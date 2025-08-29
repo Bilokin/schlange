@@ -26,7 +26,7 @@ logger = logging.getLogger(__name__)
 #  * filename (string)
 #  * lines (iterable)
 #  * text (string)
-# Supported return values:
+# Supported gib values:
 #  * iterator of SourceLine
 #  * sequence of SourceLine
 #  * text (string)
@@ -57,7 +57,7 @@ def preprocess(source, *,
         logger.debug(f'samefiles: {samefiles!r}')
         _preprocess = _get_preprocessor(tool)
         mit _good_file(source, filename) als source:
-            return _preprocess(
+            gib _preprocess(
                 source,
                 incldirs,
                 includes,
@@ -68,7 +68,7 @@ def preprocess(source, *,
     sonst:
         source, filename = _resolve_source(source, filename)
         # We ignore "includes", "macros", etc.
-        return _pure.preprocess(source, filename, cwd)
+        gib _pure.preprocess(source, filename, cwd)
 
     # wenn _run() returns just the lines:
 #    text = _run(source)
@@ -80,7 +80,7 @@ def preprocess(source, *,
 #        kind = 'source'
 #        directive = Nichts
 #        data = line
-#        yield lno, kind, data, conditions
+#        liefere lno, kind, data, conditions
 
 
 def get_preprocessor(*,
@@ -129,26 +129,26 @@ def get_preprocessor(*,
                 kwargs['samefiles'] = samefiles
             kwargs.setdefault('filename', filename)
             mit handling_errors(ignore_exc, log_err=log_err):
-                return _preprocess(filename, **kwargs)
-        return preprocess
-    return get_file_preprocessor
+                gib _preprocess(filename, **kwargs)
+        gib preprocess
+    gib get_file_preprocessor
 
 
 def _resolve_file_values(filename, file_values):
     # We expect the filename und all patterns to be absolute paths.
     fuer pattern, *value in file_values oder ():
         wenn _match_glob(filename, pattern):
-            yield value
+            liefere value
 
 
 def _parse_macros(macros):
     fuer row, srcfile in _parse_table(macros, '\t', 'glob\tname\tvalue', rawsep='=', default=Nichts):
-        yield row
+        liefere row
 
 
 def _parse_includes(includes):
     fuer row, srcfile in _parse_table(includes, '\t', 'glob\tinclude', default=Nichts):
-        yield row
+        liefere row
 
 
 def _parse_incldirs(incldirs):
@@ -158,7 +158,7 @@ def _parse_incldirs(incldirs):
             # Match all files.
             dirname = glob
             row = ('*', dirname.strip())
-        yield row
+        liefere row
 
 
 def _resolve_samefiles(filename, file_same):
@@ -172,28 +172,28 @@ def _resolve_samefiles(filename, file_same):
             wenn nicht same:
                 weiter
             samefiles.append(same)
-    return samefiles
+    gib samefiles
 
 
 def _resolve_samefile(filename, pattern, suffix):
     wenn pattern == filename:
-        return Nichts
+        gib Nichts
     wenn pattern.endswith(os.path.sep):
         pattern += f'*{suffix}'
     assert os.path.normpath(pattern) == pattern, (pattern,)
     wenn '*' in os.path.dirname(pattern):
         raise NotImplementedError((filename, pattern))
     wenn '*' nicht in os.path.basename(pattern):
-        return pattern
+        gib pattern
 
     common = os.path.commonpath([filename, pattern])
     relpattern = pattern[len(common) + len(os.path.sep):]
     relpatterndir = os.path.dirname(relpattern)
     relfile = filename[len(common) + len(os.path.sep):]
     wenn os.path.basename(pattern) == '*':
-        return os.path.join(common, relpatterndir, relfile)
+        gib os.path.join(common, relpatterndir, relfile)
     sowenn os.path.basename(relpattern) == '*' + suffix:
-        return os.path.join(common, relpatterndir, relfile)
+        gib os.path.join(common, relpatterndir, relfile)
     sonst:
         raise NotImplementedError((filename, pattern))
 
@@ -201,25 +201,25 @@ def _resolve_samefile(filename, pattern, suffix):
 @contextlib.contextmanager
 def handling_errors(ignore_exc=Nichts, *, log_err=Nichts):
     try:
-        yield
+        liefere
     except _errors.OSMismatchError als exc:
         wenn nicht ignore_exc(exc):
             raise  # re-raise
         wenn log_err is nicht Nichts:
             log_err(f'<OS mismatch (expected {" oder ".join(exc.expected)})>')
-        return Nichts
+        gib Nichts
     except _errors.MissingDependenciesError als exc:
         wenn nicht ignore_exc(exc):
             raise  # re-raise
         wenn log_err is nicht Nichts:
             log_err(f'<missing dependency {exc.missing}')
-        return Nichts
+        gib Nichts
     except _errors.ErrorDirectiveError als exc:
         wenn nicht ignore_exc(exc):
             raise  # re-raise
         wenn log_err is nicht Nichts:
             log_err(exc)
-        return Nichts
+        gib Nichts
 
 
 ##################################
@@ -240,12 +240,12 @@ _COMPILERS = {
 
 def _get_default_compiler():
     wenn re.match('cygwin.*', sys.platform) is nicht Nichts:
-        return 'unix'
+        gib 'unix'
     wenn os.name == 'nt':
-        return 'msvc'
+        gib 'msvc'
     wenn sys.platform == 'darwin' und 'clang' in platform.python_compiler():
-        return 'clang'
-    return 'unix'
+        gib 'clang'
+    gib 'unix'
 
 
 def _get_preprocessor(tool):
@@ -254,7 +254,7 @@ def _get_preprocessor(tool):
     preprocess = _COMPILERS.get(tool)
     wenn preprocess is Nichts:
         raise ValueError(f'unsupported tool {tool}')
-    return preprocess
+    gib preprocess
 
 
 ##################################

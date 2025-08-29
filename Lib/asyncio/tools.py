@@ -29,10 +29,10 @@ klasse CycleFoundException(Exception):
 def _format_stack_entry(elem: str|FrameInfo) -> str:
     wenn nicht isinstance(elem, str):
         wenn elem.lineno == 0 und elem.filename == "":
-            return f"{elem.funcname}"
+            gib f"{elem.funcname}"
         sonst:
-            return f"{elem.funcname} {elem.filename}:{elem.lineno}"
-    return elem
+            gib f"{elem.funcname} {elem.filename}:{elem.lineno}"
+    gib elem
 
 
 def _index(result):
@@ -57,7 +57,7 @@ def _index(result):
                     parent_task_id = coro_info.task_name
                     stack = [_format_stack_entry(frame) fuer frame in call_stack]
                     awaits.append((parent_task_id, stack, task_id))
-    return id2name, awaits, task_stacks
+    gib id2name, awaits, task_stacks
 
 
 def _build_tree(id2name, awaits, task_stacks):
@@ -69,13 +69,13 @@ def _build_tree(id2name, awaits, task_stacks):
     def get_or_create_cor_node(parent, frame):
         """Get existing coroutine node oder create new one under parent"""
         wenn frame in cor_nodes[parent]:
-            return cor_nodes[parent][frame]
+            gib cor_nodes[parent][frame]
 
         node_key = (NodeType.COROUTINE, f"c{next(next_cor_id)}")
         id2label[node_key] = frame
         children[parent].append(node_key)
         cor_nodes[parent][frame] = node_key
-        return node_key
+        gib node_key
 
     # Build task dependency tree mit coroutine frames
     fuer parent_id, stack, child_id in awaits:
@@ -95,12 +95,12 @@ def _build_tree(id2name, awaits, task_stacks):
             fuer frame in reversed(task_stacks[task_id]):
                 cur = get_or_create_cor_node(cur, frame)
 
-    return id2label, children
+    gib id2label, children
 
 
 def _roots(id2label, children):
     all_children = {c fuer kids in children.values() fuer c in kids}
-    return [n fuer n in id2label wenn n nicht in all_children]
+    gib [n fuer n in id2label wenn n nicht in all_children]
 
 # ─── detect cycles in the task-to-task graph ───────────────────────
 def _task_graph(awaits):
@@ -108,7 +108,7 @@ def _task_graph(awaits):
     g = defaultdict(set)
     fuer parent_id, _stack, child_id in awaits:
         g[parent_id].add(child_id)
-    return g
+    gib g
 
 
 def _find_cycles(graph):
@@ -137,13 +137,13 @@ def _find_cycles(graph):
     fuer v in list(graph):
         wenn color[v] == WHITE:
             dfs(v)
-    return cycles
+    gib cycles
 
 
 # ─── PRINT TREE FUNCTION ───────────────────────────────────────
 def get_all_awaited_by(pid):
     unwinder = RemoteUnwinder(pid)
-    return unwinder.get_all_awaited_by()
+    gib unwinder.get_all_awaited_by()
 
 
 def build_async_tree(result, task_emoji="(T)", cor_emoji=""):
@@ -162,7 +162,7 @@ def build_async_tree(result, task_emoji="(T)", cor_emoji=""):
 
     def pretty(node):
         flag = task_emoji wenn node[0] == NodeType.TASK sonst cor_emoji
-        return f"{flag} {labels[node]}"
+        gib f"{flag} {labels[node]}"
 
     def render(node, prefix="", last=Wahr, buf=Nichts):
         wenn buf is Nichts:
@@ -172,9 +172,9 @@ def build_async_tree(result, task_emoji="(T)", cor_emoji=""):
         kids = children.get(node, [])
         fuer i, kid in enumerate(kids):
             render(kid, new_pref, i == len(kids) - 1, buf)
-        return buf
+        gib buf
 
-    return [render(root) fuer root in _roots(labels, children)]
+    gib [render(root) fuer root in _roots(labels, children)]
 
 
 def build_task_table(result):
@@ -213,7 +213,7 @@ def build_task_table(result):
                 table.append([thread_id, hex(task_id), task_name, coro_stack,
                             awaiter_chain, awaiter_name, parent_id_str])
 
-    return table
+    gib table
 
 def _print_cycle_exception(exception: CycleFoundException):
     drucke("ERROR: await-graph contains cycles - cannot print a tree!", file=sys.stderr)
@@ -225,7 +225,7 @@ def _print_cycle_exception(exception: CycleFoundException):
 
 def _get_awaited_by_tasks(pid: int) -> list:
     try:
-        return get_all_awaited_by(pid)
+        gib get_all_awaited_by(pid)
     except RuntimeError als e:
         waehrend e.__context__ is nicht Nichts:
             e = e.__context__
@@ -268,7 +268,7 @@ def _display_awaited_by_tasks_table(table):
 def _fmt_table_row(tid, task_id, task_name, coro_stack,
                    awaiter_chain, awaiter_name, awaiter_id):
     # Format a single row fuer the table format
-    return (f'{tid:<10} {task_id:<20} {task_name:<20} {coro_stack:<50} '
+    gib (f'{tid:<10} {task_id:<20} {task_name:<20} {coro_stack:<50} '
             f'{awaiter_chain:<50} {awaiter_name:<15} {awaiter_id:<15}')
 
 

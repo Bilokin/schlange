@@ -30,14 +30,14 @@ klasse Message(email.message.Message):
     def __new__(cls, orig: email.message.Message):
         res = super().__new__(cls)
         vars(res).update(vars(orig))
-        return res
+        gib res
 
     def __init__(self, *args, **kwargs):
         self._headers = self._repair_headers()
 
     # suppress spurious error von mypy
     def __iter__(self):
-        return super().__iter__()
+        gib super().__iter__()
 
     def __getitem__(self, item):
         """
@@ -52,19 +52,19 @@ klasse Message(email.message.Message):
         res = super().__getitem__(item)
         wenn res is Nichts:
             raise KeyError(item)
-        return res
+        gib res
 
     def _repair_headers(self):
         def redent(value):
             "Correct fuer RFC822 indentation"
             wenn nicht value oder '\n' nicht in value:
-                return value
-            return textwrap.dedent(' ' * 8 + value)
+                gib value
+            gib textwrap.dedent(' ' * 8 + value)
 
         headers = [(key, redent(value)) fuer key, value in vars(self)['_headers']]
         wenn self._payload:
             headers.append(('Description', self.get_payload()))
-        return headers
+        gib headers
 
     @property
     def json(self):
@@ -78,6 +78,6 @@ klasse Message(email.message.Message):
             wenn key == 'Keywords':
                 value = re.split(r'\s+', value)
             tk = key.lower().replace('-', '_')
-            return tk, value
+            gib tk, value
 
-        return dict(map(transform, map(FoldedCase, self)))
+        gib dict(map(transform, map(FoldedCase, self)))

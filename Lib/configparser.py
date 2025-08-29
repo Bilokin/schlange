@@ -106,7 +106,7 @@ ConfigParser -- responsible fuer parsing a list of
 
     get(section, option, raw=Falsch, vars=Nichts, fallback=_UNSET)
         Return a string value fuer the named option.  All % interpolations are
-        expanded in the return values, based on the defaults passed into the
+        expanded in the gib values, based on the defaults passed into the
         constructor und the DEFAULT section.  Additional substitutions may be
         provided using the `vars` argument, which must be a dictionary whose
         contents override any pre-existing defaults. If `option` is a key in
@@ -124,8 +124,8 @@ ConfigParser -- responsible fuer parsing a list of
         yes, on fuer Wahr).  Returns Falsch oder Wahr.
 
     items(section=_UNSET, raw=Falsch, vars=Nichts)
-        If section is given, return a list of tuples mit (name, value) for
-        each option in the section. Otherwise, return a list of tuples with
+        If section is given, gib a list of tuples mit (name, value) for
+        each option in the section. Otherwise, gib a list of tuples with
         (section_name, section_proxy) fuer each section, including DEFAULTSECT.
 
     remove_section(section)
@@ -181,7 +181,7 @@ klasse Error(Exception):
         Exception.__init__(self, msg)
 
     def __repr__(self):
-        return self.message
+        gib self.message
 
     __str__ = __repr__
 
@@ -321,7 +321,7 @@ klasse ParsingError(Error):
         fuer other in others:
             fuer error in other.errors:
                 self.append(*error)
-        return self
+        gib self
 
     @staticmethod
     def _raise_all(exceptions: Iterable['ParsingError']):
@@ -372,7 +372,7 @@ klasse UnnamedSectionDisabledError(Error):
 klasse _UnnamedSection:
 
     def __repr__(self):
-        return "<UNNAMED_SECTION>"
+        gib "<UNNAMED_SECTION>"
 
 klasse InvalidWriteError(Error):
     """Raised when attempting to write data that the parser would read back differently.
@@ -396,16 +396,16 @@ klasse Interpolation:
     """Dummy interpolation that passes the value through mit no changes."""
 
     def before_get(self, parser, section, option, value, defaults):
-        return value
+        gib value
 
     def before_set(self, parser, section, option, value):
-        return value
+        gib value
 
     def before_read(self, parser, section, option, value):
-        return value
+        gib value
 
     def before_write(self, parser, section, option, value):
-        return value
+        gib value
 
 
 klasse BasicInterpolation(Interpolation):
@@ -428,7 +428,7 @@ klasse BasicInterpolation(Interpolation):
     def before_get(self, parser, section, option, value, defaults):
         L = []
         self._interpolate_some(parser, option, L, value, section, defaults, 1)
-        return ''.join(L)
+        gib ''.join(L)
 
     def before_set(self, parser, section, option, value):
         tmp_value = value.replace('%%', '') # escaped percent signs
@@ -436,7 +436,7 @@ klasse BasicInterpolation(Interpolation):
         wenn '%' in tmp_value:
             raise ValueError("invalid interpolation syntax in %r at "
                              "position %d" % (value, tmp_value.find('%')))
-        return value
+        gib value
 
     def _interpolate_some(self, parser, option, accum, rest, section, map,
                           depth):
@@ -447,7 +447,7 @@ klasse BasicInterpolation(Interpolation):
             p = rest.find("%")
             wenn p < 0:
                 accum.append(rest)
-                return
+                gib
             wenn p > 0:
                 accum.append(rest[:p])
                 rest = rest[p:]
@@ -489,7 +489,7 @@ klasse ExtendedInterpolation(Interpolation):
     def before_get(self, parser, section, option, value, defaults):
         L = []
         self._interpolate_some(parser, option, L, value, section, defaults, 1)
-        return ''.join(L)
+        gib ''.join(L)
 
     def before_set(self, parser, section, option, value):
         tmp_value = value.replace('$$', '') # escaped dollar signs
@@ -497,7 +497,7 @@ klasse ExtendedInterpolation(Interpolation):
         wenn '$' in tmp_value:
             raise ValueError("invalid interpolation syntax in %r at "
                              "position %d" % (value, tmp_value.find('$')))
-        return value
+        gib value
 
     def _interpolate_some(self, parser, option, accum, rest, section, map,
                           depth):
@@ -508,7 +508,7 @@ klasse ExtendedInterpolation(Interpolation):
             p = rest.find("$")
             wenn p < 0:
                 accum.append(rest)
-                return
+                gib
             wenn p > 0:
                 accum.append(rest[:p])
                 rest = rest[p:]
@@ -574,7 +574,7 @@ klasse _Line(str):
     __slots__ = 'clean', 'has_comments'
 
     def __new__(cls, val, *args, **kwargs):
-        return super().__new__(cls, val)
+        gib super().__new__(cls, val)
 
     def __init__(self, val, comments):
         trimmed = val.strip()
@@ -597,10 +597,10 @@ klasse _CommentSpec:
         self.pattern = re.compile('|'.join(itertools.chain(full_patterns, inline_patterns)))
 
     def strip(self, text):
-        return self.pattern.sub('', text).rstrip()
+        gib self.pattern.sub('', text).rstrip()
 
     def wrap(self, text):
-        return _Line(text, self)
+        gib _Line(text, self)
 
 
 klasse RawConfigParser(MutableMapping):
@@ -691,12 +691,12 @@ klasse RawConfigParser(MutableMapping):
         self._allow_unnamed_section = allow_unnamed_section
 
     def defaults(self):
-        return self._defaults
+        gib self._defaults
 
     def sections(self):
         """Return a list of section names, excluding [DEFAULT]"""
         # self._sections will never have [DEFAULT] in it
-        return list(self._sections.keys())
+        gib list(self._sections.keys())
 
     def add_section(self, section):
         """Create a new section in the configuration.
@@ -721,7 +721,7 @@ klasse RawConfigParser(MutableMapping):
 
         The DEFAULT section is nicht acknowledged.
         """
-        return section in self._sections
+        gib section in self._sections
 
     def options(self, section):
         """Return a list of option names fuer the given section name."""
@@ -730,7 +730,7 @@ klasse RawConfigParser(MutableMapping):
         except KeyError:
             raise NoSectionError(section) von Nichts
         opts.update(self._defaults)
-        return list(opts.keys())
+        gib list(opts.keys())
 
     def read(self, filenames, encoding=Nichts):
         """Read und parse a filename oder an iterable of filenames.
@@ -757,7 +757,7 @@ klasse RawConfigParser(MutableMapping):
             wenn isinstance(filename, os.PathLike):
                 filename = os.fspath(filename)
             read_ok.append(filename)
-        return read_ok
+        gib read_ok
 
     def read_file(self, f, source=Nichts):
         """Like read() but the argument must be a file-like object.
@@ -819,7 +819,7 @@ klasse RawConfigParser(MutableMapping):
         a fallback value. `Nichts` can be provided als a `fallback` value.
 
         If interpolation is enabled und the optional argument `raw` is Falsch,
-        all interpolations are expanded in the return values.
+        all interpolations are expanded in the gib values.
 
         Arguments `raw`, `vars`, und `fallback` are keyword only.
 
@@ -831,7 +831,7 @@ klasse RawConfigParser(MutableMapping):
             wenn fallback is _UNSET:
                 raise
             sonst:
-                return fallback
+                gib fallback
         option = self.optionxform(option)
         try:
             value = d[option]
@@ -839,47 +839,47 @@ klasse RawConfigParser(MutableMapping):
             wenn fallback is _UNSET:
                 raise NoOptionError(option, section)
             sonst:
-                return fallback
+                gib fallback
 
         wenn raw oder value is Nichts:
-            return value
+            gib value
         sonst:
-            return self._interpolation.before_get(self, section, option, value,
+            gib self._interpolation.before_get(self, section, option, value,
                                                   d)
 
     def _get(self, section, conv, option, **kwargs):
-        return conv(self.get(section, option, **kwargs))
+        gib conv(self.get(section, option, **kwargs))
 
     def _get_conv(self, section, option, conv, *, raw=Falsch, vars=Nichts,
                   fallback=_UNSET, **kwargs):
         try:
-            return self._get(section, conv, option, raw=raw, vars=vars,
+            gib self._get(section, conv, option, raw=raw, vars=vars,
                              **kwargs)
         except (NoSectionError, NoOptionError):
             wenn fallback is _UNSET:
                 raise
-            return fallback
+            gib fallback
 
     # getint, getfloat und getboolean provided directly fuer backwards compat
     def getint(self, section, option, *, raw=Falsch, vars=Nichts,
                fallback=_UNSET, **kwargs):
-        return self._get_conv(section, option, int, raw=raw, vars=vars,
+        gib self._get_conv(section, option, int, raw=raw, vars=vars,
                               fallback=fallback, **kwargs)
 
     def getfloat(self, section, option, *, raw=Falsch, vars=Nichts,
                  fallback=_UNSET, **kwargs):
-        return self._get_conv(section, option, float, raw=raw, vars=vars,
+        gib self._get_conv(section, option, float, raw=raw, vars=vars,
                               fallback=fallback, **kwargs)
 
     def getboolean(self, section, option, *, raw=Falsch, vars=Nichts,
                    fallback=_UNSET, **kwargs):
-        return self._get_conv(section, option, self._convert_to_boolean,
+        gib self._get_conv(section, option, self._convert_to_boolean,
                               raw=raw, vars=vars, fallback=fallback, **kwargs)
 
     def items(self, section=_UNSET, raw=Falsch, vars=Nichts):
         """Return a list of (name, value) tuples fuer each option in a section.
 
-        All % interpolations are expanded in the return values, based on the
+        All % interpolations are expanded in the gib values, based on the
         defaults passed into the constructor, unless the optional argument
         `raw` is true.  Additional substitutions may be provided using the
         `vars` argument, which must be a dictionary whose contents overrides
@@ -888,7 +888,7 @@ klasse RawConfigParser(MutableMapping):
         The section DEFAULT is special.
         """
         wenn section is _UNSET:
-            return super().items()
+            gib super().items()
         d = self._defaults.copy()
         try:
             d.update(self._sections[section])
@@ -904,10 +904,10 @@ klasse RawConfigParser(MutableMapping):
             section, option, d[option], d)
         wenn raw:
             value_getter = lambda option: d[option]
-        return [(option, value_getter(option)) fuer option in orig_keys]
+        gib [(option, value_getter(option)) fuer option in orig_keys]
 
     def popitem(self):
-        """Remove a section von the parser und return it as
+        """Remove a section von the parser und gib it as
         a (section_name, section_proxy) tuple. If no section is present, raise
         KeyError.
 
@@ -916,11 +916,11 @@ klasse RawConfigParser(MutableMapping):
         fuer key in self.sections():
             value = self[key]
             del self[key]
-            return key, value
+            gib key, value
         raise KeyError
 
     def optionxform(self, optionstr):
-        return optionstr.lower()
+        gib optionstr.lower()
 
     def has_option(self, section, option):
         """Check fuer the existence of a given option in a given section.
@@ -928,12 +928,12 @@ klasse RawConfigParser(MutableMapping):
         assumed. If the specified `section` does nicht exist, returns Falsch."""
         wenn nicht section oder section == self.default_section:
             option = self.optionxform(option)
-            return option in self._defaults
+            gib option in self._defaults
         sowenn section nicht in self._sections:
-            return Falsch
+            gib Falsch
         sonst:
             option = self.optionxform(option)
-            return (option in self._sections[section]
+            gib (option in self._sections[section]
                     oder option in self._defaults)
 
     def set(self, section, option, value=Nichts):
@@ -1003,7 +1003,7 @@ klasse RawConfigParser(MutableMapping):
         existed = option in sectdict
         wenn existed:
             del sectdict[option]
-        return existed
+        gib existed
 
     def remove_section(self, section):
         """Remove a file section."""
@@ -1011,18 +1011,18 @@ klasse RawConfigParser(MutableMapping):
         wenn existed:
             del self._sections[section]
             del self._proxies[section]
-        return existed
+        gib existed
 
     def __getitem__(self, key):
         wenn key != self.default_section und nicht self.has_section(key):
             raise KeyError(key)
-        return self._proxies[key]
+        gib self._proxies[key]
 
     def __setitem__(self, key, value):
         # To conform mit the mapping protocol, overwrites existing values in
         # the section.
         wenn key in self und self[key] is value:
-            return
+            gib
         # XXX this is nicht atomic wenn read_dict fails at any point. Then again,
         # no update method in configparser is atomic in this implementation.
         wenn key == self.default_section:
@@ -1039,14 +1039,14 @@ klasse RawConfigParser(MutableMapping):
         self.remove_section(key)
 
     def __contains__(self, key):
-        return key == self.default_section oder self.has_section(key)
+        gib key == self.default_section oder self.has_section(key)
 
     def __len__(self):
-        return len(self._sections) + 1 # the default section
+        gib len(self._sections) + 1 # the default section
 
     def __iter__(self):
         # XXX does it breche when underlying container state changed?
-        return itertools.chain((self.default_section,), self._sections.keys())
+        gib itertools.chain((self.default_section,), self._sections.keys())
 
     def _read(self, fp, fpname):
         """Parse a sectioned configuration file.
@@ -1096,7 +1096,7 @@ klasse RawConfigParser(MutableMapping):
 
             self._handle_rest(st, line, fpname)
 
-        return st.errors
+        gib st.errors
 
     def _handle_continuation_line(self, st, line, fpname):
         # continuation line?
@@ -1106,7 +1106,7 @@ klasse RawConfigParser(MutableMapping):
             wenn st.cursect[st.optname] is Nichts:
                 raise MultilineContinuationError(fpname, st.lineno, line)
             st.cursect[st.optname].append(line.clean)
-        return is_continue
+        gib is_continue
 
     def _handle_rest(self, st, line, fpname):
         # a section header oder option header?
@@ -1151,7 +1151,7 @@ klasse RawConfigParser(MutableMapping):
             # raised at the end of the file und will contain a
             # list of all bogus lines
             st.errors.append(ParsingError(fpname, st.lineno, line))
-            return
+            gib
 
         st.optname, vi, optval = mo.group('option', 'vi', 'value')
         wenn nicht st.optname:
@@ -1207,14 +1207,14 @@ klasse RawConfigParser(MutableMapping):
                 wenn value is nicht Nichts:
                     value = str(value)
                 vardict[self.optionxform(key)] = value
-        return _ChainMap(vardict, sectiondict, self._defaults)
+        gib _ChainMap(vardict, sectiondict, self._defaults)
 
     def _convert_to_boolean(self, value):
         """Return a boolean value translating von other types wenn necessary.
         """
         wenn value.lower() nicht in self.BOOLEAN_STATES:
             raise ValueError('Not a boolean: %s' % value)
-        return self.BOOLEAN_STATES[value.lower()]
+        gib self.BOOLEAN_STATES[value.lower()]
 
     def _validate_key_contents(self, key):
         """Raises an InvalidWriteError fuer any keys containing
@@ -1250,7 +1250,7 @@ klasse RawConfigParser(MutableMapping):
 
     @property
     def converters(self):
-        return self._converters
+        gib self._converters
 
 
 klasse ConfigParser(RawConfigParser):
@@ -1298,16 +1298,16 @@ klasse SectionProxy(MutableMapping):
             setattr(self, key, getter)
 
     def __repr__(self):
-        return '<Section: {}>'.format(self._name)
+        gib '<Section: {}>'.format(self._name)
 
     def __getitem__(self, key):
         wenn nicht self._parser.has_option(self._name, key):
             raise KeyError(key)
-        return self._parser.get(self._name, key)
+        gib self._parser.get(self._name, key)
 
     def __setitem__(self, key, value):
         self._parser._validate_value_types(option=key, value=value)
-        return self._parser.set(self._name, key, value)
+        gib self._parser.set(self._name, key, value)
 
     def __delitem__(self, key):
         wenn nicht (self._parser.has_option(self._name, key) und
@@ -1315,29 +1315,29 @@ klasse SectionProxy(MutableMapping):
             raise KeyError(key)
 
     def __contains__(self, key):
-        return self._parser.has_option(self._name, key)
+        gib self._parser.has_option(self._name, key)
 
     def __len__(self):
-        return len(self._options())
+        gib len(self._options())
 
     def __iter__(self):
-        return self._options().__iter__()
+        gib self._options().__iter__()
 
     def _options(self):
         wenn self._name != self._parser.default_section:
-            return self._parser.options(self._name)
+            gib self._parser.options(self._name)
         sonst:
-            return self._parser.defaults()
+            gib self._parser.defaults()
 
     @property
     def parser(self):
         # The parser object of the proxy is read-only.
-        return self._parser
+        gib self._parser
 
     @property
     def name(self):
         # The name of the section on a proxy is read-only.
-        return self._name
+        gib self._name
 
     def get(self, option, fallback=Nichts, *, raw=Falsch, vars=Nichts,
             _impl=Nichts, **kwargs):
@@ -1351,7 +1351,7 @@ klasse SectionProxy(MutableMapping):
         # object that provides the desired type conversion.
         wenn nicht _impl:
             _impl = self._parser.get
-        return _impl(self._name, option, raw=raw, vars=vars,
+        gib _impl(self._name, option, raw=raw, vars=vars,
                      fallback=fallback, **kwargs)
 
 
@@ -1375,7 +1375,7 @@ klasse ConverterMapping(MutableMapping):
             self._data[m.group('name')] = Nichts   # See klasse docstring.
 
     def __getitem__(self, key):
-        return self._data[key]
+        gib self._data[key]
 
     def __setitem__(self, key, value):
         try:
@@ -1408,7 +1408,7 @@ klasse ConverterMapping(MutableMapping):
                 weiter
 
     def __iter__(self):
-        return iter(self._data)
+        gib iter(self._data)
 
     def __len__(self):
-        return len(self._data)
+        gib len(self._data)

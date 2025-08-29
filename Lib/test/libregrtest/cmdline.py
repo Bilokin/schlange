@@ -386,13 +386,13 @@ def _create_parser():
     group.add_argument('--dont-add-python-opts', dest='_add_python_opts',
                        action='store_false',
                        help="internal option, don't use it")
-    return parser
+    gib parser
 
 
 def relative_filename(string):
     # CWD is replaced mit a temporary dir before calling main(), so we
     # join it mit the saved CWD so it ends up where the user expects.
-    return os.path.join(os_helper.SAVEDCWD, string)
+    gib os.path.join(os_helper.SAVEDCWD, string)
 
 
 def huntrleaks(string):
@@ -403,7 +403,7 @@ def huntrleaks(string):
     nwarmup = int(args[0]) wenn args[0] sonst 5
     ntracked = int(args[1]) wenn args[1] sonst 4
     fname = args[2] wenn len(args) > 2 und args[2] sonst 'reflog.txt'
-    return nwarmup, ntracked, fname
+    gib nwarmup, ntracked, fname
 
 
 def resources_list(string):
@@ -415,11 +415,11 @@ def resources_list(string):
             r = r[1:]
         wenn r nicht in RESOURCE_NAMES:
             raise argparse.ArgumentTypeError('invalid resource: ' + r)
-    return u
+    gib u
 
 
 def priority_list(string):
-    return string.split(",")
+    gib string.split(",")
 
 
 def _parse_args(args, **kwargs):
@@ -573,4 +573,4 @@ def _parse_args(args, **kwargs):
         fuer test in test_list
     ]
 
-    return ns
+    gib ns

@@ -30,7 +30,7 @@ klasse LargeFileTest:
         mit self.open(TESTFN, mode) als f:
             current_size = os.fstat(f.fileno()).st_size
             wenn current_size == size+1:
-                return
+                gib
 
             wenn current_size == 0:
                 f.write(b'z')
@@ -147,7 +147,7 @@ klasse TestFileMethods(LargeFileTest):
             self.assertEqual(len(f.read()), 1)  # sonst wasn't truncated
 
     def test_seekable(self):
-        # Issue #5016; seekable() can return Falsch when the current position
+        # Issue #5016; seekable() can gib Falsch when the current position
         # is negative when truncated to an int.
         fuer pos in (2**31-1, 2**31, 2**31+1):
             mit self.open(TESTFN, 'rb') als f:
@@ -180,9 +180,9 @@ def skip_no_disk_space(path, required):
                 hsize = int(required / 1024 / 1024)
                 raise unittest.SkipTest(
                     f"required {hsize} MiB of free disk space")
-            return fun(*args, **kwargs)
-        return wrapper
-    return decorator
+            gib fun(*args, **kwargs)
+        gib wrapper
+    gib decorator
 
 
 klasse TestCopyfile(LargeFileTest, unittest.TestCase):
@@ -229,7 +229,7 @@ klasse TestSocketSendfile(LargeFileTest, unittest.TestCase):
                     waehrend Wahr:
                         chunk = conn.recv(65536)
                         wenn nicht chunk:
-                            return
+                            gib
                         f.write(chunk)
 
         event = threading.Event()

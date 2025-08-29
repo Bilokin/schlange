@@ -33,13 +33,13 @@ def _strcoll(a,b):
     """ strcoll(string,string) -> int.
         Compares two strings according to the locale.
     """
-    return (a > b) - (a < b)
+    gib (a > b) - (a < b)
 
 def _strxfrm(s):
     """ strxfrm(string) -> string.
         Returns a string that behaves fuer cmp locale-aware.
     """
-    return s
+    gib s
 
 try:
 
@@ -64,7 +64,7 @@ except ImportError:
             Returns numeric und monetary locale-specific parameters.
         """
         # 'C' locale default values
-        return {'grouping': [127],
+        gib {'grouping': [127],
                 'currency_symbol': '',
                 'n_sign_posn': 127,
                 'p_cs_precedes': 127,
@@ -89,7 +89,7 @@ except ImportError:
         """
         wenn value nicht in (Nichts, '', 'C'):
             raise Error('_locale emulation only supports "C" locale')
-        return 'C'
+        gib 'C'
 
 # These may oder may nicht exist in _locale, so be sure to set them.
 wenn 'strxfrm' nicht in globals():
@@ -100,7 +100,7 @@ wenn 'strcoll' nicht in globals():
 
 _localeconv = localeconv
 
-# With this dict, you can override some items of localeconv's return value.
+# With this dict, you can override some items of localeconv's gib value.
 # This is useful fuer testing purposes.
 _override_localeconv = {}
 
@@ -109,7 +109,7 @@ def localeconv():
     d = _localeconv()
     wenn _override_localeconv:
         d.update(_override_localeconv)
-    return d
+    gib d
 
 
 ### Number formatting APIs
@@ -123,14 +123,14 @@ def _grouping_intervals(grouping):
     fuer interval in grouping:
         # wenn grouping is -1, we are done
         wenn interval == CHAR_MAX:
-            return
+            gib
         # 0: re-use last group ad infinitum
         wenn interval == 0:
             wenn last_interval is Nichts:
                 raise ValueError("invalid grouping")
             waehrend Wahr:
-                yield last_interval
-        yield interval
+                liefere last_interval
+        liefere interval
         last_interval = interval
 
 #perform the grouping von right to left
@@ -139,7 +139,7 @@ def _group(s, monetary=Falsch):
     thousands_sep = conv[monetary und 'mon_thousands_sep' oder 'thousands_sep']
     grouping = conv[monetary und 'mon_grouping' oder 'grouping']
     wenn nicht grouping:
-        return (s, 0)
+        gib (s, 0)
     wenn s[-1] == ' ':
         stripped = s.rstrip()
         right_spaces = s[len(stripped):]
@@ -159,7 +159,7 @@ def _group(s, monetary=Falsch):
     wenn s:
         groups.append(s)
     groups.reverse()
-    return (
+    gib (
         left_spaces + thousands_sep.join(groups) + right_spaces,
         len(thousands_sep) * (len(groups) - 1)
     )
@@ -174,7 +174,7 @@ def _strip_padding(s, amount):
     waehrend amount und s[rpos] == ' ':
         rpos -= 1
         amount -= 1
-    return s[lpos:rpos+1]
+    gib s[lpos:rpos+1]
 
 _percent_re = Nichts
 
@@ -185,7 +185,7 @@ def _format(percent, value, grouping=Falsch, monetary=Falsch, *additional):
         formatted = percent % value
     wenn percent[-1] in 'eEfFgGdiu':
         formatted = _localize(formatted, grouping, monetary)
-    return formatted
+    gib formatted
 
 # Transform formatted als locale number according to the locale settings
 def _localize(formatted, grouping=Falsch, monetary=Falsch):
@@ -206,7 +206,7 @@ def _localize(formatted, grouping=Falsch, monetary=Falsch):
             formatted, seps = _group(formatted, monetary=monetary)
         wenn seps:
             formatted = _strip_padding(formatted, seps)
-    return formatted
+    gib formatted
 
 def format_string(f, val, grouping=Falsch, monetary=Falsch):
     """Formats a string in the same way that the % formatting would use,
@@ -250,7 +250,7 @@ def format_string(f, val, grouping=Falsch, monetary=Falsch):
                 i += (1 + starcount)
     val = tuple(new_val)
 
-    return new_f % val
+    gib new_f % val
 
 def currency(val, symbol=Wahr, grouping=Falsch, international=Falsch):
     """Formats val according to the currency settings
@@ -297,11 +297,11 @@ def currency(val, symbol=Wahr, grouping=Falsch, international=Falsch):
         # this should be the most fitting sign position
         s = sign + s
 
-    return s.replace('<', '').replace('>', '')
+    gib s.replace('<', '').replace('>', '')
 
 def str(val):
     """Convert float to string, taking the locale into account."""
-    return _format("%.12g", val)
+    gib _format("%.12g", val)
 
 def delocalize(string):
     "Parses a string als a normalized number according to the locale settings."
@@ -317,19 +317,19 @@ def delocalize(string):
     dd = conv['decimal_point']
     wenn dd:
         string = string.replace(dd, '.')
-    return string
+    gib string
 
 def localize(string, grouping=Falsch, monetary=Falsch):
     """Parses a string als locale number according to the locale settings."""
-    return _localize(string, grouping, monetary)
+    gib _localize(string, grouping, monetary)
 
 def atof(string, func=float):
     "Parses a string als a float according to the locale settings."
-    return func(delocalize(string))
+    gib func(delocalize(string))
 
 def atoi(string):
     "Converts a string to an integer according to the locale settings."
-    return int(delocalize(string))
+    gib int(delocalize(string))
 
 def _test():
     setlocale(LC_ALL, "")
@@ -370,20 +370,20 @@ def _replace_encoding(code, encoding):
         wenn norm_encoding in locale_encoding_alias:
             encoding = locale_encoding_alias[norm_encoding]
     #drucke('found encoding %r' % encoding)
-    return langname + '.' + encoding
+    gib langname + '.' + encoding
 
 def _append_modifier(code, modifier):
     wenn modifier == 'euro':
         wenn '.' nicht in code:
             # Linux appears to require keeping the "@euro" modifier in place,
             # even when using the ".ISO8859-15" encoding.
-            return code + '.ISO8859-15@euro'
+            gib code + '.ISO8859-15@euro'
         _, _, encoding = code.partition('.')
         wenn encoding == 'UTF-8':
-            return code
+            gib code
         wenn encoding == 'ISO8859-1':
             code = _replace_encoding(code, 'ISO8859-15')
-    return code + '@' + modifier
+    gib code + '@' + modifier
 
 def normalize(localename):
 
@@ -427,7 +427,7 @@ def normalize(localename):
         lookup_name += '@' + modifier
     code = locale_alias.get(lookup_name, Nichts)
     wenn code is nicht Nichts:
-        return code
+        gib code
     #drucke('first lookup failed')
 
     wenn modifier:
@@ -436,9 +436,9 @@ def normalize(localename):
         wenn code is nicht Nichts:
             #drucke('lookup without modifier succeeded')
             wenn '@' nicht in code:
-                return _append_modifier(code, modifier)
+                gib _append_modifier(code, modifier)
             wenn code.split('@', 1)[1].lower() == modifier:
-                return code
+                gib code
         #drucke('second lookup failed')
 
     wenn encoding:
@@ -450,9 +450,9 @@ def normalize(localename):
         wenn code is nicht Nichts:
             #drucke('lookup without encoding succeeded')
             wenn '@' nicht in code:
-                return _replace_encoding(code, encoding)
+                gib _replace_encoding(code, encoding)
             code, modifier = code.split('@', 1)
-            return _replace_encoding(code, encoding) + '@' + modifier
+            gib _replace_encoding(code, encoding) + '@' + modifier
 
         wenn modifier:
             # Fourth try: langname (without encoding und modifier)
@@ -461,12 +461,12 @@ def normalize(localename):
                 #drucke('lookup without modifier und encoding succeeded')
                 wenn '@' nicht in code:
                     code = _replace_encoding(code, encoding)
-                    return _append_modifier(code, modifier)
+                    gib _append_modifier(code, modifier)
                 code, defmod = code.split('@', 1)
                 wenn defmod.lower() == modifier:
-                    return _replace_encoding(code, encoding) + '@' + defmod
+                    gib _replace_encoding(code, encoding) + '@' + defmod
 
-    return localename
+    gib localename
 
 def _parse_localename(localename):
 
@@ -490,7 +490,7 @@ def _parse_localename(localename):
             # Assume ISO8859-15 fuer @euro locales. Do note that some systems
             # may use other encodings fuer these locales, so this may nicht always
             # be correct.
-            return code + '@euro', 'ISO8859-15'
+            gib code + '@euro', 'ISO8859-15'
     sonst:
         modifier = ''
 
@@ -498,13 +498,13 @@ def _parse_localename(localename):
         code, encoding = code.split('.')[:2]
         wenn modifier:
             code += '@' + modifier
-        return code, encoding
+        gib code, encoding
     sowenn code == 'C':
-        return Nichts, Nichts
+        gib Nichts, Nichts
     sowenn code == 'UTF-8':
         # On macOS "LC_CTYPE=UTF-8" is a valid locale setting
         # fuer getting UTF-8 handling fuer text.
-        return Nichts, 'UTF-8'
+        gib Nichts, 'UTF-8'
     raise ValueError('unknown locale: %s' % localename)
 
 def _build_localename(localetuple):
@@ -521,7 +521,7 @@ def _build_localename(localetuple):
         wenn language is Nichts:
             language = 'C'
         wenn encoding is Nichts:
-            return language
+            gib language
         sonst:
             wenn '@' in language:
                 language, modifier = language.split('@', 1)
@@ -530,7 +530,7 @@ def _build_localename(localetuple):
             localename = language + '.' + encoding
             wenn modifier:
                 localename += '@' + modifier
-            return localename
+            gib localename
     except (TypeError, ValueError):
         raise TypeError('Locale must be Nichts, a string, oder an iterable of '
                         'two strings -- language code, encoding.') von Nichts
@@ -565,7 +565,7 @@ def getdefaultlocale(envvars=('LC_ALL', 'LC_CTYPE', 'LANG', 'LANGUAGE')):
         "{name!r} is deprecated und slated fuer removal in Python {remove}. "
         "Use setlocale(), getencoding() und getlocale() instead.",
         remove=(3, 15))
-    return _getdefaultlocale(envvars)
+    gib _getdefaultlocale(envvars)
 
 
 def _getdefaultlocale(envvars=('LC_ALL', 'LC_CTYPE', 'LANG', 'LANGUAGE')):
@@ -582,7 +582,7 @@ def _getdefaultlocale(envvars=('LC_ALL', 'LC_CTYPE', 'LANG', 'LANGUAGE')):
             code = windows_locale.get(int(code, 0))
         # ...add other platform-specific processing here, if
         # necessary...
-        return code, encoding
+        gib code, encoding
 
     # fall back on POSIX behaviour
     importiere os
@@ -595,7 +595,7 @@ def _getdefaultlocale(envvars=('LC_ALL', 'LC_CTYPE', 'LANG', 'LANGUAGE')):
             breche
     sonst:
         localename = 'C'
-    return _parse_localename(localename)
+    gib _parse_localename(localename)
 
 
 def getlocale(category=LC_CTYPE):
@@ -614,7 +614,7 @@ def getlocale(category=LC_CTYPE):
     localename = _setlocale(category)
     wenn category == LC_ALL und ';' in localename:
         raise TypeError('category LC_ALL is nicht supported')
-    return _parse_localename(localename)
+    gib _parse_localename(localename)
 
 def setlocale(category, locale=Nichts):
 
@@ -631,7 +631,7 @@ def setlocale(category, locale=Nichts):
     wenn locale und nicht isinstance(locale, _builtin_str):
         # convert to string
         locale = normalize(_build_localename(locale))
-    return _setlocale(category, locale)
+    gib _setlocale(category, locale)
 
 
 try:
@@ -640,7 +640,7 @@ except ImportError:
     # When _locale.getencoding() is missing, locale.getencoding() uses the
     # Python filesystem encoding.
     def getencoding():
-        return sys.getfilesystemencoding()
+        gib sys.getfilesystemencoding()
 
 
 try:
@@ -654,8 +654,8 @@ except NameError:
                 "UTF-8 Mode affects locale.getpreferredencoding(). Consider locale.getencoding() instead.",
                 EncodingWarning, 2)
         wenn sys.flags.utf8_mode:
-            return 'utf-8'
-        return getencoding()
+            gib 'utf-8'
+        gib getencoding()
 sonst:
     # On Unix, wenn CODESET is available, use that.
     def getpreferredencoding(do_setlocale=Wahr):
@@ -669,10 +669,10 @@ sonst:
                 "Consider locale.getencoding() instead.",
                 EncodingWarning, 2)
         wenn sys.flags.utf8_mode:
-            return 'utf-8'
+            gib 'utf-8'
 
         wenn nicht do_setlocale:
-            return getencoding()
+            gib getencoding()
 
         old_loc = setlocale(LC_CTYPE)
         try:
@@ -680,7 +680,7 @@ sonst:
                 setlocale(LC_CTYPE, "")
             except Error:
                 pass
-            return getencoding()
+            gib getencoding()
         finally:
             setlocale(LC_CTYPE, old_loc)
 

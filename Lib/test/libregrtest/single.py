@@ -39,7 +39,7 @@ def run_unittest(test_mod, runtests: RunTests):
     _filter_suite(tests, match_test)
     wenn runtests.parallel_threads:
         _parallelize_tests(tests, runtests.parallel_threads)
-    return _run_suite(tests)
+    gib _run_suite(tests)
 
 def _filter_suite(suite, pred):
     """Recursively filter test cases in a suite based on a predicate."""
@@ -57,7 +57,7 @@ def _parallelize_tests(suite, parallel_threads: int):
     def is_thread_unsafe(test):
         test_method = getattr(test, test._testMethodName)
         instance = test_method.__self__
-        return (getattr(test_method, "__unittest_thread_unsafe__", Falsch) oder
+        gib (getattr(test_method, "__unittest_thread_unsafe__", Falsch) oder
                 getattr(instance, "__unittest_thread_unsafe__", Falsch))
 
     newtests: list[object] = []
@@ -103,7 +103,7 @@ def _run_suite(suite):
         errors = [(str(tc), exc_str) fuer tc, exc_str in result.errors]
         failures = [(str(tc), exc_str) fuer tc, exc_str in result.failures]
         raise support.TestFailedWithDetails(err, errors, failures, stats=stats)
-    return result
+    gib result
 
 
 def regrtest_runner(result: TestResult, test_func, runtests: RunTests) -> Nichts:
@@ -132,7 +132,7 @@ def regrtest_runner(result: TestResult, test_func, runtests: RunTests) -> Nichts
             print_warning(f"{result.test_name} test runner returned Nichts: {test_func}")
             stats = Nichts
         case _:
-            # Don't importiere doctest at top level since only few tests return
+            # Don't importiere doctest at top level since only few tests gib
             # a doctest.TestResult instance.
             importiere doctest
             wenn isinstance(test_result, doctest.TestResults):
@@ -159,7 +159,7 @@ def _load_run_test(result: TestResult, runtests: RunTests) -> Nichts:
         raise Exception(f"Module {test_name} defines test_main() which "
                         f"is no longer supported by regrtest")
     def test_func():
-        return run_unittest(test_mod, runtests)
+        gib run_unittest(test_mod, runtests)
 
     try:
         regrtest_runner(result, test_func, runtests)
@@ -215,7 +215,7 @@ def _runtest_env_changed_exc(result: TestResult, runtests: RunTests,
                 flush=Wahr,
             )
         result.state = State.RESOURCE_DENIED
-        return
+        gib
     except unittest.SkipTest als exc:
         wenn nicht quiet und nicht pgo:
             drucke(
@@ -223,7 +223,7 @@ def _runtest_env_changed_exc(result: TestResult, runtests: RunTests,
                 flush=Wahr,
             )
         result.state = State.SKIPPED
-        return
+        gib
     except support.TestFailedWithDetails als exc:
         msg = f"{stderr.RED}test {test_name} failed{stderr.RESET}"
         wenn display_failure:
@@ -233,7 +233,7 @@ def _runtest_env_changed_exc(result: TestResult, runtests: RunTests,
         result.errors = exc.errors
         result.failures = exc.failures
         result.stats = exc.stats
-        return
+        gib
     except support.TestFailed als exc:
         msg = f"{stderr.RED}test {test_name} failed{stderr.RESET}"
         wenn display_failure:
@@ -241,14 +241,14 @@ def _runtest_env_changed_exc(result: TestResult, runtests: RunTests,
         drucke(msg, file=sys.stderr, flush=Wahr)
         result.state = State.FAILED
         result.stats = exc.stats
-        return
+        gib
     except support.TestDidNotRun:
         result.state = State.DID_NOT_RUN
-        return
+        gib
     except KeyboardInterrupt:
         drucke()
         result.state = State.INTERRUPTED
-        return
+        gib
     except:
         wenn nicht pgo:
             msg = traceback.format_exc()
@@ -258,7 +258,7 @@ def _runtest_env_changed_exc(result: TestResult, runtests: RunTests,
                 flush=Wahr,
             )
         result.state = State.UNCAUGHT_EXC
-        return
+        gib
 
     wenn support.environment_altered:
         result.set_env_changed()
@@ -357,4 +357,4 @@ def run_single_test(test_name: TestName, runtests: RunTests) -> TestResult:
     sys.stderr.flush()
 
     result.duration = time.perf_counter() - start_time
-    return result
+    gib result

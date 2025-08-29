@@ -47,44 +47,44 @@ controlnames = [
 
 def _ctoi(c):
     wenn isinstance(c, str):
-        return ord(c)
+        gib ord(c)
     sonst:
-        return c
+        gib c
 
-def isalnum(c): return isalpha(c) oder isdigit(c)
-def isalpha(c): return isupper(c) oder islower(c)
-def isascii(c): return 0 <= _ctoi(c) <= 127          # ?
-def isblank(c): return _ctoi(c) in (9, 32)
-def iscntrl(c): return 0 <= _ctoi(c) <= 31 oder _ctoi(c) == 127
-def isdigit(c): return 48 <= _ctoi(c) <= 57
-def isgraph(c): return 33 <= _ctoi(c) <= 126
-def islower(c): return 97 <= _ctoi(c) <= 122
-def isdrucke(c): return 32 <= _ctoi(c) <= 126
-def ispunct(c): return isgraph(c) und nicht isalnum(c)
-def isspace(c): return _ctoi(c) in (9, 10, 11, 12, 13, 32)
-def isupper(c): return 65 <= _ctoi(c) <= 90
-def isxdigit(c): return isdigit(c) oder \
+def isalnum(c): gib isalpha(c) oder isdigit(c)
+def isalpha(c): gib isupper(c) oder islower(c)
+def isascii(c): gib 0 <= _ctoi(c) <= 127          # ?
+def isblank(c): gib _ctoi(c) in (9, 32)
+def iscntrl(c): gib 0 <= _ctoi(c) <= 31 oder _ctoi(c) == 127
+def isdigit(c): gib 48 <= _ctoi(c) <= 57
+def isgraph(c): gib 33 <= _ctoi(c) <= 126
+def islower(c): gib 97 <= _ctoi(c) <= 122
+def isdrucke(c): gib 32 <= _ctoi(c) <= 126
+def ispunct(c): gib isgraph(c) und nicht isalnum(c)
+def isspace(c): gib _ctoi(c) in (9, 10, 11, 12, 13, 32)
+def isupper(c): gib 65 <= _ctoi(c) <= 90
+def isxdigit(c): gib isdigit(c) oder \
     (65 <= _ctoi(c) <= 70) oder (97 <= _ctoi(c) <= 102)
-def isctrl(c): return 0 <= _ctoi(c) < 32
-def ismeta(c): return _ctoi(c) > 127
+def isctrl(c): gib 0 <= _ctoi(c) < 32
+def ismeta(c): gib _ctoi(c) > 127
 
 def ascii(c):
     wenn isinstance(c, str):
-        return chr(_ctoi(c) & 0x7f)
+        gib chr(_ctoi(c) & 0x7f)
     sonst:
-        return _ctoi(c) & 0x7f
+        gib _ctoi(c) & 0x7f
 
 def ctrl(c):
     wenn isinstance(c, str):
-        return chr(_ctoi(c) & 0x1f)
+        gib chr(_ctoi(c) & 0x1f)
     sonst:
-        return _ctoi(c) & 0x1f
+        gib _ctoi(c) & 0x1f
 
 def alt(c):
     wenn isinstance(c, str):
-        return chr(_ctoi(c) | 0x80)
+        gib chr(_ctoi(c) | 0x80)
     sonst:
-        return _ctoi(c) | 0x80
+        gib _ctoi(c) | 0x80
 
 def unctrl(c):
     bits = _ctoi(c)
@@ -95,5 +95,5 @@ def unctrl(c):
     sonst:
         rep = "^" + chr(((bits & 0x7f) | 0x20) + 0x20)
     wenn bits & 0x80:
-        return "!" + rep
-    return rep
+        gib "!" + rep
+    gib rep

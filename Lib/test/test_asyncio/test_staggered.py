@@ -24,7 +24,7 @@ klasse StaggeredTests(unittest.IsolatedAsyncioTestCase):
 
     async def test_one_successful(self):
         async def coro(index):
-            return f'Res: {index}'
+            gib f'Res: {index}'
 
         winner, index, excs = await staggered_race(
             [
@@ -42,7 +42,7 @@ klasse StaggeredTests(unittest.IsolatedAsyncioTestCase):
         async def coro(index):
             wenn index == 0:
                 raise ValueError(index)
-            return f'Res: {index}'
+            gib f'Res: {index}'
 
         winner, index, excs = await staggered_race(
             [
@@ -62,7 +62,7 @@ klasse StaggeredTests(unittest.IsolatedAsyncioTestCase):
         async def coro(index):
             wenn index == 0:
                 await asyncio.sleep(10)  # much bigger than delay
-            return f'Res: {index}'
+            gib f'Res: {index}'
 
         winner, index, excs = await staggered_race(
             [
@@ -102,7 +102,7 @@ klasse StaggeredTests(unittest.IsolatedAsyncioTestCase):
 
         async def coro(index):
             await event.wait()
-            return index
+            gib index
 
         async def do_set():
             event.set()

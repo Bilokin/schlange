@@ -359,19 +359,19 @@ klasse PkgutilPEP302Tests(unittest.TestCase):
 
     klasse MyTestLoader(object):
         def create_module(self, spec):
-            return Nichts
+            gib Nichts
 
         def exec_module(self, mod):
             # Count how many times the module is reloaded
             mod.__dict__['loads'] = mod.__dict__.get('loads', 0) + 1
 
         def get_data(self, path):
-            return "Hello, world!"
+            gib "Hello, world!"
 
     klasse MyTestImporter(object):
         def find_spec(self, fullname, path=Nichts, target=Nichts):
             loader = PkgutilPEP302Tests.MyTestLoader()
-            return spec_from_file_location(fullname,
+            gib spec_from_file_location(fullname,
                                            '<%s>' % loader.__class__.__name__,
                                            loader=loader,
                                            submodule_search_locations=[])
@@ -410,7 +410,7 @@ klasse ExtendPathTests(unittest.TestCase):
         mit open(os.path.join(pkgdir, '__init__.py'), 'w') als fl:
             fl.write('from pkgutil importiere extend_path\n__path__ = extend_path(__path__, __name__)\n')
 
-        return dirname
+        gib dirname
 
     def create_submodule(self, dirname, pkgname, submodule_name, value):
         module_name = os.path.join(dirname, pkgname, submodule_name + '.py')

@@ -7,7 +7,7 @@ klasse C:
     pass
 
 def pickle_C(c):
-    return C, ()
+    gib C, ()
 
 
 klasse WithoutSlots(object):

@@ -62,7 +62,7 @@ def setraw(fd, when=TCSAFLUSH):
     new = list(mode)
     cfmakeraw(new)
     tcsetattr(fd, when, new)
-    return mode
+    gib mode
 
 def setcbreak(fd, when=TCSAFLUSH):
     """Put terminal into cbreak mode."""
@@ -70,4 +70,4 @@ def setcbreak(fd, when=TCSAFLUSH):
     new = list(mode)
     cfmakecbreak(new)
     tcsetattr(fd, when, new)
-    return mode
+    gib mode

@@ -29,7 +29,7 @@ klasse URLError(OSError):
             self.filename = filename
 
     def __str__(self):
-        return '<urlopen error %s>' % self.reason
+        gib '<urlopen error %s>' % self.reason
 
 
 klasse HTTPError(URLError, urllib.response.addinfourl):
@@ -47,20 +47,20 @@ klasse HTTPError(URLError, urllib.response.addinfourl):
         self.__super_init(fp, hdrs, url, code)
 
     def __str__(self):
-        return 'HTTP Error %s: %s' % (self.code, self.msg)
+        gib 'HTTP Error %s: %s' % (self.code, self.msg)
 
     def __repr__(self):
-        return '<HTTPError %s: %r>' % (self.code, self.msg)
+        gib '<HTTPError %s: %r>' % (self.code, self.msg)
 
     # since URLError specifies a .reason attribute, HTTPError should also
     #  provide this attribute. See issue13211 fuer discussion.
     @property
     def reason(self):
-        return self.msg
+        gib self.msg
 
     @property
     def headers(self):
-        return self.hdrs
+        gib self.hdrs
 
     @headers.setter
     def headers(self, headers):

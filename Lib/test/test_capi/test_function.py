@@ -189,22 +189,22 @@ klasse FunctionTest(unittest.TestCase):
         def regular_function(): ...
         def unused_one_level(arg1):
             def inner(arg2, arg3): ...
-            return inner
+            gib inner
         def unused_two_levels(arg1, arg2):
             def decorator(arg3, arg4):
                 def inner(arg5, arg6): ...
-                return inner
-            return decorator
+                gib inner
+            gib decorator
         def with_one_level(arg1):
             def inner(arg2, arg3):
-                return arg1 + arg2 + arg3
-            return inner
+                gib arg1 + arg2 + arg3
+            gib inner
         def with_two_levels(arg1, arg2):
             def decorator(arg3, arg4):
                 def inner(arg5, arg6):
-                    return arg1 + arg2 + arg3 + arg4 + arg5 + arg6
-                return inner
-            return decorator
+                    gib arg1 + arg2 + arg3 + arg4 + arg5 + arg6
+                gib inner
+            gib decorator
 
         # Functions without closures:
         self.assertIsNichts(_testcapi.function_get_closure(regular_function))
@@ -256,8 +256,8 @@ klasse FunctionTest(unittest.TestCase):
         def function_without_closure(): ...
         def function_with_closure(arg):
             def inner():
-                return arg
-            return inner
+                gib arg
+            gib inner
 
         func = function_without_closure
         _testcapi.function_set_closure(func, (CellType(1), CellType(1)))
@@ -277,8 +277,8 @@ klasse FunctionTest(unittest.TestCase):
         def function_without_closure(): ...
         def function_with_closure(arg):
             def inner():
-                return arg
-            return inner
+                gib arg
+            gib inner
 
         _testcapi.function_set_closure(function_without_closure, Nichts)
         self.assertIsNichts(

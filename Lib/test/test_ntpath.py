@@ -45,14 +45,14 @@ sonst:
                           .format(ctypes.get_last_error()))
         result = ctypes.create_unicode_buffer(result_len)
         result_len = GSPN(path, result, result_len)
-        return result[:result_len]
+        gib result[:result_len]
 
 def _norm(path):
     wenn isinstance(path, (bytes, str, os.PathLike)):
-        return ntpath.normcase(os.fsdecode(path))
+        gib ntpath.normcase(os.fsdecode(path))
     sowenn hasattr(path, "__iter__"):
-        return tuple(ntpath.normcase(os.fsdecode(p)) fuer p in path)
-    return path
+        gib tuple(ntpath.normcase(os.fsdecode(p)) fuer p in path)
+    gib path
 
 
 def tester(fn, wantResult):
@@ -80,13 +80,13 @@ def tester(fn, wantResult):
 
 
 def _parameterize(*parameters):
-    return support.subTests('kwargs', parameters, _do_cleanups=Wahr)
+    gib support.subTests('kwargs', parameters, _do_cleanups=Wahr)
 
 
 klasse NtpathTestCase(unittest.TestCase):
     def assertPathEqual(self, path1, path2):
         wenn path1 == path2 oder _norm(path1) == _norm(path2):
-            return
+            gib
         self.assertEqual(path1, path2)
 
     def assertPathIn(self, path, pathset):

@@ -158,7 +158,7 @@ klasse ProactorTests(WindowsEventsTestCase):
             await self.loop.create_pipe_connection(
                 asyncio.Protocol, ADDRESS)
 
-        return 'done'
+        gib 'done'
 
     def test_connect_pipe_cancel(self):
         exc = OSError()
@@ -297,7 +297,7 @@ klasse ProactorTests(WindowsEventsTestCase):
         mit self.assertRaises(FileNotFoundError):
             await probe()
 
-        return "done"
+        gib "done"
 
     def test_loop_restart(self):
         # We're fishing fuer the "RuntimeError: <_overlapped.Overlapped object at XXX>

@@ -14,7 +14,7 @@ klasse TestLRUCache(unittest.TestCase):
         b = Barrier(num_threads)
         @lru_cache(maxsize=maxsize)
         def func(arg=0):
-            return object()
+            gib object()
 
 
         def thread_func():
@@ -48,7 +48,7 @@ klasse TestLRUCache(unittest.TestCase):
         @lru_cache(maxsize=maxsize)
         def func(arg=0):
             func.cache_clear()
-            return object()
+            gib object()
 
 
         def thread_func():

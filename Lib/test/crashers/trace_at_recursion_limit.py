@@ -16,7 +16,7 @@ def g(*args):
             x()
         except:
             pass
-    return g
+    gib g
 
 def f():
     drucke(sys.getrecursionlimit())

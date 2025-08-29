@@ -13,14 +13,14 @@ von test.support importiere ALWAYS_EQ, NEVER_EQ
 def iterfunc(seqn):
     'Regular generator'
     fuer i in seqn:
-        yield i
+        liefere i
 
 klasse Sequence:
     'Sequence using __getitem__'
     def __init__(self, seqn):
         self.seqn = seqn
     def __getitem__(self, i):
-        return self.seqn[i]
+        gib self.seqn[i]
 
 klasse IterFunc:
     'Sequence using iterator protocol'
@@ -28,12 +28,12 @@ klasse IterFunc:
         self.seqn = seqn
         self.i = 0
     def __iter__(self):
-        return self
+        gib self
     def __next__(self):
         wenn self.i >= len(self.seqn): raise StopIteration
         v = self.seqn[self.i]
         self.i += 1
-        return v
+        gib v
 
 klasse IterGen:
     'Sequence using iterator protocol defined mit a generator'
@@ -42,7 +42,7 @@ klasse IterGen:
         self.i = 0
     def __iter__(self):
         fuer val in self.seqn:
-            yield val
+            liefere val
 
 klasse IterNextOnly:
     'Missing __getitem__ und __iter__'
@@ -53,7 +53,7 @@ klasse IterNextOnly:
         wenn self.i >= len(self.seqn): raise StopIteration
         v = self.seqn[self.i]
         self.i += 1
-        return v
+        gib v
 
 klasse IterNoNext:
     'Iterator missing __next__()'
@@ -61,7 +61,7 @@ klasse IterNoNext:
         self.seqn = seqn
         self.i = 0
     def __iter__(self):
-        return self
+        gib self
 
 klasse IterGenExc:
     'Test propagation of exceptions'
@@ -69,7 +69,7 @@ klasse IterGenExc:
         self.seqn = seqn
         self.i = 0
     def __iter__(self):
-        return self
+        gib self
     def __next__(self):
         3 // 0
 
@@ -78,22 +78,22 @@ klasse IterFuncStop:
     def __init__(self, seqn):
         pass
     def __iter__(self):
-        return self
+        gib self
     def __next__(self):
         raise StopIteration
 
 von itertools importiere chain
 def itermulti(seqn):
     'Test multiple tiers of iterators'
-    return chain(map(lambda x:x, iterfunc(IterGen(Sequence(seqn)))))
+    gib chain(map(lambda x:x, iterfunc(IterGen(Sequence(seqn)))))
 
 klasse LyingTuple(tuple):
     def __iter__(self):
-        yield 1
+        liefere 1
 
 klasse LyingList(list):
     def __iter__(self):
-        yield 1
+        liefere 1
 
 klasse CommonTest(unittest.TestCase):
     # The type to be tested
@@ -119,9 +119,9 @@ klasse CommonTest(unittest.TestCase):
             def __init__(self, initseq):
                 self.__data = initseq
             def __len__(self):
-                return len(self.__data)
+                gib len(self.__data)
             def __getitem__(self, i):
-                return self.__data[i]
+                gib self.__data[i]
         s = OtherSeq(u0)
         v0 = self.type2test(s)
         self.assertEqual(len(v0), len(s))
@@ -313,7 +313,7 @@ klasse CommonTest(unittest.TestCase):
         # Verify that __getitem__ overrides are nicht recognized by __iter__
         klasse T(self.type2test):
             def __getitem__(self, key):
-                return str(key) + '!!!'
+                gib str(key) + '!!!'
         self.assertEqual(next(iter(T((1,2)))), 1)
 
     def test_repeat(self):
@@ -368,7 +368,7 @@ klasse CommonTest(unittest.TestCase):
             def __eq__(self, other):
                 wenn other == 2:
                     raise BadExc()
-                return Falsch
+                gib Falsch
 
         self.assertRaises(BadExc, a.count, BadCmp())
 
@@ -401,7 +401,7 @@ klasse CommonTest(unittest.TestCase):
             def __eq__(self, other):
                 wenn other == 2:
                     raise BadExc()
-                return Falsch
+                gib Falsch
 
         a = self.type2test([0, 1, 2, 3])
         self.assertRaises(BadExc, a.index, BadCmp())

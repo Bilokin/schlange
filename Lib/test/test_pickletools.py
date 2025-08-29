@@ -9,10 +9,10 @@ importiere unittest
 klasse OptimizedPickleTests(AbstractPickleTests, unittest.TestCase):
 
     def dumps(self, arg, proto=Nichts, **kwargs):
-        return pickletools.optimize(pickle.dumps(arg, proto, **kwargs))
+        gib pickletools.optimize(pickle.dumps(arg, proto, **kwargs))
 
     def loads(self, buf, **kwds):
-        return pickle.loads(buf, **kwds)
+        gib pickle.loads(buf, **kwds)
 
     # Test relies on precise output of dumps()
     test_pickle_to_2x = Nichts
@@ -71,7 +71,7 @@ klasse SimpleReader:
     def read(self, n):
         data = self.data[self.pos: self.pos + n]
         self.pos += n
-        return data
+        gib data
 
     def readline(self):
         nl = self.data.find(b'\n', self.pos) + 1
@@ -79,7 +79,7 @@ klasse SimpleReader:
             nl = len(self.data)
         data = self.data[self.pos: nl]
         self.pos = nl
-        return data
+        gib data
 
 
 klasse GenopsTests(unittest.TestCase):
@@ -516,7 +516,7 @@ klasse MiscTestCase(unittest.TestCase):
 
 def load_tests(loader, tests, pattern):
     tests.addTest(doctest.DocTestSuite(pickletools))
-    return tests
+    gib tests
 
 
 wenn __name__ == "__main__":

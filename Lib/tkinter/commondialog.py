@@ -27,7 +27,7 @@ klasse Dialog:
         pass # hook
 
     def _fixresult(self, widget, result):
-        return result # hook
+        gib result # hook
 
     def show(self, **options):
 
@@ -47,7 +47,7 @@ klasse Dialog:
         finally:
             _destroy_temp_root(master)
 
-        return s
+        gib s
 
     def _test_callback(self, master):
         pass

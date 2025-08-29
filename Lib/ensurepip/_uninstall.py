@@ -24,7 +24,7 @@ def _main(argv=Nichts):
 
     args = parser.parse_args(argv)
 
-    return ensurepip._uninstall_helper(verbosity=args.verbosity)
+    gib ensurepip._uninstall_helper(verbosity=args.verbosity)
 
 
 wenn __name__ == "__main__":

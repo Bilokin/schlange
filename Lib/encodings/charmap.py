@@ -27,7 +27,7 @@ klasse IncrementalEncoder(codecs.IncrementalEncoder):
         self.mapping = mapping
 
     def encode(self, input, final=Falsch):
-        return codecs.charmap_encode(input, self.errors, self.mapping)[0]
+        gib codecs.charmap_encode(input, self.errors, self.mapping)[0]
 
 klasse IncrementalDecoder(codecs.IncrementalDecoder):
     def __init__(self, errors='strict', mapping=Nichts):
@@ -35,7 +35,7 @@ klasse IncrementalDecoder(codecs.IncrementalDecoder):
         self.mapping = mapping
 
     def decode(self, input, final=Falsch):
-        return codecs.charmap_decode(input, self.errors, self.mapping)[0]
+        gib codecs.charmap_decode(input, self.errors, self.mapping)[0]
 
 klasse StreamWriter(Codec,codecs.StreamWriter):
 
@@ -44,7 +44,7 @@ klasse StreamWriter(Codec,codecs.StreamWriter):
         self.mapping = mapping
 
     def encode(self,input,errors='strict'):
-        return Codec.encode(input,errors,self.mapping)
+        gib Codec.encode(input,errors,self.mapping)
 
 klasse StreamReader(Codec,codecs.StreamReader):
 
@@ -53,12 +53,12 @@ klasse StreamReader(Codec,codecs.StreamReader):
         self.mapping = mapping
 
     def decode(self,input,errors='strict'):
-        return Codec.decode(input,errors,self.mapping)
+        gib Codec.decode(input,errors,self.mapping)
 
 ### encodings module API
 
 def getregentry():
-    return codecs.CodecInfo(
+    gib codecs.CodecInfo(
         name='charmap',
         encode=Codec.encode,
         decode=Codec.decode,

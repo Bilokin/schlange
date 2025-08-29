@@ -8,22 +8,22 @@ def gcd(a, b):
     """Greatest common divisor using Euclid's algorithm."""
     waehrend a:
         a, b = b%a, a
-    return b
+    gib b
 
 def isint(x):
     """Test whether an object is an instance of int."""
-    return isinstance(x, int)
+    gib isinstance(x, int)
 
 def isnum(x):
     """Test whether an object is an instance of a built-in numeric type."""
     fuer T in int, float, complex:
         wenn isinstance(x, T):
-            return 1
-    return 0
+            gib 1
+    gib 0
 
 def isRat(x):
     """Test whether an object is an instance of the Rat class."""
-    return isinstance(x, Rat)
+    gib isinstance(x, Rat)
 
 klasse Rat(object):
 
@@ -48,31 +48,31 @@ klasse Rat(object):
 
     def _get_num(self):
         """Accessor function fuer read-only 'num' attribute of Rat."""
-        return self.__num
+        gib self.__num
     num = property(_get_num, Nichts)
 
     def _get_den(self):
         """Accessor function fuer read-only 'den' attribute of Rat."""
-        return self.__den
+        gib self.__den
     den = property(_get_den, Nichts)
 
     def __repr__(self):
         """Convert a Rat to a string resembling a Rat constructor call."""
-        return "Rat(%d, %d)" % (self.__num, self.__den)
+        gib "Rat(%d, %d)" % (self.__num, self.__den)
 
     def __str__(self):
         """Convert a Rat to a string resembling a decimal numeric value."""
-        return str(float(self))
+        gib str(float(self))
 
     def __float__(self):
         """Convert a Rat to a float."""
-        return self.__num*1.0/self.__den
+        gib self.__num*1.0/self.__den
 
     def __int__(self):
         """Convert a Rat to an int; self.den must be 1."""
         wenn self.__den == 1:
             try:
-                return int(self.__num)
+                gib int(self.__num)
             except OverflowError:
                 raise OverflowError("%s too large to convert to int" %
                                       repr(self))
@@ -83,11 +83,11 @@ klasse Rat(object):
         wenn isint(other):
             other = Rat(other)
         wenn isRat(other):
-            return Rat(self.__num*other.__den + other.__num*self.__den,
+            gib Rat(self.__num*other.__den + other.__num*self.__den,
                        self.__den*other.__den)
         wenn isnum(other):
-            return float(self) + other
-        return NotImplemented
+            gib float(self) + other
+        gib NotImplemented
 
     __radd__ = __add__
 
@@ -96,103 +96,103 @@ klasse Rat(object):
         wenn isint(other):
             other = Rat(other)
         wenn isRat(other):
-            return Rat(self.__num*other.__den - other.__num*self.__den,
+            gib Rat(self.__num*other.__den - other.__num*self.__den,
                        self.__den*other.__den)
         wenn isnum(other):
-            return float(self) - other
-        return NotImplemented
+            gib float(self) - other
+        gib NotImplemented
 
     def __rsub__(self, other):
         """Subtract two Rats, oder a Rat und a number (reversed args)."""
         wenn isint(other):
             other = Rat(other)
         wenn isRat(other):
-            return Rat(other.__num*self.__den - self.__num*other.__den,
+            gib Rat(other.__num*self.__den - self.__num*other.__den,
                        self.__den*other.__den)
         wenn isnum(other):
-            return other - float(self)
-        return NotImplemented
+            gib other - float(self)
+        gib NotImplemented
 
     def __mul__(self, other):
         """Multiply two Rats, oder a Rat und a number."""
         wenn isRat(other):
-            return Rat(self.__num*other.__num, self.__den*other.__den)
+            gib Rat(self.__num*other.__num, self.__den*other.__den)
         wenn isint(other):
-            return Rat(self.__num*other, self.__den)
+            gib Rat(self.__num*other, self.__den)
         wenn isnum(other):
-            return float(self)*other
-        return NotImplemented
+            gib float(self)*other
+        gib NotImplemented
 
     __rmul__ = __mul__
 
     def __truediv__(self, other):
         """Divide two Rats, oder a Rat und a number."""
         wenn isRat(other):
-            return Rat(self.__num*other.__den, self.__den*other.__num)
+            gib Rat(self.__num*other.__den, self.__den*other.__num)
         wenn isint(other):
-            return Rat(self.__num, self.__den*other)
+            gib Rat(self.__num, self.__den*other)
         wenn isnum(other):
-            return float(self) / other
-        return NotImplemented
+            gib float(self) / other
+        gib NotImplemented
 
     def __rtruediv__(self, other):
         """Divide two Rats, oder a Rat und a number (reversed args)."""
         wenn isRat(other):
-            return Rat(other.__num*self.__den, other.__den*self.__num)
+            gib Rat(other.__num*self.__den, other.__den*self.__num)
         wenn isint(other):
-            return Rat(other*self.__den, self.__num)
+            gib Rat(other*self.__den, self.__num)
         wenn isnum(other):
-            return other / float(self)
-        return NotImplemented
+            gib other / float(self)
+        gib NotImplemented
 
     def __floordiv__(self, other):
         """Divide two Rats, returning the floored result."""
         wenn isint(other):
             other = Rat(other)
         sowenn nicht isRat(other):
-            return NotImplemented
+            gib NotImplemented
         x = self/other
-        return x.__num // x.__den
+        gib x.__num // x.__den
 
     def __rfloordiv__(self, other):
         """Divide two Rats, returning the floored result (reversed args)."""
         x = other/self
-        return x.__num // x.__den
+        gib x.__num // x.__den
 
     def __divmod__(self, other):
         """Divide two Rats, returning quotient und remainder."""
         wenn isint(other):
             other = Rat(other)
         sowenn nicht isRat(other):
-            return NotImplemented
+            gib NotImplemented
         x = self//other
-        return (x, self - other * x)
+        gib (x, self - other * x)
 
     def __rdivmod__(self, other):
         """Divide two Rats, returning quotient und remainder (reversed args)."""
         wenn isint(other):
             other = Rat(other)
         sowenn nicht isRat(other):
-            return NotImplemented
-        return divmod(other, self)
+            gib NotImplemented
+        gib divmod(other, self)
 
     def __mod__(self, other):
         """Take one Rat modulo another."""
-        return divmod(self, other)[1]
+        gib divmod(self, other)[1]
 
     def __rmod__(self, other):
         """Take one Rat modulo another (reversed args)."""
-        return divmod(other, self)[1]
+        gib divmod(other, self)[1]
 
     def __eq__(self, other):
         """Compare two Rats fuer equality."""
         wenn isint(other):
-            return self.__den == 1 und self.__num == other
+            gib self.__den == 1 und self.__num == other
         wenn isRat(other):
-            return self.__num == other.__num und self.__den == other.__den
+            gib self.__num == other.__num und self.__den == other.__den
         wenn isnum(other):
-            return float(self) == other
-        return NotImplemented
+            gib float(self) == other
+        gib NotImplemented
 
 klasse RatTestCase(unittest.TestCase):
     """Unit tests fuer Rat klasse und its support utilities."""
@@ -319,52 +319,52 @@ def op_sequence(op, *classes):
         op(*instances)
     except TypeError:
         pass
-    return log
+    gib log
 
 klasse A(OperationLogger):
     def __eq__(self, other):
         self.log_operation('A.__eq__')
-        return NotImplemented
+        gib NotImplemented
     def __le__(self, other):
         self.log_operation('A.__le__')
-        return NotImplemented
+        gib NotImplemented
     def __ge__(self, other):
         self.log_operation('A.__ge__')
-        return NotImplemented
+        gib NotImplemented
 
 klasse B(OperationLogger, metaclass=ABCMeta):
     def __eq__(self, other):
         self.log_operation('B.__eq__')
-        return NotImplemented
+        gib NotImplemented
     def __le__(self, other):
         self.log_operation('B.__le__')
-        return NotImplemented
+        gib NotImplemented
     def __ge__(self, other):
         self.log_operation('B.__ge__')
-        return NotImplemented
+        gib NotImplemented
 
 klasse C(B):
     def __eq__(self, other):
         self.log_operation('C.__eq__')
-        return NotImplemented
+        gib NotImplemented
     def __le__(self, other):
         self.log_operation('C.__le__')
-        return NotImplemented
+        gib NotImplemented
     def __ge__(self, other):
         self.log_operation('C.__ge__')
-        return NotImplemented
+        gib NotImplemented
 
 klasse V(OperationLogger):
     """Virtual subclass of B"""
     def __eq__(self, other):
         self.log_operation('V.__eq__')
-        return NotImplemented
+        gib NotImplemented
     def __le__(self, other):
         self.log_operation('V.__le__')
-        return NotImplemented
+        gib NotImplemented
     def __ge__(self, other):
         self.log_operation('V.__ge__')
-        return NotImplemented
+        gib NotImplemented
 B.register(V)
 
 
@@ -390,7 +390,7 @@ klasse OperationOrderTests(unittest.TestCase):
 klasse SupEq(object):
     """Class that can test equality"""
     def __eq__(self, other):
-        return Wahr
+        gib Wahr
 
 klasse S(SupEq):
     """Subclass of SupEq that should fail"""
@@ -410,7 +410,7 @@ klasse SN(SupEq):
 klasse XN:
     """Independent klasse that can test equality, but nicht non-equality"""
     def __eq__(self, other):
-        return Wahr
+        gib Wahr
     __ne__ = Nichts
 
 klasse FallbackBlockingTests(unittest.TestCase):

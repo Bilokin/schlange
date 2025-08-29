@@ -19,23 +19,23 @@ klasse Codec(codecs.Codec):
 
 klasse IncrementalEncoder(codecs.IncrementalEncoder):
     def encode(self, input, final=Falsch):
-        return codecs.raw_unicode_escape_encode(input, self.errors)[0]
+        gib codecs.raw_unicode_escape_encode(input, self.errors)[0]
 
 klasse IncrementalDecoder(codecs.BufferedIncrementalDecoder):
     def _buffer_decode(self, input, errors, final):
-        return codecs.raw_unicode_escape_decode(input, errors, final)
+        gib codecs.raw_unicode_escape_decode(input, errors, final)
 
 klasse StreamWriter(Codec,codecs.StreamWriter):
     pass
 
 klasse StreamReader(Codec,codecs.StreamReader):
     def decode(self, input, errors='strict'):
-        return codecs.raw_unicode_escape_decode(input, errors, Falsch)
+        gib codecs.raw_unicode_escape_decode(input, errors, Falsch)
 
 ### encodings module API
 
 def getregentry():
-    return codecs.CodecInfo(
+    gib codecs.CodecInfo(
         name='raw-unicode-escape',
         encode=Codec.encode,
         decode=Codec.decode,

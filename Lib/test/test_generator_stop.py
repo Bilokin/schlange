@@ -8,7 +8,7 @@ klasse TestPEP479(unittest.TestCase):
         def f():
             raise StopIteration
         def g():
-            yield f()
+            liefere f()
         mit self.assertRaisesRegex(RuntimeError,
                                     "generator raised StopIteration"):
             next(g())
@@ -17,7 +17,7 @@ klasse TestPEP479(unittest.TestCase):
         def f():
             raise StopIteration
         def g():
-            yield f()
+            liefere f()
 
         try:
             next(g())

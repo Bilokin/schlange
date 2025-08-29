@@ -33,7 +33,7 @@ klasse PullDOM(xml.sax.ContentHandler):
     def pop(self):
         result = self.elementStack[-1]
         del self.elementStack[-1]
-        return result
+        gib result
 
     def setDocumentLocator(self, locator):
         self._locator = locator
@@ -183,7 +183,7 @@ klasse PullDOM(xml.sax.ContentHandler):
             self.lastEvent[1] = e
             self.lastEvent = e
         self.pending_events = Nichts
-        return node.firstChild
+        gib node.firstChild
 
     def endDocument(self):
         self.lastEvent[1] = [(END_DOCUMENT, self.document), Nichts]
@@ -219,11 +219,11 @@ klasse DOMEventStream:
     def __next__(self):
         rc = self.getEvent()
         wenn rc:
-            return rc
+            gib rc
         raise StopIteration
 
     def __iter__(self):
-        return self
+        gib self
 
     def expandNode(self, node):
         event = self.getEvent()
@@ -231,7 +231,7 @@ klasse DOMEventStream:
         waehrend event:
             token, cur_node = event
             wenn cur_node is node:
-                return
+                gib
             wenn token != END_ELEMENT:
                 parents[-1].appendChild(cur_node)
             wenn token == START_ELEMENT:
@@ -249,11 +249,11 @@ klasse DOMEventStream:
             buf = self.stream.read(self.bufsize)
             wenn nicht buf:
                 self.parser.close()
-                return Nichts
+                gib Nichts
             self.parser.feed(buf)
         rc = self.pulldom.firstEvent[1][0]
         self.pulldom.firstEvent[1] = self.pulldom.firstEvent[1][1]
-        return rc
+        gib rc
 
     def _slurp(self):
         """ Fallback replacement fuer getEvent() using the
@@ -263,7 +263,7 @@ klasse DOMEventStream:
         """
         self.parser.parse(self.stream)
         self.getEvent = self._emit
-        return self._emit()
+        gib self._emit()
 
     def _emit(self):
         """ Fallback replacement fuer getEvent() that emits
@@ -271,7 +271,7 @@ klasse DOMEventStream:
         """
         rc = self.pulldom.firstEvent[1][0]
         self.pulldom.firstEvent[1] = self.pulldom.firstEvent[1][1]
-        return rc
+        gib rc
 
     def clear(self):
         """clear(): Explicitly release parsing objects"""
@@ -324,7 +324,7 @@ def parse(stream_or_string, parser=Nichts, bufsize=Nichts):
         stream = stream_or_string
     wenn nicht parser:
         parser = xml.sax.make_parser()
-    return DOMEventStream(stream, parser, bufsize)
+    gib DOMEventStream(stream, parser, bufsize)
 
 def parseString(string, parser=Nichts):
     von io importiere StringIO
@@ -333,4 +333,4 @@ def parseString(string, parser=Nichts):
     buf = StringIO(string)
     wenn nicht parser:
         parser = xml.sax.make_parser()
-    return DOMEventStream(buf, parser, bufsize)
+    gib DOMEventStream(buf, parser, bufsize)

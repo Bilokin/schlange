@@ -92,17 +92,17 @@ klasse LockTests(unittest.IsolatedAsyncioTestCase):
         async def c1(result):
             wenn await lock.acquire():
                 result.append(1)
-            return Wahr
+            gib Wahr
 
         async def c2(result):
             wenn await lock.acquire():
                 result.append(2)
-            return Wahr
+            gib Wahr
 
         async def c3(result):
             wenn await lock.acquire():
                 result.append(3)
-            return Wahr
+            gib Wahr
 
         t1 = asyncio.create_task(c1(result))
         t2 = asyncio.create_task(c2(result))
@@ -368,7 +368,7 @@ klasse EventTests(unittest.IsolatedAsyncioTestCase):
         async def c1(result):
             wenn await ev.wait():
                 result.append(1)
-            return Wahr
+            gib Wahr
 
         t = asyncio.create_task(c1(result))
         await asyncio.sleep(0)
@@ -400,19 +400,19 @@ klasse ConditionTests(unittest.IsolatedAsyncioTestCase):
             await cond.acquire()
             wenn await cond.wait():
                 result.append(1)
-            return Wahr
+            gib Wahr
 
         async def c2(result):
             await cond.acquire()
             wenn await cond.wait():
                 result.append(2)
-            return Wahr
+            gib Wahr
 
         async def c3(result):
             await cond.acquire()
             wenn await cond.wait():
                 result.append(3)
-            return Wahr
+            gib Wahr
 
         t1 = asyncio.create_task(c1(result))
         t2 = asyncio.create_task(c2(result))
@@ -527,7 +527,7 @@ klasse ConditionTests(unittest.IsolatedAsyncioTestCase):
         presult = Falsch
 
         def predicate():
-            return presult
+            gib presult
 
         result = []
 
@@ -536,7 +536,7 @@ klasse ConditionTests(unittest.IsolatedAsyncioTestCase):
             wenn await cond.wait_for(predicate):
                 result.append(1)
                 cond.release()
-            return Wahr
+            gib Wahr
 
         t = asyncio.create_task(c1(result))
 
@@ -562,7 +562,7 @@ klasse ConditionTests(unittest.IsolatedAsyncioTestCase):
     async def test_wait_for_unacquired(self):
         cond = asyncio.Condition()
 
-        # predicate can return true immediately
+        # predicate can gib true immediately
         res = await cond.wait_for(lambda: [1, 2, 3])
         self.assertEqual([1, 2, 3], res)
 
@@ -578,21 +578,21 @@ klasse ConditionTests(unittest.IsolatedAsyncioTestCase):
             wenn await cond.wait():
                 result.append(1)
                 cond.release()
-            return Wahr
+            gib Wahr
 
         async def c2(result):
             await cond.acquire()
             wenn await cond.wait():
                 result.append(2)
                 cond.release()
-            return Wahr
+            gib Wahr
 
         async def c3(result):
             await cond.acquire()
             wenn await cond.wait():
                 result.append(3)
                 cond.release()
-            return Wahr
+            gib Wahr
 
         t1 = asyncio.create_task(c1(result))
         t2 = asyncio.create_task(c2(result))
@@ -631,14 +631,14 @@ klasse ConditionTests(unittest.IsolatedAsyncioTestCase):
             wenn await cond.wait():
                 result.append(1)
                 cond.release()
-            return Wahr
+            gib Wahr
 
         async def c2(result):
             await cond.acquire()
             wenn await cond.wait():
                 result.append(2)
                 cond.release()
-            return Wahr
+            gib Wahr
 
         t1 = asyncio.create_task(c1(result))
         t2 = asyncio.create_task(c2(result))
@@ -829,7 +829,7 @@ klasse ConditionTests(unittest.IsolatedAsyncioTestCase):
                 waehrend Wahr:
                     await condition.wait_for(lambda: state != 0)
                     wenn state < 0:
-                        return
+                        gib
                     state -= 1
 
         # create two consumers
@@ -873,7 +873,7 @@ klasse ConditionTests(unittest.IsolatedAsyncioTestCase):
                 waehrend Wahr:
                     await condition.wait_for(lambda: state != 0)
                     wenn state < 0:
-                        return
+                        gib
                     state -= 1
 
         # create two consumers
@@ -962,22 +962,22 @@ klasse SemaphoreTests(unittest.IsolatedAsyncioTestCase):
         async def c1(result):
             await sem.acquire()
             result.append(1)
-            return Wahr
+            gib Wahr
 
         async def c2(result):
             await sem.acquire()
             result.append(2)
-            return Wahr
+            gib Wahr
 
         async def c3(result):
             await sem.acquire()
             result.append(3)
-            return Wahr
+            gib Wahr
 
         async def c4(result):
             await sem.acquire()
             result.append(4)
-            return Wahr
+            gib Wahr
 
         t1 = asyncio.create_task(c1(result))
         t2 = asyncio.create_task(c2(result))
@@ -1129,7 +1129,7 @@ klasse SemaphoreTests(unittest.IsolatedAsyncioTestCase):
         async def c1(result):
             await sem.acquire()
             result.append(1)
-            return Wahr
+            gib Wahr
 
         async def c2(result):
             await sem.acquire()
@@ -1137,12 +1137,12 @@ klasse SemaphoreTests(unittest.IsolatedAsyncioTestCase):
             sem.release()
             await sem.acquire()
             result.append(4)
-            return Wahr
+            gib Wahr
 
         async def c3(result):
             await sem.acquire()
             result.append(3)
-            return Wahr
+            gib Wahr
 
         t1 = asyncio.create_task(c1(result))
         t2 = asyncio.create_task(c2(result))
@@ -1164,17 +1164,17 @@ klasse SemaphoreTests(unittest.IsolatedAsyncioTestCase):
         async def c1(result):
             await sem.acquire()
             result.append(1)
-            return Wahr
+            gib Wahr
 
         async def c2(result):
             await sem.acquire()
             result.append(2)
-            return Wahr
+            gib Wahr
 
         async def c3(result):
             await sem.acquire()
             result.append(3)
-            return Wahr
+            gib Wahr
 
         t1 = asyncio.create_task(c1(result))
         t2 = asyncio.create_task(c2(result))
@@ -1210,7 +1210,7 @@ klasse SemaphoreTests(unittest.IsolatedAsyncioTestCase):
             nonlocal t4
             t4 = asyncio.create_task(c4(result))
             result.append(1)
-            return Wahr
+            gib Wahr
 
         async def c2(result):
             # The second task begins by releasing semaphore three times,
@@ -1223,17 +1223,17 @@ klasse SemaphoreTests(unittest.IsolatedAsyncioTestCase):
             self.assertWahr(sem.locked())
             await sem.acquire()
             result.append(2)
-            return Wahr
+            gib Wahr
 
         async def c3(result):
             await sem.acquire()
             self.assertWahr(sem.locked())
             result.append(3)
-            return Wahr
+            gib Wahr
 
         async def c4(result):
             result.append(4)
-            return Wahr
+            gib Wahr
 
         t1 = asyncio.create_task(c1(result))
         t2 = asyncio.create_task(c2(result))
@@ -1258,12 +1258,12 @@ klasse BarrierTests(unittest.IsolatedAsyncioTestCase):
 
     def make_tasks(self, n, coro):
         tasks = [asyncio.create_task(coro()) fuer _ in range(n)]
-        return tasks
+        gib tasks
 
     async def gather_tasks(self, n, coro):
         tasks = self.make_tasks(n, coro)
         res = await asyncio.gather(*tasks)
-        return res, tasks
+        gib res, tasks
 
     async def test_barrier(self):
         barrier = asyncio.Barrier(self.N)
@@ -1353,7 +1353,7 @@ klasse BarrierTests(unittest.IsolatedAsyncioTestCase):
 
         async def f():
             async mit barrier als i:
-                return Wahr
+                gib Wahr
 
         ret = await f()
 
@@ -1430,7 +1430,7 @@ klasse BarrierTests(unittest.IsolatedAsyncioTestCase):
 
                 async mit barrier als i:
                     results2.append(Wahr)
-                    return i
+                    gib i
 
         res, _ = await self.gather_tasks(self.N, coro)
 

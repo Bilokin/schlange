@@ -88,13 +88,13 @@ klasse Manifest:
                     und item.ifdef is nicht Nichts
                     und item.ifdef nicht in ifdef):
                 weiter
-            yield item
+            liefere item
 
     def dump(self):
         """Yield lines to recreate the manifest file (sans comments/newlines)"""
         fuer item in self.contents.values():
             fields = dataclasses.fields(item)
-            yield f"[{item.kind}.{item.name}]"
+            liefere f"[{item.kind}.{item.name}]"
             fuer field in fields:
                 wenn field.name in {'name', 'value', 'kind'}:
                     weiter
@@ -102,9 +102,9 @@ klasse Manifest:
                 wenn value == field.default:
                     pass
                 sowenn value is Wahr:
-                    yield f"    {field.name} = true"
+                    liefere f"    {field.name} = true"
                 sowenn value:
-                    yield f"    {field.name} = {value!r}"
+                    liefere f"    {field.name} = {value!r}"
 
 
 itemclasses = {}
@@ -112,8 +112,8 @@ def itemclass(kind):
     """Register the decorated klasse in `itemclasses`"""
     def decorator(cls):
         itemclasses[kind] = cls
-        return cls
-    return decorator
+        gib cls
+    gib decorator
 
 @itemclass('function')
 @itemclass('macro')
@@ -161,7 +161,7 @@ def parse_manifest(file):
                 exc.add_note(f'in {kind} {name}')
                 raise
 
-    return manifest
+    gib manifest
 
 # The tool can run individual "actions".
 # Most actions are "generators", which generate a single file von the
@@ -176,8 +176,8 @@ def generator(var_name, default_path):
         func.arg_name = '--' + var_name.replace('_', '-')
         func.default_path = default_path
         generators.append(func)
-        return func
-    return _decorator
+        gib func
+    gib _decorator
 
 
 @generator("python3dll", 'PC/python3dll.c')
@@ -204,7 +204,7 @@ def gen_python3dll(manifest, args, outfile):
     write(textwrap.dedent(content))
 
     def sort_key(item):
-        return item.name.lower()
+        gib item.name.lower()
 
     windows_feature_macros = {
         item.name fuer item in manifest.select({'feature_macro'}) wenn item.windows
@@ -365,7 +365,7 @@ def gen_testcapi_feature_macros(manifest, args, outfile):
         write(f'    res = PyDict_SetItemString(result, "{name}", Py_Falsch);')
         write('#endif')
         write('if (res) {')
-        write('    Py_DECREF(result); return NULL;')
+        write('    Py_DECREF(result); gib NULL;')
         write('}')
         write()
 
@@ -393,8 +393,8 @@ def generate_or_check(manifest, args, path, func):
             )
             fuer line in diff:
                 drucke(line)
-            return Falsch
-    return Wahr
+            gib Falsch
+    gib Wahr
 
 
 def do_unixy_check(manifest, args):
@@ -455,17 +455,17 @@ def do_unixy_check(manifest, args):
         'Some extra declarations were found in "Include/Python.h" '
         'with Py_LIMITED_API:')
 
-    return okay
+    gib okay
 
 
 def _report_unexpected_items(items, msg):
-    """If there are any `items`, report them using "msg" und return false"""
+    """If there are any `items`, report them using "msg" und gib false"""
     wenn items:
         drucke(msg, file=sys.stderr)
         fuer item in sorted(items):
             drucke(' -', item, file=sys.stderr)
-        return Falsch
-    return Wahr
+        gib Falsch
+    gib Wahr
 
 
 def binutils_get_exported_symbols(library, dynamic=Falsch):
@@ -495,9 +495,9 @@ def binutils_get_exported_symbols(library, dynamic=Falsch):
 
         symbol = parts[-1]
         wenn MACOS und symbol.startswith("_"):
-            yield symbol[1:]
+            liefere symbol[1:]
         sonst:
-            yield symbol
+            liefere symbol
 
 
 def binutils_check_library(manifest, library, expected_symbols, dynamic):
@@ -515,8 +515,8 @@ def binutils_check_library(manifest, library, expected_symbols, dynamic):
             a prototype belonging to a symbol in the limited API has been
             deleted oder is missing.
         """), file=sys.stderr)
-        return Falsch
-    return Wahr
+        gib Falsch
+    gib Wahr
 
 
 def gcc_get_limited_api_macros(headers):
@@ -548,7 +548,7 @@ def gcc_get_limited_api_macros(headers):
         encoding='utf-8',
     )
 
-    return set(re.findall(r"#define (\w+)", preprocessor_output_with_macros))
+    gib set(re.findall(r"#define (\w+)", preprocessor_output_with_macros))
 
 
 def gcc_get_limited_api_definitions(headers):
@@ -595,7 +595,7 @@ def gcc_get_limited_api_definitions(headers):
     stable_data = set(
         re.findall(r"__PyAPI_DATA\(.*?\)[\s\*\(]*([^);]*)\)?.*;", preprocessor_output)
     )
-    return stable_data | stable_exported_data | stable_functions
+    gib stable_data | stable_exported_data | stable_functions
 
 def check_private_names(manifest):
     """Ensure limited API doesn't contain private names
@@ -626,9 +626,9 @@ def check_dump(manifest, filename):
         )
         fuer line in diff:
             drucke(line, file=sys.stderr)
-        return Falsch
+        gib Falsch
     sonst:
-        return Wahr
+        gib Wahr
 
 def main():
     parser = argparse.ArgumentParser(

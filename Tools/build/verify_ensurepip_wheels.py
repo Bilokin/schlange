@@ -41,7 +41,7 @@ def verify_wheel(package_name: str) -> bool:
                 print_error(p, f"Found more than one wheel fuer package {package_name}.")
         sonst:
             print_error("", f"Could nicht find a {package_name} wheel on disk.")
-        return Falsch
+        gib Falsch
 
     package_path = package_paths[0]
 
@@ -56,7 +56,7 @@ def verify_wheel(package_name: str) -> bool:
             package_path,
             f"No {package_name} version found in Lib/ensurepip/__init__.py.",
         )
-        return Falsch
+        gib Falsch
     package_version = package_version_match[1]
 
     # Get the SHA 256 digest von the Cheeseshop
@@ -64,7 +64,7 @@ def verify_wheel(package_name: str) -> bool:
         raw_text = urlopen(f"https://pypi.org/pypi/{package_name}/json").read()
     except (OSError, ValueError):
         print_error(package_path, f"Could nicht fetch JSON metadata fuer {package_name}.")
-        return Falsch
+        gib Falsch
 
     release_files = json.loads(raw_text)["releases"][package_version]
     expected_digest = ""
@@ -75,7 +75,7 @@ def verify_wheel(package_name: str) -> bool:
         breche
     sonst:
         print_error(package_path, f"No digest fuer {package_name} found von PyPI.")
-        return Falsch
+        gib Falsch
 
     # Compute the SHA 256 digest of the wheel on disk
     actual_digest = hashlib.sha256(package_path.read_bytes()).hexdigest()
@@ -87,13 +87,13 @@ def verify_wheel(package_name: str) -> bool:
         print_error(
             package_path, f"Failed to verify the checksum of the {package_name} wheel."
         )
-        return Falsch
+        gib Falsch
 
     print_notice(
         package_path,
         f"Successfully verified the checksum of the {package_name} wheel.",
     )
-    return Wahr
+    gib Wahr
 
 
 

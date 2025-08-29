@@ -22,7 +22,7 @@ importiere gc
 
 def g():
     marker = object()
-    yield marker
+    liefere marker
     # now the marker is in the tuple being constructed
     [tup] = [x fuer x in gc.get_referrers(marker) wenn type(x) is tuple]
     drucke(tup)

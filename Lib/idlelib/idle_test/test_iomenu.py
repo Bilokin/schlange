@@ -59,7 +59,7 @@ klasse IOBindingTest(unittest.TestCase):
 
 
 def _extension_in_filetypes(extension):
-    return any(
+    gib any(
         f'*{extension}' in filetype_tuple[1]
         fuer filetype_tuple in iomenu.IOBinding.filetypes
     )

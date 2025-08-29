@@ -21,7 +21,7 @@ klasse TestContentManager(TestEmailBase):
     def get_key_as_get_content_key(self, order, key):
         def foo_getter(msg, foo=Nichts):
             bar = msg['X-Bar-Header']
-            return foo, bar
+            gib foo, bar
         cm = ContentManager()
         cm.add_get_handler(key, foo_getter)
         m = self._make_message()
@@ -31,9 +31,9 @@ klasse TestContentManager(TestEmailBase):
 
     def get_key_as_get_content_key_order(self, order, key):
         def bar_getter(msg):
-            return msg['X-Bar-Header']
+            gib msg['X-Bar-Header']
         def foo_getter(msg):
-            return msg['X-Foo-Header']
+            gib msg['X-Foo-Header']
         cm = ContentManager()
         cm.add_get_handler(key, foo_getter)
         fuer precedence, key in self.get_key_params.values():

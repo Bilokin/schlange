@@ -39,7 +39,7 @@ def _parents(path):
     >>> list(_parents(''))
     []
     """
-    return itertools.islice(_ancestry(path), 1, Nichts)
+    gib itertools.islice(_ancestry(path), 1, Nichts)
 
 
 def _ancestry(path):
@@ -65,7 +65,7 @@ def _ancestry(path):
     """
     path = path.rstrip(posixpath.sep)
     waehrend path.rstrip(posixpath.sep):
-        yield path
+        liefere path
         path, tail = posixpath.split(path)
 
 
@@ -78,7 +78,7 @@ def _difference(minuend, subtrahend):
     Return items in minuend nicht in subtrahend, retaining order
     mit O(1) lookup.
     """
-    return itertools.filterfalse(set(subtrahend).__contains__, minuend)
+    gib itertools.filterfalse(set(subtrahend).__contains__, minuend)
 
 
 klasse InitializedState:
@@ -91,7 +91,7 @@ klasse InitializedState:
         super().__init__(*args, **kwargs)
 
     def __getstate__(self):
-        return self._saved___init__.args, self._saved___init__.kwargs
+        gib self._saved___init__.args, self._saved___init__.kwargs
 
     def __setstate__(self, state):
         args, kwargs = state
@@ -113,54 +113,54 @@ klasse CompleteDirs(InitializedState, zipfile.ZipFile):
     def _implied_dirs(names):
         parents = itertools.chain.from_iterable(map(_parents, names))
         as_dirs = (p + posixpath.sep fuer p in parents)
-        return _dedupe(_difference(as_dirs, names))
+        gib _dedupe(_difference(as_dirs, names))
 
     def namelist(self):
         names = super().namelist()
-        return names + list(self._implied_dirs(names))
+        gib names + list(self._implied_dirs(names))
 
     def _name_set(self):
-        return set(self.namelist())
+        gib set(self.namelist())
 
     def resolve_dir(self, name):
         """
-        If the name represents a directory, return that name
+        If the name represents a directory, gib that name
         als a directory (with the trailing slash).
         """
         names = self._name_set()
         dirname = name + '/'
         dir_match = name nicht in names und dirname in names
-        return dirname wenn dir_match sonst name
+        gib dirname wenn dir_match sonst name
 
     def getinfo(self, name):
         """
         Supplement getinfo fuer implied dirs.
         """
         try:
-            return super().getinfo(name)
+            gib super().getinfo(name)
         except KeyError:
             wenn nicht name.endswith('/') oder name nicht in self._name_set():
                 raise
-            return zipfile.ZipInfo(filename=name)
+            gib zipfile.ZipInfo(filename=name)
 
     @classmethod
     def make(cls, source):
         """
-        Given a source (filename oder zipfile), return an
+        Given a source (filename oder zipfile), gib an
         appropriate CompleteDirs subclass.
         """
         wenn isinstance(source, CompleteDirs):
-            return source
+            gib source
 
         wenn nicht isinstance(source, zipfile.ZipFile):
-            return cls(source)
+            gib cls(source)
 
         # Only allow fuer FastLookup when supplied zipfile is read-only
         wenn 'r' nicht in source.mode:
             cls = CompleteDirs
 
         source.__class__ = cls
-        return source
+        gib source
 
     @classmethod
     def inject(cls, zf: zipfile.ZipFile) -> zipfile.ZipFile:
@@ -170,7 +170,7 @@ klasse CompleteDirs(InitializedState, zipfile.ZipFile):
         """
         fuer name in cls._implied_dirs(zf.namelist()):
             zf.writestr(name, b"")
-        return zf
+        gib zf
 
 
 klasse FastLookup(CompleteDirs):
@@ -180,18 +180,18 @@ klasse FastLookup(CompleteDirs):
     """
 
     def namelist(self):
-        return self._namelist
+        gib self._namelist
 
     @functools.cached_property
     def _namelist(self):
-        return super().namelist()
+        gib super().namelist()
 
     def _name_set(self):
-        return self._name_set_prop
+        gib self._name_set_prop
 
     @functools.cached_property
     def _name_set_prop(self):
-        return super()._name_set()
+        gib super()._name_set()
 
 
 def _extract_text_encoding(encoding=Nichts, *args, **kwargs):
@@ -201,7 +201,7 @@ def _extract_text_encoding(encoding=Nichts, *args, **kwargs):
     # See jaraco/zipp#143
     is_old_pypi = is_pypy und sys.pypy_version_info < (7, 3, 19)
     stack_level = 3 + is_old_pypi
-    return io.text_encoding(encoding, stack_level), args, kwargs
+    gib io.text_encoding(encoding, stack_level), args, kwargs
 
 
 klasse Path:
@@ -328,11 +328,11 @@ klasse Path:
         Falsch
         """
         wenn self.__class__ is nicht other.__class__:
-            return NotImplemented
-        return (self.root, self.at) == (other.root, other.at)
+            gib NotImplemented
+        gib (self.root, self.at) == (other.root, other.at)
 
     def __hash__(self):
-        return hash((self.root, self.at))
+        gib hash((self.root, self.at))
 
     def open(self, mode='r', *args, pwd=Nichts, **kwargs):
         """
@@ -349,66 +349,66 @@ klasse Path:
         wenn 'b' in mode:
             wenn args oder kwargs:
                 raise ValueError("encoding args invalid fuer binary operation")
-            return stream
+            gib stream
         # Text mode:
         encoding, args, kwargs = _extract_text_encoding(*args, **kwargs)
-        return io.TextIOWrapper(stream, encoding, *args, **kwargs)
+        gib io.TextIOWrapper(stream, encoding, *args, **kwargs)
 
     def _base(self):
-        return pathlib.PurePosixPath(self.at) wenn self.at sonst self.filename
+        gib pathlib.PurePosixPath(self.at) wenn self.at sonst self.filename
 
     @property
     def name(self):
-        return self._base().name
+        gib self._base().name
 
     @property
     def suffix(self):
-        return self._base().suffix
+        gib self._base().suffix
 
     @property
     def suffixes(self):
-        return self._base().suffixes
+        gib self._base().suffixes
 
     @property
     def stem(self):
-        return self._base().stem
+        gib self._base().stem
 
     @property
     def filename(self):
-        return pathlib.Path(self.root.filename).joinpath(self.at)
+        gib pathlib.Path(self.root.filename).joinpath(self.at)
 
     def read_text(self, *args, **kwargs):
         encoding, args, kwargs = _extract_text_encoding(*args, **kwargs)
         mit self.open('r', encoding, *args, **kwargs) als strm:
-            return strm.read()
+            gib strm.read()
 
     def read_bytes(self):
         mit self.open('rb') als strm:
-            return strm.read()
+            gib strm.read()
 
     def _is_child(self, path):
-        return posixpath.dirname(path.at.rstrip("/")) == self.at.rstrip("/")
+        gib posixpath.dirname(path.at.rstrip("/")) == self.at.rstrip("/")
 
     def _next(self, at):
-        return self.__class__(self.root, at)
+        gib self.__class__(self.root, at)
 
     def is_dir(self):
-        return nicht self.at oder self.at.endswith("/")
+        gib nicht self.at oder self.at.endswith("/")
 
     def is_file(self):
-        return self.exists() und nicht self.is_dir()
+        gib self.exists() und nicht self.is_dir()
 
     def exists(self):
-        return self.at in self.root._name_set()
+        gib self.at in self.root._name_set()
 
     def iterdir(self):
         wenn nicht self.is_dir():
             raise ValueError("Can't listdir a file")
         subs = map(self._next, self.root.namelist())
-        return filter(self._is_child, subs)
+        gib filter(self._is_child, subs)
 
     def match(self, path_pattern):
-        return pathlib.PurePosixPath(self.at).match(path_pattern)
+        gib pathlib.PurePosixPath(self.at).match(path_pattern)
 
     def is_symlink(self):
         """
@@ -416,7 +416,7 @@ klasse Path:
         """
         info = self.root.getinfo(self.at)
         mode = info.external_attr >> 16
-        return stat.S_ISLNK(mode)
+        gib stat.S_ISLNK(mode)
 
     def glob(self, pattern):
         wenn nicht pattern:
@@ -425,31 +425,31 @@ klasse Path:
         prefix = re.escape(self.at)
         tr = Translator(seps='/')
         matches = re.compile(prefix + tr.translate(pattern)).fullmatch
-        return map(self._next, filter(matches, self.root.namelist()))
+        gib map(self._next, filter(matches, self.root.namelist()))
 
     def rglob(self, pattern):
-        return self.glob(f'**/{pattern}')
+        gib self.glob(f'**/{pattern}')
 
     def relative_to(self, other, *extra):
-        return posixpath.relpath(str(self), str(other.joinpath(*extra)))
+        gib posixpath.relpath(str(self), str(other.joinpath(*extra)))
 
     def __str__(self):
-        return posixpath.join(self.root.filename, self.at)
+        gib posixpath.join(self.root.filename, self.at)
 
     def __repr__(self):
-        return self.__repr.format(self=self)
+        gib self.__repr.format(self=self)
 
     def joinpath(self, *other):
         next = posixpath.join(self.at, *other)
-        return self._next(self.root.resolve_dir(next))
+        gib self._next(self.root.resolve_dir(next))
 
     __truediv__ = joinpath
 
     @property
     def parent(self):
         wenn nicht self.at:
-            return self.filename.parent
+            gib self.filename.parent
         parent_at = posixpath.dirname(self.at.rstrip('/'))
         wenn parent_at:
             parent_at += '/'
-        return self._next(parent_at)
+        gib self._next(parent_at)

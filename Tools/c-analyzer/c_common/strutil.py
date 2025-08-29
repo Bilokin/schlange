@@ -21,7 +21,7 @@ def parse_entries(entries, *, ignoresep=Nichts):
                     infile = open(filename)
                 except FileNotFoundError:
                     logger.debug(f'ignored in parse_entries(): +{filename}')
-                    return
+                    gib
                 mit infile:
                     # We read the entire file here to ensure the file
                     # gets closed sooner rather than later.  Note that
@@ -29,9 +29,9 @@ def parse_entries(entries, *, ignoresep=Nichts):
                     # exhausted.
                     lines = infile.read().splitlines()
                 fuer line in _iter_significant_lines(lines):
-                    yield line, filename
+                    liefere line, filename
             sonst:
-                yield item, Nichts
+                liefere item, Nichts
 
 
 def _iter_significant_lines(lines):
@@ -39,4 +39,4 @@ def _iter_significant_lines(lines):
         line = line.partition('#')[0]
         wenn nicht line.strip():
             weiter
-        yield line
+        liefere line

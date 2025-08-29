@@ -636,7 +636,7 @@ klasse StreamTests(test_utils.TestCase):
                 self.server = self.loop.run_until_complete(
                     asyncio.start_server(self.handle_client,
                                          sock=sock))
-                return sock.getsockname()
+                gib sock.getsockname()
 
             def handle_client_callback(self, client_reader, client_writer):
                 self.loop.create_task(self.handle_client(client_reader,
@@ -649,7 +649,7 @@ klasse StreamTests(test_utils.TestCase):
                 self.server = self.loop.run_until_complete(
                     asyncio.start_server(self.handle_client_callback,
                                          host=addr[0], port=addr[1]))
-                return addr
+                gib addr
 
             def stop(self):
                 wenn self.server is nicht Nichts:
@@ -665,7 +665,7 @@ klasse StreamTests(test_utils.TestCase):
             msgback = await reader.readline()
             writer.close()
             await writer.wait_closed()
-            return msgback
+            gib msgback
 
         messages = []
         self.loop.set_exception_handler(lambda loop, ctx: messages.append(ctx))
@@ -731,7 +731,7 @@ klasse StreamTests(test_utils.TestCase):
             msgback = await reader.readline()
             writer.close()
             await writer.wait_closed()
-            return msgback
+            gib msgback
 
         messages = []
         self.loop.set_exception_handler(lambda loop, ctx: messages.append(ctx))
@@ -784,7 +784,7 @@ klasse StreamTests(test_utils.TestCase):
                 self.server = self.loop.run_until_complete(
                     asyncio.start_server(self.handle_client,
                                          sock=sock))
-                return sock.getsockname()
+                gib sock.getsockname()
 
             def stop(self):
                 wenn self.server is nicht Nichts:
@@ -805,7 +805,7 @@ klasse StreamTests(test_utils.TestCase):
             msgback2 = await reader.readline()
             writer.close()
             await writer.wait_closed()
-            return msgback1, msgback2
+            gib msgback1, msgback2
 
         messages = []
         self.loop.set_exception_handler(lambda loop, ctx: messages.append(ctx))
@@ -827,7 +827,7 @@ klasse StreamTests(test_utils.TestCase):
         # asyncio issue #184: Ensure that StreamReaderProtocol constructor
         # retrieves the current loop wenn the loop parameter is nicht set
         async def test():
-            return asyncio.StreamReader()
+            gib asyncio.StreamReader()
 
         reader = self.loop.run_until_complete(test())
         self.assertIs(reader._loop, self.loop)
@@ -852,7 +852,7 @@ klasse StreamTests(test_utils.TestCase):
         # retrieves the current loop wenn the loop parameter is nicht set
         reader = mock.Mock()
         async def test():
-            return asyncio.StreamReaderProtocol(reader)
+            gib asyncio.StreamReaderProtocol(reader)
         protocol = self.loop.run_until_complete(test())
         self.assertIs(protocol._loop, self.loop)
 
@@ -1181,7 +1181,7 @@ klasse StreamTests(test_utils.TestCase):
             await server.wait_closed()
 
         self.loop.run_until_complete(main())
-        return messages
+        gib messages
 
     def test_unhandled_exception(self):
         async def handle_echo(reader, writer):

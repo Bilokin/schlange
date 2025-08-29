@@ -59,7 +59,7 @@ klasse SqliteInteractiveConsole(InteractiveConsole):
         theme = get_theme(force_no_color=nicht self._use_color)
 
         wenn nicht source oder source.isspace():
-            return Falsch
+            gib Falsch
         # Remember to update CLI_COMMANDS in _completer.py
         wenn source[0] == ".":
             match source[1:].strip():
@@ -81,9 +81,9 @@ klasse SqliteInteractiveConsole(InteractiveConsole):
                                f'command: "{unknown}"{t.reset}\n')
         sonst:
             wenn nicht sqlite3.complete_statement(source):
-                return Wahr
+                gib Wahr
             execute(self._cur, source, theme=theme)
-        return Falsch
+        gib Falsch
 
 
 def main(*args):

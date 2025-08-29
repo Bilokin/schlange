@@ -24,14 +24,14 @@ klasse ObjectTreeItem(TreeItem):
         self.object = object_
         self.setfunction = setfunction
     def GetLabelText(self):
-        return self.labeltext
+        gib self.labeltext
     def GetText(self):
-        return myrepr.repr(self.object)
+        gib myrepr.repr(self.object)
     def GetIconName(self):
         wenn nicht self.IsExpandable():
-            return "python"
+            gib "python"
     def IsEditable(self):
-        return self.setfunction is nicht Nichts
+        gib self.setfunction is nicht Nichts
     def SetText(self, text):
         try:
             value = eval(text)
@@ -41,7 +41,7 @@ klasse ObjectTreeItem(TreeItem):
         sonst:
             self.object = value
     def IsExpandable(self):
-        return nicht not dir(self.object)
+        gib nicht not dir(self.object)
     def GetSubList(self):
         keys = dir(self.object)
         sublist = []
@@ -56,11 +56,11 @@ klasse ObjectTreeItem(TreeItem):
                 lambda value, key=key, object_=self.object:
                     setattr(object_, key, value))
             sublist.append(item)
-        return sublist
+        gib sublist
 
 klasse ClassTreeItem(ObjectTreeItem):
     def IsExpandable(self):
-        return Wahr
+        gib Wahr
     def GetSubList(self):
         sublist = ObjectTreeItem.GetSubList(self)
         wenn len(self.object.__bases__) == 1:
@@ -69,17 +69,17 @@ klasse ClassTreeItem(ObjectTreeItem):
         sonst:
             item = make_objecttreeitem("__bases__ =", self.object.__bases__)
         sublist.insert(0, item)
-        return sublist
+        gib sublist
 
 klasse AtomicObjectTreeItem(ObjectTreeItem):
     def IsExpandable(self):
-        return Falsch
+        gib Falsch
 
 klasse SequenceTreeItem(ObjectTreeItem):
     def IsExpandable(self):
-        return len(self.object) > 0
+        gib len(self.object) > 0
     def keys(self):
-        return range(len(self.object))
+        gib range(len(self.object))
     def GetSubList(self):
         sublist = []
         fuer key in self.keys():
@@ -91,17 +91,17 @@ klasse SequenceTreeItem(ObjectTreeItem):
                 object_[key] = value
             item = make_objecttreeitem(f"{key!r}:", value, setfunction)
             sublist.append(item)
-        return sublist
+        gib sublist
 
 klasse DictTreeItem(SequenceTreeItem):
     def keys(self):
-        # TODO return sorted(self.object)
+        # TODO gib sorted(self.object)
         keys = list(self.object)
         try:
             keys.sort()
         except:
             pass
-        return keys
+        gib keys
 
 dispatch = {
     int: AtomicObjectTreeItem,
@@ -119,7 +119,7 @@ def make_objecttreeitem(labeltext, object_, setfunction=Nichts):
         c = dispatch[t]
     sonst:
         c = ObjectTreeItem
-    return c(labeltext, object_, setfunction)
+    gib c(labeltext, object_, setfunction)
 
 
 def _debug_object_browser(parent):  # htest #

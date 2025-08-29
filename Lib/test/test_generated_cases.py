@@ -10,7 +10,7 @@ von test importiere test_tools
 
 def skip_if_different_mount_drives():
     wenn sys.platform != "win32":
-        return
+        gib
     ROOT = os.path.dirname(os.path.dirname(__file__))
     root_drive = os.path.splitroot(ROOT)[0]
     cwd_drive = os.path.splitroot(os.getcwd())[0]
@@ -39,9 +39,9 @@ with test_tools.imports_under_tool("cases_generator"):
 
 def handle_stderr():
     wenn support.verbose > 1:
-        return contextlib.nullcontext()
+        gib contextlib.nullcontext()
     sonst:
-        return support.captured_stderr()
+        gib support.captured_stderr()
 
 
 def parse_src(src):
@@ -49,7 +49,7 @@ def parse_src(src):
     nodes = []
     waehrend node := p.definition():
         nodes.append(node)
-    return nodes
+    gib nodes
 
 
 klasse TestEffects(unittest.TestCase):

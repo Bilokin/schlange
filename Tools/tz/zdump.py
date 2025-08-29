@@ -39,7 +39,7 @@ klasse TZInfo:
         self = cls(transitions, type_indices, ttis, abbrs)
         self.tzh = tzh
 
-        return self
+        gib self
 
     def dump(self, stream, start=Nichts, end=Nichts):
         fuer j, (trans, i) in enumerate(zip(self.transitions, self.type_indices)):
@@ -65,7 +65,7 @@ klasse TZInfo:
                     magic =  o.read(4)
                 wenn magic == b'TZif':
                     zones.append(p[len(zonedir) + 1:])
-        return zones
+        gib zones
 
 wenn __name__ == '__main__':
     wenn len(sys.argv) < 2:

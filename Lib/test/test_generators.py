@@ -18,7 +18,7 @@ except ImportError:
 
 
 # This tests to make sure that wenn a SIGINT arrives just before we send into a
-# yield von chain, the KeyboardInterrupt is raised in the innermost
+# liefere von chain, the KeyboardInterrupt is raised in the innermost
 # generator (see bpo-30039).
 @unittest.skipUnless(_testcapi is nicht Nichts und
                      hasattr(_testcapi, "raise_SIGINT_then_send_Nichts"),
@@ -26,15 +26,15 @@ except ImportError:
 klasse SignalAndYieldFromTest(unittest.TestCase):
 
     def generator1(self):
-        return (yield von self.generator2())
+        gib (yield von self.generator2())
 
     def generator2(self):
         try:
-            yield
+            liefere
         except KeyboardInterrupt:
-            return "PASSED"
+            gib "PASSED"
         sonst:
-            return "FAILED"
+            gib "FAILED"
 
     def test_raise_and_yield_from(self):
         gen = self.generator1()
@@ -54,7 +54,7 @@ klasse FinalizationTest(unittest.TestCase):
         def gen():
             nonlocal frame
             try:
-                yield
+                liefere
             finally:
                 frame = sys._getframe()
 
@@ -75,8 +75,8 @@ klasse FinalizationTest(unittest.TestCase):
         def gen():
             nonlocal finalized
             try:
-                g = yield
-                yield 1
+                g = liefere
+                liefere 1
             finally:
                 finalized = Wahr
 
@@ -97,14 +97,14 @@ klasse FinalizationTest(unittest.TestCase):
         self.assertIsInstance(f(), types.GeneratorType)
         self.assertEqual(next(f()), 1)
 
-        def g(): return (yield 1)
+        def g(): gib (yield 1)
 
         # test 'yield from'
         f2 = lambda: (yield von g())
-        def g2(): return (yield von g())
+        def g2(): gib (yield von g())
 
         f3 = lambda: (yield von f())
-        def g3(): return (yield von f())
+        def g3(): gib (yield von f())
 
         fuer gen_fun in (f, g, f2, g2, f3, g3):
             gen = gen_fun()
@@ -121,7 +121,7 @@ klasse FinalizationTest(unittest.TestCase):
         exec(textwrap.dedent("""
             def gen():
                 try:
-                    yield
+                    liefere
                 except:
                     resurrected.append(g)
 
@@ -139,7 +139,7 @@ klasse GeneratorTest(unittest.TestCase):
 
     def test_name(self):
         def func():
-            yield 1
+            liefere 1
 
         # check generator names
         gen = func()
@@ -175,14 +175,14 @@ klasse GeneratorTest(unittest.TestCase):
 
     def test_copy(self):
         def f():
-            yield 1
+            liefere 1
         g = f()
         mit self.assertRaises(TypeError):
             copy.copy(g)
 
     def test_pickle(self):
         def f():
-            yield 1
+            liefere 1
         g = f()
         fuer proto in range(pickle.HIGHEST_PROTOCOL + 1):
             mit self.assertRaises((TypeError, pickle.PicklingError)):
@@ -190,7 +190,7 @@ klasse GeneratorTest(unittest.TestCase):
 
     def test_send_non_none_to_new_gen(self):
         def f():
-            yield 1
+            liefere 1
         g = f()
         mit self.assertRaises(TypeError):
             g.send(0)
@@ -205,7 +205,7 @@ klasse GeneratorTest(unittest.TestCase):
             inspect.stack()
 
         def gen():
-            yield 1
+            liefere 1
 
         thresholds = gc.get_threshold()
 
@@ -234,7 +234,7 @@ klasse GeneratorTest(unittest.TestCase):
 
     def test_ag_frame_f_back(self):
         async def f():
-            yield
+            liefere
         ag = f()
         self.assertIsNichts(ag.ag_frame.f_back)
 
@@ -247,21 +247,21 @@ klasse GeneratorTest(unittest.TestCase):
 
     def test_gi_frame_f_back(self):
         def f():
-            yield
+            liefere
         gi = f()
         self.assertIsNichts(gi.gi_frame.f_back)
 
     def test_issue103488(self):
 
         def gen_raises():
-            yield
+            liefere
             raise ValueError()
 
         def loop():
             try:
                 fuer _ in gen_raises():
                     wenn Wahr is Falsch:
-                        return
+                        gib
             except ValueError:
                 pass
 
@@ -279,14 +279,14 @@ klasse GeneratorTest(unittest.TestCase):
                 wenn self.val == 2:
                     raise StopIteration
                 self.val += 1
-                return self.val
+                gib self.val
 
             # No __iter__ method
 
         klasse C:
 
             def __iter__(self):
-                return Iterator()
+                gib Iterator()
 
         self.assertEqual([1,2], list(i fuer i in C()))
 
@@ -310,13 +310,13 @@ klasse ModifyUnderlyingIterableTest(unittest.TestCase):
     ]
 
     def genexpr(self):
-        return (x fuer x in range(10))
+        gib (x fuer x in range(10))
 
     def genfunc(self):
         def gen(it):
             fuer x in it:
-                yield x
-        return gen(range(10))
+                liefere x
+        gib gen(range(10))
 
     def process_tests(self, get_generator):
         fuer obj in self.iterables:
@@ -337,13 +337,13 @@ klasse ModifyUnderlyingIterableTest(unittest.TestCase):
     def test_modify_f_locals(self):
         def modify_f_locals(g, local, obj):
             g.gi_frame.f_locals[local] = obj
-            return g
+            gib g
 
         def get_generator_genexpr(obj):
-            return modify_f_locals(self.genexpr(), '.0', obj)
+            gib modify_f_locals(self.genexpr(), '.0', obj)
 
         def get_generator_genfunc(obj):
-            return modify_f_locals(self.genfunc(), 'it', obj)
+            gib modify_f_locals(self.genfunc(), 'it', obj)
 
         self.process_tests(get_generator_genexpr)
         self.process_tests(get_generator_genfunc)
@@ -351,13 +351,13 @@ klasse ModifyUnderlyingIterableTest(unittest.TestCase):
     def test_new_gen_from_gi_code(self):
         def new_gen_from_gi_code(g, obj):
             generator_func = types.FunctionType(g.gi_code, {})
-            return generator_func(obj)
+            gib generator_func(obj)
 
         def get_generator_genexpr(obj):
-            return new_gen_from_gi_code(self.genexpr(), obj)
+            gib new_gen_from_gi_code(self.genexpr(), obj)
 
         def get_generator_genfunc(obj):
-            return new_gen_from_gi_code(self.genfunc(), obj)
+            gib new_gen_from_gi_code(self.genfunc(), obj)
 
         self.process_tests(get_generator_genexpr)
         self.process_tests(get_generator_genfunc)
@@ -371,16 +371,16 @@ klasse ExceptionTest(unittest.TestCase):
         def store_raise_exc_generator():
             try:
                 self.assertIsNichts(sys.exception())
-                yield
+                liefere
             except Exception als exc:
                 # exception raised by gen.throw(exc)
                 self.assertIsInstance(sys.exception(), ValueError)
                 self.assertIsNichts(exc.__context__)
-                yield
+                liefere
 
                 # ensure that the exception is nicht lost
                 self.assertIsInstance(sys.exception(), ValueError)
-                yield
+                liefere
 
                 # we should be able to raise back the ValueError
                 raise
@@ -406,7 +406,7 @@ klasse ExceptionTest(unittest.TestCase):
     def test_except_next(self):
         def gen():
             self.assertIsInstance(sys.exception(), ValueError)
-            yield "done"
+            liefere "done"
 
         g = gen()
         try:
@@ -419,7 +419,7 @@ klasse ExceptionTest(unittest.TestCase):
         def gen():
             try:
                 self.assertIsNichts(sys.exception())
-                yield
+                liefere
                 # we are called von "except ValueError:", TypeError must
                 # inherit ValueError in its context
                 raise TypeError()
@@ -428,9 +428,9 @@ klasse ExceptionTest(unittest.TestCase):
                 self.assertEqual(type(exc.__context__), ValueError)
             # here we are still called von the "except ValueError:"
             self.assertIsInstance(sys.exception(), ValueError)
-            yield
+            liefere
             self.assertIsNichts(sys.exception())
-            yield "done"
+            liefere "done"
 
         g = gen()
         next(g)
@@ -446,14 +446,14 @@ klasse ExceptionTest(unittest.TestCase):
         def gen():
             fuer i in range(100):
                 self.assertIsInstance(sys.exception(), TypeError)
-                yield "doing"
+                liefere "doing"
 
         def outer():
             try:
                 raise TypeError
             except:
                 fuer x in gen():
-                    yield x
+                    liefere x
 
         try:
             raise ValueError
@@ -467,7 +467,7 @@ klasse ExceptionTest(unittest.TestCase):
             try:
                 try:
                     self.assertIsNichts(sys.exception())
-                    yield
+                    liefere
                 except ValueError:
                     # we are called von "except ValueError:"
                     self.assertIsInstance(sys.exception(), ValueError)
@@ -477,9 +477,9 @@ klasse ExceptionTest(unittest.TestCase):
                 self.assertEqual(type(exc.__context__), ValueError)
             # we are still called von "except ValueError:"
             self.assertIsInstance(sys.exception(), ValueError)
-            yield
+            liefere
             self.assertIsNichts(sys.exception())
-            yield "done"
+            liefere "done"
 
         g = gen()
         next(g)
@@ -494,10 +494,10 @@ klasse ExceptionTest(unittest.TestCase):
     def test_except_throw_bad_exception(self):
         klasse E(Exception):
             def __new__(cls, *args, **kwargs):
-                return cls
+                gib cls
 
         def boring_generator():
-            yield
+            liefere
 
         gen = boring_generator()
 
@@ -510,7 +510,7 @@ klasse ExceptionTest(unittest.TestCase):
 
         def generator():
             mit self.assertRaisesRegex(TypeError, err_msg):
-                yield
+                liefere
 
         gen = generator()
         next(gen)
@@ -519,7 +519,7 @@ klasse ExceptionTest(unittest.TestCase):
 
     def test_gen_3_arg_deprecation_warning(self):
         def g():
-            yield 42
+            liefere 42
 
         gen = g()
         mit self.assertWarns(DeprecationWarning):
@@ -531,7 +531,7 @@ klasse ExceptionTest(unittest.TestCase):
 
         def gen():
             raise StopIteration
-            yield
+            liefere
 
         mit self.assertRaisesRegex(RuntimeError, 'raised StopIteration'):
             next(gen())
@@ -540,9 +540,9 @@ klasse ExceptionTest(unittest.TestCase):
         # Raise StopIteration" stops the generator too:
 
         def f():
-            yield 1
+            liefere 1
             raise StopIteration
-            yield 2 # never reached
+            liefere 2 # never reached
 
         g = f()
         self.assertEqual(next(g), 1)
@@ -552,7 +552,7 @@ klasse ExceptionTest(unittest.TestCase):
 
     def test_return_tuple(self):
         def g():
-            return (yield 1)
+            gib (yield 1)
 
         gen = g()
         self.assertEqual(next(gen), 1)
@@ -562,7 +562,7 @@ klasse ExceptionTest(unittest.TestCase):
 
     def test_return_stopiteration(self):
         def g():
-            return (yield 1)
+            gib (yield 1)
 
         gen = g()
         self.assertEqual(next(gen), 1)
@@ -576,7 +576,7 @@ klasse GeneratorCloseTest(unittest.TestCase):
 
     def test_close_no_return_value(self):
         def f():
-            yield
+            liefere
 
         gen = f()
         gen.send(Nichts)
@@ -585,10 +585,10 @@ klasse GeneratorCloseTest(unittest.TestCase):
     def test_close_return_value(self):
         def f():
             try:
-                yield
+                liefere
                 # close() raises GeneratorExit here, which is caught
             except GeneratorExit:
-                return 0
+                gib 0
 
         gen = f()
         gen.send(Nichts)
@@ -596,10 +596,10 @@ klasse GeneratorCloseTest(unittest.TestCase):
 
     def test_close_not_catching_exit(self):
         def f():
-            yield
+            liefere
             # close() raises GeneratorExit here, which isn't caught und
-            # therefore propagates -- no return value
-            return 0
+            # therefore propagates -- no gib value
+            gib 0
 
         gen = f()
         gen.send(Nichts)
@@ -608,9 +608,9 @@ klasse GeneratorCloseTest(unittest.TestCase):
     def test_close_not_started(self):
         def f():
             try:
-                yield
+                liefere
             except GeneratorExit:
-                return 0
+                gib 0
 
         gen = f()
         self.assertIsNichts(gen.close())
@@ -618,9 +618,9 @@ klasse GeneratorCloseTest(unittest.TestCase):
     def test_close_exhausted(self):
         def f():
             try:
-                yield
+                liefere
             except GeneratorExit:
-                return 0
+                gib 0
 
         gen = f()
         next(gen)
@@ -631,9 +631,9 @@ klasse GeneratorCloseTest(unittest.TestCase):
     def test_close_closed(self):
         def f():
             try:
-                yield
+                liefere
             except GeneratorExit:
-                return 0
+                gib 0
 
         gen = f()
         gen.send(Nichts)
@@ -643,7 +643,7 @@ klasse GeneratorCloseTest(unittest.TestCase):
     def test_close_raises(self):
         def f():
             try:
-                yield
+                liefere
             except GeneratorExit:
                 pass
             raise RuntimeError
@@ -664,7 +664,7 @@ klasse GeneratorCloseTest(unittest.TestCase):
 
         def genfn():
             a = f
-            yield
+            liefere
 
         g = genfn()
         next(g)
@@ -679,16 +679,16 @@ klasse GeneratorDeallocTest(unittest.TestCase):
     def test_frame_outlives_generator(self):
         def g1():
             a = 42
-            yield sys._getframe()
+            liefere sys._getframe()
 
         def g2():
             a = 42
-            yield
+            liefere
 
         def g3(obj):
             a = 42
             obj.frame = sys._getframe()
-            yield
+            liefere
 
         klasse ObjectWithFrame():
             def __init__(self):
@@ -696,17 +696,17 @@ klasse GeneratorDeallocTest(unittest.TestCase):
 
         def get_frame(index):
             wenn index == 1:
-                return next(g1())
+                gib next(g1())
             sowenn index == 2:
                 gen = g2()
                 next(gen)
-                return gen.gi_frame
+                gib gen.gi_frame
             sowenn index == 3:
                 obj = ObjectWithFrame()
                 next(g3(obj))
-                return obj.frame
+                gib obj.frame
             sonst:
-                return Nichts
+                gib Nichts
 
         fuer index in (1, 2, 3):
             mit self.subTest(index=index):
@@ -722,21 +722,21 @@ klasse GeneratorDeallocTest(unittest.TestCase):
             nonlocal frame_locals1
             frame_locals1 = sys._getframe().f_locals
             a = 42
-            yield
+            liefere
 
         def g2():
             a = 42
-            yield sys._getframe().f_locals
+            liefere sys._getframe().f_locals
 
         def get_frame_locals(index):
             wenn index == 1:
                 nonlocal frame_locals1
                 next(g1())
-                return frame_locals1
+                gib frame_locals1
             wenn index == 2:
-                return next(g2())
+                gib next(g2())
             sonst:
-                return Nichts
+                gib Nichts
 
         fuer index in (1, 2):
             mit self.subTest(index=index):
@@ -747,7 +747,7 @@ klasse GeneratorDeallocTest(unittest.TestCase):
     def test_frame_locals_outlive_generator_with_exec(self):
         def g():
             a = 42
-            yield locals(), sys._getframe().f_locals
+            liefere locals(), sys._getframe().f_locals
 
         locals_ = {'g': g}
         fuer i in range(10):
@@ -764,7 +764,7 @@ klasse GeneratorThrowTest(unittest.TestCase):
             try:
                 raise KeyError('a')
             except Exception:
-                yield
+                liefere
 
         gen = f()
         gen.send(Nichts)
@@ -781,13 +781,13 @@ klasse GeneratorThrowTest(unittest.TestCase):
                 raise KeyError('a')
             except Exception:
                 try:
-                    yield
+                    liefere
                 except Exception als exc:
                     self.assertEqual(type(exc), ValueError)
                     context = exc.__context__
                     self.assertEqual((type(context), context.args),
                         (KeyError, ('a',)))
-                    yield 'b'
+                    liefere 'b'
 
         gen = f()
         gen.send(Nichts)
@@ -797,13 +797,13 @@ klasse GeneratorThrowTest(unittest.TestCase):
 
     def test_exception_context_with_yield_from(self):
         def f():
-            yield
+            liefere
 
         def g():
             try:
                 raise KeyError('a')
             except Exception:
-                yield von f()
+                liefere von f()
 
         gen = g()
         gen.send(Nichts)
@@ -818,7 +818,7 @@ klasse GeneratorThrowTest(unittest.TestCase):
         has_cycle = Nichts
 
         def f():
-            yield
+            liefere
 
         def g(exc):
             nonlocal has_cycle
@@ -826,10 +826,10 @@ klasse GeneratorThrowTest(unittest.TestCase):
                 raise exc
             except Exception:
                 try:
-                    yield von f()
+                    liefere von f()
                 except Exception als exc:
                     has_cycle = (exc is exc.__context__)
-            yield
+            liefere
 
         exc = KeyError('a')
         gen = g(exc)
@@ -846,7 +846,7 @@ klasse GeneratorThrowTest(unittest.TestCase):
                 pass
 
             try:
-                yield
+                liefere
             except Exception:
                 raise RuntimeError
 
@@ -876,14 +876,14 @@ klasse GeneratorStackTraceTest(unittest.TestCase):
         def f():
             self.check_stack_names(sys._getframe(), ['f', 'g'])
             try:
-                yield
+                liefere
             except Exception:
                 pass
             self.check_stack_names(sys._getframe(), ['f', 'g'])
 
         def g():
             self.check_stack_names(sys._getframe(), ['g'])
-            yield von f()
+            liefere von f()
             self.check_stack_names(sys._getframe(), ['g'])
 
         gen = g()
@@ -913,12 +913,12 @@ klasse GeneratorStackTraceTest(unittest.TestCase):
             def throw(self, *args):
                 self.test.check_stack_names(sys._getframe(), ['throw', 'g'])
             def __iter__(self):
-                return self
+                gib self
             def __next__(self):
-                return 42
+                gib 42
 
         def g(target):
-            yield von target
+            liefere von target
 
         gen = g(CustomGen(self))
         gen.send(Nichts)
@@ -930,15 +930,15 @@ klasse YieldFromTests(unittest.TestCase):
         def a():
             self.assertEqual(inspect.getgeneratorstate(gen_b), inspect.GEN_RUNNING)
             self.assertIsNichts(gen_b.gi_yieldfrom)
-            yield
+            liefere
             self.assertEqual(inspect.getgeneratorstate(gen_b), inspect.GEN_RUNNING)
             self.assertIsNichts(gen_b.gi_yieldfrom)
 
         def b():
             self.assertIsNichts(gen_b.gi_yieldfrom)
-            yield von a()
+            liefere von a()
             self.assertIsNichts(gen_b.gi_yieldfrom)
-            yield
+            liefere
             self.assertIsNichts(gen_b.gi_yieldfrom)
 
         gen_b = b()
@@ -962,8 +962,8 @@ tutorial_tests = """
 Let's try a simple generator:
 
     >>> def f():
-    ...    yield 1
-    ...    yield 2
+    ...    liefere 1
+    ...    liefere 2
 
     >>> fuer i in f():
     ...     drucke(i)
@@ -986,9 +986,9 @@ Let's try a simple generator:
 "return" also stops the generator:
 
     >>> def f():
-    ...     yield 1
-    ...     return
-    ...     yield 2 # never reached
+    ...     liefere 1
+    ...     gib
+    ...     liefere 2 # never reached
     ...
     >>> g = f()
     >>> next(g)
@@ -1007,9 +1007,9 @@ However, "return" und StopIteration are nicht exactly equivalent:
 
     >>> def g1():
     ...     try:
-    ...         return
+    ...         gib
     ...     except:
-    ...         yield 1
+    ...         liefere 1
     ...
     >>> list(g1())
     []
@@ -1018,7 +1018,7 @@ However, "return" und StopIteration are nicht exactly equivalent:
     ...     try:
     ...         raise StopIteration
     ...     except:
-    ...         yield 42
+    ...         liefere 42
     >>> drucke(list(g2()))
     [42]
 
@@ -1026,9 +1026,9 @@ This may be surprising at first:
 
     >>> def g3():
     ...     try:
-    ...         return
+    ...         gib
     ...     finally:
-    ...         yield 1
+    ...         liefere 1
     ...
     >>> list(g3())
     [1]
@@ -1037,17 +1037,17 @@ Let's create an alternate range() function implemented als a generator:
 
     >>> def yrange(n):
     ...     fuer i in range(n):
-    ...         yield i
+    ...         liefere i
     ...
     >>> list(yrange(5))
     [0, 1, 2, 3, 4]
 
-Generators always return to the most recent caller:
+Generators always gib to the most recent caller:
 
     >>> def creator():
     ...     r = yrange(5)
     ...     drucke("creator", next(r))
-    ...     return r
+    ...     gib r
     ...
     >>> def caller():
     ...     r = creator()
@@ -1065,7 +1065,7 @@ Generators can call other generators:
 
     >>> def zrange(n):
     ...     fuer i in yrange(n):
-    ...         yield i
+    ...         liefere i
     ...
     >>> list(zrange(5))
     [0, 1, 2, 3, 4]
@@ -1083,7 +1083,7 @@ Specification:  Yield
 
     >>> def g():
     ...     i = next(me)
-    ...     yield i
+    ...     liefere i
     >>> me = g()
     >>> next(me)
     Traceback (most recent call last):
@@ -1093,25 +1093,25 @@ Specification:  Yield
 
 Specification: Return
 
-    Note that return isn't always equivalent to raising StopIteration:  the
+    Note that gib isn't always equivalent to raising StopIteration:  the
     difference lies in how enclosing try/except constructs are treated.
     For example,
 
         >>> def f1():
         ...     try:
-        ...         return
+        ...         gib
         ...     except:
-        ...        yield 1
+        ...        liefere 1
         >>> drucke(list(f1()))
         []
 
-    because, als in any function, return simply exits, but
+    because, als in any function, gib simply exits, but
 
         >>> def f2():
         ...     try:
         ...         raise StopIteration
         ...     except:
-        ...         yield 42
+        ...         liefere 42
         >>> drucke(list(f2()))
         [42]
 
@@ -1121,10 +1121,10 @@ Specification: Return
 Specification: Generators und Exception Propagation
 
     >>> def f():
-    ...     return 1//0
+    ...     gib 1//0
     >>> def g():
-    ...     yield f()  # the zero division exception propagates
-    ...     yield 42   # und we'll never get here
+    ...     liefere f()  # the zero division exception propagates
+    ...     liefere 42   # und we'll never get here
     >>> k = g()
     >>> next(k)
     Traceback (most recent call last):
@@ -1142,26 +1142,26 @@ Specification: Try/Except/Finally
 
     >>> def f():
     ...     try:
-    ...         yield 1
+    ...         liefere 1
     ...         try:
-    ...             yield 2
+    ...             liefere 2
     ...             1//0
-    ...             yield 3  # never get here
+    ...             liefere 3  # never get here
     ...         except ZeroDivisionError:
-    ...             yield 4
-    ...             yield 5
+    ...             liefere 4
+    ...             liefere 5
     ...             raise
     ...         except:
-    ...             yield 6
-    ...         yield 7     # the "raise" above stops this
+    ...             liefere 6
+    ...         liefere 7     # the "raise" above stops this
     ...     except:
-    ...         yield 8
-    ...     yield 9
+    ...         liefere 8
+    ...     liefere 9
     ...     try:
     ...         x = 12
     ...     finally:
-    ...         yield 10
-    ...     yield 11
+    ...         liefere 10
+    ...     liefere 11
     >>> drucke(list(f()))
     [1, 2, 4, 5, 8, 9, 10, 11]
     >>>
@@ -1182,18 +1182,18 @@ Guido's binary tree example.
     ...             s = s + "\\n" + self.left.__repr__(level+1, indent)
     ...         wenn self.right:
     ...             s = s + "\\n" + self.right.__repr__(level+1, indent)
-    ...         return s
+    ...         gib s
     ...
     ...     def __iter__(self):
-    ...         return inorder(self)
+    ...         gib inorder(self)
 
     >>> # Create a Tree von a list.
     >>> def tree(list):
     ...     n = len(list)
     ...     wenn n == 0:
-    ...         return []
+    ...         gib []
     ...     i = n // 2
-    ...     return Tree(list[i], tree(list[:i]), tree(list[i+1:]))
+    ...     gib Tree(list[i], tree(list[:i]), tree(list[i+1:]))
 
     >>> # Show it off: create a tree.
     >>> t = tree("ABCDEFGHIJKLMNOPQRSTUVWXYZ")
@@ -1202,10 +1202,10 @@ Guido's binary tree example.
     >>> def inorder(t):
     ...     wenn t:
     ...         fuer x in inorder(t.left):
-    ...             yield x
-    ...         yield t.label
+    ...             liefere x
+    ...         liefere t.label
     ...         fuer x in inorder(t.right):
-    ...             yield x
+    ...             liefere x
 
     >>> # Show it off: create a tree.
     >>> t = tree("ABCDEFGHIJKLMNOPQRSTUVWXYZ")
@@ -1221,13 +1221,13 @@ Guido's binary tree example.
     ...         waehrend node.left:
     ...             stack.append(node)
     ...             node = node.left
-    ...         yield node.label
+    ...         liefere node.label
     ...         waehrend nicht node.right:
     ...             try:
     ...                 node = stack.pop()
     ...             except IndexError:
-    ...                 return
-    ...             yield node.label
+    ...                 gib
+    ...             liefere node.label
     ...         node = node.right
 
     >>> # Exercise the non-recursive generator.
@@ -1245,9 +1245,9 @@ The difference between yielding Nichts und returning it.
 
 >>> def g():
 ...     fuer i in range(3):
-...         yield Nichts
-...     yield Nichts
-...     return
+...         liefere Nichts
+...     liefere Nichts
+...     gib
 >>> list(g())
 [Nichts, Nichts, Nichts, Nichts]
 
@@ -1255,12 +1255,12 @@ Ensure that explicitly raising StopIteration acts like any other exception
 in try/except, nicht like a return.
 
 >>> def g():
-...     yield 1
+...     liefere 1
 ...     try:
 ...         raise StopIteration
 ...     except:
-...         yield 2
-...     yield 3
+...         liefere 2
+...     liefere 3
 >>> list(g())
 [1, 2, 3]
 
@@ -1270,19 +1270,19 @@ Next one was posted to c.l.py.
 ...     "Generate all combinations of k elements von list x."
 ...
 ...     wenn k > len(x):
-...         return
+...         gib
 ...     wenn k == 0:
-...         yield []
+...         liefere []
 ...     sonst:
 ...         first, rest = x[0], x[1:]
 ...         # A combination does oder doesn't contain first.
 ...         # If it does, the remainder is a k-1 comb of rest.
 ...         fuer c in gcomb(rest, k-1):
 ...             c.insert(0, first)
-...             yield c
+...             liefere c
 ...         # If it doesn't contain first, it's a k comb of rest.
 ...         fuer c in gcomb(rest, k):
-...             yield c
+...             liefere c
 
 >>> seq = list(range(1, 5))
 >>> fuer k in range(len(seq) + 2):
@@ -1315,7 +1315,7 @@ Next one was posted to c.l.py.
 From the Iterators list, about the types of these things.
 
 >>> def g():
-...     yield 1
+...     liefere 1
 ...
 >>> type(g)
 <class 'function'>
@@ -1344,7 +1344,7 @@ Traceback (most recent call last):
   ...
 AttributeError: attribute 'gi_running' of 'generator' objects is nicht writable
 >>> def g():
-...     yield me.gi_running
+...     liefere me.gi_running
 >>> me = g()
 >>> me.gi_running
 0
@@ -1366,12 +1366,12 @@ Subject: Re: PEP 255: Simple Generators
 ...
 ...     def generate(self):
 ...         waehrend nicht self.parent:
-...             yield self
+...             liefere self
 ...         fuer x in self.parent.generator:
-...             yield x
+...             liefere x
 ...
 ...     def find(self):
-...         return next(self.generator)
+...         gib next(self.generator)
 ...
 ...     def union(self, parent):
 ...         wenn self.parent:
@@ -1379,7 +1379,7 @@ Subject: Re: PEP 255: Simple Generators
 ...         self.parent = parent
 ...
 ...     def __str__(self):
-...         return self.name
+...         gib self.name
 
 >>> names = "ABCDEFGHIJKLM"
 >>> sets = [disjointSet(name) fuer name in names]
@@ -1435,11 +1435,11 @@ fun_tests = """
 Build up to a recursive Sieve of Eratosthenes generator.
 
 >>> def firstn(g, n):
-...     return [next(g) fuer i in range(n)]
+...     gib [next(g) fuer i in range(n)]
 
 >>> def intsfrom(i):
 ...     waehrend 1:
-...         yield i
+...         liefere i
 ...         i += 1
 
 >>> firstn(intsfrom(5), 7)
@@ -1448,17 +1448,17 @@ Build up to a recursive Sieve of Eratosthenes generator.
 >>> def exclude_multiples(n, ints):
 ...     fuer i in ints:
 ...         wenn i % n:
-...             yield i
+...             liefere i
 
 >>> firstn(exclude_multiples(3, intsfrom(1)), 6)
 [1, 2, 4, 5, 7, 8]
 
 >>> def sieve(ints):
 ...     prime = next(ints)
-...     yield prime
+...     liefere prime
 ...     not_divisible_by_prime = exclude_multiples(prime, ints)
 ...     fuer p in sieve(not_divisible_by_prime):
-...         yield p
+...         liefere p
 
 >>> primes = sieve(intsfrom(2))
 >>> firstn(primes, 20)
@@ -1473,7 +1473,7 @@ Try writing it without generators, und correctly, und without generating
 
 >>> def times(n, g):
 ...     fuer i in g:
-...         yield n * i
+...         liefere n * i
 >>> firstn(times(10, intsfrom(1)), 10)
 [10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
 
@@ -1482,13 +1482,13 @@ Try writing it without generators, und correctly, und without generating
 ...     nh = next(h)
 ...     waehrend 1:
 ...         wenn ng < nh:
-...             yield ng
+...             liefere ng
 ...             ng = next(g)
 ...         sowenn ng > nh:
-...             yield nh
+...             liefere nh
 ...             nh = next(h)
 ...         sonst:
-...             yield ng
+...             liefere ng
 ...             ng = next(g)
 ...             nh = next(h)
 
@@ -1499,14 +1499,14 @@ result sequence.  So this is an example where lazy lists are more natural
 (you can look at the head of a lazy list any number of times).
 
 >>> def m235():
-...     yield 1
+...     liefere 1
 ...     me_times2 = times(2, m235())
 ...     me_times3 = times(3, m235())
 ...     me_times5 = times(5, m235())
 ...     fuer i in merge(merge(me_times2,
 ...                          me_times3),
 ...                    me_times5):
-...         yield i
+...         liefere i
 
 Don't print "too many" of these -- the implementation above is extremely
 inefficient:  each call of m235() leads to 3 recursive calls, und in
@@ -1537,10 +1537,10 @@ arguments are iterable -- a LazyList is the same als a generator to times().
 ...         sofar, fetch = self.sofar, self.fetch
 ...         waehrend i >= len(sofar):
 ...             sofar.append(fetch())
-...         return sofar[i]
+...         gib sofar[i]
 
 >>> def m235():
-...     yield 1
+...     liefere 1
 ...     # Gack:  m235 below actually refers to a LazyList.
 ...     me_times2 = times(2, m235)
 ...     me_times3 = times(3, m235)
@@ -1548,7 +1548,7 @@ arguments are iterable -- a LazyList is the same als a generator to times().
 ...     fuer i in merge(merge(me_times2,
 ...                          me_times3),
 ...                    me_times5):
-...         yield i
+...         liefere i
 
 Print als many of these als you like -- *this* implementation is memory-
 efficient.
@@ -1568,18 +1568,18 @@ Ye olde Fibonacci generator, LazyList style.
 ...
 ...     def sum(g, h):
 ...         waehrend 1:
-...             yield next(g) + next(h)
+...             liefere next(g) + next(h)
 ...
 ...     def tail(g):
 ...         next(g)    # throw first away
 ...         fuer x in g:
-...             yield x
+...             liefere x
 ...
-...     yield a
-...     yield b
+...     liefere a
+...     liefere b
 ...     fuer s in sum(iter(fib),
 ...                  tail(iter(fib))):
-...         yield s
+...         liefere s
 
 >>> fib = LazyList(fibgen(1, 2))
 >>> firstn(iter(fib), 17)
@@ -1615,14 +1615,14 @@ m235 to share a single generator".
 >>> von itertools importiere tee
 >>> def m235():
 ...     def _m235():
-...         yield 1
+...         liefere 1
 ...         fuer n in merge(times(2, m2),
 ...                        merge(times(3, m3),
 ...                              times(5, m5))):
-...             yield n
+...             liefere n
 ...     m1 = _m235()
 ...     m2, m3, m5, mRes = tee(m1, 4)
-...     return mRes
+...     gib mRes
 
 >>> it = m235()
 >>> fuer i in range(5):
@@ -1647,18 +1647,18 @@ Ye olde Fibonacci generator, tee style.
 ...
 ...     def _isum(g, h):
 ...         waehrend 1:
-...             yield next(g) + next(h)
+...             liefere next(g) + next(h)
 ...
 ...     def _fib():
-...         yield 1
-...         yield 2
+...         liefere 1
+...         liefere 2
 ...         next(fibTail) # throw first away
 ...         fuer res in _isum(fibHead, fibTail):
-...             yield res
+...             liefere res
 ...
 ...     realfib = _fib()
 ...     fibHead, fibTail, fibRes = tee(realfib, 3)
-...     return fibRes
+...     gib fibRes
 
 >>> firstn(fib(), 17)
 [1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377, 610, 987, 1597, 2584]
@@ -1673,12 +1673,12 @@ syntax_tests = """
 These are fine:
 
 >>> def f():
-...     yield 1
-...     return
+...     liefere 1
+...     gib
 
 >>> def f():
 ...     try:
-...         yield 1
+...         liefere 1
 ...     finally:
 ...         pass
 
@@ -1687,7 +1687,7 @@ These are fine:
 ...         try:
 ...             1//0
 ...         except ZeroDivisionError:
-...             yield 666
+...             liefere 666
 ...         except:
 ...             pass
 ...     finally:
@@ -1696,47 +1696,47 @@ These are fine:
 >>> def f():
 ...     try:
 ...         try:
-...             yield 12
+...             liefere 12
 ...             1//0
 ...         except ZeroDivisionError:
-...             yield 666
+...             liefere 666
 ...         except:
 ...             try:
 ...                 x = 12
 ...             finally:
-...                 yield 12
+...                 liefere 12
 ...     except:
-...         return
+...         gib
 >>> list(f())
 [12, 666]
 
 >>> def f():
-...    yield
+...    liefere
 >>> type(f())
 <class 'generator'>
 
 
 >>> def f():
 ...    wenn 0:
-...        yield
+...        liefere
 >>> type(f())
 <class 'generator'>
 
 
 >>> def f():
 ...     wenn 0:
-...         yield 1
+...         liefere 1
 >>> type(f())
 <class 'generator'>
 
 >>> def f():
 ...    wenn "":
-...        yield Nichts
+...        liefere Nichts
 >>> type(f())
 <class 'generator'>
 
 >>> def f():
-...     return
+...     gib
 ...     try:
 ...         wenn x==4:
 ...             pass
@@ -1749,20 +1749,20 @@ These are fine:
 ...                 wenn 0:
 ...                     waehrend 12:
 ...                         x += 1
-...                         yield 2 # don't blink
+...                         liefere 2 # don't blink
 ...                         f(a, b, c, d, e)
 ...         sonst:
 ...             pass
 ...     except:
 ...         x = 1
-...     return
+...     gib
 >>> type(f())
 <class 'generator'>
 
 >>> def f():
 ...     wenn 0:
 ...         def g():
-...             yield 1
+...             liefere 1
 ...
 >>> type(f())
 <class 'NoneType'>
@@ -1771,17 +1771,17 @@ These are fine:
 ...     wenn 0:
 ...         klasse C:
 ...             def __init__(self):
-...                 yield 1
+...                 liefere 1
 ...             def f(self):
-...                 yield 2
+...                 liefere 2
 >>> type(f())
 <class 'NoneType'>
 
 >>> def f():
 ...     wenn 0:
-...         return
+...         gib
 ...     wenn 0:
-...         yield 2
+...         liefere 2
 >>> type(f())
 <class 'generator'>
 
@@ -1792,7 +1792,7 @@ This one caused a crash (see SF bug 567538):
 ...         try:
 ...             weiter
 ...         finally:
-...             yield i
+...             liefere i
 ...
 >>> g = f()
 >>> drucke(next(g))
@@ -1809,7 +1809,7 @@ StopIteration
 Test the gi_code attribute
 
 >>> def f():
-...     yield 5
+...     liefere 5
 ...
 >>> g = f()
 >>> g.gi_code is f.__code__
@@ -1826,7 +1826,7 @@ Wahr
 Test the __name__ attribute und the repr()
 
 >>> def f():
-...    yield 5
+...    liefere 5
 ...
 >>> g = f()
 >>> g.__name__
@@ -1834,7 +1834,7 @@ Test the __name__ attribute und the repr()
 >>> repr(g)  # doctest: +ELLIPSIS
 '<generator object f at ...>'
 
-Lambdas shouldn't have their usual return behavior.
+Lambdas shouldn't have their usual gib behavior.
 
 >>> x = lambda: (yield 1)
 >>> list(x())
@@ -1847,7 +1847,7 @@ Lambdas shouldn't have their usual return behavior.
 
 # conjoin is a simple backtracking generator, named in honor of Icon's
 # "conjunction" control structure.  Pass a list of no-argument functions
-# that return iterable objects.  Easiest to explain by example:  assume the
+# that gib iterable objects.  Easiest to explain by example:  assume the
 # function list [x, y, z] is passed.  Then conjoin acts like:
 #
 # def g():
@@ -1855,7 +1855,7 @@ Lambdas shouldn't have their usual return behavior.
 #     fuer values[0] in x():
 #         fuer values[1] in y():
 #             fuer values[2] in z():
-#                 yield values
+#                 liefere values
 #
 # So some 3-lists of values *may* be generated, each time we successfully
 # get into the innermost loop.  If an iterator fails (is exhausted) before
@@ -1871,14 +1871,14 @@ def simple_conjoin(gs):
 
     def gen(i):
         wenn i >= len(gs):
-            yield values
+            liefere values
         sonst:
             fuer values[i] in gs[i]():
                 fuer x in gen(i+1):
-                    yield x
+                    liefere x
 
     fuer x in gen(0):
-        yield x
+        liefere x
 
 # That works fine, but recursing a level und checking i against len(gs) for
 # each item produced is inefficient.  By doing manual loop unrolling across
@@ -1896,17 +1896,17 @@ def conjoin(gs):
 
     def gen(i):
         wenn i >= n:
-            yield values
+            liefere values
 
         sowenn (n-i) % 3:
             ip1 = i+1
             fuer values[i] in gs[i]():
                 fuer x in gen(ip1):
-                    yield x
+                    liefere x
 
         sonst:
             fuer x in _gen3(i):
-                yield x
+                liefere x
 
     # Do three loop nests at a time, recursing only wenn at least three more
     # remain.  Don't call directly:  this is an internal optimization for
@@ -1918,11 +1918,11 @@ def conjoin(gs):
         g, g1, g2 = gs[i : ip3]
 
         wenn ip3 >= n:
-            # These are the last three, so we can yield values directly.
+            # These are the last three, so we can liefere values directly.
             fuer values[i] in g():
                 fuer values[ip1] in g1():
                     fuer values[ip2] in g2():
-                        yield values
+                        liefere values
 
         sonst:
             # At least 6 loop nests remain; peel off 3 und recurse fuer the
@@ -1931,10 +1931,10 @@ def conjoin(gs):
                 fuer values[ip1] in g1():
                     fuer values[ip2] in g2():
                         fuer x in _gen3(ip3):
-                            yield x
+                            liefere x
 
     fuer x in gen(0):
-        yield x
+        liefere x
 
 # And one more approach:  For backtracking apps like the Knight's Tour
 # solver below, the number of backtracking levels can be enormous (one
@@ -1964,7 +1964,7 @@ def flat_conjoin(gs):  # rename to conjoin to run tests mit this instead
             pass
         sonst:
             assert i == n
-            yield values
+            liefere values
 
         # Backtrack until an older iterator can be resumed.
         i -= 1
@@ -2011,7 +2011,7 @@ klasse Queens:
                     uses = rowuses[j]
                     wenn uses & self.used == 0:
                         self.used |= uses
-                        yield j
+                        liefere j
                         self.used &= ~uses
 
             self.rowgenerators.append(rowgen)
@@ -2020,7 +2020,7 @@ klasse Queens:
     def solve(self):
         self.used = 0
         fuer row2col in conjoin(self.rowgenerators):
-            yield row2col
+            liefere row2col
 
     def printsolution(self, row2col):
         n = self.n
@@ -2048,7 +2048,7 @@ klasse Knights:
 
         # Remove i0 von each of its successor's successor lists, i.e.
         # successors can't go back to i0 again.  Return 0 wenn we can
-        # detect this makes a solution impossible, sonst return 1.
+        # detect this makes a solution impossible, sonst gib 1.
 
         def remove_from_successors(i0, len=len):
             # If we remove all exits von a free square, we're dead:
@@ -2068,7 +2068,7 @@ klasse Knights:
                     ne0 += 1
                 sowenn e == 1:
                     ne1 += 1
-            return ne0 == 0 und ne1 < 2
+            gib ne0 == 0 und ne1 < 2
 
         # Put i0 back in each of its successor's successor lists.
 
@@ -2079,14 +2079,14 @@ klasse Knights:
         # Generate the first move.
         def first():
             wenn m < 1 oder n < 1:
-                return
+                gib
 
             # Since we're looking fuer a cycle, it doesn't matter where we
             # start.  Starting in a corner makes the 2nd move easy.
             corner = self.coords2index(0, 0)
             remove_from_successors(corner)
             self.lastij = corner
-            yield corner
+            liefere corner
             add_to_successors(corner)
 
         # Generate the second moves.
@@ -2094,7 +2094,7 @@ klasse Knights:
             corner = self.coords2index(0, 0)
             assert self.lastij == corner  # i.e., we started in the corner
             wenn m < 3 oder n < 3:
-                return
+                gib
             assert len(succs[corner]) == 2
             assert self.coords2index(1, 2) in succs[corner]
             assert self.coords2index(2, 1) in succs[corner]
@@ -2110,7 +2110,7 @@ klasse Knights:
                 remove_from_successors(this)
                 succs[final].append(corner)
                 self.lastij = this
-                yield this
+                liefere this
                 succs[final].remove(corner)
                 add_to_successors(this)
 
@@ -2133,7 +2133,7 @@ klasse Knights:
                 wenn i != self.final:
                     wenn remove_from_successors(i):
                         self.lastij = i
-                        yield i
+                        liefere i
                     add_to_successors(i)
 
         # Generate moves 3 through m*n-1.  Alternative version using a
@@ -2163,13 +2163,13 @@ klasse Knights:
                 wenn i != self.final:
                     wenn remove_from_successors(i):
                         self.lastij = i
-                        yield i
+                        liefere i
                     add_to_successors(i)
 
         # Generate the last move.
         def last():
             assert self.final in succs[self.lastij]
-            yield self.final
+            liefere self.final
 
         wenn m*n < 4:
             self.squaregenerators = [first]
@@ -2181,11 +2181,11 @@ klasse Knights:
     def coords2index(self, i, j):
         assert 0 <= i < self.m
         assert 0 <= j < self.n
-        return i * self.n + j
+        gib i * self.n + j
 
     def index2coords(self, index):
         assert 0 <= index < self.m * self.n
-        return divmod(index, self.n)
+        gib divmod(index, self.n)
 
     def _init_board(self):
         succs = self.succs
@@ -2207,7 +2207,7 @@ klasse Knights:
     def solve(self):
         self._init_board()
         fuer x in conjoin(self.squaregenerators):
-            yield x
+            liefere x
 
     def printsolution(self, x):
         m, n = self.m, self.n
@@ -2251,7 +2251,7 @@ generated sequence, you need to copy its results.
 
 >>> def gencopy(iterator):
 ...     fuer x in iterator:
-...         yield x[:]
+...         liefere x[:]
 
 >>> fuer n in range(10):
 ...     all = list(gencopy(conjoin([lambda: iter((0, 1))] * n)))
@@ -2381,7 +2381,7 @@ Generators are weakly referencable:
 
 >>> importiere weakref
 >>> def gen():
-...     yield 'foo!'
+...     liefere 'foo!'
 ...
 >>> wr = weakref.ref(gen)
 >>> wr() is gen
@@ -2407,7 +2407,7 @@ Sending a value into a started generator:
 
 >>> def f():
 ...     drucke((yield 1))
-...     yield 2
+...     liefere 2
 >>> g = f()
 >>> next(g)
 1
@@ -2425,7 +2425,7 @@ TypeError: can't send non-Nichts value to a just-started generator
 
 Yield by itself yields Nichts:
 
->>> def f(): yield
+>>> def f(): liefere
 >>> list(f())
 [Nichts]
 
@@ -2437,12 +2437,12 @@ Yield is allowed only in the outermost iterable in generator expression:
 <class 'generator'>
 
 
-A yield expression mit augmented assignment.
+A liefere expression mit augmented assignment.
 
 >>> def coroutine(seq):
 ...     count = 0
 ...     waehrend count < 200:
-...         count += yield
+...         count += liefere
 ...         seq.append(count)
 >>> seq = []
 >>> c = coroutine(seq)
@@ -2460,7 +2460,7 @@ A yield expression mit augmented assignment.
 [10, 20, 30]
 
 
-Check some syntax errors fuer yield expressions:
+Check some syntax errors fuer liefere expressions:
 
 >>> f=lambda: (yield 1),(yield 2)
 Traceback (most recent call last):
@@ -2472,20 +2472,20 @@ Traceback (most recent call last):
   ...
 SyntaxError: 'yield from' outside function
 
->>> yield von [1,2]
+>>> liefere von [1,2]
 Traceback (most recent call last):
   ...
 SyntaxError: 'yield from' outside function
 
->>> def f(): x = yield = y
+>>> def f(): x = liefere = y
 Traceback (most recent call last):
   ...
-SyntaxError: assignment to yield expression nicht possible
+SyntaxError: assignment to liefere expression nicht possible
 
 >>> def f(): (yield bar) = y
 Traceback (most recent call last):
   ...
-SyntaxError: cannot assign to yield expression here. Maybe you meant '==' instead of '='?
+SyntaxError: cannot assign to liefere expression here. Maybe you meant '==' instead of '='?
 
 >>> def f(): (yield bar) += y
 Traceback (most recent call last):
@@ -2599,7 +2599,7 @@ The traceback should have 3 levels:
 
 >>> def f():
 ...     try:
-...         yield
+...         liefere
 ...     except:
 ...         raise
 >>> g = f()
@@ -2620,7 +2620,7 @@ The traceback should have 3 levels:
 Now let's try closing a generator:
 
 >>> def f():
-...     try: yield
+...     try: liefere
 ...     except GeneratorExit:
 ...         drucke("exiting")
 
@@ -2632,7 +2632,7 @@ exiting
 
 >>> f().close()  # close on just-opened generator should be fine
 
->>> def f(): yield      # an even simpler generator
+>>> def f(): liefere      # an even simpler generator
 >>> f().close()         # close before opening
 >>> g = f()
 >>> next(g)
@@ -2641,7 +2641,7 @@ exiting
 And finalization:
 
 >>> def f():
-...     try: yield
+...     try: liefere
 ...     finally:
 ...         drucke("exiting")
 
@@ -2654,7 +2654,7 @@ exiting
 GeneratorExit is nicht caught by except Exception:
 
 >>> def f():
-...     try: yield
+...     try: liefere
 ...     except Exception:
 ...         drucke('except')
 ...     finally:
@@ -2669,9 +2669,9 @@ finally
 Now let's try some ill-behaved generators:
 
 >>> def f():
-...     try: yield
+...     try: liefere
 ...     except GeneratorExit:
-...         yield "foo!"
+...         liefere "foo!"
 >>> g = f()
 >>> next(g)
 >>> g.close()
@@ -2702,7 +2702,7 @@ Wahr
 And errors thrown during closing should propagate:
 
 >>> def f():
-...     try: yield
+...     try: liefere
 ...     except GeneratorExit:
 ...         raise TypeError("fie!")
 >>> g = f()
@@ -2713,14 +2713,14 @@ Traceback (most recent call last):
 TypeError: fie!
 
 
-Ensure that various yield expression constructs make their
+Ensure that various liefere expression constructs make their
 enclosing function a generator:
 
->>> def f(): x += yield
+>>> def f(): x += liefere
 >>> type(f())
 <class 'generator'>
 
->>> def f(): x = yield
+>>> def f(): x = liefere
 >>> type(f())
 <class 'generator'>
 
@@ -2757,13 +2757,13 @@ would trigger wenn it starts being uncleanable again.
 >>> def leak():
 ...     klasse gen:
 ...         def __iter__(self):
-...             return self
+...             gib self
 ...         def __next__(self):
-...             return self.item
+...             gib self.item
 ...     g = gen()
 ...     head, tail = itertools.tee(g)
 ...     g.item = head
-...     return head
+...     gib head
 >>> it = leak()
 
 Make sure to also test the involvement of the tee-internal teedataobject,
@@ -2780,7 +2780,7 @@ was removed.
 >>> def leak():
 ...    def gen():
 ...        waehrend Wahr:
-...            yield g
+...            liefere g
 ...    g = gen()
 
 >>> leak()
@@ -2835,7 +2835,7 @@ __test__ = {"tut":      tutorial_tests,
 
 def load_tests(loader, tests, pattern):
     tests.addTest(doctest.DocTestSuite())
-    return tests
+    gib tests
 
 
 wenn __name__ == "__main__":

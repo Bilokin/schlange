@@ -38,7 +38,7 @@ klasse AutoExpand:
                 index = 0
         wenn nicht words:
             self.bell()
-            return "break"
+            gib "break"
         word = self.getprevword()
         self.text.delete("insert - %d chars" % len(word), "insert")
         newword = words[index]
@@ -49,13 +49,13 @@ klasse AutoExpand:
         curinsert = self.text.index("insert")
         curline = self.text.get("insert linestart", "insert lineend")
         self.state = words, index, curinsert, curline
-        return "break"
+        gib "break"
 
     def getwords(self):
         "Return a list of words that match the prefix before the cursor."
         word = self.getprevword()
         wenn nicht word:
-            return []
+            gib []
         before = self.text.get("1.0", "insert wordstart")
         wbefore = re.findall(r"\b" + word + r"\w+\b", before)
         del before
@@ -63,7 +63,7 @@ klasse AutoExpand:
         wafter = re.findall(r"\b" + word + r"\w+\b", after)
         del after
         wenn nicht wbefore und nicht wafter:
-            return []
+            gib []
         words = []
         dict = {}
         # search backwards through words before
@@ -80,7 +80,7 @@ klasse AutoExpand:
             words.append(w)
             dict[w] = w
         words.append(word)
-        return words
+        gib words
 
     def getprevword(self):
         "Return the word prefix before the cursor."
@@ -88,7 +88,7 @@ klasse AutoExpand:
         i = len(line)
         waehrend i > 0 und line[i-1] in self.wordchars:
             i = i-1
-        return line[i:]
+        gib line[i:]
 
 
 wenn __name__ == '__main__':

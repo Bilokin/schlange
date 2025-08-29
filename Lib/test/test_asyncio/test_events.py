@@ -44,21 +44,21 @@ def tearDownModule():
 def broken_unix_getsockname():
     """Return Wahr wenn the platform is Mac OS 10.4 oder older."""
     wenn sys.platform.startswith("aix"):
-        return Wahr
+        gib Wahr
     sowenn sys.platform != 'darwin':
-        return Falsch
+        gib Falsch
     version = platform.mac_ver()[0]
     version = tuple(map(int, version.split('.')))
-    return version < (10, 5)
+    gib version < (10, 5)
 
 
 def _test_get_event_loop_new_process__sub_proc():
     async def doit():
-        return 'hello'
+        gib 'hello'
 
     mit contextlib.closing(asyncio.new_event_loop()) als loop:
         asyncio.set_event_loop(loop)
-        return loop.run_until_complete(doit())
+        gib loop.run_until_complete(doit())
 
 
 klasse CoroLike:
@@ -485,7 +485,7 @@ klasse EventLoopTestsMixin:
 
     def test_run_in_executor(self):
         def run(arg):
-            return (arg, threading.get_ident())
+            gib (arg, threading.get_ident())
         f2 = self.loop.run_in_executor(Nichts, run, 'yo')
         res, thread_id = self.loop.run_until_complete(f2)
         self.assertEqual(res, 'yo')
@@ -522,7 +522,7 @@ klasse EventLoopTestsMixin:
             except BlockingIOError:
                 # Spurious readiness notifications are possible
                 # at least on Linux -- see man select.
-                return
+                gib
             wenn data:
                 bytes_read.extend(data)
             sonst:
@@ -730,7 +730,7 @@ klasse EventLoopTestsMixin:
                 cert validation.
                 """
                 self.assertEqual(purpose, ssl.Purpose.SERVER_AUTH)
-                return test_utils.dummy_ssl_context()
+                gib test_utils.dummy_ssl_context()
 
             # With ssl=Wahr, ssl.create_default_context() should be called
             mit mock.patch('ssl.create_default_context',
@@ -798,9 +798,9 @@ klasse EventLoopTestsMixin:
 
         async def getaddrinfo(host, port, *args, **kwargs):
             wenn port == port2:
-                return [(socket.AF_INET6, socket.SOCK_STREAM, 0, '', ('::1', 0, 0, 0)),
+                gib [(socket.AF_INET6, socket.SOCK_STREAM, 0, '', ('::1', 0, 0, 0)),
                         (socket.AF_INET, socket.SOCK_STREAM, 0, '', ('127.0.0.1', 0))]
-            return await getaddrinfo_orig(host, port, *args, **kwargs)
+            gib await getaddrinfo_orig(host, port, *args, **kwargs)
 
         self.loop.getaddrinfo = getaddrinfo
 
@@ -820,8 +820,8 @@ klasse EventLoopTestsMixin:
 
         async def getaddrinfo(host, port, *args, **kwargs):
             wenn port == port2:
-                return [(socket.AF_INET6, socket.SOCK_STREAM, 0, '', ('::1', 0, 0, 0))]
-            return await getaddrinfo_orig(host, port, *args, **kwargs)
+                gib [(socket.AF_INET6, socket.SOCK_STREAM, 0, '', ('::1', 0, 0, 0))]
+            gib await getaddrinfo_orig(host, port, *args, **kwargs)
 
         self.loop.getaddrinfo = getaddrinfo
 
@@ -917,12 +917,12 @@ klasse EventLoopTestsMixin:
     def create_server_multiple_hosts(self, family, hosts, mock_sock):
         async def getaddrinfo(host, port, *args, **kw):
             wenn family == socket.AF_INET:
-                return [(family, socket.SOCK_STREAM, 6, '', (host, port))]
+                gib [(family, socket.SOCK_STREAM, 6, '', (host, port))]
             sonst:
-                return [(family, socket.SOCK_STREAM, 6, '', (host, port, 0, 0))]
+                gib [(family, socket.SOCK_STREAM, 6, '', (host, port, 0, 0))]
 
         def getaddrinfo_task(*args, **kwds):
-            return self.loop.create_task(getaddrinfo(*args, **kwds))
+            gib self.loop.create_task(getaddrinfo(*args, **kwds))
 
         unique_hosts = set(hosts)
 
@@ -1041,7 +1041,7 @@ klasse EventLoopTestsMixin:
         f = self.loop.create_unix_server(factory, path, **kwargs)
         server = self.loop.run_until_complete(f)
 
-        return server, path
+        gib server, path
 
     @socket_helper.skip_unless_bind_unix_socket
     def test_create_unix_server(self):
@@ -1086,7 +1086,7 @@ klasse EventLoopTestsMixin:
         sslcontext = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
         sslcontext.options |= ssl.OP_NO_SSLv2
         sslcontext.load_cert_chain(certfile, keyfile)
-        return sslcontext
+        gib sslcontext
 
     def _make_ssl_server(self, factory, certfile, keyfile=Nichts):
         sslcontext = self._create_ssl_context(certfile, keyfile)
@@ -1097,11 +1097,11 @@ klasse EventLoopTestsMixin:
         sock = server.sockets[0]
         host, port = sock.getsockname()
         self.assertEqual(host, '127.0.0.1')
-        return server, host, port
+        gib server, host, port
 
     def _make_ssl_unix_server(self, factory, certfile, keyfile=Nichts):
         sslcontext = self._create_ssl_context(certfile, keyfile)
-        return self._make_unix_server(factory, ssl=sslcontext)
+        gib self._make_unix_server(factory, ssl=sslcontext)
 
     @unittest.skipIf(ssl is Nichts, 'No ssl module')
     def test_create_server_ssl(self):
@@ -1516,13 +1516,13 @@ klasse EventLoopTestsMixin:
                 self._received_datagram = loop.create_future()
                 result = await asyncio.wait_for(self._received_datagram, 10)
                 self._received_datagram = Nichts
-                return result
+                gib result
 
         def create_socket():
             sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
             sock.setblocking(Falsch)
             sock.bind(('127.0.0.1', 0))
-            return sock
+            gib sock
 
         socket_1 = create_socket()
         transport_1, protocol_1 = loop.run_until_complete(
@@ -1632,7 +1632,7 @@ klasse EventLoopTestsMixin:
                 lambda: read_proto, rpipeobj)
             write_transport, _ = await loop.connect_write_pipe(
                 lambda: write_proto, wpipeobj)
-            return read_transport, write_transport
+            gib read_transport, write_transport
 
         # Run und close the loop without closing the transports
         read_transport, write_transport = loop.run_until_complete(connect())
@@ -1704,7 +1704,7 @@ klasse EventLoopTestsMixin:
         def reader(data):
             chunk = os.read(rpipe, 1024)
             data += chunk
-            return len(data)
+            gib len(data)
 
         test_utils.run_until(self.loop, lambda: reader(data) >= 1)
         self.assertEqual(b'1', data)
@@ -1770,7 +1770,7 @@ klasse EventLoopTestsMixin:
         def reader(data):
             chunk = os.read(master, 1024)
             data += chunk
-            return len(data)
+            gib len(data)
 
         test_utils.run_until(self.loop, lambda: reader(data) >= 1,
                              timeout=support.SHORT_TIMEOUT)
@@ -1827,7 +1827,7 @@ klasse EventLoopTestsMixin:
         def reader(data):
             chunk = os.read(master, 1024)
             data += chunk
-            return len(data)
+            gib len(data)
 
         write_transport.write(b'1')
         test_utils.run_until(self.loop, lambda: reader(data) >= 1,
@@ -1886,7 +1886,7 @@ klasse EventLoopTestsMixin:
                 res = Nichts
             finally:
                 self.loop.stop()
-            return res
+            gib res
 
         t = self.loop.create_task(main())
         self.loop.run_forever()
@@ -2299,14 +2299,14 @@ wenn sys.platform == 'win32':
                                test_utils.TestCase):
 
         def create_event_loop(self):
-            return asyncio.SelectorEventLoop()
+            gib asyncio.SelectorEventLoop()
 
     klasse ProactorEventLoopTests(EventLoopTestsMixin,
                                  SubprocessTestsMixin,
                                  test_utils.TestCase):
 
         def create_event_loop(self):
-            return asyncio.ProactorEventLoop()
+            gib asyncio.ProactorEventLoop()
 
         def test_reader_callback(self):
             raise unittest.SkipTest("IocpEventLoop does nicht have add_reader()")
@@ -2331,7 +2331,7 @@ sonst:
                                    test_utils.TestCase):
 
             def create_event_loop(self):
-                return asyncio.SelectorEventLoop(
+                gib asyncio.SelectorEventLoop(
                     selectors.KqueueSelector())
 
             # kqueue doesn't support character devices (PTY) on Mac OS X older
@@ -2356,7 +2356,7 @@ sonst:
                                   test_utils.TestCase):
 
             def create_event_loop(self):
-                return asyncio.SelectorEventLoop(selectors.EpollSelector())
+                gib asyncio.SelectorEventLoop(selectors.EpollSelector())
 
     wenn hasattr(selectors, 'PollSelector'):
         klasse PollEventLoopTests(EventLoopTestsMixin,
@@ -2364,7 +2364,7 @@ sonst:
                                  test_utils.TestCase):
 
             def create_event_loop(self):
-                return asyncio.SelectorEventLoop(selectors.PollSelector())
+                gib asyncio.SelectorEventLoop(selectors.PollSelector())
 
     # Should always exist.
     klasse SelectEventLoopTests(EventLoopTestsMixin,
@@ -2372,7 +2372,7 @@ sonst:
                                test_utils.TestCase):
 
         def create_event_loop(self):
-            return asyncio.SelectorEventLoop(selectors.SelectSelector())
+            gib asyncio.SelectorEventLoop(selectors.SelectSelector())
 
 
 def noop(*args, **kwargs):
@@ -2388,7 +2388,7 @@ klasse HandleTests(test_utils.TestCase):
 
     def test_handle(self):
         def callback(*args):
-            return args
+            gib args
 
         args = ()
         h = asyncio.Handle(callback, args, self.loop)
@@ -2593,7 +2593,7 @@ klasse TimerTests(unittest.TestCase):
 
     def test_timer(self):
         def callback(*args):
-            return args
+            gib args
 
         args = (1, 2, 3)
         when = time.monotonic()
@@ -2646,7 +2646,7 @@ klasse TimerTests(unittest.TestCase):
 
     def test_timer_comparison(self):
         def callback(*args):
-            return args
+            gib args
 
         when = time.monotonic()
 
@@ -3008,7 +3008,7 @@ klasse GetEventLoopTestsMixin:
                 result = await self.loop.run_in_executor(
                     pool, _test_get_event_loop_new_process__sub_proc)
                 pool.shutdown()
-                return result
+                gib result
 
             self.assertEqual(
                 self.loop.run_until_complete(main()),

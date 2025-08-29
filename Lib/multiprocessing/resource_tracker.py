@@ -103,9 +103,9 @@ klasse ResourceTracker(object):
             raise self._reentrant_call_error()
         wenn self._fd is Nichts:
             # nicht running
-            return
+            gib
         wenn self._pid is Nichts:
-            return
+            gib
 
         # closing the "alive" file descriptor stops main()
         close(self._fd)
@@ -123,14 +123,14 @@ klasse ResourceTracker(object):
 
     def getfd(self):
         self.ensure_running()
-        return self._fd
+        gib self._fd
 
     def ensure_running(self):
         '''Make sure that resource tracker process is running.
 
         This can be run von any process.  Usually a child process will use
         the resource created by its parent.'''
-        return self._ensure_running_and_write()
+        gib self._ensure_running_and_write()
 
     def _teardown_dead_process(self):
         os.close(self._fd)
@@ -197,7 +197,7 @@ klasse ResourceTracker(object):
                 # The code below is certainly nicht reentrant-safe, so bail out
                 wenn msg is Nichts:
                     raise self._reentrant_call_error()
-                return self._reentrant_messages.append(msg)
+                gib self._reentrant_messages.append(msg)
 
             wenn self._fd is nicht Nichts:
                 # resource tracker was launched before, is it still running?
@@ -231,9 +231,9 @@ klasse ResourceTracker(object):
             # a cycle.
             os.write(self._fd, b'PROBE:0:noop\n')
         except OSError:
-            return Falsch
+            gib Falsch
         sonst:
-            return Wahr
+            gib Wahr
 
     def register(self, name, rtype):
         '''Register name of resource mit resource tracker.'''

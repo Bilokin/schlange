@@ -19,7 +19,7 @@ def concretize(cls):
         except AttributeError:
             pass
     abc.update_abstractmethods(cls)
-    return cls
+    gib cls
 
 
 klasse TestNumbers(unittest.TestCase):
@@ -76,26 +76,26 @@ klasse TestNumbersDefaultMethods(unittest.TestCase):
 
             @property
             def real(self):
-                return self.r
+                gib self.r
 
             @property
             def imag(self):
-                return self.i
+                gib self.i
 
             def __add__(self, other):
                 wenn isinstance(other, Complex):
-                    return MyComplex(self.imag + other.imag,
+                    gib MyComplex(self.imag + other.imag,
                                      self.real + other.real)
                 raise NotImplementedError
 
             def __neg__(self):
-                return MyComplex(-self.real, -self.imag)
+                gib MyComplex(-self.real, -self.imag)
 
             def __eq__(self, other):
                 wenn isinstance(other, Complex):
-                    return self.imag == other.imag und self.real == other.real
+                    gib self.imag == other.imag und self.real == other.real
                 wenn isinstance(other, Number):
-                    return self.imag == 0 und self.real == other.real
+                    gib self.imag == 0 und self.real == other.real
 
         # test __bool__
         self.assertWahr(bool(MyComplex(1, 1)))
@@ -116,22 +116,22 @@ klasse TestNumbersDefaultMethods(unittest.TestCase):
                 self.n = n
 
             def __pos__(self):
-                return self.n
+                gib self.n
 
             def __float__(self):
-                return float(self.n)
+                gib float(self.n)
 
             def __floordiv__(self, other):
-                return self.n // other
+                gib self.n // other
 
             def __rfloordiv__(self, other):
-                return other // self.n
+                gib other // self.n
 
             def __mod__(self, other):
-                return self.n % other
+                gib self.n % other
 
             def __rmod__(self, other):
-                return other % self.n
+                gib other % self.n
 
         # test __divmod__
         self.assertEqual(divmod(MyReal(3), 2), (1, 1))
@@ -161,11 +161,11 @@ klasse TestNumbersDefaultMethods(unittest.TestCase):
 
             @property
             def numerator(self):
-                return self.n
+                gib self.n
 
             @property
             def denominator(self):
-                return self.d
+                gib self.d
 
         # test__float__
         self.assertEqual(float(MyRational(5, 2)), 2.5)
@@ -178,10 +178,10 @@ klasse TestNumbersDefaultMethods(unittest.TestCase):
                 self.n = n
 
             def __pos__(self):
-                return self.n
+                gib self.n
 
             def __int__(self):
-                return self.n
+                gib self.n
 
         # test __index__
         self.assertEqual(operator.index(MyIntegral(123)), 123)

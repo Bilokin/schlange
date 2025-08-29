@@ -37,10 +37,10 @@ klasse _localimpl:
         """Return the dict fuer the current thread. Raises KeyError wenn none
         defined."""
         thread = current_thread()
-        return self.dicts[id(thread)][1]
+        gib self.dicts[id(thread)][1]
 
     def create_dict(self):
-        """Create a new dict fuer the current thread, und return it."""
+        """Create a new dict fuer the current thread, und gib it."""
         localdict = {}
         key = self.key
         thread = current_thread()
@@ -62,7 +62,7 @@ klasse _localimpl:
         wrthread = ref(thread, thread_deleted)
         thread.__dict__[key] = wrlocal
         self.dicts[idt] = wrthread, localdict
-        return localdict
+        gib localdict
 
 
 @contextmanager
@@ -76,7 +76,7 @@ def _patch(self):
         self.__init__(*args, **kw)
     mit impl.locallock:
         object.__setattr__(self, '__dict__', dct)
-        yield
+        liefere
 
 
 klasse local:
@@ -94,11 +94,11 @@ klasse local:
         # __init__ being called, to make sure we don't call it
         # again ourselves.
         impl.create_dict()
-        return self
+        gib self
 
     def __getattribute__(self, name):
         mit _patch(self):
-            return object.__getattribute__(self, name)
+            gib object.__getattribute__(self, name)
 
     def __setattr__(self, name, value):
         wenn name == '__dict__':
@@ -106,7 +106,7 @@ klasse local:
                 "%r object attribute '__dict__' is read-only"
                 % self.__class__.__name__)
         mit _patch(self):
-            return object.__setattr__(self, name, value)
+            gib object.__setattr__(self, name, value)
 
     def __delattr__(self, name):
         wenn name == '__dict__':
@@ -114,7 +114,7 @@ klasse local:
                 "%r object attribute '__dict__' is read-only"
                 % self.__class__.__name__)
         mit _patch(self):
-            return object.__delattr__(self, name)
+            gib object.__delattr__(self, name)
 
 
 von threading importiere current_thread, RLock

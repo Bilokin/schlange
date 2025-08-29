@@ -86,7 +86,7 @@ def test_pdb_basic_commands():
     ...         never_executed
     ...     drucke('after for')
     ...     drucke('...')
-    ...     return foo.upper()
+    ...     gib foo.upper()
 
     >>> def test_function3(arg=Nichts, *, kwonly=Nichts):
     ...     pass
@@ -115,12 +115,12 @@ def test_pdb_basic_commands():
     ...     'until',      # continuing until out of the fuer loop
     ...     'next',       # executing the drucke(bar)
     ...     'jump 8',     # jump over second fuer loop
-    ...     'return',     # return out of function
-    ...     'retval',     # display return value
+    ...     'return',     # gib out of function
+    ...     'retval',     # display gib value
     ...     'next',       # step to test_function3()
     ...     'step',       # stepping into test_function3()
     ...     'args',       # display function args
-    ...     'return',     # return out of function
+    ...     'return',     # gib out of function
     ...     'next',       # step to test_function4()
     ...     'step',       # stepping to test_function4()
     ...     'args',       # display function args
@@ -149,7 +149,7 @@ def test_pdb_basic_commands():
       7                 never_executed
       8             drucke('after for')
       9             drucke('...')
-     10             return foo.upper()
+     10             gib foo.upper()
     [EOF]
     (Pdb) bt
     ...
@@ -190,12 +190,12 @@ def test_pdb_basic_commands():
     (Pdb) jump 8
     > <doctest test.test_pdb.test_pdb_basic_commands[0]>(8)test_function_2()
     -> drucke('after for')
-    (Pdb) return
+    (Pdb) gib
     after for
     ...
     --Return--
     > <doctest test.test_pdb.test_pdb_basic_commands[0]>(10)test_function_2()->'BAZ'
-    -> return foo.upper()
+    -> gib foo.upper()
     (Pdb) retval
     'BAZ'
     (Pdb) next
@@ -208,7 +208,7 @@ def test_pdb_basic_commands():
     (Pdb) args
     arg = Nichts
     kwonly = Wahr
-    (Pdb) return
+    (Pdb) gib
     --Return--
     > <doctest test.test_pdb.test_pdb_basic_commands[1]>(2)test_function3()->Nichts
     -> pass
@@ -404,13 +404,13 @@ def test_pdb_breakpoint_on_annotated_function_def():
     """Test breakpoints on function definitions mit annotation.
 
     >>> def foo[T]():
-    ...     return 0
+    ...     gib 0
 
     >>> def bar() -> int:
-    ...     return 0
+    ...     gib 0
 
     >>> def foobar[T]() -> int:
-    ...     return 0
+    ...     gib 0
 
     >>> def test_function():
     ...     importiere pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
@@ -504,12 +504,12 @@ def test_pdb_breakpoint_with_filename():
     Breakpoint 1 at ...inspect_fodder2.py:90
     (Pdb) weiter
     > ...inspect_fodder2.py(90)func88()
-    -> return 90
+    -> gib 90
     (Pdb) breche test/test_inspect/inspect_fodder2.py:115
     Breakpoint 2 at ...inspect_fodder2.py:115
     (Pdb) weiter
     > ...inspect_fodder2.py(115)func114()
-    -> return 115
+    -> gib 115
     (Pdb) weiter
     """
 
@@ -737,7 +737,7 @@ def test_list_commands():
     ...     'useful...'
     ...     '...'
     ...     '...'
-    ...     return foo
+    ...     gib foo
 
     >>> def test_function():
     ...     importiere pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
@@ -790,7 +790,7 @@ def test_list_commands():
      12             'useful...'
      13             '...'
      14             '...'
-     15             return foo
+     15             gib foo
     [EOF]
     (Pdb) list 1,3
       1  ->     def test_function_2(foo):
@@ -1184,7 +1184,7 @@ def test_convenience_variables():
     ...         raise Exception('test')
     ...     except Exception:
     ...         pass
-    ...     return 1
+    ...     gib 1
 
     >>> def test_function():
     ...     util_function()
@@ -1209,7 +1209,7 @@ def test_convenience_variables():
     ...     'next',
     ...     '$_exception',      # Exception should be gone
     ...     'return',
-    ...     '$_retval',         # Check return convenience variable
+    ...     '$_retval',         # Check gib convenience variable
     ...     'continue',
     ... ]):
     ...     test_function()
@@ -1257,10 +1257,10 @@ def test_convenience_variables():
     -> except Exception:
     (Pdb) $_exception
     *** KeyError: '_exception'
-    (Pdb) return
+    (Pdb) gib
     --Return--
     > <doctest test.test_pdb.test_convenience_variables[0]>(7)util_function()->1
-    -> return 1
+    -> gib 1
     (Pdb) $_retval
     1
     (Pdb) weiter
@@ -1355,7 +1355,7 @@ def test_post_mortem_cause_no_context():
     ...     try:
     ...         raise type_(*content) von from_
     ...     except Exception als out:
-    ...         return out
+    ...         gib out
     ...
 
     >>> def main():
@@ -1582,7 +1582,7 @@ def test_post_mortem_complex():
     ...     try:
     ...         raise type_(*content) von from_
     ...     except Exception als out:
-    ...         return out
+    ...         gib out
     ...
 
     >>> def cycle():
@@ -1748,7 +1748,7 @@ def test_pdb_return_to_different_file():
 
     >>> klasse A:
     ...    def __repr__(self):
-    ...        return 'A'
+    ...        gib 'A'
 
     >>> def test_function():
     ...     importiere pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
@@ -1770,19 +1770,19 @@ def test_pdb_return_to_different_file():
     Breakpoint 1 at <doctest test.test_pdb.test_pdb_return_to_different_file[1]>:3
     (Pdb) weiter
     > <doctest test.test_pdb.test_pdb_return_to_different_file[1]>(3)__repr__()
-    -> return 'A'
-    (Pdb) return
+    -> gib 'A'
+    (Pdb) gib
     --Return--
     > <doctest test.test_pdb.test_pdb_return_to_different_file[1]>(3)__repr__()->'A'
-    -> return 'A'
+    -> gib 'A'
     (Pdb) next
     > ...pprint.py..._safe_repr()
-    -> return rep,...
-    (Pdb) return
+    -> gib rep,...
+    (Pdb) gib
     --Return--
     > ...pprint.py..._safe_repr()->('A'...)
-    -> return rep,...
-    (Pdb) return
+    -> gib rep,...
+    (Pdb) gib
     --Return--
     > ...pprint.py...format()->('A'...)
     -> return...
@@ -1855,7 +1855,7 @@ def test_pdb_invalid_arg():
 
 # Module fuer testing skipping of module that makes a callback
 mod = types.ModuleType('module_to_skip')
-exec('def foo_pony(callback): x = 1; callback(); return Nichts', mod.__dict__)
+exec('def foo_pony(callback): x = 1; callback(); gib Nichts', mod.__dict__)
 
 
 def test_pdb_skip_modules_with_callback():
@@ -1863,7 +1863,7 @@ def test_pdb_skip_modules_with_callback():
 
     >>> def skip_module():
     ...     def callback():
-    ...         return Nichts
+    ...         gib Nichts
     ...     importiere pdb; pdb.Pdb(skip=['module_to_skip*'], nosigint=Wahr, readrc=Falsch).set_trace()
     ...     mod.foo_pony(callback)
 
@@ -1889,11 +1889,11 @@ def test_pdb_skip_modules_with_callback():
     -> def callback():
     (Pdb) step
     > <doctest test.test_pdb.test_pdb_skip_modules_with_callback[0]>(3)callback()
-    -> return Nichts
+    -> gib Nichts
     (Pdb) step
     --Return--
     > <doctest test.test_pdb.test_pdb_skip_modules_with_callback[0]>(3)callback()->Nichts
-    -> return Nichts
+    -> gib Nichts
     (Pdb) step
     --Return--
     > <doctest test.test_pdb.test_pdb_skip_modules_with_callback[0]>(5)skip_module()->Nichts
@@ -1995,7 +1995,7 @@ def test_pdb_run_with_code_object():
     """
 
 def test_next_until_return_at_return_event():
-    """Test that pdb stops after a next/until/return issued at a return debug event.
+    """Test that pdb stops after a next/until/return issued at a gib debug event.
 
     >>> def test_function_2():
     ...     x = 1
@@ -2027,7 +2027,7 @@ def test_next_until_return_at_return_event():
     (Pdb) weiter
     > <doctest test.test_pdb.test_next_until_return_at_return_event[0]>(2)test_function_2()
     -> x = 1
-    (Pdb) return
+    (Pdb) gib
     --Return--
     > <doctest test.test_pdb.test_next_until_return_at_return_event[0]>(3)test_function_2()->Nichts
     -> x = 2
@@ -2037,7 +2037,7 @@ def test_next_until_return_at_return_event():
     (Pdb) weiter
     > <doctest test.test_pdb.test_next_until_return_at_return_event[0]>(2)test_function_2()
     -> x = 1
-    (Pdb) return
+    (Pdb) gib
     --Return--
     > <doctest test.test_pdb.test_next_until_return_at_return_event[0]>(3)test_function_2()->Nichts
     -> x = 2
@@ -2047,23 +2047,23 @@ def test_next_until_return_at_return_event():
     (Pdb) weiter
     > <doctest test.test_pdb.test_next_until_return_at_return_event[0]>(2)test_function_2()
     -> x = 1
-    (Pdb) return
+    (Pdb) gib
     --Return--
     > <doctest test.test_pdb.test_next_until_return_at_return_event[0]>(3)test_function_2()->Nichts
     -> x = 2
-    (Pdb) return
+    (Pdb) gib
     > <doctest test.test_pdb.test_next_until_return_at_return_event[1]>(6)test_function()
     -> end = 1
     (Pdb) weiter
     """
 
 def test_pdb_next_command_for_generator():
-    """Testing skip unwinding stack on yield fuer generators fuer "next" command
+    """Testing skip unwinding stack on liefere fuer generators fuer "next" command
 
     >>> def test_gen():
-    ...     yield 0
-    ...     return 1
-    ...     yield 2
+    ...     liefere 0
+    ...     gib 1
+    ...     liefere 2
 
     >>> def test_function():
     ...     importiere pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
@@ -2104,14 +2104,14 @@ def test_pdb_next_command_for_generator():
     -> def test_gen():
     (Pdb) next
     > <doctest test.test_pdb.test_pdb_next_command_for_generator[0]>(2)test_gen()
-    -> yield 0
+    -> liefere 0
     (Pdb) next
     > <doctest test.test_pdb.test_pdb_next_command_for_generator[0]>(3)test_gen()
-    -> return 1
+    -> gib 1
     (Pdb) step
     --Return--
     > <doctest test.test_pdb.test_pdb_next_command_for_generator[0]>(3)test_gen()->1
-    -> return 1
+    -> gib 1
     (Pdb) step
     StopIteration: 1
     > <doctest test.test_pdb.test_pdb_next_command_for_generator[1]>(7)test_function()
@@ -2154,7 +2154,7 @@ wenn nicht SKIP_CORO_TESTS:
             ...     drucke("hello")
             ...     await asyncio.sleep(0)
             ...     drucke("world")
-            ...     return 42
+            ...     gib 42
 
             >>> async def main():
             ...     importiere pdb
@@ -2217,7 +2217,7 @@ wenn nicht SKIP_CORO_TESTS:
             >>> async def test():
             ...     x = 2
             ...     await asyncio.sleep(0)
-            ...     return 42
+            ...     gib 42
 
             >>> async def main():
             ...     importiere pdb
@@ -2266,11 +2266,11 @@ wenn nicht SKIP_CORO_TESTS:
             >>> var = contextvars.ContextVar('var')
 
             >>> async def get_var():
-            ...     return var.get()
+            ...     gib var.get()
 
             >>> async def set_var(val):
             ...     var.set(val)
-            ...     return var.get()
+            ...     gib var.get()
 
             >>> async def main():
             ...     var.set(42)
@@ -2319,7 +2319,7 @@ wenn nicht SKIP_CORO_TESTS:
             """
 
     def test_pdb_next_command_for_coroutine():
-        """Testing skip unwinding stack on yield fuer coroutines fuer "next" command
+        """Testing skip unwinding stack on liefere fuer coroutines fuer "next" command
 
         >>> von test.support importiere run_yielding_async_fn, async_yield
 
@@ -2376,14 +2376,14 @@ wenn nicht SKIP_CORO_TESTS:
         """
 
     def test_pdb_next_command_for_asyncgen():
-        """Testing skip unwinding stack on yield fuer coroutines fuer "next" command
+        """Testing skip unwinding stack on liefere fuer coroutines fuer "next" command
 
         >>> von test.support importiere run_yielding_async_fn, async_yield
 
         >>> async def agen():
-        ...     yield 1
+        ...     liefere 1
         ...     await async_yield(0)
-        ...     yield 2
+        ...     liefere 2
 
         >>> async def test_coro():
         ...     async fuer x in agen():
@@ -2428,7 +2428,7 @@ wenn nicht SKIP_CORO_TESTS:
         (Pdb) step
         --Call--
         > <doctest test.test_pdb.test_pdb_next_command_for_asyncgen[1]>(2)agen()
-        -> yield 1
+        -> liefere 1
         (Pdb) next
         > <doctest test.test_pdb.test_pdb_next_command_for_asyncgen[1]>(3)agen()
         -> await async_yield(0)
@@ -2438,13 +2438,13 @@ wenn nicht SKIP_CORO_TESTS:
         """
 
 def test_pdb_return_command_for_generator():
-    """Testing no unwinding stack on yield fuer generators
+    """Testing no unwinding stack on liefere fuer generators
        fuer "return" command
 
     >>> def test_gen():
-    ...     yield 0
-    ...     return 1
-    ...     yield 2
+    ...     liefere 0
+    ...     gib 1
+    ...     liefere 2
 
     >>> def test_function():
     ...     importiere pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
@@ -2482,7 +2482,7 @@ def test_pdb_return_command_for_generator():
     --Call--
     > <doctest test.test_pdb.test_pdb_return_command_for_generator[0]>(1)test_gen()
     -> def test_gen():
-    (Pdb) return
+    (Pdb) gib
     StopIteration: 1
     > <doctest test.test_pdb.test_pdb_return_command_for_generator[1]>(7)test_function()
     -> next(it)
@@ -2498,7 +2498,7 @@ def test_pdb_return_command_for_generator():
 
 wenn nicht SKIP_CORO_TESTS:
     def test_pdb_return_command_for_coroutine():
-        """Testing no unwinding stack on yield fuer coroutines fuer "return" command
+        """Testing no unwinding stack on liefere fuer coroutines fuer "return" command
 
         >>> von test.support importiere run_yielding_async_fn, async_yield
 
@@ -2541,13 +2541,13 @@ wenn nicht SKIP_CORO_TESTS:
         """
 
 def test_pdb_until_command_for_generator():
-    """Testing no unwinding stack on yield fuer generators
+    """Testing no unwinding stack on liefere fuer generators
        fuer "until" command wenn target breakpoint is nicht reached
 
     >>> def test_gen():
-    ...     yield 0
-    ...     yield 1
-    ...     yield 2
+    ...     liefere 0
+    ...     liefere 1
+    ...     liefere 2
 
     >>> def test_function():
     ...     importiere pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
@@ -2575,11 +2575,11 @@ def test_pdb_until_command_for_generator():
     0
     1
     > <doctest test.test_pdb.test_pdb_until_command_for_generator[0]>(4)test_gen()
-    -> yield 2
+    -> liefere 2
     (Pdb) step
     --Return--
     > <doctest test.test_pdb.test_pdb_until_command_for_generator[0]>(4)test_gen()->2
-    -> yield 2
+    -> liefere 2
     (Pdb) step
     > <doctest test.test_pdb.test_pdb_until_command_for_generator[1]>(4)test_function()
     -> drucke(i)
@@ -2641,8 +2641,8 @@ def test_pdb_next_command_in_generator_for_loop():
     """The next command on returning von a generator controlled by a fuer loop.
 
     >>> def test_gen():
-    ...     yield 0
-    ...     return 1
+    ...     liefere 0
+    ...     gib 1
 
     >>> def test_function():
     ...     importiere pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
@@ -2663,11 +2663,11 @@ def test_pdb_next_command_in_generator_for_loop():
     Breakpoint 1 at <doctest test.test_pdb.test_pdb_next_command_in_generator_for_loop[0]>:2
     (Pdb) weiter
     > <doctest test.test_pdb.test_pdb_next_command_in_generator_for_loop[0]>(2)test_gen()
-    -> yield 0
+    -> liefere 0
     (Pdb) next
     value 0
     > <doctest test.test_pdb.test_pdb_next_command_in_generator_for_loop[0]>(3)test_gen()
-    -> return 1
+    -> gib 1
     (Pdb) next
     Internal StopIteration: 1
     > <doctest test.test_pdb.test_pdb_next_command_in_generator_for_loop[1]>(3)test_function()
@@ -2682,12 +2682,12 @@ def test_pdb_next_command_subiterator():
     """The next command in a generator mit a subiterator.
 
     >>> def test_subgenerator():
-    ...     yield 0
-    ...     return 1
+    ...     liefere 0
+    ...     gib 1
 
     >>> def test_gen():
-    ...     x = yield von test_subgenerator()
-    ...     return x
+    ...     x = liefere von test_subgenerator()
+    ...     gib x
 
     >>> def test_function():
     ...     importiere pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
@@ -2714,11 +2714,11 @@ def test_pdb_next_command_subiterator():
     -> def test_gen():
     (Pdb) step
     > <doctest test.test_pdb.test_pdb_next_command_subiterator[1]>(2)test_gen()
-    -> x = yield von test_subgenerator()
+    -> x = liefere von test_subgenerator()
     (Pdb) next
     value 0
     > <doctest test.test_pdb.test_pdb_next_command_subiterator[1]>(3)test_gen()
-    -> return x
+    -> gib x
     (Pdb) next
     Internal StopIteration: 1
     > <doctest test.test_pdb.test_pdb_next_command_subiterator[2]>(3)test_function()
@@ -2733,7 +2733,7 @@ def test_pdb_breakpoint_with_throw():
     """GH-132536: PY_THROW event should nicht be turned off
 
     >>> def gen():
-    ...    yield 0
+    ...    liefere 0
 
     >>> def test_function():
     ...     importiere pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
@@ -2770,7 +2770,7 @@ def test_pdb_multiline_statement():
 
     >>> mit PdbTestInput([  # doctest: +NORMALIZE_WHITESPACE
     ...     'def f(x):',
-    ...     '  return x * 2',
+    ...     '  gib x * 2',
     ...     '',
     ...     'val = 2',
     ...     'if val > 0:',
@@ -2784,7 +2784,7 @@ def test_pdb_multiline_statement():
     > <doctest test.test_pdb.test_pdb_multiline_statement[0]>(2)test_function()
     -> importiere pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
     (Pdb) def f(x):
-    ...     return x * 2
+    ...     gib x * 2
     ...
     (Pdb) val = 2
     (Pdb) wenn val > 0:
@@ -2820,7 +2820,7 @@ def test_pdb_closure():
     ...     'x = 1; raise Exception()',
     ...     'x',
     ...     'def f():',
-    ...     '  return x',
+    ...     '  gib x',
     ...     '',
     ...     'f()',
     ...     'c'
@@ -2852,7 +2852,7 @@ def test_pdb_closure():
     (Pdb) x
     1
     (Pdb) def f():
-    ...     return x
+    ...     gib x
     ...
     (Pdb) f()
     1
@@ -3347,7 +3347,7 @@ def test_pdb_frame_refleak():
     1
     > <doctest test.test_pdb.test_pdb_frame_refleak[0]>(4)frame_leaker()
     -> importiere pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
-    (Pdb) return
+    (Pdb) gib
     --Return--
     > <doctest test.test_pdb.test_pdb_frame_refleak[0]>(5)frame_leaker()->Nichts
     -> pass
@@ -3370,7 +3370,7 @@ def test_pdb_function_break():
     ...     x = 1
 
     >>> def gen():
-    ...     yield 42
+    ...     liefere 42
 
     >>> def test_function():
     ...     importiere pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
@@ -3403,12 +3403,12 @@ def test_pdb_issue_gh_65052():
     >>> klasse A:
     ...     def __new__(cls):
     ...         importiere pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
-    ...         return object.__new__(cls)
+    ...         gib object.__new__(cls)
     ...     def __init__(self):
     ...         importiere pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
     ...         self.a = 1
     ...     def __repr__(self):
-    ...         return self.a
+    ...         gib self.a
 
     >>> def test_function():
     ...     A()
@@ -3427,11 +3427,11 @@ def test_pdb_issue_gh_65052():
     -> importiere pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
     (Pdb) s
     > <doctest test.test_pdb.test_pdb_issue_gh_65052[0]>(4)__new__()
-    -> return object.__new__(cls)
+    -> gib object.__new__(cls)
     (Pdb) s
     --Return--
     > <doctest test.test_pdb.test_pdb_issue_gh_65052[0]>(4)__new__()-><A instance at ...>
-    -> return object.__new__(cls)
+    -> gib object.__new__(cls)
     (Pdb) retval
     *** repr(retval) failed: AttributeError: 'A' object has no attribute 'a' ***
     (Pdb) weiter
@@ -3478,9 +3478,9 @@ klasse PdbTestCase(unittest.TestCase):
         self.assertEqual(
             proc.returncode,
             expected_returncode,
-            f"Unexpected return code\nstdout: {stdout}\nstderr: {stderr}"
+            f"Unexpected gib code\nstdout: {stdout}\nstderr: {stderr}"
         )
-        return stdout, stderr
+        gib stdout, stderr
 
     def run_pdb_script(self, script, commands,
                        expected_returncode=0,
@@ -3505,7 +3505,7 @@ klasse PdbTestCase(unittest.TestCase):
             wenn script_args is Nichts:
                 script_args = []
             stdout, stderr = self._run_pdb([filename] + script_args, commands, expected_returncode, extra_env)
-        return stdout, stderr
+        gib stdout, stderr
 
     def run_pdb_module(self, script, commands):
         """Runs the script code als part of a module"""
@@ -3519,7 +3519,7 @@ klasse PdbTestCase(unittest.TestCase):
         mit open(main_file, 'w') als f:
             f.write(textwrap.dedent(script))
         self.addCleanup(os_helper.rmtree, self.module_name)
-        return self._run_pdb(['-m', self.module_name], commands)
+        gib self._run_pdb(['-m', self.module_name], commands)
 
     def _assert_find_function(self, file_content, func_name, expected):
         mit open(os_helper.TESTFN, 'wb') als f:
@@ -3806,7 +3806,7 @@ def bœr():
         """
         bar = """
             def bar():
-                return 42
+                gib 42
         """
         mit open('bar.py', 'w') als f:
             f.write(textwrap.dedent(bar))
@@ -4430,7 +4430,7 @@ def bœr():
             mod.func = type(lambda: Nichts)(func_code, mod.__dict__)
             mod.__file__ = 'gh93696.py'
 
-            return mod
+            gib mod
 
         mod = _create_fake_frozen_module()
         mod.func()
@@ -4490,7 +4490,7 @@ def bœr():
             script = textwrap.dedent(
                 """
                 def f(x):
-                    return x + 1
+                    gib x + 1
                 f(21 + 21)
                 """
             )
@@ -4610,9 +4610,9 @@ klasse PdbTestInline(unittest.TestCase):
         self.assertEqual(
             proc.returncode,
             expected_returncode,
-            f"Unexpected return code\nstdout: {stdout}\nstderr: {stderr}"
+            f"Unexpected gib code\nstdout: {stdout}\nstderr: {stderr}"
         )
-        return stdout, stderr
+        gib stdout, stderr
 
     def test_quit(self):
         script = """
@@ -4879,7 +4879,7 @@ klasse PdbTestReadline(unittest.TestCase):
 
         input = b"def func():\n"
         # Auto-indent
-        # Complete: return 40 + 2
+        # Complete: gib 40 + 2
         input += b"ret\t 40 + 2\n"
         input += b"\n"
         # Complete: func()
@@ -4955,7 +4955,7 @@ def load_tests(loader, tests, pattern):
         def setUp(test):
             importiere pdb
             pdb.set_default_backend(backend)
-        return setUp
+        gib setUp
 
     def tearDown(test):
         # Ensure that asyncio state has been cleared at the end of the test.
@@ -4996,7 +4996,7 @@ def load_tests(loader, tests, pattern):
             tearDown=tearDown,
         )
     )
-    return tests
+    gib tests
 
 
 wenn __name__ == '__main__':

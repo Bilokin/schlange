@@ -33,7 +33,7 @@ klasse TestLLTrace(unittest.TestCase):
             drucke("\n--- stdout ---")
             drucke(result)
             drucke()
-        return result
+        gib result
 
     def test_lltrace(self):
         stdout = self.run_code("""

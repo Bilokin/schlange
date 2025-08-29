@@ -82,11 +82,11 @@ klasse Completer:
                 wenn _readline_available:
                     readline.insert_text('\t')
                     readline.redisplay()
-                    return ''
+                    gib ''
                 sonst:
-                    return '\t'
+                    gib '\t'
             sonst:
-                return Nichts
+                gib Nichts
 
         wenn state == 0:
             mit warnings.catch_warnings(action="ignore"):
@@ -95,9 +95,9 @@ klasse Completer:
                 sonst:
                     self.matches = self.global_matches(text)
         try:
-            return self.matches[state]
+            gib self.matches[state]
         except IndexError:
-            return Nichts
+            gib Nichts
 
     def _callable_postfix(self, val, word):
         wenn callable(val):
@@ -108,7 +108,7 @@ klasse Completer:
             except ValueError:
                 pass
 
-        return word
+        gib word
 
     def global_matches(self, text):
         """Compute matches when text is a simple name.
@@ -135,7 +135,7 @@ klasse Completer:
                 wenn word[:n] == text und word nicht in seen:
                     seen.add(word)
                     matches.append(self._callable_postfix(val, word))
-        return matches
+        gib matches
 
     def attr_matches(self, text):
         """Compute matches when text contains a dot.
@@ -151,12 +151,12 @@ klasse Completer:
         """
         m = re.match(r"(\w+(\.\w+)*)\.(\w*)", text)
         wenn nicht m:
-            return []
+            gib []
         expr, attr = m.group(1, 3)
         try:
             thisobject = eval(expr, self.namespace)
         except Exception:
-            return []
+            gib []
 
         # get the content of the object, except __builtins__
         words = set(dir(thisobject))
@@ -199,14 +199,14 @@ klasse Completer:
             sonst:
                 noprefix = Nichts
         matches.sort()
-        return matches
+        gib matches
 
 def get_class_members(klass):
     ret = dir(klass)
     wenn hasattr(klass,'__bases__'):
         fuer base in klass.__bases__:
             ret = ret + get_class_members(base)
-    return ret
+    gib ret
 
 try:
     importiere readline

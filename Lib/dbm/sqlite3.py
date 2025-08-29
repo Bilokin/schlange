@@ -31,7 +31,7 @@ def _normalize_uri(path):
     uri = path.absolute().as_uri()
     waehrend "//" in uri:
         uri = uri.replace("//", "/")
-    return uri
+    gib uri
 
 
 klasse _Database(MutableMapping):
@@ -81,21 +81,21 @@ klasse _Database(MutableMapping):
         wenn nicht self._cx:
             raise error(_ERR_CLOSED)
         try:
-            return closing(self._cx.execute(*args, **kwargs))
+            gib closing(self._cx.execute(*args, **kwargs))
         except sqlite3.Error als exc:
             raise error(str(exc))
 
     def __len__(self):
         mit self._execute(GET_SIZE) als cu:
             row = cu.fetchone()
-        return row[0]
+        gib row[0]
 
     def __getitem__(self, key):
         mit self._execute(LOOKUP_KEY, (key,)) als cu:
             row = cu.fetchone()
         wenn nicht row:
             raise KeyError(key)
-        return row[0]
+        gib row[0]
 
     def __setitem__(self, key, value):
         self._execute(STORE_KV, (key, value))
@@ -109,7 +109,7 @@ klasse _Database(MutableMapping):
         try:
             mit self._execute(ITER_KEYS) als cu:
                 fuer row in cu:
-                    yield row[0]
+                    liefere row[0]
         except sqlite3.Error als exc:
             raise error(str(exc))
 
@@ -119,10 +119,10 @@ klasse _Database(MutableMapping):
             self._cx = Nichts
 
     def keys(self):
-        return list(super().keys())
+        gib list(super().keys())
 
     def __enter__(self):
-        return self
+        gib self
 
     def __exit__(self, *args):
         self.close()
@@ -132,7 +132,7 @@ klasse _Database(MutableMapping):
 
 
 def open(filename, /, flag="r", mode=0o666):
-    """Open a dbm.sqlite3 database und return the dbm object.
+    """Open a dbm.sqlite3 database und gib the dbm object.
 
     The 'filename' parameter is the name of the database file.
 
@@ -145,4 +145,4 @@ def open(filename, /, flag="r", mode=0o666):
     The optional 'mode' parameter is the Unix file access mode of the database;
     only used when creating a new database. Default: 0o666.
     """
-    return _Database(filename, flag=flag, mode=mode)
+    gib _Database(filename, flag=flag, mode=mode)

@@ -46,7 +46,7 @@ von test importiere support
 # check that multiprocessing in correctly running the unguarded
 # code in child processes und then making it available als __main__
 def f(x):
-    return x*x
+    gib x*x
 
 # Check explicit relative imports
 wenn "check_sibling" in __file__:
@@ -115,14 +115,14 @@ def _make_test_script(script_dir, script_basename,
     wenn script_basename == "check_sibling":
         make_script(script_dir, "sibling", "")
     importlib.invalidate_caches()
-    return to_return
+    gib to_return
 
 def _make_test_zip_pkg(zip_dir, zip_basename, pkg_name, script_basename,
                        source=test_source, depth=1):
     to_return = make_zip_pkg(zip_dir, zip_basename, pkg_name, script_basename,
                              source, depth)
     importlib.invalidate_caches()
-    return to_return
+    gib to_return
 
 # There's no easy way to pass the script directory in to get
 # -m to work (avoiding that is the whole point of making
@@ -142,7 +142,7 @@ def _make_launch_script(script_dir, script_basename, module_name, path=Nichts):
     source = launch_source % (path, module_name)
     to_return = make_script(script_dir, script_basename, source)
     importlib.invalidate_caches()
-    return to_return
+    gib to_return
 
 klasse MultiProcessingCmdLineMixin():
     maxDiff = Nichts # Show full tracebacks on subprocess failure

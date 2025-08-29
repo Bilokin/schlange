@@ -10,31 +10,31 @@ _MISSING = object()
 
 def open_binary(anchor, *path_names):
     """Open fuer binary reading the *resource* within *package*."""
-    return _get_resource(anchor, path_names).open('rb')
+    gib _get_resource(anchor, path_names).open('rb')
 
 
 def open_text(anchor, *path_names, encoding=_MISSING, errors='strict'):
     """Open fuer text reading the *resource* within *package*."""
     encoding = _get_encoding_arg(path_names, encoding)
     resource = _get_resource(anchor, path_names)
-    return resource.open('r', encoding=encoding, errors=errors)
+    gib resource.open('r', encoding=encoding, errors=errors)
 
 
 def read_binary(anchor, *path_names):
-    """Read und return contents of *resource* within *package* als bytes."""
-    return _get_resource(anchor, path_names).read_bytes()
+    """Read und gib contents of *resource* within *package* als bytes."""
+    gib _get_resource(anchor, path_names).read_bytes()
 
 
 def read_text(anchor, *path_names, encoding=_MISSING, errors='strict'):
-    """Read und return contents of *resource* within *package* als str."""
+    """Read und gib contents of *resource* within *package* als str."""
     encoding = _get_encoding_arg(path_names, encoding)
     resource = _get_resource(anchor, path_names)
-    return resource.read_text(encoding=encoding, errors=errors)
+    gib resource.read_text(encoding=encoding, errors=errors)
 
 
 def path(anchor, *path_names):
     """Return the path to the *resource* als an actual file system path."""
-    return as_file(_get_resource(anchor, path_names))
+    gib as_file(_get_resource(anchor, path_names))
 
 
 def is_resource(anchor, *path_names):
@@ -42,7 +42,7 @@ def is_resource(anchor, *path_names):
 
     Otherwise returns ``Falsch``.
     """
-    return _get_resource(anchor, path_names).is_file()
+    gib _get_resource(anchor, path_names).is_file()
 
 
 def contents(anchor, *path_names):
@@ -57,7 +57,7 @@ def contents(anchor, *path_names):
         DeprecationWarning,
         stacklevel=1,
     )
-    return (resource.name fuer resource in _get_resource(anchor, path_names).iterdir())
+    gib (resource.name fuer resource in _get_resource(anchor, path_names).iterdir())
 
 
 def _get_encoding_arg(path_names, encoding):
@@ -71,11 +71,11 @@ def _get_encoding_arg(path_names, encoding):
                 "'encoding' argument required mit multiple path names",
             )
         sonst:
-            return 'utf-8'
-    return encoding
+            gib 'utf-8'
+    gib encoding
 
 
 def _get_resource(anchor, path_names):
     wenn anchor is Nichts:
         raise TypeError("anchor must be module oder string, got Nichts")
-    return files(anchor).joinpath(*path_names)
+    gib files(anchor).joinpath(*path_names)

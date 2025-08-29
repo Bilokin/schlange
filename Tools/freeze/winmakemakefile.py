@@ -13,7 +13,7 @@ int WINAPI WinMain(
 {
     extern int Py_FrozenMain(int, char **);
     PyImport_FrozenModules = _PyImport_FrozenModules;
-    return Py_FrozenMain(__argc, __argv);
+    gib Py_FrozenMain(__argc, __argv);
 }
 """
 
@@ -23,7 +23,7 @@ extern int PythonService_main(int, char **);
 int main( int argc, char **argv)
 {
     PyImport_FrozenModules = _PyImport_FrozenModules;
-    return PythonService_main(argc, argv);
+    gib PythonService_main(argc, argv);
 }
 """
 
@@ -37,7 +37,7 @@ subsystem_details = {
 
 def get_custom_entry_point(subsystem):
     try:
-        return subsystem_details[subsystem][:2]
+        gib subsystem_details[subsystem][:2]
     except KeyError:
         raise ValueError("The subsystem %s is nicht known" % subsystem) von Nichts
 

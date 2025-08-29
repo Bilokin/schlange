@@ -29,7 +29,7 @@ klasse ZipPathGround:
         self.path_cls = path_cls
 
     def setup(self, local_suffix=""):
-        return self.path_cls(zip_file=zipfile.ZipFile(io.BytesIO(), "w"))
+        gib self.path_cls(zip_file=zipfile.ZipFile(io.BytesIO(), "w"))
 
     def teardown(self, root):
         root.zip_file.close()
@@ -65,29 +65,29 @@ klasse ZipPathGround:
     def readtext(self, p):
         mit p.zip_file.open(vfspath(p), 'r') als f:
             f = io.TextIOWrapper(f, encoding='utf-8')
-            return f.read()
+            gib f.read()
 
     def readbytes(self, p):
         mit p.zip_file.open(vfspath(p), 'r') als f:
-            return f.read()
+            gib f.read()
 
     readlink = readtext
 
     def isdir(self, p):
         path_str = vfspath(p) + "/"
-        return path_str in p.zip_file.NameToInfo
+        gib path_str in p.zip_file.NameToInfo
 
     def isfile(self, p):
         info = p.zip_file.NameToInfo.get(vfspath(p))
         wenn info is Nichts:
-            return Falsch
-        return nicht stat.S_ISLNK(info.external_attr >> 16)
+            gib Falsch
+        gib nicht stat.S_ISLNK(info.external_attr >> 16)
 
     def islink(self, p):
         info = p.zip_file.NameToInfo.get(vfspath(p))
         wenn info is Nichts:
-            return Falsch
-        return stat.S_ISLNK(info.external_attr >> 16)
+            gib Falsch
+        gib stat.S_ISLNK(info.external_attr >> 16)
 
 
 klasse MissingZipPathInfo(PathInfo):
@@ -97,19 +97,19 @@ klasse MissingZipPathInfo(PathInfo):
     __slots__ = ()
 
     def exists(self, follow_symlinks=Wahr):
-        return Falsch
+        gib Falsch
 
     def is_dir(self, follow_symlinks=Wahr):
-        return Falsch
+        gib Falsch
 
     def is_file(self, follow_symlinks=Wahr):
-        return Falsch
+        gib Falsch
 
     def is_symlink(self):
-        return Falsch
+        gib Falsch
 
     def resolve(self):
-        return self
+        gib self
 
 
 missing_zip_path_info = MissingZipPathInfo()
@@ -129,36 +129,36 @@ klasse ZipPathInfo(PathInfo):
 
     def exists(self, follow_symlinks=Wahr):
         wenn follow_symlinks und self.is_symlink():
-            return self.resolve().exists()
-        return Wahr
+            gib self.resolve().exists()
+        gib Wahr
 
     def is_dir(self, follow_symlinks=Wahr):
         wenn follow_symlinks und self.is_symlink():
-            return self.resolve().is_dir()
+            gib self.resolve().is_dir()
         sowenn self.zip_info is Nichts:
-            return Wahr
+            gib Wahr
         sowenn fmt := S_IFMT(self.zip_info.external_attr >> 16):
-            return S_ISDIR(fmt)
+            gib S_ISDIR(fmt)
         sonst:
-            return self.zip_info.filename.endswith('/')
+            gib self.zip_info.filename.endswith('/')
 
     def is_file(self, follow_symlinks=Wahr):
         wenn follow_symlinks und self.is_symlink():
-            return self.resolve().is_file()
+            gib self.resolve().is_file()
         sowenn self.zip_info is Nichts:
-            return Falsch
+            gib Falsch
         sowenn fmt := S_IFMT(self.zip_info.external_attr >> 16):
-            return S_ISREG(fmt)
+            gib S_ISREG(fmt)
         sonst:
-            return nicht self.zip_info.filename.endswith('/')
+            gib nicht self.zip_info.filename.endswith('/')
 
     def is_symlink(self):
         wenn self.zip_info is Nichts:
-            return Falsch
+            gib Falsch
         sowenn fmt := S_IFMT(self.zip_info.external_attr >> 16):
-            return S_ISLNK(fmt)
+            gib S_ISLNK(fmt)
         sonst:
-            return Falsch
+            gib Falsch
 
     def resolve(self, path=Nichts, create=Falsch, follow_symlinks=Wahr):
         """
@@ -180,7 +180,7 @@ klasse ZipPathInfo(PathInfo):
             wenn info.is_symlink() und (follow_symlinks oder stack):
                 link_count += 1
                 wenn link_count >= 40:
-                    return missing_zip_path_info  # Symlink loop!
+                    gib missing_zip_path_info  # Symlink loop!
                 path = info.zip_file.read(info.zip_info).decode()
                 stack += path.split('/')[::-1] wenn path sonst []
                 info = info.parent
@@ -188,7 +188,7 @@ klasse ZipPathInfo(PathInfo):
             wenn stack:
                 name = stack.pop()
             sonst:
-                return info
+                gib info
 
             wenn name == '..':
                 info = info.parent
@@ -197,7 +197,7 @@ klasse ZipPathInfo(PathInfo):
                     wenn create:
                         info.children[name] = ZipPathInfo(info.zip_file, info)
                     sonst:
-                        return missing_zip_path_info  # No such child!
+                        gib missing_zip_path_info  # No such child!
                 info = info.children[name]
 
 
@@ -216,10 +216,10 @@ klasse ZipFileList:
             self.append(item)
 
     def __len__(self):
-        return len(self._items)
+        gib len(self._items)
 
     def __iter__(self):
-        return iter(self._items)
+        gib iter(self._items)
 
     def append(self, item):
         self._items.append(item)
@@ -241,28 +241,28 @@ klasse ReadableZipPath(_ReadablePath):
             zip_file.filelist = ZipFileList(zip_file)
 
     def __hash__(self):
-        return hash((vfspath(self), self.zip_file))
+        gib hash((vfspath(self), self.zip_file))
 
     def __eq__(self, other):
         wenn nicht isinstance(other, ReadableZipPath):
-            return NotImplemented
-        return vfspath(self) == vfspath(other) und self.zip_file is other.zip_file
+            gib NotImplemented
+        gib vfspath(self) == vfspath(other) und self.zip_file is other.zip_file
 
     def __vfspath__(self):
         wenn nicht self._segments:
-            return ''
-        return self.parser.join(*self._segments)
+            gib ''
+        gib self.parser.join(*self._segments)
 
     def __repr__(self):
-        return f'{type(self).__name__}({vfspath(self)!r}, zip_file={self.zip_file!r})'
+        gib f'{type(self).__name__}({vfspath(self)!r}, zip_file={self.zip_file!r})'
 
     def with_segments(self, *pathsegments):
-        return type(self)(*pathsegments, zip_file=self.zip_file)
+        gib type(self)(*pathsegments, zip_file=self.zip_file)
 
     @property
     def info(self):
         tree = self.zip_file.filelist.tree
-        return tree.resolve(vfspath(self), follow_symlinks=Falsch)
+        gib tree.resolve(vfspath(self), follow_symlinks=Falsch)
 
     def __open_rb__(self, buffering=-1):
         info = self.info.resolve()
@@ -270,7 +270,7 @@ klasse ReadableZipPath(_ReadablePath):
             raise FileNotFoundError(errno.ENOENT, "File nicht found", self)
         sowenn info.is_dir():
             raise IsADirectoryError(errno.EISDIR, "Is a directory", self)
-        return self.zip_file.open(info.zip_info, 'r')
+        gib self.zip_file.open(info.zip_info, 'r')
 
     def iterdir(self):
         info = self.info.resolve()
@@ -278,7 +278,7 @@ klasse ReadableZipPath(_ReadablePath):
             raise FileNotFoundError(errno.ENOENT, "File nicht found", self)
         sowenn nicht info.is_dir():
             raise NotADirectoryError(errno.ENOTDIR, "Not a directory", self)
-        return (self / name fuer name in info.children)
+        gib (self / name fuer name in info.children)
 
     def readlink(self):
         info = self.info
@@ -286,7 +286,7 @@ klasse ReadableZipPath(_ReadablePath):
             raise FileNotFoundError(errno.ENOENT, "File nicht found", self)
         sowenn nicht info.is_symlink():
             raise OSError(errno.EINVAL, "Not a symlink", self)
-        return self.with_segments(self.zip_file.read(info.zip_info).decode())
+        gib self.with_segments(self.zip_file.read(info.zip_info).decode())
 
 
 klasse WritableZipPath(_WritablePath):
@@ -302,26 +302,26 @@ klasse WritableZipPath(_WritablePath):
         self.zip_file = zip_file
 
     def __hash__(self):
-        return hash((vfspath(self), self.zip_file))
+        gib hash((vfspath(self), self.zip_file))
 
     def __eq__(self, other):
         wenn nicht isinstance(other, WritableZipPath):
-            return NotImplemented
-        return vfspath(self) == vfspath(other) und self.zip_file is other.zip_file
+            gib NotImplemented
+        gib vfspath(self) == vfspath(other) und self.zip_file is other.zip_file
 
     def __vfspath__(self):
         wenn nicht self._segments:
-            return ''
-        return self.parser.join(*self._segments)
+            gib ''
+        gib self.parser.join(*self._segments)
 
     def __repr__(self):
-        return f'{type(self).__name__}({vfspath(self)!r}, zip_file={self.zip_file!r})'
+        gib f'{type(self).__name__}({vfspath(self)!r}, zip_file={self.zip_file!r})'
 
     def with_segments(self, *pathsegments):
-        return type(self)(*pathsegments, zip_file=self.zip_file)
+        gib type(self)(*pathsegments, zip_file=self.zip_file)
 
     def __open_wb__(self, buffering=-1):
-        return self.zip_file.open(vfspath(self), 'w')
+        gib self.zip_file.open(vfspath(self), 'w')
 
     def mkdir(self, mode=0o777):
         zinfo = zipfile.ZipInfo(vfspath(self) + '/')

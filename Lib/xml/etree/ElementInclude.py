@@ -80,7 +80,7 @@ klasse LimitedRecursiveIncludeError(FatalIncludeError):
 # @param encoding Optional text encoding (UTF-8 by default fuer "text").
 # @return The expanded resource.  If the parse mode is "xml", this
 #    is an Element instance.  If the parse mode is "text", this
-#    is a string.  If the loader fails, it can return Nichts
+#    is a string.  If the loader fails, it can gib Nichts
 #    oder raise an OSError exception.
 # @throws OSError If the loader fails to load the resource.
 
@@ -93,7 +93,7 @@ def default_loader(href, parse, encoding=Nichts):
             encoding = 'UTF-8'
         mit open(href, 'r', encoding=encoding) als file:
             data = file.read()
-    return data
+    gib data
 
 ##
 # Expand XInclude directives.

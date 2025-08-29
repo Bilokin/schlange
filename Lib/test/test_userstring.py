@@ -46,7 +46,7 @@ klasse UserStringTest(
 
         klasse ustr3(ustr2):
             def __rmod__(self, other):
-                return super().__rmod__(other)
+                gib super().__rmod__(other)
 
         fmt2 = ustr2('value is %s')
         str3 = ustr3('TEST')

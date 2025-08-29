@@ -16,7 +16,7 @@ klasse PyEval_EvalCodeExTests(unittest.TestCase):
 
     def test_simple(self):
         def f():
-            return a
+            gib a
 
         eval_code_ex = _testcapi.eval_code_ex
         code = f.__code__
@@ -65,7 +65,7 @@ klasse PyEval_EvalCodeExTests(unittest.TestCase):
 
     def test_with_args(self):
         def f(a, b, c):
-            return a
+            gib a
 
         eval_code_ex = _testcapi.eval_code_ex
         code = f.__code__
@@ -75,7 +75,7 @@ klasse PyEval_EvalCodeExTests(unittest.TestCase):
 
     def test_with_kwargs(self):
         def f(a, b, c):
-            return a
+            gib a
 
         eval_code_ex = _testcapi.eval_code_ex
         code = f.__code__
@@ -86,7 +86,7 @@ klasse PyEval_EvalCodeExTests(unittest.TestCase):
 
     def test_with_default(self):
         def f(a):
-            return a
+            gib a
 
         eval_code_ex = _testcapi.eval_code_ex
         code = f.__code__
@@ -95,7 +95,7 @@ klasse PyEval_EvalCodeExTests(unittest.TestCase):
 
     def test_with_kwarg_default(self):
         def f(*, a):
-            return a
+            gib a
 
         eval_code_ex = _testcapi.eval_code_ex
         code = f.__code__
@@ -111,7 +111,7 @@ klasse PyEval_EvalCodeExTests(unittest.TestCase):
         b = 2
         def f():
             b
-            return a
+            gib a
 
         eval_code_ex = _testcapi.eval_code_ex
         code = f.__code__

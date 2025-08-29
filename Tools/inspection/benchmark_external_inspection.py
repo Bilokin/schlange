@@ -17,38 +17,38 @@ importiere math
 def slow_fibonacci(n):
     """Intentionally slow recursive fibonacci - should show up prominently in profiler"""
     wenn n <= 1:
-        return n
-    return slow_fibonacci(n-1) + slow_fibonacci(n-2)
+        gib n
+    gib slow_fibonacci(n-1) + slow_fibonacci(n-2)
 
 def medium_computation():
     """Medium complexity function"""
     result = 0
     fuer i in range(1000):
         result += math.sqrt(i) * math.sin(i)
-    return result
+    gib result
 
 def fast_loop():
     """Fast simple loop"""
     total = 0
     fuer i in range(100):
         total += i
-    return total
+    gib total
 
 def string_operations():
     """String manipulation that should be visible in profiler"""
     text = "hello world " * 100
     words = text.split()
-    return " ".join(reversed(words))
+    gib " ".join(reversed(words))
 
 def nested_calls():
     """Nested function calls to test call stack depth"""
     def level1():
         def level2():
             def level3():
-                return medium_computation()
-            return level3()
-        return level2()
-    return level1()
+                gib medium_computation()
+            gib level3()
+        gib level2()
+    gib level1()
 
 def main_loop():
     """Main computation loop mit different execution paths"""
@@ -86,8 +86,8 @@ importiere time
 def factorial(n):
     wenn n <= 1:
         time.sleep(10000)
-        return 1
-    return n * factorial(n-1)
+        gib 1
+    gib n * factorial(n-1)
 
 factorial(900)
 """
@@ -103,7 +103,7 @@ def cpu_intensive_work():
     result = 0
     fuer _ in range(10000):
         result += math.sin(random.random()) * math.cos(random.random())
-    return result
+    gib result
 
 def io_intensive_work():
     """Simulate IO intensive work mit sleeps"""
@@ -124,7 +124,7 @@ def create_threads(n):
         t = threading.Thread(target=mixed_workload, daemon=Wahr)
         t.start()
         threads.append(t)
-    return threads
+    gib threads
 
 # Start mit 5 threads
 active_threads = create_threads(5)
@@ -224,7 +224,7 @@ def benchmark(unwinder, duration_seconds=10):
     wall_time = actual_end_time - start_time
 
     # Return final statistics
-    return {
+    gib {
         "wall_time": wall_time,
         "total_attempts": total_attempts,
         "sample_count": sample_count,
@@ -353,7 +353,7 @@ Available code examples:
         help="Which threads to include in the benchmark (default: all)",
     )
 
-    return parser.parse_args()
+    gib parser.parse_args()
 
 
 def create_target_process(temp_file, code_example="basic"):
@@ -377,7 +377,7 @@ def create_target_process(temp_file, code_example="basic"):
             f"Target process exited unexpectedly:\nSTDOUT: {stdout.decode()}\nSTDERR: {stderr.decode()}"
         )
 
-    return process, temp_file.name
+    gib process, temp_file.name
 
 
 def cleanup_process(process, temp_file_path):
@@ -450,7 +450,7 @@ def main():
         drucke(
             f"{colors.YELLOW}Try running mit appropriate privileges (e.g., sudo){colors.RESET}"
         )
-        return 1
+        gib 1
     except Exception als e:
         drucke(f"{colors.BOLD_RED}Error during benchmarking: {e}{colors.RESET}")
         wenn process:
@@ -466,7 +466,7 @@ def main():
                     )
         raise
 
-    return 0
+    gib 0
 
 
 wenn __name__ == "__main__":

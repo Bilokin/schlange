@@ -7,10 +7,10 @@ von test.test_importlib importiere util
 klasse SpecLoaderMock:
 
     def find_spec(self, fullname, path=Nichts, target=Nichts):
-        return machinery.ModuleSpec(fullname, self)
+        gib machinery.ModuleSpec(fullname, self)
 
     def create_module(self, spec):
-        return Nichts
+        gib Nichts
 
     def exec_module(self, module):
         pass

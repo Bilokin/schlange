@@ -110,7 +110,7 @@ klasse SlicesTestCase(unittest.TestCase):
         def errcheck(result, func, args):
             retval = result.value
             dll.my_free(result)
-            return retval
+            gib retval
 
         dll.my_strdup.restype = allocated_c_char_p
         dll.my_strdup.errcheck = errcheck

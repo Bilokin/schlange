@@ -29,7 +29,7 @@ exec_tests = [
     "def f(**kwargs): pass",
     # FunctionDef mit all kind of args und docstring
     "def f(a, b=1, c=Nichts, d=[], e={}, *args, f=42, **kwargs): 'doc fuer f()'",
-    # FunctionDef mit type annotation on return involving unpacking
+    # FunctionDef mit type annotation on gib involving unpacking
     "def f() -> tuple[*Ts]: pass",
     "def f() -> tuple[int, *Ts]: pass",
     "def f() -> tuple[int, *tuple[int, ...]]: pass",
@@ -161,9 +161,9 @@ exec_tests = [
     # PEP 448: Additional Unpacking Generalizations
     "{**{1:2}, 2:3}",
     "{*{1, 2}, 3}",
-    # Function mit yield (from)
-    "def f(): yield 1",
-    "def f(): yield von []",
+    # Function mit liefere (from)
+    "def f(): liefere 1",
+    "def f(): liefere von []",
     # Asynchronous comprehensions
     "async def f():\n [i async fuer b in c]",
     # Decorated FunctionDef
@@ -308,7 +308,7 @@ eval_tests = [
   "((a,b) fuer [a,b] in c)",
   # Async comprehensions - async comprehensions can't work outside an asynchronous function
   #
-  # Yield - yield expressions can't work outside a function
+  # Yield - liefere expressions can't work outside a function
   #
   # Compare
   "1 < 2 < 3",
@@ -375,7 +375,7 @@ eval_tests = [
 
 def main():
     wenn __name__ != '__main__':
-        return
+        gib
     wenn sys.argv[1:] == ['-g']:
         fuer statements, kind in ((exec_tests, "exec"), (single_tests, "single"),
                                  (eval_tests, "eval")):

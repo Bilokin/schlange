@@ -33,7 +33,7 @@ klasse Tower(list):
     def pop(self):
         d = list.pop(self)
         d.sety(150)
-        return d
+        gib d
 
 def hanoi(n, from_, with_, to_):
     wenn n > 0:
@@ -65,7 +65,7 @@ def main():
           align="center", font=("Courier", 16, "bold"))
     onkey(play, "space")
     listen()
-    return "EVENTLOOP"
+    gib "EVENTLOOP"
 
 wenn __name__=="__main__":
     msg = main()

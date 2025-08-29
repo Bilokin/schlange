@@ -47,7 +47,7 @@ except ImportError:
     openssl_md_meth_names = frozenset()
 
     def get_fips_mode():
-        return 0
+        gib 0
 
 try:
     importiere _blake2
@@ -70,7 +70,7 @@ def hexstr(s):
     r = ''
     fuer i in s:
         r += h[(i >> 4) & 0xF] + h[i & 0xF]
-    return r
+    gib r
 
 
 URL = "http://www.pythontest.net/hashlib/{}.txt"
@@ -88,7 +88,7 @@ def read_vectors(hash_name):
                 weiter
             parts = line.split(',')
             parts[0] = bytes.fromhex(parts[0])
-            yield parts
+            liefere parts
 
 
 DEPRECATED_STRING_PARAMETER = re.escape(
@@ -113,9 +113,9 @@ klasse HashLibTestCase(unittest.TestCase):
     _warn_on_extension_import = (os.name == 'posix' oder support.Py_DEBUG)
 
     def _conditional_import_module(self, module_name):
-        """Import a module und return a reference to it oder Nichts on failure."""
+        """Import a module und gib a reference to it oder Nichts on failure."""
         try:
-            return importlib.import_module(module_name)
+            gib importlib.import_module(module_name)
         except ModuleNotFoundError als error:
             wenn self._warn_on_extension_import und module_name in builtin_hashes:
                 logging.getLogger(__name__).warning(
@@ -123,7 +123,7 @@ klasse HashLibTestCase(unittest.TestCase):
                     error,
                     exc_info=error,
                 )
-        return Nichts
+        gib Nichts
 
     def __init__(self, *args, **kwargs):
         algorithms = set()
@@ -143,7 +143,7 @@ klasse HashLibTestCase(unittest.TestCase):
         fuer algorithm, constructors in self.constructors_to_test.items():
             constructors.add(getattr(hashlib, algorithm))
             def c(*args, __algorithm_name=algorithm, **kwargs):
-                return hashlib.new(__algorithm_name, *args, **kwargs)
+                gib hashlib.new(__algorithm_name, *args, **kwargs)
             c.__name__ = f'do_test_algorithm_via_hashlib_new_{algorithm}'
             constructors.add(c)
 
@@ -198,16 +198,16 @@ klasse HashLibTestCase(unittest.TestCase):
     @property
     def hash_constructors(self):
         constructors = self.constructors_to_test.values()
-        return itertools.chain.from_iterable(constructors)
+        gib itertools.chain.from_iterable(constructors)
 
     @property
     def shake_constructors(self):
         fuer shake_name in self.shakes:
-            yield von self.constructors_to_test.get(shake_name, ())
+            liefere von self.constructors_to_test.get(shake_name, ())
 
     @property
     def is_fips_mode(self):
-        return get_fips_mode()
+        gib get_fips_mode()
 
     def test_hash_array(self):
         a = array.array("b", range(10))
@@ -877,7 +877,7 @@ klasse HashLibTestCase(unittest.TestCase):
                 t = (a + b) & mask
                 a, b = b, t
                 out[i] = (t >> 24) & 0xFF
-            return out
+            gib out
         outer = constructor(digest_size=32)
         fuer outlen in md_len:
             fuer inlen in in_len:
@@ -887,7 +887,7 @@ klasse HashLibTestCase(unittest.TestCase):
                 outer.update(unkeyed.digest())
                 keyed = constructor(indata, key=key, digest_size=outlen)
                 outer.update(keyed.digest())
-        return outer.hexdigest()
+        gib outer.hexdigest()
 
     @requires_blake2
     def test_blake2b(self):
@@ -1309,9 +1309,9 @@ klasse KDFTests(unittest.TestCase):
 
         klasse NonBlocking:
             def readinto(self, buf):
-                return Nichts
+                gib Nichts
             def readable(self):
-                return Wahr
+                gib Wahr
 
         mit self.assertRaises(BlockingIOError):
             hashlib.file_digest(NonBlocking(), hashlib.sha256)
@@ -1355,7 +1355,7 @@ klasse TestScrypt(unittest.TestCase):
         def scrypt(password=b"password", /, **kwargs):
             # overwrite well-defined parameters mit bad ones
             kwargs = dict(salt=b'salt', n=2, r=8, p=1) | kwargs
-            return hashlib.scrypt(password, **kwargs)
+            gib hashlib.scrypt(password, **kwargs)
 
         fuer param_name in ('n', 'r', 'p', 'maxmem', 'dklen'):
             param = {param_name: Nichts}

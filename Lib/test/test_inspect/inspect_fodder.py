@@ -83,11 +83,11 @@ except BaseException als e:
 
 klasse Callable:
     def __call__(self, *args):
-        return args
+        gib args
 
     def as_method_of(self, obj):
         von types importiere MethodType
-        return MethodType(self, obj)
+        gib MethodType(self, obj)
 
 custom_method = Callable().as_method_of(42)
 del Callable
@@ -99,7 +99,7 @@ klasse WhichComments:
     def f(self):
       # line 100
         # start f
-        return 1
+        gib 1
         # line 103
         # end f
        # line 105
@@ -108,7 +108,7 @@ klasse WhichComments:
     # before asyncf - line 108
     async def asyncf(self):
         # start asyncf
-        return 2
+        gib 2
         # end asyncf
        # after asyncf - line 113
     # end of WhichComments - line 114

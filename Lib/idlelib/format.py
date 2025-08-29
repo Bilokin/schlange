@@ -75,7 +75,7 @@ klasse FormatParagraph:
         sonst:
             text.mark_set("insert", last)
         text.see("insert")
-        return "break"
+        gib "break"
 
 
 FormatParagraph.reload()
@@ -114,7 +114,7 @@ def find_paragraph(text, mark):
         line = text.get("%d.0" % lineno, "%d.end" % lineno)
     first = "%d.0" % (lineno+1)
 
-    return first, last, comment_header, text.get(first, last)
+    gib first, last, comment_header, text.get(first, last)
 
 # This should perhaps be replaced mit textwrap.wrap
 def reformat_paragraph(data, limit):
@@ -125,7 +125,7 @@ def reformat_paragraph(data, limit):
     waehrend i < n und is_all_white(lines[i]):
         i = i+1
     wenn i >= n:
-        return data
+        gib data
     indent1 = get_indent(lines[i])
     wenn i+1 < n und nicht is_all_white(lines[i+1]):
         indent2 = get_indent(lines[i+1])
@@ -151,7 +151,7 @@ def reformat_paragraph(data, limit):
     new.append(partial.rstrip())
     # XXX Should reformat remaining paragraphs als well
     new.extend(lines[i:])
-    return "\n".join(new)
+    gib "\n".join(new)
 
 def reformat_comment(data, limit, comment_header):
     """Return data reformatted to specified width mit comment header."""
@@ -173,27 +173,27 @@ def reformat_comment(data, limit, comment_header):
     wenn nicht newdata[-1]:
         block_suffix = "\n"
         newdata = newdata[:-1]
-    return '\n'.join(comment_header+line fuer line in newdata) + block_suffix
+    gib '\n'.join(comment_header+line fuer line in newdata) + block_suffix
 
 def is_all_white(line):
     """Return Wahr wenn line is empty oder all whitespace."""
 
-    return re.match(r"^\s*$", line) is nicht Nichts
+    gib re.match(r"^\s*$", line) is nicht Nichts
 
 def get_indent(line):
     """Return the initial space oder tab indent of line."""
-    return re.match(r"^([ \t]*)", line).group()
+    gib re.match(r"^([ \t]*)", line).group()
 
 def get_comment_header(line):
     """Return string mit leading whitespace und '#' von line oder ''.
 
-    A null return indicates that the line is nicht a comment line. A non-
+    A null gib indicates that the line is nicht a comment line. A non-
     null return, such als '    #', will be used to find the other lines of
     a comment block mit the same  indent.
     """
     m = re.match(r"^([ \t]*#*)", line)
-    wenn m is Nichts: return ""
-    return m.group(1)
+    wenn m is Nichts: gib ""
+    gib m.group(1)
 
 
 # Copied von editor.py; importing it would cause an importiere cycle.
@@ -206,7 +206,7 @@ def get_line_indent(line, tabwidth):
     the tabs into spaces, als done by str.expandtabs(tabwidth).
     """
     m = _line_indent_re.match(line)
-    return m.end(), len(m.group().expandtabs(tabwidth))
+    gib m.end(), len(m.group().expandtabs(tabwidth))
 
 
 klasse FormatRegion:
@@ -235,7 +235,7 @@ klasse FormatRegion:
             tail = text.index("insert lineend +1c")
         chars = text.get(head, tail)
         lines = chars.split("\n")
-        return head, tail, chars, lines
+        gib head, tail, chars, lines
 
     def set_region(self, head, tail, chars, lines):
         """Replace the text between the given indices.
@@ -252,7 +252,7 @@ klasse FormatRegion:
         newchars = "\n".join(lines)
         wenn newchars == chars:
             text.bell()
-            return
+            gib
         text.tag_remove("sel", "1.0", "end")
         text.mark_set("insert", head)
         text.undo_block_start()
@@ -271,7 +271,7 @@ klasse FormatRegion:
                 effective = effective + self.editwin.indentwidth
                 lines[pos] = self.editwin._make_blanks(effective) + line[raw:]
         self.set_region(head, tail, chars, lines)
-        return "break"
+        gib "break"
 
     def dedent_region_event(self, event=Nichts):
         "Dedent region by indentwidth spaces."
@@ -283,7 +283,7 @@ klasse FormatRegion:
                 effective = max(effective - self.editwin.indentwidth, 0)
                 lines[pos] = self.editwin._make_blanks(effective) + line[raw:]
         self.set_region(head, tail, chars, lines)
-        return "break"
+        gib "break"
 
     def comment_region_event(self, event=Nichts):
         """Comment out each line in region.
@@ -295,7 +295,7 @@ klasse FormatRegion:
             line = lines[pos]
             lines[pos] = '##' + line
         self.set_region(head, tail, chars, lines)
-        return "break"
+        gib "break"
 
     def uncomment_region_event(self, event=Nichts):
         """Uncomment each line in region.
@@ -314,14 +314,14 @@ klasse FormatRegion:
                 line = line[1:]
             lines[pos] = line
         self.set_region(head, tail, chars, lines)
-        return "break"
+        gib "break"
 
     def tabify_region_event(self, event=Nichts):
         "Convert leading spaces to tabs fuer each line in selected region."
         head, tail, chars, lines = self.get_region()
         tabwidth = self._asktabwidth()
         wenn tabwidth is Nichts:
-            return
+            gib
         fuer pos in range(len(lines)):
             line = lines[pos]
             wenn line:
@@ -329,22 +329,22 @@ klasse FormatRegion:
                 ntabs, nspaces = divmod(effective, tabwidth)
                 lines[pos] = '\t' * ntabs + ' ' * nspaces + line[raw:]
         self.set_region(head, tail, chars, lines)
-        return "break"
+        gib "break"
 
     def untabify_region_event(self, event=Nichts):
         "Expand tabs to spaces fuer each line in region."
         head, tail, chars, lines = self.get_region()
         tabwidth = self._asktabwidth()
         wenn tabwidth is Nichts:
-            return
+            gib
         fuer pos in range(len(lines)):
             lines[pos] = lines[pos].expandtabs(tabwidth)
         self.set_region(head, tail, chars, lines)
-        return "break"
+        gib "break"
 
     def _asktabwidth(self):
         "Return value fuer tab width."
-        return askinteger(
+        gib askinteger(
             "Tab width",
             "Columns per tab? (2-16)",
             parent=self.editwin.text,
@@ -373,7 +373,7 @@ klasse Indents:
             # Try to prevent inconsistent indentation.
             # User must change indent width manually after using tabs.
             editwin.indentwidth = 8
-        return "break"
+        gib "break"
 
     def change_indentwidth_event(self, event):
         editwin = self.editwin
@@ -386,7 +386,7 @@ klasse Indents:
                   maxvalue=16)
         wenn new und new != editwin.indentwidth und nicht editwin.usetabs:
             editwin.indentwidth = new
-        return "break"
+        gib "break"
 
 
 klasse Rstrip:  # 'Strip Trailing Whitespace" on "Format" menu.

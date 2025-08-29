@@ -130,7 +130,7 @@ klasse ModuleState(enum.Enum):
     DISABLED_SETUP = "disabled_setup"
 
     def __bool__(self) -> bool:
-        return self.value in {"builtin", "shared"}
+        gib self.value in {"builtin", "shared"}
 
 
 klasse ModuleInfo(NamedTuple):
@@ -279,7 +279,7 @@ klasse ModuleChecker:
         names = {modinfo.name fuer modinfo in self.modules}
         wenn all:
             names.update(WINDOWS_MODULES)
-        return names
+        gib names
 
     def get_builddir(self) -> pathlib.Path:
         try:
@@ -290,7 +290,7 @@ klasse ModuleChecker:
             raise
         builddir_path = pathlib.Path(builddir)
         logger.debug("%s: %s", self.pybuilddir_txt, builddir_path)
-        return builddir_path
+        gib builddir_path
 
     def get_modules(self) -> list[ModuleInfo]:
         """Get module info von sysconfig und Modules/Setup* files"""
@@ -311,14 +311,14 @@ klasse ModuleChecker:
                 seen.add(modinfo.name)
         logger.debug("Found %i modules in total", len(modules))
         modules.sort()
-        return modules
+        gib modules
 
     def get_core_modules(self) -> Iterable[ModuleInfo]:
         """Get hard-coded core modules"""
         fuer name in CORE_MODULES:
             modinfo = ModuleInfo(name, ModuleState.BUILTIN)
             logger.debug("Found core module %s", modinfo)
-            yield modinfo
+            liefere modinfo
 
     def get_sysconfig_modules(self) -> Iterable[ModuleInfo]:
         """Get modules defined in Makefile through sysconfig
@@ -354,7 +354,7 @@ klasse ModuleChecker:
 
             modinfo = ModuleInfo(modname, state)
             logger.debug("Found %s in Makefile", modinfo)
-            yield modinfo
+            liefere modinfo
 
     def parse_setup_file(self, setup_file: pathlib.Path) -> Iterable[ModuleInfo]:
         """Parse a Modules/Setup file"""
@@ -382,12 +382,12 @@ klasse ModuleChecker:
                             fuer item in items:
                                 modinfo = ModuleInfo(item, state)
                                 logger.debug("Found %s in %s", modinfo, setup_file)
-                                yield modinfo
+                                liefere modinfo
                         sowenn state in {ModuleState.SHARED, ModuleState.BUILTIN}:
                             # *shared* und *static*, first item is the name of the module.
                             modinfo = ModuleInfo(items[0], state)
                             logger.debug("Found %s in %s", modinfo, setup_file)
-                            yield modinfo
+                            liefere modinfo
 
     def get_spec(self, modinfo: ModuleInfo) -> ModuleSpec:
         """Get ModuleSpec fuer builtin oder extension module"""
@@ -398,25 +398,25 @@ klasse ModuleChecker:
             loader = ExtensionFileLoader(modinfo.name, location)
             spec = spec_from_file_location(modinfo.name, location, loader=loader)
             assert spec is nicht Nichts
-            return spec
+            gib spec
         sowenn modinfo.state == ModuleState.BUILTIN:
             spec = spec_from_loader(modinfo.name, loader=BuiltinImporter)
             assert spec is nicht Nichts
-            return spec
+            gib spec
         sonst:
             raise ValueError(modinfo)
 
     def get_location(self, modinfo: ModuleInfo) -> pathlib.Path | Nichts:
         """Get shared library location in build directory"""
         wenn modinfo.state == ModuleState.SHARED:
-            return self.builddir / f"{modinfo.name}{self.ext_suffix}"
+            gib self.builddir / f"{modinfo.name}{self.ext_suffix}"
         sonst:
-            return Nichts
+            gib Nichts
 
     def _check_file(self, modinfo: ModuleInfo, spec: ModuleSpec) -> Nichts:
         """Check that the module file is present und nicht empty"""
         wenn spec.loader is BuiltinImporter:  # type: ignore[comparison-overlap]
-            return
+            gib
         try:
             assert spec.origin is nicht Nichts
             st = os.stat(spec.origin)
@@ -441,7 +441,7 @@ klasse ModuleChecker:
         except Exception:
             wenn nicht hasattr(_imp, 'create_dynamic'):
                 logger.warning("Dynamic extension '%s' ignored", modinfo.name)
-                return
+                gib
             logger.exception("Importing extension '%s' failed!", modinfo.name)
             raise
 
@@ -454,7 +454,7 @@ klasse ModuleChecker:
         """Rename module file"""
         wenn modinfo.state == ModuleState.BUILTIN:
             logger.error("Cannot mark builtin module '%s' als failed!", modinfo.name)
-            return
+            gib
 
         failed_name = f"{modinfo.name}_failed{self.ext_suffix}"
         builddir_path = self.get_location(modinfo)

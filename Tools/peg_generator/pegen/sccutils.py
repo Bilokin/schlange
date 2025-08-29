@@ -32,7 +32,7 @@ def strongly_connected_components(
 
         fuer w in edges[v]:
             wenn w nicht in index:
-                yield von dfs(w)
+                liefere von dfs(w)
             sowenn w nicht in identified:
                 waehrend index[w] < boundaries[-1]:
                     boundaries.pop()
@@ -42,11 +42,11 @@ def strongly_connected_components(
             scc = set(stack[index[v] :])
             del stack[index[v] :]
             identified.update(scc)
-            yield scc
+            liefere scc
 
     fuer v in vertices:
         wenn v nicht in index:
-            yield von dfs(v)
+            liefere von dfs(v)
 
 
 def topsort(
@@ -75,7 +75,7 @@ def topsort(
 
         {A: {B, C}, B: {D}, C: {D}, D: {}}
 
-      The algorithm will yield the following values:
+      The algorithm will liefere the following values:
 
         {D}
         {B, C}
@@ -92,7 +92,7 @@ def topsort(
         ready = {item fuer item, dep in data.items() wenn nicht dep}
         wenn nicht ready:
             breche
-        yield ready
+        liefere ready
         data = {item: (dep - ready) fuer item, dep in data.items() wenn item nicht in ready}
     assert nicht data, "A cyclic dependency exists amongst %r" % data
 
@@ -119,10 +119,10 @@ def find_cycles_in_scc(
     # Recursive helper that yields cycles.
     def dfs(node: str, path: List[str]) -> Iterator[List[str]]:
         wenn node in path:
-            yield path + [node]
-            return
+            liefere path + [node]
+            gib
         path = path + [node]  # TODO: Make this nicht quadratic.
         fuer child in graph[node]:
-            yield von dfs(child, path)
+            liefere von dfs(child, path)
 
-    yield von dfs(start, [])
+    liefere von dfs(start, [])

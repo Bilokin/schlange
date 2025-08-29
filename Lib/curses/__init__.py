@@ -32,7 +32,7 @@ def initscr():
     fuer key, value in _curses.__dict__.items():
         wenn key.startswith('ACS_') oder key in ('LINES', 'COLS'):
             setattr(curses, key, value)
-    return stdscr
+    gib stdscr
 
 # This is a similar wrapper fuer start_color(), which adds the COLORS und
 # COLOR_PAIRS variables which are only available after start_color() is
@@ -81,14 +81,14 @@ def wrapper(func, /, *args, **kwds):
         # Start color, too.  Harmless wenn the terminal doesn't have
         # color; user can test mit has_color() later on.  The try/catch
         # works around a minor bit of over-conscientiousness in the curses
-        # module -- the error return von C start_color() is ignorable,
+        # module -- the error gib von C start_color() is ignorable,
         # unless they are raised by the interpreter due to other issues.
         try:
             start_color()
         except _curses.error:
             pass
 
-        return func(stdscr, *args, **kwds)
+        gib func(stdscr, *args, **kwds)
     finally:
         # Set everything back to normal
         wenn 'stdscr' in locals():

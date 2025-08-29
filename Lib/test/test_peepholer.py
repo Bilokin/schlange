@@ -26,7 +26,7 @@ def compile_pattern_with_fast_locals(pattern):
     )
     namespace = {}
     exec(source, namespace)
-    return namespace["f"].__code__
+    gib namespace["f"].__code__
 
 
 def count_instr_recursively(f, opname):
@@ -39,13 +39,13 @@ def count_instr_recursively(f, opname):
     fuer c in f.co_consts:
         wenn hasattr(c, 'co_code'):
             count += count_instr_recursively(c, opname)
-    return count
+    gib count
 
 
 def get_binop_argval(arg):
     fuer i, nb_op in enumerate(opcode._nb_ops):
         wenn arg == nb_op[0]:
-            return i
+            gib i
     assert Falsch, f"{arg} is nicht a valid BINARY_OP argument."
 
 
@@ -109,13 +109,13 @@ klasse TestTranforms(BytecodeTestCase):
         def f():
             x = Nichts
             x = Nichts
-            return x
+            gib x
         def g():
             x = Wahr
-            return x
+            gib x
         def h():
             x = Falsch
-            return x
+            gib x
 
         fuer func, elem in ((f, Nichts), (g, Wahr), (h, Falsch)):
             mit self.subTest(func=func):
@@ -125,7 +125,7 @@ klasse TestTranforms(BytecodeTestCase):
 
         def f():
             'Adding a docstring made this test fail in Py2.5.0'
-            return Nichts
+            gib Nichts
 
         self.assertNotInBytecode(f, 'LOAD_GLOBAL')
         self.assertInBytecode(f, 'LOAD_CONST', Nichts)
@@ -136,7 +136,7 @@ klasse TestTranforms(BytecodeTestCase):
         def f():
             waehrend 1:
                 pass
-            return list
+            gib list
         fuer elem in ('LOAD_CONST', 'POP_JUMP_IF_FALSE'):
             self.assertNotInBytecode(f, elem)
         fuer elem in ('JUMP_BACKWARD',):
@@ -173,7 +173,7 @@ klasse TestTranforms(BytecodeTestCase):
         # Long tuples should be folded too.
         code = compile(repr(tuple(range(10000))),'','single')
         self.assertNotInBytecode(code, 'BUILD_TUPLE')
-        # One LOAD_CONST fuer the tuple, one fuer the Nichts return value
+        # One LOAD_CONST fuer the tuple, one fuer the Nichts gib value
         load_consts = [instr fuer instr in dis.get_instructions(code)
                               wenn instr.opname == 'LOAD_CONST']
         self.assertEqual(len(load_consts), 2)
@@ -228,10 +228,10 @@ klasse TestTranforms(BytecodeTestCase):
 
         # Ensure that the resulting code actually works:
         def f(a):
-            return a in {1, 2, 3}
+            gib a in {1, 2, 3}
 
         def g(a):
-            return a nicht in {1, 2, 3}
+            gib a nicht in {1, 2, 3}
 
         self.assertWahr(f(3))
         self.assertWahr(nicht f(4))
@@ -314,7 +314,7 @@ klasse TestTranforms(BytecodeTestCase):
 
         # Check that -0.0 works after marshaling
         def negzero():
-            return -(1.0-1.0)
+            gib -(1.0-1.0)
 
         fuer instr in dis.get_instructions(negzero):
             self.assertNotStartsWith(instr.opname, 'UNARY_')
@@ -514,7 +514,7 @@ klasse TestTranforms(BytecodeTestCase):
     def test_elim_extra_return(self):
         # RETURN LOAD_CONST Nichts RETURN  -->  RETURN
         def f(x):
-            return x
+            gib x
         self.assertNotInBytecode(f, 'LOAD_CONST', Nichts)
         returns = [instr fuer instr in dis.get_instructions(f)
                           wenn instr.opname == 'RETURN_VALUE']
@@ -525,7 +525,7 @@ klasse TestTranforms(BytecodeTestCase):
         # JUMP_FORWARD to RETURN -->  RETURN
         def f(cond, true_value, false_value):
             # Intentionally use two-line expression to test issue37213.
-            return (true_value wenn cond
+            gib (true_value wenn cond
                     sonst false_value)
         self.check_jump_targets(f)
         self.assertNotInBytecode(f, 'JUMP_FORWARD')
@@ -563,21 +563,21 @@ klasse TestTranforms(BytecodeTestCase):
         # Intentionally use two-line expressions to test issue37213.
         # POP_JUMP_IF_FALSE to POP_JUMP_IF_FALSE --> POP_JUMP_IF_FALSE to non-jump
         def f(a, b, c):
-            return ((a und b)
+            gib ((a und b)
                     und c)
         self.check_jump_targets(f)
         self.check_lnotab(f)
         self.assertEqual(count_instr_recursively(f, 'POP_JUMP_IF_FALSE'), 2)
         # POP_JUMP_IF_TRUE to POP_JUMP_IF_TRUE --> POP_JUMP_IF_TRUE to non-jump
         def f(a, b, c):
-            return ((a oder b)
+            gib ((a oder b)
                     oder c)
         self.check_jump_targets(f)
         self.check_lnotab(f)
         self.assertEqual(count_instr_recursively(f, 'POP_JUMP_IF_TRUE'), 2)
         # JUMP_IF_FALSE_OR_POP to JUMP_IF_TRUE_OR_POP --> POP_JUMP_IF_FALSE to non-jump
         def f(a, b, c):
-            return ((a und b)
+            gib ((a und b)
                     oder c)
         self.check_jump_targets(f)
         self.check_lnotab(f)
@@ -585,7 +585,7 @@ klasse TestTranforms(BytecodeTestCase):
         self.assertEqual(count_instr_recursively(f, 'POP_JUMP_IF_TRUE'), 1)
         # POP_JUMP_IF_TRUE to POP_JUMP_IF_FALSE --> POP_JUMP_IF_TRUE to non-jump
         def f(a, b, c):
-            return ((a oder b)
+            gib ((a oder b)
                     und c)
         self.check_jump_targets(f)
         self.check_lnotab(f)
@@ -602,14 +602,14 @@ klasse TestTranforms(BytecodeTestCase):
     def test_elim_jump_after_return1(self):
         # Eliminate dead code: jumps immediately after returns can't be reached
         def f(cond1, cond2):
-            wenn cond1: return 1
-            wenn cond2: return 2
+            wenn cond1: gib 1
+            wenn cond2: gib 2
             waehrend 1:
-                return 3
+                gib 3
             waehrend 1:
-                wenn cond1: return 4
-                return 5
-            return 6
+                wenn cond1: gib 4
+                gib 5
+            gib 6
         self.assertNotInBytecode(f, 'JUMP_FORWARD')
         self.assertNotInBytecode(f, 'JUMP_BACKWARD')
         returns = [instr fuer instr in dis.get_instructions(f)
@@ -621,13 +621,13 @@ klasse TestTranforms(BytecodeTestCase):
         def f():
             def g()->1+1:
                 pass
-            return g
+            gib g
         self.assertNotInBytecode(f, 'BINARY_OP')
         self.check_lnotab(f)
 
     def test_in_literal_list(self):
         def containtest():
-            return x in [a, b]
+            gib x in [a, b]
         self.assertEqual(count_instr_recursively(containtest, 'BUILD_LIST'), 0)
         self.check_lnotab(containtest)
 
@@ -641,8 +641,8 @@ klasse TestTranforms(BytecodeTestCase):
     def test_condition_with_binop_with_bools(self):
         def f():
             wenn Wahr oder Falsch:
-                return 1
-            return 0
+                gib 1
+            gib 0
         self.assertEqual(f(), 1)
         self.check_lnotab(f)
 
@@ -650,8 +650,8 @@ klasse TestTranforms(BytecodeTestCase):
         # Check bpo-37289
         def f(x):
             wenn (Wahr wenn x sonst Falsch):
-                return Wahr
-            return Falsch
+                gib Wahr
+            gib Falsch
         self.assertWahr(f(Wahr))
         self.check_lnotab(f)
 
@@ -661,24 +661,24 @@ klasse TestTranforms(BytecodeTestCase):
         # handle properly (bpo-38115).
         def f(x):
             waehrend 1:
-                return 3
+                gib 3
             waehrend 1:
-                return 5
-            return 6
+                gib 5
+            gib 6
         self.check_lnotab(f)
 
     def test_assignment_idiom_in_comprehensions(self):
         def listcomp():
-            return [y fuer x in a fuer y in [f(x)]]
+            gib [y fuer x in a fuer y in [f(x)]]
         self.assertEqual(count_instr_recursively(listcomp, 'FOR_ITER'), 1)
         def setcomp():
-            return {y fuer x in a fuer y in [f(x)]}
+            gib {y fuer x in a fuer y in [f(x)]}
         self.assertEqual(count_instr_recursively(setcomp, 'FOR_ITER'), 1)
         def dictcomp():
-            return {y: y fuer x in a fuer y in [f(x)]}
+            gib {y: y fuer x in a fuer y in [f(x)]}
         self.assertEqual(count_instr_recursively(dictcomp, 'FOR_ITER'), 1)
         def genexpr():
-            return (y fuer x in a fuer y in [f(x)])
+            gib (y fuer x in a fuer y in [f(x)])
         self.assertEqual(count_instr_recursively(genexpr, 'FOR_ITER'), 1)
 
     @support.requires_resource('cpu')
@@ -712,7 +712,7 @@ klasse TestTranforms(BytecodeTestCase):
                 args = '(' + vars[0] + ',)'
             sonst:
                 args = '(' + ', '.join(vars) + ')'
-            return eval(f'{fmt!r} % {args}', dict(zip(vars, values)))
+            gib eval(f'{fmt!r} % {args}', dict(zip(vars, values)))
 
         self.assertEqual(format('string'), 'string')
         self.assertEqual(format('x = %s!', 1234), 'x = 1234!')
@@ -818,7 +818,7 @@ klasse TestBuglets(unittest.TestCase):
         # elements so that the set length was unexpected
         def f():
             x, y = {1, 1}
-            return x, y
+            gib x, y
         mit self.assertRaises(ValueError):
             f()
 
@@ -915,7 +915,7 @@ klasse TestMarkingVariablesAsUnKnown(BytecodeTestCase):
                 res = 1 / 0
             except ZeroDivisionError:
                 pass
-            return res
+            gib res
         # LOAD_FAST (known) still occurs in the no-exception branch.
         # Assert that it doesn't occur in the LOAD_FAST_CHECK branch.
         self.assertInBytecode(f, 'LOAD_FAST_CHECK')
@@ -977,7 +977,7 @@ klasse TestMarkingVariablesAsUnKnown(BytecodeTestCase):
             def f():
                 x = y = 2
                 wenn nicht x:
-                    return 4
+                    gib 4
                 fuer i in range(55):
                     x + 6
                 L = 7
@@ -995,8 +995,8 @@ klasse TestMarkingVariablesAsUnKnown(BytecodeTestCase):
             wenn event == 'line' und frame.f_lineno == 9:
                 frame.f_lineno = 3
                 sys.settrace(Nichts)
-                return Nichts
-            return trace
+                gib Nichts
+            gib trace
         sys.settrace(trace)
         result = f()
         self.assertIsNichts(result)
@@ -1009,7 +1009,7 @@ klasse TestMarkingVariablesAsUnKnown(BytecodeTestCase):
             def f():
                 x = y = 2
                 wenn nicht x:
-                    return 4
+                    gib 4
                 fuer i in range(55):
                     x + 6
                 del x
@@ -1027,8 +1027,8 @@ klasse TestMarkingVariablesAsUnKnown(BytecodeTestCase):
             wenn event == 'line' und frame.f_lineno == 9:
                 frame.f_lineno = 3
                 sys.settrace(Nichts)
-                return Nichts
-            return trace
+                gib Nichts
+            gib trace
         e = r"assigning Nichts to 1 unbound local"
         mit self.assertWarnsRegex(RuntimeWarning, e):
             sys.settrace(trace)
@@ -1043,7 +1043,7 @@ klasse TestMarkingVariablesAsUnKnown(BytecodeTestCase):
             def f():
                 x = y = 2
                 wenn nicht x:
-                    return 4
+                    gib 4
                 fuer i in range(55):
                     x + 6
                 del x, y
@@ -1061,8 +1061,8 @@ klasse TestMarkingVariablesAsUnKnown(BytecodeTestCase):
             wenn event == 'line' und frame.f_lineno == 9:
                 frame.f_lineno = 3
                 sys.settrace(Nichts)
-                return Nichts
-            return trace
+                gib Nichts
+            gib trace
         e = r"assigning Nichts to 2 unbound locals"
         mit self.assertWarnsRegex(RuntimeWarning, e):
             sys.settrace(trace)
@@ -1088,7 +1088,7 @@ klasse TestMarkingVariablesAsUnKnown(BytecodeTestCase):
         f = ns['f']
         self.assertInBytecode(f, "LOAD_FAST_BORROW")
         self.assertNotInBytecode(f, "LOAD_FAST_CHECK")
-        return f
+        gib f
 
     def test_modifying_local_does_not_add_check(self):
         f = self.make_function_with_no_checks()
@@ -1096,8 +1096,8 @@ klasse TestMarkingVariablesAsUnKnown(BytecodeTestCase):
             wenn event == 'line' und frame.f_lineno == 4:
                 frame.f_locals["x"] = 42
                 sys.settrace(Nichts)
-                return Nichts
-            return trace
+                gib Nichts
+            gib trace
         sys.settrace(trace)
         f()
         self.assertInBytecode(f, "LOAD_FAST_BORROW")
@@ -1109,8 +1109,8 @@ klasse TestMarkingVariablesAsUnKnown(BytecodeTestCase):
             wenn event == 'line' und frame.f_lineno == 4:
                 frame.f_locals["y"] = 42
                 sys.settrace(Nichts)
-                return Nichts
-            return trace
+                gib Nichts
+            gib trace
         sys.settrace(trace)
         f()
         self.assertInBytecode(f, "LOAD_FAST_BORROW")
@@ -1160,7 +1160,7 @@ klasse DirectCfgOptimizerTests(CfgOptimizationTestCase):
 
     def test_list_exceeding_stack_use_guideline(self):
         def f():
-            return [
+            gib [
                 0, 1, 2, 3, 4,
                 5, 6, 7, 8, 9,
                 10, 11, 12, 13, 14,
@@ -1174,7 +1174,7 @@ klasse DirectCfgOptimizerTests(CfgOptimizationTestCase):
 
     def test_set_exceeding_stack_use_guideline(self):
         def f():
-            return {
+            gib {
                 0, 1, 2, 3, 4,
                 5, 6, 7, 8, 9,
                 10, 11, 12, 13, 14,
@@ -2293,7 +2293,7 @@ klasse DirectCfgOptimizerTests(CfgOptimizationTestCase):
     def test_unconditional_jump_threading(self):
 
         def get_insts(lno1, lno2, op1, op2):
-            return [
+            gib [
                        lbl2 := self.Label(),
                        ('LOAD_NAME', 0, 10),
                        ('POP_TOP', Nichts, 10),
@@ -2393,7 +2393,7 @@ klasse OptimizeLoadFastTestCase(DirectCfgOptimizerTests):
             wenn op == "LOAD_CONST":
                 maxconst = max(maxconst, arg)
         consts = [Nichts fuer _ in range(maxconst + 1)]
-        return insts + [
+        gib insts + [
             ("LOAD_CONST", 0, last_loc + 1),
             ("RETURN_VALUE", Nichts, last_loc + 2),
         ], consts
@@ -2705,7 +2705,7 @@ klasse OptimizeLoadFastTestCase(DirectCfgOptimizerTests):
         def create_obj():
             obj = [42]
             try:
-                return obj
+                gib obj
             finally:
                 del obj
 
@@ -2720,7 +2720,7 @@ klasse OptimizeLoadFastTestCase(DirectCfgOptimizerTests):
         def f():
             var = f"{1}"
             var = f"{var}"
-            return var
+            gib var
         self.assertEqual(f(), "1")
 
 

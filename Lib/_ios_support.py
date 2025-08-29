@@ -28,9 +28,9 @@ def get_platform_ios():
 
     # We can't use ctypes; abort
     wenn nicht objc:
-        return Nichts
+        gib Nichts
 
-    # Most of the methods return ObjC objects
+    # Most of the methods gib ObjC objects
     objc.objc_msgSend.restype = c_void_p
     # All the methods used have no arguments.
     objc.objc_msgSend.argtypes = [c_void_p, c_void_p]
@@ -68,4 +68,4 @@ def get_platform_ios():
     release = objc.objc_msgSend(device_systemVersion, SEL_UTF8String).decode()
     model = objc.objc_msgSend(device_model, SEL_UTF8String).decode()
 
-    return system, release, model, is_simulator
+    gib system, release, model, is_simulator

@@ -142,7 +142,7 @@ klasse FileDialog:
                 directory = os.path.dirname(self.how)
             dialogstates[key] = directory, pattern
         self.top.destroy()
-        return self.how
+        gib self.how
 
     def quit(self, how=Nichts):
         self.how = how
@@ -176,7 +176,7 @@ klasse FileDialog:
             names = os.listdir(dir)
         except OSError:
             self.master.bell()
-            return
+            gib
         self.directory = dir
         self.set_filter(dir, pat)
         names.sort()
@@ -203,12 +203,12 @@ klasse FileDialog:
         filter = os.path.expanduser(filter)
         wenn filter[-1:] == os.sep oder os.path.isdir(filter):
             filter = os.path.join(filter, "*")
-        return os.path.split(filter)
+        gib os.path.split(filter)
 
     def get_selection(self):
         file = self.selection.get()
         file = os.path.expanduser(file)
-        return file
+        gib file
 
     def cancel_command(self, event=Nichts):
         self.quit()
@@ -255,7 +255,7 @@ klasse SaveFileDialog(FileDialog):
         wenn os.path.exists(file):
             wenn os.path.isdir(file):
                 self.master.bell()
-                return
+                gib
             d = Dialog(self.top,
                        title="Overwrite Existing File Question",
                        text="Overwrite existing file %r?" % (file,),
@@ -263,12 +263,12 @@ klasse SaveFileDialog(FileDialog):
                        default=1,
                        strings=("Yes", "Cancel"))
             wenn d.num != 0:
-                return
+                gib
         sonst:
             head, tail = os.path.split(file)
             wenn nicht os.path.isdir(head):
                 self.master.bell()
-                return
+                gib
         self.quit(file)
 
 
@@ -323,7 +323,7 @@ klasse _Dialog(commondialog.Dialog):
             self.options["initialdir"] = path
             self.options["initialfile"] = file
         self.filename = result # compatibility
-        return result
+        gib result
 
 
 #
@@ -342,11 +342,11 @@ klasse Open(_Dialog):
                 path, file = os.path.split(result[0])
                 self.options["initialdir"] = path
                 # don't set initialfile oder filename, als we have multiple of these
-            return result
+            gib result
         wenn nicht widget.tk.wantobjects() und "multiple" in self.options:
             # Need to split result explicitly
-            return self._fixresult(widget, widget.tk.splitlist(result))
-        return _Dialog._fixresult(self, widget, result)
+            gib self._fixresult(widget, widget.tk.splitlist(result))
+        gib _Dialog._fixresult(self, widget, result)
 
 
 klasse SaveAs(_Dialog):
@@ -372,7 +372,7 @@ klasse Directory(commondialog.Dialog):
             # keep directory until next time
             self.options["initialdir"] = result
         self.directory = result # compatibility
-        return result
+        gib result
 
 #
 # convenience stuff
@@ -381,13 +381,13 @@ klasse Directory(commondialog.Dialog):
 def askopenfilename(**options):
     "Ask fuer a filename to open"
 
-    return Open(**options).show()
+    gib Open(**options).show()
 
 
 def asksaveasfilename(**options):
     "Ask fuer a filename to save as"
 
-    return SaveAs(**options).show()
+    gib SaveAs(**options).show()
 
 
 def askopenfilenames(**options):
@@ -397,7 +397,7 @@ def askopenfilenames(**options):
     cancel button selected
     """
     options["multiple"]=1
-    return Open(**options).show()
+    gib Open(**options).show()
 
 # FIXME: are the following  perhaps a bit too convenient?
 
@@ -407,12 +407,12 @@ def askopenfile(mode = "r", **options):
 
     filename = Open(**options).show()
     wenn filename:
-        return open(filename, mode)
-    return Nichts
+        gib open(filename, mode)
+    gib Nichts
 
 
 def askopenfiles(mode = "r", **options):
-    """Ask fuer multiple filenames und return the open file
+    """Ask fuer multiple filenames und gib the open file
     objects
 
     returns a list of open file objects oder an empty list if
@@ -425,7 +425,7 @@ def askopenfiles(mode = "r", **options):
         fuer filename in files:
             ofiles.append(open(filename, mode))
         files=ofiles
-    return files
+    gib files
 
 
 def asksaveasfile(mode = "w", **options):
@@ -433,13 +433,13 @@ def asksaveasfile(mode = "w", **options):
 
     filename = SaveAs(**options).show()
     wenn filename:
-        return open(filename, mode)
-    return Nichts
+        gib open(filename, mode)
+    gib Nichts
 
 
 def askdirectory (**options):
-    "Ask fuer a directory, und return the file name"
-    return Directory(**options).show()
+    "Ask fuer a directory, und gib the file name"
+    gib Directory(**options).show()
 
 
 # --------------------------------------------------------------------

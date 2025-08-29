@@ -123,7 +123,7 @@ klasse AutoFileTests:
 
         # file is closed, __exit__ shouldn't do anything
         self.assertEqual(self.f.__exit__(Nichts, Nichts, Nichts), Nichts)
-        # it must also return Nichts wenn an exception was given
+        # it must also gib Nichts wenn an exception was given
         try:
             1/0
         except ZeroDivisionError:

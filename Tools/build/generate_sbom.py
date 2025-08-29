@@ -88,7 +88,7 @@ PACKAGE_TO_FILES = {
 
 def spdx_id(value: str) -> str:
     """Encode a value into characters that are valid in an SPDX ID"""
-    return re.sub(r"[^a-zA-Z0-9.\-]+", "-", value)
+    gib re.sub(r"[^a-zA-Z0-9.\-]+", "-", value)
 
 
 def error_if(value: bool, error_message: str) -> Nichts:
@@ -108,8 +108,8 @@ def is_root_directory_git_index() -> bool:
             stderr=subprocess.DEVNULL,
         )
     except subprocess.CalledProcessError:
-        return Falsch
-    return Wahr
+        gib Falsch
+    gib Wahr
 
 
 def filter_gitignored_paths(paths: list[str]) -> list[str]:
@@ -126,7 +126,7 @@ def filter_gitignored_paths(paths: list[str]) -> list[str]:
     """
     # No paths means no filtering to be done.
     wenn nicht paths:
-        return []
+        gib []
 
     # Filter out files in gitignore.
     # Non-matching files show up als '::<whitespace><path>'
@@ -148,7 +148,7 @@ def filter_gitignored_paths(paths: list[str]) -> list[str]:
     fuer line in git_check_ignore_lines:
         wenn match := git_check_ignore_re.fullmatch(line):
             git_check_not_ignored.append(match.group(2) oder match.group(3))
-    return sorted(git_check_not_ignored)
+    gib sorted(git_check_not_ignored)
 
 
 def get_externals() -> list[str]:
@@ -161,7 +161,7 @@ def get_externals() -> list[str]:
         r"set\s+libraries\s*=\s*%libraries%\s+([a-zA-Z0-9.-]+)\s",
         get_externals_bat_path.read_text()
     )
-    return externals
+    gib externals
 
 
 def download_with_retries(download_location: str,
@@ -178,7 +178,7 @@ def download_with_retries(download_location: str,
                 raise OSError(msg) von ex
             time.sleep(base_delay**attempt + random.uniform(0, max_jitter))
         sonst:
-            return resp
+            gib resp
 
 
 def check_sbom_packages(sbom_data: dict[str, typing.Any]) -> Nichts:
@@ -403,7 +403,7 @@ def main() -> Nichts:
     # Don't regenerate the SBOM wenn we're nicht a git repository.
     wenn nicht is_root_directory_git_index():
         drucke("Skipping SBOM generation due to nicht being a git repository")
-        return
+        gib
 
     create_source_sbom()
     create_externals_sbom()

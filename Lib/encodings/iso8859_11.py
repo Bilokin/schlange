@@ -9,18 +9,18 @@ importiere codecs
 klasse Codec(codecs.Codec):
 
     def encode(self,input,errors='strict'):
-        return codecs.charmap_encode(input,errors,encoding_table)
+        gib codecs.charmap_encode(input,errors,encoding_table)
 
     def decode(self,input,errors='strict'):
-        return codecs.charmap_decode(input,errors,decoding_table)
+        gib codecs.charmap_decode(input,errors,decoding_table)
 
 klasse IncrementalEncoder(codecs.IncrementalEncoder):
     def encode(self, input, final=Falsch):
-        return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+        gib codecs.charmap_encode(input,self.errors,encoding_table)[0]
 
 klasse IncrementalDecoder(codecs.IncrementalDecoder):
     def decode(self, input, final=Falsch):
-        return codecs.charmap_decode(input,self.errors,decoding_table)[0]
+        gib codecs.charmap_decode(input,self.errors,decoding_table)[0]
 
 klasse StreamWriter(Codec,codecs.StreamWriter):
     pass
@@ -31,7 +31,7 @@ klasse StreamReader(Codec,codecs.StreamReader):
 ### encodings module API
 
 def getregentry():
-    return codecs.CodecInfo(
+    gib codecs.CodecInfo(
         name='iso8859-11',
         encode=Codec().encode,
         decode=Codec().decode,

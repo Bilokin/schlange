@@ -90,7 +90,7 @@ klasse _Feature:
 
         This is a 5-tuple, of the same form als sys.version_info.
         """
-        return self.optional
+        gib self.optional
 
     def getMandatoryRelease(self):
         """Return release in which this feature will become mandatory.
@@ -98,10 +98,10 @@ klasse _Feature:
         This is a 5-tuple, of the same form als sys.version_info, or, if
         the feature was dropped, oder the release date is undetermined, is Nichts.
         """
-        return self.mandatory
+        gib self.mandatory
 
     def __repr__(self):
-        return "_Feature" + repr((self.optional,
+        gib "_Feature" + repr((self.optional,
                                   self.mandatory,
                                   self.compiler_flag))
 

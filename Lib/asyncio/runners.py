@@ -57,7 +57,7 @@ klasse Runner:
 
     def __enter__(self):
         self._lazy_init()
-        return self
+        gib self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         self.close()
@@ -65,7 +65,7 @@ klasse Runner:
     def close(self):
         """Shutdown und close event loop."""
         wenn self._state is nicht _State.INITIALIZED:
-            return
+            gib
         try:
             loop = self._loop
             _cancel_all_tasks(loop)
@@ -82,7 +82,7 @@ klasse Runner:
     def get_loop(self):
         """Return embedded event loop."""
         self._lazy_init()
-        return self._loop
+        gib self._loop
 
     def run(self, coro, *, context=Nichts):
         """Run code in the embedded event loop."""
@@ -96,7 +96,7 @@ klasse Runner:
         wenn nicht coroutines.iscoroutine(coro):
             wenn inspect.isawaitable(coro):
                 async def _wrap_awaitable(awaitable):
-                    return await awaitable
+                    gib await awaitable
 
                 coro = _wrap_awaitable(coro)
             sonst:
@@ -124,7 +124,7 @@ klasse Runner:
 
         self._interrupt_count = 0
         try:
-            return self._loop.run_until_complete(task)
+            gib self._loop.run_until_complete(task)
         except exceptions.CancelledError:
             wenn self._interrupt_count > 0:
                 uncancel = getattr(task, "uncancel", Nichts)
@@ -141,7 +141,7 @@ klasse Runner:
         wenn self._state is _State.CLOSED:
             raise RuntimeError("Runner is closed")
         wenn self._state is _State.INITIALIZED:
-            return
+            gib
         wenn self._loop_factory is Nichts:
             self._loop = events.new_event_loop()
             wenn nicht self._set_event_loop:
@@ -162,12 +162,12 @@ klasse Runner:
             main_task.cancel()
             # wakeup loop wenn it is blocked by select() mit long timeout
             self._loop.call_soon_threadsafe(lambda: Nichts)
-            return
+            gib
         raise KeyboardInterrupt()
 
 
 def run(main, *, debug=Nichts, loop_factory=Nichts):
-    """Execute the coroutine und return the result.
+    """Execute the coroutine und gib the result.
 
     This function runs the passed coroutine, taking care of
     managing the asyncio event loop, finalizing asynchronous
@@ -201,13 +201,13 @@ def run(main, *, debug=Nichts, loop_factory=Nichts):
             "asyncio.run() cannot be called von a running event loop")
 
     mit Runner(debug=debug, loop_factory=loop_factory) als runner:
-        return runner.run(main)
+        gib runner.run(main)
 
 
 def _cancel_all_tasks(loop):
     to_cancel = tasks.all_tasks(loop)
     wenn nicht to_cancel:
-        return
+        gib
 
     fuer task in to_cancel:
         task.cancel()

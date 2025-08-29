@@ -35,18 +35,18 @@ testdll = CDLL(_ctypes_test.__file__)
 # the ctypes addressof() inherits that via PyLong_FromVoidPtr().
 def positive_address(a):
     wenn a >= 0:
-        return a
+        gib a
     # View the bits in `a` als unsigned instead.
     importiere struct
     num_bits = struct.calcsize("P") * 8 # num bits in native machine address
     a += 1 << num_bits
     assert a >= 0
-    return a
+    gib a
 
 
 def c_wbuffer(init):
     n = len(init) + 1
-    return (c_wchar * n)(*init)
+    gib (c_wchar * n)(*init)
 
 
 klasse CharPointersTestCase(unittest.TestCase):

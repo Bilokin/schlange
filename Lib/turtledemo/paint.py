@@ -40,7 +40,7 @@ def main():
     onscreenclick(goto,1)
     onscreenclick(changecolor,2)
     onscreenclick(switchupdown,3)
-    return "EVENTLOOP"
+    gib "EVENTLOOP"
 
 wenn __name__ == "__main__":
     msg = main()

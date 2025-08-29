@@ -40,14 +40,14 @@ klasse EncodingTest:
                 file.write(source)
             loader = self.machinery.SourceFileLoader(self.module_name,
                                                   mapping[self.module_name])
-            return self.load(loader)
+            gib self.load(loader)
 
     def create_source(self, encoding):
         encoding_line = "# coding={0}".format(encoding)
         assert CODING_RE.match(encoding_line)
         source_lines = [encoding_line.encode('utf-8')]
         source_lines.append(self.source_line.encode(encoding))
-        return b'\n'.join(source_lines)
+        gib b'\n'.join(source_lines)
 
     def test_non_obvious_encoding(self):
         # Make sure that an encoding that has never been a standard one for
@@ -94,7 +94,7 @@ klasse EncodingTestPEP451(EncodingTest):
         module = types.ModuleType(self.module_name)
         module.__spec__ = importlib.util.spec_from_loader(self.module_name, loader)
         loader.exec_module(module)
-        return module
+        gib module
 
 
 (Frozen_EncodingTestPEP451,
@@ -107,7 +107,7 @@ klasse EncodingTestPEP302(EncodingTest):
     def load(self, loader):
         mit warnings.catch_warnings():
             warnings.simplefilter('ignore', DeprecationWarning)
-            return loader.load_module(self.module_name)
+            gib loader.load_module(self.module_name)
 
 
 (Frozen_EncodingTestPEP302,
@@ -129,7 +129,7 @@ klasse LineEndingTest:
                 file.write(source)
             loader = self.machinery.SourceFileLoader(module_name,
                                                      mapping[module_name])
-            return self.load(loader, module_name)
+            gib self.load(loader, module_name)
 
     # [cr]
     def test_cr(self):
@@ -150,7 +150,7 @@ klasse LineEndingTestPEP451(LineEndingTest):
         module = types.ModuleType(module_name)
         module.__spec__ = importlib.util.spec_from_loader(module_name, loader)
         loader.exec_module(module)
-        return module
+        gib module
 
 
 (Frozen_LineEndingTestPEP451,
@@ -163,7 +163,7 @@ klasse LineEndingTestPEP302(LineEndingTest):
     def load(self, loader, module_name):
         mit warnings.catch_warnings():
             warnings.simplefilter('ignore', DeprecationWarning)
-            return loader.load_module(module_name)
+            gib loader.load_module(module_name)
 
 
 (Frozen_LineEndingTestPEP302,

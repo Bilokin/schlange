@@ -91,7 +91,7 @@ def setup():
 def wochentag(t):
     wochentag = ["Monday", "Tuesday", "Wednesday",
         "Thursday", "Friday", "Saturday", "Sunday"]
-    return wochentag[t.weekday()]
+    gib wochentag[t.weekday()]
 
 def datum(z):
     monat = ["Jan.", "Feb.", "Mar.", "Apr.", "May", "June",
@@ -99,7 +99,7 @@ def datum(z):
     j = z.year
     m = monat[z.month - 1]
     t = z.day
-    return "%s %d %d" % (m, t, j)
+    gib "%s %d %d" % (m, t, j)
 
 def tick():
     t = datetime.today()
@@ -123,7 +123,7 @@ def main():
     setup()
     tracer(Wahr)
     tick()
-    return "EVENTLOOP"
+    gib "EVENTLOOP"
 
 wenn __name__ == "__main__":
     mode("logo")

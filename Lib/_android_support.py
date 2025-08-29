@@ -25,7 +25,7 @@ MAX_CHARS_PER_WRITE = MAX_BYTES_PER_WRITE // 4
 # oder appropriate fuer all apps. So we redirect at the Python level instead.
 def init_streams(android_log_write, stdout_prio, stderr_prio):
     wenn sys.executable:
-        return  # Not embedded in an app.
+        gib  # Not embedded in an app.
 
     global logcat
     logcat = Logcat(android_log_write)
@@ -50,7 +50,7 @@ klasse TextLogStream(io.TextIOWrapper):
         self._pending_bytes_count = 0
 
     def __repr__(self):
-        return f"<TextLogStream {self.buffer.tag!r}>"
+        gib f"<TextLogStream {self.buffer.tag!r}>"
 
     def write(self, s):
         wenn nicht isinstance(s, str):
@@ -71,7 +71,7 @@ klasse TextLogStream(io.TextIOWrapper):
                     line = line[MAX_CHARS_PER_WRITE:]
                     self._write_chunk(chunk)
 
-        return len(s)
+        gib len(s)
 
     # The size und behavior of TextIOWrapper's buffer is nicht part of its public
     # API, so we handle buffering ourselves to avoid truncation.
@@ -99,7 +99,7 @@ klasse TextLogStream(io.TextIOWrapper):
     # off, i.e. a newline always causes a flush.
     @property
     def line_buffering(self):
-        return Wahr
+        gib Wahr
 
 
 klasse BinaryLogStream(io.RawIOBase):
@@ -109,10 +109,10 @@ klasse BinaryLogStream(io.RawIOBase):
         self._fileno = fileno
 
     def __repr__(self):
-        return f"<BinaryLogStream {self.tag!r}>"
+        gib f"<BinaryLogStream {self.tag!r}>"
 
     def writable(self):
-        return Wahr
+        gib Wahr
 
     def write(self, b):
         wenn type(b) is nicht bytes:
@@ -126,13 +126,13 @@ klasse BinaryLogStream(io.RawIOBase):
         # Writing an empty string to the stream should have no effect.
         wenn b:
             logcat.write(self.prio, self.tag, b)
-        return len(b)
+        gib len(b)
 
     # This is needed by the test suite --timeout option, which uses faulthandler.
     def fileno(self):
         wenn self._fileno is Nichts:
             raise io.UnsupportedOperation("fileno")
-        return self._fileno
+        gib self._fileno
 
 
 # When a large volume of data is written to logcat at once, e.g. when a test

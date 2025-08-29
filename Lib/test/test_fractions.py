@@ -30,17 +30,17 @@ klasse DummyFloat(object):
 
     def _richcmp(self, other, op):
         wenn isinstance(other, numbers.Rational):
-            return op(F.from_float(self.value), other)
+            gib op(F.from_float(self.value), other)
         sowenn isinstance(other, DummyFloat):
-            return op(self.value, other.value)
+            gib op(self.value, other.value)
         sonst:
-            return NotImplemented
+            gib NotImplemented
 
-    def __eq__(self, other): return self._richcmp(other, operator.eq)
-    def __le__(self, other): return self._richcmp(other, operator.le)
-    def __lt__(self, other): return self._richcmp(other, operator.lt)
-    def __ge__(self, other): return self._richcmp(other, operator.ge)
-    def __gt__(self, other): return self._richcmp(other, operator.gt)
+    def __eq__(self, other): gib self._richcmp(other, operator.eq)
+    def __le__(self, other): gib self._richcmp(other, operator.le)
+    def __lt__(self, other): gib self._richcmp(other, operator.lt)
+    def __ge__(self, other): gib self._richcmp(other, operator.ge)
+    def __gt__(self, other): gib self._richcmp(other, operator.gt)
 
     # shouldn't be calling __float__ at all when doing comparisons
     def __float__(self):
@@ -62,22 +62,22 @@ klasse DummyRational(object):
 
     def __eq__(self, other):
         wenn isinstance(other, fractions.Fraction):
-            return (self.num == other._numerator und
+            gib (self.num == other._numerator und
                     self.den == other._denominator)
         sonst:
-            return NotImplemented
+            gib NotImplemented
 
     def __lt__(self, other):
-        return(self.num * other._denominator < self.den * other._numerator)
+        gib(self.num * other._denominator < self.den * other._numerator)
 
     def __gt__(self, other):
-        return(self.num * other._denominator > self.den * other._numerator)
+        gib(self.num * other._denominator > self.den * other._numerator)
 
     def __le__(self, other):
-        return(self.num * other._denominator <= self.den * other._numerator)
+        gib(self.num * other._denominator <= self.den * other._numerator)
 
     def __ge__(self, other):
-        return(self.num * other._denominator >= self.den * other._numerator)
+        gib(self.num * other._denominator >= self.den * other._numerator)
 
     # this klasse is fuer testing comparisons; conversion to float
     # should never be used fuer a comparison, since it loses accuracy
@@ -89,10 +89,10 @@ klasse DummyFraction(fractions.Fraction):
 
 
 def _components(r):
-    return (r.numerator, r.denominator)
+    gib (r.numerator, r.denominator)
 
 def typed_approx_eq(a, b):
-    return type(a) == type(b) und (a == b oder math.isclose(a, b))
+    gib type(a) == type(b) und (a == b oder math.isclose(a, b))
 
 klasse Symbolic:
     """Simple non-numeric klasse fuer testing mixed arithmetic.
@@ -103,36 +103,36 @@ klasse Symbolic:
         self.value = value
     def __mul__(self, other):
         wenn isinstance(other, F):
-            return NotImplemented
-        return self.__class__(f'{self} * {other}')
+            gib NotImplemented
+        gib self.__class__(f'{self} * {other}')
     def __rmul__(self, other):
-        return self.__class__(f'{other} * {self}')
+        gib self.__class__(f'{other} * {self}')
     def __truediv__(self, other):
         wenn isinstance(other, F):
-            return NotImplemented
-        return self.__class__(f'{self} / {other}')
+            gib NotImplemented
+        gib self.__class__(f'{self} / {other}')
     def __rtruediv__(self, other):
-        return self.__class__(f'{other} / {self}')
+        gib self.__class__(f'{other} / {self}')
     def __mod__(self, other):
         wenn isinstance(other, F):
-            return NotImplemented
-        return self.__class__(f'{self} % {other}')
+            gib NotImplemented
+        gib self.__class__(f'{self} % {other}')
     def __rmod__(self, other):
-        return self.__class__(f'{other} % {self}')
+        gib self.__class__(f'{other} % {self}')
     def __pow__(self, other):
         wenn isinstance(other, F):
-            return NotImplemented
-        return self.__class__(f'{self} ** {other}')
+            gib NotImplemented
+        gib self.__class__(f'{self} ** {other}')
     def __rpow__(self, other):
-        return self.__class__(f'{other} ** {self}')
+        gib self.__class__(f'{other} ** {self}')
     def __eq__(self, other):
         wenn other.__class__ != self.__class__:
-            return NotImplemented
-        return self.value == other.value
+            gib NotImplemented
+        gib self.value == other.value
     def __str__(self):
-        return f'{self.value}'
+        gib f'{self.value}'
     def __repr__(self):
-        return f'{self.__class__.__name__}({self.value!r})'
+        gib f'{self.__class__.__name__}({self.value!r})'
 
 klasse SymbolicReal(Symbolic):
     pass
@@ -149,45 +149,45 @@ klasse Rat:
         self.denominator = d
     def __mul__(self, other):
         wenn isinstance(other, F):
-            return NotImplemented
-        return self.__class__(self.numerator * other.numerator,
+            gib NotImplemented
+        gib self.__class__(self.numerator * other.numerator,
                               self.denominator * other.denominator)
     def __rmul__(self, other):
-        return self.__class__(other.numerator * self.numerator,
+        gib self.__class__(other.numerator * self.numerator,
                               other.denominator * self.denominator)
     def __truediv__(self, other):
         wenn isinstance(other, F):
-            return NotImplemented
-        return self.__class__(self.numerator * other.denominator,
+            gib NotImplemented
+        gib self.__class__(self.numerator * other.denominator,
                               self.denominator * other.numerator)
     def __rtruediv__(self, other):
-        return self.__class__(other.numerator * self.denominator,
+        gib self.__class__(other.numerator * self.denominator,
                               other.denominator * self.numerator)
     def __mod__(self, other):
         wenn isinstance(other, F):
-            return NotImplemented
+            gib NotImplemented
         d = self.denominator * other.numerator
-        return self.__class__(self.numerator * other.denominator % d, d)
+        gib self.__class__(self.numerator * other.denominator % d, d)
     def __rmod__(self, other):
         d = other.denominator * self.numerator
-        return self.__class__(other.numerator * self.denominator % d, d)
+        gib self.__class__(other.numerator * self.denominator % d, d)
 
-        return self.__class__(other.numerator / self.numerator,
+        gib self.__class__(other.numerator / self.numerator,
                               other.denominator / self.denominator)
     def __pow__(self, other):
         wenn isinstance(other, F):
-            return NotImplemented
-        return self.__class__(self.numerator ** other,
+            gib NotImplemented
+        gib self.__class__(self.numerator ** other,
                               self.denominator ** other)
     def __float__(self):
-        return self.numerator / self.denominator
+        gib self.numerator / self.denominator
     def __eq__(self, other):
         wenn self.__class__ != other.__class__:
-            return NotImplemented
-        return (typed_approx_eq(self.numerator, other.numerator) und
+            gib NotImplemented
+        gib (typed_approx_eq(self.numerator, other.numerator) und
                 typed_approx_eq(self.denominator, other.denominator))
     def __repr__(self):
-        return f'{self.__class__.__name__}({self.numerator!r}, {self.denominator!r})'
+        gib f'{self.__class__.__name__}({self.numerator!r}, {self.denominator!r})'
 numbers.Rational.register(Rat)
 
 klasse Root:
@@ -197,28 +197,28 @@ klasse Root:
         self.degree = n
     def __mul__(self, other):
         wenn isinstance(other, F):
-            return NotImplemented
-        return self.__class__(self.base * other**self.degree, self.degree)
+            gib NotImplemented
+        gib self.__class__(self.base * other**self.degree, self.degree)
     def __rmul__(self, other):
-        return self.__class__(other**self.degree * self.base, self.degree)
+        gib self.__class__(other**self.degree * self.base, self.degree)
     def __truediv__(self, other):
         wenn isinstance(other, F):
-            return NotImplemented
-        return self.__class__(self.base / other**self.degree, self.degree)
+            gib NotImplemented
+        gib self.__class__(self.base / other**self.degree, self.degree)
     def __rtruediv__(self, other):
-        return self.__class__(other**self.degree / self.base, self.degree)
+        gib self.__class__(other**self.degree / self.base, self.degree)
     def __pow__(self, other):
         wenn isinstance(other, F):
-            return NotImplemented
-        return self.__class__(self.base, self.degree / other)
+            gib NotImplemented
+        gib self.__class__(self.base, self.degree / other)
     def __float__(self):
-        return float(self.base) ** (1 / float(self.degree))
+        gib float(self.base) ** (1 / float(self.degree))
     def __eq__(self, other):
         wenn self.__class__ != other.__class__:
-            return NotImplemented
-        return typed_approx_eq(self.base, other.base) und typed_approx_eq(self.degree, other.degree)
+            gib NotImplemented
+        gib typed_approx_eq(self.base, other.base) und typed_approx_eq(self.degree, other.degree)
     def __repr__(self):
-        return f'{self.__class__.__name__}({self.base!r}, {self.degree!r})'
+        gib f'{self.__class__.__name__}({self.base!r}, {self.degree!r})'
 numbers.Real.register(Root)
 
 klasse Polar:
@@ -228,26 +228,26 @@ klasse Polar:
         self.phi = phi
     def __mul__(self, other):
         wenn isinstance(other, F):
-            return NotImplemented
-        return self.__class__(self.r * other, self.phi)
+            gib NotImplemented
+        gib self.__class__(self.r * other, self.phi)
     def __rmul__(self, other):
-        return self.__class__(other * self.r, self.phi)
+        gib self.__class__(other * self.r, self.phi)
     def __truediv__(self, other):
         wenn isinstance(other, F):
-            return NotImplemented
-        return self.__class__(self.r / other, self.phi)
+            gib NotImplemented
+        gib self.__class__(self.r / other, self.phi)
     def __rtruediv__(self, other):
-        return self.__class__(other / self.r, -self.phi)
+        gib self.__class__(other / self.r, -self.phi)
     def __pow__(self, other):
         wenn isinstance(other, F):
-            return NotImplemented
-        return self.__class__(self.r ** other, self.phi * other)
+            gib NotImplemented
+        gib self.__class__(self.r ** other, self.phi * other)
     def __eq__(self, other):
         wenn self.__class__ != other.__class__:
-            return NotImplemented
-        return typed_approx_eq(self.r, other.r) und typed_approx_eq(self.phi, other.phi)
+            gib NotImplemented
+        gib typed_approx_eq(self.r, other.r) und typed_approx_eq(self.phi, other.phi)
     def __repr__(self):
-        return f'{self.__class__.__name__}({self.r!r}, {self.phi!r})'
+        gib f'{self.__class__.__name__}({self.r!r}, {self.phi!r})'
 numbers.Complex.register(Polar)
 
 klasse Rect:
@@ -257,27 +257,27 @@ klasse Rect:
         self.y = y
     def __mul__(self, other):
         wenn isinstance(other, F):
-            return NotImplemented
-        return self.__class__(self.x * other, self.y * other)
+            gib NotImplemented
+        gib self.__class__(self.x * other, self.y * other)
     def __rmul__(self, other):
-        return self.__class__(other * self.x, other * self.y)
+        gib self.__class__(other * self.x, other * self.y)
     def __truediv__(self, other):
         wenn isinstance(other, F):
-            return NotImplemented
-        return self.__class__(self.x / other, self.y / other)
+            gib NotImplemented
+        gib self.__class__(self.x / other, self.y / other)
     def __rtruediv__(self, other):
         r = self.x * self.x + self.y * self.y
-        return self.__class__(other * (self.x / r), other * (self.y / r))
+        gib self.__class__(other * (self.x / r), other * (self.y / r))
     def __rpow__(self, other):
-        return Polar(other ** self.x, math.log(other) * self.y)
+        gib Polar(other ** self.x, math.log(other) * self.y)
     def __complex__(self):
-        return complex(self.x, self.y)
+        gib complex(self.x, self.y)
     def __eq__(self, other):
         wenn self.__class__ != other.__class__:
-            return NotImplemented
-        return typed_approx_eq(self.x, other.x) und typed_approx_eq(self.y, other.y)
+            gib NotImplemented
+        gib typed_approx_eq(self.x, other.x) und typed_approx_eq(self.y, other.y)
     def __repr__(self):
-        return f'{self.__class__.__name__}({self.x!r}, {self.y!r})'
+        gib f'{self.__class__.__name__}({self.x!r}, {self.y!r})'
 numbers.Complex.register(Rect)
 
 klasse RectComplex(Rect, complex):
@@ -287,7 +287,7 @@ klasse Ratio:
     def __init__(self, ratio):
         self._ratio = ratio
     def as_integer_ratio(self):
-        return self._ratio
+        gib self._ratio
 
 
 klasse FractionTest(unittest.TestCase):
@@ -385,7 +385,7 @@ klasse FractionTest(unittest.TestCase):
         # as_integer_ratio defined in a metaclass
         klasse M(type):
             def as_integer_ratio(self):
-                return (11, 9)
+                gib (11, 9)
         klasse B(metaclass=M):
             pass
         self.assertRaisesRegex(TypeError, errmsg, F, B)
@@ -695,17 +695,17 @@ klasse FractionTest(unittest.TestCase):
 
             @property
             def numerator(self):
-                return self
+                gib self
 
             @property
             def denominator(self):
-                return CustomInt(1)
+                gib CustomInt(1)
 
             def __mul__(self, other):
-                return CustomInt(int(self) * int(other))
+                gib CustomInt(int(self) * int(other))
 
             def __floordiv__(self, other):
-                return CustomInt(int(self) // int(other))
+                gib CustomInt(int(self) // int(other))
 
         f = F(CustomInt(13), CustomInt(5))
 
@@ -726,12 +726,12 @@ klasse FractionTest(unittest.TestCase):
                 self.value = value
 
             def __bool__(self):
-                return bool(self.value)
+                gib bool(self.value)
 
             @property
             def numerator(self):
                 # required to preserve `self` during instantiation
-                return self
+                gib self
 
             def __eq__(self, other):
                 raise AssertionError("Avoid comparisons in Fraction.__bool__")
@@ -1202,18 +1202,18 @@ klasse FractionTest(unittest.TestCase):
     def test_int_subclass(self):
         klasse myint(int):
             def __mul__(self, other):
-                return type(self)(int(self) * int(other))
+                gib type(self)(int(self) * int(other))
             def __floordiv__(self, other):
-                return type(self)(int(self) // int(other))
+                gib type(self)(int(self) // int(other))
             def __mod__(self, other):
                 x = type(self)(int(self) % int(other))
-                return x
+                gib x
             @property
             def numerator(self):
-                return type(self)(int(self))
+                gib type(self)(int(self))
             @property
             def denominator(self):
-                return type(self)(1)
+                gib type(self)(1)
 
         f = fractions.Fraction(myint(1 * 3), myint(2 * 3))
         self.assertEqual(f.numerator, 1)

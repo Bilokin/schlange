@@ -20,7 +20,7 @@ BOOL = ctypes.c_long
 klasse VARIANT_BOOL(ctypes._SimpleCData):
     _type_ = "v"
     def __repr__(self):
-        return "%s(%r)" % (self.__class__.__name__, self.value)
+        gib "%s(%r)" % (self.__class__.__name__, self.value)
 
 ULONG = ctypes.c_ulong
 LONG = ctypes.c_long
@@ -131,7 +131,7 @@ klasse SIZE(ctypes.Structure):
 tagSIZE = SIZEL = SIZE
 
 def RGB(red, green, blue):
-    return red + (green << 8) + (blue << 16)
+    gib red + (green << 8) + (blue << 16)
 
 klasse FILETIME(ctypes.Structure):
     _fields_ = [("dwLowDateTime", DWORD),

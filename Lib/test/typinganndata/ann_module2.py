@@ -11,7 +11,7 @@ x: float = i/10
 
 def f():
     klasse C: ...
-    return C()
+    gib C()
 
 f().new_attr: object = object()
 

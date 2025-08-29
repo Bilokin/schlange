@@ -30,7 +30,7 @@ def nonblocking(fd):
     wenn blocking:
         os.set_blocking(fd, Falsch)
     try:
-        yield
+        liefere
     finally:
         wenn blocking:
             os.set_blocking(fd, blocking)
@@ -40,12 +40,12 @@ def read_file_with_timeout(fd, nbytes, timeout):
     mit nonblocking(fd):
         end = time.time() + timeout
         try:
-            return os.read(fd, nbytes)
+            gib os.read(fd, nbytes)
         except BlockingIOError:
             pass
         waehrend time.time() < end:
             try:
-                return os.read(fd, nbytes)
+                gib os.read(fd, nbytes)
             except BlockingIOError:
                 weiter
         sonst:
@@ -58,7 +58,7 @@ wenn nicht WINDOWS:
         r, _, _ = select.select([fd], [], [], timeout)
         wenn fd nicht in r:
             raise TimeoutError('nothing to read')
-        return os.read(fd, nbytes)
+        gib os.read(fd, nbytes)
 
 
 def noop():
@@ -76,11 +76,11 @@ def read_msg(fd, timeout=10.0):
     waehrend ch != b'\0':
         msg += ch
         ch = os.read(fd, 1)
-    return msg
+    gib msg
 
 
 def get_current_name():
-    return __name__
+    gib __name__
 
 
 def fail(exctype, msg=Nichts):
@@ -89,7 +89,7 @@ def fail(exctype, msg=Nichts):
 
 def get_current_interpid(*extra):
     interpid, _ = _interpreters.get_current()
-    return (interpid, *extra)
+    gib (interpid, *extra)
 
 
 klasse InterpretersMixin(InterpreterPoolMixin):
@@ -98,7 +98,7 @@ klasse InterpretersMixin(InterpreterPoolMixin):
         r, w = os.pipe()
         self.addCleanup(lambda: os.close(r))
         self.addCleanup(lambda: os.close(w))
-        return r, w
+        gib r, w
 
 
 klasse PickleShenanigans:
@@ -108,7 +108,7 @@ klasse PickleShenanigans:
             raise RuntimeError("gotcha")
 
     def __reduce__(self):
-        return (self.__class__, (1,))
+        gib (self.__class__, (1,))
 
 
 klasse InterpreterPoolExecutorTest(
@@ -172,7 +172,7 @@ klasse InterpreterPoolExecutorTest(
                 INITIALIZER_STATUS
 
             def get_init_status():
-                return INITIALIZER_STATUS
+                gib INITIALIZER_STATUS
 
             wenn __name__ == "__main__":
                 exe = InterpreterPoolExecutor(initializer=init,
@@ -272,11 +272,11 @@ klasse InterpreterPoolExecutorTest(
     def test_submit_closure(self):
         spam = Wahr
         def task1():
-            return spam
+            gib spam
         def task2():
             nonlocal spam
             spam += 1
-            return spam
+            gib spam
 
         executor = self.executor_type()
 
@@ -301,7 +301,7 @@ klasse InterpreterPoolExecutorTest(
     def test_submit_instance_method(self):
         klasse Spam:
             def run(self):
-                return Wahr
+                gib Wahr
         spam = Spam()
 
         executor = self.executor_type()
@@ -507,7 +507,7 @@ klasse InterpreterPoolExecutorTest(
     def test_thread_name_prefix_with_thread_get_name(self):
         def get_thread_name():
             importiere _thread
-            return _thread._get_name()
+            gib _thread._get_name()
 
         # Some platforms (Linux) are using 16 bytes to store the thread name,
         # so only compare the first 15 bytes (without the trailing \n).

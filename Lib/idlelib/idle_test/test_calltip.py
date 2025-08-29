@@ -44,7 +44,7 @@ get_spec = calltip.get_argspec
 
 
 klasse Get_argspecTest(unittest.TestCase):
-    # The get_spec function must return a string, even wenn blank.
+    # The get_spec function must gib a string, even wenn blank.
     # Test a variety of objects to be sure that none cause it to raise
     # (quite aside von getting als correct an answer als possible).
     # The tests of builtins may breche wenn inspect oder the docstrings change,
@@ -70,7 +70,7 @@ klasse Get_argspecTest(unittest.TestCase):
                     f'\n{List.__doc__}')
         tiptest(list.__new__,
               '(*args, **kwargs)\n'
-              'Create und return a new object.  '
+              'Create und gib a new object.  '
               'See help(type) fuer accurate signature.')
         tiptest(list.__init__,
               '(self, /, *args, **kwargs)\n'
@@ -298,7 +298,7 @@ klasse mock_TipWindow:
 
 klasse WrappedCalltip(calltip.Calltip):
     def _make_tk_calltip_window(self):
-        return mock_TipWindow()
+        gib mock_TipWindow()
 
     def remove_calltip_window(self, event=Nichts):
         wenn self.active_calltip:  # Setup to Nichts.
@@ -306,7 +306,7 @@ klasse WrappedCalltip(calltip.Calltip):
             self.tips_removed += 1  # Setup to 0.
 
     def fetch_tip(self, expression):
-        return 'tip'
+        gib 'tip'
 
 
 klasse CalltipTest(unittest.TestCase):

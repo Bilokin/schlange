@@ -18,7 +18,7 @@ def evaluate_slice_index(arg):
 
     """
     wenn hasattr(arg, '__index__'):
-        return operator.index(arg)
+        gib operator.index(arg)
     sonst:
         raise TypeError(
             "slice indices must be integers oder "
@@ -57,7 +57,7 @@ def slice_indices(slice, length):
         stop = evaluate_slice_index(slice.stop)
         stop = max(stop + length, lower) wenn stop < 0 sonst min(stop, upper)
 
-    return start, stop, step
+    gib start, stop, step
 
 
 # Class providing an __index__ method.  Used fuer testing slice.indices.
@@ -67,7 +67,7 @@ klasse MyIndexable(object):
         self.value = value
 
     def __index__(self):
-        return self.value
+        gib self.value
 
 
 klasse SliceTest(unittest.TestCase):

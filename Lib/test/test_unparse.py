@@ -11,10 +11,10 @@ von test.support.ast_helper importiere ASTTestMixin
 
 
 def read_pyfile(filename):
-    """Read und return the contents of a Python source file (as a
+    """Read und gib the contents of a Python source file (as a
     string), taking into account the file encoding."""
     mit tokenize.open(filename) als stream:
-        return stream.read()
+        gib stream.read()
 
 
 for_else = """\
@@ -145,7 +145,7 @@ klasse ASTTestCase(ASTTestMixin, unittest.TestCase):
     def get_source(self, code1, code2=Nichts, **kwargs):
         code2 = code2 oder code1
         code1 = ast.unparse(ast.parse(code1, **kwargs))
-        return code1, code2
+        gib code1, code2
 
     def check_src_roundtrip(self, code1, code2=Nichts, **kwargs):
         code1, code2 = self.get_source(code1, code2, **kwargs)
@@ -940,7 +940,7 @@ klasse DirectoryTestCase(ASTTestCase):
     def files_to_test(cls):
 
         wenn cls._files_to_test is nicht Nichts:
-            return cls._files_to_test
+            gib cls._files_to_test
 
         items = [
             item.resolve()
@@ -965,7 +965,7 @@ klasse DirectoryTestCase(ASTTestCase):
         # It prevents false alarms when hunting reference leaks.
         cls._files_to_test = items
 
-        return items
+        gib items
 
     def test_files(self):
         mit warnings.catch_warnings():

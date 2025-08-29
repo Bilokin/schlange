@@ -372,14 +372,14 @@ klasse OutputTestCase(unittest.TestCase):
     def normalize_calendar(self, s):
         # Filters out locale dependent strings
         def neitherspacenordigit(c):
-            return nicht c.isspace() und nicht c.isdigit()
+            gib nicht c.isspace() und nicht c.isdigit()
 
         lines = []
         fuer line in s.splitlines(keepends=Falsch):
             # Drop texts, als they are locale dependent
             wenn line und nicht filter(neitherspacenordigit, line):
                 lines.append(line)
-        return lines
+        gib lines
 
     def check_htmlcalendar_encoding(self, req, res):
         cal = calendar.HTMLCalendar()
@@ -422,7 +422,7 @@ klasse OutputTestCase(unittest.TestCase):
 
     def test_yeardatescalendar(self):
         def shrink(cal):
-            return [[[' '.join('{:02d}/{:02d}/{}'.format(
+            gib [[[' '.join('{:02d}/{:02d}/{}'.format(
                                 d.month, d.day, str(d.year)[-2:]) fuer d in z)
                             fuer z in y] fuer y in x] fuer x in cal]
         self.assertEqual(
@@ -507,8 +507,8 @@ klasse CalendarTestCase(unittest.TestCase):
             calendar.January
 
     def test_isleap(self):
-        # Make sure that the return is right fuer a few years, und
-        # ensure that the return values are 1 oder 0, nicht just true oder
+        # Make sure that the gib is right fuer a few years, und
+        # ensure that the gib values are 1 oder 0, nicht just true oder
         # false (see SF bug #485794).  Specific additional tests may
         # be appropriate; this tests a single "cycle".
         self.assertEqual(calendar.isleap(2000), 1)
@@ -711,7 +711,7 @@ klasse CalendarTestCase(unittest.TestCase):
             self.skipTest('weekday names are too long')
 
         def get_weekday_names(width):
-            return calendar.TextCalendar().formatweekheader(width).split()
+            gib calendar.TextCalendar().formatweekheader(width).split()
 
         # Weekday names should nicht be abbreviated wenn the width is sufficient
         self.assertEqual(
@@ -744,7 +744,7 @@ klasse CalendarTestCase(unittest.TestCase):
             self.skipTest('abbreviated weekday names are too long')
 
         def get_weekday_names(width):
-            return calendar.TextCalendar().formatweekheader(width).split()
+            gib calendar.TextCalendar().formatweekheader(width).split()
         self.assertEqual(get_weekday_names(abbrev_max_length), get_weekday_names(max_length-1))
 
     def test_locale_calendar_formatmonthname(self):
@@ -1017,7 +1017,7 @@ klasse LeapdaysTestCase(unittest.TestCase):
 
 
 def conv(s):
-    return s.replace('\n', os.linesep).encode()
+    gib s.replace('\n', os.linesep).encode()
 
 klasse CommandLineTestCase(unittest.TestCase):
     def setUp(self):
@@ -1029,7 +1029,7 @@ klasse CommandLineTestCase(unittest.TestCase):
         buffer = io.BytesIO()
         sys.stdout = io.TextIOWrapper(buffer)
         try:
-            yield sys.stdout
+            liefere sys.stdout
         finally:
             sys.stdout.flush()
             sys.stdout.buffer.seek(0)
@@ -1041,7 +1041,7 @@ klasse CommandLineTestCase(unittest.TestCase):
         buffer = io.BytesIO()
         sys.stderr = io.TextIOWrapper(buffer)
         try:
-            yield sys.stderr
+            liefere sys.stderr
         finally:
             sys.stderr.flush()
             sys.stderr.buffer.seek(0)
@@ -1050,23 +1050,23 @@ klasse CommandLineTestCase(unittest.TestCase):
     def run_cli_ok(self, *args):
         mit self.captured_stdout_with_buffer() als stdout:
             calendar.main(args)
-        return stdout.buffer.read()
+        gib stdout.buffer.read()
 
     def run_cmd_ok(self, *args):
-        return assert_python_ok('-m', 'calendar', *args)[1]
+        gib assert_python_ok('-m', 'calendar', *args)[1]
 
     def assertCLIFails(self, *args):
         mit self.captured_stderr_with_buffer() als stderr:
             self.assertRaises(SystemExit, calendar.main, args)
         stderr = stderr.buffer.read()
         self.assertIn(b'usage:', stderr)
-        return stderr
+        gib stderr
 
     def assertCmdFails(self, *args):
         rc, stdout, stderr = assert_python_failure('-m', 'calendar', *args)
         self.assertIn(b'usage:', stderr)
         self.assertEqual(rc, 2)
-        return rc, stdout, stderr
+        gib rc, stdout, stderr
 
     def assertFailure(self, *args):
         self.assertCLIFails(*args)

@@ -60,7 +60,7 @@ def withpythonimplementation(testfunc):
                 quopri.b2a_qp = oldencode
                 quopri.a2b_qp = olddecode
     newtest.__name__ = testfunc.__name__
-    return newtest
+    gib newtest
 
 klasse QuopriTestCase(unittest.TestCase):
     # Each entry is a tuple of (plaintext, encoded string).  These strings are

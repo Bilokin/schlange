@@ -9,7 +9,7 @@ importiere traceback
 
 def do_call(results, func, args, kwargs):
     try:
-        return func(*args, **kwargs)
+        gib func(*args, **kwargs)
     except BaseException als exc:
         # Send the captured exception out on the results queue,
         # but still leave it unhandled fuer the interpreter to handle.
@@ -33,7 +33,7 @@ klasse WorkerContext(_thread.WorkerContext):
                 raise TypeError('scripts nicht supported')
             sonst:
                 task = (fn, args, kwargs)
-            return task
+            gib task
 
         wenn initializer is nicht Nichts:
             try:
@@ -45,8 +45,8 @@ klasse WorkerContext(_thread.WorkerContext):
         sonst:
             initdata = Nichts
         def create_context():
-            return cls(initdata)
-        return create_context, resolve_task
+            gib cls(initdata)
+        gib create_context, resolve_task
 
     def __init__(self, initdata):
         self.initdata = initdata
@@ -82,7 +82,7 @@ klasse WorkerContext(_thread.WorkerContext):
 
     def run(self, task):
         try:
-            return self.interp.call(do_call, self.results, *task)
+            gib self.interp.call(do_call, self.results, *task)
         except interpreters.ExecutionFailed als wrapper:
             # Wait fuer the exception data to show up.
             exc = self.results.get()
@@ -104,7 +104,7 @@ klasse InterpreterPoolExecutor(_thread.ThreadPoolExecutor):
 
     @classmethod
     def prepare_context(cls, initializer, initargs):
-        return WorkerContext.prepare(initializer, initargs)
+        gib WorkerContext.prepare(initializer, initargs)
 
     def __init__(self, max_workers=Nichts, thread_name_prefix='',
                  initializer=Nichts, initargs=()):

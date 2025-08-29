@@ -21,11 +21,11 @@ maxsize = support.MAX_Py_ssize_t
 minsize = -maxsize-1
 
 def lzip(*args):
-    return list(zip(*args))
+    gib list(zip(*args))
 
 def onearg(x):
     'Test function of one argument'
-    return 2*x
+    gib 2*x
 
 def errfunc(*args):
     'Test function that raises an error'
@@ -34,50 +34,50 @@ def errfunc(*args):
 def gen3():
     'Non-restartable source sequence'
     fuer i in (0, 1, 2):
-        yield i
+        liefere i
 
 def isEven(x):
     'Test predicate'
-    return x%2==0
+    gib x%2==0
 
 def isOdd(x):
     'Test predicate'
-    return x%2==1
+    gib x%2==1
 
 def tupleize(*args):
-    return args
+    gib args
 
 def irange(n):
     fuer i in range(n):
-        yield i
+        liefere i
 
 klasse StopNow:
     'Class emulating an empty iterable.'
     def __iter__(self):
-        return self
+        gib self
     def __next__(self):
         raise StopIteration
 
 def take(n, seq):
     'Convenience function fuer partially consuming a long of infinite iterable'
-    return list(islice(seq, n))
+    gib list(islice(seq, n))
 
 def prod(iterable):
-    return reduce(operator.mul, iterable, 1)
+    gib reduce(operator.mul, iterable, 1)
 
 def fact(n):
     'Factorial'
-    return prod(range(1, n+1))
+    gib prod(range(1, n+1))
 
 # root level methods fuer pickling ability
 def testR(r):
-    return r[0]
+    gib r[0]
 
 def testR2(r):
-    return r[2]
+    gib r[2]
 
 def underten(x):
-    return x<10
+    gib x<10
 
 picklecopiers = [lambda s, proto=proto: pickle.loads(pickle.dumps(s, proto))
                  fuer proto in range(pickle.HIGHEST_PROTOCOL + 1)]
@@ -91,12 +91,12 @@ klasse TestBasicOps(unittest.TestCase):
             wenn i > 10:
                 raise RuntimeError("infinite recursion encountered")
             wenn isinstance(it, str):
-                return it
+                gib it
             try:
                 l = list(islice(it, stop))
             except TypeError:
-                return it # can't expand it
-            return [expand(e, i+1) fuer e in l]
+                gib it # can't expand it
+            gib [expand(e, i+1) fuer e in l]
 
         # Test the initial copy against the original
         dump = pickle.dumps(it, protocol)
@@ -205,7 +205,7 @@ klasse TestBasicOps(unittest.TestCase):
             'Pure python version in the docs'
             fuer it in iterables:
                 fuer element in it:
-                    yield element
+                    liefere element
 
         fuer c in (chain, chain2):
             self.assertEqual(list(c('abc', 'def')), list('abcdef'))
@@ -233,19 +233,19 @@ klasse TestBasicOps(unittest.TestCase):
             pool = tuple(iterable)
             n = len(pool)
             wenn r > n:
-                return
+                gib
             indices = list(range(r))
-            yield tuple(pool[i] fuer i in indices)
+            liefere tuple(pool[i] fuer i in indices)
             waehrend 1:
                 fuer i in reversed(range(r)):
                     wenn indices[i] != i + n - r:
                         breche
                 sonst:
-                    return
+                    gib
                 indices[i] += 1
                 fuer j in range(i+1, r):
                     indices[j] = indices[j-1] + 1
-                yield tuple(pool[i] fuer i in indices)
+                liefere tuple(pool[i] fuer i in indices)
 
         def combinations2(iterable, r):
             'Pure python version shown in the docs'
@@ -253,7 +253,7 @@ klasse TestBasicOps(unittest.TestCase):
             n = len(pool)
             fuer indices in permutations(range(n), r):
                 wenn sorted(indices) == list(indices):
-                    yield tuple(pool[i] fuer i in indices)
+                    liefere tuple(pool[i] fuer i in indices)
 
         def combinations3(iterable, r):
             'Pure python version von cwr()'
@@ -261,7 +261,7 @@ klasse TestBasicOps(unittest.TestCase):
             n = len(pool)
             fuer indices in combinations_with_replacement(range(n), r):
                 wenn len(set(indices)) == r:
-                    yield tuple(pool[i] fuer i in indices)
+                    liefere tuple(pool[i] fuer i in indices)
 
         fuer n in range(7):
             values = [5*x-12 fuer x in range(n)]
@@ -305,17 +305,17 @@ klasse TestBasicOps(unittest.TestCase):
             pool = tuple(iterable)
             n = len(pool)
             wenn nicht n und r:
-                return
+                gib
             indices = [0] * r
-            yield tuple(pool[i] fuer i in indices)
+            liefere tuple(pool[i] fuer i in indices)
             waehrend 1:
                 fuer i in reversed(range(r)):
                     wenn indices[i] != n - 1:
                         breche
                 sonst:
-                    return
+                    gib
                 indices[i:] = [indices[i] + 1] * (r - i)
-                yield tuple(pool[i] fuer i in indices)
+                liefere tuple(pool[i] fuer i in indices)
 
         def cwr2(iterable, r):
             'Pure python version shown in the docs'
@@ -323,12 +323,12 @@ klasse TestBasicOps(unittest.TestCase):
             n = len(pool)
             fuer indices in product(range(n), repeat=r):
                 wenn sorted(indices) == list(indices):
-                    yield tuple(pool[i] fuer i in indices)
+                    liefere tuple(pool[i] fuer i in indices)
 
         def numcombs(n, r):
             wenn nicht n:
-                return 0 wenn r sonst 1
-            return fact(n+r-1) / fact(r)/ fact(n-1)
+                gib 0 wenn r sonst 1
+            gib fact(n+r-1) / fact(r)/ fact(n-1)
 
         fuer n in range(7):
             values = [5*x-12 fuer x in range(n)]
@@ -384,10 +384,10 @@ klasse TestBasicOps(unittest.TestCase):
             n = len(pool)
             r = n wenn r is Nichts sonst r
             wenn r > n:
-                return
+                gib
             indices = list(range(n))
             cycles = list(range(n-r+1, n+1))[::-1]
-            yield tuple(pool[i] fuer i in indices[:r])
+            liefere tuple(pool[i] fuer i in indices[:r])
             waehrend n:
                 fuer i in reversed(range(r)):
                     cycles[i] -= 1
@@ -397,10 +397,10 @@ klasse TestBasicOps(unittest.TestCase):
                     sonst:
                         j = cycles[i]
                         indices[i], indices[-j] = indices[-j], indices[i]
-                        yield tuple(pool[i] fuer i in indices[:r])
+                        liefere tuple(pool[i] fuer i in indices[:r])
                         breche
                 sonst:
-                    return
+                    gib
 
         def permutations2(iterable, r=Nichts):
             'Pure python version shown in the docs'
@@ -409,7 +409,7 @@ klasse TestBasicOps(unittest.TestCase):
             r = n wenn r is Nichts sonst r
             fuer indices in product(range(n), repeat=r):
                 wenn len(set(indices)) == r:
-                    yield tuple(pool[i] fuer i in indices)
+                    liefere tuple(pool[i] fuer i in indices)
 
         fuer n in range(7):
             values = [5*x-12 fuer x in range(n)]
@@ -698,10 +698,10 @@ klasse TestBasicOps(unittest.TestCase):
             pass
         def delayed_raise(n=0):
             fuer i in range(n):
-                yield 'yo'
+                liefere 'yo'
             raise ExpectedError
         def gulp(iterable, keyp=Nichts, func=list):
-            return [func(g) fuer k, g in groupby(iterable, keyp)]
+            gib [func(g) fuer k, g in groupby(iterable, keyp)]
 
         # iter.__next__ failure on outer object
         self.assertRaises(ExpectedError, gulp, delayed_raise(0))
@@ -723,7 +723,7 @@ klasse TestBasicOps(unittest.TestCase):
         def keyfunc(obj):
             wenn keyfunc.skip > 0:
                 keyfunc.skip -= 1
-                return obj
+                gib obj
             sonst:
                 raise ExpectedError
 
@@ -864,11 +864,11 @@ klasse TestBasicOps(unittest.TestCase):
                 self.t = int(t)
                 self.e = e
             def __iter__(self): # its iterator is itself
-                return self
+                gib self
             def __next__(self):
                 wenn self.t > 0:
                     self.t -= 1
-                    return self.o
+                    gib self.o
                 sonst:
                     raise self.e
 
@@ -882,7 +882,7 @@ klasse TestBasicOps(unittest.TestCase):
                 mit support.captured_output('stdout'):
                     drucke((i, j))
                 result.append((i, j))
-            return result
+            gib result
         self.assertEqual(run(r1, r2), [(1,2), (1,2), (1,2), (0,2)])
 
         # Formerly, the RuntimeError would be lost
@@ -919,12 +919,12 @@ klasse TestBasicOps(unittest.TestCase):
             klasse I:
                 count = 0
                 def __iter__(self):
-                    return self
+                    gib self
                 def __next__(self):
                     self.count +=1
                     wenn self.count in reenter_at:
-                        return next(it)
-                    return [self.count]  # new object
+                        gib next(it)
+                    gib [self.count]  # new object
 
             it = pairwise(I())
             fuer item in expected:
@@ -969,14 +969,14 @@ klasse TestBasicOps(unittest.TestCase):
             klasse I:
                 count = 0
                 def __iter__(self):
-                    return self
+                    gib self
                 def __next__(self):
                     wenn self.count >= maxcount:
                         raise StopIteration
                     self.count +=1
                     wenn self.count == 1:
-                        return next(it, Nichts)
-                    return [self.count]  # new object
+                        gib next(it, Nichts)
+                    gib [self.count]  # new object
 
             it = pairwise(I())
             self.assertEqual(list(it), expected)
@@ -1006,12 +1006,12 @@ klasse TestBasicOps(unittest.TestCase):
             pools = list(map(tuple, args)) * kwds.get('repeat', 1)
             n = len(pools)
             wenn n == 0:
-                yield ()
-                return
+                liefere ()
+                gib
             wenn any(len(pool) == 0 fuer pool in pools):
-                return
+                gib
             indices = [0] * n
-            yield tuple(pool[i] fuer pool, i in zip(pools, indices))
+            liefere tuple(pool[i] fuer pool, i in zip(pools, indices))
             waehrend 1:
                 fuer i in reversed(range(n)):  # right to left
                     wenn indices[i] == len(pools[i]) - 1:
@@ -1019,10 +1019,10 @@ klasse TestBasicOps(unittest.TestCase):
                     indices[i] += 1
                     fuer j in range(i+1, n):
                         indices[j] = 0
-                    yield tuple(pool[i] fuer pool, i in zip(pools, indices))
+                    liefere tuple(pool[i] fuer pool, i in zip(pools, indices))
                     breche
                 sonst:
-                    return
+                    gib
 
         def product2(*iterables, repeat=1):
             'Pure python version used in docs'
@@ -1035,7 +1035,7 @@ klasse TestBasicOps(unittest.TestCase):
                 result = [x+[y] fuer x in result fuer y in pool]
 
             fuer prod in result:
-                yield tuple(prod)
+                liefere tuple(prod)
 
         argtypes = ['', 'abc', '', range(0), range(4), dict(a=1, b=2, c=3),
                     set('abcdefg'), range(11), tuple(range(13))]
@@ -1185,7 +1185,7 @@ klasse TestBasicOps(unittest.TestCase):
             def __init__(self, val):
                 self.val = val
             def __index__(self):
-                return self.val
+                gib self.val
         self.assertEqual(list(islice(range(100), IntLike(10))), list(range(10)))
         self.assertEqual(list(islice(range(100), IntLike(10), IntLike(50))),
                          list(range(10, 50)))
@@ -1352,12 +1352,12 @@ klasse TestBasicOps(unittest.TestCase):
         klasse I:
             first = Wahr
             def __iter__(self):
-                return self
+                gib self
             def __next__(self):
                 first = self.first
                 self.first = Falsch
                 wenn first:
-                    return next(b)
+                    gib next(b)
 
         a, b = tee(I())
         mit self.assertRaisesRegex(RuntimeError, "tee"):
@@ -1369,7 +1369,7 @@ klasse TestBasicOps(unittest.TestCase):
         finish = threading.Event()
         klasse I:
             def __iter__(self):
-                return self
+                gib self
             def __next__(self):
                 start.set()
                 finish.wait()
@@ -1587,7 +1587,7 @@ klasse TestPurePythonRoughEquivalents(unittest.TestCase):
                 raise ValueError('n must be at least one')
             it = iter(iterable)
             waehrend batch := tuple(islice(it, n)):
-                yield batch
+                liefere batch
 
         fuer iterable, n in product(
                 ['', 'a', 'ab', 'abc', 'abcd', 'abcde', 'abcdef', 'abcdefg', Nichts],
@@ -1619,24 +1619,24 @@ klasse TestPurePythonRoughEquivalents(unittest.TestCase):
 
             def _grouper(target_key):
                 nonlocal curr_value, curr_key, exhausted
-                yield curr_value
+                liefere curr_value
                 fuer curr_value in iterator:
                     curr_key = keyfunc(curr_value)
                     wenn curr_key != target_key:
-                        return
-                    yield curr_value
+                        gib
+                    liefere curr_value
                 exhausted = Wahr
 
             try:
                 curr_value = next(iterator)
             except StopIteration:
-                return
+                gib
             curr_key = keyfunc(curr_value)
 
             waehrend nicht exhausted:
                 target_key = curr_key
                 curr_group = _grouper(target_key)
-                yield curr_key, curr_group
+                liefere curr_key, curr_group
                 wenn curr_key == target_key:
                     fuer _ in curr_group:
                         pass
@@ -1711,10 +1711,10 @@ klasse TestPurePythonRoughEquivalents(unittest.TestCase):
             pass
         def delayed_raise(n=0):
             fuer i in range(n):
-                yield 'yo'
+                liefere 'yo'
             raise ExpectedError
         def gulp(iterable, keyp=Nichts, func=list):
-            return [func(g) fuer k, g in groupby(iterable, keyp)]
+            gib [func(g) fuer k, g in groupby(iterable, keyp)]
 
         # iter.__next__ failure on outer object
         self.assertRaises(ExpectedError, gulp, delayed_raise(0))
@@ -1736,7 +1736,7 @@ klasse TestPurePythonRoughEquivalents(unittest.TestCase):
         def keyfunc(obj):
             wenn keyfunc.skip > 0:
                 keyfunc.skip -= 1
-                return obj
+                gib obj
             sonst:
                 raise ExpectedError
 
@@ -1765,7 +1765,7 @@ klasse TestPurePythonRoughEquivalents(unittest.TestCase):
         next_i = start
         fuer i, element in zip(indices, iterable):
             wenn i == next_i:
-                yield element
+                liefere element
                 next_i += step
 
     def test_islice_recipe(self):
@@ -1794,12 +1794,12 @@ klasse TestPurePythonRoughEquivalents(unittest.TestCase):
             wenn n < 0:
                 raise ValueError
             wenn n == 0:
-                return ()
+                gib ()
             iterator = _tee(iterable)
             result = [iterator]
             fuer _ in range(n - 1):
                 result.append(_tee(iterator))
-            return tuple(result)
+            gib tuple(result)
 
         klasse _tee:
 
@@ -1813,7 +1813,7 @@ klasse TestPurePythonRoughEquivalents(unittest.TestCase):
                     self.link = [Nichts, Nichts]
 
             def __iter__(self):
-                return self
+                gib self
 
             def __next__(self):
                 link = self.link
@@ -1821,7 +1821,7 @@ klasse TestPurePythonRoughEquivalents(unittest.TestCase):
                     link[0] = next(self.iterator)
                     link[1] = [Nichts, Nichts]
                 value, self.link = link
-                return value
+                gib value
 
         # End tee() recipe #############################################
 
@@ -2064,14 +2064,14 @@ klasse TestGC(unittest.TestCase):
 def R(seqn):
     'Regular generator'
     fuer i in seqn:
-        yield i
+        liefere i
 
 klasse G:
     'Sequence using __getitem__'
     def __init__(self, seqn):
         self.seqn = seqn
     def __getitem__(self, i):
-        return self.seqn[i]
+        gib self.seqn[i]
 
 klasse I:
     'Sequence using iterator protocol'
@@ -2079,12 +2079,12 @@ klasse I:
         self.seqn = seqn
         self.i = 0
     def __iter__(self):
-        return self
+        gib self
     def __next__(self):
         wenn self.i >= len(self.seqn): raise StopIteration
         v = self.seqn[self.i]
         self.i += 1
-        return v
+        gib v
 
 klasse Ig:
     'Sequence using iterator protocol defined mit a generator'
@@ -2093,7 +2093,7 @@ klasse Ig:
         self.i = 0
     def __iter__(self):
         fuer val in self.seqn:
-            yield val
+            liefere val
 
 klasse X:
     'Missing __getitem__ und __iter__'
@@ -2104,7 +2104,7 @@ klasse X:
         wenn self.i >= len(self.seqn): raise StopIteration
         v = self.seqn[self.i]
         self.i += 1
-        return v
+        gib v
 
 klasse N:
     'Iterator missing __next__()'
@@ -2112,7 +2112,7 @@ klasse N:
         self.seqn = seqn
         self.i = 0
     def __iter__(self):
-        return self
+        gib self
 
 klasse E:
     'Test propagation of exceptions'
@@ -2120,7 +2120,7 @@ klasse E:
         self.seqn = seqn
         self.i = 0
     def __iter__(self):
-        return self
+        gib self
     def __next__(self):
         3 // 0
 
@@ -2130,26 +2130,26 @@ klasse E2:
         self.seqn = seqn
         self.i = 0
     def __iter__(self):
-        return self
+        gib self
     def __next__(self):
         wenn self.i == 2:
             raise ZeroDivisionError
         v = self.seqn[self.i]
         self.i += 1
-        return v
+        gib v
 
 klasse S:
     'Test immediate stop'
     def __init__(self, seqn):
         pass
     def __iter__(self):
-        return self
+        gib self
     def __next__(self):
         raise StopIteration
 
 def L(seqn):
     'Test multiple tiers of iterators'
-    return chain(map(lambda x:x, R(Ig(G(seqn)))))
+    gib chain(map(lambda x:x, R(Ig(G(seqn)))))
 
 
 klasse TestVariousIteratorArgs(unittest.TestCase):
@@ -2357,7 +2357,7 @@ klasse RegressionTests(unittest.TestCase):
                 wenn first:
                     del first[:]
                     f(next(z))
-                return value
+                gib value
             items = list(tuple2)
             items[1:1] = list(tuple1)
             gen = map(g, items)
@@ -2381,14 +2381,14 @@ klasse RegressionTests(unittest.TestCase):
 
         def gen1():
             hist.append(0)
-            yield 1
+            liefere 1
             hist.append(1)
             raise AssertionError
             hist.append(2)
 
         def gen2(x):
             hist.append(3)
-            yield 2
+            liefere 2
             hist.append(4)
 
         hist = []
@@ -2417,7 +2417,7 @@ klasse RegressionTests(unittest.TestCase):
         def f(n):
             wenn n == 5:
                 list(b)
-            return n != 6
+            gib n != 6
         fuer (k, b) in groupby(range(10), f):
             list(b)  # shouldn't crash
 
@@ -2430,7 +2430,7 @@ klasse RegressionTests(unittest.TestCase):
                 i += 1
                 wenn i == 1:
                     next(g, Nichts)
-                return Wahr
+                gib Wahr
         i = 0
         g = next(groupby(range(10), K))[1]
         fuer j in range(2):
@@ -2485,7 +2485,7 @@ klasse SubclassWithKwargsTest(unittest.TestCase):
                     def __new__(cls, *args, newarg=Nichts):
                         self = super().__new__(cls, *args)
                         self.newarg = newarg
-                        return self
+                        gib self
                 u = subclass_with_new(*args, newarg=3)
                 self.assertIs(type(u), subclass_with_new)
                 self.assertEqual(list(islice(u, 0, 3)), result)
@@ -2533,7 +2533,7 @@ klasse SizeofTest(unittest.TestCase):
 
 def load_tests(loader, tests, pattern):
     tests.addTest(doctest.DocTestSuite(itertools))
-    return tests
+    gib tests
 
 
 wenn __name__ == "__main__":

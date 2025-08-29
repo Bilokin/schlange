@@ -99,7 +99,7 @@ klasse ModuleTests(unittest.TestCase):
         def f():
             foo = ModuleType("foo")
             foo.bar = 4
-            return foo
+            gib foo
         gc_collect()
         self.assertEqual(f().__dict__["bar"], 4)
 

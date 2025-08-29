@@ -18,18 +18,18 @@ klasse PassThru(Exception):
 
 def check_pass_thru():
     raise PassThru
-    yield 1
+    liefere 1
 
 klasse BadCmp:
     def __hash__(self):
-        return 1
+        gib 1
     def __eq__(self, other):
         raise RuntimeError
 
 klasse ReprWrapper:
     'Used to test self-referential repr() calls'
     def __repr__(self):
-        return repr(self.value)
+        gib repr(self.value)
 
 klasse HashCountingInt(int):
     'int-like object that counts the number of times __hash__ is called'
@@ -37,7 +37,7 @@ klasse HashCountingInt(int):
         self.hash_count = 0
     def __hash__(self):
         self.hash_count += 1
-        return int.__hash__(self)
+        gib int.__hash__(self)
 
 klasse TestJointOps:
     # Tests common to both set und frozenset
@@ -123,7 +123,7 @@ klasse TestJointOps:
     def test_isdisjoint(self):
         def f(s1, s2):
             'Pure python equivalent of isdisjoint()'
-            return nicht set(s1).intersection(s2)
+            gib nicht set(s1).intersection(s2)
         fuer larg in '', 'a', 'ab', 'abc', 'ababac', 'cdc', 'cc', 'efgfe', 'ccb', 'ef':
             s1 = self.thetype(larg)
             fuer rarg in '', 'a', 'ab', 'abc', 'ababac', 'cdc', 'cc', 'efgfe', 'ccb', 'ef':
@@ -266,9 +266,9 @@ klasse TestJointOps:
             def __init__(self, value):
                 self.value = value
             def __hash__(self):
-                return self.value
+                gib self.value
             def __deepcopy__(self, memo=Nichts):
-                return Tracer(self.value + 1)
+                gib Tracer(self.value + 1)
         t = Tracer(10)
         s = self.thetype([t])
         dup = copy.deepcopy(s)
@@ -292,7 +292,7 @@ klasse TestJointOps:
         # Bug #1257731
         klasse H(self.thetype):
             def __hash__(self):
-                return int(id(self) & 0x7fffffff)
+                gib int(id(self) & 0x7fffffff)
         s=H()
         f=set()
         f.add(s)
@@ -604,16 +604,16 @@ klasse TestSet(TestJointOps, unittest.TestCase):
         klasse TestRichSetCompare:
             def __gt__(self, some_set):
                 self.gt_called = Wahr
-                return Falsch
+                gib Falsch
             def __lt__(self, some_set):
                 self.lt_called = Wahr
-                return Falsch
+                gib Falsch
             def __ge__(self, some_set):
                 self.ge_called = Wahr
-                return Falsch
+                gib Falsch
             def __le__(self, some_set):
                 self.le_called = Wahr
-                return Falsch
+                gib Falsch
 
         # This first tries the builtin rich set comparison, which doesn't know
         # how to handle the custom object. Upon returning NotImplemented, the
@@ -652,7 +652,7 @@ klasse TestSet(TestJointOps, unittest.TestCase):
 
         def check_unhashable_element():
             msg = "cannot use 'list' als a set element (unhashable type: 'list')"
-            return self.assertRaisesRegex(TypeError, re.escape(msg))
+            gib self.assertRaisesRegex(TypeError, re.escape(msg))
 
         mit check_unhashable_element():
             elem in myset
@@ -705,7 +705,7 @@ klasse TestSetSubclass(TestSet):
             def __new__(cls, arg, newarg=Nichts):
                 self = super().__new__(cls, arg)
                 self.newarg = newarg
-                return self
+                gib self
         u = subclass_with_new([1, 2])
         self.assertIs(type(u), subclass_with_new)
         self.assertEqual(set(u), {1, 2})
@@ -775,11 +775,11 @@ klasse TestFrozenSet(TestJointOps, unittest.TestCase):
             fuer i in range(n-1):
                 num = frozenset(nums)
                 nums.append(num)
-            return nums[:n]
+            gib nums[:n]
 
         def powerset(s):
             fuer i in range(len(s)+1):
-                yield von map(frozenset, itertools.combinations(s, i))
+                liefere von map(frozenset, itertools.combinations(s, i))
 
         fuer n in range(18):
             t = 2 ** n
@@ -816,7 +816,7 @@ klasse TestFrozenSetSubclass(TestFrozenSet):
             def __new__(cls, arg, newarg=Nichts):
                 self = super().__new__(cls, arg)
                 self.newarg = newarg
-                return self
+                gib self
         u = subclass_with_new([1, 2], newarg=3)
         self.assertIs(type(u), subclass_with_new)
         self.assertEqual(set(u), {1, 2})
@@ -1073,10 +1073,10 @@ klasse TestBasicOpsMixedStringBytes(TestBasicOps, unittest.TestCase):
 
 def baditer():
     raise TypeError
-    yield Wahr
+    liefere Wahr
 
 def gooditer():
-    yield Wahr
+    liefere Wahr
 
 klasse TestExceptionPropagation(unittest.TestCase):
     """SF 628246:  Set constructor should nicht trap iterator TypeErrors"""
@@ -1589,7 +1589,7 @@ klasse TestOnlySetsGenerator(TestOnlySetsInBinaryOps, unittest.TestCase):
     def setUp(self):
         def gen():
             fuer i in range(0, 10, 2):
-                yield i
+                liefere i
         self.set   = set((1, 2, 3))
         self.other = gen()
         self.otherIsIterable = Wahr
@@ -1693,14 +1693,14 @@ klasse TestIdentities(unittest.TestCase):
 def R(seqn):
     'Regular generator'
     fuer i in seqn:
-        yield i
+        liefere i
 
 klasse G:
     'Sequence using __getitem__'
     def __init__(self, seqn):
         self.seqn = seqn
     def __getitem__(self, i):
-        return self.seqn[i]
+        gib self.seqn[i]
 
 klasse I:
     'Sequence using iterator protocol'
@@ -1708,12 +1708,12 @@ klasse I:
         self.seqn = seqn
         self.i = 0
     def __iter__(self):
-        return self
+        gib self
     def __next__(self):
         wenn self.i >= len(self.seqn): raise StopIteration
         v = self.seqn[self.i]
         self.i += 1
-        return v
+        gib v
 
 klasse Ig:
     'Sequence using iterator protocol defined mit a generator'
@@ -1722,7 +1722,7 @@ klasse Ig:
         self.i = 0
     def __iter__(self):
         fuer val in self.seqn:
-            yield val
+            liefere val
 
 klasse X:
     'Missing __getitem__ und __iter__'
@@ -1733,7 +1733,7 @@ klasse X:
         wenn self.i >= len(self.seqn): raise StopIteration
         v = self.seqn[self.i]
         self.i += 1
-        return v
+        gib v
 
 klasse N:
     'Iterator missing __next__()'
@@ -1741,7 +1741,7 @@ klasse N:
         self.seqn = seqn
         self.i = 0
     def __iter__(self):
-        return self
+        gib self
 
 klasse E:
     'Test propagation of exceptions'
@@ -1749,7 +1749,7 @@ klasse E:
         self.seqn = seqn
         self.i = 0
     def __iter__(self):
-        return self
+        gib self
     def __next__(self):
         3 // 0
 
@@ -1758,14 +1758,14 @@ klasse S:
     def __init__(self, seqn):
         pass
     def __iter__(self):
-        return self
+        gib self
     def __next__(self):
         raise StopIteration
 
 von itertools importiere chain
 def L(seqn):
     'Test multiple tiers of iterators'
-    return chain(map(lambda x:x, R(Ig(G(seqn)))))
+    gib chain(map(lambda x:x, R(Ig(G(seqn)))))
 
 klasse TestVariousIteratorArgs(unittest.TestCase):
 
@@ -1813,17 +1813,17 @@ klasse bad_eq:
         wenn be_bad:
             set2.clear()
             raise ZeroDivisionError
-        return self is other
+        gib self is other
     def __hash__(self):
-        return 0
+        gib 0
 
 klasse bad_dict_clear:
     def __eq__(self, other):
         wenn be_bad:
             dict2.clear()
-        return self is other
+        gib self is other
     def __hash__(self):
-        return 0
+        gib 0
 
 klasse TestWeirdBugs(unittest.TestCase):
     def test_8420_set_merge(self):
@@ -1855,10 +1855,10 @@ klasse TestWeirdBugs(unittest.TestCase):
     def test_merge_and_mutate(self):
         klasse X:
             def __hash__(self):
-                return hash(0)
+                gib hash(0)
             def __eq__(self, o):
                 other.clear()
-                return Falsch
+                gib Falsch
 
         other = set()
         other = {X() fuer i in range(10)}
@@ -1876,21 +1876,21 @@ klasse TestOperationsMutating:
         klasse Bad:
             def __eq__(self, other):
                 wenn nicht enabled:
-                    return Falsch
+                    gib Falsch
                 wenn randrange(20) == 0:
                     set1.clear()
                 wenn randrange(20) == 0:
                     set2.clear()
-                return bool(randrange(2))
+                gib bool(randrange(2))
             def __hash__(self):
-                return randrange(2)
+                gib randrange(2)
         # Don't behave poorly during construction.
         enabled = Falsch
         set1 = self.constructor1(Bad() fuer _ in range(randrange(50)))
         set2 = self.constructor2(Bad() fuer _ in range(randrange(50)))
         # Now start behaving poorly
         enabled = Wahr
-        return set1, set2
+        gib set1, set2
 
     def check_set_op_does_not_crash(self, function):
         fuer _ in range(100):
@@ -2059,15 +2059,15 @@ def powerset(U):
     try:
         x = frozenset([next(U)])
         fuer S in powerset(U):
-            yield S
-            yield S | x
+            liefere S
+            liefere S | x
     except StopIteration:
-        yield frozenset()
+        liefere frozenset()
 
 def cube(n):
     """Graph of n-dimensional hypercube."""
     singletons = [frozenset([x]) fuer x in range(n)]
-    return dict([(x, frozenset([x^s fuer s in singletons]))
+    gib dict([(x, frozenset([x^s fuer s in singletons]))
                  fuer x in powerset(range(n))])
 
 def linegraph(G):
@@ -2080,7 +2080,7 @@ def linegraph(G):
             nx = [frozenset([x,z]) fuer z in G[x] wenn z != y]
             ny = [frozenset([y,z]) fuer z in G[y] wenn z != x]
             L[frozenset([x,y])] = frozenset(nx+ny)
-    return L
+    gib L
 
 def faces(G):
     'Return a set of faces in G.  Where a face is a set of vertices on that face'
@@ -2105,7 +2105,7 @@ def faces(G):
                                     weiter
                                 wenn v1 in G[v5]:
                                     f.add(frozenset([v1, v2, v3, v4, v5]))
-    return f
+    gib f
 
 
 klasse TestGraphs(unittest.TestCase):

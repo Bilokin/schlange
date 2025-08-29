@@ -31,7 +31,7 @@ klasse TestBase(unittest.TestCase):
 klasse TestVariable(TestBase):
 
     def info_exists(self, *args):
-        return self.root.getboolean(self.root.call("info", "exists", *args))
+        gib self.root.getboolean(self.root.call("info", "exists", *args))
 
     def test_default(self):
         v = Variable(self.root)

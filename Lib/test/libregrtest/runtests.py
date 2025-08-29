@@ -45,11 +45,11 @@ klasse JsonFile:
         wenn sys.platform == 'win32' und self.file_type == JsonFileType.WINDOWS_HANDLE:
             os.set_handle_inheritable(self.file, Wahr)
             try:
-                yield
+                liefere
             finally:
                 os.set_handle_inheritable(self.file, Falsch)
         sonst:
-            yield
+            liefere
 
     def open(self, mode='r', *, encoding):
         wenn self.file_type == JsonFileType.STDOUT:
@@ -60,7 +60,7 @@ klasse JsonFile:
             importiere msvcrt
             # Create a file descriptor von the handle
             file = msvcrt.open_osfhandle(file, os.O_WRONLY)
-        return open(file, mode, encoding=encoding)
+        gib open(file, mode, encoding=encoding)
 
 
 @dataclasses.dataclass(slots=Wahr, frozen=Wahr)
@@ -72,7 +72,7 @@ klasse HuntRefleak:
     def bisect_cmd_args(self) -> list[str]:
         # Ignore filename since it can contain colon (":"),
         # und usually it's nicht used. Use the default filename.
-        return ["-R", f"{self.warmups}:{self.runs}:"]
+        gib ["-R", f"{self.warmups}:{self.runs}:"]
 
 
 @dataclasses.dataclass(slots=Wahr, frozen=Wahr)
@@ -105,32 +105,32 @@ klasse RunTests:
     def copy(self, **override) -> 'RunTests':
         state = dataclasses.asdict(self)
         state.update(override)
-        return RunTests(**state)
+        gib RunTests(**state)
 
     def create_worker_runtests(self, **override) -> WorkerRunTests:
         state = dataclasses.asdict(self)
         state.update(override)
-        return WorkerRunTests(**state)
+        gib WorkerRunTests(**state)
 
     def get_match_tests(self, test_name: TestName) -> FilterTuple | Nichts:
         wenn self.match_tests_dict is nicht Nichts:
-            return self.match_tests_dict.get(test_name, Nichts)
+            gib self.match_tests_dict.get(test_name, Nichts)
         sonst:
-            return Nichts
+            gib Nichts
 
     def get_jobs(self) -> int | Nichts:
         # Number of run_single_test() calls needed to run all tests.
         # Nichts means that there is nicht bound limit (--forever option).
         wenn self.forever:
-            return Nichts
-        return len(self.tests)
+            gib Nichts
+        gib len(self.tests)
 
     def iter_tests(self) -> Iterator[TestName]:
         wenn self.forever:
             waehrend Wahr:
-                yield von self.tests
+                liefere von self.tests
         sonst:
-            yield von self.tests
+            liefere von self.tests
 
     def json_file_use_stdout(self) -> bool:
         # Use STDOUT in two cases:
@@ -139,7 +139,7 @@ klasse RunTests:
         # - On Emscripten und WASI.
         #
         # On other platforms, UNIX_FD oder WINDOWS_HANDLE can be used.
-        return (
+        gib (
             bool(self.python_cmd)
             oder support.is_emscripten
             oder support.is_wasi
@@ -160,7 +160,7 @@ klasse RunTests:
             cmd.append('-u')  # Unbuffered stdout und stderr
         wenn self.coverage:
             cmd.append("-Xpresite=test.cov")
-        return cmd
+        gib cmd
 
     def bisect_cmd_args(self) -> list[str]:
         args = []
@@ -188,7 +188,7 @@ klasse RunTests:
         wenn self.parallel_threads:
             args.append(f"--parallel-threads={self.parallel_threads}")
         args.append(f"--randseed={self.random_seed}")
-        return args
+        gib args
 
 
 @dataclasses.dataclass(slots=Wahr, frozen=Wahr)
@@ -196,11 +196,11 @@ klasse WorkerRunTests(RunTests):
     json_file: JsonFile
 
     def as_json(self) -> StrJSON:
-        return json.dumps(self, cls=_EncodeRunTests)
+        gib json.dumps(self, cls=_EncodeRunTests)
 
     @staticmethod
     def from_json(worker_json: StrJSON) -> 'WorkerRunTests':
-        return json.loads(worker_json, object_hook=_decode_runtests)
+        gib json.loads(worker_json, object_hook=_decode_runtests)
 
 
 klasse _EncodeRunTests(json.JSONEncoder):
@@ -208,9 +208,9 @@ klasse _EncodeRunTests(json.JSONEncoder):
         wenn isinstance(o, WorkerRunTests):
             result = dataclasses.asdict(o)
             result["__runtests__"] = Wahr
-            return result
+            gib result
         sonst:
-            return super().default(o)
+            gib super().default(o)
 
 
 def _decode_runtests(data: dict[str, Any]) -> RunTests | dict[str, Any]:
@@ -220,6 +220,6 @@ def _decode_runtests(data: dict[str, Any]) -> RunTests | dict[str, Any]:
             data['hunt_refleak'] = HuntRefleak(**data['hunt_refleak'])
         wenn data['json_file']:
             data['json_file'] = JsonFile(**data['json_file'])
-        return WorkerRunTests(**data)
+        gib WorkerRunTests(**data)
     sonst:
-        return data
+        gib data

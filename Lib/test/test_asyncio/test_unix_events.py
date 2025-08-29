@@ -37,20 +37,20 @@ MOCK_ANY = mock.ANY
 
 
 def EXITCODE(exitcode):
-    return 32768 + exitcode
+    gib 32768 + exitcode
 
 
 def SIGNAL(signum):
     wenn nicht 1 <= signum <= 68:
         raise AssertionError(f'invalid signum {signum}')
-    return 32768 - signum
+    gib 32768 - signum
 
 
 def close_pipe_transport(transport):
     # Don't call transport.close() because the event loop und the selector
     # are mocked
     wenn transport._pipe is Nichts:
-        return
+        gib
     transport._pipe.close()
     transport._pipe = Nichts
 
@@ -504,10 +504,10 @@ klasse SelectorEventLoopUnixSockSendfileTests(test_utils.TestCase):
         sock.setsockopt(socket.SOL_SOCKET, socket.SO_RCVBUF, 1024)
         wenn cleanup:
             self.addCleanup(sock.close)
-        return sock
+        gib sock
 
     def run_loop(self, coro):
-        return self.loop.run_until_complete(coro)
+        gib self.loop.run_until_complete(coro)
 
     def prepare(self):
         sock = self.make_socket()
@@ -529,7 +529,7 @@ klasse SelectorEventLoopUnixSockSendfileTests(test_utils.TestCase):
 
         self.addCleanup(cleanup)
 
-        return sock, proto
+        gib sock, proto
 
     def test_sock_sendfile_not_available(self):
         sock, proto = self.prepare()
@@ -681,7 +681,7 @@ klasse UnixReadPipeTransportTests(test_utils.TestCase):
                                                        self.protocol,
                                                        waiter=waiter)
         self.addCleanup(close_pipe_transport, transport)
-        return transport
+        gib transport
 
     def test_ctor(self):
         waiter = self.loop.create_future()
@@ -858,7 +858,7 @@ klasse UnixWritePipeTransportTests(test_utils.TestCase):
                                                         self.protocol,
                                                         waiter=waiter)
         self.addCleanup(close_pipe_transport, transport)
-        return transport
+        gib transport
 
     def test_ctor(self):
         waiter = self.loop.create_future()
@@ -1121,7 +1121,7 @@ klasse TestFunctional(unittest.TestCase):
 
     def test_add_reader_invalid_argument(self):
         def assert_raises():
-            return self.assertRaisesRegex(ValueError, r'Invalid file object')
+            gib self.assertRaisesRegex(ValueError, r'Invalid file object')
 
         cb = lambda: Nichts
 
@@ -1137,7 +1137,7 @@ klasse TestFunctional(unittest.TestCase):
 
     def test_add_reader_or_writer_transport_fd(self):
         def assert_raises():
-            return self.assertRaisesRegex(
+            gib self.assertRaisesRegex(
                 RuntimeError,
                 r'File descriptor .* is used by transport')
 
@@ -1244,7 +1244,7 @@ klasse TestFork(unittest.IsolatedAsyncioTestCase):
 
             async def func():
                 await asyncio.sleep(0.1)
-                return 42
+                gib 42
 
             # Test parent's loop is still functional
             self.assertEqual(await asyncio.create_task(func()), 42)

@@ -40,21 +40,21 @@ klasse MyIndex:
         self.value = value
 
     def __index__(self):
-        return self.value
+        gib self.value
 
 klasse MyInt:
     def __init__(self, value):
         self.value = value
 
     def __int__(self):
-        return self.value
+        gib self.value
 
 klasse FloatLike:
     def __init__(self, value):
         self.value = value
 
     def __float__(self):
-        return self.value
+        gib self.value
 
 
 klasse GeneralFloatCases(unittest.TestCase):
@@ -208,24 +208,24 @@ klasse GeneralFloatCases(unittest.TestCase):
         # Make sure that calls to __float__() work properly
         klasse Foo2(float):
             def __float__(self):
-                return 42.
+                gib 42.
 
         klasse Foo3(float):
             def __new__(cls, value=0.):
-                return float.__new__(cls, 2*value)
+                gib float.__new__(cls, 2*value)
 
             def __float__(self):
-                return self
+                gib self
 
         klasse Foo4(float):
             def __float__(self):
-                return 42
+                gib 42
 
         # Issue 5759: __float__ nicht called on str subclasses (though it is on
         # unicode subclasses).
         klasse FooStr(str):
             def __float__(self):
-                return float(str(self)) + 1
+                gib float(str(self)) + 1
 
         self.assertEqual(float(FloatLike(42.)), 42.)
         self.assertEqual(float(Foo2()), 42.)
@@ -276,7 +276,7 @@ klasse GeneralFloatCases(unittest.TestCase):
             def __new__(cls, arg, newarg=Nichts):
                 self = super().__new__(cls, arg)
                 self.newarg = newarg
-                return self
+                gib self
         u = subclass_with_new(2.5, newarg=3)
         self.assertIs(type(u), subclass_with_new)
         self.assertEqual(float(u), 2.5)
@@ -645,7 +645,7 @@ klasse GeneralFloatCases(unittest.TestCase):
         self.assertEqual(hash(value), object.__hash__(value))
         klasse H:
             def __hash__(self):
-                return 42
+                gib 42
         klasse F(float, H):
             pass
         value = F('nan')
@@ -1542,7 +1542,7 @@ klasse HexFloatTestCase(FloatsAreIdenticalMixin, unittest.TestCase):
 
     def test_roundtrip(self):
         def roundtrip(x):
-            return fromHex(toHex(x))
+            gib fromHex(toHex(x))
 
         fuer x in [NAN, INF, self.MAX, self.MIN, self.MIN-self.TINY, self.TINY, 0.0]:
             self.identical(x, roundtrip(x))
@@ -1564,7 +1564,7 @@ klasse HexFloatTestCase(FloatsAreIdenticalMixin, unittest.TestCase):
     def test_subclass(self):
         klasse F(float):
             def __new__(cls, value):
-                return float.__new__(cls, value + 1)
+                gib float.__new__(cls, value + 1)
 
         f = F.fromhex((1.5).hex())
         self.assertIs(type(f), F)

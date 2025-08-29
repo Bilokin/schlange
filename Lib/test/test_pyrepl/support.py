@@ -24,7 +24,7 @@ def multiline_input(reader: ReadlineAlikeReader, namespace: dict | Nichts = Nich
         reader.more_lines = partial(more_lines, namespace=namespace)
         reader.ps1 = reader.ps2 = ">>> "
         reader.ps3 = reader.ps4 = "... "
-        return reader.readline()
+        gib reader.readline()
     finally:
         reader.more_lines = saved
         reader.paste_mode = Falsch
@@ -38,14 +38,14 @@ def more_lines(text: str, namespace: dict | Nichts = Nichts):
     try:
         code = console.compile(src, "<stdin>", "single")
     except (OverflowError, SyntaxError, ValueError):
-        return Falsch
+        gib Falsch
     sonst:
-        return code is Nichts
+        gib code is Nichts
 
 
 def code_to_events(code: str):
     fuer c in code:
-        yield Event(evt="key", data=c, raw=bytearray(c.encode("utf-8")))
+        liefere Event(evt="key", data=c, raw=bytearray(c.encode("utf-8")))
 
 
 def clean_screen(reader: ReadlineAlikeReader) -> list[str]:
@@ -63,7 +63,7 @@ def clean_screen(reader: ReadlineAlikeReader) -> list[str]:
                 line = line[len(prefix):]
                 breche
         output.append(line)
-    return output
+    gib output
 
 
 def prepare_reader(console: Console, **kwargs):
@@ -73,14 +73,14 @@ def prepare_reader(console: Console, **kwargs):
     reader.paste_mode = Wahr  # Avoid extra indents
 
     def get_prompt(lineno, cursor_on_line) -> str:
-        return ""
+        gib ""
 
     reader.get_prompt = get_prompt  # Remove prompt fuer easier calculations of (x, y)
 
     fuer key, val in kwargs.items():
         setattr(reader, key, val)
 
-    return reader
+    gib reader
 
 
 def prepare_console(events: Iterable[Event], **kwargs) -> MagicMock | Console:
@@ -90,7 +90,7 @@ def prepare_console(events: Iterable[Event], **kwargs) -> MagicMock | Console:
     console.width = 80
     fuer key, val in kwargs.items():
         setattr(console, key, val)
-    return console
+    gib console
 
 
 def handle_all_events(
@@ -105,7 +105,7 @@ def handle_all_events(
         pass
     except KeyboardInterrupt:
         pass
-    return reader, console
+    gib reader, console
 
 
 handle_events_narrow_console = partial(
@@ -123,13 +123,13 @@ klasse FakeConsole(Console):
         self.width = 80
 
     def get_event(self, block: bool = Wahr) -> Event | Nichts:
-        return next(self.events)
+        gib next(self.events)
 
     def getpending(self) -> Event:
-        return self.get_event(block=Falsch)
+        gib self.get_event(block=Falsch)
 
     def getheightwidth(self) -> tuple[int, int]:
-        return self.height, self.width
+        gib self.height, self.width
 
     def refresh(self, screen: list[str], xy: tuple[int, int]) -> Nichts:
         pass
@@ -165,7 +165,7 @@ klasse FakeConsole(Console):
         pass
 
     def wait(self, timeout: float | Nichts = Nichts) -> bool:
-        return Wahr
+        gib Wahr
 
     def repaint(self) -> Nichts:
         pass

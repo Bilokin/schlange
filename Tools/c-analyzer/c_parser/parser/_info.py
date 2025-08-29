@@ -22,7 +22,7 @@ klasse TextInfo:
     def __repr__(self):
         args = (f'{a}={getattr(self, a)!r}'
                 fuer a in ['text', 'start', 'end'])
-        return f'{type(self).__name__}({", ".join(args)})'
+        gib f'{type(self).__name__}({", ".join(args)})'
 
     def add_line(self, line, lno=Nichts):
         wenn lno is Nichts:
@@ -61,25 +61,25 @@ klasse SourceInfo:
     def __repr__(self):
         args = (f'{a}={getattr(self, a)!r}'
                 fuer a in ['filename', '_current'])
-        return f'{type(self).__name__}({", ".join(args)})'
+        gib f'{type(self).__name__}({", ".join(args)})'
 
     @property
     def start(self):
         wenn self._current is Nichts:
-            return self._start
-        return self._current.start
+            gib self._start
+        gib self._current.start
 
     @property
     def end(self):
         wenn self._current is Nichts:
-            return self._start
-        return self._current.end
+            gib self._start
+        gib self._current.end
 
     @property
     def text(self):
         wenn self._current is Nichts:
-            return ''
-        return self._current.text
+            gib ''
+        gib self._current.text
 
     def nest(self, text, before, start=Nichts):
         wenn self._current is Nichts:
@@ -118,7 +118,7 @@ klasse SourceInfo:
         wenn kind und kind != 'field':
             kind = KIND._from_raw(kind)
         fileinfo = FileInfo(self.filename, self._start)
-        return ParsedItem(fileinfo, kind, parent, name, data)
+        gib ParsedItem(fileinfo, kind, parent, name, data)
 
     def done(self):
         self._set_ready()
@@ -129,12 +129,12 @@ klasse SourceInfo:
         sowenn maxlines und self.end - self.start > maxlines:
             pass
         sonst:
-            return Falsch
+            gib Falsch
 
         #if re.fullmatch(r'[^;]+\[\][ ]*=[ ]*[{]([ ]*\d+,)*([ ]*\d+,?)\s*',
         #                self._current.text):
-        #    return Falsch
-        return Wahr
+        #    gib Falsch
+        gib Wahr
 
     def _set_ready(self):
         wenn self._current is Nichts:
@@ -145,7 +145,7 @@ klasse SourceInfo:
     def _used(self):
         ready = self._ready
         self._ready = Falsch
-        return ready
+        gib ready
 
     def _clear(self, start=Nichts):
         old = self._current
@@ -157,7 +157,7 @@ klasse SourceInfo:
         wenn start is nicht Nichts:
             self._start = start
         self._set_ready()
-        return old
+        gib old
 
     def _replace(self, text, start=Nichts, *, fixnested=Falsch):
         end = self._current.end
@@ -170,7 +170,7 @@ klasse SourceInfo:
     def _add_line(self, line, lno=Nichts):
         wenn nicht line.strip():
             # We don't worry about multi-line string literals.
-            return
+            gib
         wenn self._current is Nichts:
             self._start = lno
             self._current = TextInfo(line, lno)

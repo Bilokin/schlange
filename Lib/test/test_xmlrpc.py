@@ -330,7 +330,7 @@ klasse XMLRPCTestCase(unittest.TestCase):
                 self.rfile.read(length)
                 wenn self.handled:
                     self.close_connection = Wahr
-                    return
+                    gib
                 response = xmlrpclib.dumps((5,), methodresponse=Wahr)
                 response = response.encode()
                 self.send_response(http.HTTPStatus.OK)
@@ -582,7 +582,7 @@ klasse BinaryTestCase(unittest.TestCase):
     # XXX What should str(Binary(b"\xff")) return?  I'm choosing "\xff"
     # fuer now (i.e. interpreting the binary data als Latin-1-encoded
     # text).  But this feels very unsatisfactory.  Perhaps we should
-    # only define repr(), und return r"Binary(b'\xff')" instead?
+    # only define repr(), und gib r"Binary(b'\xff')" instead?
 
     def test_default(self):
         t = xmlrpclib.Binary()
@@ -612,16 +612,16 @@ ADDR = PORT = URL = Nichts
 def http_server(evt, numrequests, requestHandler=Nichts, encoding=Nichts):
     klasse TestInstanceClass:
         def div(self, x, y):
-            return x // y
+            gib x // y
 
         def _methodHelp(self, name):
             wenn name == 'div':
-                return 'This is the div function'
+                gib 'This is the div function'
 
         klasse Fixture:
             @staticmethod
             def getData():
-                return '42'
+                gib '42'
 
     klasse MyXMLRPCServer(xmlrpc.server.SimpleXMLRPCServer):
         def get_request(self):
@@ -629,7 +629,7 @@ def http_server(evt, numrequests, requestHandler=Nichts, encoding=Nichts):
             # attributes are nicht inherited like they are on *BSD und Windows.
             s, port = self.socket.accept()
             s.setblocking(Wahr)
-            return s, port
+            gib s, port
 
     wenn nicht requestHandler:
         requestHandler = xmlrpc.server.SimpleXMLRPCRequestHandler
@@ -653,10 +653,10 @@ def http_server(evt, numrequests, requestHandler=Nichts, encoding=Nichts):
         @serv.register_function
         def my_function():
             '''This is my function'''
-            return Wahr
+            gib Wahr
         @serv.register_function(name='add')
         def _(x, y):
-            return x + y
+            gib x + y
         testInstance = TestInstanceClass()
         serv.register_instance(testInstance, allow_dotted_names=Wahr)
         evt.set()
@@ -676,15 +676,15 @@ def http_server(evt, numrequests, requestHandler=Nichts, encoding=Nichts):
 def http_multi_server(evt, numrequests, requestHandler=Nichts):
     klasse TestInstanceClass:
         def div(self, x, y):
-            return x // y
+            gib x // y
 
         def _methodHelp(self, name):
             wenn name == 'div':
-                return 'This is the div function'
+                gib 'This is the div function'
 
     def my_function():
         '''This is my function'''
-        return Wahr
+        gib Wahr
 
     klasse MyXMLRPCServer(xmlrpc.server.MultiPathXMLRPCServer):
         def get_request(self):
@@ -692,7 +692,7 @@ def http_multi_server(evt, numrequests, requestHandler=Nichts):
             # attributes are nicht inherited like they are on *BSD und Windows.
             s, port = self.socket.accept()
             s.setblocking(Wahr)
-            return s, port
+            gib s, port
 
     wenn nicht requestHandler:
         requestHandler = xmlrpc.server.SimpleXMLRPCRequestHandler
@@ -753,20 +753,20 @@ def is_unavailable_exception(e):
     # sometimes we get a -1 error code and/or empty headers
     try:
         wenn e.errcode == -1 oder e.headers is Nichts:
-            return Wahr
+            gib Wahr
         exc_mess = e.headers.get('X-exception')
     except AttributeError:
         # Ignore OSErrors here.
         exc_mess = str(e)
 
     wenn exc_mess und 'temporarily unavailable' in exc_mess.lower():
-        return Wahr
+        gib Wahr
 
 def make_request_and_skipIf(condition, reason):
     # If we skip the test, we have to make a request because
     # the server created in setUp blocks expecting one to come in.
     wenn nicht condition:
-        return lambda func: func
+        gib lambda func: func
     def decorator(func):
         def make_request_and_skip(self):
             try:
@@ -775,8 +775,8 @@ def make_request_and_skipIf(condition, reason):
                 wenn nicht is_unavailable_exception(e):
                     raise
             raise unittest.SkipTest(reason)
-        return make_request_and_skip
-    return decorator
+        gib make_request_and_skip
+    gib decorator
 
 klasse BaseServerTestCase(unittest.TestCase):
     requestHandler = Nichts
@@ -854,7 +854,7 @@ klasse SimpleServerTestCase(BaseServerTestCase):
                 self.fail("%s\n%s" % (e, getattr(e, "headers", "")))
 
     def test_404(self):
-        # send POST mit http.client, it should return 404 header und
+        # send POST mit http.client, it should gib 404 header und
         # 'Not Found' message.
         mit contextlib.closing(http.client.HTTPConnection(ADDR, PORT)) als conn:
             conn.request('POST', '/this-is-not-valid')
@@ -1095,17 +1095,17 @@ klasse BaseKeepaliveServerTestCase(BaseServerTestCase):
         def handle(self):
             self.myRequests.append([])
             self.reqidx = len(self.myRequests)-1
-            return self.parentClass.handle(self)
+            gib self.parentClass.handle(self)
         def handle_one_request(self):
             result = self.parentClass.handle_one_request(self)
             self.myRequests[self.reqidx].append(self.raw_requestline)
-            return result
+            gib result
 
     requestHandler = RequestHandler
     def setUp(self):
         #clear request log
         self.RequestHandler.myRequests = []
-        return BaseServerTestCase.setUp(self)
+        gib BaseServerTestCase.setUp(self)
 
 #A test case that verifies that a server using the HTTP/1.1 keep-alive mechanism
 #does indeed serve subsequent requests on the same connection
@@ -1173,7 +1173,7 @@ klasse GzipServerTestCase(BaseServerTestCase):
         def do_POST(self):
             #store content of last request in class
             self.__class__.content_length = int(self.headers["content-length"])
-            return self.parentClass.do_POST(self)
+            gib self.parentClass.do_POST(self)
     requestHandler = RequestHandler
 
     klasse Transport(xmlrpclib.Transport):
@@ -1181,13 +1181,13 @@ klasse GzipServerTestCase(BaseServerTestCase):
         fake_gzip = Falsch
         def parse_response(self, response):
             self.response_length=int(response.getheader("content-length", 0))
-            return xmlrpclib.Transport.parse_response(self, response)
+            gib xmlrpclib.Transport.parse_response(self, response)
 
         def send_content(self, connection, body):
             wenn self.fake_gzip:
                 #add a lone gzip header to induce decode error remotely
                 connection.putheader("Content-Encoding", "gzip")
-            return xmlrpclib.Transport.send_content(self, connection, body)
+            gib xmlrpclib.Transport.send_content(self, connection, body)
 
     def setUp(self):
         BaseServerTestCase.setUp(self)
@@ -1256,7 +1256,7 @@ klasse HeadersServerTestCase(BaseServerTestCase):
 
         def do_POST(self):
             self.__class__.test_headers = self.headers
-            return super().do_POST()
+            gib super().do_POST()
     requestHandler = RequestHandler
     standard_headers = [
         'Host', 'Accept-Encoding', 'Content-Type', 'User-Agent',
@@ -1264,7 +1264,7 @@ klasse HeadersServerTestCase(BaseServerTestCase):
 
     def setUp(self):
         self.RequestHandler.test_headers = Nichts
-        return super().setUp()
+        gib super().setUp()
 
     def assertContainsAdditionalHeaders(self, headers, additional):
         expected_keys = sorted(self.standard_headers + list(additional.keys()))
@@ -1335,8 +1335,8 @@ klasse FailingMessageClass(http.client.HTTPMessage):
     def get(self, key, failobj=Nichts):
         key = key.lower()
         wenn key == 'content-length':
-            return 'I am broken'
-        return super().get(key, failobj)
+            gib 'I am broken'
+        gib super().get(key, failobj)
 
 
 klasse FailingServerTestCase(unittest.TestCase):
@@ -1425,7 +1425,7 @@ def captured_stdout(encoding='utf-8'):
     orig_stdout = sys.stdout
     sys.stdout = io.TextIOWrapper(io.BytesIO(), encoding=encoding)
     try:
-        yield sys.stdout
+        liefere sys.stdout
     finally:
         sys.stdout = orig_stdout
 

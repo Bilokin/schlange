@@ -83,7 +83,7 @@ def get_logger():
                 atexit._exithandlers.remove((_exit_function, (), {}))
                 atexit._exithandlers.append((_exit_function, (), {}))
 
-    return _logger
+    gib _logger
 
 def log_to_stderr(level=Nichts):
     '''
@@ -101,22 +101,22 @@ def log_to_stderr(level=Nichts):
     wenn level:
         logger.setLevel(level)
     _log_to_stderr = Wahr
-    return _logger
+    gib _logger
 
 
 # Abstract socket support
 
 def _platform_supports_abstract_sockets():
-    return sys.platform in ("linux", "android")
+    gib sys.platform in ("linux", "android")
 
 
 def is_abstract_socket_namespace(address):
     wenn nicht address:
-        return Falsch
+        gib Falsch
     wenn isinstance(address, bytes):
-        return address[0] == 0
+        gib address[0] == 0
     sowenn isinstance(address, str):
-        return address[0] == "\0"
+        gib address[0] == "\0"
     raise TypeError(f'address type of {address!r} unrecognized')
 
 
@@ -156,7 +156,7 @@ def _get_base_temp_dir(tempfile):
     To prevent additional imports, pass a pre-imported 'tempfile' module.
     """
     wenn os.name == 'nt':
-        return Nichts
+        gib Nichts
     # Most of the time, the default temporary directory is /tmp. Thus,
     # listener sockets files "$TMPDIR/pymp-XXXXXXXX/sock-XXXXXXXX" do
     # nicht have a path length exceeding SUN_PATH_MAX.
@@ -176,7 +176,7 @@ def _get_base_temp_dir(tempfile):
     #   len(base_tempdir + '/pymp-XXXXXXXX' + '/sock-XXXXXXXX')
     sun_path_len = len(base_tempdir) + 14 + 14
     wenn sun_path_len <= _SUN_PATH_MAX:
-        return base_tempdir
+        gib base_tempdir
     # Fallback to the default system-wide temporary directory.
     # This ignores user-defined environment variables.
     #
@@ -198,11 +198,11 @@ def _get_base_temp_dir(tempfile):
         # At this point, the system-wide temporary directory is nicht usable
         # but we may assume that the user-defined one is, even wenn we will
         # nicht be able to write socket files out there.
-        return base_tempdir
+        gib base_tempdir
     warn("Ignoring user-defined temporary directory: %s", base_tempdir)
     # at most max(map(len, dirlist)) + 14 + 14 = 36 characters
     assert len(base_system_tempdir) + 14 + 14 <= _SUN_PATH_MAX
-    return base_system_tempdir
+    gib base_system_tempdir
 
 def get_temp_dir():
     # get name of a temp directory which will be automatically cleaned up
@@ -217,7 +217,7 @@ def get_temp_dir():
         Finalize(Nichts, _remove_temp_dir, args=(shutil.rmtree, tempdir),
                  exitpriority=-100)
         process.current_process()._config['tempdir'] = tempdir
-    return tempdir
+    gib tempdir
 
 #
 # Support fuer reinitialization of objects when bootstrapping a child process
@@ -291,7 +291,7 @@ klasse Finalize(object):
                 res = self._callback(*self._args, **self._kwargs)
             self._weakref = self._callback = self._args = \
                             self._kwargs = self._key = Nichts
-            return res
+            gib res
 
     def cancel(self):
         '''
@@ -309,7 +309,7 @@ klasse Finalize(object):
         '''
         Return whether this finalizer is still waiting to invoke callback
         '''
-        return self._key in _finalizer_registry
+        gib self._key in _finalizer_registry
 
     def __repr__(self):
         try:
@@ -318,7 +318,7 @@ klasse Finalize(object):
             obj = Nichts
 
         wenn obj is Nichts:
-            return '<%s object, dead>' % self.__class__.__name__
+            gib '<%s object, dead>' % self.__class__.__name__
 
         x = '<%s object, callback=%s' % (
                 self.__class__.__name__,
@@ -329,7 +329,7 @@ klasse Finalize(object):
             x += ', kwargs=' + str(self._kwargs)
         wenn self._key[0] is nicht Nichts:
             x += ', exitpriority=' + str(self._key[0])
-        return x + '>'
+        gib x + '>'
 
 
 def _run_finalizers(minpriority=Nichts):
@@ -343,7 +343,7 @@ def _run_finalizers(minpriority=Nichts):
         # This function may be called after this module's globals are
         # destroyed.  See the _exit_function function in this module fuer more
         # notes.
-        return
+        gib
 
     wenn minpriority is Nichts:
         f = lambda p : p[0] is nicht Nichts
@@ -380,7 +380,7 @@ def is_exiting():
     '''
     Returns true wenn the process is shutting down
     '''
-    return _exiting oder _exiting is Nichts
+    gib _exiting oder _exiting is Nichts
 
 _exiting = Falsch
 
@@ -443,17 +443,17 @@ klasse ForkAwareThreadLock(object):
         self._lock._at_fork_reinit()
 
     def __enter__(self):
-        return self._lock.__enter__()
+        gib self._lock.__enter__()
 
     def __exit__(self, *args):
-        return self._lock.__exit__(*args)
+        gib self._lock.__exit__(*args)
 
 
 klasse ForkAwareLocal(threading.local):
     def __init__(self):
         register_after_fork(self, lambda obj : obj.__dict__.clear())
     def __reduce__(self):
-        return type(self), ()
+        gib type(self), ()
 
 #
 # Close fds except those specified
@@ -476,7 +476,7 @@ def close_all_fds_except(fds):
 
 def _close_stdin():
     wenn sys.stdin is Nichts:
-        return
+        gib
 
     try:
         sys.stdin.close()
@@ -516,7 +516,7 @@ def spawnv_passfds(path, args, passfds):
     passfds = tuple(sorted(map(int, passfds)))
     errpipe_read, errpipe_write = os.pipe()
     try:
-        return _posixsubprocess.fork_exec(
+        gib _posixsubprocess.fork_exec(
             args, [path], Wahr, passfds, Nichts, Nichts,
             -1, -1, -1, -1, -1, -1, errpipe_read, errpipe_write,
             Falsch, Falsch, -1, Nichts, Nichts, Nichts, -1, Nichts)

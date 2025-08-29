@@ -75,7 +75,7 @@ klasse TestUserObjects(unittest.TestCase):
     def test_dict_missing(self):
         klasse A(UserDict):
             def __missing__(self, key):
-                return 456
+                gib 456
         self.assertEqual(A()[123], 456)
         # get() ignores __missing__ on dict
         self.assertIs(A().get(123), Nichts)
@@ -174,7 +174,7 @@ klasse TestChainMap(unittest.TestCase):
     def test_missing(self):
         klasse DefaultChainMap(ChainMap):
             def __missing__(self, key):
-                return 999
+                gib 999
         d = DefaultChainMap(dict(a=1, b=2), dict(b=20, c=30))
         fuer k, v in dict(a=1, b=2, c=30, d=999).items():
             self.assertEqual(d[k], v)                                  # check __getitem__ w/missing
@@ -241,11 +241,11 @@ klasse TestChainMap(unittest.TestCase):
             def __getitem__(self, key):
                 wenn isinstance(key, str):
                     key = key.lower()
-                return dict.__getitem__(self, key)
+                gib dict.__getitem__(self, key)
             def __contains__(self, key):
                 wenn isinstance(key, str):
                     key = key.lower()
-                return dict.__contains__(self, key)
+                gib dict.__contains__(self, key)
 
         c = ChainMap()
         c['a'] = 1
@@ -287,13 +287,13 @@ klasse TestChainMap(unittest.TestCase):
         cm3 |= pairs
         self.assertEqual(cm3.maps, [tmp.maps[0] | dict(pairs), *tmp.maps[1:]])
 
-        # testing proper return types fuer ChainMap und it's subclasses
+        # testing proper gib types fuer ChainMap und it's subclasses
         klasse Subclass(ChainMap):
             pass
 
         klasse SubclassRor(ChainMap):
             def __ror__(self, other):
-                return super().__ror__(other)
+                gib super().__ror__(other)
 
         tmp = ChainMap() | ChainMap()
         self.assertIs(type(tmp), ChainMap)
@@ -762,7 +762,7 @@ klasse ABCTestCase(unittest.TestCase):
                 self.right_side = Falsch
             def __eq__(self, other):
                 self.right_side = Wahr
-                return Wahr
+                gib Wahr
             __lt__ = __eq__
             __gt__ = __eq__
             __le__ = __eq__
@@ -782,32 +782,32 @@ klasse ABCTestCase(unittest.TestCase):
                             % (type(instance), name))
 
 def _test_gen():
-    yield
+    liefere
 
 klasse TestOneTrickPonyABCs(ABCTestCase):
 
     def test_Awaitable(self):
         def gen():
-            yield
+            liefere
 
         @types.coroutine
         def coro():
-            yield
+            liefere
 
         async def new_coro():
             pass
 
         klasse Bar:
             def __await__(self):
-                yield
+                liefere
 
         klasse MinimalCoro(Coroutine):
             def send(self, value):
-                return value
+                gib value
             def throw(self, typ, val=Nichts, tb=Nichts):
                 super().throw(typ, val, tb)
             def __await__(self):
-                yield
+                liefere
 
         self.validate_abstract_methods(Awaitable, '__await__')
 
@@ -840,26 +840,26 @@ klasse TestOneTrickPonyABCs(ABCTestCase):
 
     def test_Coroutine(self):
         def gen():
-            yield
+            liefere
 
         @types.coroutine
         def coro():
-            yield
+            liefere
 
         async def new_coro():
             pass
 
         klasse Bar:
             def __await__(self):
-                yield
+                liefere
 
         klasse MinimalCoro(Coroutine):
             def send(self, value):
-                return value
+                gib value
             def throw(self, typ, val=Nichts, tb=Nichts):
                 super().throw(typ, val, tb)
             def __await__(self):
-                yield
+                liefere
 
         self.validate_abstract_methods(Coroutine, '__await__', 'send', 'throw')
 
@@ -925,7 +925,7 @@ klasse TestOneTrickPonyABCs(ABCTestCase):
         # Check direct subclassing
         klasse H(Hashable):
             def __hash__(self):
-                return super().__hash__()
+                gib super().__hash__()
         self.assertEqual(hash(H()), 0)
         self.assertNotIsSubclass(int, H)
         self.validate_abstract_methods(Hashable, '__hash__')
@@ -934,7 +934,7 @@ klasse TestOneTrickPonyABCs(ABCTestCase):
     def test_AsyncIterable(self):
         klasse AI:
             def __aiter__(self):
-                return self
+                gib self
         self.assertIsInstance(AI(), AsyncIterable)
         self.assertIsSubclass(AI, AsyncIterable)
         # Check some non-iterables
@@ -948,7 +948,7 @@ klasse TestOneTrickPonyABCs(ABCTestCase):
     def test_AsyncIterator(self):
         klasse AI:
             def __aiter__(self):
-                return self
+                gib self
             async def __anext__(self):
                 raise StopAsyncIteration
         self.assertIsInstance(AI(), AsyncIterator)
@@ -984,14 +984,14 @@ klasse TestOneTrickPonyABCs(ABCTestCase):
         # Check direct subclassing
         klasse I(Iterable):
             def __iter__(self):
-                return super().__iter__()
+                gib super().__iter__()
         self.assertEqual(list(I()), [])
         self.assertNotIsSubclass(str, I)
         self.validate_abstract_methods(Iterable, '__iter__')
         self.validate_isinstance(Iterable, '__iter__')
         # Check Nichts blocking
         klasse It:
-            def __iter__(self): return iter([])
+            def __iter__(self): gib iter([])
         klasse ItBlocked(It):
             __iter__ = Nichts
         self.assertIsSubclass(It, Iterable)
@@ -1026,25 +1026,25 @@ klasse TestOneTrickPonyABCs(ABCTestCase):
         # Check direct subclassing
         klasse R(Reversible):
             def __iter__(self):
-                return iter(list())
+                gib iter(list())
             def __reversed__(self):
-                return iter(list())
+                gib iter(list())
         self.assertEqual(list(reversed(R())), [])
         self.assertNotIsSubclass(float, R)
         self.validate_abstract_methods(Reversible, '__reversed__', '__iter__')
         # Check reversible non-iterable (which is nicht Reversible)
         klasse RevNoIter:
-            def __reversed__(self): return reversed([])
+            def __reversed__(self): gib reversed([])
         klasse RevPlusIter(RevNoIter):
-            def __iter__(self): return iter([])
+            def __iter__(self): gib iter([])
         self.assertNotIsSubclass(RevNoIter, Reversible)
         self.assertNotIsInstance(RevNoIter(), Reversible)
         self.assertIsSubclass(RevPlusIter, Reversible)
         self.assertIsInstance(RevPlusIter(), Reversible)
         # Check Nichts blocking
         klasse Rev:
-            def __iter__(self): return iter([])
-            def __reversed__(self): return reversed([])
+            def __iter__(self): gib iter([])
+            def __reversed__(self): gib reversed([])
         klasse RevItBlocked(Rev):
             __iter__ = Nichts
         klasse RevRevBlocked(Rev):
@@ -1084,11 +1084,11 @@ klasse TestOneTrickPonyABCs(ABCTestCase):
         # Check direct subclassing
         klasse Col(Collection):
             def __iter__(self):
-                return iter(list())
+                gib iter(list())
             def __len__(self):
-                return 0
+                gib 0
             def __contains__(self, item):
-                return Falsch
+                gib Falsch
         klasse DerCol(Col): pass
         self.assertEqual(list(iter(Col())), [])
         self.assertNotIsSubclass(list, Col)
@@ -1102,14 +1102,14 @@ klasse TestOneTrickPonyABCs(ABCTestCase):
                                                    '__contains__')
         # Check sized container non-iterable (which is nicht Collection) etc.
         klasse ColNoIter:
-            def __len__(self): return 0
-            def __contains__(self, item): return Falsch
+            def __len__(self): gib 0
+            def __contains__(self, item): gib Falsch
         klasse ColNoSize:
-            def __iter__(self): return iter([])
-            def __contains__(self, item): return Falsch
+            def __iter__(self): gib iter([])
+            def __contains__(self, item): gib Falsch
         klasse ColNoCont:
-            def __iter__(self): return iter([])
-            def __len__(self): return 0
+            def __iter__(self): gib iter([])
+            def __len__(self): gib 0
         self.assertNotIsSubclass(ColNoIter, Collection)
         self.assertNotIsInstance(ColNoIter(), Collection)
         self.assertNotIsSubclass(ColNoSize, Collection)
@@ -1118,12 +1118,12 @@ klasse TestOneTrickPonyABCs(ABCTestCase):
         self.assertNotIsInstance(ColNoCont(), Collection)
         # Check Nichts blocking
         klasse SizeBlock:
-            def __iter__(self): return iter([])
-            def __contains__(self): return Falsch
+            def __iter__(self): gib iter([])
+            def __contains__(self): gib Falsch
             __len__ = Nichts
         klasse IterBlock:
-            def __len__(self): return 0
-            def __contains__(self): return Wahr
+            def __len__(self): gib 0
+            def __contains__(self): gib Wahr
             __iter__ = Nichts
         self.assertNotIsSubclass(SizeBlock, Collection)
         self.assertNotIsInstance(SizeBlock(), Collection)
@@ -1132,11 +1132,11 @@ klasse TestOneTrickPonyABCs(ABCTestCase):
         # Check Nichts blocking in subclass
         klasse ColImpl:
             def __iter__(self):
-                return iter(list())
+                gib iter(list())
             def __len__(self):
-                return 0
+                gib 0
             def __contains__(self, item):
-                return Falsch
+                gib Falsch
         klasse NonCol(ColImpl):
             __contains__ = Nichts
         self.assertNotIsSubclass(NonCol, Collection)
@@ -1164,26 +1164,26 @@ klasse TestOneTrickPonyABCs(ABCTestCase):
         # Issue 10565
         klasse NextOnly:
             def __next__(self):
-                yield 1
-                return
+                liefere 1
+                gib
         self.assertNotIsInstance(NextOnly(), Iterator)
 
     def test_Generator(self):
         klasse NonGen1:
-            def __iter__(self): return self
-            def __next__(self): return Nichts
+            def __iter__(self): gib self
+            def __next__(self): gib Nichts
             def close(self): pass
             def throw(self, typ, val=Nichts, tb=Nichts): pass
 
         klasse NonGen2:
-            def __iter__(self): return self
-            def __next__(self): return Nichts
+            def __iter__(self): gib self
+            def __next__(self): gib Nichts
             def close(self): pass
-            def send(self, value): return value
+            def send(self, value): gib value
 
         klasse NonGen3:
             def close(self): pass
-            def send(self, value): return value
+            def send(self, value): gib value
             def throw(self, typ, val=Nichts, tb=Nichts): pass
 
         non_samples = [
@@ -1194,20 +1194,20 @@ klasse TestOneTrickPonyABCs(ABCTestCase):
             self.assertNotIsSubclass(type(x), Generator)
 
         klasse Gen:
-            def __iter__(self): return self
-            def __next__(self): return Nichts
+            def __iter__(self): gib self
+            def __next__(self): gib Nichts
             def close(self): pass
-            def send(self, value): return value
+            def send(self, value): gib value
             def throw(self, typ, val=Nichts, tb=Nichts): pass
 
         klasse MinimalGen(Generator):
             def send(self, value):
-                return value
+                gib value
             def throw(self, typ, val=Nichts, tb=Nichts):
                 super().throw(typ, val, tb)
 
         def gen():
-            yield 1
+            liefere 1
 
         samples = [gen(), (lambda: (yield))(), Gen(), MinimalGen()]
         fuer x in samples:
@@ -1228,33 +1228,33 @@ klasse TestOneTrickPonyABCs(ABCTestCase):
         self.assertRaises(StopIteration, mgen.throw, StopIteration())
 
         klasse FailOnClose(Generator):
-            def send(self, value): return value
+            def send(self, value): gib value
             def throw(self, *args): raise ValueError
 
         self.assertRaises(ValueError, FailOnClose().close)
 
         klasse IgnoreGeneratorExit(Generator):
-            def send(self, value): return value
+            def send(self, value): gib value
             def throw(self, *args): pass
 
         self.assertRaises(RuntimeError, IgnoreGeneratorExit().close)
 
     def test_AsyncGenerator(self):
         klasse NonAGen1:
-            def __aiter__(self): return self
-            def __anext__(self): return Nichts
+            def __aiter__(self): gib self
+            def __anext__(self): gib Nichts
             def aclose(self): pass
             def athrow(self, typ, val=Nichts, tb=Nichts): pass
 
         klasse NonAGen2:
-            def __aiter__(self): return self
-            def __anext__(self): return Nichts
+            def __aiter__(self): gib self
+            def __anext__(self): gib Nichts
             def aclose(self): pass
-            def asend(self, value): return value
+            def asend(self, value): gib value
 
         klasse NonAGen3:
             def aclose(self): pass
-            def asend(self, value): return value
+            def asend(self, value): gib value
             def athrow(self, typ, val=Nichts, tb=Nichts): pass
 
         non_samples = [
@@ -1265,20 +1265,20 @@ klasse TestOneTrickPonyABCs(ABCTestCase):
             self.assertNotIsSubclass(type(x), AsyncGenerator)
 
         klasse Gen:
-            def __aiter__(self): return self
-            async def __anext__(self): return Nichts
+            def __aiter__(self): gib self
+            async def __anext__(self): gib Nichts
             async def aclose(self): pass
-            async def asend(self, value): return value
+            async def asend(self, value): gib value
             async def athrow(self, typ, val=Nichts, tb=Nichts): pass
 
         klasse MinimalAGen(AsyncGenerator):
             async def asend(self, value):
-                return value
+                gib value
             async def athrow(self, typ, val=Nichts, tb=Nichts):
                 await super().athrow(typ, val, tb)
 
         async def gen():
-            yield 1
+            liefere 1
 
         samples = [gen(), Gen(), MinimalAGen()]
         fuer x in samples:
@@ -1295,7 +1295,7 @@ klasse TestOneTrickPonyABCs(ABCTestCase):
                 except StopIteration als ex:
                     result = ex.args[0] wenn ex.args sonst Nichts
                     breche
-            return result
+            gib result
 
         # mixin tests
         mgen = MinimalAGen()
@@ -1307,14 +1307,14 @@ klasse TestOneTrickPonyABCs(ABCTestCase):
             run_async(mgen.athrow(ValueError))
 
         klasse FailOnClose(AsyncGenerator):
-            async def asend(self, value): return value
+            async def asend(self, value): gib value
             async def athrow(self, *args): raise ValueError
 
         mit self.assertRaises(ValueError):
             run_async(FailOnClose().aclose())
 
         klasse IgnoreGeneratorExit(AsyncGenerator):
-            async def asend(self, value): return value
+            async def asend(self, value): gib value
             async def athrow(self, *args): pass
 
         mit self.assertRaises(RuntimeError):
@@ -1397,13 +1397,13 @@ klasse WithSet(MutableSet):
         self.data = set(it)
 
     def __len__(self):
-        return len(self.data)
+        gib len(self.data)
 
     def __iter__(self):
-        return iter(self.data)
+        gib iter(self.data)
 
     def __contains__(self, item):
-        return item in self.data
+        gib item in self.data
 
     def add(self, item):
         self.data.add(item)
@@ -1424,11 +1424,11 @@ klasse TestCollectionABCs(ABCTestCase):
         self.validate_abstract_methods(Set, '__contains__', '__iter__', '__len__')
         klasse MySet(Set):
             def __contains__(self, x):
-                return Falsch
+                gib Falsch
             def __len__(self):
-                return 0
+                gib 0
             def __iter__(self):
-                return iter([])
+                gib iter([])
         self.validate_comparison(MySet())
 
     def test_hash_Set(self):
@@ -1436,13 +1436,13 @@ klasse TestCollectionABCs(ABCTestCase):
             def __init__(self):
                 self.contents = [1, 2, 3]
             def __contains__(self, x):
-                return x in self.contents
+                gib x in self.contents
             def __len__(self):
-                return len(self.contents)
+                gib len(self.contents)
             def __iter__(self):
-                return iter(self.contents)
+                gib iter(self.contents)
             def __hash__(self):
-                return self._hash()
+                gib self._hash()
         a, b = OneTwoThreeSet(), OneTwoThreeSet()
         self.assertWahr(hash(a) == hash(b))
 
@@ -1451,11 +1451,11 @@ klasse TestCollectionABCs(ABCTestCase):
             def __init__(self, itr):
                 self.contents = itr
             def __contains__(self, x):
-                return x in self.contents
+                gib x in self.contents
             def __iter__(self):
-                return iter(self.contents)
+                gib iter(self.contents)
             def __len__(self):
-                return len([x fuer x in self.contents])
+                gib len([x fuer x in self.contents])
         s1 = MySet((1, 2, 3))
         s2 = MySet((4, 5, 6))
         s3 = MySet((1, 5, 6))
@@ -1467,11 +1467,11 @@ klasse TestCollectionABCs(ABCTestCase):
             def __init__(self, itr):
                 self.contents = itr
             def __contains__(self, x):
-                return x in self.contents
+                gib x in self.contents
             def __iter__(self):
-                return iter(self.contents)
+                gib iter(self.contents)
             def __len__(self):
-                return len([x fuer x in self.contents])
+                gib len([x fuer x in self.contents])
         s1 = MySet((1,))
         s2 = MySet((1, 2))
         s3 = MySet((3, 4))
@@ -1489,11 +1489,11 @@ klasse TestCollectionABCs(ABCTestCase):
             def __init__(self, itr):
                 self.contents = itr
             def __contains__(self, x):
-                return x in self.contents
+                gib x in self.contents
             def __iter__(self):
-                return iter(self.contents)
+                gib iter(self.contents)
             def __len__(self):
-                return len([x fuer x in self.contents])
+                gib len([x fuer x in self.contents])
         s1 = MySet((1, 2, 3))
         s2 = MySet((3, 4, 5))
         s3 = s1 & s2
@@ -1522,21 +1522,21 @@ klasse TestCollectionABCs(ABCTestCase):
                     items=[]
                 self.__s=set(items)
             def __contains__(self,v):
-                return v in self.__s
+                gib v in self.__s
             def __iter__(self):
-                return iter(self.__s)
+                gib iter(self.__s)
             def __len__(self):
-                return len(self.__s)
+                gib len(self.__s)
             def add(self,v):
                 result=v nicht in self.__s
                 self.__s.add(v)
-                return result
+                gib result
             def discard(self,v):
                 result=v in self.__s
                 self.__s.discard(v)
-                return result
+                gib result
             def __repr__(self):
-                return "MySet(%s)" % repr(list(self))
+                gib "MySet(%s)" % repr(list(self))
         items = [5,43,2,1]
         s = MySet(items)
         r = s.pop()
@@ -1564,22 +1564,22 @@ klasse TestCollectionABCs(ABCTestCase):
         # Set instances
         klasse MyComparableSet(Set):
             def __contains__(self, x):
-                return Falsch
+                gib Falsch
             def __len__(self):
-                return 0
+                gib 0
             def __iter__(self):
-                return iter([])
+                gib iter([])
         klasse MyNonComparableSet(Set):
             def __contains__(self, x):
-                return Falsch
+                gib Falsch
             def __len__(self):
-                return 0
+                gib 0
             def __iter__(self):
-                return iter([])
+                gib iter([])
             def __le__(self, x):
-                return NotImplemented
+                gib NotImplemented
             def __lt__(self, x):
-                return NotImplemented
+                gib NotImplemented
 
         cs = MyComparableSet()
         ncs = MyNonComparableSet()
@@ -1594,9 +1594,9 @@ klasse TestCollectionABCs(ABCTestCase):
             def __init__(self, seq):
                 self._seq = seq
             def __getitem__(self, index):
-                return self._seq[index]
+                gib self._seq[index]
             def __len__(self):
-                return len(self._seq)
+                gib len(self._seq)
 
         nan = float('nan')
         obj = support.NEVER_EQ
@@ -1629,16 +1629,16 @@ klasse TestCollectionABCs(ABCTestCase):
                 self._values = set(values)
 
             def _from_iterable(self, values):
-                return type(self)(values, 'from_iterable')
+                gib type(self)(values, 'from_iterable')
 
             def __contains__(self, value):
-                return value in self._values
+                gib value in self._values
 
             def __iter__(self):
-                yield von self._values
+                liefere von self._values
 
             def __len__(self):
-                return len(self._values)
+                gib len(self._values)
 
             def add(self, value):
                 self._values.add(value)
@@ -1684,13 +1684,13 @@ klasse TestCollectionABCs(ABCTestCase):
                     wenn elem nicht in self.data:
                         self.data.append(elem)
             def __contains__(self, elem):
-                return elem in self.data
+                gib elem in self.data
             def __iter__(self):
-                return iter(self.data)
+                gib iter(self.data)
             def __len__(self):
-                return len(self.data)
+                gib len(self.data)
             def __repr__(self):
-                return 'Set({!r})'.format(self.data)
+                gib 'Set({!r})'.format(self.data)
 
         r1 = set('abc')
         r2 = set('bcd')
@@ -1846,11 +1846,11 @@ klasse TestCollectionABCs(ABCTestCase):
         self.validate_abstract_methods(Mapping, '__iter__', '__len__', '__getitem__')
         klasse MyMapping(Mapping):
             def __len__(self):
-                return 0
+                gib 0
             def __getitem__(self, i):
                 raise IndexError
             def __iter__(self):
-                return iter(())
+                gib iter(())
         self.validate_comparison(MyMapping())
         self.assertRaises(TypeError, reversed, MyMapping())
 
@@ -1905,10 +1905,10 @@ klasse TestCollectionABCs(ABCTestCase):
                 self.seq = seq
 
             def __getitem__(self, index):
-                return self.seq[index]
+                gib self.seq[index]
 
             def __len__(self):
-                return len(self.seq)
+                gib len(self.seq)
 
         # Compare Sequence.index() behavior to (list|str).index() behavior
         def assert_index_same(seq1, seq2, index_args):
@@ -1966,10 +1966,10 @@ klasse TestCollectionABCs(ABCTestCase):
                 self.lst[index] = value
 
             def __getitem__(self, index):
-                return self.lst[index]
+                gib self.lst[index]
 
             def __len__(self):
-                return len(self.lst)
+                gib len(self.lst)
 
             def __delitem__(self, index):
                 del self.lst[index]
@@ -2032,7 +2032,7 @@ klasse CounterSubclassWithGet(Counter):
         Counter.__init__(self, *args, **kwds)
     def get(self, key, default):
         self.called = Wahr
-        return Counter.get(self, key, default)
+        gib Counter.get(self, key, default)
 
 klasse TestCounter(unittest.TestCase):
 
@@ -2131,7 +2131,7 @@ klasse TestCounter(unittest.TestCase):
         def correctly_ordered(seq):
             'Return true wenn the letters occur in the expected order'
             positions = [order[letter] fuer letter in seq]
-            return positions == sorted(positions)
+            gib positions == sorted(positions)
 
         p, q = Counter(ps), Counter(qs)
         self.assertWahr(correctly_ordered(+p))
@@ -2379,7 +2379,7 @@ klasse TestCounter(unittest.TestCase):
 
 def load_tests(loader, tests, pattern):
     tests.addTest(doctest.DocTestSuite(collections))
-    return tests
+    gib tests
 
 
 wenn __name__ == "__main__":

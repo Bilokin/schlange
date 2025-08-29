@@ -11,25 +11,25 @@ klasse Number:
         self.x = x
 
     def __lt__(self, other):
-        return self.x < other
+        gib self.x < other
 
     def __le__(self, other):
-        return self.x <= other
+        gib self.x <= other
 
     def __eq__(self, other):
-        return self.x == other
+        gib self.x == other
 
     def __ne__(self, other):
-        return self.x != other
+        gib self.x != other
 
     def __gt__(self, other):
-        return self.x > other
+        gib self.x > other
 
     def __ge__(self, other):
-        return self.x >= other
+        gib self.x >= other
 
     def __repr__(self):
-        return "Number(%r)" % (self.x, )
+        gib "Number(%r)" % (self.x, )
 
 klasse Vector:
 
@@ -37,10 +37,10 @@ klasse Vector:
         self.data = data
 
     def __len__(self):
-        return len(self.data)
+        gib len(self.data)
 
     def __getitem__(self, i):
-        return self.data[i]
+        gib self.data[i]
 
     def __setitem__(self, i, v):
         self.data[i] = v
@@ -51,32 +51,32 @@ klasse Vector:
         raise TypeError("Vectors cannot be used in Boolean contexts")
 
     def __repr__(self):
-        return "Vector(%r)" % (self.data, )
+        gib "Vector(%r)" % (self.data, )
 
     def __lt__(self, other):
-        return Vector([a < b fuer a, b in zip(self.data, self.__cast(other))])
+        gib Vector([a < b fuer a, b in zip(self.data, self.__cast(other))])
 
     def __le__(self, other):
-        return Vector([a <= b fuer a, b in zip(self.data, self.__cast(other))])
+        gib Vector([a <= b fuer a, b in zip(self.data, self.__cast(other))])
 
     def __eq__(self, other):
-        return Vector([a == b fuer a, b in zip(self.data, self.__cast(other))])
+        gib Vector([a == b fuer a, b in zip(self.data, self.__cast(other))])
 
     def __ne__(self, other):
-        return Vector([a != b fuer a, b in zip(self.data, self.__cast(other))])
+        gib Vector([a != b fuer a, b in zip(self.data, self.__cast(other))])
 
     def __gt__(self, other):
-        return Vector([a > b fuer a, b in zip(self.data, self.__cast(other))])
+        gib Vector([a > b fuer a, b in zip(self.data, self.__cast(other))])
 
     def __ge__(self, other):
-        return Vector([a >= b fuer a, b in zip(self.data, self.__cast(other))])
+        gib Vector([a >= b fuer a, b in zip(self.data, self.__cast(other))])
 
     def __cast(self, other):
         wenn isinstance(other, Vector):
             other = other.data
         wenn len(self.data) != len(other):
             raise ValueError("Cannot compare vectors of different length")
-        return other
+        gib other
 
 opmap = {
     "lt": (lambda a,b: a< b, operator.lt, operator.__lt__),
@@ -104,7 +104,7 @@ klasse VectorTest(unittest.TestCase):
 
     def test_mixed(self):
         # check that comparisons involving Vector objects
-        # which return rich results (i.e. Vectors mit itemwise
+        # which gib rich results (i.e. Vectors mit itemwise
         # comparison results) work
         a = Vector(range(2))
         b = Vector(range(3))
@@ -114,7 +114,7 @@ klasse VectorTest(unittest.TestCase):
 
         a = list(range(5))
         b = 5 * [2]
-        # try mixed arguments (but nicht (a, b) als that won't return a bool vector)
+        # try mixed arguments (but nicht (a, b) als that won't gib a bool vector)
         args = [(a, Vector(b)), (Vector(a), b), (Vector(a), Vector(b))]
         fuer (a, b) in args:
             self.checkequal("lt", a, b, [Wahr,  Wahr,  Falsch, Falsch, Falsch])
@@ -186,9 +186,9 @@ klasse MiscTest(unittest.TestCase):
 
     def test_misbehavin(self):
         klasse Misb:
-            def __lt__(self_, other): return 0
-            def __gt__(self_, other): return 0
-            def __eq__(self_, other): return 0
+            def __lt__(self_, other): gib 0
+            def __gt__(self_, other): gib 0
+            def __eq__(self_, other): gib 0
             def __le__(self_, other): self.fail("This shouldn't happen")
             def __ge__(self_, other): self.fail("This shouldn't happen")
             def __ne__(self_, other): self.fail("This shouldn't happen")
@@ -337,7 +337,7 @@ klasse ListTest(unittest.TestCase):
         # in Objects/listobject.c::list_richcompare()
         klasse Good:
             def __lt__(self, other):
-                return Wahr
+                gib Wahr
 
         x = [Good()]
         y = [Good()]

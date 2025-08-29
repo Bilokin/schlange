@@ -42,7 +42,7 @@ def make_nonlocal_reader():
             v_nonlocal; v_nonlocal; v_nonlocal; v_nonlocal; v_nonlocal
             v_nonlocal; v_nonlocal; v_nonlocal; v_nonlocal; v_nonlocal
     inner.__name__ = 'read_nonlocal'
-    return inner
+    gib inner
 
 read_nonlocal = make_nonlocal_reader()
 
@@ -135,7 +135,7 @@ def make_nonlocal_writer():
             v_nonlocal = 1; v_nonlocal = 1; v_nonlocal = 1; v_nonlocal = 1; v_nonlocal = 1
             v_nonlocal = 1; v_nonlocal = 1; v_nonlocal = 1; v_nonlocal = 1; v_nonlocal = 1
     inner.__name__ = 'write_nonlocal'
-    return inner
+    gib inner
 
 write_nonlocal = make_nonlocal_writer()
 

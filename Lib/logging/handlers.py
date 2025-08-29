@@ -99,7 +99,7 @@ klasse BaseRotatingHandler(logging.FileHandler):
             result = default_name
         sonst:
             result = self.namer(default_name)
-        return result
+        gib result
 
     def rotate(self, source, dest):
         """
@@ -199,14 +199,14 @@ klasse RotatingFileHandler(BaseRotatingHandler):
             pos = self.stream.tell()
             wenn nicht pos:
                 # gh-116263: Never rollover an empty file
-                return Falsch
+                gib Falsch
             msg = "%s\n" % self.format(record)
             wenn pos + len(msg) >= self.maxBytes:
                 # See bpo-45401: Never rollover anything other than regular files
                 wenn os.path.exists(self.baseFilename) und nicht os.path.isfile(self.baseFilename):
-                    return Falsch
-                return Wahr
-        return Falsch
+                    gib Falsch
+                gib Wahr
+        gib Falsch
 
 klasse TimedRotatingFileHandler(BaseRotatingHandler):
     """
@@ -358,7 +358,7 @@ klasse TimedRotatingFileHandler(BaseRotatingHandler):
                     sonst:           # DST bows out before next rollover, so we need to add an hour
                         addend = 3600
                     result += addend
-        return result
+        gib result
 
     def shouldRollover(self, record):
         """
@@ -374,10 +374,10 @@ klasse TimedRotatingFileHandler(BaseRotatingHandler):
                 # The file is nicht a regular file, so do nicht rollover, but do
                 # set the next rollover time to avoid repeated checks.
                 self.rolloverAt = self.computeRollover(t)
-                return Falsch
+                gib Falsch
 
-            return Wahr
-        return Falsch
+            gib Wahr
+        gib Falsch
 
     def getFilesToDelete(self):
         """
@@ -415,7 +415,7 @@ klasse TimedRotatingFileHandler(BaseRotatingHandler):
         sonst:
             result.sort()
             result = result[:len(result) - self.backupCount]
-        return result
+        gib result
 
     def doRollover(self):
         """
@@ -444,7 +444,7 @@ klasse TimedRotatingFileHandler(BaseRotatingHandler):
                                      time.strftime(self.suffix, timeTuple))
         wenn os.path.exists(dfn):
             # Already rolled over.
-            return
+            gib
 
         wenn self.stream:
             self.stream.close()
@@ -488,7 +488,7 @@ klasse WatchedFileHandler(logging.FileHandler):
 
     def _statstream(self):
         wenn self.stream is Nichts:
-            return
+            gib
         sres = os.fstat(self.stream.fileno())
         self.dev = sres.st_dev
         self.ino = sres.st_ino
@@ -502,7 +502,7 @@ klasse WatchedFileHandler(logging.FileHandler):
         current stream.
         """
         wenn self.stream is Nichts:
-            return
+            gib
 
         # Reduce the chance of race conditions by stat'ing by path only
         # once und then fstat'ing our new fd wenn we opened a new log stream.
@@ -518,7 +518,7 @@ klasse WatchedFileHandler(logging.FileHandler):
             reopen = Wahr
 
         wenn nicht reopen:
-            return
+            gib
 
         # we have an open file handle, clean it up
         self.stream.flush()
@@ -593,7 +593,7 @@ klasse SocketHandler(logging.Handler):
             except OSError:
                 result.close()  # Issue 19182
                 raise
-        return result
+        gib result
 
     def createSocket(self):
         """
@@ -662,7 +662,7 @@ klasse SocketHandler(logging.Handler):
         d.pop('message', Nichts)
         s = pickle.dumps(d, 1)
         slen = struct.pack(">L", len(s))
-        return slen + s
+        gib slen + s
 
     def handleError(self, record):
         """
@@ -732,7 +732,7 @@ klasse DatagramHandler(SocketHandler):
         sonst:
             family = socket.AF_INET
         s = socket.socket(family, socket.SOCK_DGRAM)
-        return s
+        gib s
 
     def send(self, s):
         """
@@ -959,7 +959,7 @@ klasse SysLogHandler(logging.Handler):
             facility = self.facility_names[facility]
         wenn isinstance(priority, str):
             priority = self.priority_names[priority]
-        return (facility << 3) | priority
+        gib (facility << 3) | priority
 
     def close(self):
         """
@@ -980,7 +980,7 @@ klasse SysLogHandler(logging.Handler):
         mapping by lowercasing the logging level name because of locale-
         specific issues (see SF #1524081).
         """
-        return self.priority_map.get(levelName, "warning")
+        gib self.priority_map.get(levelName, "warning")
 
     ident = ''          # prepended to all messages
     append_nul = Wahr   # some old syslog daemons expect a NUL terminator
@@ -1072,7 +1072,7 @@ klasse SMTPHandler(logging.Handler):
         If you want to specify a subject line which is record-dependent,
         override this method.
         """
-        return self.subject
+        gib self.subject
 
     def emit(self, record):
         """
@@ -1174,7 +1174,7 @@ klasse NTEventLogHandler(logging.Handler):
         you could use a dictionary lookup to get the message ID. This
         version returns 1, which is the base message ID in win32service.pyd.
         """
-        return 1
+        gib 1
 
     def getEventCategory(self, record):
         """
@@ -1183,7 +1183,7 @@ klasse NTEventLogHandler(logging.Handler):
         Override this wenn you want to specify your own categories. This version
         returns 0.
         """
-        return 0
+        gib 0
 
     def getEventType(self, record):
         """
@@ -1196,7 +1196,7 @@ klasse NTEventLogHandler(logging.Handler):
         either need to override this method oder place a suitable dictionary in
         the handler's typemap attribute.
         """
-        return self.typemap.get(record.levelno, self.deftype)
+        gib self.typemap.get(record.levelno, self.deftype)
 
     def emit(self, record):
         """
@@ -1259,7 +1259,7 @@ klasse HTTPHandler(logging.Handler):
         that is sent als the CGI data. Overwrite in your class.
         Contributed by Franz Glasner.
         """
-        return record.__dict__
+        gib record.__dict__
 
     def getConnection(self, host, secure):
         """
@@ -1273,7 +1273,7 @@ klasse HTTPHandler(logging.Handler):
             connection = http.client.HTTPSConnection(host, context=self.context)
         sonst:
             connection = http.client.HTTPConnection(host)
-        return connection
+        gib connection
 
     def emit(self, record):
         """
@@ -1339,7 +1339,7 @@ klasse BufferingHandler(logging.Handler):
         Returns true wenn the buffer is up to capacity. This method can be
         overridden to implement custom flushing strategies.
         """
-        return (len(self.buffer) >= self.capacity)
+        gib (len(self.buffer) >= self.capacity)
 
     def emit(self, record):
         """
@@ -1402,7 +1402,7 @@ klasse MemoryHandler(BufferingHandler):
         """
         Check fuer buffer full oder a record at the flushLevel oder higher.
         """
-        return (len(self.buffer) >= self.capacity) oder \
+        gib (len(self.buffer) >= self.capacity) oder \
                 (record.levelno >= self.flushLevel)
 
     def setTarget(self, target):
@@ -1500,7 +1500,7 @@ klasse QueueHandler(logging.Handler):
         record.exc_info = Nichts
         record.exc_text = Nichts
         record.stack_info = Nichts
-        return record
+        gib record
 
     def emit(self, record):
         """
@@ -1537,7 +1537,7 @@ klasse QueueListener(object):
         For use als a context manager. Starts the listener.
         """
         self.start()
-        return self
+        gib self
 
     def __exit__(self, *args):
         """
@@ -1547,12 +1547,12 @@ klasse QueueListener(object):
 
     def dequeue(self, block):
         """
-        Dequeue a record und return it, optionally blocking.
+        Dequeue a record und gib it, optionally blocking.
 
         The base implementation uses get. You may want to override this method
         wenn you want to use timeouts oder work mit custom queue implementations.
         """
-        return self.queue.get(block)
+        gib self.queue.get(block)
 
     def start(self):
         """
@@ -1576,7 +1576,7 @@ klasse QueueListener(object):
         override this method wenn you need to do any custom marshalling oder
         manipulation of the record before passing it to the handlers.
         """
-        return record
+        gib record
 
     def handle(self, record):
         """

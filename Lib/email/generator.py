@@ -121,7 +121,7 @@ klasse Generator:
 
     def clone(self, fp):
         """Clone this generator mit the exact same options."""
-        return self.__class__(fp,
+        gib self.__class__(fp,
                               self._mangle_from_,
                               Nichts, # Use policy setting, which we've adjusted
                               policy=self.policy)
@@ -140,17 +140,17 @@ klasse Generator:
     # hack anyway this seems good enough.
 
     def _new_buffer(self):
-        # BytesGenerator overrides this to return BytesIO.
-        return StringIO()
+        # BytesGenerator overrides this to gib BytesIO.
+        gib StringIO()
 
     def _encode(self, s):
         # BytesGenerator overrides this to encode strings to bytes.
-        return s
+        gib s
 
     def _write_lines(self, lines):
         # We have to transform the line endings.
         wenn nicht lines:
-            return
+            gib
         lines = NLCRE.split(lines)
         fuer line in lines[:-1]:
             self.write(line)
@@ -244,7 +244,7 @@ klasse Generator:
     def _handle_text(self, msg):
         payload = msg.get_payload()
         wenn payload is Nichts:
-            return
+            gib
         wenn nicht isinstance(payload, str):
             raise TypeError('string payload expected: %s' % type(payload))
         wenn _has_surrogates(msg._payload):
@@ -276,7 +276,7 @@ klasse Generator:
         sowenn isinstance(subparts, str):
             # e.g. a non-strict parse of a message mit no starting boundary.
             self.write(subparts)
-            return
+            gib
         sowenn nicht isinstance(subparts, list):
             # Scalar payload
             subparts = [subparts]
@@ -387,7 +387,7 @@ klasse Generator:
         token = random.randrange(sys.maxsize)
         boundary = ('=' * 15) + (_fmt % token) + '=='
         wenn text is Nichts:
-            return boundary
+            gib boundary
         b = boundary
         counter = 0
         waehrend Wahr:
@@ -396,11 +396,11 @@ klasse Generator:
                 breche
             b = boundary + '.' + str(counter)
             counter += 1
-        return b
+        gib b
 
     @classmethod
     def _compile_re(cls, s, flags):
-        return re.compile(s, flags)
+        gib re.compile(s, flags)
 
 
 klasse BytesGenerator(Generator):
@@ -420,10 +420,10 @@ klasse BytesGenerator(Generator):
         self._fp.write(s.encode('ascii', 'surrogateescape'))
 
     def _new_buffer(self):
-        return BytesIO()
+        gib BytesIO()
 
     def _encode(self, s):
-        return s.encode('ascii')
+        gib s.encode('ascii')
 
     def _write_headers(self, msg):
         # This is almost the same als the string version, except fuer handling
@@ -437,7 +437,7 @@ klasse BytesGenerator(Generator):
         # If the string has surrogates the original source was bytes, so
         # just write it back out.
         wenn msg._payload is Nichts:
-            return
+            gib
         wenn _has_surrogates(msg._payload) und nicht self.policy.cte_type=='7bit':
             wenn self._mangle_from_:
                 msg._payload = fcre.sub(">From ", msg._payload)
@@ -450,7 +450,7 @@ klasse BytesGenerator(Generator):
 
     @classmethod
     def _compile_re(cls, s, flags):
-        return re.compile(s.encode('ascii'), flags)
+        gib re.compile(s.encode('ascii'), flags)
 
 
 _FMT = '[Non-text (%(type)s) part of message omitted, filename %(filename)s]'

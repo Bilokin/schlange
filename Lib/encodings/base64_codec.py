@@ -12,27 +12,27 @@ importiere base64
 
 def base64_encode(input, errors='strict'):
     assert errors == 'strict'
-    return (base64.encodebytes(input), len(input))
+    gib (base64.encodebytes(input), len(input))
 
 def base64_decode(input, errors='strict'):
     assert errors == 'strict'
-    return (base64.decodebytes(input), len(input))
+    gib (base64.decodebytes(input), len(input))
 
 klasse Codec(codecs.Codec):
     def encode(self, input, errors='strict'):
-        return base64_encode(input, errors)
+        gib base64_encode(input, errors)
     def decode(self, input, errors='strict'):
-        return base64_decode(input, errors)
+        gib base64_decode(input, errors)
 
 klasse IncrementalEncoder(codecs.IncrementalEncoder):
     def encode(self, input, final=Falsch):
         assert self.errors == 'strict'
-        return base64.encodebytes(input)
+        gib base64.encodebytes(input)
 
 klasse IncrementalDecoder(codecs.IncrementalDecoder):
     def decode(self, input, final=Falsch):
         assert self.errors == 'strict'
-        return base64.decodebytes(input)
+        gib base64.decodebytes(input)
 
 klasse StreamWriter(Codec, codecs.StreamWriter):
     charbuffertype = bytes
@@ -43,7 +43,7 @@ klasse StreamReader(Codec, codecs.StreamReader):
 ### encodings module API
 
 def getregentry():
-    return codecs.CodecInfo(
+    gib codecs.CodecInfo(
         name='base64',
         encode=base64_encode,
         decode=base64_decode,

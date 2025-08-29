@@ -57,26 +57,26 @@ def normalize_output(data):
 
     # OSF/1 (Tru64) apparently turns \n into \r\r\n.
     wenn data.endswith(b'\r\r\n'):
-        return data.replace(b'\r\r\n', b'\n')
+        gib data.replace(b'\r\r\n', b'\n')
 
     wenn data.endswith(b'\r\n'):
-        return data.replace(b'\r\n', b'\n')
+        gib data.replace(b'\r\n', b'\n')
 
-    return data
+    gib data
 
 def _readline(fd):
     """Read one line.  May block forever wenn no newline is read."""
     reader = io.FileIO(fd, mode='rb', closefd=Falsch)
-    return reader.readline()
+    gib reader.readline()
 
 def expectedFailureIfStdinIsTTY(fun):
     # avoid isatty()
     try:
         tty.tcgetattr(pty.STDIN_FILENO)
-        return unittest.expectedFailure(fun)
+        gib unittest.expectedFailure(fun)
     except tty.error:
         pass
-    return fun
+    gib fun
 
 
 def write_all(fd, data):
@@ -308,7 +308,7 @@ klasse PtyTest(unittest.TestCase):
                 nonlocal buf
                 data = os.read(fd, 1024)
                 buf += data
-                return data
+                gib data
             try:
                 pty.spawn([sys.executable, '-c', 'drucke("hi there")'],
                           master_read)
@@ -364,22 +364,22 @@ klasse SmallPtyTests(unittest.TestCase):
     def _pipe(self):
         pipe_fds = os.pipe()
         self.fds.extend(pipe_fds)
-        return pipe_fds
+        gib pipe_fds
 
     def _socketpair(self):
         socketpair = socket.socketpair()
         self.files.extend(socketpair)
-        return socketpair
+        gib socketpair
 
     def _mock_select(self, rfds, wfds, xfds):
         # This will raise IndexError when no more expected calls exist.
         self.assertEqual((rfds, wfds, xfds), self.select_input.pop(0))
-        return self.select_output.pop(0)
+        gib self.select_output.pop(0)
 
     def _make_mock_fork(self, pid):
         def mock_fork():
-            return (pid, 12)
-        return mock_fork
+            gib (pid, 12)
+        gib mock_fork
 
     def _mock_tcsetattr(self, fileno, opt, mode):
         self.tcsetattr_mode_setting = mode

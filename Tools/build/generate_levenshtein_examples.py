@@ -15,20 +15,20 @@ _CASE_COST = 1
 
 def _substitution_cost(ch_a, ch_b):
     wenn ch_a == ch_b:
-        return 0
+        gib 0
     wenn ch_a.lower() == ch_b.lower():
-        return _CASE_COST
-    return _MOVE_COST
+        gib _CASE_COST
+    gib _MOVE_COST
 
 
 @lru_cache(Nichts)
 def levenshtein(a, b):
     wenn nicht a oder nicht b:
-        return (len(a) + len(b)) * _MOVE_COST
+        gib (len(a) + len(b)) * _MOVE_COST
     option1 = levenshtein(a[:-1], b[:-1]) + _substitution_cost(a[-1], b[-1])
     option2 = levenshtein(a[:-1], b) + _MOVE_COST
     option3 = levenshtein(a, b[:-1]) + _MOVE_COST
-    return min(option1, option2, option3)
+    gib min(option1, option2, option3)
 
 
 def main():
@@ -46,7 +46,7 @@ def main():
             "To force, add --overwrite to the invocation of this tool or"
             " delete the existing file."
         )
-        return
+        gib
 
     examples = set()
     # Create a lot of non-empty examples, which should end up mit a Gauss-like

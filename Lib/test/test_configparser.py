@@ -12,22 +12,22 @@ von test.support importiere os_helper
 klasse SortedDict(collections.UserDict):
 
     def items(self):
-        return sorted(self.data.items())
+        gib sorted(self.data.items())
 
     def keys(self):
-        return sorted(self.data.keys())
+        gib sorted(self.data.keys())
 
     def values(self):
-        return [i[1] fuer i in self.items()]
+        gib [i[1] fuer i in self.items()]
 
     def iteritems(self):
-        return iter(self.items())
+        gib iter(self.items())
 
     def iterkeys(self):
-        return iter(self.keys())
+        gib iter(self.keys())
 
     def itervalues(self):
-        return iter(self.values())
+        gib iter(self.values())
 
     __iter__ = iterkeys
 
@@ -57,12 +57,12 @@ klasse CfgParserTestCaseClass:
             interpolation=self.interpolation,
         )
         instance = self.config_class(**arguments)
-        return instance
+        gib instance
 
     def fromstring(self, string, defaults=Nichts):
         cf = self.newconfig(defaults)
         cf.read_string(string)
-        return cf
+        gib cf
 
 
 klasse BasicTestCase(CfgParserTestCaseClass):
@@ -561,7 +561,7 @@ boolean {0[0]} NO
             sio = io.StringIO(src)
         mit self.assertRaises(exc) als cm:
             cf.read_file(sio)
-        return cm.exception
+        gib cm.exception
 
     def test_query_errors(self):
         cf = self.newconfig()
@@ -584,7 +584,7 @@ boolean {0[0]} NO
         try:
             cf.get(section, option)
         except exc als e:
-            return e
+            gib e
         sonst:
             self.fail("expected exception type %s.%s"
                       % (exc.__module__, exc.__qualname__))
@@ -780,7 +780,7 @@ boolean {0[0]} NO
 
     # shared by subclasses
     def get_interpolation_config(self):
-        return self.fromstring(
+        gib self.fromstring(
             "[Foo]\n"
             "bar{equals}something %(with1)s interpolation (1 step)\n"
             "bar9{equals}something %(with9)s lots of interpolation (9 steps)\n"
@@ -1164,7 +1164,7 @@ klasse ConfigParserTestCaseExtendedInterpolation(BasicTestCase, unittest.TestCas
         wenn optionxform:
             cf.optionxform = optionxform
         cf.read_string(string)
-        return cf
+        gib cf
 
     def test_extended_interpolation(self):
         cf = self.fromstring(textwrap.dedent("""
@@ -1430,7 +1430,7 @@ klasse Issue7005TestCase(unittest.TestCase):
         cp.set("section", "option", Nichts)
         sio = io.StringIO()
         cp.write(sio)
-        return sio.getvalue()
+        gib sio.getvalue()
 
     def test_none_as_value_stringified(self):
         cp = configparser.ConfigParser(allow_no_value=Falsch)
@@ -1504,7 +1504,7 @@ klasse CopyTestCase(BasicTestCase, unittest.TestCase):
             fuer default, value in cf[self.default_section].items():
                 wenn section[default] == value:
                     del section[default]
-        return cf_copy
+        gib cf_copy
 
 
 klasse FakeFile:
@@ -1516,15 +1516,15 @@ klasse FakeFile:
 
     def readline(self):
         wenn len(self.lines):
-            return self.lines.pop()
-        return ''
+            gib self.lines.pop()
+        gib ''
 
 
 def readline_generator(f):
     """As advised in Doc/library/configparser.rst."""
     line = f.readline()
     waehrend line:
-        yield line
+        liefere line
         line = f.readline()
 
 
@@ -1971,7 +1971,7 @@ klasse ConvertersTestCase(BasicTestCase, unittest.TestCase):
         instance = super().newconfig(defaults=defaults)
         instance.converters['list'] = lambda v: [e.strip() fuer e in v.split()
                                                  wenn e.strip()]
-        return instance
+        gib instance
 
     def test_converters(self):
         cfg = self.newconfig()
@@ -2073,12 +2073,12 @@ klasse BlatantOverrideConvertersTestCase(unittest.TestCase):
             def getboolean(self, section, option, *, raw=Falsch, vars=Nichts,
                         fallback=configparser._UNSET):
                 wenn section == option:
-                    return Wahr
-                return super().getboolean(section, option, raw=raw, vars=vars,
+                    gib Wahr
+                gib super().getboolean(section, option, raw=raw, vars=vars,
                                           fallback=fallback)
             def getlen(self, section, option, *, raw=Falsch, vars=Nichts,
                        fallback=configparser._UNSET):
-                return self._get_conv(section, option, len, raw=raw, vars=vars,
+                gib self._get_conv(section, option, len, raw=raw, vars=vars,
                                       fallback=fallback)
 
         cfg = StrangeConfigParser()
@@ -2160,7 +2160,7 @@ klasse SectionlessTestCase(unittest.TestCase):
     def fromstring(self, string):
         cfg = configparser.ConfigParser(allow_unnamed_section=Wahr)
         cfg.read_string(string)
-        return cfg
+        gib cfg
 
     def test_no_first_section(self):
         cfg1 = self.fromstring("""

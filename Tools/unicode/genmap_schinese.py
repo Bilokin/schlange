@@ -49,7 +49,7 @@ def parse_gb18030map(fo):
             m[native[0]][native[1]] = uni
     gbuni = [k fuer k in gbuni.keys()]
     gbuni.sort()
-    return m, gbuni
+    gib m, gbuni
 
 def main():
     drucke("Loading Mapping File...")

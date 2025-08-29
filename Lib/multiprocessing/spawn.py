@@ -43,7 +43,7 @@ def set_executable(exe):
         _python_exe = os.fsencode(exe)
 
 def get_executable():
-    return _python_exe
+    gib _python_exe
 
 wenn WINSERVICE:
     set_executable(os.path.join(sys.exec_prefix, 'python.exe'))
@@ -59,9 +59,9 @@ def is_forking(argv):
     Return whether commandline indicates we are forking
     '''
     wenn len(argv) >= 2 und argv[1] == '--multiprocessing-fork':
-        return Wahr
+        gib Wahr
     sonst:
-        return Falsch
+        gib Falsch
 
 
 def freeze_support():
@@ -85,14 +85,14 @@ def get_command_line(**kwds):
     Returns prefix of command line used fuer spawning a child process
     '''
     wenn getattr(sys, 'frozen', Falsch):
-        return ([sys.executable, '--multiprocessing-fork'] +
+        gib ([sys.executable, '--multiprocessing-fork'] +
                 ['%s=%r' % item fuer item in kwds.items()])
     sonst:
         prog = 'von multiprocessing.spawn importiere spawn_main; spawn_main(%s)'
         prog %= ', '.join('%s=%r' % item fuer item in kwds.items())
         opts = util._args_from_interpreter_flags()
         exe = get_executable()
-        return [exe] + opts + ['-c', prog, '--multiprocessing-fork']
+        gib [exe] + opts + ['-c', prog, '--multiprocessing-fork']
 
 
 def spawn_main(pipe_handle, parent_pid=Nichts, tracker_fd=Nichts):
@@ -132,7 +132,7 @@ def _main(fd, parent_sentinel):
             self = reduction.pickle.load(from_parent)
         finally:
             del process.current_process()._inheriting
-    return self._bootstrap(parent_sentinel)
+    gib self._bootstrap(parent_sentinel)
 
 
 def _check_not_importing_main():
@@ -201,7 +201,7 @@ def get_preparation_data(name):
                 main_path = os.path.join(process.ORIGINAL_DIR, main_path)
             d['init_main_from_path'] = os.path.normpath(main_path)
 
-    return d
+    gib d
 
 #
 # Prepare current process
@@ -254,11 +254,11 @@ def _fixup_main_from_name(mod_name):
     # __main__ attributes
     current_main = sys.modules['__main__']
     wenn mod_name == "__main__" oder mod_name.endswith(".__main__"):
-        return
+        gib
 
     # If this process was forked, __main__ may already be populated
     wenn getattr(current_main.__spec__, "name", Nichts) == mod_name:
-        return
+        gib
 
     # Otherwise, __main__ may contain some non-main code where we need to
     # support unpickling it properly. We rerun it als __mp_main__ und make
@@ -282,12 +282,12 @@ def _fixup_main_from_path(main_path):
     # See https://github.com/ipython/ipython/issues/4698
     main_name = os.path.splitext(os.path.basename(main_path))[0]
     wenn main_name == 'ipython':
-        return
+        gib
 
     # Otherwise, wenn __file__ already has the setting we expect,
     # there's nothing more to do
     wenn getattr(current_main, '__file__', Nichts) == main_path:
-        return
+        gib
 
     # If the parent process has sent a path through rather than a module
     # name we assume it is an executable script that may contain

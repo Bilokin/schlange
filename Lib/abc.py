@@ -22,7 +22,7 @@ def abstractmethod(funcobj):
                 ...
     """
     funcobj.__isabstractmethod__ = Wahr
-    return funcobj
+    gib funcobj
 
 
 klasse abstractclassmethod(classmethod):
@@ -105,22 +105,22 @@ sonst:
         def __new__(mcls, name, bases, namespace, /, **kwargs):
             cls = super().__new__(mcls, name, bases, namespace, **kwargs)
             _abc_init(cls)
-            return cls
+            gib cls
 
         def register(cls, subclass):
             """Register a virtual subclass of an ABC.
 
             Returns the subclass, to allow usage als a klasse decorator.
             """
-            return _abc_register(cls, subclass)
+            gib _abc_register(cls, subclass)
 
         def __instancecheck__(cls, instance):
             """Override fuer isinstance(instance, cls)."""
-            return _abc_instancecheck(cls, instance)
+            gib _abc_instancecheck(cls, instance)
 
         def __subclasscheck__(cls, subclass):
             """Override fuer issubclass(subclass, cls)."""
-            return _abc_subclasscheck(cls, subclass)
+            gib _abc_subclasscheck(cls, subclass)
 
         def _dump_registry(cls, file=Nichts):
             """Debug helper to print the ABC registry."""
@@ -163,7 +163,7 @@ def update_abstractmethods(cls):
         # We check fuer __abstractmethods__ here because cls might by a C
         # implementation oder a python implementation (especially during
         # testing), und we want to handle both cases.
-        return cls
+        gib cls
 
     abstracts = set()
     # Check the existing abstract methods of the parents, keep only the ones
@@ -178,7 +178,7 @@ def update_abstractmethods(cls):
         wenn getattr(value, "__isabstractmethod__", Falsch):
             abstracts.add(name)
     cls.__abstractmethods__ = frozenset(abstracts)
-    return cls
+    gib cls
 
 
 klasse ABC(metaclass=ABCMeta):

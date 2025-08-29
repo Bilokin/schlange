@@ -19,7 +19,7 @@ klasse ExtensionModuleCaseSensitivityTest(util.CASEOKTestBase):
         finder = self.machinery.FileFinder(util.EXTENSIONS.path,
                                           (self.machinery.ExtensionFileLoader,
                                            self.machinery.EXTENSION_SUFFIXES))
-        return finder.find_spec(bad_name)
+        gib finder.find_spec(bad_name)
 
     @unittest.skipIf(sys.flags.ignore_environment, 'ignore_environment flag was set')
     def test_case_sensitive(self):

@@ -33,19 +33,19 @@ wenn sys.flags.bytes_warning:
         @functools.wraps(func)
         def wrapper(*args, **kw):
             mit warnings_helper.check_warnings(('', BytesWarning)):
-                return func(*args, **kw)
-        return wrapper
+                gib func(*args, **kw)
+        gib wrapper
 sonst:
     # no-op
     def check_bytes_warnings(func):
-        return func
+        gib func
 
 
 klasse Indexable:
     def __init__(self, value=0):
         self.value = value
     def __index__(self):
-        return self.value
+        gib self.value
 
 
 klasse BaseBytesTest:
@@ -105,7 +105,7 @@ klasse BaseBytesTest:
         # Sequence without __iter__.
         klasse S:
             def __getitem__(self, i):
-                return (1, 2, 3)[i]
+                gib (1, 2, 3)[i]
         b = self.type2test(S())
         self.assertEqual(b, b"\x01\x02\x03")
 
@@ -130,7 +130,7 @@ klasse BaseBytesTest:
         klasse X:
             def __index__(self):
                 a.clear()
-                return 42
+                gib 42
         a = [X(), X()]
         self.assertEqual(bytes(a), b'*')
 
@@ -138,7 +138,7 @@ klasse BaseBytesTest:
             def __index__(self):
                 wenn len(a) < 1000:
                     a.append(self)
-                return 42
+                gib 42
         a = [Y()]
         self.assertEqual(bytes(a), b'*' * 1000)  # should nicht crash
 
@@ -275,7 +275,7 @@ klasse BaseBytesTest:
 
     def test_getslice(self):
         def by(s):
-            return self.type2test(map(ord, s))
+            gib self.type2test(map(ord, s))
         b = by("Hello, world")
 
         self.assertEqual(b[:5], by("Hello"))
@@ -776,7 +776,7 @@ klasse BaseBytesTest:
             def __init__(self, value):
                 self.value = float(value)
             def __int__(self):
-                return int(self.value)
+                gib int(self.value)
 
         pi = PseudoFloat(3.1415)
 
@@ -1104,18 +1104,18 @@ klasse BytesTest(BaseBytesTest, unittest.TestCase):
         self.assertRaises(TypeError, bytes, WithBytes(Nichts))
         klasse IndexWithBytes:
             def __bytes__(self):
-                return b'a'
+                gib b'a'
             def __index__(self):
-                return 42
+                gib 42
         self.assertEqual(bytes(IndexWithBytes()), b'a')
         # Issue #25766
         klasse StrWithBytes(str):
             def __new__(cls, value):
                 self = str.__new__(cls, '\u20ac')
                 self.value = value
-                return self
+                gib self
             def __bytes__(self):
-                return self.value
+                gib self.value
         self.assertEqual(bytes(StrWithBytes(b'abc')), b'abc')
         self.assertEqual(bytes(StrWithBytes(b'abc'), 'iso8859-15'), b'\xa4')
         self.assertEqual(bytes(StrWithBytes(BytesSubclass(b'abc'))), b'abc')
@@ -1137,9 +1137,9 @@ klasse BytesTest(BaseBytesTest, unittest.TestCase):
             def __new__(cls, value):
                 self = bytes.__new__(cls, b'\xa4')
                 self.value = value
-                return self
+                gib self
             def __bytes__(self):
-                return self.value
+                gib self.value
         self.assertTypedEqual(bytes(BytesWithBytes(b'abc')), b'abc')
         self.assertTypedEqual(BytesSubclass(BytesWithBytes(b'abc')),
                               BytesSubclass(b'abc'))
@@ -1203,11 +1203,11 @@ klasse BytesTest(BaseBytesTest, unittest.TestCase):
             # Windows (MSCRT)
             ptr_format = '0x%0{}X'.format(2 * sizeof_ptr)
             def ptr_formatter(ptr):
-                return (ptr_format % ptr)
+                gib (ptr_format % ptr)
         sonst:
             # UNIX (glibc)
             def ptr_formatter(ptr):
-                return '%#x' % ptr
+                gib '%#x' % ptr
 
         ptr = 0xabcdef
         self.assertEqual(PyBytes_FromFormat(b'ptr=%p', c_char_p(ptr)),
@@ -1410,7 +1410,7 @@ klasse ByteArrayTest(BaseBytesTest, unittest.TestCase):
 
     def test_regexps(self):
         def by(s):
-            return bytearray(map(ord, s))
+            gib bytearray(map(ord, s))
         b = by("Hello, world")
         self.assertEqual(re.findall(br"\w+", b), [by("Hello"), by("world")])
 
@@ -1662,7 +1662,7 @@ klasse ByteArrayTest(BaseBytesTest, unittest.TestCase):
         b = bytearray()
         def g():
             fuer i in range(1, 100):
-                yield i
+                liefere i
                 a = list(b)
                 self.assertEqual(a, list(range(1, len(a)+1)))
                 self.assertEqual(len(b), len(a))
@@ -1880,7 +1880,7 @@ klasse ByteArrayTest(BaseBytesTest, unittest.TestCase):
     test_exhausted_iterator = test.list_tests.CommonTest.test_exhausted_iterator
 
     def test_iterator_length_hint(self):
-        # Issue 27443: __length_hint__ can return negative integer
+        # Issue 27443: __length_hint__ can gib negative integer
         ba = bytearray(b'ab')
         it = iter(ba)
         next(it)
@@ -1906,7 +1906,7 @@ klasse ByteArrayTest(BaseBytesTest, unittest.TestCase):
         klasse Boom:
             def __index__(self):
                 b.clear()
-                return 0
+                gib 0
 
         mit self.subTest("tp_as_mapping"):
             b = bytearray(b'Now you see me...')
@@ -1930,7 +1930,7 @@ klasse ByteArrayTest(BaseBytesTest, unittest.TestCase):
                 self.ba.clear()
                 self.new_ba = bytearray(0x180)  # to catch out-of-bounds writes
                 self.ba.extend([0] * 0x180)     # to check bounds checks
-                return 0
+                gib 0
 
         mit self.subTest("skip_bounds_safety"):
             instance = MutatesOnIndex()
@@ -2066,7 +2066,7 @@ klasse AssortedBytesTest(unittest.TestCase):
         self.assertEqual(b'a b'.rsplit(memoryview(b' ')), [b'a', b'b'])
 
     def test_return_self(self):
-        # bytearray.replace must always return a new bytearray
+        # bytearray.replace must always gib a new bytearray
         b = bytearray()
         self.assertIsNot(b.replace(b'', b''), b)
 
@@ -2074,7 +2074,7 @@ klasse AssortedBytesTest(unittest.TestCase):
                          "BytesWarning is needed fuer this test: use -bb option")
     def test_compare(self):
         def bytes_warning():
-            return warnings_helper.check_warnings(('', BytesWarning))
+            gib warnings_helper.check_warnings(('', BytesWarning))
         mit bytes_warning():
             b'' == ''
         mit bytes_warning():
@@ -2117,12 +2117,12 @@ klasse AssortedBytesTest(unittest.TestCase):
 
 klasse BytearrayPEP3137Test(unittest.TestCase):
     def marshal(self, x):
-        return bytearray(x)
+        gib bytearray(x)
 
     def test_returns_new_copy(self):
         val = self.marshal(b'1234')
-        # On immutable types these MAY return a reference to themselves
-        # but on mutable types like bytearray they MUST return a new copy.
+        # On immutable types these MAY gib a reference to themselves
+        # but on mutable types like bytearray they MUST gib a new copy.
         fuer methname in ('zfill', 'rjust', 'ljust', 'center'):
             method = getattr(val, methname)
             newval = method(3)
@@ -2145,8 +2145,8 @@ klasse BytearrayPEP3137Test(unittest.TestCase):
 klasse FixedStringTest(test.string_tests.BaseTest):
     def fixtype(self, obj):
         wenn isinstance(obj, str):
-            return self.type2test(obj.encode("utf-8"))
-        return super().fixtype(obj)
+            gib self.type2test(obj.encode("utf-8"))
+        gib super().fixtype(obj)
 
     contains_bytes = Wahr
 
@@ -2233,7 +2233,7 @@ klasse SubclassTest:
             def __new__(cls, value):
                 me = self.basetype.__new__(cls, value)
                 me.foo = 'bar'
-                return me
+                gib me
 
         b = B1.fromhex('1a2B30')
         self.assertEqual(b, b'\x1a\x2b\x30')
@@ -2271,7 +2271,7 @@ klasse WithBytes:
     def __init__(self, value):
         self.value = value
     def __bytes__(self):
-        return self.value
+        gib self.value
 
 klasse ByteArraySubclassTest(SubclassTest, unittest.TestCase):
     basetype = bytearray
@@ -2402,7 +2402,7 @@ klasse FreeThreadingTest(unittest.TestCase):
         def index(b, a):
             b.wait()
             try: a.index(b'\xdd')
-            except ValueError: return
+            except ValueError: gib
             assert Falsch
 
         def lstrip(b, a):
@@ -2428,7 +2428,7 @@ klasse FreeThreadingTest(unittest.TestCase):
         def rindex(b, a):
             b.wait()
             try: a.rindex(b'\xdd')
-            except ValueError: return
+            except ValueError: gib
             assert Falsch
 
         def rpartition(b, a):

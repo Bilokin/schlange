@@ -24,7 +24,7 @@ logger = logging.getLogger(__name__)
 
 def _format_vartype(vartype):
     wenn isinstance(vartype, str):
-        return vartype
+        gib vartype
 
     data = vartype
     try:
@@ -43,11 +43,11 @@ def _format_vartype(vartype):
         vartype = f'{typequal} {vartype}'
     wenn storage:
         vartype = f'{storage} {vartype}'
-    return vartype
+    gib vartype
 
 
 def _get_preprocessor(filename, **kwargs):
-    return get_processor(filename,
+    gib get_processor(filename,
                          log_err=print,
                          **kwargs
                          )
@@ -57,12 +57,12 @@ def _get_preprocessor(filename, **kwargs):
 # the formats
 
 def fmt_raw(filename, item, *, showfwd=Nichts):
-    yield str(tuple(item))
+    liefere str(tuple(item))
 
 
 def fmt_summary(filename, item, *, showfwd=Nichts):
     wenn item.filename != filename:
-        yield f'> {item.filename}'
+        liefere f'> {item.filename}'
 
     wenn showfwd is Nichts:
         LINE = ' {lno:>5} {kind:10} {funcname:40} {fwd:1} {name:40} {data}'
@@ -122,11 +122,11 @@ def fmt_summary(filename, item, *, showfwd=Nichts):
     wenn isforward:
         fwd = '*'
         wenn nicht showfwd und showfwd is nicht Nichts:
-            return
+            gib
     sowenn showfwd:
-        return
+        gib
     kind = kind.value
-    yield LINE.format(**locals())
+    liefere LINE.format(**locals())
 
 
 def fmt_full(filename, item, *, showfwd=Nichts):
@@ -147,7 +147,7 @@ def add_output_cli(parser):
 
     def process_args(args, *, argv=Nichts):
         pass
-    return process_args
+    gib process_args
 
 
 #######################################
@@ -158,7 +158,7 @@ def _cli_parse(parser, excluded=Nichts, **prepr_kwargs):
     process_kinds = add_kind_filtering_cli(parser)
     process_preprocessor = add_preprocessor_cli(parser, **prepr_kwargs)
     process_files = add_files_cli(parser, excluded=excluded)
-    return [
+    gib [
         process_output,
         process_kinds,
         process_preprocessor,
@@ -189,7 +189,7 @@ def cmd_parse(filenames, *,
 def _cli_data(parser):
     ...
 
-    return []
+    gib []
 
 
 def cmd_data(filenames,
@@ -244,7 +244,7 @@ def parse_args(argv=sys.argv[1:], prog=sys.argv[0], *, subset='parse'):
         ['verbosity', 'traceback_cm'],
     )
 
-    return cmd, ns, verbosity, traceback_cm
+    gib cmd, ns, verbosity, traceback_cm
 
 
 def main(cmd, cmd_kwargs):

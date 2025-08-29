@@ -234,7 +234,7 @@ klasse TextWrapper:
     def __init__(self, master):
         self.text = Text(master=master)
     def __getattr__(self, name):
-        return getattr(self.text, name)
+        gib getattr(self.text, name)
     def undo_block_start(self): pass
     def undo_block_stop(self): pass
 
@@ -426,11 +426,11 @@ klasse C1:
 
     def compare(self):
         wenn a > b:
-            return a
+            gib a
         sowenn a < b:
-            return b
+            gib b
         sonst:
-            return Nichts
+            gib Nichts
 """
 
     def test_get_region(self):

@@ -45,7 +45,7 @@ klasse CallbackTracbackTestCase(unittest.TestCase):
     @contextlib.contextmanager
     def expect_unraisable(self, exc_type, exc_msg=Nichts):
         mit support.catch_unraisable_exception() als cm:
-            yield
+            liefere
 
             self.assertIsInstance(cm.unraisable.exc_value, exc_type)
             wenn exc_msg is nicht Nichts:

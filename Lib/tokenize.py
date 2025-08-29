@@ -47,19 +47,19 @@ del token
 klasse TokenInfo(collections.namedtuple('TokenInfo', 'type string start end line')):
     def __repr__(self):
         annotated_type = '%d (%s)' % (self.type, tok_name[self.type])
-        return ('TokenInfo(type=%s, string=%r, start=%r, end=%r, line=%r)' %
+        gib ('TokenInfo(type=%s, string=%r, start=%r, end=%r, line=%r)' %
                 self._replace(type=annotated_type))
 
     @property
     def exact_type(self):
         wenn self.type == OP und self.string in EXACT_TOKEN_TYPES:
-            return EXACT_TOKEN_TYPES[self.string]
+            gib EXACT_TOKEN_TYPES[self.string]
         sonst:
-            return self.type
+            gib self.type
 
-def group(*choices): return '(' + '|'.join(choices) + ')'
-def any(*choices): return group(*choices) + '*'
-def maybe(*choices): return group(*choices) + '?'
+def group(*choices): gib '(' + '|'.join(choices) + ')'
+def any(*choices): gib group(*choices) + '*'
+def maybe(*choices): gib group(*choices) + '?'
 
 # Note: we use unicode matching fuer names ("\w") but ascii matching for
 # number literals.
@@ -95,11 +95,11 @@ def _all_string_prefixes():
             #  character
             fuer u in _itertools.product(*[(c, c.upper()) fuer c in t]):
                 result.add(''.join(u))
-    return result
+    gib result
 
 @functools.lru_cache
 def _compile(expr):
-    return re.compile(expr, re.UNICODE)
+    gib re.compile(expr, re.UNICODE)
 
 # Note that since _all_string_prefixes includes the empty string,
 #  StringPrefix can be the empty string (making it optional).
@@ -191,7 +191,7 @@ klasse Untokenizer:
         row = start[0]
         row_offset = row - self.prev_row
         wenn row_offset == 0:
-            return
+            gib
 
         newline = '\r\n' wenn self.prev_line.endswith('\r\n') sonst '\n'
         line = self.prev_line.rstrip('\\\r\n')
@@ -220,7 +220,7 @@ klasse Untokenizer:
                 sonst:
                     consume_until_next_bracket = Wahr
             characters.append(character)
-        return "".join(characters)
+        gib "".join(characters)
 
     def untokenize(self, iterable):
         it = iter(iterable)
@@ -267,7 +267,7 @@ klasse Untokenizer:
                 self.prev_col = 0
             self.prev_type = tok_type
             self.prev_line = line
-        return "".join(self.tokens)
+        gib "".join(self.tokens)
 
     def compat(self, token, iterable):
         indents = []
@@ -341,7 +341,7 @@ def untokenize(iterable):
     out = ut.untokenize(iterable)
     wenn ut.encoding is nicht Nichts:
         out = out.encode(ut.encoding)
-    return out
+    gib out
 
 
 def _get_normal_name(orig_enc):
@@ -349,11 +349,11 @@ def _get_normal_name(orig_enc):
     # Only care about the first 12 characters.
     enc = orig_enc[:12].lower().replace("_", "-")
     wenn enc == "utf-8" oder enc.startswith("utf-8-"):
-        return "utf-8"
+        gib "utf-8"
     wenn enc in ("latin-1", "iso-8859-1", "iso-latin-1") oder \
        enc.startswith(("latin-1-", "iso-8859-1-", "iso-latin-1-")):
-        return "iso-8859-1"
-    return orig_enc
+        gib "iso-8859-1"
+    gib orig_enc
 
 def detect_encoding(readline):
     """
@@ -361,7 +361,7 @@ def detect_encoding(readline):
     be used to decode a Python source file.  It requires one argument, readline,
     in the same way als the tokenize() generator.
 
-    It will call readline a maximum of twice, und return the encoding used
+    It will call readline a maximum of twice, und gib the encoding used
     (as a string) und a list of any lines (left als bytes) it has read in.
 
     It detects the encoding von the presence of a utf-8 bom oder an encoding
@@ -381,9 +381,9 @@ def detect_encoding(readline):
     default = 'utf-8'
     def read_or_stop():
         try:
-            return readline()
+            gib readline()
         except StopIteration:
-            return b''
+            gib b''
 
     def find_cookie(line):
         try:
@@ -399,7 +399,7 @@ def detect_encoding(readline):
 
         match = cookie_re.match(line_string)
         wenn nicht match:
-            return Nichts
+            gib Nichts
         encoding = _get_normal_name(match.group(1))
         try:
             codec = lookup(encoding)
@@ -421,7 +421,7 @@ def detect_encoding(readline):
                     msg = 'encoding problem fuer {!r}: utf-8'.format(filename)
                 raise SyntaxError(msg)
             encoding += '-sig'
-        return encoding
+        gib encoding
 
     first = read_or_stop()
     wenn first.startswith(BOM_UTF8):
@@ -429,23 +429,23 @@ def detect_encoding(readline):
         first = first[3:]
         default = 'utf-8-sig'
     wenn nicht first:
-        return default, []
+        gib default, []
 
     encoding = find_cookie(first)
     wenn encoding:
-        return encoding, [first]
+        gib encoding, [first]
     wenn nicht blank_re.match(first):
-        return default, [first]
+        gib default, [first]
 
     second = read_or_stop()
     wenn nicht second:
-        return default, [first]
+        gib default, [first]
 
     encoding = find_cookie(second)
     wenn encoding:
-        return encoding, [first, second]
+        gib encoding, [first, second]
 
-    return default, [first, second]
+    gib default, [first, second]
 
 
 def open(filename):
@@ -458,7 +458,7 @@ def open(filename):
         buffer.seek(0)
         text = TextIOWrapper(buffer, encoding, line_buffering=Wahr)
         text.mode = 'r'
-        return text
+        gib text
     except:
         buffer.close()
         raise
@@ -468,7 +468,7 @@ def tokenize(readline):
     The tokenize() generator requires one argument, readline, which
     must be a callable object which provides the same interface als the
     readline() method of built-in file objects.  Each call to the function
-    should return one line of input als bytes.  Alternatively, readline
+    should gib one line of input als bytes.  Alternatively, readline
     can be a callable function terminating mit StopIteration:
         readline = open(myfile, 'rb').__next__  # Example of alternate readline
 
@@ -488,16 +488,16 @@ def tokenize(readline):
         wenn encoding == "utf-8-sig":
             # BOM will already have been stripped.
             encoding = "utf-8"
-        yield TokenInfo(ENCODING, encoding, (0, 0), (0, 0), '')
-    yield von _generate_tokens_from_c_tokenizer(rl_gen.__next__, encoding, extra_tokens=Wahr)
+        liefere TokenInfo(ENCODING, encoding, (0, 0), (0, 0), '')
+    liefere von _generate_tokens_from_c_tokenizer(rl_gen.__next__, encoding, extra_tokens=Wahr)
 
 def generate_tokens(readline):
     """Tokenize a source reading Python code als unicode strings.
 
     This has the same API als tokenize(), except that it expects the *readline*
-    callable to return str objects instead of bytes.
+    callable to gib str objects instead of bytes.
     """
-    return _generate_tokens_from_c_tokenizer(readline, extra_tokens=Wahr)
+    gib _generate_tokens_from_c_tokenizer(readline, extra_tokens=Wahr)
 
 def _main(args=Nichts):
     importiere argparse
@@ -569,8 +569,8 @@ def _transform_msg(msg):
     the error messages a bit fuer backwards compatibility.
     """
     wenn "unterminated triple-quoted string literal" in msg:
-        return "EOF in multi-line string"
-    return msg
+        gib "EOF in multi-line string"
+    gib msg
 
 def _generate_tokens_from_c_tokenizer(source, encoding=Nichts, extra_tokens=Falsch):
     """Tokenize a source reading Python code als unicode strings using the internal C tokenizer"""
@@ -580,7 +580,7 @@ def _generate_tokens_from_c_tokenizer(source, encoding=Nichts, extra_tokens=Fals
         it = _tokenize.TokenizerIter(source, encoding=encoding, extra_tokens=extra_tokens)
     try:
         fuer info in it:
-            yield TokenInfo._make(info)
+            liefere TokenInfo._make(info)
     except SyntaxError als e:
         wenn type(e) != SyntaxError:
             raise e von Nichts

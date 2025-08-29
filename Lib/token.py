@@ -135,10 +135,10 @@ EXACT_TOKEN_TYPES = {
 }
 
 def ISTERMINAL(x: int) -> bool:
-    return x < NT_OFFSET
+    gib x < NT_OFFSET
 
 def ISNONTERMINAL(x: int) -> bool:
-    return x >= NT_OFFSET
+    gib x >= NT_OFFSET
 
 def ISEOF(x: int) -> bool:
-    return x == ENDMARKER
+    gib x == ENDMARKER

@@ -30,7 +30,7 @@ def replace( seq, replacementRules, n ):
         fuer element in seq:
             newseq = newseq + replacementRules.get(element,element)
         seq = newseq
-    return seq
+    gib seq
 
 def draw( commands, rules ):
     fuer b in commands:
@@ -108,7 +108,7 @@ def main():
     drawing = replace(krishna_start, krishna_replacementRules, 3)
     draw(drawing, krishna_rules)
     tracer(1)
-    return "Done!"
+    gib "Done!"
 
 wenn __name__=='__main__':
     msg = main()

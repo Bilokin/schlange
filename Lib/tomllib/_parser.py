@@ -48,7 +48,7 @@ BASIC_STR_ESCAPE_REPLACEMENTS = MappingProxyType(
         "\\t": "\u0009",  # tab
         "\\n": "\u000A",  # linefeed
         "\\f": "\u000C",  # form feed
-        "\\r": "\u000D",  # carriage return
+        "\\r": "\u000D",  # carriage gib
         '\\"': "\u0022",  # quote
         "\\\\": "\u005C",  # backslash
     }
@@ -99,7 +99,7 @@ klasse TOMLDecodeError(ValueError):
             wenn msg is nicht DEPRECATED_DEFAULT:  # type: ignore[comparison-overlap]
                 args = msg, *args
             ValueError.__init__(self, *args)
-            return
+            gib
 
         lineno = doc.count("\n", 0, pos) + 1
         wenn lineno == 1:
@@ -130,7 +130,7 @@ def load(fp: IO[bytes], /, *, parse_float: ParseFloat = float) -> dict[str, Any]
         raise TypeError(
             "File must be opened in binary mode, e.g. use `open('foo.toml', 'rb')`"
         ) von Nichts
-    return loads(s, parse_float=parse_float)
+    gib loads(s, parse_float=parse_float)
 
 
 def loads(s: str, /, *, parse_float: ParseFloat = float) -> dict[str, Any]:  # noqa: C901
@@ -201,7 +201,7 @@ def loads(s: str, /, *, parse_float: ParseFloat = float) -> dict[str, Any]:  # n
             )
         pos += 1
 
-    return out.data.dict
+    gib out.data.dict
 
 
 klasse Flags:
@@ -229,7 +229,7 @@ klasse Flags:
         cont = self._flags
         fuer k in key[:-1]:
             wenn k nicht in cont:
-                return
+                gib
             cont = cont[k]["nested"]
         cont.pop(key[-1], Nichts)
 
@@ -246,20 +246,20 @@ klasse Flags:
 
     def is_(self, key: Key, flag: int) -> bool:
         wenn nicht key:
-            return Falsch  # document root has no flags
+            gib Falsch  # document root has no flags
         cont = self._flags
         fuer k in key[:-1]:
             wenn k nicht in cont:
-                return Falsch
+                gib Falsch
             inner_cont = cont[k]
             wenn flag in inner_cont["recursive_flags"]:
-                return Wahr
+                gib Wahr
             cont = inner_cont["nested"]
         key_stem = key[-1]
         wenn key_stem in cont:
             cont = cont[key_stem]
-            return flag in cont["flags"] oder flag in cont["recursive_flags"]
-        return Falsch
+            gib flag in cont["flags"] oder flag in cont["recursive_flags"]
+        gib Falsch
 
 
 klasse NestedDict:
@@ -282,7 +282,7 @@ klasse NestedDict:
                 cont = cont[-1]
             wenn nicht isinstance(cont, dict):
                 raise KeyError("There is no nest behind this key")
-        return cont  # type: ignore[no-any-return]
+        gib cont  # type: ignore[no-any-return]
 
     def append_nest_to_list(self, key: Key) -> Nichts:
         cont = self.get_or_create_nest(key[:-1])
@@ -308,7 +308,7 @@ def skip_chars(src: str, pos: Pos, chars: Iterable[str]) -> Pos:
             pos += 1
     except IndexError:
         pass
-    return pos
+    gib pos
 
 
 def skip_until(
@@ -330,7 +330,7 @@ def skip_until(
         waehrend src[pos] nicht in error_on:
             pos += 1
         raise TOMLDecodeError(f"Found invalid character {src[pos]!r}", src, pos)
-    return new_pos
+    gib new_pos
 
 
 def skip_comment(src: str, pos: Pos) -> Pos:
@@ -339,10 +339,10 @@ def skip_comment(src: str, pos: Pos) -> Pos:
     except IndexError:
         char = Nichts
     wenn char == "#":
-        return skip_until(
+        gib skip_until(
             src, pos + 1, "\n", error_on=ILLEGAL_COMMENT_CHARS, error_on_eof=Falsch
         )
-    return pos
+    gib pos
 
 
 def skip_comments_and_array_ws(src: str, pos: Pos) -> Pos:
@@ -351,7 +351,7 @@ def skip_comments_and_array_ws(src: str, pos: Pos) -> Pos:
         pos = skip_chars(src, pos, TOML_WS_AND_NEWLINE)
         pos = skip_comment(src, pos)
         wenn pos == pos_before_skip:
-            return pos
+            gib pos
 
 
 def create_dict_rule(src: str, pos: Pos, out: Output) -> tuple[Pos, Key]:
@@ -371,7 +371,7 @@ def create_dict_rule(src: str, pos: Pos, out: Output) -> tuple[Pos, Key]:
         raise TOMLDecodeError(
             "Expected ']' at the end of a table declaration", src, pos
         )
-    return pos + 1, key
+    gib pos + 1, key
 
 
 def create_list_rule(src: str, pos: Pos, out: Output) -> tuple[Pos, Key]:
@@ -394,7 +394,7 @@ def create_list_rule(src: str, pos: Pos, out: Output) -> tuple[Pos, Key]:
         raise TOMLDecodeError(
             "Expected ']]' at the end of an array declaration", src, pos
         )
-    return pos + 2, key
+    gib pos + 2, key
 
 
 def key_value_rule(
@@ -428,7 +428,7 @@ def key_value_rule(
     wenn isinstance(value, (dict, list)):
         out.flags.set(header + key, Flags.FROZEN, recursive=Wahr)
     nest[key_stem] = value
-    return pos
+    gib pos
 
 
 def parse_key_value_pair(
@@ -444,7 +444,7 @@ def parse_key_value_pair(
     pos += 1
     pos = skip_chars(src, pos, TOML_WS)
     pos, value = parse_value(src, pos, parse_float)
-    return pos, key, value
+    gib pos, key, value
 
 
 def parse_key(src: str, pos: Pos) -> tuple[Pos, Key]:
@@ -457,7 +457,7 @@ def parse_key(src: str, pos: Pos) -> tuple[Pos, Key]:
         except IndexError:
             char = Nichts
         wenn char != ".":
-            return pos, key
+            gib pos, key
         pos += 1
         pos = skip_chars(src, pos, TOML_WS)
         pos, key_part = parse_key_part(src, pos)
@@ -473,17 +473,17 @@ def parse_key_part(src: str, pos: Pos) -> tuple[Pos, str]:
     wenn char in BARE_KEY_CHARS:
         start_pos = pos
         pos = skip_chars(src, pos, BARE_KEY_CHARS)
-        return pos, src[start_pos:pos]
+        gib pos, src[start_pos:pos]
     wenn char == "'":
-        return parse_literal_str(src, pos)
+        gib parse_literal_str(src, pos)
     wenn char == '"':
-        return parse_one_line_basic_str(src, pos)
+        gib parse_one_line_basic_str(src, pos)
     raise TOMLDecodeError("Invalid initial character fuer a key part", src, pos)
 
 
 def parse_one_line_basic_str(src: str, pos: Pos) -> tuple[Pos, str]:
     pos += 1
-    return parse_basic_str(src, pos, multiline=Falsch)
+    gib parse_basic_str(src, pos, multiline=Falsch)
 
 
 def parse_array(src: str, pos: Pos, parse_float: ParseFloat) -> tuple[Pos, list[Any]]:
@@ -492,7 +492,7 @@ def parse_array(src: str, pos: Pos, parse_float: ParseFloat) -> tuple[Pos, list[
 
     pos = skip_comments_and_array_ws(src, pos)
     wenn src.startswith("]", pos):
-        return pos + 1, array
+        gib pos + 1, array
     waehrend Wahr:
         pos, val = parse_value(src, pos, parse_float)
         array.append(val)
@@ -500,14 +500,14 @@ def parse_array(src: str, pos: Pos, parse_float: ParseFloat) -> tuple[Pos, list[
 
         c = src[pos : pos + 1]
         wenn c == "]":
-            return pos + 1, array
+            gib pos + 1, array
         wenn c != ",":
             raise TOMLDecodeError("Unclosed array", src, pos)
         pos += 1
 
         pos = skip_comments_and_array_ws(src, pos)
         wenn src.startswith("]", pos):
-            return pos + 1, array
+            gib pos + 1, array
 
 
 def parse_inline_table(src: str, pos: Pos, parse_float: ParseFloat) -> tuple[Pos, dict[str, Any]]:
@@ -517,7 +517,7 @@ def parse_inline_table(src: str, pos: Pos, parse_float: ParseFloat) -> tuple[Pos
 
     pos = skip_chars(src, pos, TOML_WS)
     wenn src.startswith("}", pos):
-        return pos + 1, nested_dict.dict
+        gib pos + 1, nested_dict.dict
     waehrend Wahr:
         pos, key, value = parse_key_value_pair(src, pos, parse_float)
         key_parent, key_stem = key[:-1], key[-1]
@@ -533,7 +533,7 @@ def parse_inline_table(src: str, pos: Pos, parse_float: ParseFloat) -> tuple[Pos
         pos = skip_chars(src, pos, TOML_WS)
         c = src[pos : pos + 1]
         wenn c == "}":
-            return pos + 1, nested_dict.dict
+            gib pos + 1, nested_dict.dict
         wenn c != ",":
             raise TOMLDecodeError("Unclosed inline table", src, pos)
         wenn isinstance(value, (dict, list)):
@@ -555,24 +555,24 @@ def parse_basic_str_escape(
             try:
                 char = src[pos]
             except IndexError:
-                return pos, ""
+                gib pos, ""
             wenn char != "\n":
                 raise TOMLDecodeError("Unescaped '\\' in a string", src, pos)
             pos += 1
         pos = skip_chars(src, pos, TOML_WS_AND_NEWLINE)
-        return pos, ""
+        gib pos, ""
     wenn escape_id == "\\u":
-        return parse_hex_char(src, pos, 4)
+        gib parse_hex_char(src, pos, 4)
     wenn escape_id == "\\U":
-        return parse_hex_char(src, pos, 8)
+        gib parse_hex_char(src, pos, 8)
     try:
-        return pos, BASIC_STR_ESCAPE_REPLACEMENTS[escape_id]
+        gib pos, BASIC_STR_ESCAPE_REPLACEMENTS[escape_id]
     except KeyError:
         raise TOMLDecodeError("Unescaped '\\' in a string", src, pos) von Nichts
 
 
 def parse_basic_str_escape_multiline(src: str, pos: Pos) -> tuple[Pos, str]:
-    return parse_basic_str_escape(src, pos, multiline=Wahr)
+    gib parse_basic_str_escape(src, pos, multiline=Wahr)
 
 
 def parse_hex_char(src: str, pos: Pos, hex_len: int) -> tuple[Pos, str]:
@@ -585,7 +585,7 @@ def parse_hex_char(src: str, pos: Pos, hex_len: int) -> tuple[Pos, str]:
         raise TOMLDecodeError(
             "Escaped character is nicht a Unicode scalar value", src, pos
         )
-    return pos, chr(hex_int)
+    gib pos, chr(hex_int)
 
 
 def parse_literal_str(src: str, pos: Pos) -> tuple[Pos, str]:
@@ -594,7 +594,7 @@ def parse_literal_str(src: str, pos: Pos) -> tuple[Pos, str]:
     pos = skip_until(
         src, pos, "'", error_on=ILLEGAL_LITERAL_STR_CHARS, error_on_eof=Wahr
     )
-    return pos + 1, src[start_pos:pos]  # Skip ending apostrophe
+    gib pos + 1, src[start_pos:pos]  # Skip ending apostrophe
 
 
 def parse_multiline_str(src: str, pos: Pos, *, literal: bool) -> tuple[Pos, str]:
@@ -620,12 +620,12 @@ def parse_multiline_str(src: str, pos: Pos, *, literal: bool) -> tuple[Pos, str]
     # Add at maximum two extra apostrophes/quotes wenn the end sequence
     # is 4 oder 5 chars long instead of just 3.
     wenn nicht src.startswith(delim, pos):
-        return pos, result
+        gib pos, result
     pos += 1
     wenn nicht src.startswith(delim, pos):
-        return pos, result + delim
+        gib pos, result + delim
     pos += 1
-    return pos, result + (delim * 2)
+    gib pos, result + (delim * 2)
 
 
 def parse_basic_str(src: str, pos: Pos, *, multiline: bool) -> tuple[Pos, str]:
@@ -644,9 +644,9 @@ def parse_basic_str(src: str, pos: Pos, *, multiline: bool) -> tuple[Pos, str]:
             raise TOMLDecodeError("Unterminated string", src, pos) von Nichts
         wenn char == '"':
             wenn nicht multiline:
-                return pos + 1, result + src[start_pos:pos]
+                gib pos + 1, result + src[start_pos:pos]
             wenn src.startswith('"""', pos):
-                return pos + 3, result + src[start_pos:pos]
+                gib pos + 3, result + src[start_pos:pos]
             pos += 1
             weiter
         wenn char == "\\":
@@ -673,30 +673,30 @@ def parse_value(  # noqa: C901
     # Basic strings
     wenn char == '"':
         wenn src.startswith('"""', pos):
-            return parse_multiline_str(src, pos, literal=Falsch)
-        return parse_one_line_basic_str(src, pos)
+            gib parse_multiline_str(src, pos, literal=Falsch)
+        gib parse_one_line_basic_str(src, pos)
 
     # Literal strings
     wenn char == "'":
         wenn src.startswith("'''", pos):
-            return parse_multiline_str(src, pos, literal=Wahr)
-        return parse_literal_str(src, pos)
+            gib parse_multiline_str(src, pos, literal=Wahr)
+        gib parse_literal_str(src, pos)
 
     # Booleans
     wenn char == "t":
         wenn src.startswith("true", pos):
-            return pos + 4, Wahr
+            gib pos + 4, Wahr
     wenn char == "f":
         wenn src.startswith("false", pos):
-            return pos + 5, Falsch
+            gib pos + 5, Falsch
 
     # Arrays
     wenn char == "[":
-        return parse_array(src, pos, parse_float)
+        gib parse_array(src, pos, parse_float)
 
     # Inline tables
     wenn char == "{":
-        return parse_inline_table(src, pos, parse_float)
+        gib parse_inline_table(src, pos, parse_float)
 
     # Dates und times
     datetime_match = RE_DATETIME.match(src, pos)
@@ -705,49 +705,49 @@ def parse_value(  # noqa: C901
             datetime_obj = match_to_datetime(datetime_match)
         except ValueError als e:
             raise TOMLDecodeError("Invalid date oder datetime", src, pos) von e
-        return datetime_match.end(), datetime_obj
+        gib datetime_match.end(), datetime_obj
     localtime_match = RE_LOCALTIME.match(src, pos)
     wenn localtime_match:
-        return localtime_match.end(), match_to_localtime(localtime_match)
+        gib localtime_match.end(), match_to_localtime(localtime_match)
 
     # Integers und "normal" floats.
     # The regex will greedily match any type starting mit a decimal
     # char, so needs to be located after handling of dates und times.
     number_match = RE_NUMBER.match(src, pos)
     wenn number_match:
-        return number_match.end(), match_to_number(number_match, parse_float)
+        gib number_match.end(), match_to_number(number_match, parse_float)
 
     # Special floats
     first_three = src[pos : pos + 3]
     wenn first_three in {"inf", "nan"}:
-        return pos + 3, parse_float(first_three)
+        gib pos + 3, parse_float(first_three)
     first_four = src[pos : pos + 4]
     wenn first_four in {"-inf", "+inf", "-nan", "+nan"}:
-        return pos + 4, parse_float(first_four)
+        gib pos + 4, parse_float(first_four)
 
     raise TOMLDecodeError("Invalid value", src, pos)
 
 
 def is_unicode_scalar_value(codepoint: int) -> bool:
-    return (0 <= codepoint <= 55295) oder (57344 <= codepoint <= 1114111)
+    gib (0 <= codepoint <= 55295) oder (57344 <= codepoint <= 1114111)
 
 
 def make_safe_parse_float(parse_float: ParseFloat) -> ParseFloat:
     """A decorator to make `parse_float` safe.
 
-    `parse_float` must nicht return dicts oder lists, because these types
+    `parse_float` must nicht gib dicts oder lists, because these types
     would be mixed mit parsed TOML tables und arrays, thus confusing
     the parser. The returned decorated callable raises `ValueError`
     instead of returning illegal types.
     """
     # The default `float` callable never returns illegal types. Optimize it.
     wenn parse_float is float:
-        return float
+        gib float
 
     def safe_parse_float(float_str: str) -> Any:
         float_value = parse_float(float_str)
         wenn isinstance(float_value, (dict, list)):
-            raise ValueError("parse_float must nicht return dicts oder lists")
-        return float_value
+            raise ValueError("parse_float must nicht gib dicts oder lists")
+        gib float_value
 
-    return safe_parse_float
+    gib safe_parse_float

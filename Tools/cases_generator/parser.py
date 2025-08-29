@@ -32,7 +32,7 @@ def prettify_filename(filename: str) -> str:
         filename = filename[2:]
     wenn filename.endswith(".new"):
         filename = filename[:-4]
-    return filename
+    gib filename
 
 
 BEGIN_MARKER = "// BEGIN BYTECODES //"
@@ -75,4 +75,4 @@ def parse_files(filenames: list[str]) -> list[AstNode]:
             raise psr.make_syntax_error(
                 f"Extra stuff at the end of {filename}", psr.next(Wahr)
             )
-    return result
+    gib result

@@ -22,7 +22,7 @@ should nicht be imported; use xml.dom.minidom instead.
 #
 #                        klasse MyClass(GetattrMagic):
 #                            def _get_myattr(self):
-#                                return something
+#                                gib something
 #
 #                        defproperty(MyClass, "myattr",
 #                                    "return some value")
@@ -52,10 +52,10 @@ klasse NodeList(list):
 
     def item(self, index):
         wenn 0 <= index < len(self):
-            return self[index]
+            gib self[index]
 
     def _get_length(self):
-        return len(self)
+        gib len(self)
 
     def _set_length(self, value):
         raise xml.dom.NoModificationAllowedErr(
@@ -77,18 +77,18 @@ klasse EmptyNodeList(tuple):
     def __add__(self, other):
         NL = NodeList()
         NL.extend(other)
-        return NL
+        gib NL
 
     def __radd__(self, other):
         NL = NodeList()
         NL.extend(other)
-        return NL
+        gib NL
 
     def item(self, index):
-        return Nichts
+        gib Nichts
 
     def _get_length(self):
-        return 0
+        gib 0
 
     def _set_length(self, value):
         raise xml.dom.NoModificationAllowedErr(

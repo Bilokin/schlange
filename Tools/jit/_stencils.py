@@ -166,8 +166,8 @@ klasse Hole:
             # patch the same value:
             folded = self.replace()
             folded.func = "patch_aarch64_33rx"
-            return folded
-        return Nichts
+            gib folded
+        gib Nichts
 
     def as_c(self, where: str) -> str:
         """Dump this hole als a call to a patch_* function."""
@@ -182,8 +182,8 @@ klasse Hole:
                 value += " + "
             value += f"{_signed(self.addend):#x}"
         wenn self.need_state:
-            return f"{self.func}({location}, {value}, state);"
-        return f"{self.func}({location}, {value});"
+            gib f"{self.func}({location}, {value}, state);"
+        gib f"{self.func}({location}, {value});"
 
 
 @dataclasses.dataclass
@@ -267,7 +267,7 @@ klasse StencilGroup:
         self.data.holes.sort(key=lambda hole: hole.offset)
 
     def _global_offset_table_lookup(self, symbol: str) -> int:
-        return len(self.data.body) + self._got.setdefault(symbol, 8 * len(self._got))
+        gib len(self.data.body) + self._got.setdefault(symbol, 8 * len(self._got))
 
     def _emit_global_offset_table(self) -> Nichts:
         got = len(self.data.body)
@@ -304,11 +304,11 @@ klasse StencilGroup:
             word = bitmask & ((1 << 32) - 1)
             trampoline_mask.append(f"{word:#04x}")
             bitmask >>= 32
-        return "{" + (", ".join(trampoline_mask) oder "0") + "}"
+        gib "{" + (", ".join(trampoline_mask) oder "0") + "}"
 
     def as_c(self, opname: str) -> str:
         """Dump this hole als a StencilGroup initializer."""
-        return f"{{emit_{opname}, {len(self.code.body)}, {len(self.data.body)}, {self._get_trampoline_mask()}}}"
+        gib f"{{emit_{opname}, {len(self.code.body)}, {len(self.data.body)}, {self._get_trampoline_mask()}}}"
 
 
 def symbol_to_value(symbol: str) -> tuple[HoleValue, str | Nichts]:
@@ -320,14 +320,14 @@ def symbol_to_value(symbol: str) -> tuple[HoleValue, str | Nichts]:
     """
     wenn symbol.startswith("_JIT_"):
         try:
-            return HoleValue[symbol.removeprefix("_JIT_")], Nichts
+            gib HoleValue[symbol.removeprefix("_JIT_")], Nichts
         except KeyError:
             pass
-    return HoleValue.ZERO, symbol
+    gib HoleValue.ZERO, symbol
 
 
 def _signed(value: int) -> int:
     value %= 1 << 64
     wenn value & (1 << 63):
         value -= 1 << 64
-    return value
+    gib value

@@ -294,7 +294,7 @@ def open_file(path):
     except OSError als e:
         wenn e.errno != errno.EEXIST:
             raise
-    return open(path, 'wb')
+    gib open(path, 'wb')
 
 
 def create_package(test_dir, source):
@@ -339,7 +339,7 @@ klasse ModuleFinderTest(unittest.TestCase):
 ##            except:
 ##                importiere traceback; traceback.print_exc()
 ##            sys.path = opath
-##            return
+##            gib
         modules = sorted(set(modules))
         found = sorted(mf.modules)
         # check wenn we found what we expected, nicht more, nicht less
@@ -430,7 +430,7 @@ b.py
             def load_module(self, fqname, fp, pathname, file_info):
                 # confirm that the fileinfo is a tuple of 3 elements
                 suffix, mode, type = file_info
-                return super().load_module(fqname, fp, pathname, file_info)
+                gib super().load_module(fqname, fp, pathname, file_info)
 
         self._do_test(absolute_import_test, modulefinder_class=CheckLoadModuleApi)
 

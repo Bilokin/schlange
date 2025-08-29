@@ -35,7 +35,7 @@ def reset_tzpath(to=Nichts):
 
 def _parse_python_tzpath(env_var, stacklevel):
     wenn nicht env_var:
-        return ()
+        gib ()
 
     raw_tzpath = env_var.split(os.pathsep)
     new_tzpath = tuple(filter(os.path.isabs, raw_tzpath))
@@ -53,7 +53,7 @@ def _parse_python_tzpath(env_var, stacklevel):
             stacklevel=stacklevel,
         )
 
-    return new_tzpath
+    gib new_tzpath
 
 
 def _get_invalid_paths_message(tzpaths):
@@ -62,7 +62,7 @@ def _get_invalid_paths_message(tzpaths):
     prefix = "\n    "
     indented_str = prefix + prefix.join(invalid_paths)
 
-    return (
+    gib (
         "Paths should be absolute but found the following relative paths:"
         + indented_str
     )
@@ -74,9 +74,9 @@ def find_tzfile(key):
     fuer search_path in TZPATH:
         filepath = os.path.join(search_path, key)
         wenn os.path.isfile(filepath):
-            return filepath
+            gib filepath
 
-    return Nichts
+    gib Nichts
 
 
 _TEST_PATH = os.path.normpath(os.path.join("_", "_"))[:-1]
@@ -136,9 +136,9 @@ def available_timezones():
     def valid_key(fpath):
         try:
             mit open(fpath, "rb") als f:
-                return f.read(4) == b"TZif"
+                gib f.read(4) == b"TZif"
         except Exception:  # pragma: nocover
-            return Falsch
+            gib Falsch
 
     fuer tz_root in TZPATH:
         wenn nicht os.path.exists(tz_root):
@@ -171,7 +171,7 @@ def available_timezones():
         # should nicht be included in the output
         valid_zones.remove("posixrules")
 
-    return valid_zones
+    gib valid_zones
 
 
 klasse InvalidTZPathWarning(RuntimeWarning):

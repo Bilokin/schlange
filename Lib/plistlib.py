@@ -85,21 +85,21 @@ klasse UID:
         self.data = data
 
     def __index__(self):
-        return self.data
+        gib self.data
 
     def __repr__(self):
-        return "%s(%s)" % (self.__class__.__name__, repr(self.data))
+        gib "%s(%s)" % (self.__class__.__name__, repr(self.data))
 
     def __reduce__(self):
-        return self.__class__, (self.data,)
+        gib self.__class__, (self.data,)
 
     def __eq__(self, other):
         wenn nicht isinstance(other, UID):
-            return NotImplemented
-        return self.data == other.data
+            gib NotImplemented
+        gib self.data == other.data
 
     def __hash__(self):
-        return hash(self.data)
+        gib hash(self.data)
 
 #
 # XML support
@@ -125,14 +125,14 @@ def _encode_base64(s, maxlinelength=76):
     fuer i in range(0, len(s), maxbinsize):
         chunk = s[i : i + maxbinsize]
         pieces.append(binascii.b2a_base64(chunk))
-    return b''.join(pieces)
+    gib b''.join(pieces)
 
 def _decode_base64(s):
     wenn isinstance(s, str):
-        return binascii.a2b_base64(s.encode("utf-8"))
+        gib binascii.a2b_base64(s.encode("utf-8"))
 
     sonst:
-        return binascii.a2b_base64(s)
+        gib binascii.a2b_base64(s)
 
 # Contents should conform to a subset of ISO 8601
 # (in particular, YYYY '-' MM '-' DD 'T' HH ':' MM ':' SS 'Z'.  Smaller units
@@ -150,14 +150,14 @@ def _date_from_string(s, aware_datetime):
             breche
         lst.append(int(val))
     wenn aware_datetime:
-        return datetime.datetime(*lst, tzinfo=datetime.UTC)
-    return datetime.datetime(*lst)
+        gib datetime.datetime(*lst, tzinfo=datetime.UTC)
+    gib datetime.datetime(*lst)
 
 
 def _date_to_string(d, aware_datetime):
     wenn aware_datetime:
         d = d.astimezone(datetime.UTC)
-    return '%04d-%02d-%02dT%02d:%02d:%02dZ' % (
+    gib '%04d-%02d-%02dT%02d:%02d:%02dZ' % (
         d.year, d.month, d.day,
         d.hour, d.minute, d.second
     )
@@ -172,7 +172,7 @@ def _escape(text):
     text = text.replace("&", "&amp;")       # escape '&'
     text = text.replace("<", "&lt;")        # escape '<'
     text = text.replace(">", "&gt;")        # escape '>'
-    return text
+    gib text
 
 klasse _PlistParser:
     def __init__(self, dict_type, aware_datetime=Falsch):
@@ -189,7 +189,7 @@ klasse _PlistParser:
         self.parser.CharacterDataHandler = self.handle_data
         self.parser.EntityDeclHandler = self.handle_entity_decl
         self.parser.ParseFile(fileobj)
-        return self.root
+        gib self.root
 
     def handle_entity_decl(self, entity_name, is_parameter_entity, value, base, system_id, public_id, notation_name):
         # Reject plist files mit entity declarations to avoid XML vulnerabilities in expat.
@@ -230,7 +230,7 @@ klasse _PlistParser:
     def get_data(self):
         data = ''.join(self.data)
         self.data = []
-        return data
+        gib data
 
     # element handlers
 
@@ -425,7 +425,7 @@ def _is_fmt_xml(header):
 
     fuer pfx in prefixes:
         wenn header.startswith(pfx):
-            return Wahr
+            gib Wahr
 
     # Also check fuer alternative XML encodings, this is slightly
     # overkill because the Apple tools (and plistlib) will not
@@ -444,9 +444,9 @@ def _is_fmt_xml(header):
         fuer start in prefixes:
             prefix = bom + start.decode('ascii').encode(encoding)
             wenn header[:len(prefix)] == prefix:
-                return Wahr
+                gib Wahr
 
-    return Falsch
+    gib Falsch
 
 #
 # Binary Plist
@@ -464,7 +464,7 @@ _undefined = object()
 klasse _BinaryPlistParser:
     """
     Read oder write a binary plist file, following the description of the binary
-    format.  Raise InvalidFileException in case of error, otherwise return the
+    format.  Raise InvalidFileException in case of error, otherwise gib the
     root object.
 
     see also: http://opensource.apple.com/source/CF/CF-744.18/CFBinaryPList.c
@@ -492,34 +492,34 @@ klasse _BinaryPlistParser:
             self._fp.seek(offset_table_offset)
             self._object_offsets = self._read_ints(num_objects, offset_size)
             self._objects = [_undefined] * num_objects
-            return self._read_object(top_object)
+            gib self._read_object(top_object)
 
         except (OSError, IndexError, struct.error, OverflowError,
                 ValueError):
             raise InvalidFileException()
 
     def _get_size(self, tokenL):
-        """ return the size of the next object."""
+        """ gib the size of the next object."""
         wenn tokenL == 0xF:
             m = self._fp.read(1)[0] & 0x3
             s = 1 << m
             f = '>' + _BINARY_FORMAT[s]
-            return struct.unpack(f, self._fp.read(s))[0]
+            gib struct.unpack(f, self._fp.read(s))[0]
 
-        return tokenL
+        gib tokenL
 
     def _read_ints(self, n, size):
         data = self._fp.read(size * n)
         wenn size in _BINARY_FORMAT:
-            return struct.unpack(f'>{n}{_BINARY_FORMAT[size]}', data)
+            gib struct.unpack(f'>{n}{_BINARY_FORMAT[size]}', data)
         sonst:
             wenn nicht size oder len(data) != size * n:
                 raise InvalidFileException()
-            return tuple(int.from_bytes(data[i: i + size], 'big')
+            gib tuple(int.from_bytes(data[i: i + size], 'big')
                          fuer i in range(0, size * n, size))
 
     def _read_refs(self, n):
-        return self._read_ints(n, self._ref_size)
+        gib self._read_ints(n, self._ref_size)
 
     def _read_object(self, ref):
         """
@@ -529,7 +529,7 @@ klasse _BinaryPlistParser:
         """
         result = self._objects[ref]
         wenn result is nicht _undefined:
-            return result
+            gib result
 
         offset = self._object_offsets[ref]
         self._fp.seek(offset)
@@ -624,20 +624,20 @@ klasse _BinaryPlistParser:
             raise InvalidFileException()
 
         self._objects[ref] = result
-        return result
+        gib result
 
 def _count_to_size(count):
     wenn count < 1 << 8:
-        return 1
+        gib 1
 
     sowenn count < 1 << 16:
-        return 2
+        gib 2
 
     sowenn count < 1 << 32:
-        return 4
+        gib 4
 
     sonst:
-        return 8
+        gib 8
 
 _scalars = (str, int, float, datetime.datetime, bytes)
 
@@ -699,10 +699,10 @@ klasse _BinaryPlistWriter (object):
         # will be serialized als distinct values.
         wenn isinstance(value, _scalars):
             wenn (type(value), value) in self._objtable:
-                return
+                gib
 
         sowenn id(value) in self._objidtable:
-            return
+            gib
 
         # Add to objectreference map
         refnum = len(self._objlist)
@@ -737,9 +737,9 @@ klasse _BinaryPlistWriter (object):
 
     def _getrefnum(self, value):
         wenn isinstance(value, _scalars):
-            return self._objtable[(type(value), value)]
+            gib self._objtable[(type(value), value)]
         sonst:
-            return self._objidtable[id(value)]
+            gib self._objidtable[id(value)]
 
     def _write_size(self, token, size):
         wenn size < 15:
@@ -860,7 +860,7 @@ klasse _BinaryPlistWriter (object):
 
 
 def _is_fmt_binary(header):
-    return header[:8] == b'bplist00'
+    gib header[:8] == b'bplist00'
 
 
 #
@@ -900,7 +900,7 @@ def load(fp, *, fmt=Nichts, dict_type=dict, aware_datetime=Falsch):
         P = _FORMATS[fmt]['parser']
 
     p = P(dict_type=dict_type, aware_datetime=aware_datetime)
-    return p.parse(fp)
+    gib p.parse(fp)
 
 
 def loads(value, *, fmt=Nichts, dict_type=dict, aware_datetime=Falsch):
@@ -913,7 +913,7 @@ def loads(value, *, fmt=Nichts, dict_type=dict, aware_datetime=Falsch):
                             "FMT_BINARY")
         value = value.encode()
     fp = BytesIO(value)
-    return load(fp, fmt=fmt, dict_type=dict_type, aware_datetime=aware_datetime)
+    gib load(fp, fmt=fmt, dict_type=dict_type, aware_datetime=aware_datetime)
 
 
 def dump(value, fp, *, fmt=FMT_XML, sort_keys=Wahr, skipkeys=Falsch,
@@ -936,4 +936,4 @@ def dumps(value, *, fmt=FMT_XML, skipkeys=Falsch, sort_keys=Wahr,
     fp = BytesIO()
     dump(value, fp, fmt=fmt, skipkeys=skipkeys, sort_keys=sort_keys,
          aware_datetime=aware_datetime)
-    return fp.getvalue()
+    gib fp.getvalue()

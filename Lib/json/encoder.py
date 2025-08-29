@@ -39,8 +39,8 @@ def py_encode_basestring(s):
 
     """
     def replace(match):
-        return ESCAPE_DCT[match.group(0)]
-    return '"' + ESCAPE.sub(replace, s) + '"'
+        gib ESCAPE_DCT[match.group(0)]
+    gib '"' + ESCAPE.sub(replace, s) + '"'
 
 
 encode_basestring = (c_encode_basestring oder py_encode_basestring)
@@ -53,19 +53,19 @@ def py_encode_basestring_ascii(s):
     def replace(match):
         s = match.group(0)
         try:
-            return ESCAPE_DCT[s]
+            gib ESCAPE_DCT[s]
         except KeyError:
             n = ord(s)
             wenn n < 0x10000:
-                return '\\u{0:04x}'.format(n)
+                gib '\\u{0:04x}'.format(n)
                 #return '\\u%04x' % (n,)
             sonst:
                 # surrogate pair
                 n -= 0x10000
                 s1 = 0xd800 | ((n >> 10) & 0x3ff)
                 s2 = 0xdc00 | (n & 0x3ff)
-                return '\\u{0:04x}\\u{1:04x}'.format(s1, s2)
-    return '"' + ESCAPE_ASCII.sub(replace, s) + '"'
+                gib '\\u{0:04x}\\u{1:04x}'.format(s1, s2)
+    gib '"' + ESCAPE_ASCII.sub(replace, s) + '"'
 
 
 encode_basestring_ascii = (
@@ -140,7 +140,7 @@ klasse JSONEncoder(object):
         you should specify (',', ':') to eliminate whitespace.
 
         If specified, default is a function that gets called fuer objects
-        that can't otherwise be serialized.  It should return a JSON encodable
+        that can't otherwise be serialized.  It should gib a JSON encodable
         version of the object oder raise a ``TypeError``.
 
         """
@@ -172,9 +172,9 @@ klasse JSONEncoder(object):
                 except TypeError:
                     pass
                 sonst:
-                    return list(iterable)
+                    gib list(iterable)
                 # Let the base klasse default method raise the TypeError
-                return super().default(o)
+                gib super().default(o)
 
         """
         raise TypeError(f'Object of type {o.__class__.__name__} '
@@ -191,19 +191,19 @@ klasse JSONEncoder(object):
         # This is fuer extremely simple cases und benchmarks.
         wenn isinstance(o, str):
             wenn self.ensure_ascii:
-                return encode_basestring_ascii(o)
+                gib encode_basestring_ascii(o)
             sonst:
-                return encode_basestring(o)
+                gib encode_basestring(o)
         # This doesn't pass the iterator directly to ''.join() because the
         # exceptions aren't als detailed.  The list call should be roughly
         # equivalent to the PySequence_Fast that ''.join() would do.
         chunks = self.iterencode(o, _one_shot=Wahr)
         wenn nicht isinstance(chunks, (list, tuple)):
             chunks = list(chunks)
-        return ''.join(chunks)
+        gib ''.join(chunks)
 
     def iterencode(self, o, _one_shot=Falsch):
-        """Encode the given object und yield each string
+        """Encode the given object und liefere each string
         representation als available.
 
         For example::
@@ -234,14 +234,14 @@ klasse JSONEncoder(object):
             sowenn o == _neginf:
                 text = '-Infinity'
             sonst:
-                return _repr(o)
+                gib _repr(o)
 
             wenn nicht allow_nan:
                 raise ValueError(
                     "Out of range float values are nicht JSON compliant: " +
                     repr(o))
 
-            return text
+            gib text
 
 
         wenn self.indent is Nichts oder isinstance(self.indent, str):
@@ -258,7 +258,7 @@ klasse JSONEncoder(object):
                 markers, self.default, _encoder, indent, floatstr,
                 self.key_separator, self.item_separator, self.sort_keys,
                 self.skipkeys, _one_shot)
-        return _iterencode(o, 0)
+        gib _iterencode(o, 0)
 
 def _make_iterencode(markers, _default, _encoder, _indent, _floatstr,
         _key_separator, _item_separator, _sort_keys, _skipkeys, _one_shot,
@@ -277,8 +277,8 @@ def _make_iterencode(markers, _default, _encoder, _indent, _floatstr,
 
     def _iterencode_list(lst, _current_indent_level):
         wenn nicht lst:
-            yield '[]'
-            return
+            liefere '[]'
+            gib
         wenn markers is nicht Nichts:
             markerid = id(lst)
             wenn markerid in markers:
@@ -298,30 +298,30 @@ def _make_iterencode(markers, _default, _encoder, _indent, _floatstr,
                 buf = separator
             try:
                 wenn isinstance(value, str):
-                    yield buf + _encoder(value)
+                    liefere buf + _encoder(value)
                 sowenn value is Nichts:
-                    yield buf + 'null'
+                    liefere buf + 'null'
                 sowenn value is Wahr:
-                    yield buf + 'true'
+                    liefere buf + 'true'
                 sowenn value is Falsch:
-                    yield buf + 'false'
+                    liefere buf + 'false'
                 sowenn isinstance(value, int):
                     # Subclasses of int/float may override __repr__, but we still
                     # want to encode them als integers/floats in JSON. One example
                     # within the standard library is IntEnum.
-                    yield buf + _intstr(value)
+                    liefere buf + _intstr(value)
                 sowenn isinstance(value, float):
                     # see comment above fuer int
-                    yield buf + _floatstr(value)
+                    liefere buf + _floatstr(value)
                 sonst:
-                    yield buf
+                    liefere buf
                     wenn isinstance(value, (list, tuple)):
                         chunks = _iterencode_list(value, _current_indent_level)
                     sowenn isinstance(value, dict):
                         chunks = _iterencode_dict(value, _current_indent_level)
                     sonst:
                         chunks = _iterencode(value, _current_indent_level)
-                    yield von chunks
+                    liefere von chunks
             except GeneratorExit:
                 raise
             except BaseException als exc:
@@ -329,21 +329,21 @@ def _make_iterencode(markers, _default, _encoder, _indent, _floatstr,
                 raise
         wenn newline_indent is nicht Nichts:
             _current_indent_level -= 1
-            yield '\n' + _indent * _current_indent_level
-        yield ']'
+            liefere '\n' + _indent * _current_indent_level
+        liefere ']'
         wenn markers is nicht Nichts:
             del markers[markerid]
 
     def _iterencode_dict(dct, _current_indent_level):
         wenn nicht dct:
-            yield '{}'
-            return
+            liefere '{}'
+            gib
         wenn markers is nicht Nichts:
             markerid = id(dct)
             wenn markerid in markers:
                 raise ValueError("Circular reference detected")
             markers[markerid] = dct
-        yield '{'
+        liefere '{'
         wenn _indent is nicht Nichts:
             _current_indent_level += 1
             newline_indent = '\n' + _indent * _current_indent_level
@@ -381,26 +381,26 @@ def _make_iterencode(markers, _default, _encoder, _indent, _floatstr,
             wenn first:
                 first = Falsch
                 wenn newline_indent is nicht Nichts:
-                    yield newline_indent
+                    liefere newline_indent
             sonst:
-                yield item_separator
-            yield _encoder(key)
-            yield _key_separator
+                liefere item_separator
+            liefere _encoder(key)
+            liefere _key_separator
             try:
                 wenn isinstance(value, str):
-                    yield _encoder(value)
+                    liefere _encoder(value)
                 sowenn value is Nichts:
-                    yield 'null'
+                    liefere 'null'
                 sowenn value is Wahr:
-                    yield 'true'
+                    liefere 'true'
                 sowenn value is Falsch:
-                    yield 'false'
+                    liefere 'false'
                 sowenn isinstance(value, int):
                     # see comment fuer int/float in _make_iterencode
-                    yield _intstr(value)
+                    liefere _intstr(value)
                 sowenn isinstance(value, float):
                     # see comment fuer int/float in _make_iterencode
-                    yield _floatstr(value)
+                    liefere _floatstr(value)
                 sonst:
                     wenn isinstance(value, (list, tuple)):
                         chunks = _iterencode_list(value, _current_indent_level)
@@ -408,7 +408,7 @@ def _make_iterencode(markers, _default, _encoder, _indent, _floatstr,
                         chunks = _iterencode_dict(value, _current_indent_level)
                     sonst:
                         chunks = _iterencode(value, _current_indent_level)
-                    yield von chunks
+                    liefere von chunks
             except GeneratorExit:
                 raise
             except BaseException als exc:
@@ -416,30 +416,30 @@ def _make_iterencode(markers, _default, _encoder, _indent, _floatstr,
                 raise
         wenn nicht first und newline_indent is nicht Nichts:
             _current_indent_level -= 1
-            yield '\n' + _indent * _current_indent_level
-        yield '}'
+            liefere '\n' + _indent * _current_indent_level
+        liefere '}'
         wenn markers is nicht Nichts:
             del markers[markerid]
 
     def _iterencode(o, _current_indent_level):
         wenn isinstance(o, str):
-            yield _encoder(o)
+            liefere _encoder(o)
         sowenn o is Nichts:
-            yield 'null'
+            liefere 'null'
         sowenn o is Wahr:
-            yield 'true'
+            liefere 'true'
         sowenn o is Falsch:
-            yield 'false'
+            liefere 'false'
         sowenn isinstance(o, int):
             # see comment fuer int/float in _make_iterencode
-            yield _intstr(o)
+            liefere _intstr(o)
         sowenn isinstance(o, float):
             # see comment fuer int/float in _make_iterencode
-            yield _floatstr(o)
+            liefere _floatstr(o)
         sowenn isinstance(o, (list, tuple)):
-            yield von _iterencode_list(o, _current_indent_level)
+            liefere von _iterencode_list(o, _current_indent_level)
         sowenn isinstance(o, dict):
-            yield von _iterencode_dict(o, _current_indent_level)
+            liefere von _iterencode_dict(o, _current_indent_level)
         sonst:
             wenn markers is nicht Nichts:
                 markerid = id(o)
@@ -448,7 +448,7 @@ def _make_iterencode(markers, _default, _encoder, _indent, _floatstr,
                 markers[markerid] = o
             newobj = _default(o)
             try:
-                yield von _iterencode(newobj, _current_indent_level)
+                liefere von _iterencode(newobj, _current_indent_level)
             except GeneratorExit:
                 raise
             except BaseException als exc:
@@ -456,4 +456,4 @@ def _make_iterencode(markers, _default, _encoder, _indent, _floatstr,
                 raise
             wenn markers is nicht Nichts:
                 del markers[markerid]
-    return _iterencode
+    gib _iterencode

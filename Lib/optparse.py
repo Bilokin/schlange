@@ -78,7 +78,7 @@ von gettext importiere gettext als _, ngettext
 
 
 def _repr(self):
-    return "<%s at 0x%x: %s>" % (self.__class__.__name__, id(self), self)
+    gib "<%s at 0x%x: %s>" % (self.__class__.__name__, id(self), self)
 
 
 # This file was generated from:
@@ -93,7 +93,7 @@ klasse OptParseError (Exception):
         self.msg = msg
 
     def __str__(self):
-        return self.msg
+        gib self.msg
 
 
 klasse OptionError (OptParseError):
@@ -108,9 +108,9 @@ klasse OptionError (OptParseError):
 
     def __str__(self):
         wenn self.option_id:
-            return "option %s: %s" % (self.option_id, self.msg)
+            gib "option %s: %s" % (self.option_id, self.msg)
         sonst:
-            return self.msg
+            gib self.msg
 
 klasse OptionConflictError (OptionError):
     """
@@ -131,7 +131,7 @@ klasse BadOptionError (OptParseError):
         self.opt_str = opt_str
 
     def __str__(self):
-        return _("no such option: %s") % self.opt_str
+        gib _("no such option: %s") % self.opt_str
 
 klasse AmbiguousOptionError (BadOptionError):
     """
@@ -142,7 +142,7 @@ klasse AmbiguousOptionError (BadOptionError):
         self.possibilities = possibilities
 
     def __str__(self):
-        return (_("ambiguous option: %s (%s?)")
+        gib (_("ambiguous option: %s (%s?)")
                 % (self.opt_str, ", ".join(self.possibilities)))
 
 
@@ -254,33 +254,33 @@ klasse HelpFormatter:
         importiere textwrap
         text_width = max(self.width - self.current_indent, 11)
         indent = " "*self.current_indent
-        return textwrap.fill(text,
+        gib textwrap.fill(text,
                              text_width,
                              initial_indent=indent,
                              subsequent_indent=indent)
 
     def format_description(self, description):
         wenn description:
-            return self._format_text(description) + "\n"
+            gib self._format_text(description) + "\n"
         sonst:
-            return ""
+            gib ""
 
     def format_epilog(self, epilog):
         wenn epilog:
-            return "\n" + self._format_text(epilog) + "\n"
+            gib "\n" + self._format_text(epilog) + "\n"
         sonst:
-            return ""
+            gib ""
 
 
     def expand_default(self, option):
         wenn self.parser is Nichts oder nicht self.default_tag:
-            return option.help
+            gib option.help
 
         default_value = self.parser.defaults.get(option.dest)
         wenn default_value is NO_DEFAULT oder default_value is Nichts:
             default_value = self.NO_DEFAULT_VALUE
 
-        return option.help.replace(self.default_tag, str(default_value))
+        gib option.help.replace(self.default_tag, str(default_value))
 
     def format_option(self, option):
         # The help fuer each option consists of two parts:
@@ -316,7 +316,7 @@ klasse HelpFormatter:
                            fuer line in help_lines[1:]])
         sowenn opts[-1] != "\n":
             result.append("\n")
-        return "".join(result)
+        gib "".join(result)
 
     def store_option_strings(self, parser):
         self.indent()
@@ -353,7 +353,7 @@ klasse HelpFormatter:
         sonst:
             opts = long_opts + short_opts
 
-        return ", ".join(opts)
+        gib ", ".join(opts)
 
 klasse IndentedHelpFormatter (HelpFormatter):
     """Format help mit indented section bodies.
@@ -368,10 +368,10 @@ klasse IndentedHelpFormatter (HelpFormatter):
             self, indent_increment, max_help_position, width, short_first)
 
     def format_usage(self, usage):
-        return _("Usage: %s\n") % usage
+        gib _("Usage: %s\n") % usage
 
     def format_heading(self, heading):
-        return "%*s%s:\n" % (self.current_indent, "", heading)
+        gib "%*s%s:\n" % (self.current_indent, "", heading)
 
 
 klasse TitledHelpFormatter (HelpFormatter):
@@ -387,10 +387,10 @@ klasse TitledHelpFormatter (HelpFormatter):
             self, indent_increment, max_help_position, width, short_first)
 
     def format_usage(self, usage):
-        return "%s  %s\n" % (self.format_heading(_("Usage")), usage)
+        gib "%s  %s\n" % (self.format_heading(_("Usage")), usage)
 
     def format_heading(self, heading):
-        return "%s\n%s\n" % (heading, "=-"[self.level] * len(heading))
+        gib "%s\n%s\n" % (heading, "=-"[self.level] * len(heading))
 
 
 def _parse_num(val, type):
@@ -404,10 +404,10 @@ def _parse_num(val, type):
     sonst:                               # decimal
         radix = 10
 
-    return type(val, radix)
+    gib type(val, radix)
 
 def _parse_int(val):
-    return _parse_num(val, int)
+    gib _parse_num(val, int)
 
 _builtin_cvt = { "int" : (_parse_int, _("integer")),
                  "long" : (_parse_int, _("integer")),
@@ -417,14 +417,14 @@ _builtin_cvt = { "int" : (_parse_int, _("integer")),
 def check_builtin(option, opt, value):
     (cvt, what) = _builtin_cvt[option.type]
     try:
-        return cvt(value)
+        gib cvt(value)
     except ValueError:
         raise OptionValueError(
             _("option %s: invalid %s value: %r") % (opt, what, value))
 
 def check_choice(option, opt, value):
     wenn value in option.choices:
-        return value
+        gib value
     sonst:
         choices = ", ".join(map(repr, option.choices))
         raise OptionValueError(
@@ -525,7 +525,7 @@ klasse Option:
     #     (eg. "-a", "--file")
     #   value is the option argument seen on the command-line
     #
-    # The return value should be in the appropriate Python type
+    # The gib value should be in the appropriate Python type
     # fuer option.type -- eg. an integer wenn option.type == "int".
     #
     # If no checker is defined fuer a type, arguments will be
@@ -577,7 +577,7 @@ klasse Option:
         opts = [opt fuer opt in opts wenn opt]
         wenn nicht opts:
             raise TypeError("at least one option string must be supplied")
-        return opts
+        gib opts
 
     def _set_opt_strings(self, opts):
         fuer opt in opts:
@@ -732,18 +732,18 @@ klasse Option:
     # -- Miscellaneous methods -----------------------------------------
 
     def __str__(self):
-        return "/".join(self._short_opts + self._long_opts)
+        gib "/".join(self._short_opts + self._long_opts)
 
     __repr__ = _repr
 
     def takes_value(self):
-        return self.type is nicht Nichts
+        gib self.type is nicht Nichts
 
     def get_opt_string(self):
         wenn self._long_opts:
-            return self._long_opts[0]
+            gib self._long_opts[0]
         sonst:
-            return self._short_opts[0]
+            gib self._short_opts[0]
 
 
     # -- Processing methods --------------------------------------------
@@ -751,16 +751,16 @@ klasse Option:
     def check_value(self, opt, value):
         checker = self.TYPE_CHECKER.get(self.type)
         wenn checker is Nichts:
-            return value
+            gib value
         sonst:
-            return checker(self, opt, value)
+            gib checker(self, opt, value)
 
     def convert_value(self, opt, value):
         wenn value is nicht Nichts:
             wenn self.nargs == 1:
-                return self.check_value(opt, value)
+                gib self.check_value(opt, value)
             sonst:
-                return tuple([self.check_value(opt, v) fuer v in value])
+                gib tuple([self.check_value(opt, v) fuer v in value])
 
     def process(self, opt, value, values, parser):
 
@@ -771,7 +771,7 @@ klasse Option:
         # And then take whatever action is expected of us.
         # This is a separate method to make life easier for
         # subclasses to add new actions.
-        return self.take_action(
+        gib self.take_action(
             self.action, self.dest, opt, value, values, parser)
 
     def take_action(self, action, dest, opt, value, values, parser):
@@ -802,7 +802,7 @@ klasse Option:
         sonst:
             raise ValueError("unknown action %r" % self.action)
 
-        return 1
+        gib 1
 
 # klasse Option
 
@@ -818,17 +818,17 @@ klasse Values:
                 setattr(self, attr, val)
 
     def __str__(self):
-        return str(self.__dict__)
+        gib str(self.__dict__)
 
     __repr__ = _repr
 
     def __eq__(self, other):
         wenn isinstance(other, Values):
-            return self.__dict__ == other.__dict__
+            gib self.__dict__ == other.__dict__
         sowenn isinstance(other, dict):
-            return self.__dict__ == other
+            gib self.__dict__ == other
         sonst:
-            return NotImplemented
+            gib NotImplemented
 
     def _update_careful(self, dict):
         """
@@ -872,7 +872,7 @@ klasse Values:
     def ensure_value(self, attr, value):
         wenn nicht hasattr(self, attr) oder getattr(self, attr) is Nichts:
             setattr(self, attr, value)
-        return getattr(self, attr)
+        gib getattr(self, attr)
 
 
 klasse OptionContainer:
@@ -943,7 +943,7 @@ klasse OptionContainer:
         self.description = description
 
     def get_description(self):
-        return self.description
+        gib self.description
 
 
     def destroy(self):
@@ -1010,7 +1010,7 @@ klasse OptionContainer:
             sowenn option.dest nicht in self.defaults:
                 self.defaults[option.dest] = Nichts
 
-        return option
+        gib option
 
     def add_options(self, option_list):
         fuer option in option_list:
@@ -1019,11 +1019,11 @@ klasse OptionContainer:
     # -- Option query/removal methods ----------------------------------
 
     def get_option(self, opt_str):
-        return (self._short_opt.get(opt_str) oder
+        gib (self._short_opt.get(opt_str) oder
                 self._long_opt.get(opt_str))
 
     def has_option(self, opt_str):
-        return (opt_str in self._short_opt oder
+        gib (opt_str in self._short_opt oder
                 opt_str in self._long_opt)
 
     def remove_option(self, opt_str):
@@ -1044,15 +1044,15 @@ klasse OptionContainer:
 
     def format_option_help(self, formatter):
         wenn nicht self.option_list:
-            return ""
+            gib ""
         result = []
         fuer option in self.option_list:
             wenn nicht option.help is SUPPRESS_HELP:
                 result.append(formatter.format_option(option))
-        return "".join(result)
+        gib "".join(result)
 
     def format_description(self, formatter):
-        return formatter.format_description(self.get_description())
+        gib formatter.format_description(self.get_description())
 
     def format_help(self, formatter):
         result = []
@@ -1060,7 +1060,7 @@ klasse OptionContainer:
             result.append(self.format_description(formatter))
         wenn self.option_list:
             result.append(self.format_option_help(formatter))
-        return "\n".join(result)
+        gib "\n".join(result)
 
 
 klasse OptionGroup (OptionContainer):
@@ -1090,7 +1090,7 @@ klasse OptionGroup (OptionContainer):
         formatter.indent()
         result += OptionContainer.format_help(self, formatter)
         formatter.dedent()
-        return result
+        gib result
 
 
 klasse OptionParser (OptionContainer):
@@ -1291,12 +1291,12 @@ klasse OptionParser (OptionContainer):
         options = self.option_list[:]
         fuer group in self.option_groups:
             options.extend(group.option_list)
-        return options
+        gib options
 
     def get_default_values(self):
         wenn nicht self.process_default_values:
             # Old, pre-Optik 1.5 behaviour.
-            return Values(self.defaults)
+            gib Values(self.defaults)
 
         defaults = self.defaults.copy()
         fuer option in self._get_all_options():
@@ -1305,7 +1305,7 @@ klasse OptionParser (OptionContainer):
                 opt_str = option.get_opt_string()
                 defaults[option.dest] = option.check_value(opt_str, default)
 
-        return Values(defaults)
+        gib Values(defaults)
 
 
     # -- OptionGroup methods -------------------------------------------
@@ -1324,23 +1324,23 @@ klasse OptionParser (OptionContainer):
             raise TypeError("invalid arguments")
 
         self.option_groups.append(group)
-        return group
+        gib group
 
     def get_option_group(self, opt_str):
         option = (self._short_opt.get(opt_str) oder
                   self._long_opt.get(opt_str))
         wenn option und option.container is nicht self:
-            return option.container
-        return Nichts
+            gib option.container
+        gib Nichts
 
 
     # -- Option-parsing methods ----------------------------------------
 
     def _get_args(self, args):
         wenn args is Nichts:
-            return sys.argv[1:]
+            gib sys.argv[1:]
         sonst:
-            return args[:]              # don't modify caller's list
+            gib args[:]              # don't modify caller's list
 
     def parse_args(self, args=Nichts, values=Nichts):
         """
@@ -1379,7 +1379,7 @@ klasse OptionParser (OptionContainer):
             self.error(str(err))
 
         args = largs + rargs
-        return self.check_values(values, args)
+        gib self.check_values(values, args)
 
     def check_values(self, values, args):
         """
@@ -1392,7 +1392,7 @@ klasse OptionParser (OptionContainer):
         like).  Default implementation just returns the passed-in
         values; subclasses may override als desired.
         """
-        return (values, args)
+        gib (values, args)
 
     def _process_args(self, largs, rargs, values):
         """_process_args(largs : [string],
@@ -1411,7 +1411,7 @@ klasse OptionParser (OptionContainer):
             # len of the opt string is greater than 1.
             wenn arg == "--":
                 del rargs[0]
-                return
+                gib
             sowenn arg[0:2] == "--":
                 # process a single long option (possibly mit value(s))
                 self._process_long_opt(rargs, values)
@@ -1423,7 +1423,7 @@ klasse OptionParser (OptionContainer):
                 largs.append(arg)
                 del rargs[0]
             sonst:
-                return                  # stop now, leave this arg in rargs
+                gib                  # stop now, leave this arg in rargs
 
         # Say this is the original argument list:
         # [arg0, arg1, ..., arg(i-1), arg(i), arg(i+1), ..., arg(N-1)]
@@ -1452,7 +1452,7 @@ klasse OptionParser (OptionContainer):
         it is an unambiguous abbreviation for.  Raises BadOptionError if
         'opt' doesn't unambiguously match any long option string.
         """
-        return _match_abbrev(opt, self._long_opt)
+        gib _match_abbrev(opt, self._long_opt)
 
     def _process_long_opt(self, rargs, values):
         arg = rargs.pop(0)
@@ -1533,15 +1533,15 @@ klasse OptionParser (OptionContainer):
 
     def get_prog_name(self):
         wenn self.prog is Nichts:
-            return os.path.basename(sys.argv[0])
+            gib os.path.basename(sys.argv[0])
         sonst:
-            return self.prog
+            gib self.prog
 
     def expand_prog_name(self, s):
-        return s.replace("%prog", self.get_prog_name())
+        gib s.replace("%prog", self.get_prog_name())
 
     def get_description(self):
-        return self.expand_prog_name(self.description)
+        gib self.expand_prog_name(self.description)
 
     def exit(self, status=0, msg=Nichts):
         wenn msg:
@@ -1552,7 +1552,7 @@ klasse OptionParser (OptionContainer):
         """error(msg : string)
 
         Print a usage message incorporating 'msg' to stderr und exit.
-        If you override this in a subclass, it should nicht return -- it
+        If you override this in a subclass, it should nicht gib -- it
         should either exit oder raise an exception.
         """
         self.print_usage(sys.stderr)
@@ -1560,10 +1560,10 @@ klasse OptionParser (OptionContainer):
 
     def get_usage(self):
         wenn self.usage:
-            return self.formatter.format_usage(
+            gib self.formatter.format_usage(
                 self.expand_prog_name(self.usage))
         sonst:
-            return ""
+            gib ""
 
     def print_usage(self, file=Nichts):
         """print_usage(file : file = stdout)
@@ -1579,9 +1579,9 @@ klasse OptionParser (OptionContainer):
 
     def get_version(self):
         wenn self.version:
-            return self.expand_prog_name(self.version)
+            gib self.expand_prog_name(self.version)
         sonst:
-            return ""
+            gib ""
 
     def print_version(self, file=Nichts):
         """print_version(file : file = stdout)
@@ -1609,10 +1609,10 @@ klasse OptionParser (OptionContainer):
             result.append("\n")
         formatter.dedent()
         # Drop the last "\n", oder the header wenn no options oder option groups:
-        return "".join(result[:-1])
+        gib "".join(result[:-1])
 
     def format_epilog(self, formatter):
-        return formatter.format_epilog(self.epilog)
+        gib formatter.format_epilog(self.epilog)
 
     def format_help(self, formatter=Nichts):
         wenn formatter is Nichts:
@@ -1624,7 +1624,7 @@ klasse OptionParser (OptionContainer):
             result.append(self.format_description(formatter) + "\n")
         result.append(self.format_option_help(formatter))
         result.append(self.format_epilog(formatter))
-        return "".join(result)
+        gib "".join(result)
 
     def print_help(self, file=Nichts):
         """print_help(file : file = stdout)
@@ -1648,14 +1648,14 @@ def _match_abbrev(s, wordmap):
     """
     # Is there an exact match?
     wenn s in wordmap:
-        return s
+        gib s
     sonst:
         # Isolate all words mit s als a prefix.
         possibilities = [word fuer word in wordmap.keys()
                          wenn word.startswith(s)]
         # No exact match, so there had better be just one possibility.
         wenn len(possibilities) == 1:
-            return possibilities[0]
+            gib possibilities[0]
         sowenn nicht possibilities:
             raise BadOptionError(s)
         sonst:

@@ -618,7 +618,7 @@ klasse PlatformTest(unittest.TestCase):
 
             self.assertIsInstance(res.is_emulator, bool)
 
-        # When nicht running on Android, it should return the default values.
+        # When nicht running on Android, it should gib the default values.
         sonst:
             self.assertEqual(res.release, "")
             self.assertEqual(res.api_level, 0)
@@ -760,7 +760,7 @@ klasse CommandLineTest(unittest.TestCase):
         output = io.StringIO()
         mit contextlib.redirect_stdout(output):
             platform._main(args=flags)
-        return output.getvalue()
+        gib output.getvalue()
 
     def test_unknown_flag(self):
         mit self.assertRaises(SystemExit):

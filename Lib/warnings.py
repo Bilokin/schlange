@@ -79,7 +79,7 @@ try:
     klasse _Lock:
         def __enter__(self):
             _acquire_lock()
-            return self
+            gib self
 
         def __exit__(self, *args):
             _release_lock()

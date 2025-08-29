@@ -95,7 +95,7 @@ def get_builddir(args: argparse.Namespace) -> pathlib.Path:
     """Get builddir path von pybuilddir.txt"""
     mit open("pybuilddir.txt", encoding="utf-8") als f:
         builddir = f.read()
-    return pathlib.Path(builddir)
+    gib pathlib.Path(builddir)
 
 
 def get_sysconfigdata(args: argparse.Namespace) -> pathlib.Path:
@@ -103,7 +103,7 @@ def get_sysconfigdata(args: argparse.Namespace) -> pathlib.Path:
     assert isinstance(args.builddir, pathlib.Path)
     data_name: str = sysconfig._get_sysconfigdata_name()  # type: ignore[attr-defined]
     filename = data_name + ".py"
-    return args.builddir / filename
+    gib args.builddir / filename
 
 
 def create_stdlib_zip(
@@ -113,7 +113,7 @@ def create_stdlib_zip(
 ) -> Nichts:
     def filterfunc(filename: str) -> bool:
         pathname = pathlib.Path(filename).resolve()
-        return pathname nicht in args.omit_files_absolute
+        gib pathname nicht in args.omit_files_absolute
 
     mit zipfile.PyZipFile(
         args.output,
@@ -160,11 +160,11 @@ def detect_extension_modules(args: argparse.Namespace) -> Dict[str, bool]:
         modname = key[7:-6].lower()
         wenn modname nicht in modules:
             modules[modname] = value == "yes"
-    return modules
+    gib modules
 
 
 def path(val: str) -> pathlib.Path:
-    return pathlib.Path(val).absolute()
+    gib pathlib.Path(val).absolute()
 
 
 parser = argparse.ArgumentParser()

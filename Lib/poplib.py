@@ -109,7 +109,7 @@ klasse POP3:
     def _create_socket(self, timeout):
         wenn timeout is nicht Nichts und nicht timeout:
             raise ValueError('Non-blocking socket (timeout=0) is nicht supported')
-        return socket.create_connection((self.host, self.port), timeout)
+        gib socket.create_connection((self.host, self.port), timeout)
 
     def _putline(self, line):
         wenn self._debugging > 1: drucke('*put*', repr(line))
@@ -125,7 +125,7 @@ klasse POP3:
         self._putline(line)
 
 
-    # Internal: return one line von the server, stripping CRLF.
+    # Internal: gib one line von the server, stripping CRLF.
     # This is where all the CPU time of this module is consumed.
     # Raise error_proto('-ERR EOF') wenn the connection is closed.
 
@@ -141,10 +141,10 @@ klasse POP3:
         # however, 'readline()' returns lines ending in LF
         # so only possibilities are ...LF, ...CRLF, CR...LF
         wenn line[-2:] == CRLF:
-            return line[:-2], octets
+            gib line[:-2], octets
         wenn line[:1] == CR:
-            return line[1:-1], octets
-        return line[:-1], octets
+            gib line[1:-1], octets
+        gib line[:-1], octets
 
 
     # Internal: get a response von the server.
@@ -155,7 +155,7 @@ klasse POP3:
         wenn self._debugging > 1: drucke('*resp*', repr(resp))
         wenn nicht resp.startswith(b'+'):
             raise error_proto(resp)
-        return resp
+        gib resp
 
 
     # Internal: get a response plus following text von the server.
@@ -171,27 +171,27 @@ klasse POP3:
             octets = octets + o
             list.append(line)
             line, o = self._getline()
-        return resp, list, octets
+        gib resp, list, octets
 
 
     # Internal: send a command und get the response
 
     def _shortcmd(self, line):
         self._putcmd(line)
-        return self._getresp()
+        gib self._getresp()
 
 
     # Internal: send a command und get the response plus following text
 
     def _longcmd(self, line):
         self._putcmd(line)
-        return self._getlongresp()
+        gib self._getlongresp()
 
 
     # These can be useful:
 
     def getwelcome(self):
-        return self.welcome
+        gib self.welcome
 
 
     def set_debuglevel(self, level):
@@ -201,21 +201,21 @@ klasse POP3:
     # Here are all the POP commands:
 
     def user(self, user):
-        """Send user name, return response
+        """Send user name, gib response
 
         (should indicate password required).
         """
-        return self._shortcmd('USER %s' % user)
+        gib self._shortcmd('USER %s' % user)
 
 
     def pass_(self, pswd):
-        """Send password, return response
+        """Send password, gib response
 
         (response includes message count, mailbox size).
 
         NB: mailbox is locked by server von here to 'quit()'
         """
-        return self._shortcmd('PASS %s' % pswd)
+        gib self._shortcmd('PASS %s' % pswd)
 
 
     def stat(self):
@@ -239,11 +239,11 @@ klasse POP3:
         except ValueError:
             raise error_proto("Invalid STAT response data: non-numeric values")
 
-        return (numMessages, sizeMessages)
+        gib (numMessages, sizeMessages)
 
 
     def list(self, which=Nichts):
-        """Request listing, return result.
+        """Request listing, gib result.
 
         Result without a message number argument is in form
         ['response', ['mesg_num octets', ...], octets].
@@ -252,8 +252,8 @@ klasse POP3:
         single response: the "scan listing" fuer that message.
         """
         wenn which is nicht Nichts:
-            return self._shortcmd('LIST %s' % which)
-        return self._longcmd('LIST')
+            gib self._shortcmd('LIST %s' % which)
+        gib self._longcmd('LIST')
 
 
     def retr(self, which):
@@ -261,7 +261,7 @@ klasse POP3:
 
         Result is in form ['response', ['line', ...], octets].
         """
-        return self._longcmd('RETR %s' % which)
+        gib self._longcmd('RETR %s' % which)
 
 
     def dele(self, which):
@@ -269,7 +269,7 @@ klasse POP3:
 
         Result is 'response'.
         """
-        return self._shortcmd('DELE %s' % which)
+        gib self._shortcmd('DELE %s' % which)
 
 
     def noop(self):
@@ -277,19 +277,19 @@ klasse POP3:
 
         One supposes the response indicates the server is alive.
         """
-        return self._shortcmd('NOOP')
+        gib self._shortcmd('NOOP')
 
 
     def rset(self):
         """Unmark all messages marked fuer deletion."""
-        return self._shortcmd('RSET')
+        gib self._shortcmd('RSET')
 
 
     def quit(self):
         """Signoff: commit changes on server, unlock mailbox, close connection."""
         resp = self._shortcmd('QUIT')
         self.close()
-        return resp
+        gib resp
 
     def close(self):
         """Close the connection without assuming anything about it."""
@@ -321,7 +321,7 @@ klasse POP3:
 
     def rpop(self, user):
         """Send RPOP command to access the mailbox mit an alternate user."""
-        return self._shortcmd('RPOP %s' % user)
+        gib self._shortcmd('RPOP %s' % user)
 
 
     timestamp = re.compile(br'\+OK.[^<]*(<.*>)')
@@ -344,7 +344,7 @@ klasse POP3:
         importiere hashlib
         digest = m.group(1)+secret
         digest = hashlib.md5(digest).hexdigest()
-        return self._shortcmd('APOP %s %s' % (user, digest))
+        gib self._shortcmd('APOP %s %s' % (user, digest))
 
 
     def top(self, which, howmuch):
@@ -353,7 +353,7 @@ klasse POP3:
 
         Result is in form ['response', ['line', ...], octets].
         """
-        return self._longcmd('TOP %s %s' % (which, howmuch))
+        gib self._longcmd('TOP %s %s' % (which, howmuch))
 
 
     def uidl(self, which=Nichts):
@@ -364,14 +364,14 @@ klasse POP3:
         the list ['response', ['mesgnum uid', ...], octets]
         """
         wenn which is nicht Nichts:
-            return self._shortcmd('UIDL %s' % which)
-        return self._longcmd('UIDL')
+            gib self._shortcmd('UIDL %s' % which)
+        gib self._longcmd('UIDL')
 
 
     def utf8(self):
         """Try to enter UTF-8 mode (see RFC 6856). Returns server response.
         """
-        return self._shortcmd('UTF8')
+        gib self._shortcmd('UTF8')
 
 
     def capa(self):
@@ -389,7 +389,7 @@ klasse POP3:
         """
         def _parsecap(line):
             lst = line.decode('ascii').split()
-            return lst[0], lst[1:]
+            gib lst[0], lst[1:]
 
         caps = {}
         try:
@@ -400,7 +400,7 @@ klasse POP3:
                 caps[capnm] = capargs
         except error_proto:
             raise error_proto('-ERR CAPA nicht supported by server')
-        return caps
+        gib caps
 
 
     def stls(self, context=Nichts):
@@ -422,7 +422,7 @@ klasse POP3:
                                         server_hostname=self.host)
         self.file = self.sock.makefile('rb')
         self._tls_established = Wahr
-        return resp
+        gib resp
 
 
 wenn HAVE_SSL:
@@ -450,7 +450,7 @@ wenn HAVE_SSL:
             sock = POP3._create_socket(self, timeout)
             sock = self.context.wrap_socket(sock,
                                             server_hostname=self.host)
-            return sock
+            gib sock
 
         def stls(self, context=Nichts):
             """The method unconditionally raises an exception since the

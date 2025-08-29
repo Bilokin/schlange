@@ -27,7 +27,7 @@ klasse MyBaseExc(BaseException):
 
 
 def get_error_types(eg):
-    return {type(exc) fuer exc in eg.exceptions}
+    gib {type(exc) fuer exc in eg.exceptions}
 
 
 def no_other_refs():
@@ -36,7 +36,7 @@ def no_other_refs():
     frame = sys._getframe(1)
     waehrend coro.cr_frame != frame:
         coro = coro.cr_await
-    return [coro]
+    gib [coro]
 
 
 def set_gc_state(enabled):
@@ -45,14 +45,14 @@ def set_gc_state(enabled):
         gc.enable()
     sonst:
         gc.disable()
-    return was_enabled
+    gib was_enabled
 
 
 @contextlib.contextmanager
 def disable_gc():
     was_enabled = set_gc_state(enabled=Falsch)
     try:
-        yield
+        liefere
     finally:
         set_gc_state(enabled=was_enabled)
 
@@ -63,11 +63,11 @@ klasse BaseTestTaskGroup:
 
         async def foo1():
             await asyncio.sleep(0.1)
-            return 42
+            gib 42
 
         async def foo2():
             await asyncio.sleep(0.2)
-            return 11
+            gib 11
 
         async mit taskgroups.TaskGroup() als g:
             t1 = g.create_task(foo1())
@@ -80,11 +80,11 @@ klasse BaseTestTaskGroup:
 
         async def foo1():
             await asyncio.sleep(0.1)
-            return 42
+            gib 42
 
         async def foo2():
             await asyncio.sleep(0.2)
-            return 11
+            gib 11
 
         async mit taskgroups.TaskGroup() als g:
             t1 = g.create_task(foo1())
@@ -98,11 +98,11 @@ klasse BaseTestTaskGroup:
 
         async def foo1():
             await asyncio.sleep(1)
-            return 42
+            gib 42
 
         async def foo2():
             await asyncio.sleep(0.2)
-            return 11
+            gib 11
 
         async mit taskgroups.TaskGroup() als g:
             t1 = g.create_task(foo1())
@@ -291,11 +291,11 @@ klasse BaseTestTaskGroup:
 
         async def foo1():
             await asyncio.sleep(1)
-            return 42
+            gib 42
 
         async def foo2():
             await asyncio.sleep(2)
-            return 11
+            gib 11
 
         async def runner():
             nonlocal t1, t2
@@ -321,11 +321,11 @@ klasse BaseTestTaskGroup:
 
         async def foo1():
             await asyncio.sleep(1)
-            return 42
+            gib 42
 
         async def foo2():
             await asyncio.sleep(2)
-            return 11
+            gib 11
 
         async def runner():
             nonlocal t1, t2
@@ -660,11 +660,11 @@ klasse BaseTestTaskGroup:
 
         async def foo1():
             await asyncio.sleep(1)
-            return 42
+            gib 42
 
         async def foo2():
             await asyncio.sleep(2)
-            return 11
+            gib 11
 
         async def runner():
             async mit taskgroups.TaskGroup() als g:
@@ -787,7 +787,7 @@ klasse BaseTestTaskGroup:
         @contextlib.asynccontextmanager
         async def database():
             try:
-                yield
+                liefere
             finally:
                 raise CustomException
 
@@ -1098,7 +1098,7 @@ klasse BaseTestTaskGroup:
 
         # wenn this test fails this current task will be cancelled
         # outside the task group und inside unittest internals
-        # we yield to the event loop mit sleep(0) so that
+        # we liefere to the event loop mit sleep(0) so that
         # cancellation happens here und error is more understandable
         await asyncio.sleep(0)
 
@@ -1111,7 +1111,7 @@ klasse TestEagerTaskTaskGroup(BaseTestTaskGroup, unittest.IsolatedAsyncioTestCas
     def loop_factory():
         loop = asyncio.EventLoop()
         loop.set_task_factory(asyncio.eager_task_factory)
-        return loop
+        gib loop
 
 
 wenn __name__ == "__main__":

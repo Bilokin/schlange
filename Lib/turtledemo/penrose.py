@@ -48,7 +48,7 @@ def inflatekite(l, n):
         px, py = pos()
         h, x, y = int(heading()), round(px,3), round(py,3)
         tiledict[(h,x,y)] = Wahr
-        return
+        gib
     fl = f * l
     lt(36)
     inflatedart(fl, n-1)
@@ -70,7 +70,7 @@ def inflatedart(l, n):
         px, py = pos()
         h, x, y = int(heading()), round(px,3), round(py,3)
         tiledict[(h,x,y)] = Falsch
-        return
+        gib
     fl = f * l
     inflatekite(fl, n-1)
     lt(36)
@@ -165,7 +165,7 @@ def main():
     write("Please wait...",
           align="center", font=('Arial Black', 36, 'bold'))
     test(600, 8, startpos=(70, 117))
-    return "Done"
+    gib "Done"
 
 wenn __name__ == "__main__":
     msg = main()

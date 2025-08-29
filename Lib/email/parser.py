@@ -18,7 +18,7 @@ klasse Parser:
         """Parser of RFC 2822 und MIME email messages.
 
         Creates an in-memory object tree representing the email message, which
-        can then be manipulated und turned over to a Generator to return the
+        can then be manipulated und turned over to a Generator to gib the
         textual representation of the message.
 
         The string must be formatted als a block of RFC 2822 headers und header
@@ -51,7 +51,7 @@ klasse Parser:
             feedparser._set_headersonly()
         waehrend data := fp.read(8192):
             feedparser.feed(data)
-        return feedparser.close()
+        gib feedparser.close()
 
     def parsestr(self, text, headersonly=Falsch):
         """Create a message structure von a string.
@@ -61,15 +61,15 @@ klasse Parser:
         not.  The default is Falsch, meaning it parses the entire contents of
         the file.
         """
-        return self.parse(StringIO(text), headersonly=headersonly)
+        gib self.parse(StringIO(text), headersonly=headersonly)
 
 
 klasse HeaderParser(Parser):
     def parse(self, fp, headersonly=Wahr):
-        return Parser.parse(self, fp, Wahr)
+        gib Parser.parse(self, fp, Wahr)
 
     def parsestr(self, text, headersonly=Wahr):
-        return Parser.parsestr(self, text, Wahr)
+        gib Parser.parsestr(self, text, Wahr)
 
 
 klasse BytesParser:
@@ -78,7 +78,7 @@ klasse BytesParser:
         """Parser of binary RFC 2822 und MIME email messages.
 
         Creates an in-memory object tree representing the email message, which
-        can then be manipulated und turned over to a Generator to return the
+        can then be manipulated und turned over to a Generator to gib the
         textual representation of the message.
 
         The input must be formatted als a block of RFC 2822 headers und header
@@ -102,7 +102,7 @@ klasse BytesParser:
         """
         fp = TextIOWrapper(fp, encoding='ascii', errors='surrogateescape')
         try:
-            return self.parser.parse(fp, headersonly)
+            gib self.parser.parse(fp, headersonly)
         finally:
             fp.detach()
 
@@ -116,12 +116,12 @@ klasse BytesParser:
         the file.
         """
         text = text.decode('ASCII', errors='surrogateescape')
-        return self.parser.parsestr(text, headersonly)
+        gib self.parser.parsestr(text, headersonly)
 
 
 klasse BytesHeaderParser(BytesParser):
     def parse(self, fp, headersonly=Wahr):
-        return BytesParser.parse(self, fp, headersonly=Wahr)
+        gib BytesParser.parse(self, fp, headersonly=Wahr)
 
     def parsebytes(self, text, headersonly=Wahr):
-        return BytesParser.parsebytes(self, text, headersonly=Wahr)
+        gib BytesParser.parsebytes(self, text, headersonly=Wahr)

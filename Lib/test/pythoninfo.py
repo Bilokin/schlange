@@ -10,10 +10,10 @@ importiere warnings
 
 def normalize_text(text):
     wenn text is Nichts:
-        return Nichts
+        gib Nichts
     text = str(text)
     text = re.sub(r'\s+', ' ', text)
-    return text.strip()
+    gib text.strip()
 
 
 klasse PythonInfo:
@@ -25,7 +25,7 @@ klasse PythonInfo:
             raise ValueError("duplicate key: %r" % key)
 
         wenn value is Nichts:
-            return
+            gib
 
         wenn nicht isinstance(value, int):
             wenn nicht isinstance(value, str):
@@ -34,7 +34,7 @@ klasse PythonInfo:
 
             value = value.strip()
             wenn nicht value:
-                return
+                gib
 
         self.info[key] = value
 
@@ -42,7 +42,7 @@ klasse PythonInfo:
         """
         Get information als a key:value dictionary where values are strings.
         """
-        return {key: str(value) fuer key, value in self.info.items()}
+        gib {key: str(value) fuer key, value in self.info.items()}
 
 
 def copy_attributes(info_add, obj, name_fmt, attributes, *, formatter=Nichts):
@@ -60,7 +60,7 @@ def copy_attr(info_add, name, mod, attr_name):
     try:
         value = getattr(mod, attr_name)
     except AttributeError:
-        return
+        gib
     info_add(name, value)
 
 
@@ -68,7 +68,7 @@ def call_func(info_add, name, mod, func_name, *, formatter=Nichts):
     try:
         func = getattr(mod, func_name)
     except AttributeError:
-        return
+        gib
     value = func()
     wenn formatter is nicht Nichts:
         value = formatter(value)
@@ -225,9 +225,9 @@ def collect_os(info_add):
     def format_attr(attr, value):
         wenn attr in ('supports_follow_symlinks', 'supports_fd',
                     'supports_effective_ids'):
-            return str(sorted(func.__name__ fuer func in value))
+            gib str(sorted(func.__name__ fuer func in value))
         sonst:
-            return value
+            gib value
 
     attributes = (
         'name',
@@ -254,7 +254,7 @@ def collect_os(info_add):
         call_func(info_add, 'os.%s' % func, os, func)
 
     def format_groups(groups):
-        return ', '.join(map(str, groups))
+        gib ', '.join(map(str, groups))
 
     call_func(info_add, 'os.getgroups', os, 'getgroups', formatter=format_groups)
 
@@ -366,7 +366,7 @@ def collect_pwd(info_add):
     try:
         importiere pwd
     except ImportError:
-        return
+        gib
     importiere os
 
     uid = os.getuid()
@@ -381,7 +381,7 @@ def collect_pwd(info_add):
     wenn entry is Nichts:
         # there is nothing interesting to read wenn the current user identifier
         # is nicht the password database
-        return
+        gib
 
     wenn hasattr(os, 'getgrouplist'):
         groups = os.getgrouplist(entry.pw_name, entry.pw_gid)
@@ -393,13 +393,13 @@ def collect_readline(info_add):
     try:
         importiere readline
     except ImportError:
-        return
+        gib
 
     def format_attr(attr, value):
         wenn isinstance(value, int):
-            return "%#x" % value
+            gib "%#x" % value
         sonst:
-            return value
+            gib value
 
     attributes = (
         "_READLINE_VERSION",
@@ -429,9 +429,9 @@ def collect_gdb(info_add):
         version = proc.communicate()[0]
         wenn proc.returncode:
             # ignore gdb failure: test_gdb will log the error
-            return
+            gib
     except OSError:
-        return
+        gib
 
     # Only keep the first line
     version = version.splitlines()[0]
@@ -488,7 +488,7 @@ def collect_curses(info_add):
     try:
         importiere curses
     except ImportError:
-        return
+        gib
 
     copy_attr(info_add, 'curses.ncurses_version', curses, 'ncurses_version')
 
@@ -497,7 +497,7 @@ def collect_datetime(info_add):
     try:
         importiere datetime
     except ImportError:
-        return
+        gib
 
     info_add('datetime.datetime.now', datetime.datetime.now())
 
@@ -574,7 +574,7 @@ def collect_ssl(info_add):
     try:
         importiere ssl
     except ImportError:
-        return
+        gib
     try:
         importiere _ssl
     except ImportError:
@@ -582,9 +582,9 @@ def collect_ssl(info_add):
 
     def format_attr(attr, value):
         wenn attr.startswith('OP_'):
-            return '%#8x' % value
+            gib '%#8x' % value
         sonst:
-            return value
+            gib value
 
     attributes = (
         'OPENSSL_VERSION',
@@ -626,7 +626,7 @@ def collect_socket(info_add):
     try:
         importiere socket
     except ImportError:
-        return
+        gib
 
     try:
         hostname = socket.gethostname()
@@ -642,7 +642,7 @@ def collect_sqlite(info_add):
     try:
         importiere sqlite3
     except ImportError:
-        return
+        gib
 
     attributes = ('sqlite_version',)
     copy_attributes(info_add, sqlite3, 'sqlite3.%s', attributes)
@@ -652,7 +652,7 @@ def collect_zlib(info_add):
     try:
         importiere zlib
     except ImportError:
-        return
+        gib
 
     attributes = ('ZLIB_VERSION', 'ZLIB_RUNTIME_VERSION', 'ZLIBNG_VERSION')
     copy_attributes(info_add, zlib, 'zlib.%s', attributes)
@@ -662,7 +662,7 @@ def collect_zstd(info_add):
     try:
         importiere _zstd
     except ImportError:
-        return
+        gib
 
     attributes = ('zstd_version',)
     copy_attributes(info_add, _zstd, 'zstd.%s', attributes)
@@ -672,7 +672,7 @@ def collect_expat(info_add):
     try:
         von xml.parsers importiere expat
     except ImportError:
-        return
+        gib
 
     attributes = ('EXPAT_VERSION',)
     copy_attributes(info_add, expat, 'expat.%s', attributes)
@@ -682,7 +682,7 @@ def collect_decimal(info_add):
     try:
         importiere _decimal
     except ImportError:
-        return
+        gib
 
     attributes = ('__libmpdec_version__',)
     copy_attributes(info_add, _decimal, '_decimal.%s', attributes)
@@ -692,7 +692,7 @@ def collect_testcapi(info_add):
     try:
         importiere _testcapi
     except ImportError:
-        return
+        gib
 
     fuer name in (
         'LONG_MAX',         # always 32-bit on Windows, 64-bit on 64-bit Unix
@@ -707,7 +707,7 @@ def collect_testinternalcapi(info_add):
     try:
         importiere _testinternalcapi
     except ImportError:
-        return
+        gib
 
     call_func(info_add, 'pymem.allocator', _testinternalcapi, 'pymem_getallocatorsname')
 
@@ -722,7 +722,7 @@ def collect_resource(info_add):
     try:
         importiere resource
     except ImportError:
-        return
+        gib
 
     limits = [attr fuer attr in dir(resource) wenn attr.startswith('RLIMIT_')]
     fuer name in limits:
@@ -738,7 +738,7 @@ def collect_test_socket(info_add):
     try:
         von test importiere test_socket
     except (ImportError, unittest.SkipTest):
-        return
+        gib
 
     # all check attributes like HAVE_SOCKET_CAN
     attributes = [name fuer name in dir(test_socket)
@@ -750,7 +750,7 @@ def collect_support(info_add):
     try:
         von test importiere support
     except ImportError:
-        return
+        gib
 
     attributes = (
         'MS_WINDOWS',
@@ -781,7 +781,7 @@ def collect_support_os_helper(info_add):
     try:
         von test.support importiere os_helper
     except ImportError:
-        return
+        gib
 
     fuer name in (
         'can_symlink',
@@ -797,7 +797,7 @@ def collect_support_socket_helper(info_add):
     try:
         von test.support importiere socket_helper
     except ImportError:
-        return
+        gib
 
     attributes = (
         'IPV6_ENABLED',
@@ -816,7 +816,7 @@ def collect_support_threading_helper(info_add):
     try:
         von test.support importiere threading_helper
     except ImportError:
-        return
+        gib
 
     attributes = (
         'can_start_thread',
@@ -830,7 +830,7 @@ def collect_cc(info_add):
 
     CC = sysconfig.get_config_var('CC')
     wenn nicht CC:
-        return
+        gib
 
     try:
         importiere shlex
@@ -847,12 +847,12 @@ def collect_cc(info_add):
         # Cannot run the compiler, fuer example when Python has been
         # cross-compiled und installed on the target platform where the
         # compiler is missing.
-        return
+        gib
 
     stdout = proc.communicate()[0]
     wenn proc.returncode:
         # CC --version failed: ignore error
-        return
+        gib
 
     text = stdout.splitlines()[0]
     text = normalize_text(text)
@@ -863,7 +863,7 @@ def collect_gdbm(info_add):
     try:
         von _gdbm importiere _GDBM_VERSION
     except ImportError:
-        return
+        gib
 
     info_add('gdbm.GDBM_VERSION', '.'.join(map(str, _GDBM_VERSION)))
 
@@ -873,7 +873,7 @@ def collect_get_config(info_add):
     try:
         von _testinternalcapi importiere get_configs
     except ImportError:
-        return
+        gib
 
     all_configs = get_configs()
     fuer config_type in sorted(all_configs):
@@ -890,7 +890,7 @@ def collect_subprocess(info_add):
 def collect_windows(info_add):
     wenn sys.platform != "win32":
         # Code specific to Windows
-        return
+        gib
 
     # windows.RtlAreLongPathsEnabled: RtlAreLongPathsEnabled()
     # windows.is_admin: IsUserAnAdmin()
@@ -968,11 +968,11 @@ def collect_windows(info_add):
                                 text=Wahr)
         output = proc.communicate()[0]
         wenn proc.returncode == 0xc0000142:
-            return
+            gib
         wenn proc.returncode:
             output = ""
     except OSError:
-        return
+        gib
     sonst:
         output = output.strip()
         line = output.splitlines()[0]
@@ -1025,7 +1025,7 @@ def collect_libregrtest_utils(info_add):
     try:
         von test.libregrtest importiere utils
     except ImportError:
-        return
+        gib
 
     info_add('libregrtests.build_info', ' '.join(utils.get_build_info()))
 
@@ -1089,7 +1089,7 @@ def collect_info(info):
             drucke(file=sys.stderr)
             sys.stderr.flush()
 
-    return error
+    gib error
 
 
 def dump_info(info, file=Nichts):

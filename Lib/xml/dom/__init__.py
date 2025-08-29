@@ -70,7 +70,7 @@ klasse DOMException(Exception):
         Exception.__init__(self, *args, **kw)
 
     def _get_code(self):
-        return self.code
+        gib self.code
 
 
 klasse IndexSizeErr(DOMException):

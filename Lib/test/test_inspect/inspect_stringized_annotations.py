@@ -10,10 +10,10 @@ klasse MyClass:
         self.a = a
         self.b = b
     def __eq__(self, other):
-        return isinstance(other, MyClass) und self.a == other.a und self.b == other.b
+        gib isinstance(other, MyClass) und self.a == other.a und self.b == other.b
 
 def function(a:int, b:str) -> MyClass:
-    return MyClass(a, b)
+    gib MyClass(a, b)
 
 
 def function2(a:int, b:"str", c:MyClass) -> MyClass:

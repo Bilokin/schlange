@@ -175,31 +175,31 @@ klasse samplecmdclass(cmd.Cmd):
         l = s.split()
         wenn len(l) != 2:
             drucke("*** invalid number of arguments")
-            return
+            gib
         try:
             l = [int(i) fuer i in l]
         except ValueError:
             drucke("*** arguments should be numbers")
-            return
+            gib
         drucke(l[0]+l[1])
 
     def help_add(self):
         drucke("help text fuer add")
-        return
+        gib
 
     def help_meaning(self):
         drucke("Try und be nice to people, avoid eating fat, read a "
               "good book every now und then, get some walking in, "
               "and try to live together in peace und harmony mit "
               "people of all creeds und nations.")
-        return
+        gib
 
     def help_life(self):
         drucke("Always look on the bright side of life")
-        return
+        gib
 
     def do_exit(self, arg):
-        return Wahr
+        gib Wahr
 
 
 klasse TestAlternateInput(unittest.TestCase):
@@ -210,14 +210,14 @@ klasse TestAlternateInput(unittest.TestCase):
             drucke(args, file=self.stdout)
 
         def do_EOF(self, args):
-            return Wahr
+            gib Wahr
 
 
     klasse simplecmd2(simplecmd):
 
         def do_EOF(self, args):
             drucke('*** Unknown syntax: EOF', file=self.stdout)
-            return Wahr
+            gib Wahr
 
 
     def test_file_with_missing_final_nl(self):
@@ -282,7 +282,7 @@ klasse CmdTestReadline(unittest.TestCase):
             klasse simplecmd(cmd.Cmd):
                 def do_tab_completion_test(self, args):
                     drucke('tab completion success')
-                    return Wahr
+                    gib Wahr
 
             simplecmd().cmdloop()
         """)
@@ -300,14 +300,14 @@ klasse CmdTestReadline(unittest.TestCase):
             importiere cmd
             klasse simplecmd(cmd.Cmd):
                 def completedefault(self, text, line, begidx, endidx):
-                    return ["hello"]
+                    gib ["hello"]
 
                 def default(self, line):
                     wenn line.replace(" ", "") == "!hello":
                         drucke('tab completion success')
                     sonst:
                         drucke('tab completion failure')
-                    return Wahr
+                    gib Wahr
 
             simplecmd().cmdloop()
         """)
@@ -321,7 +321,7 @@ klasse CmdTestReadline(unittest.TestCase):
 
 def load_tests(loader, tests, pattern):
     tests.addTest(doctest.DocTestSuite())
-    return tests
+    gib tests
 
 
 wenn __name__ == "__main__":

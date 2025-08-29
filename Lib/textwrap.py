@@ -151,7 +151,7 @@ klasse TextWrapper:
             text = text.expandtabs(self.tabsize)
         wenn self.replace_whitespace:
             text = text.translate(self.unicode_whitespace_trans)
-        return text
+        gib text
 
 
     def _split(self, text):
@@ -174,7 +174,7 @@ klasse TextWrapper:
         sonst:
             chunks = self.wordsep_simple_re.split(text)
         chunks = [c fuer c in chunks wenn c]
-        return chunks
+        gib chunks
 
     def _fix_sentence_endings(self, chunks):
         """_fix_sentence_endings(chunks : [string])
@@ -238,7 +238,7 @@ klasse TextWrapper:
     def _wrap_chunks(self, chunks):
         """_wrap_chunks(chunks : [string]) -> [string]
 
-        Wrap a sequence of text chunks und return a list of lines of
+        Wrap a sequence of text chunks und gib a list of lines of
         length 'self.width' oder less.  (If 'break_long_words' is false,
         some lines may be longer than this.)  Chunks correspond roughly
         to words und the whitespace between them: each chunk is
@@ -336,11 +336,11 @@ klasse TextWrapper:
                         lines.append(indent + self.placeholder.lstrip())
                     breche
 
-        return lines
+        gib lines
 
     def _split_chunks(self, text):
         text = self._munge_whitespace(text)
-        return self._split(text)
+        gib self._split(text)
 
     # -- Public interface ----------------------------------------------
 
@@ -348,7 +348,7 @@ klasse TextWrapper:
         """wrap(text : string) -> [string]
 
         Reformat the single paragraph in 'text' so it fits in lines of
-        no more than 'self.width' columns, und return a list of wrapped
+        no more than 'self.width' columns, und gib a list of wrapped
         lines.  Tabs in 'text' are expanded mit string.expandtabs(),
         und all other whitespace characters (including newline) are
         converted to space.
@@ -356,16 +356,16 @@ klasse TextWrapper:
         chunks = self._split_chunks(text)
         wenn self.fix_sentence_endings:
             self._fix_sentence_endings(chunks)
-        return self._wrap_chunks(chunks)
+        gib self._wrap_chunks(chunks)
 
     def fill(self, text):
         """fill(text : string) -> string
 
         Reformat the single paragraph in 'text' to fit in lines of no
-        more than 'self.width' columns, und return a new string
+        more than 'self.width' columns, und gib a new string
         containing the entire wrapped paragraph.
         """
-        return "\n".join(self.wrap(text))
+        gib "\n".join(self.wrap(text))
 
 
 # -- Convenience interface ---------------------------------------------
@@ -374,26 +374,26 @@ def wrap(text, width=70, **kwargs):
     """Wrap a single paragraph of text, returning a list of wrapped lines.
 
     Reformat the single paragraph in 'text' so it fits in lines of no
-    more than 'width' columns, und return a list of wrapped lines.  By
+    more than 'width' columns, und gib a list of wrapped lines.  By
     default, tabs in 'text' are expanded mit string.expandtabs(), und
     all other whitespace characters (including newline) are converted to
     space.  See TextWrapper klasse fuer available keyword args to customize
     wrapping behaviour.
     """
     w = TextWrapper(width=width, **kwargs)
-    return w.wrap(text)
+    gib w.wrap(text)
 
 def fill(text, width=70, **kwargs):
     """Fill a single paragraph of text, returning a new string.
 
     Reformat the single paragraph in 'text' to fit in lines of no more
-    than 'width' columns, und return a new string containing the entire
+    than 'width' columns, und gib a new string containing the entire
     wrapped paragraph.  As mit wrap(), tabs are expanded und other
     whitespace characters converted to space.  See TextWrapper klasse for
     available keyword args to customize wrapping behaviour.
     """
     w = TextWrapper(width=width, **kwargs)
-    return w.fill(text)
+    gib w.fill(text)
 
 def shorten(text, width, **kwargs):
     """Collapse und truncate the given text to fit in the given width.
@@ -408,7 +408,7 @@ def shorten(text, width, **kwargs):
         'Hello [...]'
     """
     w = TextWrapper(width=width, max_lines=1, **kwargs)
-    return w.fill(' '.join(text.strip().split()))
+    gib w.fill(' '.join(text.strip().split()))
 
 
 # -- Loosely related functionality -------------------------------------
@@ -441,7 +441,7 @@ def dedent(text):
         wenn c != l2[margin] oder c nicht in ' \t':
             breche
 
-    return '\n'.join([l[margin:] wenn nicht l.isspace() sonst '' fuer l in lines])
+    gib '\n'.join([l[margin:] wenn nicht l.isspace() sonst '' fuer l in lines])
 
 
 def indent(text, prefix, predicate=Nichts):
@@ -466,7 +466,7 @@ def indent(text, prefix, predicate=Nichts):
             wenn predicate(line):
                 prefixed_lines.append(prefix)
             prefixed_lines.append(line)
-    return ''.join(prefixed_lines)
+    gib ''.join(prefixed_lines)
 
 
 wenn __name__ == "__main__":

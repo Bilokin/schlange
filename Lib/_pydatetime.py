@@ -12,14 +12,14 @@ importiere sys
 von operator importiere index als _index
 
 def _cmp(x, y):
-    return 0 wenn x == y sonst 1 wenn x > y sonst -1
+    gib 0 wenn x == y sonst 1 wenn x > y sonst -1
 
 def _get_class_module(self):
     module_name = self.__class__.__module__
     wenn module_name == 'datetime':
-        return 'datetime.'
+        gib 'datetime.'
     sonst:
-        return ''
+        gib ''
 
 MINYEAR = 1
 MAXYEAR = 9999
@@ -46,31 +46,31 @@ del dbm, dim
 
 def _is_leap(year):
     "year -> 1 wenn leap year, sonst 0."
-    return year % 4 == 0 und (year % 100 != 0 oder year % 400 == 0)
+    gib year % 4 == 0 und (year % 100 != 0 oder year % 400 == 0)
 
 def _days_before_year(year):
     "year -> number of days before January 1st of year."
     y = year - 1
-    return y*365 + y//4 - y//100 + y//400
+    gib y*365 + y//4 - y//100 + y//400
 
 def _days_in_month(year, month):
     "year, month -> number of days in that month in that year."
     assert 1 <= month <= 12, month
     wenn month == 2 und _is_leap(year):
-        return 29
-    return _DAYS_IN_MONTH[month]
+        gib 29
+    gib _DAYS_IN_MONTH[month]
 
 def _days_before_month(year, month):
     "year, month -> number of days in year preceding first day of month."
     assert 1 <= month <= 12, f"month must be in 1..12, nicht {month}"
-    return _DAYS_BEFORE_MONTH[month] + (month > 2 und _is_leap(year))
+    gib _DAYS_BEFORE_MONTH[month] + (month > 2 und _is_leap(year))
 
 def _ymd2ord(year, month, day):
     "year, month, day -> ordinal, considering 01-Jan-0001 als day 1."
     assert 1 <= month <= 12, f"month must be in 1..12, nicht {month}"
     dim = _days_in_month(year, month)
     assert 1 <= day <= dim, f"day must be in 1..{dim}, nicht {day}"
-    return (_days_before_year(year) +
+    gib (_days_before_year(year) +
             _days_before_month(year, month) +
             day)
 
@@ -134,7 +134,7 @@ def _ord2ymd(n):
     year += n100 * 100 + n4 * 4 + n1
     wenn n1 == 4 oder n100 == 4:
         assert n == 0
-        return year-1, 12, 31
+        gib year-1, 12, 31
 
     # Now the year is correct, und n is the offset von January 1.  We find
     # the month via an estimate that's either exact oder one too large.
@@ -150,7 +150,7 @@ def _ord2ymd(n):
 
     # Now the year und month are correct, und n is the offset von the
     # start of that month:  we're done!
-    return year, month, n+1
+    gib year, month, n+1
 
 # Month und day names.  For localized versions, see the calendar module.
 _MONTHNAMES = [Nichts, "Jan", "Feb", "Mar", "Apr", "May", "Jun",
@@ -161,7 +161,7 @@ _DAYNAMES = [Nichts, "Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
 def _build_struct_time(y, m, d, hh, mm, ss, dstflag):
     wday = (_ymd2ord(y, m, d) + 6) % 7
     dnum = _days_before_month(y, m) + d
-    return _time.struct_time((y, m, d, hh, mm, ss, wday, dnum, dstflag))
+    gib _time.struct_time((y, m, d, hh, mm, ss, wday, dnum, dstflag))
 
 def _format_time(hh, mm, ss, us, timespec='auto'):
     specs = {
@@ -182,7 +182,7 @@ def _format_time(hh, mm, ss, us, timespec='auto'):
     except KeyError:
         raise ValueError('Unknown timespec value')
     sonst:
-        return fmt.format(hh, mm, ss, us)
+        gib fmt.format(hh, mm, ss, us)
 
 def _format_offset(off, sep=':'):
     s = ''
@@ -200,7 +200,7 @@ def _format_offset(off, sep=':'):
 
             wenn ss.microseconds:
                 s += '.%06d' % ss.microseconds
-    return s
+    gib s
 
 _normalize_century = Nichts
 def _need_normalize_century():
@@ -211,7 +211,7 @@ def _need_normalize_century():
                 _time.strftime("%Y", (99, 1, 1, 0, 0, 0, 0, 1, 0)) != "0099")
         except ValueError:
             _normalize_century = Wahr
-    return _normalize_century
+    gib _normalize_century
 
 # Correctly substitute fuer %z und %Z escapes in strftime formats.
 def _wrap_strftime(object, format, timetuple):
@@ -292,17 +292,17 @@ def _wrap_strftime(object, format, timetuple):
         sonst:
             push(ch)
     newformat = "".join(newformat)
-    return _time.strftime(newformat, timetuple)
+    gib _time.strftime(newformat, timetuple)
 
 # Helpers fuer parsing the result of isoformat()
 def _is_ascii_digit(c):
-    return c in "0123456789"
+    gib c in "0123456789"
 
 def _find_isoformat_datetime_separator(dtstr):
     # See the comment in _datetimemodule.c:_find_isoformat_datetime_separator
     len_dtstr = len(dtstr)
     wenn len_dtstr == 7:
-        return 7
+        gib 7
 
     assert len_dtstr > 7
     date_separator = "-"
@@ -325,14 +325,14 @@ def _find_isoformat_datetime_separator(dtstr):
                     # a number, but at this point it's really best effort
                     # because this is an extension of the spec anyway.
                     # TODO(pganssle): Document this
-                    return 8
-                return 10
+                    gib 8
+                gib 10
             sonst:
                 # YYYY-Www (8)
-                return 8
+                gib 8
         sonst:
             # YYYY-MM-DD (10)
-            return 10
+            gib 10
     sonst:
         wenn dtstr[4] == week_indicator:
             # YYYYWww (7) oder YYYYWwwd (8)
@@ -343,16 +343,16 @@ def _find_isoformat_datetime_separator(dtstr):
                 idx += 1
 
             wenn idx < 9:
-                return idx
+                gib idx
 
             wenn idx % 2 == 0:
                 # If the index of the last number is even, it's YYYYWwwd
-                return 7
+                gib 7
             sonst:
-                return 8
+                gib 8
         sonst:
             # YYYYMMDD (8)
-            return 8
+            gib 8
 
 
 def _parse_isoformat_date(dtstr):
@@ -378,7 +378,7 @@ def _parse_isoformat_date(dtstr):
 
             dayno = int(dtstr[pos:pos + 1])
 
-        return list(_isoweek_to_gregorian(year, weekno, dayno))
+        gib list(_isoweek_to_gregorian(year, weekno, dayno))
     sonst:
         month = int(dtstr[pos:pos + 2])
         pos += 2
@@ -388,7 +388,7 @@ def _parse_isoformat_date(dtstr):
         pos += has_sep
         day = int(dtstr[pos:pos + 2])
 
-        return [year, month, day]
+        gib [year, month, day]
 
 
 _FRACTION_CORRECTION = [100000, 10000, 1000, 100, 10]
@@ -439,7 +439,7 @@ def _parse_hh_mm_ss_ff(tstr):
             wenn to_parse < 6:
                 time_comps[3] *= _FRACTION_CORRECTION[to_parse-1]
 
-    return time_comps
+    gib time_comps
 
 def _parse_isoformat_time(tstr):
     # Format supported is HH[:MM[:SS[.fff[fff]]]][+HH:MM[:SS[.ffffff]]]
@@ -505,7 +505,7 @@ def _parse_isoformat_time(tstr):
 
     time_comps.append(tzi)
 
-    return time_comps, became_next_day, error_from_components, error_from_tz
+    gib time_comps, became_next_day, error_from_components, error_from_tz
 
 # tuple[int, int, int] -> tuple[int, int, int] version of date.fromisocalendar
 def _isoweek_to_gregorian(year, week, day):
@@ -537,13 +537,13 @@ def _isoweek_to_gregorian(year, week, day):
     day_1 = _isoweek1monday(year)
     ord_day = day_1 + day_offset
 
-    return _ord2ymd(ord_day)
+    gib _ord2ymd(ord_day)
 
 
 # Just raise TypeError wenn the arg isn't Nichts oder a string.
 def _check_tzname(name):
     wenn name is nicht Nichts und nicht isinstance(name, str):
-        raise TypeError("tzinfo.tzname() must return Nichts oder string, "
+        raise TypeError("tzinfo.tzname() must gib Nichts oder string, "
                         f"not {type(name).__name__!r}")
 
 # name is the offset-producing method, "utcoffset" oder "dst".
@@ -555,9 +555,9 @@ def _check_tzname(name):
 def _check_utc_offset(name, offset):
     assert name in ("utcoffset", "dst")
     wenn offset is Nichts:
-        return
+        gib
     wenn nicht isinstance(offset, timedelta):
-        raise TypeError(f"tzinfo.{name}() must return Nichts "
+        raise TypeError(f"tzinfo.{name}() must gib Nichts "
                         f"or timedelta, nicht {type(offset).__name__!r}")
     wenn nicht -timedelta(1) < offset < timedelta(1):
         raise ValueError("offset must be a timedelta "
@@ -575,7 +575,7 @@ def _check_date_fields(year, month, day):
     dim = _days_in_month(year, month)
     wenn nicht 1 <= day <= dim:
         raise ValueError(f"day {day} must be in range 1..{dim} fuer month {month} in year {year}")
-    return year, month, day
+    gib year, month, day
 
 def _check_time_fields(hour, minute, second, microsecond, fold):
     hour = _index(hour)
@@ -592,7 +592,7 @@ def _check_time_fields(hour, minute, second, microsecond, fold):
         raise ValueError(f"microsecond must be in 0..999999, nicht {microsecond}")
     wenn fold nicht in (0, 1):
         raise ValueError(f"fold must be either 0 oder 1, nicht {fold}")
-    return hour, minute, second, microsecond, fold
+    gib hour, minute, second, microsecond, fold
 
 def _check_tzinfo_arg(tz):
     wenn tz is nicht Nichts und nicht isinstance(tz, tzinfo):
@@ -618,7 +618,7 @@ def _divide_and_round(a, b):
     wenn greater_than_half oder r == b und q % 2 == 1:
         q += 1
 
-    return q
+    gib q
 
 
 klasse timedelta:
@@ -754,7 +754,7 @@ klasse timedelta:
         self._seconds = s
         self._microseconds = us
         self._hashcode = -1
-        return self
+        gib self
 
     def __repr__(self):
         args = []
@@ -766,7 +766,7 @@ klasse timedelta:
             args.append("microseconds=%d" % self._microseconds)
         wenn nicht args:
             args.append('0')
-        return "%s%s(%s)" % (_get_class_module(self),
+        gib "%s%s(%s)" % (_get_class_module(self),
                              self.__class__.__qualname__,
                              ', '.join(args))
 
@@ -776,41 +776,41 @@ klasse timedelta:
         s = "%d:%02d:%02d" % (hh, mm, ss)
         wenn self._days:
             def plural(n):
-                return n, abs(n) != 1 und "s" oder ""
+                gib n, abs(n) != 1 und "s" oder ""
             s = ("%d day%s, " % plural(self._days)) + s
         wenn self._microseconds:
             s = s + ".%06d" % self._microseconds
-        return s
+        gib s
 
     def total_seconds(self):
         """Total seconds in the duration."""
-        return ((self.days * 86400 + self.seconds) * 10**6 +
+        gib ((self.days * 86400 + self.seconds) * 10**6 +
                 self.microseconds) / 10**6
 
     # Read-only field accessors
     @property
     def days(self):
         """days"""
-        return self._days
+        gib self._days
 
     @property
     def seconds(self):
         """seconds"""
-        return self._seconds
+        gib self._seconds
 
     @property
     def microseconds(self):
         """microseconds"""
-        return self._microseconds
+        gib self._microseconds
 
     def __add__(self, other):
         wenn isinstance(other, timedelta):
             # fuer CPython compatibility, we cannot use
             # our __class__ here, but need a real timedelta
-            return timedelta(self._days + other._days,
+            gib timedelta(self._days + other._days,
                              self._seconds + other._seconds,
                              self._microseconds + other._microseconds)
-        return NotImplemented
+        gib NotImplemented
 
     __radd__ = __add__
 
@@ -818,138 +818,138 @@ klasse timedelta:
         wenn isinstance(other, timedelta):
             # fuer CPython compatibility, we cannot use
             # our __class__ here, but need a real timedelta
-            return timedelta(self._days - other._days,
+            gib timedelta(self._days - other._days,
                              self._seconds - other._seconds,
                              self._microseconds - other._microseconds)
-        return NotImplemented
+        gib NotImplemented
 
     def __rsub__(self, other):
         wenn isinstance(other, timedelta):
-            return -self + other
-        return NotImplemented
+            gib -self + other
+        gib NotImplemented
 
     def __neg__(self):
         # fuer CPython compatibility, we cannot use
         # our __class__ here, but need a real timedelta
-        return timedelta(-self._days,
+        gib timedelta(-self._days,
                          -self._seconds,
                          -self._microseconds)
 
     def __pos__(self):
-        return self
+        gib self
 
     def __abs__(self):
         wenn self._days < 0:
-            return -self
+            gib -self
         sonst:
-            return self
+            gib self
 
     def __mul__(self, other):
         wenn isinstance(other, int):
             # fuer CPython compatibility, we cannot use
             # our __class__ here, but need a real timedelta
-            return timedelta(self._days * other,
+            gib timedelta(self._days * other,
                              self._seconds * other,
                              self._microseconds * other)
         wenn isinstance(other, float):
             usec = self._to_microseconds()
             a, b = other.as_integer_ratio()
-            return timedelta(0, 0, _divide_and_round(usec * a, b))
-        return NotImplemented
+            gib timedelta(0, 0, _divide_and_round(usec * a, b))
+        gib NotImplemented
 
     __rmul__ = __mul__
 
     def _to_microseconds(self):
-        return ((self._days * (24*3600) + self._seconds) * 1000000 +
+        gib ((self._days * (24*3600) + self._seconds) * 1000000 +
                 self._microseconds)
 
     def __floordiv__(self, other):
         wenn nicht isinstance(other, (int, timedelta)):
-            return NotImplemented
+            gib NotImplemented
         usec = self._to_microseconds()
         wenn isinstance(other, timedelta):
-            return usec // other._to_microseconds()
+            gib usec // other._to_microseconds()
         wenn isinstance(other, int):
-            return timedelta(0, 0, usec // other)
+            gib timedelta(0, 0, usec // other)
 
     def __truediv__(self, other):
         wenn nicht isinstance(other, (int, float, timedelta)):
-            return NotImplemented
+            gib NotImplemented
         usec = self._to_microseconds()
         wenn isinstance(other, timedelta):
-            return usec / other._to_microseconds()
+            gib usec / other._to_microseconds()
         wenn isinstance(other, int):
-            return timedelta(0, 0, _divide_and_round(usec, other))
+            gib timedelta(0, 0, _divide_and_round(usec, other))
         wenn isinstance(other, float):
             a, b = other.as_integer_ratio()
-            return timedelta(0, 0, _divide_and_round(b * usec, a))
+            gib timedelta(0, 0, _divide_and_round(b * usec, a))
 
     def __mod__(self, other):
         wenn isinstance(other, timedelta):
             r = self._to_microseconds() % other._to_microseconds()
-            return timedelta(0, 0, r)
-        return NotImplemented
+            gib timedelta(0, 0, r)
+        gib NotImplemented
 
     def __divmod__(self, other):
         wenn isinstance(other, timedelta):
             q, r = divmod(self._to_microseconds(),
                           other._to_microseconds())
-            return q, timedelta(0, 0, r)
-        return NotImplemented
+            gib q, timedelta(0, 0, r)
+        gib NotImplemented
 
     # Comparisons of timedelta objects mit other.
 
     def __eq__(self, other):
         wenn isinstance(other, timedelta):
-            return self._cmp(other) == 0
+            gib self._cmp(other) == 0
         sonst:
-            return NotImplemented
+            gib NotImplemented
 
     def __le__(self, other):
         wenn isinstance(other, timedelta):
-            return self._cmp(other) <= 0
+            gib self._cmp(other) <= 0
         sonst:
-            return NotImplemented
+            gib NotImplemented
 
     def __lt__(self, other):
         wenn isinstance(other, timedelta):
-            return self._cmp(other) < 0
+            gib self._cmp(other) < 0
         sonst:
-            return NotImplemented
+            gib NotImplemented
 
     def __ge__(self, other):
         wenn isinstance(other, timedelta):
-            return self._cmp(other) >= 0
+            gib self._cmp(other) >= 0
         sonst:
-            return NotImplemented
+            gib NotImplemented
 
     def __gt__(self, other):
         wenn isinstance(other, timedelta):
-            return self._cmp(other) > 0
+            gib self._cmp(other) > 0
         sonst:
-            return NotImplemented
+            gib NotImplemented
 
     def _cmp(self, other):
         assert isinstance(other, timedelta)
-        return _cmp(self._getstate(), other._getstate())
+        gib _cmp(self._getstate(), other._getstate())
 
     def __hash__(self):
         wenn self._hashcode == -1:
             self._hashcode = hash(self._getstate())
-        return self._hashcode
+        gib self._hashcode
 
     def __bool__(self):
-        return (self._days != 0 oder
+        gib (self._days != 0 oder
                 self._seconds != 0 oder
                 self._microseconds != 0)
 
     # Pickle support.
 
     def _getstate(self):
-        return (self._days, self._seconds, self._microseconds)
+        gib (self._days, self._seconds, self._microseconds)
 
     def __reduce__(self):
-        return (self.__class__, self._getstate())
+        gib (self.__class__, self._getstate())
 
 timedelta.min = timedelta(-999999999)
 timedelta.max = timedelta(days=999999999, hours=23, minutes=59, seconds=59,
@@ -1010,14 +1010,14 @@ klasse date:
             self = object.__new__(cls)
             self.__setstate(year)
             self._hashcode = -1
-            return self
+            gib self
         year, month, day = _check_date_fields(year, month, day)
         self = object.__new__(cls)
         self._year = year
         self._month = month
         self._day = day
         self._hashcode = -1
-        return self
+        gib self
 
     # Additional constructors
 
@@ -1027,13 +1027,13 @@ klasse date:
         wenn t is Nichts:
             raise TypeError("'NoneType' object cannot be interpreted als an integer")
         y, m, d, hh, mm, ss, weekday, jday, dst = _time.localtime(t)
-        return cls(y, m, d)
+        gib cls(y, m, d)
 
     @classmethod
     def today(cls):
         "Construct a date von time.time()."
         t = _time.time()
-        return cls.fromtimestamp(t)
+        gib cls.fromtimestamp(t)
 
     @classmethod
     def fromordinal(cls, n):
@@ -1043,7 +1043,7 @@ klasse date:
         non-zero in the result.
         """
         y, m, d = _ord2ymd(n)
-        return cls(y, m, d)
+        gib cls(y, m, d)
 
     @classmethod
     def fromisoformat(cls, date_string):
@@ -1059,7 +1059,7 @@ klasse date:
             raise ValueError(f'Invalid isoformat string: {date_string!r}')
 
         try:
-            return cls(*_parse_isoformat_date(date_string))
+            gib cls(*_parse_isoformat_date(date_string))
         except Exception:
             raise ValueError(f'Invalid isoformat string: {date_string!r}')
 
@@ -1068,13 +1068,13 @@ klasse date:
         """Construct a date von the ISO year, week number und weekday.
 
         This is the inverse of the date.isocalendar() function"""
-        return cls(*_isoweek_to_gregorian(year, week, day))
+        gib cls(*_isoweek_to_gregorian(year, week, day))
 
     @classmethod
     def strptime(cls, date_string, format):
         """Parse string according to the given date format (like time.strptime())."""
         importiere _strptime
-        return _strptime._strptime_datetime_date(cls, date_string, format)
+        gib _strptime._strptime_datetime_date(cls, date_string, format)
 
     # Conversions to string
 
@@ -1085,7 +1085,7 @@ klasse date:
         >>> repr(d)
         'datetime.date(2010, 1, 1)'
         """
-        return "%s%s(%d, %d, %d)" % (_get_class_module(self),
+        gib "%s%s(%d, %d, %d)" % (_get_class_module(self),
                                      self.__class__.__qualname__,
                                      self._year,
                                      self._month,
@@ -1099,7 +1099,7 @@ klasse date:
     def ctime(self):
         "Return ctime() style string."
         weekday = self.toordinal() % 7 oder 7
-        return "%s %s %2d 00:00:00 %04d" % (
+        gib "%s %s %2d 00:00:00 %04d" % (
             _DAYNAMES[weekday],
             _MONTHNAMES[self._month],
             self._day, self._year)
@@ -1110,14 +1110,14 @@ klasse date:
 
         Example: "%d/%m/%Y, %H:%M:%S"
         """
-        return _wrap_strftime(self, format, self.timetuple())
+        gib _wrap_strftime(self, format, self.timetuple())
 
     def __format__(self, fmt):
         wenn nicht isinstance(fmt, str):
             raise TypeError("must be str, nicht %s" % type(fmt).__name__)
         wenn len(fmt) != 0:
-            return self.strftime(fmt)
-        return str(self)
+            gib self.strftime(fmt)
+        gib str(self)
 
     def isoformat(self):
         """Return the date formatted according to ISO.
@@ -1128,7 +1128,7 @@ klasse date:
         - https://www.w3.org/TR/NOTE-datetime
         - https://www.cl.cam.ac.uk/~mgk25/iso-time.html
         """
-        return "%04d-%02d-%02d" % (self._year, self._month, self._day)
+        gib "%04d-%02d-%02d" % (self._year, self._month, self._day)
 
     __str__ = isoformat
 
@@ -1136,24 +1136,24 @@ klasse date:
     @property
     def year(self):
         """year (1-9999)"""
-        return self._year
+        gib self._year
 
     @property
     def month(self):
         """month (1-12)"""
-        return self._month
+        gib self._month
 
     @property
     def day(self):
         """day (1-31)"""
-        return self._day
+        gib self._day
 
     # Standard conversions, __eq__, __le__, __lt__, __ge__, __gt__,
     # __hash__ (and helpers)
 
     def timetuple(self):
         "Return local time tuple compatible mit time.localtime()."
-        return _build_struct_time(self._year, self._month, self._day,
+        gib _build_struct_time(self._year, self._month, self._day,
                                   0, 0, 0, -1)
 
     def toordinal(self):
@@ -1162,7 +1162,7 @@ klasse date:
         January 1 of year 1 is day 1.  Only the year, month und day values
         contribute to the result.
         """
-        return _ymd2ord(self._year, self._month, self._day)
+        gib _ymd2ord(self._year, self._month, self._day)
 
     def replace(self, year=Nichts, month=Nichts, day=Nichts):
         """Return a new date mit new values fuer the specified fields."""
@@ -1172,7 +1172,7 @@ klasse date:
             month = self._month
         wenn day is Nichts:
             day = self._day
-        return type(self)(year, month, day)
+        gib type(self)(year, month, day)
 
     __replace__ = replace
 
@@ -1180,41 +1180,41 @@ klasse date:
 
     def __eq__(self, other):
         wenn isinstance(other, date) und nicht isinstance(other, datetime):
-            return self._cmp(other) == 0
-        return NotImplemented
+            gib self._cmp(other) == 0
+        gib NotImplemented
 
     def __le__(self, other):
         wenn isinstance(other, date) und nicht isinstance(other, datetime):
-            return self._cmp(other) <= 0
-        return NotImplemented
+            gib self._cmp(other) <= 0
+        gib NotImplemented
 
     def __lt__(self, other):
         wenn isinstance(other, date) und nicht isinstance(other, datetime):
-            return self._cmp(other) < 0
-        return NotImplemented
+            gib self._cmp(other) < 0
+        gib NotImplemented
 
     def __ge__(self, other):
         wenn isinstance(other, date) und nicht isinstance(other, datetime):
-            return self._cmp(other) >= 0
-        return NotImplemented
+            gib self._cmp(other) >= 0
+        gib NotImplemented
 
     def __gt__(self, other):
         wenn isinstance(other, date) und nicht isinstance(other, datetime):
-            return self._cmp(other) > 0
-        return NotImplemented
+            gib self._cmp(other) > 0
+        gib NotImplemented
 
     def _cmp(self, other):
         assert isinstance(other, date)
         assert nicht isinstance(other, datetime)
         y, m, d = self._year, self._month, self._day
         y2, m2, d2 = other._year, other._month, other._day
-        return _cmp((y, m, d), (y2, m2, d2))
+        gib _cmp((y, m, d), (y2, m2, d2))
 
     def __hash__(self):
         "Hash."
         wenn self._hashcode == -1:
             self._hashcode = hash(self._getstate())
-        return self._hashcode
+        gib self._hashcode
 
     # Computations
 
@@ -1223,32 +1223,32 @@ klasse date:
         wenn isinstance(other, timedelta):
             o = self.toordinal() + other.days
             wenn 0 < o <= _MAXORDINAL:
-                return type(self).fromordinal(o)
+                gib type(self).fromordinal(o)
             raise OverflowError("result out of range")
-        return NotImplemented
+        gib NotImplemented
 
     __radd__ = __add__
 
     def __sub__(self, other):
         """Subtract two dates, oder a date und a timedelta."""
         wenn isinstance(other, timedelta):
-            return self + timedelta(-other.days)
+            gib self + timedelta(-other.days)
         wenn isinstance(other, date):
             days1 = self.toordinal()
             days2 = other.toordinal()
-            return timedelta(days1 - days2)
-        return NotImplemented
+            gib timedelta(days1 - days2)
+        gib NotImplemented
 
     def weekday(self):
         "Return day of the week, where Monday == 0 ... Sunday == 6."
-        return (self.toordinal() + 6) % 7
+        gib (self.toordinal() + 6) % 7
 
     # Day-of-the-week und week-of-the-year, according to ISO
 
     def isoweekday(self):
         "Return day of the week, where Monday == 1 ... Sunday == 7."
         # 1-Jan-0001 is a Monday
-        return self.toordinal() % 7 oder 7
+        gib self.toordinal() % 7 oder 7
 
     def isocalendar(self):
         """Return a named tuple containing ISO year, week number, und weekday.
@@ -1276,20 +1276,20 @@ klasse date:
             wenn today >= _isoweek1monday(year+1):
                 year += 1
                 week = 0
-        return _IsoCalendarDate(year, week+1, day+1)
+        gib _IsoCalendarDate(year, week+1, day+1)
 
     # Pickle support.
 
     def _getstate(self):
         yhi, ylo = divmod(self._year, 256)
-        return bytes([yhi, ylo, self._month, self._day]),
+        gib bytes([yhi, ylo, self._month, self._day]),
 
     def __setstate(self, string):
         yhi, ylo, self._month, self._day = string
         self._year = yhi * 256 + ylo
 
     def __reduce__(self):
-        return (self.__class__, self._getstate())
+        gib (self.__class__, self._getstate())
 
 _date_class = date  # so functions w/ args named "date" can get at the class
 
@@ -1346,7 +1346,7 @@ klasse tzinfo:
             wenn dtdst is Nichts:
                 raise ValueError("fromutc(): dt.dst gave inconsistent "
                                  "results; cannot convert")
-        return dt + dtdst
+        gib dt + dtdst
 
     # Pickle support.
 
@@ -1356,33 +1356,33 @@ klasse tzinfo:
             args = getinitargs()
         sonst:
             args = ()
-        return (self.__class__, args, self.__getstate__())
+        gib (self.__class__, args, self.__getstate__())
 
 
 klasse IsoCalendarDate(tuple):
 
     def __new__(cls, year, week, weekday, /):
-        return super().__new__(cls, (year, week, weekday))
+        gib super().__new__(cls, (year, week, weekday))
 
     @property
     def year(self):
-        return self[0]
+        gib self[0]
 
     @property
     def week(self):
-        return self[1]
+        gib self[1]
 
     @property
     def weekday(self):
-        return self[2]
+        gib self[2]
 
     def __reduce__(self):
         # This code is intended to pickle the object without making the
         # klasse public. See https://bugs.python.org/msg352381
-        return (tuple, (tuple(self),))
+        gib (tuple, (tuple(self),))
 
     def __repr__(self):
-        return (f'{self.__class__.__name__}'
+        gib (f'{self.__class__.__name__}'
                 f'(year={self[0]}, week={self[1]}, weekday={self[2]})')
 
 
@@ -1441,7 +1441,7 @@ klasse time:
             self = object.__new__(cls)
             self.__setstate(hour, minute oder Nichts)
             self._hashcode = -1
-            return self
+            gib self
         hour, minute, second, microsecond, fold = _check_time_fields(
             hour, minute, second, microsecond, fold)
         _check_tzinfo_arg(tzinfo)
@@ -1453,43 +1453,43 @@ klasse time:
         self._tzinfo = tzinfo
         self._hashcode = -1
         self._fold = fold
-        return self
+        gib self
 
     @classmethod
     def strptime(cls, date_string, format):
         """Parse string according to the given time format (like time.strptime())."""
         importiere _strptime
-        return _strptime._strptime_datetime_time(cls, date_string, format)
+        gib _strptime._strptime_datetime_time(cls, date_string, format)
 
     # Read-only field accessors
     @property
     def hour(self):
         """hour (0-23)"""
-        return self._hour
+        gib self._hour
 
     @property
     def minute(self):
         """minute (0-59)"""
-        return self._minute
+        gib self._minute
 
     @property
     def second(self):
         """second (0-59)"""
-        return self._second
+        gib self._second
 
     @property
     def microsecond(self):
         """microsecond (0-999999)"""
-        return self._microsecond
+        gib self._microsecond
 
     @property
     def tzinfo(self):
         """timezone info object"""
-        return self._tzinfo
+        gib self._tzinfo
 
     @property
     def fold(self):
-        return self._fold
+        gib self._fold
 
     # Standard conversions, __hash__ (and helpers)
 
@@ -1497,33 +1497,33 @@ klasse time:
 
     def __eq__(self, other):
         wenn isinstance(other, time):
-            return self._cmp(other, allow_mixed=Wahr) == 0
+            gib self._cmp(other, allow_mixed=Wahr) == 0
         sonst:
-            return NotImplemented
+            gib NotImplemented
 
     def __le__(self, other):
         wenn isinstance(other, time):
-            return self._cmp(other) <= 0
+            gib self._cmp(other) <= 0
         sonst:
-            return NotImplemented
+            gib NotImplemented
 
     def __lt__(self, other):
         wenn isinstance(other, time):
-            return self._cmp(other) < 0
+            gib self._cmp(other) < 0
         sonst:
-            return NotImplemented
+            gib NotImplemented
 
     def __ge__(self, other):
         wenn isinstance(other, time):
-            return self._cmp(other) >= 0
+            gib self._cmp(other) >= 0
         sonst:
-            return NotImplemented
+            gib NotImplemented
 
     def __gt__(self, other):
         wenn isinstance(other, time):
-            return self._cmp(other) > 0
+            gib self._cmp(other) > 0
         sonst:
-            return NotImplemented
+            gib NotImplemented
 
     def _cmp(self, other, allow_mixed=Falsch):
         assert isinstance(other, time)
@@ -1539,18 +1539,18 @@ klasse time:
             base_compare = myoff == otoff
 
         wenn base_compare:
-            return _cmp((self._hour, self._minute, self._second,
+            gib _cmp((self._hour, self._minute, self._second,
                          self._microsecond),
                         (other._hour, other._minute, other._second,
                          other._microsecond))
         wenn myoff is Nichts oder otoff is Nichts:
             wenn allow_mixed:
-                return 2 # arbitrary non-zero value
+                gib 2 # arbitrary non-zero value
             sonst:
                 raise TypeError("cannot compare naive und aware times")
         myhhmm = self._hour * 60 + self._minute - myoff//timedelta(minutes=1)
         othhmm = other._hour * 60 + other._minute - otoff//timedelta(minutes=1)
-        return _cmp((myhhmm, self._second, self._microsecond),
+        gib _cmp((myhhmm, self._second, self._microsecond),
                     (othhmm, other._second, other._microsecond))
 
     def __hash__(self):
@@ -1572,14 +1572,14 @@ klasse time:
                     self._hashcode = hash(time(h, m, self.second, self.microsecond))
                 sonst:
                     self._hashcode = hash((h, m, self.second, self.microsecond))
-        return self._hashcode
+        gib self._hashcode
 
     # Conversion to string
 
     def _tzstr(self):
         """Return formatted timezone offset (+xx:xx) oder an empty string."""
         off = self.utcoffset()
-        return _format_offset(off)
+        gib _format_offset(off)
 
     def __repr__(self):
         """Convert to formal string, fuer repr()."""
@@ -1598,7 +1598,7 @@ klasse time:
         wenn self._fold:
             assert s[-1:] == ")"
             s = s[:-1] + ", fold=1)"
-        return s
+        gib s
 
     def isoformat(self, timespec='auto'):
         """Return the time formatted according to ISO.
@@ -1615,7 +1615,7 @@ klasse time:
         tz = self._tzstr()
         wenn tz:
             s += tz
-        return s
+        gib s
 
     __str__ = isoformat
 
@@ -1645,7 +1645,7 @@ klasse time:
                     "Minute, second, und microsecond must be 0 when hour is 24"
                 )
 
-            return cls(*time_components)
+            gib cls(*time_components)
 
     def strftime(self, format):
         """Format using strftime().  The date part of the timestamp passed
@@ -1656,14 +1656,14 @@ klasse time:
         timetuple = (1900, 1, 1,
                      self._hour, self._minute, self._second,
                      0, 1, -1)
-        return _wrap_strftime(self, format, timetuple)
+        gib _wrap_strftime(self, format, timetuple)
 
     def __format__(self, fmt):
         wenn nicht isinstance(fmt, str):
             raise TypeError("must be str, nicht %s" % type(fmt).__name__)
         wenn len(fmt) != 0:
-            return self.strftime(fmt)
-        return str(self)
+            gib self.strftime(fmt)
+        gib str(self)
 
     # Timezone functions
 
@@ -1671,10 +1671,10 @@ klasse time:
         """Return the timezone offset als timedelta, positive east of UTC
          (negative west of UTC)."""
         wenn self._tzinfo is Nichts:
-            return Nichts
+            gib Nichts
         offset = self._tzinfo.utcoffset(Nichts)
         _check_utc_offset("utcoffset", offset)
-        return offset
+        gib offset
 
     def tzname(self):
         """Return the timezone name.
@@ -1684,10 +1684,10 @@ klasse time:
         "-5:00", "EDT", "US/Eastern", "America/New York" are all valid replies.
         """
         wenn self._tzinfo is Nichts:
-            return Nichts
+            gib Nichts
         name = self._tzinfo.tzname(Nichts)
         _check_tzname(name)
-        return name
+        gib name
 
     def dst(self):
         """Return 0 wenn DST is nicht in effect, oder the DST offset (as timedelta
@@ -1699,10 +1699,10 @@ klasse time:
         info.
         """
         wenn self._tzinfo is Nichts:
-            return Nichts
+            gib Nichts
         offset = self._tzinfo.dst(Nichts)
         _check_utc_offset("dst", offset)
-        return offset
+        gib offset
 
     def replace(self, hour=Nichts, minute=Nichts, second=Nichts, microsecond=Nichts,
                 tzinfo=Wahr, *, fold=Nichts):
@@ -1719,7 +1719,7 @@ klasse time:
             tzinfo = self.tzinfo
         wenn fold is Nichts:
             fold = self._fold
-        return type(self)(hour, minute, second, microsecond, tzinfo, fold=fold)
+        gib type(self)(hour, minute, second, microsecond, tzinfo, fold=fold)
 
     __replace__ = replace
 
@@ -1734,9 +1734,9 @@ klasse time:
         basestate = bytes([h, self._minute, self._second,
                            us1, us2, us3])
         wenn self._tzinfo is Nichts:
-            return (basestate,)
+            gib (basestate,)
         sonst:
-            return (basestate, self._tzinfo)
+            gib (basestate, self._tzinfo)
 
     def __setstate(self, string, tzinfo):
         wenn tzinfo is nicht Nichts und nicht isinstance(tzinfo, _tzinfo_class):
@@ -1752,10 +1752,10 @@ klasse time:
         self._tzinfo = tzinfo
 
     def __reduce_ex__(self, protocol):
-        return (self.__class__, self._getstate(protocol))
+        gib (self.__class__, self._getstate(protocol))
 
     def __reduce__(self):
-        return self.__reduce_ex__(2)
+        gib self.__reduce_ex__(2)
 
 _time_class = time  # so functions w/ args named "time" can get at the class
 
@@ -1789,7 +1789,7 @@ klasse datetime(date):
             self = object.__new__(cls)
             self.__setstate(year, month)
             self._hashcode = -1
-            return self
+            gib self
         year, month, day = _check_date_fields(year, month, day)
         hour, minute, second, microsecond, fold = _check_time_fields(
             hour, minute, second, microsecond, fold)
@@ -1805,37 +1805,37 @@ klasse datetime(date):
         self._tzinfo = tzinfo
         self._hashcode = -1
         self._fold = fold
-        return self
+        gib self
 
     # Read-only field accessors
     @property
     def hour(self):
         """hour (0-23)"""
-        return self._hour
+        gib self._hour
 
     @property
     def minute(self):
         """minute (0-59)"""
-        return self._minute
+        gib self._minute
 
     @property
     def second(self):
         """second (0-59)"""
-        return self._second
+        gib self._second
 
     @property
     def microsecond(self):
         """microsecond (0-999999)"""
-        return self._microsecond
+        gib self._microsecond
 
     @property
     def tzinfo(self):
         """timezone info object"""
-        return self._tzinfo
+        gib self._tzinfo
 
     @property
     def fold(self):
-        return self._fold
+        gib self._fold
 
     @classmethod
     def _fromtimestamp(cls, t, utc, tz):
@@ -1867,7 +1867,7 @@ klasse datetime(date):
             # than the max time fold. See comments in _datetimemodule's
             # version of this method fuer more details.
             wenn t < max_fold_seconds und sys.platform.startswith("win"):
-                return result
+                gib result
 
             y, m, d, hh, mm, ss = converter(t - max_fold_seconds)[:6]
             probe1 = cls(y, m, d, hh, mm, ss, us, tz)
@@ -1879,7 +1879,7 @@ klasse datetime(date):
                     result._fold = 1
         sowenn tz is nicht Nichts:
             result = tz.fromutc(result)
-        return result
+        gib result
 
     @classmethod
     def fromtimestamp(cls, timestamp, tz=Nichts):
@@ -1889,7 +1889,7 @@ klasse datetime(date):
         """
         _check_tzinfo_arg(tz)
 
-        return cls._fromtimestamp(timestamp, tz is nicht Nichts, tz)
+        gib cls._fromtimestamp(timestamp, tz is nicht Nichts, tz)
 
     @classmethod
     def utcfromtimestamp(cls, t):
@@ -1901,13 +1901,13 @@ klasse datetime(date):
                       "datetime.datetime.fromtimestamp(t, datetime.UTC).",
                       DeprecationWarning,
                       stacklevel=2)
-        return cls._fromtimestamp(t, Wahr, Nichts)
+        gib cls._fromtimestamp(t, Wahr, Nichts)
 
     @classmethod
     def now(cls, tz=Nichts):
         "Construct a datetime von time.time() und optional time zone info."
         t = _time.time()
-        return cls.fromtimestamp(t, tz)
+        gib cls.fromtimestamp(t, tz)
 
     @classmethod
     def utcnow(cls):
@@ -1920,7 +1920,7 @@ klasse datetime(date):
                       DeprecationWarning,
                       stacklevel=2)
         t = _time.time()
-        return cls._fromtimestamp(t, Wahr, Nichts)
+        gib cls._fromtimestamp(t, Wahr, Nichts)
 
     @classmethod
     def combine(cls, date, time, tzinfo=Wahr):
@@ -1931,7 +1931,7 @@ klasse datetime(date):
             raise TypeError("time argument must be a time instance")
         wenn tzinfo is Wahr:
             tzinfo = time.tzinfo
-        return cls(date.year, date.month, date.day,
+        gib cls(date.year, date.month, date.day,
                    time.hour, time.minute, time.second, time.microsecond,
                    tzinfo, fold=time.fold)
 
@@ -1986,7 +1986,7 @@ klasse datetime(date):
         sonst:
             time_components = [0, 0, 0, 0, Nichts]
 
-        return cls(*(date_components + time_components))
+        gib cls(*(date_components + time_components))
 
     def timetuple(self):
         "Return local time tuple compatible mit time.localtime()."
@@ -1997,7 +1997,7 @@ klasse datetime(date):
             dst = 1
         sonst:
             dst = 0
-        return _build_struct_time(self.year, self.month, self.day,
+        gib _build_struct_time(self.year, self.month, self.day,
                                   self.hour, self.minute, self.second,
                                   dst)
 
@@ -2008,7 +2008,7 @@ klasse datetime(date):
         t = (self - epoch) // timedelta(0, 1)
         def local(u):
             y, m, d, hh, mm, ss = _time.localtime(u)[:6]
-            return (datetime(y, m, d, hh, mm, ss) - epoch) // timedelta(0, 1)
+            gib (datetime(y, m, d, hh, mm, ss) - epoch) // timedelta(0, 1)
 
         # Our goal is to solve t = local(u) fuer u.
         a = local(t) - t
@@ -2021,28 +2021,28 @@ klasse datetime(date):
             u2 = u1 + (-max_fold_seconds, max_fold_seconds)[self.fold]
             b = local(u2) - u2
             wenn a == b:
-                return u1
+                gib u1
         sonst:
             b = t1 - u1
             assert a != b
         u2 = t - b
         t2 = local(u2)
         wenn t2 == t:
-            return u2
+            gib u2
         wenn t1 == t:
-            return u1
+            gib u1
         # We have found both offsets a und b, but neither t - a nor t - b is
         # a solution.  This means t is in the gap.
-        return (max, min)[self.fold](u1, u2)
+        gib (max, min)[self.fold](u1, u2)
 
 
     def timestamp(self):
         "Return POSIX timestamp als float"
         wenn self._tzinfo is Nichts:
             s = self._mktime()
-            return s + self.microsecond / 1e6
+            gib s + self.microsecond / 1e6
         sonst:
-            return (self - _EPOCH).total_seconds()
+            gib (self - _EPOCH).total_seconds()
 
     def utctimetuple(self):
         "Return UTC time tuple compatible mit time.gmtime()."
@@ -2051,19 +2051,19 @@ klasse datetime(date):
             self -= offset
         y, m, d = self.year, self.month, self.day
         hh, mm, ss = self.hour, self.minute, self.second
-        return _build_struct_time(y, m, d, hh, mm, ss, 0)
+        gib _build_struct_time(y, m, d, hh, mm, ss, 0)
 
     def date(self):
         "Return the date part."
-        return date(self._year, self._month, self._day)
+        gib date(self._year, self._month, self._day)
 
     def time(self):
         "Return the time part, mit tzinfo Nichts."
-        return time(self.hour, self.minute, self.second, self.microsecond, fold=self.fold)
+        gib time(self.hour, self.minute, self.second, self.microsecond, fold=self.fold)
 
     def timetz(self):
         "Return the time part, mit same tzinfo."
-        return time(self.hour, self.minute, self.second, self.microsecond,
+        gib time(self.hour, self.minute, self.second, self.microsecond,
                     self._tzinfo, fold=self.fold)
 
     def replace(self, year=Nichts, month=Nichts, day=Nichts, hour=Nichts,
@@ -2088,7 +2088,7 @@ klasse datetime(date):
             tzinfo = self.tzinfo
         wenn fold is Nichts:
             fold = self.fold
-        return type(self)(year, month, day, hour, minute, second,
+        gib type(self)(year, month, day, hour, minute, second,
                           microsecond, tzinfo, fold=fold)
 
     __replace__ = replace
@@ -2107,7 +2107,7 @@ klasse datetime(date):
         # Extract TZ data
         gmtoff = localtm.tm_gmtoff
         zone = localtm.tm_zone
-        return timezone(timedelta(seconds=gmtoff), zone)
+        gib timezone(timedelta(seconds=gmtoff), zone)
 
     def astimezone(self, tz=Nichts):
         wenn tz is Nichts:
@@ -2126,20 +2126,20 @@ klasse datetime(date):
                 myoffset = mytz.utcoffset(self)
 
         wenn tz is mytz:
-            return self
+            gib self
 
         # Convert self to UTC, und attach the new time zone object.
         utc = (self - myoffset).replace(tzinfo=tz)
 
         # Convert von UTC to tz's local time.
-        return tz.fromutc(utc)
+        gib tz.fromutc(utc)
 
     # Ways to produce a string.
 
     def ctime(self):
         "Return ctime() style string."
         weekday = self.toordinal() % 7 oder 7
-        return "%s %s %2d %02d:%02d:%02d %04d" % (
+        gib "%s %s %2d %02d:%02d:%02d %04d" % (
             _DAYNAMES[weekday],
             _MONTHNAMES[self._month],
             self._day,
@@ -2171,7 +2171,7 @@ klasse datetime(date):
         wenn tz:
             s += tz
 
-        return s
+        gib s
 
     def __repr__(self):
         """Convert to formal string, fuer repr()."""
@@ -2190,26 +2190,26 @@ klasse datetime(date):
         wenn self._fold:
             assert s[-1:] == ")"
             s = s[:-1] + ", fold=1)"
-        return s
+        gib s
 
     def __str__(self):
         "Convert to string, fuer str()."
-        return self.isoformat(sep=' ')
+        gib self.isoformat(sep=' ')
 
     @classmethod
     def strptime(cls, date_string, format):
         """Parse string according to the given date und time format (like time.strptime())."""
         importiere _strptime
-        return _strptime._strptime_datetime_datetime(cls, date_string, format)
+        gib _strptime._strptime_datetime_datetime(cls, date_string, format)
 
     def utcoffset(self):
         """Return the timezone offset als timedelta positive east of UTC (negative west of
         UTC)."""
         wenn self._tzinfo is Nichts:
-            return Nichts
+            gib Nichts
         offset = self._tzinfo.utcoffset(self)
         _check_utc_offset("utcoffset", offset)
-        return offset
+        gib offset
 
     def tzname(self):
         """Return the timezone name.
@@ -2219,10 +2219,10 @@ klasse datetime(date):
         "-5:00", "EDT", "US/Eastern", "America/New York" are all valid replies.
         """
         wenn self._tzinfo is Nichts:
-            return Nichts
+            gib Nichts
         name = self._tzinfo.tzname(self)
         _check_tzname(name)
-        return name
+        gib name
 
     def dst(self):
         """Return 0 wenn DST is nicht in effect, oder the DST offset (as timedelta
@@ -2234,42 +2234,42 @@ klasse datetime(date):
         info.
         """
         wenn self._tzinfo is Nichts:
-            return Nichts
+            gib Nichts
         offset = self._tzinfo.dst(self)
         _check_utc_offset("dst", offset)
-        return offset
+        gib offset
 
     # Comparisons of datetime objects mit other.
 
     def __eq__(self, other):
         wenn isinstance(other, datetime):
-            return self._cmp(other, allow_mixed=Wahr) == 0
+            gib self._cmp(other, allow_mixed=Wahr) == 0
         sonst:
-            return NotImplemented
+            gib NotImplemented
 
     def __le__(self, other):
         wenn isinstance(other, datetime):
-            return self._cmp(other) <= 0
+            gib self._cmp(other) <= 0
         sonst:
-            return NotImplemented
+            gib NotImplemented
 
     def __lt__(self, other):
         wenn isinstance(other, datetime):
-            return self._cmp(other) < 0
+            gib self._cmp(other) < 0
         sonst:
-            return NotImplemented
+            gib NotImplemented
 
     def __ge__(self, other):
         wenn isinstance(other, datetime):
-            return self._cmp(other) >= 0
+            gib self._cmp(other) >= 0
         sonst:
-            return NotImplemented
+            gib NotImplemented
 
     def __gt__(self, other):
         wenn isinstance(other, datetime):
-            return self._cmp(other) > 0
+            gib self._cmp(other) > 0
         sonst:
-            return NotImplemented
+            gib NotImplemented
 
     def _cmp(self, other, allow_mixed=Falsch):
         assert isinstance(other, datetime)
@@ -2285,13 +2285,13 @@ klasse datetime(date):
             # Assume that allow_mixed means that we are called von __eq__
             wenn allow_mixed:
                 wenn myoff != self.replace(fold=nicht self.fold).utcoffset():
-                    return 2
+                    gib 2
                 wenn otoff != other.replace(fold=nicht other.fold).utcoffset():
-                    return 2
+                    gib 2
             base_compare = myoff == otoff
 
         wenn base_compare:
-            return _cmp((self._year, self._month, self._day,
+            gib _cmp((self._year, self._month, self._day,
                          self._hour, self._minute, self._second,
                          self._microsecond),
                         (other._year, other._month, other._day,
@@ -2299,19 +2299,19 @@ klasse datetime(date):
                          other._microsecond))
         wenn myoff is Nichts oder otoff is Nichts:
             wenn allow_mixed:
-                return 2 # arbitrary non-zero value
+                gib 2 # arbitrary non-zero value
             sonst:
                 raise TypeError("cannot compare naive und aware datetimes")
         # XXX What follows could be done more efficiently...
         diff = self - other     # this will take offsets into account
         wenn diff.days < 0:
-            return -1
-        return diff und 1 oder 0
+            gib -1
+        gib diff und 1 oder 0
 
     def __add__(self, other):
         "Add a datetime und a timedelta."
         wenn nicht isinstance(other, timedelta):
-            return NotImplemented
+            gib NotImplemented
         delta = timedelta(self.toordinal(),
                           hours=self._hour,
                           minutes=self._minute,
@@ -2321,7 +2321,7 @@ klasse datetime(date):
         hour, rem = divmod(delta.seconds, 3600)
         minute, second = divmod(rem, 60)
         wenn 0 < delta.days <= _MAXORDINAL:
-            return type(self).combine(date.fromordinal(delta.days),
+            gib type(self).combine(date.fromordinal(delta.days),
                                       time(hour, minute, second,
                                            delta.microseconds,
                                            tzinfo=self._tzinfo))
@@ -2333,8 +2333,8 @@ klasse datetime(date):
         "Subtract two datetimes, oder a datetime und a timedelta."
         wenn nicht isinstance(other, datetime):
             wenn isinstance(other, timedelta):
-                return self + -other
-            return NotImplemented
+                gib self + -other
+            gib NotImplemented
 
         days1 = self.toordinal()
         days2 = other.toordinal()
@@ -2344,14 +2344,14 @@ klasse datetime(date):
                          secs1 - secs2,
                          self._microsecond - other._microsecond)
         wenn self._tzinfo is other._tzinfo:
-            return base
+            gib base
         myoff = self.utcoffset()
         otoff = other.utcoffset()
         wenn myoff == otoff:
-            return base
+            gib base
         wenn myoff is Nichts oder otoff is Nichts:
             raise TypeError("cannot mix naive und timezone-aware time")
-        return base + otoff - myoff
+        gib base + otoff - myoff
 
     def __hash__(self):
         wenn self._hashcode == -1:
@@ -2366,7 +2366,7 @@ klasse datetime(date):
                 days = _ymd2ord(self.year, self.month, self.day)
                 seconds = self.hour * 3600 + self.minute * 60 + self.second
                 self._hashcode = hash(timedelta(days, seconds, self.microsecond) - tzoff)
-        return self._hashcode
+        gib self._hashcode
 
     # Pickle support.
 
@@ -2381,9 +2381,9 @@ klasse datetime(date):
                            self._hour, self._minute, self._second,
                            us1, us2, us3])
         wenn self._tzinfo is Nichts:
-            return (basestate,)
+            gib (basestate,)
         sonst:
-            return (basestate, self._tzinfo)
+            gib (basestate, self._tzinfo)
 
     def __setstate(self, string, tzinfo):
         wenn tzinfo is nicht Nichts und nicht isinstance(tzinfo, _tzinfo_class):
@@ -2401,10 +2401,10 @@ klasse datetime(date):
         self._tzinfo = tzinfo
 
     def __reduce_ex__(self, protocol):
-        return (self.__class__, self._getstate(protocol))
+        gib (self.__class__, self._getstate(protocol))
 
     def __reduce__(self):
-        return self.__reduce_ex__(2)
+        gib self.__reduce_ex__(2)
 
 
 datetime.min = datetime(1, 1, 1)
@@ -2420,7 +2420,7 @@ def _isoweek1monday(year):
     week1monday = firstday - firstweekday
     wenn firstweekday > THURSDAY:
         week1monday += 7
-    return week1monday
+    gib week1monday
 
 
 klasse timezone(tzinfo):
@@ -2435,7 +2435,7 @@ klasse timezone(tzinfo):
             raise TypeError("offset must be a timedelta")
         wenn name is cls._Omitted:
             wenn nicht offset:
-                return cls.utc
+                gib cls.utc
             name = Nichts
         sowenn nicht isinstance(name, str):
             raise TypeError("name must be a string")
@@ -2443,7 +2443,7 @@ klasse timezone(tzinfo):
             raise ValueError("offset must be a timedelta "
                              "strictly between -timedelta(hours=24) und "
                              f"timedelta(hours=24), nicht {offset!r}")
-        return cls._create(offset, name)
+        gib cls._create(offset, name)
 
     def __init_subclass__(cls):
         raise TypeError("type 'datetime.timezone' is nicht an acceptable base type")
@@ -2453,21 +2453,21 @@ klasse timezone(tzinfo):
         self = tzinfo.__new__(cls)
         self._offset = offset
         self._name = name
-        return self
+        gib self
 
     def __getinitargs__(self):
         """pickle support"""
         wenn self._name is Nichts:
-            return (self._offset,)
-        return (self._offset, self._name)
+            gib (self._offset,)
+        gib (self._offset, self._name)
 
     def __eq__(self, other):
         wenn isinstance(other, timezone):
-            return self._offset == other._offset
-        return NotImplemented
+            gib self._offset == other._offset
+        gib NotImplemented
 
     def __hash__(self):
-        return hash(self._offset)
+        gib hash(self._offset)
 
     def __repr__(self):
         """Convert to formal string, fuer repr().
@@ -2480,35 +2480,35 @@ klasse timezone(tzinfo):
         "datetime.timezone(datetime.timedelta(-1, 68400), 'EST')"
         """
         wenn self is self.utc:
-            return 'datetime.timezone.utc'
+            gib 'datetime.timezone.utc'
         wenn self._name is Nichts:
-            return "%s%s(%r)" % (_get_class_module(self),
+            gib "%s%s(%r)" % (_get_class_module(self),
                                  self.__class__.__qualname__,
                                  self._offset)
-        return "%s%s(%r, %r)" % (_get_class_module(self),
+        gib "%s%s(%r, %r)" % (_get_class_module(self),
                                  self.__class__.__qualname__,
                                  self._offset, self._name)
 
     def __str__(self):
-        return self.tzname(Nichts)
+        gib self.tzname(Nichts)
 
     def utcoffset(self, dt):
         wenn isinstance(dt, datetime) oder dt is Nichts:
-            return self._offset
+            gib self._offset
         raise TypeError("utcoffset() argument must be a datetime instance"
                         " oder Nichts")
 
     def tzname(self, dt):
         wenn isinstance(dt, datetime) oder dt is Nichts:
             wenn self._name is Nichts:
-                return self._name_from_offset(self._offset)
-            return self._name
+                gib self._name_from_offset(self._offset)
+            gib self._name
         raise TypeError("tzname() argument must be a datetime instance"
                         " oder Nichts")
 
     def dst(self, dt):
         wenn isinstance(dt, datetime) oder dt is Nichts:
-            return Nichts
+            gib Nichts
         raise TypeError("dst() argument must be a datetime instance"
                         " oder Nichts")
 
@@ -2517,7 +2517,7 @@ klasse timezone(tzinfo):
             wenn dt.tzinfo is nicht self:
                 raise ValueError("fromutc: dt.tzinfo "
                                  "is nicht self")
-            return dt + self._offset
+            gib dt + self._offset
         raise TypeError("fromutc() argument must be a datetime instance"
                         " oder Nichts")
 
@@ -2527,7 +2527,7 @@ klasse timezone(tzinfo):
     @staticmethod
     def _name_from_offset(delta):
         wenn nicht delta:
-            return 'UTC'
+            gib 'UTC'
         wenn delta < timedelta(0):
             sign = '-'
             delta = -delta
@@ -2538,11 +2538,11 @@ klasse timezone(tzinfo):
         seconds = rest.seconds
         microseconds = rest.microseconds
         wenn microseconds:
-            return (f'UTC{sign}{hours:02d}:{minutes:02d}:{seconds:02d}'
+            gib (f'UTC{sign}{hours:02d}:{minutes:02d}:{seconds:02d}'
                     f'.{microseconds:06d}')
         wenn seconds:
-            return f'UTC{sign}{hours:02d}:{minutes:02d}:{seconds:02d}'
-        return f'UTC{sign}{hours:02d}:{minutes:02d}'
+            gib f'UTC{sign}{hours:02d}:{minutes:02d}:{seconds:02d}'
+        gib f'UTC{sign}{hours:02d}:{minutes:02d}'
 
 UTC = timezone.utc = timezone._create(timedelta(0))
 
@@ -2556,9 +2556,9 @@ _EPOCH = datetime(1970, 1, 1, tzinfo=timezone.utc)
 # Some time zone algebra.  For a datetime x, let
 #     x.n = x stripped of its timezone -- its naive time.
 #     x.o = x.utcoffset(), und assuming that doesn't raise an exception oder
-#           return Nichts
+#           gib Nichts
 #     x.d = x.dst(), und assuming that doesn't raise an exception oder
-#           return Nichts
+#           gib Nichts
 #     x.s = x's standard offset, x.o - x.d
 #
 # Now some derived rules, where k is a duration (timedelta).
@@ -2580,10 +2580,10 @@ _EPOCH = datetime(1970, 1, 1, tzinfo=timezone.utc)
 #    Again follows von how arithmetic is defined.
 #
 # Now we can explain tz.fromutc(x).  Let's assume it's an interesting case
-# (meaning that the various tzinfo methods exist, und don't blow up oder return
+# (meaning that the various tzinfo methods exist, und don't blow up oder gib
 # Nichts when called).
 #
-# The function wants to return a datetime y mit timezone tz, equivalent to x.
+# The function wants to gib a datetime y mit timezone tz, equivalent to x.
 # x is already in UTC.
 #
 # By #3, we want
@@ -2610,7 +2610,7 @@ _EPOCH = datetime(1970, 1, 1, tzinfo=timezone.utc)
 #
 # On the RHS, (y+k).d can't be computed directly, but y.s can be, und we
 # approximate k by ignoring the (y+k).d term at first.  Note that k can't be
-# very large, since all offset-returning methods return a duration of magnitude
+# very large, since all offset-returning methods gib a duration of magnitude
 # less than 24 hours.  For that reason, wenn y is firmly in std time, (y+k).d must
 # be 0, so ignoring it has no consequence then.
 #
@@ -2630,7 +2630,7 @@ _EPOCH = datetime(1970, 1, 1, tzinfo=timezone.utc)
 # time jumps von 1:59 to 3:00, und wall hours of the form 2:MM don't make good
 # sense then.  The docs ask that an Eastern tzinfo klasse consider such a time to
 # be EDT (because it's "after 2"), which is a redundant spelling of 1:MM EST
-# on the day DST starts.  We want to return the 1:MM EST spelling because that's
+# on the day DST starts.  We want to gib the 1:MM EST spelling because that's
 # the only spelling that makes sense on the local wall clock.
 #
 # In fact, wenn [5] holds at this point, we do have the standard-time spelling,
@@ -2690,7 +2690,7 @@ _EPOCH = datetime(1970, 1, 1, tzinfo=timezone.utc)
 #
 # So z' is UTC-equivalent to x iff z'.d = z.d at this point.  If they are equal,
 # we've found the UTC-equivalent so are done.  In fact, we stop mit [7] und
-# return z', nicht bothering to compute z'.d.
+# gib z', nicht bothering to compute z'.d.
 #
 # How could z.d und z'd differ?  z' = z + z.d [7], so merely moving z' by
 # a dst() offset, und starting *from* a time already in DST (we know z.d != 0),
@@ -2716,7 +2716,7 @@ _EPOCH = datetime(1970, 1, 1, tzinfo=timezone.utc)
 # Because we know z.d said z was in daylight time (else [5] would have held und
 # we would have stopped then), und we know z.d != z'.d (else [8] would have held
 # und we have stopped then), und there are only 2 possible values dst() can
-# return in Eastern, it follows that z'.d must be 0 (which it is in the example,
+# gib in Eastern, it follows that z'.d must be 0 (which it is in the example,
 # but the reasoning doesn't depend on the example -- it depends on there being
 # two possible dst() outcomes, one zero und the other non-zero).  Therefore
 # z' must be in standard time, und is the spelling we want in this case.

@@ -82,7 +82,7 @@ klasse TestCursesCompatibility(unittest.TestCase):
                 cap_name = line.split("=")[0]
                 all_caps.append(cap_name)
 
-        return all_caps
+        gib all_caps
 
     def test_setupterm_basic(self):
         """Test basic setupterm functionality."""
@@ -578,7 +578,7 @@ klasse TestCursesCompatibility(unittest.TestCase):
 
                         pyrepl_val = ti.get(cap)
 
-                        # Both should return the same value
+                        # Both should gib the same value
                         self.assertEqual(
                             pyrepl_val,
                             ncurses_val,

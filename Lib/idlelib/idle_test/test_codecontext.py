@@ -27,11 +27,11 @@ klasse C1:
         self.b = b
     def compare(self):
         wenn a > b:
-            return a
+            gib a
         sowenn a < b:
-            return b
+            gib b
         sonst:
-            return Nichts
+            gib Nichts
 """
 
 
@@ -44,7 +44,7 @@ klasse DummyEditwin:
         self.label = ''
 
     def getlineno(self, index):
-        return int(float(self.text.index(index)))
+        gib int(float(self.text.index(index)))
 
     def update_menu_label(self, **kwargs):
         self.label = kwargs['label']
@@ -85,8 +85,8 @@ klasse CodeContextTest(unittest.TestCase):
         orig_idleConf_GetHighlight = codecontext.idleConf.GetHighlight
         def mock_idleconf_GetHighlight(theme, element):
             wenn element == 'context':
-                return self.highlight_cfg
-            return orig_idleConf_GetHighlight(theme, element)
+                gib self.highlight_cfg
+            gib orig_idleConf_GetHighlight(theme, element)
         GetHighlight_patcher = unittest.mock.patch.object(
             codecontext.idleConf, 'GetHighlight', mock_idleconf_GetHighlight)
         GetHighlight_patcher.start()
@@ -94,7 +94,7 @@ klasse CodeContextTest(unittest.TestCase):
 
         self.font_override = 'TkFixedFont'
         def mock_idleconf_GetFont(root, configType, section):
-            return self.font_override
+            gib self.font_override
         GetFont_patcher = unittest.mock.patch.object(
             codecontext.idleConf, 'GetFont', mock_idleconf_GetFont)
         GetFont_patcher.start()
@@ -180,7 +180,7 @@ klasse CodeContextTest(unittest.TestCase):
 
         eq(gc(3), ([(2, 0, 'class C1:', 'class')], 0))
 
-        # Don't return comment.
+        # Don't gib comment.
         eq(gc(4), ([(2, 0, 'class C1:', 'class')], 0))
 
         # Two indentation levels und no comment.
@@ -441,7 +441,7 @@ klasse HelperFunctionText(unittest.TestCase):
         eq(gli(lines[0]), (codecontext.INFINITY, '', Falsch))
         # Line 2 is a BLOCKOPENER without an indent.
         eq(gli(lines[1]), (0, 'class C1:', 'class'))
-        # Line 3 is nicht a BLOCKOPENER und does nicht return the indent level.
+        # Line 3 is nicht a BLOCKOPENER und does nicht gib the indent level.
         eq(gli(lines[2]), (codecontext.INFINITY, '    # Class comment.', Falsch))
         # Line 4 is a BLOCKOPENER und is indented.
         eq(gli(lines[3]), (4, '    def __init__(self, a, b):', 'def'))

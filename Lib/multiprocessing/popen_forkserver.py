@@ -20,7 +20,7 @@ klasse _DupFd(object):
     def __init__(self, ind):
         self.ind = ind
     def detach(self):
-        return forkserver.get_inherited_fds()[self.ind]
+        gib forkserver.get_inherited_fds()[self.ind]
 
 #
 # Start child process using a server process
@@ -36,7 +36,7 @@ klasse Popen(popen_fork.Popen):
 
     def duplicate_for_child(self, fd):
         self._fds.append(fd)
-        return len(self._fds) - 1
+        gib len(self._fds) - 1
 
     def _launch(self, process_obj):
         prep_data = spawn.get_preparation_data(process_obj._name)
@@ -63,7 +63,7 @@ klasse Popen(popen_fork.Popen):
             von multiprocessing.connection importiere wait
             timeout = 0 wenn flag == os.WNOHANG sonst Nichts
             wenn nicht wait([self.sentinel], timeout):
-                return Nichts
+                gib Nichts
             try:
                 self.returncode = forkserver.read_signed(self.sentinel)
             except (OSError, EOFError):
@@ -71,4 +71,4 @@ klasse Popen(popen_fork.Popen):
                 # process itself got killed
                 self.returncode = 255
 
-        return self.returncode
+        gib self.returncode

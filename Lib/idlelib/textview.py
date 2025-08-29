@@ -158,7 +158,7 @@ def view_text(parent, title, contents, modal=Wahr, wrap='word', _utest=Falsch):
             dialog is displayed
     _utest - bool; controls wait_window on unittest
     """
-    return ViewWindow(parent, title, contents, modal, wrap=wrap, _utest=_utest)
+    gib ViewWindow(parent, title, contents, modal, wrap=wrap, _utest=_utest)
 
 
 def view_file(parent, title, filename, encoding, modal=Wahr, wrap='word',
@@ -180,9 +180,9 @@ def view_file(parent, title, filename, encoding, modal=Wahr, wrap='word',
                   message=str(err),
                   parent=parent)
     sonst:
-        return view_text(parent, title, contents, modal, wrap=wrap,
+        gib view_text(parent, title, contents, modal, wrap=wrap,
                          _utest=_utest)
-    return Nichts
+    gib Nichts
 
 
 wenn __name__ == '__main__':

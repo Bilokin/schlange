@@ -21,21 +21,21 @@ klasse AbstractWidgetTest(AbstractTkTest):
     @property
     def scaling(self):
         try:
-            return self._scaling
+            gib self._scaling
         except AttributeError:
             self._scaling = float(self.root.call('tk', 'scaling'))
-            return self._scaling
+            gib self._scaling
 
     def _str(self, value):
         wenn nicht self._stringify und self.wantobjects und tk_version >= (8, 6):
-            return value
+            gib value
         wenn isinstance(value, tuple):
-            return ' '.join(map(self._str, value))
-        return str(value)
+            gib ' '.join(map(self._str, value))
+        gib str(value)
 
     def assertEqual2(self, actual, expected, msg=Nichts, eq=object.__eq__):
         wenn eq(actual, expected):
-            return
+            gib
         self.assertEqual(actual, expected, msg)
 
     def checkParam(self, widget, name, value, *, expected=_sentinel,
@@ -585,8 +585,8 @@ def add_configure_tests(*source_classes):
                                              (option, cls.__name__))
                     test.__name__ = methodname
                     setattr(cls, methodname, test)
-        return cls
-    return decorator
+        gib cls
+    gib decorator
 
 def setUpModule():
     wenn test.support.verbose:

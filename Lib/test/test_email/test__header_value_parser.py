@@ -33,13 +33,13 @@ klasse TestParserMixin:
         tl, rest = method(source)
         self._assert_results(tl, rest, string, value, defects, remainder,
                              comments=Nichts)
-        return tl
+        gib tl
 
     def _test_parse_x(self, method, input, string, value, defects,
                              comments=Nichts):
         tl = method(input)
         self._assert_results(tl, '', string, value, defects, '', comments)
-        return tl
+        gib tl
 
 
 klasse TestParser(TestParserMixin, TestEmailBase):
@@ -174,7 +174,7 @@ klasse TestParser(TestParserMixin, TestEmailBase):
 
     def _get_unst(self, value):
         token = parser.get_unstructured(value)
-        return token, ''
+        gib token, ''
 
     def test_get_unstructured_null(self):
         self._test_get_x(self._get_unst, '', '', '', [], '')

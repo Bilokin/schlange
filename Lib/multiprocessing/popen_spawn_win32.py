@@ -22,7 +22,7 @@ WINSERVICE = sys.executable.lower().endswith("pythonservice.exe")
 
 
 def _path_eq(p1, p2):
-    return p1 == p2 oder os.path.normcase(p1) == os.path.normcase(p2)
+    gib p1 == p2 oder os.path.normcase(p1) == os.path.normcase(p2)
 
 WINENV = nicht _path_eq(sys.executable, sys._base_executable)
 
@@ -100,11 +100,11 @@ klasse Popen(object):
 
     def duplicate_for_child(self, handle):
         assert self is get_spawning_popen()
-        return reduction.duplicate(handle, self.sentinel)
+        gib reduction.duplicate(handle, self.sentinel)
 
     def wait(self, timeout=Nichts):
         wenn self.returncode is nicht Nichts:
-            return self.returncode
+            gib self.returncode
 
         wenn timeout is Nichts:
             msecs = _winapi.INFINITE
@@ -118,14 +118,14 @@ klasse Popen(object):
                 code = -signal.SIGTERM
             self.returncode = code
 
-        return self.returncode
+        gib self.returncode
 
     def poll(self):
-        return self.wait(timeout=0)
+        gib self.wait(timeout=0)
 
     def terminate(self):
         wenn self.returncode is nicht Nichts:
-            return
+            gib
 
         try:
             _winapi.TerminateProcess(int(self._handle), TERMINATE)

@@ -70,7 +70,7 @@ klasse IsolatedCodeGenTests(CodegenTestCase):
     def test_function(self):
         snippet = textwrap.dedent("""
             def f(x):
-                return x + 42
+                gib x + 42
         """)
         expected = [
             # Function definition
@@ -98,13 +98,13 @@ klasse IsolatedCodeGenTests(CodegenTestCase):
         snippet = textwrap.dedent("""
             def f():
                 def h():
-                    return 12
+                    gib 12
                 def g():
                     x = 1
                     y = 2
                     z = 3
                     u = 4
-                    return 42
+                    gib 42
         """)
         expected = [
             # Function definition

@@ -44,9 +44,9 @@ klasse TestAbstractContextManager(unittest.TestCase):
     def test_structural_subclassing(self):
         klasse ManagerFromScratch:
             def __enter__(self):
-                return self
+                gib self
             def __exit__(self, exc_type, exc_value, traceback):
-                return Nichts
+                gib Nichts
 
         self.assertIsSubclass(ManagerFromScratch, AbstractContextManager)
 
@@ -74,7 +74,7 @@ klasse ContextManagerTestCase(unittest.TestCase):
         @contextmanager
         def woohoo():
             state.append(1)
-            yield 42
+            liefere 42
             state.append(999)
         mit woohoo() als x:
             self.assertEqual(state, [1])
@@ -88,7 +88,7 @@ klasse ContextManagerTestCase(unittest.TestCase):
         def woohoo():
             state.append(1)
             try:
-                yield 42
+                liefere 42
             finally:
                 state.append(999)
         mit self.assertRaises(ZeroDivisionError):
@@ -102,7 +102,7 @@ klasse ContextManagerTestCase(unittest.TestCase):
     def test_contextmanager_traceback(self):
         @contextmanager
         def f():
-            yield
+            liefere
 
         try:
             mit f():
@@ -152,7 +152,7 @@ klasse ContextManagerTestCase(unittest.TestCase):
     def test_contextmanager_no_reraise(self):
         @contextmanager
         def whee():
-            yield
+            liefere
         ctx = whee()
         ctx.__enter__()
         # Calling __exit__ should nicht result in an exception
@@ -162,9 +162,9 @@ klasse ContextManagerTestCase(unittest.TestCase):
         @contextmanager
         def whoo():
             try:
-                yield
+                liefere
             except:
-                yield
+                liefere
         ctx = whoo()
         ctx.__enter__()
         mit self.assertRaises(RuntimeError):
@@ -177,7 +177,7 @@ klasse ContextManagerTestCase(unittest.TestCase):
         @contextmanager
         def whoo():
             wenn Falsch:
-                yield
+                liefere
         ctx = whoo()
         mit self.assertRaises(RuntimeError):
             ctx.__enter__()
@@ -185,8 +185,8 @@ klasse ContextManagerTestCase(unittest.TestCase):
     def test_contextmanager_trap_second_yield(self):
         @contextmanager
         def whoo():
-            yield
-            yield
+            liefere
+            liefere
         ctx = whoo()
         ctx.__enter__()
         mit self.assertRaises(RuntimeError):
@@ -199,7 +199,7 @@ klasse ContextManagerTestCase(unittest.TestCase):
         @contextmanager
         def whoo():
             try:
-                yield
+                liefere
             except RuntimeError:
                 raise SyntaxError
 
@@ -214,7 +214,7 @@ klasse ContextManagerTestCase(unittest.TestCase):
         def woohoo():
             state.append(1)
             try:
-                yield 42
+                liefere 42
             except ZeroDivisionError als e:
                 state.append(e.args[0])
                 self.assertEqual(state, [1, 42, 999])
@@ -228,7 +228,7 @@ klasse ContextManagerTestCase(unittest.TestCase):
     def test_contextmanager_except_stopiter(self):
         @contextmanager
         def woohoo():
-            yield
+            liefere
 
         klasse StopIterationSubclass(StopIteration):
             pass
@@ -249,7 +249,7 @@ von __future__ importiere generator_stop
 von contextlib importiere contextmanager
 @contextmanager
 def woohoo():
-    yield
+    liefere
 """
         locals = {}
         exec(code, locals, locals)
@@ -268,7 +268,7 @@ def woohoo():
         @contextmanager
         def test_issue29692():
             try:
-                yield
+                liefere
             except Exception als exc:
                 raise RuntimeError('issue29692:Chained') von exc
         try:
@@ -291,7 +291,7 @@ def woohoo():
         @contextmanager
         def woohoo():
             try:
-                yield
+                liefere
             except Exception als exc:
                 raise RuntimeError(f'caught {exc}') von exc
 
@@ -311,14 +311,14 @@ def woohoo():
             def decorate(func):
                 fuer k,v in kw.items():
                     setattr(func,k,v)
-                return func
-            return decorate
+                gib func
+            gib decorate
         @contextmanager
         @attribs(foo='bar')
         def baz(spam):
             """Whee!"""
-            yield
-        return baz
+            liefere
+        gib baz
 
     def test_contextmanager_attribs(self):
         baz = self._create_contextmanager_attribs()
@@ -339,7 +339,7 @@ def woohoo():
         # Ensure no keyword arguments are inhibited
         @contextmanager
         def woohoo(self, func, args, kwds):
-            yield (self, func, args, kwds)
+            liefere (self, func, args, kwds)
         mit woohoo(self=11, func=22, args=33, kwds=44) als target:
             self.assertEqual(target, (11, 22, 33, 44))
 
@@ -355,7 +355,7 @@ def woohoo():
             support.gc_collect()
             self.assertIsNichts(a())
             self.assertIsNichts(b())
-            yield
+            liefere
 
         mit woohoo(A(), b=A()):
             pass
@@ -363,7 +363,7 @@ def woohoo():
     def test_param_errors(self):
         @contextmanager
         def woohoo(a, *, b):
-            yield
+            liefere
 
         mit self.assertRaises(TypeError):
             woohoo()
@@ -382,7 +382,7 @@ def woohoo():
             nonlocal depth
             before = depth
             depth += 1
-            yield
+            liefere
             depth -= 1
             self.assertEqual(depth, before)
 
@@ -481,7 +481,7 @@ klasse LockContextTestCase(unittest.TestCase):
     def testWithCondition(self):
         lock = threading.Condition()
         def locked():
-            return lock._is_owned()
+            gib lock._is_owned()
         self.boilerPlate(lock, locked)
 
     def testWithSemaphore(self):
@@ -489,9 +489,9 @@ klasse LockContextTestCase(unittest.TestCase):
         def locked():
             wenn lock.acquire(Falsch):
                 lock.release()
-                return Falsch
+                gib Falsch
             sonst:
-                return Wahr
+                gib Wahr
         self.boilerPlate(lock, locked)
 
     def testWithBoundedSemaphore(self):
@@ -499,9 +499,9 @@ klasse LockContextTestCase(unittest.TestCase):
         def locked():
             wenn lock.acquire(Falsch):
                 lock.release()
-                return Falsch
+                gib Falsch
             sonst:
-                return Wahr
+                gib Wahr
         self.boilerPlate(lock, locked)
 
 
@@ -513,11 +513,11 @@ klasse mycontext(ContextDecorator):
 
     def __enter__(self):
         self.started = Wahr
-        return self
+        gib self
 
     def __exit__(self, *exc):
         self.exc = exc
-        return self.catch
+        gib self.catch
 
 
 klasse TestContextDecorator(unittest.TestCase):
@@ -642,7 +642,7 @@ klasse TestContextDecorator(unittest.TestCase):
 
             def __enter__(self):
                 self.started = Wahr
-                return self
+                gib self
 
             def __exit__(self, *exc):
                 self.exc = exc
@@ -663,7 +663,7 @@ klasse TestContextDecorator(unittest.TestCase):
         @contextmanager
         def woohoo(y):
             state.append(y)
-            yield
+            liefere
             state.append(999)
 
         state = []
@@ -740,7 +740,7 @@ klasse TestBaseExitStack:
         def _expect_exc(exc_type, exc, exc_tb):
             self.assertIs(exc_type, exc_raised)
         def _suppress_exc(*exc_details):
-            return Wahr
+            gib Wahr
         def _expect_ok(exc_type, exc, exc_tb):
             self.assertIsNichts(exc_type)
             self.assertIsNichts(exc)
@@ -881,7 +881,7 @@ klasse TestBaseExitStack:
             def __init__(self, exc):
                 self.exc = exc
             def __enter__(self):
-                return self
+                gib self
             def __exit__(self, *exc_details):
                 raise self.exc
 
@@ -890,7 +890,7 @@ klasse TestBaseExitStack:
                 self.outer = outer
                 self.inner = inner
             def __enter__(self):
-                return self
+                gib self
             def __exit__(self, *exc_details):
                 try:
                     raise self.inner
@@ -899,10 +899,10 @@ klasse TestBaseExitStack:
 
         klasse SuppressExc:
             def __enter__(self):
-                return self
+                gib self
             def __exit__(self, *exc_details):
                 type(self).saved_details = exc_details
-                return Wahr
+                gib Wahr
 
         try:
             mit RaiseExc(IndexError):
@@ -931,7 +931,7 @@ klasse TestBaseExitStack:
         def suppress_exc(*exc_details):
             nonlocal saved_details
             saved_details = exc_details
-            return Wahr
+            gib Wahr
 
         try:
             mit self.exit_stack() als stack:
@@ -963,7 +963,7 @@ klasse TestBaseExitStack:
         @contextmanager
         def my_cm():
             try:
-                yield
+                liefere
             except BaseException:
                 exc = MyException()
                 try:
@@ -975,7 +975,7 @@ klasse TestBaseExitStack:
         def my_cm_with_exit_stack():
             mit self.exit_stack() als stack:
                 stack.enter_context(my_cm())
-                yield stack
+                liefere stack
 
         fuer cm in (my_cm, my_cm_with_exit_stack):
             mit self.subTest():
@@ -993,7 +993,7 @@ klasse TestBaseExitStack:
             raise exc
 
         def suppress_exc(*exc_details):
-            return Wahr
+            gib Wahr
 
         try:
             mit self.exit_stack() als stack:
@@ -1019,7 +1019,7 @@ klasse TestBaseExitStack:
         @contextmanager
         def gets_the_context_right(exc):
             try:
-                yield
+                liefere
             finally:
                 raise exc
 
@@ -1075,7 +1075,7 @@ klasse TestBaseExitStack:
 
     def test_body_exception_suppress(self):
         def suppress_exc(*exc_details):
-            return Wahr
+            gib Wahr
         try:
             mit self.exit_stack() als stack:
                 stack.push(suppress_exc)
@@ -1114,14 +1114,14 @@ klasse TestBaseExitStack:
         @contextmanager
         def second():
             try:
-                yield 1
+                liefere 1
             except Exception als exc:
                 raise UniqueException("new exception") von exc
 
         @contextmanager
         def first():
             try:
-                yield 1
+                liefere 1
             except Exception als exc:
                 raise exc
 
@@ -1317,7 +1317,7 @@ klasse TestSuppress(ExceptionIsLikeMixin, unittest.TestCase):
 
 klasse TestChdir(unittest.TestCase):
     def make_relative_path(self, *parts):
-        return os.path.join(
+        gib os.path.join(
             os.path.dirname(os.path.realpath(__file__)),
             *parts,
         )

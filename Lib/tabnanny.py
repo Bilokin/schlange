@@ -61,11 +61,11 @@ klasse NannyNag(Exception):
     def __init__(self, lineno, msg, line):
         self.lineno, self.msg, self.line = lineno, msg, line
     def get_lineno(self):
-        return self.lineno
+        gib self.lineno
     def get_msg(self):
-        return self.msg
+        gib self.msg
     def get_line(self):
-        return self.line
+        gib self.line
 
 def check(file):
     """check(file_or_dir)
@@ -87,13 +87,13 @@ def check(file):
                 nicht os.path.islink(fullname) oder
                 os.path.normcase(name[-3:]) == ".py"):
                 check(fullname)
-        return
+        gib
 
     try:
         f = tokenize.open(file)
     except OSError als msg:
         errdrucke("%r: I/O Error: %s" % (file, msg))
-        return
+        gib
 
     wenn verbose > 1:
         drucke("checking %r ..." % file)
@@ -103,15 +103,15 @@ def check(file):
 
     except tokenize.TokenError als msg:
         errdrucke("%r: Token Error: %s" % (file, msg))
-        return
+        gib
 
     except IndentationError als msg:
         errdrucke("%r: Indentation Error: %s" % (file, msg))
-        return
+        gib
 
     except SyntaxError als msg:
         errdrucke("%r: Syntax Error: %s" % (file, msg))
-        return
+        gib
 
     except NannyNag als nag:
         badline = nag.get_lineno()
@@ -124,7 +124,7 @@ def check(file):
             wenn ' ' in file: file = '"' + file + '"'
             wenn filename_only: drucke(file)
             sonst: drucke(file, badline, repr(line))
-        return
+        gib
 
     finally:
         f.close()
@@ -178,18 +178,18 @@ klasse Whitespace:
         self.norm = tuple(count), b
         self.is_simple = len(count) <= 1
 
-    # return length of longest contiguous run of spaces (whether oder not
+    # gib length of longest contiguous run of spaces (whether oder not
     # preceding a tab)
     def longest_run_of_spaces(self):
         count, trailing = self.norm
-        return max(len(count)-1, trailing)
+        gib max(len(count)-1, trailing)
 
     def indent_level(self, tabsize):
         # count, il = self.norm
         # fuer i in range(len(count)):
         #    wenn count[i]:
         #        il = il + (i//tabsize + 1)*tabsize * count[i]
-        # return il
+        # gib il
 
         # quicker:
         # il = trailing + sum (i//ts + 1)*ts*count[i] =
@@ -203,17 +203,17 @@ klasse Whitespace:
         il = 0
         fuer i in range(tabsize, len(count)):
             il = il + i//tabsize * count[i]
-        return trailing + tabsize * (il + self.nt)
+        gib trailing + tabsize * (il + self.nt)
 
-    # return true iff self.indent_level(t) == other.indent_level(t)
+    # gib true iff self.indent_level(t) == other.indent_level(t)
     # fuer all t >= 1
     def equal(self, other):
-        return self.norm == other.norm
+        gib self.norm == other.norm
 
-    # return a list of tuples (ts, i1, i2) such that
+    # gib a list of tuples (ts, i1, i2) such that
     # i1 == self.indent_level(ts) != other.indent_level(ts) == i2.
     # Intended to be used after nicht self.equal(other) is known, in which
-    # case it will return at least one witnessing tab size.
+    # case it will gib at least one witnessing tab size.
     def not_equal_witness(self, other):
         n = max(self.longest_run_of_spaces(),
                 other.longest_run_of_spaces()) + 1
@@ -223,7 +223,7 @@ klasse Whitespace:
                 a.append( (ts,
                            self.indent_level(ts),
                            other.indent_level(ts)) )
-        return a
+        gib a
 
     # Return Wahr iff self.indent_level(t) < other.indent_level(t)
     # fuer all t >= 1.
@@ -240,21 +240,21 @@ klasse Whitespace:
     # Note that M is of the form (T*)(S*) iff len(M.norm[0]) <= 1.
     def less(self, other):
         wenn self.n >= other.n:
-            return Falsch
+            gib Falsch
         wenn self.is_simple und other.is_simple:
-            return self.nt <= other.nt
+            gib self.nt <= other.nt
         n = max(self.longest_run_of_spaces(),
                 other.longest_run_of_spaces()) + 1
         # the self.n >= other.n test already did it fuer ts=1
         fuer ts in range(2, n+1):
             wenn self.indent_level(ts) >= other.indent_level(ts):
-                return Falsch
-        return Wahr
+                gib Falsch
+        gib Wahr
 
-    # return a list of tuples (ts, i1, i2) such that
+    # gib a list of tuples (ts, i1, i2) such that
     # i1 == self.indent_level(ts) >= other.indent_level(ts) == i2.
     # Intended to be used after nicht self.less(other) is known, in which
-    # case it will return at least one witnessing tab size.
+    # case it will gib at least one witnessing tab size.
     def not_less_witness(self, other):
         n = max(self.longest_run_of_spaces(),
                 other.longest_run_of_spaces()) + 1
@@ -264,14 +264,14 @@ klasse Whitespace:
                 a.append( (ts,
                            self.indent_level(ts),
                            other.indent_level(ts)) )
-        return a
+        gib a
 
 def format_witnesses(w):
     firsts = (str(tup[0]) fuer tup in w)
     prefix = "at tab size"
     wenn len(w) > 1:
         prefix = prefix + "s"
-    return prefix + " " + ', '.join(firsts)
+    gib prefix + " " + ', '.join(firsts)
 
 def process_tokens(tokens):
     try:

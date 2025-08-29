@@ -62,7 +62,7 @@ klasse urlopenNetworkTests(unittest.TestCase):
         mit socket_helper.transient_internet(resource):
             r = urllib.request.urlopen(*args, **kwargs)
             try:
-                yield r
+                liefere r
             finally:
                 r.close()
 
@@ -78,9 +78,9 @@ klasse urlopenNetworkTests(unittest.TestCase):
         # Test both readline und readlines.
         mit self.urlopen(self.url) als open_url:
             self.assertIsInstance(open_url.readline(), bytes,
-                                  "readline did nicht return a string")
+                                  "readline did nicht gib a string")
             self.assertIsInstance(open_url.readlines(), list,
-                                  "readlines did nicht return a list")
+                                  "readlines did nicht gib a list")
 
     def test_info(self):
         # Test 'info'.
@@ -160,7 +160,7 @@ klasse urlretrieveNetworkTests(unittest.TestCase):
         mit socket_helper.transient_internet(resource):
             file_location, info = urllib.request.urlretrieve(*args, **kwargs)
             try:
-                yield file_location, info
+                liefere file_location, info
             finally:
                 os_helper.unlink(file_location)
 

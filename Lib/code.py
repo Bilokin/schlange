@@ -54,8 +54,8 @@ klasse InteractiveInterpreter:
         object.  The code is executed by calling self.runcode() (which
         also handles run-time exceptions, except fuer SystemExit).
 
-        The return value is Wahr in case 2, Falsch in the other cases (unless
-        an exception is raised).  The return value can be used to
+        The gib value is Wahr in case 2, Falsch in the other cases (unless
+        an exception is raised).  The gib value can be used to
         decide whether to use sys.ps1 oder sys.ps2 to prompt the next
         line.
 
@@ -65,15 +65,15 @@ klasse InteractiveInterpreter:
         except (OverflowError, SyntaxError, ValueError):
             # Case 1
             self.showsyntaxerror(filename, source=source)
-            return Falsch
+            gib Falsch
 
         wenn code is Nichts:
             # Case 2
-            return Wahr
+            gib Wahr
 
         # Case 3
         self.runcode(code)
-        return Falsch
+        gib Falsch
 
     def runcode(self, code):
         """Execute a code object.
@@ -312,7 +312,7 @@ klasse InteractiveConsole(InteractiveInterpreter):
         concatenated contents of the buffer als source.  If this
         indicates that the command was executed oder invalid, the buffer
         is reset; otherwise, the command is incomplete, und the buffer
-        is left als it was after the line was appended.  The return
+        is left als it was after the line was appended.  The gib
         value is 1 wenn more input is required, 0 wenn the line was dealt
         mit in some way (this is the same als runsource()).
 
@@ -324,7 +324,7 @@ klasse InteractiveConsole(InteractiveInterpreter):
         more = self.runsource(source, filename, symbol=_symbol)
         wenn nicht more:
             self.resetbuffer()
-        return more
+        gib more
 
     def raw_input(self, prompt=""):
         """Write a prompt und read a line.
@@ -337,7 +337,7 @@ klasse InteractiveConsole(InteractiveInterpreter):
         implementation.
 
         """
-        return input(prompt)
+        gib input(prompt)
 
 
 klasse Quitter:
@@ -349,7 +349,7 @@ klasse Quitter:
             self.eof = 'Ctrl-D (i.e. EOF)'
 
     def __repr__(self):
-        return f'Use {self.name} oder {self.eof} to exit'
+        gib f'Use {self.name} oder {self.eof} to exit'
 
     def __call__(self, code=Nichts):
         raise SystemExit(code)

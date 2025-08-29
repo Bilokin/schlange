@@ -27,7 +27,7 @@ klasse PackTest(AbstractWidgetTest, unittest.TestCase):
         b = tkinter.Frame(pack, name='b', width=50, height=30, bg='blue')
         c = tkinter.Frame(pack, name='c', width=80, height=80, bg='green')
         d = tkinter.Frame(pack, name='d', width=40, height=30, bg='yellow')
-        return pack, a, b, c, d
+        gib pack, a, b, c, d
 
     def test_pack_configure_after(self):
         pack, a, b, c, d = self.create2()
@@ -292,7 +292,7 @@ klasse PlaceTest(AbstractWidgetTest, unittest.TestCase):
         f.place_configure(x=48, y=38)
         f2 = tkinter.Frame(t, width=30, height=60, bd=2, relief='raised')
         self.root.update()
-        return t, f, f2
+        gib t, f, f2
 
     def test_place_configure_in(self):
         t, f, f2 = self.create2()

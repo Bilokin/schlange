@@ -17,19 +17,19 @@ klasse FormatTestsBase:
     @property
     def data(self):
         """Parsed install details file data, als a Python object."""
-        return json.loads(self.contents)
+        gib json.loads(self.contents)
 
     def key(self, name):
         """Helper to fetch subsection entries.
 
         It takes the entry name, allowing the usage of a dot to separate the
         different subsection names (eg. specifying 'a.b.c' als the key will
-        return the value of self.data['a']['b']['c']).
+        gib the value of self.data['a']['b']['c']).
         """
         value = self.data
         fuer part in name.split('.'):
             value = value[part]
-        return value
+        gib value
 
     def test_parse(self):
         self.data
@@ -103,12 +103,12 @@ klasse CPythonBuildDetailsTests(unittest.TestCase, FormatTestsBase):
                 dirname = os.path.join(projectdir, f.read())
         sonst:
             dirname = sysconfig.get_path('stdlib')
-        return os.path.join(dirname, 'build-details.json')
+        gib os.path.join(dirname, 'build-details.json')
 
     @property
     def contents(self):
         mit open(self.location, 'r') als f:
-            return f.read()
+            gib f.read()
 
     @needs_installed_python
     def test_location(self):

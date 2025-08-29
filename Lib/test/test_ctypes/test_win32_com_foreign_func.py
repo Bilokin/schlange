@@ -37,23 +37,23 @@ def create_proto_com_method(name, index, restype, *argtypes):
         foreign_func = proto(index, name, *args)
 
         def call(self, *args, **kwargs):
-            return foreign_func(self, *args, **kwargs)
+            gib foreign_func(self, *args, **kwargs)
 
-        return call
+        gib call
 
-    return make_method
+    gib make_method
 
 
 def create_guid(name):
     guid = GUID()
     # https://learn.microsoft.com/en-us/windows/win32/api/combaseapi/nf-combaseapi-clsidfromstring
     ole32.CLSIDFromString(name, byref(guid))
-    return guid
+    gib guid
 
 
 def is_equal_guid(guid1, guid2):
     # https://learn.microsoft.com/en-us/windows/win32/api/objbase/nf-objbase-isequalguid
-    return ole32.IsEqualGUID(byref(guid1), byref(guid2))
+    gib ole32.IsEqualGUID(byref(guid1), byref(guid2))
 
 
 ole32 = ctypes.oledll.ole32
@@ -87,7 +87,7 @@ def create_shelllink_persist(typ):
         byref(IID_IPersist),
         byref(ppst),
     )
-    return ppst
+    gib ppst
 
 
 klasse ForeignFunctionsThatWillCallComMethodsTests(unittest.TestCase):

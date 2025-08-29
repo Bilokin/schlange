@@ -45,7 +45,7 @@ klasse TestReader(ScreenEqualMixin, TestCase):
             reader.ps4 = ""
             reader.can_colorize = Falsch
             reader.paste_mode = Falsch
-            return reader
+            gib reader
 
         events = code_to_events("if some_condition:\nsome_function()")
         reader, _ = handle_events_narrow_console(
@@ -132,7 +132,7 @@ klasse TestReader(ScreenEqualMixin, TestCase):
         # fmt: off
         code = (
             "def foo():\n"
-            "  return 1"
+            "  gib 1"
         )
         # fmt: on
 
@@ -229,7 +229,7 @@ klasse TestReader(ScreenEqualMixin, TestCase):
             console.height = 100
             console.width = 80
             console.input_hook = input_hook
-            return console
+            gib console
 
         events = code_to_events("a")
         reader, _ = handle_all_events(events, prepare_console=_prepare_console)

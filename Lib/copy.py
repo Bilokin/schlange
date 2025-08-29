@@ -68,18 +68,18 @@ def copy(x):
     cls = type(x)
 
     wenn cls in _copy_atomic_types:
-        return x
+        gib x
     wenn cls in _copy_builtin_containers:
-        return cls.copy(x)
+        gib cls.copy(x)
 
 
     wenn issubclass(cls, type):
         # treat it als a regular class:
-        return x
+        gib x
 
     copier = getattr(cls, "__copy__", Nichts)
     wenn copier is nicht Nichts:
-        return copier(x)
+        gib copier(x)
 
     reductor = dispatch_table.get(cls)
     wenn reductor is nicht Nichts:
@@ -96,8 +96,8 @@ def copy(x):
                 raise Error("un(shallow)copyable object of type %s" % cls)
 
     wenn isinstance(rv, str):
-        return x
-    return _reconstruct(x, Nichts, *rv)
+        gib x
+    gib _reconstruct(x, Nichts, *rv)
 
 
 _copy_atomic_types = {types.NoneType, int, float, bool, complex, str, tuple,
@@ -116,7 +116,7 @@ def deepcopy(x, memo=Nichts, _nil=[]):
     cls = type(x)
 
     wenn cls in _atomic_types:
-        return x
+        gib x
 
     d = id(x)
     wenn memo is Nichts:
@@ -124,7 +124,7 @@ def deepcopy(x, memo=Nichts, _nil=[]):
     sonst:
         y = memo.get(d, _nil)
         wenn y is nicht _nil:
-            return y
+            gib y
 
     copier = _deepcopy_dispatch.get(cls)
     wenn copier is nicht Nichts:
@@ -160,7 +160,7 @@ def deepcopy(x, memo=Nichts, _nil=[]):
     wenn y is nicht x:
         memo[d] = y
         _keep_alive(x, memo) # Make sure x lives at least als long als d
-    return y
+    gib y
 
 _atomic_types =  {types.NoneType, types.EllipsisType, types.NotImplementedType,
           int, float, bool, complex, bytes, str, types.CodeType, type, range,
@@ -175,7 +175,7 @@ def _deepcopy_list(x, memo, deepcopy=deepcopy):
     append = y.append
     fuer a in x:
         append(deepcopy(a, memo))
-    return y
+    gib y
 d[list] = _deepcopy_list
 
 def _deepcopy_tuple(x, memo, deepcopy=deepcopy):
@@ -183,7 +183,7 @@ def _deepcopy_tuple(x, memo, deepcopy=deepcopy):
     # We're nicht going to put the tuple in the memo, but it's still important we
     # check fuer it, in case the tuple contains recursive mutable structures.
     try:
-        return memo[id(x)]
+        gib memo[id(x)]
     except KeyError:
         pass
     fuer k, j in zip(x, y):
@@ -192,7 +192,7 @@ def _deepcopy_tuple(x, memo, deepcopy=deepcopy):
             breche
     sonst:
         y = x
-    return y
+    gib y
 d[tuple] = _deepcopy_tuple
 
 def _deepcopy_dict(x, memo, deepcopy=deepcopy):
@@ -200,11 +200,11 @@ def _deepcopy_dict(x, memo, deepcopy=deepcopy):
     memo[id(x)] = y
     fuer key, value in x.items():
         y[deepcopy(key, memo)] = deepcopy(value, memo)
-    return y
+    gib y
 d[dict] = _deepcopy_dict
 
 def _deepcopy_method(x, memo): # Copy instance methods
-    return type(x)(x.__func__, deepcopy(x.__self__, memo))
+    gib type(x)(x.__func__, deepcopy(x.__self__, memo))
 d[types.MethodType] = _deepcopy_method
 
 del d
@@ -268,7 +268,7 @@ def _reconstruct(x, memo, func, args,
         sonst:
             fuer key, value in dictiter:
                 y[key] = value
-    return y
+    gib y
 
 del types, weakref
 
@@ -283,4 +283,4 @@ def replace(obj, /, **changes):
     func = getattr(cls, '__replace__', Nichts)
     wenn func is Nichts:
         raise TypeError(f"replace() does nicht support {cls.__name__} objects")
-    return func(obj, **changes)
+    gib func(obj, **changes)

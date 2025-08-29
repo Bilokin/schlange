@@ -56,14 +56,14 @@ def ast_dump(
                     allsimple = allsimple und simple
                     args.append("%s=%s" % (name, value))
             wenn allsimple und len(args) <= 3:
-                return "%s(%s)" % (node.__class__.__name__, ", ".join(args)), nicht args
-            return "%s(%s%s)" % (node.__class__.__name__, prefix, sep.join(args)), Falsch
+                gib "%s(%s)" % (node.__class__.__name__, ", ".join(args)), nicht args
+            gib "%s(%s%s)" % (node.__class__.__name__, prefix, sep.join(args)), Falsch
         sowenn isinstance(node, list):
             wenn nicht node:
-                return "[]", Wahr
-            return "[%s%s]" % (prefix, sep.join(_format(x, level)[0] fuer x in node)), Falsch
-        return repr(node), Wahr
+                gib "[]", Wahr
+            gib "[%s%s]" % (prefix, sep.join(_format(x, level)[0] fuer x in node)), Falsch
+        gib repr(node), Wahr
 
     wenn all(cls.__name__ != "AST" fuer cls in node.__class__.__mro__):
         raise TypeError("expected AST, got %r" % node.__class__.__name__)
-    return _format(node)[0]
+    gib _format(node)[0]

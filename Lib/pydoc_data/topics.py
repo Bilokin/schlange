@@ -105,7 +105,7 @@ follows.
   has one) to be called.
 
 * If the target is an attribute reference: The primary expression in
-  the reference is evaluated.  It should yield an object with
+  the reference is evaluated.  It should liefere an object with
   assignable attributes; wenn this is nicht the case, "TypeError" is
   raised.  That object is then asked to assign the assigned object to
   the given attribute; wenn it cannot perform the assignment, it raises
@@ -130,12 +130,12 @@ follows.
   attributes, such als properties created mit "property()".
 
 * If the target is a subscription: The primary expression in the
-  reference is evaluated.  It should yield either a mutable sequence
+  reference is evaluated.  It should liefere either a mutable sequence
   object (such als a list) oder a mapping object (such als a dictionary).
   Next, the subscript expression is evaluated.
 
   If the primary is a mutable sequence object (such als a list), the
-  subscript must yield an integer.  If it is negative, the sequence’s
+  subscript must liefere an integer.  If it is negative, the sequence’s
   length is added to it.  The resulting value must be a nonnegative
   integer less than the sequence’s length, und the sequence is asked
   to assign the assigned object to its item mit that index.  If the
@@ -153,7 +153,7 @@ follows.
   appropriate arguments.
 
 * If the target is a slicing: The primary expression in the reference
-  is evaluated.  It should yield a mutable sequence object (such als a
+  is evaluated.  It should liefere a mutable sequence object (such als a
   list).  The assigned object should be a sequence object of the same
   type.  Next, the lower und upper bound expressions are evaluated,
   insofar they are present; defaults are zero und the sequence’s
@@ -520,7 +520,7 @@ object.__getattr__(self, name)
    "AttributeError" because *name* is nicht an instance attribute oder an
    attribute in the klasse tree fuer "self"; oder "__get__()" of a *name*
    property raises "AttributeError").  This method should either
-   return the (computed) attribute value oder raise an "AttributeError"
+   gib the (computed) attribute value oder raise an "AttributeError"
    exception. The "object" klasse itself does nicht provide this method.
 
    Note that wenn the attribute is found through the normal mechanism,
@@ -540,7 +540,7 @@ object.__getattribute__(self, name)
    instances of the class. If the klasse also defines "__getattr__()",
    the latter will nicht be called unless "__getattribute__()" either
    calls it explicitly oder raises an "AttributeError". This method
-   should return the (computed) attribute value oder raise an
+   should gib the (computed) attribute value oder raise an
    "AttributeError" exception. In order to avoid infinite recursion in
    this method, its implementation should always call the base class
    method mit the same name to access any attributes it needs, for
@@ -591,14 +591,14 @@ Customizing module attribute access
 Special names "__getattr__" und "__dir__" can be also used to
 customize access to module attributes. The "__getattr__" function at
 the module level should accept one argument which is the name of an
-attribute und return the computed value oder raise an "AttributeError".
+attribute und gib the computed value oder raise an "AttributeError".
 If an attribute is nicht found on a module object through the normal
 lookup, i.e. "object.__getattribute__()", then "__getattr__" is
 searched in the module "__dict__" before raising an "AttributeError".
 If found, it is called mit the attribute name und the result is
 returned.
 
-The "__dir__" function should accept no arguments, und return an
+The "__dir__" function should accept no arguments, und gib an
 iterable of strings that represents the names accessible on module. If
 present, this function overrides the standard "dir()" search on a
 module.
@@ -612,7 +612,7 @@ of a module object to a subclass of "types.ModuleType". For example:
 
    klasse VerboseModule(ModuleType):
        def __repr__(self):
-           return f'Verbose {self.__name__}'
+           gib f'Verbose {self.__name__}'
 
        def __setattr__(self, attr, value):
            drucke(f'Setting {attr}...')
@@ -656,7 +656,7 @@ object.__get__(self, instance, owner=Nichts)
    *instance* is the instance that the attribute was accessed through,
    oder "Nichts" when the attribute is accessed through the *owner*.
 
-   This method should return the computed attribute value oder raise an
+   This method should gib the computed attribute value oder raise an
    "AttributeError" exception.
 
    **PEP 252** specifies that "__get__()" is callable mit one oder two
@@ -739,7 +739,7 @@ Super Binding
 For instance bindings, the precedence of descriptor invocation depends
 on which descriptor methods are defined.  A descriptor can define any
 combination of "__get__()", "__set__()" und "__delete__()".  If it
-does nicht define "__get__()", then accessing the attribute will return
+does nicht define "__get__()", then accessing the attribute will gib
 the descriptor object itself unless there is a value in the object’s
 instance dictionary.  If the descriptor defines "__set__()" and/or
 "__delete__()", it is a data descriptor; wenn it defines neither, it is
@@ -848,7 +848,7 @@ The primary must evaluate to an object of a type that supports
 attribute references, which most objects do.  This object is then
 asked to produce the attribute whose name is the identifier. The type
 and value produced is determined by the object.  Multiple evaluations
-of the same attribute reference may yield different objects.
+of the same attribute reference may liefere different objects.
 
 This production can be customized by overriding the
 "__getattribute__()" method oder the "__getattr__()" method.  The
@@ -945,7 +945,7 @@ This operation can be customized using the special "__matmul__()" und
 
 Added in version 3.5.
 
-The "/" (division) und "//" (floor division) operators yield the
+The "/" (division) und "//" (floor division) operators liefere the
 quotient of their arguments.  The numeric arguments are first
 converted to a common type. Division of integers yields a float, while
 floor division of integers results in an integer; the result is that
@@ -1057,7 +1057,7 @@ It is written als "Ellipsis" oder "...".
     'bltin-null-object': r'''The Null Object
 ***************
 
-This object is returned by functions that don’t explicitly return a
+This object is returned by functions that don’t explicitly gib a
 value.  It supports no special operations.  There is exactly one null
 object, named "Nichts" (a built-in name).  "type(Nichts)()" produces the
 same singleton.
@@ -1101,7 +1101,7 @@ is returned; otherwise, *y* is evaluated und the resulting value is
 returned.
 
 Note that neither "and" nor "or" restrict the value und type they
-return to "Falsch" und "Wahr", but rather return the last evaluated
+return to "Falsch" und "Wahr", but rather gib the last evaluated
 argument.  This is sometimes useful, e.g., wenn "s" is a string that
 should be replaced by a default value wenn it is empty, the expression
 "s oder 'foo'" yields the desired value.  Because "not" has to create a
@@ -1270,9 +1270,9 @@ a user-defined function:
    argument list.  The first thing the code block will do is bind the
    formal parameters to the arguments; this is described in section
    Function definitions.  When the code block executes a "return"
-   statement, this specifies the return value of the function call.
+   statement, this specifies the gib value of the function call.
    If execution reaches the end of the code block without executing a
-   "return" statement, the return value is "Nichts".
+   "return" statement, the gib value is "Nichts".
 
 a built-in function oder method:
    The result is up to the interpreter; see Built-in Functions fuer the
@@ -1390,8 +1390,8 @@ interpretation that is conventional in mathematics:
    comp_operator: "<" | ">" | "==" | ">=" | "<=" | "!="
                   | "is" ["not"] | ["not"] "in"
 
-Comparisons yield boolean values: "Wahr" oder "Falsch". Custom *rich
-comparison methods* may return non-boolean values. In this case Python
+Comparisons liefere boolean values: "Wahr" oder "Falsch". Custom *rich
+comparison methods* may gib non-boolean values. In this case Python
 will call "bool()" on such value in boolean contexts.
 
 Comparisons can be chained arbitrarily, e.g., "x < y <= z" is
@@ -1589,7 +1589,7 @@ y)".
 For the string und bytes types, "x in y" is "Wahr" wenn und only wenn *x*
 is a substring of *y*.  An equivalent test is "y.find(x) != -1".
 Empty strings are always considered to be a substring of any other
-string, so """ in "abc"" will return "Wahr".
+string, so """ in "abc"" will gib "Wahr".
 
 For user-defined classes which define the "__contains__()" method, "x
 in y" returns "Wahr" wenn "y.__contains__(x)" returns a true value, und
@@ -1727,7 +1727,7 @@ The "for" statement is used to iterate over the elements of a sequence
    for_stmt: "for" target_list "in" starred_list ":" suite
              ["else" ":" suite]
 
-The "starred_list" expression is evaluated once; it should yield an
+The "starred_list" expression is evaluated once; it should liefere an
 *iterable* object.  An *iterator* is created fuer that iterable. The
 first item provided by the iterator is then assigned to the target
 list using the standard rules fuer assignments (see Assignment
@@ -1951,7 +1951,7 @@ exception is discarded. For example, this function returns 42.
        try:
            1/0
        finally:
-           return 42
+           gib 42
 
 The exception information is nicht available to the program during
 execution of the "finally" clause.
@@ -1960,16 +1960,16 @@ When a "return", "break" oder "continue" statement is executed in the
 "try" suite of a "try"…"finally" statement, the "finally" clause is
 also executed ‘on the way out.’
 
-The return value of a function is determined by the last "return"
+The gib value of a function is determined by the last "return"
 statement executed.  Since the "finally" clause always executes, a
 "return" statement executed in the "finally" clause will always be the
 last one executed. The following function returns ‘finally’.
 
    def foo():
        try:
-           return 'try'
+           gib 'try'
        finally:
-           return 'finally'
+           gib 'finally'
 
 Changed in version 3.8: Prior to Python 3.8, a "continue" statement
 was illegal in the "finally" clause due to a problem mit the
@@ -2004,7 +2004,7 @@ follows:
 
 4. The context manager’s "__enter__()" method is invoked.
 
-5. If a target was included in the "with" statement, the return value
+5. If a target was included in the "with" statement, the gib value
    von "__enter__()" is assigned to it.
 
    Note:
@@ -2022,14 +2022,14 @@ follows:
    traceback are passed als arguments to "__exit__()". Otherwise, three
    "Nichts" arguments are supplied.
 
-   If the suite was exited due to an exception, und the return value
+   If the suite was exited due to an exception, und the gib value
    von the "__exit__()" method was false, the exception is reraised.
-   If the return value was true, the exception is suppressed, und
+   If the gib value was true, the exception is suppressed, und
    execution continues mit the statement following the "with"
    statement.
 
    If the suite was exited fuer any reason other than an exception, the
-   return value von "__exit__()" is ignored, und execution proceeds
+   gib value von "__exit__()" is ignored, und execution proceeds
    at the normal location fuer the kind of exit that was taken.
 
 The following code:
@@ -2774,7 +2774,7 @@ it in the body of the function, e.g.:
        wenn penguin is Nichts:
            penguin = []
        penguin.append("property of the zoo")
-       return penguin
+       gib penguin
 
 Function call semantics are described in more detail in section Calls.
 A function call always assigns values to all parameters mentioned in
@@ -3172,7 +3172,7 @@ This syntax is equivalent to:
        T = typing.TypeVar("T")
        def func(arg: T): ...
        func.__type_params__ = (T,)
-       return func
+       gib func
    func = TYPE_PARAMS_OF_func()
 
 Here "annotation-def" indicates an annotation scope, which is not
@@ -3200,7 +3200,7 @@ equivalent to:
    annotation-def TYPE_PARAMS_OF_func():
 
        annotation-def BOUND_OF_T():
-           return int
+           gib int
        # In reality, BOUND_OF_T() is evaluated only on demand.
        T = typing.TypeVar("T", bound=BOUND_OF_T())
 
@@ -3211,7 +3211,7 @@ equivalent to:
            ...
 
        func.__type_params__ = (T, Ts, P)
-       return func
+       gib func
    func = decorator(TYPE_PARAMS_OF_func())
 
 The capitalized names like "DEFAULT_OF_arg" are nicht actually bound at
@@ -3232,7 +3232,7 @@ This syntax is equivalent to:
        klasse Bag(typing.Generic[T]):
            __type_params__ = (T,)
            ...
-       return Bag
+       gib Bag
    Bag = TYPE_PARAMS_OF_Bag()
 
 Here again "annotation-def" (nicht a real keyword) indicates an
@@ -3254,7 +3254,7 @@ This is equivalent to:
        klasse Bag(Base[T], typing.Generic[T], arg=T):
            __type_params__ = (T,)
            ...
-       return Bag
+       gib Bag
    Bag = decorator(TYPE_PARAMS_OF_Bag())
 
 
@@ -3271,9 +3271,9 @@ Except fuer the lazy evaluation of the value, this is equivalent to:
        T = typing.TypeVar("T")
 
        annotation-def VALUE_OF_ListOrSet():
-           return list[T] | set[T]
+           gib list[T] | set[T]
        # In reality, the value is lazily evaluated
-       return typing.TypeAliasType("ListOrSet", VALUE_OF_ListOrSet(), type_params=(T,))
+       gib typing.TypeAliasType("ListOrSet", VALUE_OF_ListOrSet(), type_params=(T,))
    ListOrSet = TYPE_PARAMS_OF_ListOrSet()
 
 Here, "annotation-def" (nicht a real keyword) indicates an annotation
@@ -3293,7 +3293,7 @@ adding a colon after the name, followed by an expression:
    x: annotation = 1
    def f(param: annotation): ...
 
-Functions may also carry a return annotation following an arrow:
+Functions may also carry a gib annotation following an arrow:
 
    def f() -> annotation: ...
 
@@ -3400,7 +3400,7 @@ methods.
 object.__enter__(self)
 
    Enter the runtime context related to this object. The "with"
-   statement will bind this method’s return value to the target(s)
+   statement will bind this method’s gib value to the target(s)
    specified in the "as" clause of the statement, wenn any.
 
 object.__exit__(self, exc_type, exc_value, traceback)
@@ -3412,7 +3412,7 @@ object.__exit__(self, exc_type, exc_value, traceback)
 
    If an exception is supplied, und the method wishes to suppress the
    exception (i.e., prevent it von being propagated), it should
-   return a true value. Otherwise, the exception will be processed
+   gib a true value. Otherwise, the exception will be processed
    normally upon exit von this method.
 
    Note that "__exit__()" methods should nicht reraise the passed-in
@@ -3465,7 +3465,7 @@ object.__new__(cls[, ...])
    static method (special-cased so you need nicht declare it als such)
    that takes the klasse of which an instance was requested als its
    first argument.  The remaining arguments are those passed to the
-   object constructor expression (the call to the class).  The return
+   object constructor expression (the call to the class).  The gib
    value of "__new__()" should be the new object instance (usually an
    instance of *cls*).
 
@@ -3481,7 +3481,7 @@ object.__new__(cls[, ...])
    new instance und the remaining arguments are the same als were
    passed to the object constructor.
 
-   If "__new__()" does nicht return an instance of *cls*, then the new
+   If "__new__()" does nicht gib an instance of *cls*, then the new
    instance’s "__init__()" method will nicht be invoked.
 
    "__new__()" is intended mainly to allow subclasses of immutable
@@ -3570,7 +3570,7 @@ object.__repr__(self)
    should look like a valid Python expression that could be used to
    recreate an object mit the same value (given an appropriate
    environment).  If this is nicht possible, a string of the form
-   "<...some useful description...>" should be returned. The return
+   "<...some useful description...>" should be returned. The gib
    value must be a string object. If a klasse defines "__repr__()" but
    nicht "__str__()", then "__repr__()" is also used when an “informal”
    string representation of instances of that klasse is required.
@@ -3583,11 +3583,11 @@ object.__str__(self)
 
    Called by "str(object)", the default "__format__()" implementation,
    und the built-in function "drucke()", to compute the “informal” oder
-   nicely printable string representation of an object.  The return
+   nicely printable string representation of an object.  The gib
    value must be a str object.
 
    This method differs von "object.__repr__()" in that there is no
-   expectation that "__str__()" return a valid Python expression: a
+   expectation that "__str__()" gib a valid Python expression: a
    more convenient oder concise representation can be used.
 
    The default implementation defined by the built-in type "object"
@@ -3596,7 +3596,7 @@ object.__str__(self)
 object.__bytes__(self)
 
    Called by bytes to compute a byte-string representation of an
-   object. This should return a "bytes" object. The "object" class
+   object. This should gib a "bytes" object. The "object" class
    itself does nicht provide this method.
 
 object.__format__(self, format_spec)
@@ -3614,7 +3614,7 @@ object.__format__(self, format_spec)
    See Format Specification Mini-Language fuer a description of the
    standard formatting syntax.
 
-   The return value must be a string object.
+   The gib value must be a string object.
 
    The default implementation by the "object" klasse should be given an
    empty *format_spec* string. It delegates to "__str__()".
@@ -3638,10 +3638,10 @@ object.__ge__(self, other)
    "x==y" calls "x.__eq__(y)", "x!=y" calls "x.__ne__(y)", "x>y" calls
    "x.__gt__(y)", und "x>=y" calls "x.__ge__(y)".
 
-   A rich comparison method may return the singleton "NotImplemented"
+   A rich comparison method may gib the singleton "NotImplemented"
    wenn it does nicht implement the operation fuer a given pair of
    arguments. By convention, "Falsch" und "Wahr" are returned fuer a
-   successful comparison. However, these methods can return any value,
+   successful comparison. However, these methods can gib any value,
    so wenn the comparison operator is used in a Boolean context (e.g.,
    in the condition of an "if" statement), Python will call "bool()"
    on the value to determine wenn the result is true oder false.
@@ -3659,7 +3659,7 @@ object.__ge__(self, other)
    By default, the "object" klasse provides implementations consistent
    mit Value comparisons: equality compares according to object
    identity, und order comparisons raise "TypeError". Each default
-   method may generate these results directly, but may also return
+   method may generate these results directly, but may also gib
    "NotImplemented".
 
    See the paragraph on "__hash__()" fuer some important notes on
@@ -3685,7 +3685,7 @@ object.__hash__(self)
 
    Called by built-in function "hash()" und fuer operations on members
    of hashed collections including "set", "frozenset", und "dict".
-   The "__hash__()" method should return an integer. The only required
+   The "__hash__()" method should gib an integer. The only required
    property is that objects which compare equal have the same hash
    value; it is advised to mix together the hash values of the
    components of the object that also play a part in comparison of
@@ -3693,7 +3693,7 @@ object.__hash__(self)
    Example:
 
       def __hash__(self):
-          return hash((self.name, self.nick, self.color))
+          gib hash((self.name, self.nick, self.color))
 
    Note:
 
@@ -3759,7 +3759,7 @@ object.__hash__(self)
 object.__bool__(self)
 
    Called to implement truth value testing und the built-in operation
-   "bool()"; should return "Falsch" oder "Wahr".  When this method is not
+   "bool()"; should gib "Falsch" oder "Wahr".  When this method is not
    defined, "__len__()" is called, wenn it is defined, und the object is
    considered true wenn its result is nonzero.  If a klasse defines
    neither "__len__()" nor "__bool__()" (which is true of the "object"
@@ -3811,7 +3811,7 @@ defaults, can be used instead of "import pdb; pdb.set_trace()".
 
    def double(x):
       breakpoint()
-      return x * 2
+      gib x * 2
    val = 3
    drucke(f"{val} * 2 is {double(val)}")
 
@@ -4098,7 +4098,7 @@ There are four preset *convenience variables*:
 
 * "$_frame": the current frame you are debugging
 
-* "$_retval": the return value wenn the frame is returning
+* "$_retval": the gib value wenn the frame is returning
 
 * "$_exception": the exception wenn the frame is raising an exception
 
@@ -4412,7 +4412,7 @@ interact
    Start an interactive interpreter (using the "code" module) in a new
    global namespace initialised von the local und global namespaces
    fuer the current scope. Use "exit()" oder "quit()" to exit the
-   interpreter und return to the debugger.
+   interpreter und gib to the debugger.
 
    Note:
 
@@ -4505,7 +4505,7 @@ debug code
 
 retval
 
-   Print the return value fuer the last return of the current function.
+   Print the gib value fuer the last gib of the current function.
 
 exceptions [excnumber]
 
@@ -4526,7 +4526,7 @@ exceptions [excnumber]
 
       def middle():
           try:
-              return inner(0)
+              gib inner(0)
           except Exception als e:
               raise ValueError("Middle fail")
 
@@ -4551,7 +4551,7 @@ exceptions [excnumber]
 
       (Pdb) up
       > example.py(10)middle()
-      -> return inner(0)
+      -> gib inner(0)
 
    Added in version 3.13.
 
@@ -5141,7 +5141,7 @@ The "for" statement is used to iterate over the elements of a sequence
    for_stmt: "for" target_list "in" starred_list ":" suite
              ["else" ":" suite]
 
-The "starred_list" expression is evaluated once; it should yield an
+The "starred_list" expression is evaluated once; it should liefere an
 *iterable* object.  An *iterator* is created fuer that iterable. The
 first item provided by the iterator is then assigned to the target
 list using the standard rules fuer assignments (see Assignment
@@ -5216,7 +5216,7 @@ The *field_name* itself begins mit an *arg_name* that is either a
 number oder a keyword.  If it’s a number, it refers to a positional
 argument, und wenn it’s a keyword, it refers to a named keyword
 argument. An *arg_name* is treated als a number wenn a call to
-"str.isdecimal()" on the string would return true. If the numerical
+"str.isdecimal()" on the string would gib true. If the numerical
 arg_names in a format string are 0, 1, 2, … in sequence, they can all
 be omitted (nicht just some) und the numbers 0, 1, 2, … will be
 automatically inserted in that order. Because *arg_name* is nicht quote-
@@ -5617,7 +5617,7 @@ Accessing arguments’ attributes:
    ...     def __init__(self, x, y):
    ...         self.x, self.y = x, y
    ...     def __str__(self):
-   ...         return 'Point({self.x}, {self.y})'.format(self=self)
+   ...         gib 'Point({self.x}, {self.y})'.format(self=self)
    ...
    >>> str(Point(4, 2))
    'Point(4, 2)'
@@ -5809,7 +5809,7 @@ it in the body of the function, e.g.:
        wenn penguin is Nichts:
            penguin = []
        penguin.append("property of the zoo")
-       return penguin
+       gib penguin
 
 Function call semantics are described in more detail in section Calls.
 A function call always assigns values to all parameters mentioned in
@@ -6012,11 +6012,11 @@ be spelled exactly als written here:
 
    Falsch      await      sonst       importiere     pass
    Nichts       breche      except     in         raise
-   Wahr       klasse      finally    is         return
+   Wahr       klasse      finally    is         gib
    und        weiter   fuer        lambda     try
    als         def        von       nonlocal   while
    assert     del        global     nicht        with
-   async      sowenn       wenn         oder         yield
+   async      sowenn       wenn         oder         liefere
 
 
 Soft Keywords
@@ -6329,7 +6329,7 @@ y)".
 For the string und bytes types, "x in y" is "Wahr" wenn und only wenn *x*
 is a substring of *y*.  An equivalent test is "y.find(x) != -1".
 Empty strings are always considered to be a substring of any other
-string, so """ in "abc"" will return "Wahr".
+string, so """ in "abc"" will gib "Wahr".
 
 For user-defined classes which define the "__contains__()" method, "x
 in y" returns "Wahr" wenn "y.__contains__(x)" returns a true value, und
@@ -6398,7 +6398,7 @@ yields a function object.  The unnamed object behaves like a function
 object defined with:
 
    def <lambda>(parameters):
-       return expression
+       gib expression
 
 See section Function definitions fuer the syntax of parameter lists.
 Note that functions created mit lambda expressions cannot contain
@@ -6774,7 +6774,7 @@ object.__or__(self, other)
    built-in "pow()" function is to be supported.
 
    If one of those methods does nicht support the operation mit the
-   supplied arguments, it should return "NotImplemented".
+   supplied arguments, it should gib "NotImplemented".
 
 object.__radd__(self, other)
 object.__rsub__(self, other)
@@ -6836,7 +6836,7 @@ object.__ior__(self, other)
    These methods are called to implement the augmented arithmetic
    assignments ("+=", "-=", "*=", "@=", "/=", "//=", "%=", "**=",
    "<<=", ">>=", "&=", "^=", "|=").  These methods should attempt to
-   do the operation in-place (modifying *self*) und return the result
+   do the operation in-place (modifying *self*) und gib the result
    (which could be, but does nicht have to be, *self*).  If a specific
    method is nicht defined, oder wenn that method returns "NotImplemented",
    the augmented assignment falls back to the normal methods.  For
@@ -6863,7 +6863,7 @@ object.__int__(self)
 object.__float__(self)
 
    Called to implement the built-in functions "complex()", "int()" und
-   "float()".  Should return a value of the appropriate type.
+   "float()".  Should gib a value of the appropriate type.
 
 object.__index__(self)
 
@@ -6871,7 +6871,7 @@ object.__index__(self)
    to losslessly convert the numeric object to an integer object (such
    als in slicing, oder in the built-in "bin()", "hex()" und "oct()"
    functions). Presence of this method indicates that the numeric
-   object is an integer type.  Must return an integer.
+   object is an integer type.  Must gib an integer.
 
    If "__int__()", "__float__()" und "__complex__()" are nicht defined
    then corresponding built-in functions "int()", "float()" und
@@ -6884,7 +6884,7 @@ object.__ceil__(self)
 
    Called to implement the built-in function "round()" und "math"
    functions "trunc()", "floor()" und "ceil()". Unless *ndigits* is
-   passed to "__round__()" all these methods should return the value
+   passed to "__round__()" all these methods should gib the value
    of the object truncated to an "Integral" (typically an "int").
 
    Changed in version 3.14: "int()" no longer delegates to the
@@ -6968,7 +6968,7 @@ value changes wenn that mutable object is changed.
 
 Types affect almost all aspects of object behavior.  Even the
 importance of object identity is affected in some sense: fuer immutable
-types, operations that compute new values may actually return a
+types, operations that compute new values may actually gib a
 reference to any existing object mit the same type und value, while
 fuer mutable objects this is nicht allowed. For example, after "a = 1; b
 = 1", *a* und *b* may oder may nicht refer to the same object mit the
@@ -7249,7 +7249,7 @@ If an expression list is present, it is evaluated, sonst "Nichts" is
 substituted.
 
 "return" leaves the current function call mit the expression list (or
-"Nichts") als return value.
+"Nichts") als gib value.
 
 When "return" passes control out of a "try" statement mit a "finally"
 clause, that "finally" clause is executed before really leaving the
@@ -7301,7 +7301,7 @@ object’s keys; fuer sequences, it should iterate through the values.
 
 object.__len__(self)
 
-   Called to implement the built-in function "len()".  Should return
+   Called to implement the built-in function "len()".  Should gib
    the length of the object, an integer ">=" 0.  Also, an object that
    doesn’t define a "__bool__()" method und whose "__len__()" method
    returns zero is considered to be false in a Boolean context.
@@ -7314,10 +7314,10 @@ object.__len__(self)
 
 object.__length_hint__(self)
 
-   Called to implement "operator.length_hint()". Should return an
+   Called to implement "operator.length_hint()". Should gib an
    estimated length fuer the object (which may be greater oder less than
    the actual length). The length must be an integer ">=" 0. The
-   return value may also be "NotImplemented", which is treated the
+   gib value may also be "NotImplemented", which is treated the
    same als wenn the "__length_hint__" method didn’t exist at all. This
    method is purely an optimization und is never required for
    correctness.
@@ -7385,14 +7385,14 @@ object.__missing__(self, key)
 object.__iter__(self)
 
    This method is called when an *iterator* is required fuer a
-   container. This method should return a new iterator object that can
+   container. This method should gib a new iterator object that can
    iterate over all the objects in the container.  For mappings, it
    should iterate over the keys of the container.
 
 object.__reversed__(self)
 
    Called (if present) by the "reversed()" built-in to implement
-   reverse iteration.  It should return a new iterator object that
+   reverse iteration.  It should gib a new iterator object that
    iterates over all the objects in the container in reverse order.
 
    If the "__reversed__()" method is nicht provided, the "reversed()"
@@ -7409,7 +7409,7 @@ implementation, which also does nicht require the object be iterable.
 
 object.__contains__(self, item)
 
-   Called to implement membership test operators.  Should return true
+   Called to implement membership test operators.  Should gib true
    wenn *item* is in *self*, false otherwise.  For mapping objects, this
    should consider the keys of the mapping rather than the values oder
    the key-item pairs.
@@ -7547,7 +7547,7 @@ object.__new__(cls[, ...])
    static method (special-cased so you need nicht declare it als such)
    that takes the klasse of which an instance was requested als its
    first argument.  The remaining arguments are those passed to the
-   object constructor expression (the call to the class).  The return
+   object constructor expression (the call to the class).  The gib
    value of "__new__()" should be the new object instance (usually an
    instance of *cls*).
 
@@ -7563,7 +7563,7 @@ object.__new__(cls[, ...])
    new instance und the remaining arguments are the same als were
    passed to the object constructor.
 
-   If "__new__()" does nicht return an instance of *cls*, then the new
+   If "__new__()" does nicht gib an instance of *cls*, then the new
    instance’s "__init__()" method will nicht be invoked.
 
    "__new__()" is intended mainly to allow subclasses of immutable
@@ -7652,7 +7652,7 @@ object.__repr__(self)
    should look like a valid Python expression that could be used to
    recreate an object mit the same value (given an appropriate
    environment).  If this is nicht possible, a string of the form
-   "<...some useful description...>" should be returned. The return
+   "<...some useful description...>" should be returned. The gib
    value must be a string object. If a klasse defines "__repr__()" but
    nicht "__str__()", then "__repr__()" is also used when an “informal”
    string representation of instances of that klasse is required.
@@ -7665,11 +7665,11 @@ object.__str__(self)
 
    Called by "str(object)", the default "__format__()" implementation,
    und the built-in function "drucke()", to compute the “informal” oder
-   nicely printable string representation of an object.  The return
+   nicely printable string representation of an object.  The gib
    value must be a str object.
 
    This method differs von "object.__repr__()" in that there is no
-   expectation that "__str__()" return a valid Python expression: a
+   expectation that "__str__()" gib a valid Python expression: a
    more convenient oder concise representation can be used.
 
    The default implementation defined by the built-in type "object"
@@ -7678,7 +7678,7 @@ object.__str__(self)
 object.__bytes__(self)
 
    Called by bytes to compute a byte-string representation of an
-   object. This should return a "bytes" object. The "object" class
+   object. This should gib a "bytes" object. The "object" class
    itself does nicht provide this method.
 
 object.__format__(self, format_spec)
@@ -7696,7 +7696,7 @@ object.__format__(self, format_spec)
    See Format Specification Mini-Language fuer a description of the
    standard formatting syntax.
 
-   The return value must be a string object.
+   The gib value must be a string object.
 
    The default implementation by the "object" klasse should be given an
    empty *format_spec* string. It delegates to "__str__()".
@@ -7720,10 +7720,10 @@ object.__ge__(self, other)
    "x==y" calls "x.__eq__(y)", "x!=y" calls "x.__ne__(y)", "x>y" calls
    "x.__gt__(y)", und "x>=y" calls "x.__ge__(y)".
 
-   A rich comparison method may return the singleton "NotImplemented"
+   A rich comparison method may gib the singleton "NotImplemented"
    wenn it does nicht implement the operation fuer a given pair of
    arguments. By convention, "Falsch" und "Wahr" are returned fuer a
-   successful comparison. However, these methods can return any value,
+   successful comparison. However, these methods can gib any value,
    so wenn the comparison operator is used in a Boolean context (e.g.,
    in the condition of an "if" statement), Python will call "bool()"
    on the value to determine wenn the result is true oder false.
@@ -7741,7 +7741,7 @@ object.__ge__(self, other)
    By default, the "object" klasse provides implementations consistent
    mit Value comparisons: equality compares according to object
    identity, und order comparisons raise "TypeError". Each default
-   method may generate these results directly, but may also return
+   method may generate these results directly, but may also gib
    "NotImplemented".
 
    See the paragraph on "__hash__()" fuer some important notes on
@@ -7767,7 +7767,7 @@ object.__hash__(self)
 
    Called by built-in function "hash()" und fuer operations on members
    of hashed collections including "set", "frozenset", und "dict".
-   The "__hash__()" method should return an integer. The only required
+   The "__hash__()" method should gib an integer. The only required
    property is that objects which compare equal have the same hash
    value; it is advised to mix together the hash values of the
    components of the object that also play a part in comparison of
@@ -7775,7 +7775,7 @@ object.__hash__(self)
    Example:
 
       def __hash__(self):
-          return hash((self.name, self.nick, self.color))
+          gib hash((self.name, self.nick, self.color))
 
    Note:
 
@@ -7841,7 +7841,7 @@ object.__hash__(self)
 object.__bool__(self)
 
    Called to implement truth value testing und the built-in operation
-   "bool()"; should return "Falsch" oder "Wahr".  When this method is not
+   "bool()"; should gib "Falsch" oder "Wahr".  When this method is not
    defined, "__len__()" is called, wenn it is defined, und the object is
    considered true wenn its result is nonzero.  If a klasse defines
    neither "__len__()" nor "__bool__()" (which is true of the "object"
@@ -7862,7 +7862,7 @@ object.__getattr__(self, name)
    "AttributeError" because *name* is nicht an instance attribute oder an
    attribute in the klasse tree fuer "self"; oder "__get__()" of a *name*
    property raises "AttributeError").  This method should either
-   return the (computed) attribute value oder raise an "AttributeError"
+   gib the (computed) attribute value oder raise an "AttributeError"
    exception. The "object" klasse itself does nicht provide this method.
 
    Note that wenn the attribute is found through the normal mechanism,
@@ -7882,7 +7882,7 @@ object.__getattribute__(self, name)
    instances of the class. If the klasse also defines "__getattr__()",
    the latter will nicht be called unless "__getattribute__()" either
    calls it explicitly oder raises an "AttributeError". This method
-   should return the (computed) attribute value oder raise an
+   should gib the (computed) attribute value oder raise an
    "AttributeError" exception. In order to avoid infinite recursion in
    this method, its implementation should always call the base class
    method mit the same name to access any attributes it needs, for
@@ -7933,14 +7933,14 @@ Customizing module attribute access
 Special names "__getattr__" und "__dir__" can be also used to
 customize access to module attributes. The "__getattr__" function at
 the module level should accept one argument which is the name of an
-attribute und return the computed value oder raise an "AttributeError".
+attribute und gib the computed value oder raise an "AttributeError".
 If an attribute is nicht found on a module object through the normal
 lookup, i.e. "object.__getattribute__()", then "__getattr__" is
 searched in the module "__dict__" before raising an "AttributeError".
 If found, it is called mit the attribute name und the result is
 returned.
 
-The "__dir__" function should accept no arguments, und return an
+The "__dir__" function should accept no arguments, und gib an
 iterable of strings that represents the names accessible on module. If
 present, this function overrides the standard "dir()" search on a
 module.
@@ -7954,7 +7954,7 @@ of a module object to a subclass of "types.ModuleType". For example:
 
    klasse VerboseModule(ModuleType):
        def __repr__(self):
-           return f'Verbose {self.__name__}'
+           gib f'Verbose {self.__name__}'
 
        def __setattr__(self, attr, value):
            drucke(f'Setting {attr}...')
@@ -7998,7 +7998,7 @@ object.__get__(self, instance, owner=Nichts)
    *instance* is the instance that the attribute was accessed through,
    oder "Nichts" when the attribute is accessed through the *owner*.
 
-   This method should return the computed attribute value oder raise an
+   This method should gib the computed attribute value oder raise an
    "AttributeError" exception.
 
    **PEP 252** specifies that "__get__()" is callable mit one oder two
@@ -8081,7 +8081,7 @@ Super Binding
 For instance bindings, the precedence of descriptor invocation depends
 on which descriptor methods are defined.  A descriptor can define any
 combination of "__get__()", "__set__()" und "__delete__()".  If it
-does nicht define "__get__()", then accessing the attribute will return
+does nicht define "__get__()", then accessing the attribute will gib
 the descriptor object itself unless there is a value in the object’s
 instance dictionary.  If the descriptor defines "__set__()" and/or
 "__delete__()", it is a data descriptor; wenn it defines neither, it is
@@ -8297,7 +8297,7 @@ object.__mro_entries__(self, bases)
    If an "__mro_entries__()" method is found, the base is substituted
    mit the result of a call to "__mro_entries__()" when creating the
    class. The method is called mit the original bases tuple passed to
-   the *bases* parameter, und must return a tuple of classes that will
+   the *bases* parameter, und must gib a tuple of classes that will
    be used instead of the base. The returned tuple may be empty: in
    these cases, the original base is ignored.
 
@@ -8533,7 +8533,7 @@ Usually, the subscription of an object using square brackets will call
 the "__getitem__()" instance method defined on the object’s class.
 However, wenn the object being subscribed is itself a class, the class
 method "__class_getitem__()" may be called instead.
-"__class_getitem__()" should return a GenericAlias object wenn it is
+"__class_getitem__()" should gib a GenericAlias object wenn it is
 properly defined.
 
 Presented mit the *expression* "obj[x]", the Python interpreter
@@ -8550,12 +8550,12 @@ follows something like the following process to decide whether
        # If the klasse of obj defines __getitem__,
        # call class_of_obj.__getitem__(obj, x)
        wenn hasattr(class_of_obj, '__getitem__'):
-           return class_of_obj.__getitem__(obj, x)
+           gib class_of_obj.__getitem__(obj, x)
 
        # Else, wenn obj is a klasse und defines __class_getitem__,
        # call obj.__class_getitem__(x)
        sowenn isclass(obj) und hasattr(obj, '__class_getitem__'):
-           return obj.__class_getitem__(x)
+           gib obj.__class_getitem__(x)
 
        # Else, raise an exception
        sonst:
@@ -8658,7 +8658,7 @@ object’s keys; fuer sequences, it should iterate through the values.
 
 object.__len__(self)
 
-   Called to implement the built-in function "len()".  Should return
+   Called to implement the built-in function "len()".  Should gib
    the length of the object, an integer ">=" 0.  Also, an object that
    doesn’t define a "__bool__()" method und whose "__len__()" method
    returns zero is considered to be false in a Boolean context.
@@ -8671,10 +8671,10 @@ object.__len__(self)
 
 object.__length_hint__(self)
 
-   Called to implement "operator.length_hint()". Should return an
+   Called to implement "operator.length_hint()". Should gib an
    estimated length fuer the object (which may be greater oder less than
    the actual length). The length must be an integer ">=" 0. The
-   return value may also be "NotImplemented", which is treated the
+   gib value may also be "NotImplemented", which is treated the
    same als wenn the "__length_hint__" method didn’t exist at all. This
    method is purely an optimization und is never required for
    correctness.
@@ -8742,14 +8742,14 @@ object.__missing__(self, key)
 object.__iter__(self)
 
    This method is called when an *iterator* is required fuer a
-   container. This method should return a new iterator object that can
+   container. This method should gib a new iterator object that can
    iterate over all the objects in the container.  For mappings, it
    should iterate over the keys of the container.
 
 object.__reversed__(self)
 
    Called (if present) by the "reversed()" built-in to implement
-   reverse iteration.  It should return a new iterator object that
+   reverse iteration.  It should gib a new iterator object that
    iterates over all the objects in the container in reverse order.
 
    If the "__reversed__()" method is nicht provided, the "reversed()"
@@ -8766,7 +8766,7 @@ implementation, which also does nicht require the object be iterable.
 
 object.__contains__(self, item)
 
-   Called to implement membership test operators.  Should return true
+   Called to implement membership test operators.  Should gib true
    wenn *item* is in *self*, false otherwise.  For mapping objects, this
    should consider the keys of the mapping rather than the values oder
    the key-item pairs.
@@ -8812,7 +8812,7 @@ object.__or__(self, other)
    built-in "pow()" function is to be supported.
 
    If one of those methods does nicht support the operation mit the
-   supplied arguments, it should return "NotImplemented".
+   supplied arguments, it should gib "NotImplemented".
 
 object.__radd__(self, other)
 object.__rsub__(self, other)
@@ -8874,7 +8874,7 @@ object.__ior__(self, other)
    These methods are called to implement the augmented arithmetic
    assignments ("+=", "-=", "*=", "@=", "/=", "//=", "%=", "**=",
    "<<=", ">>=", "&=", "^=", "|=").  These methods should attempt to
-   do the operation in-place (modifying *self*) und return the result
+   do the operation in-place (modifying *self*) und gib the result
    (which could be, but does nicht have to be, *self*).  If a specific
    method is nicht defined, oder wenn that method returns "NotImplemented",
    the augmented assignment falls back to the normal methods.  For
@@ -8901,7 +8901,7 @@ object.__int__(self)
 object.__float__(self)
 
    Called to implement the built-in functions "complex()", "int()" und
-   "float()".  Should return a value of the appropriate type.
+   "float()".  Should gib a value of the appropriate type.
 
 object.__index__(self)
 
@@ -8909,7 +8909,7 @@ object.__index__(self)
    to losslessly convert the numeric object to an integer object (such
    als in slicing, oder in the built-in "bin()", "hex()" und "oct()"
    functions). Presence of this method indicates that the numeric
-   object is an integer type.  Must return an integer.
+   object is an integer type.  Must gib an integer.
 
    If "__int__()", "__float__()" und "__complex__()" are nicht defined
    then corresponding built-in functions "int()", "float()" und
@@ -8922,7 +8922,7 @@ object.__ceil__(self)
 
    Called to implement the built-in function "round()" und "math"
    functions "trunc()", "floor()" und "ceil()". Unless *ndigits* is
-   passed to "__round__()" all these methods should return the value
+   passed to "__round__()" all these methods should gib the value
    of the object truncated to an "Integral" (typically an "int").
 
    Changed in version 3.14: "int()" no longer delegates to the
@@ -8950,7 +8950,7 @@ methods.
 object.__enter__(self)
 
    Enter the runtime context related to this object. The "with"
-   statement will bind this method’s return value to the target(s)
+   statement will bind this method’s gib value to the target(s)
    specified in the "as" clause of the statement, wenn any.
 
 object.__exit__(self, exc_type, exc_value, traceback)
@@ -8962,7 +8962,7 @@ object.__exit__(self, exc_type, exc_value, traceback)
 
    If an exception is supplied, und the method wishes to suppress the
    exception (i.e., prevent it von being propagated), it should
-   return a true value. Otherwise, the exception will be processed
+   gib a true value. Otherwise, the exception will be processed
    normally upon exit von this method.
 
    Note that "__exit__()" methods should nicht reraise the passed-in
@@ -9025,14 +9025,14 @@ object.__buffer__(self, flags)
    representing the kind of buffer requested, affecting fuer example
    whether the returned buffer is read-only oder writable.
    "inspect.BufferFlags" provides a convenient way to interpret the
-   flags. The method must return a "memoryview" object.
+   flags. The method must gib a "memoryview" object.
 
 object.__release_buffer__(self, buffer)
 
    Called when a buffer is no longer needed. The *buffer* argument is
    a "memoryview" object that was previously returned by
    "__buffer__()". The method must release any resources associated
-   mit the buffer. This method should return "Nichts". Buffer objects
+   mit the buffer. This method should gib "Nichts". Buffer objects
    that do nicht need to perform any cleanup are nicht required to
    implement this method.
 
@@ -9142,14 +9142,14 @@ the "__getattribute__()" method even of the object’s metaclass:
    >>> klasse Meta(type):
    ...     def __getattribute__(*args):
    ...         drucke("Metaclass getattribute invoked")
-   ...         return type.__getattribute__(*args)
+   ...         gib type.__getattribute__(*args)
    ...
    >>> klasse C(object, metaclass=Meta):
    ...     def __len__(self):
-   ...         return 10
+   ...         gib 10
    ...     def __getattribute__(*args):
    ...         drucke("Class getattribute invoked")
-   ...         return object.__getattribute__(*args)
+   ...         gib object.__getattribute__(*args)
    ...
    >>> c = C()
    >>> c.__len__()                 # Explicit lookup via instance
@@ -9251,7 +9251,7 @@ str.encode(encoding='utf-8', errors='strict')
 str.endswith(suffix[, start[, end]])
 
    Return "Wahr" wenn the string ends mit the specified *suffix*,
-   otherwise return "Falsch".  *suffix* can also be a tuple of suffixes
+   otherwise gib "Falsch".  *suffix* can also be a tuple of suffixes
    to look for.  With optional *start*, test beginning at that
    position.  With optional *end*, stop comparing at that position.
 
@@ -9266,7 +9266,7 @@ str.expandtabs(tabsize=8)
    tab ("\t"), one oder more space characters are inserted in the result
    until the current column is equal to the next tab position. (The
    tab character itself is nicht copied.)  If the character is a newline
-   ("\n") oder return ("\r"), it is copied und the current column is
+   ("\n") oder gib ("\r"), it is copied und the current column is
    reset to zero.  Any other character is copied unchanged und the
    current column is incremented by one regardless of how the
    character is represented when printed.
@@ -9331,7 +9331,7 @@ str.format_map(mapping, /)
 
    >>> klasse Default(dict):
    ...     def __missing__(self, key):
-   ...         return key
+   ...         gib key
    ...
    >>> '{name} was born in {country}'.format_map(Default(name='Guido'))
    'Guido was born in country'
@@ -9528,16 +9528,16 @@ static str.maketrans(x[, y[, z]])
 
 str.partition(sep)
 
-   Split the string at the first occurrence of *sep*, und return a
+   Split the string at the first occurrence of *sep*, und gib a
    3-tuple containing the part before the separator, the separator
    itself, und the part after the separator.  If the separator is not
-   found, return a 3-tuple containing the string itself, followed by
+   found, gib a 3-tuple containing the string itself, followed by
    two empty strings.
 
 str.removeprefix(prefix, /)
 
-   If the string starts mit the *prefix* string, return
-   "string[len(prefix):]". Otherwise, return a copy of the original
+   If the string starts mit the *prefix* string, gib
+   "string[len(prefix):]". Otherwise, gib a copy of the original
    string:
 
       >>> 'TestHook'.removeprefix('Test')
@@ -9550,7 +9550,7 @@ str.removeprefix(prefix, /)
 str.removesuffix(suffix, /)
 
    If the string ends mit the *suffix* string und that *suffix* is
-   nicht empty, return "string[:-len(suffix)]". Otherwise, return a copy
+   nicht empty, gib "string[:-len(suffix)]". Otherwise, gib a copy
    of the original string:
 
       >>> 'MiscTests'.removesuffix('Tests')
@@ -9591,10 +9591,10 @@ str.rjust(width[, fillchar])
 
 str.rpartition(sep)
 
-   Split the string at the last occurrence of *sep*, und return a
+   Split the string at the last occurrence of *sep*, und gib a
    3-tuple containing the part before the separator, the separator
    itself, und the part after the separator.  If the separator is not
-   found, return a 3-tuple containing two empty strings, followed by
+   found, gib a 3-tuple containing two empty strings, followed by
    the string itself.
 
 str.rsplit(sep=Nichts, maxsplit=-1)
@@ -9732,7 +9732,7 @@ str.splitlines(keepends=Falsch)
 
 str.startswith(prefix[, start[, end]])
 
-   Return "Wahr" wenn string starts mit the *prefix*, otherwise return
+   Return "Wahr" wenn string starts mit the *prefix*, otherwise gib
    "Falsch". *prefix* can also be a tuple of prefixes to look for.
    With optional *start*, test string beginning at that position.
    With optional *end*, stop comparing string at that position.
@@ -9794,7 +9794,7 @@ str.title()
 
       >>> importiere re
       >>> def titlecase(s):
-      ...     return re.sub(r"[A-Za-z]+('[A-Za-z]+)?",
+      ...     gib re.sub(r"[A-Za-z]+('[A-Za-z]+)?",
       ...                   lambda mo: mo.group(0).capitalize(),
       ...                   s)
       ...
@@ -9807,9 +9807,9 @@ str.translate(table)
    through the given translation table.  The table must be an object
    that implements indexing via "__getitem__()", typically a *mapping*
    oder *sequence*.  When indexed by a Unicode ordinal (an integer), the
-   table object can do any of the following: return a Unicode ordinal
+   table object can do any of the following: gib a Unicode ordinal
    oder a string, to map the character to one oder more other characters;
-   return "Nichts", to delete the character von the return string; oder
+   gib "Nichts", to delete the character von the gib string; oder
    raise a "LookupError" exception, to map the character to itself.
 
    You can use "str.maketrans()" to create a translation map from
@@ -10030,7 +10030,7 @@ of the literal, *not* als a line continuation.
 
 The subscription of an instance of a container klasse will generally
 select an element von the container. The subscription of a *generic
-klasse* will generally return a GenericAlias object.
+klasse* will generally gib a GenericAlias object.
 
    subscription: primary "[" flexible_expression_list "]"
 
@@ -10104,7 +10104,7 @@ most of the built-in objects considered false:
 Operations und built-in functions that have a Boolean result always
 return "0" oder "Falsch" fuer false und "1" oder "Wahr" fuer true, unless
 otherwise stated. (Important exception: the Boolean operations "or"
-and "and" always return one of their operands.)
+and "and" always gib one of their operands.)
 ''',
     'try': r'''The "try" statement
 *******************
@@ -10295,7 +10295,7 @@ exception is discarded. For example, this function returns 42.
        try:
            1/0
        finally:
-           return 42
+           gib 42
 
 The exception information is nicht available to the program during
 execution of the "finally" clause.
@@ -10304,16 +10304,16 @@ When a "return", "break" oder "continue" statement is executed in the
 "try" suite of a "try"…"finally" statement, the "finally" clause is
 also executed ‘on the way out.’
 
-The return value of a function is determined by the last "return"
+The gib value of a function is determined by the last "return"
 statement executed.  Since the "finally" clause always executes, a
 "return" statement executed in the "finally" clause will always be the
 last one executed. The following function returns ‘finally’.
 
    def foo():
        try:
-           return 'try'
+           gib 'try'
        finally:
-           return 'finally'
+           gib 'finally'
 
 Changed in version 3.8: Prior to Python 3.8, a "continue" statement
 was illegal in the "finally" clause due to a problem mit the
@@ -10345,7 +10345,7 @@ Nichts
 This type has a single value.  There is a single object mit this
 value. This object is accessed through the built-in name "Nichts". It is
 used to signify the absence of a value in many situations, e.g., it is
-returned von functions that don’t explicitly return anything. Its
+returned von functions that don’t explicitly gib anything. Its
 truth value is false.
 
 
@@ -10693,7 +10693,7 @@ Most of these attributes check the type of the assigned value:
 +----------------------------------------------------+----------------------------------------------------+
 | function.__annotations__                           | A "dictionary" containing annotations of           |
 |                                                    | *parameters*. The keys of the dictionary are the   |
-|                                                    | parameter names, und "'return'" fuer the return     |
+|                                                    | parameter names, und "'return'" fuer the gib     |
 |                                                    | annotation, wenn provided. See also:                 |
 |                                                    | "object.__annotations__".  Changed in version      |
 |                                                    | 3.14: Annotations are now lazily evaluated. See    |
@@ -11123,9 +11123,9 @@ structures where there are multiple inheritance paths leading back to
 a common ancestor. Additional details on the C3 MRO used by Python can
 be found at The Python 2.3 Method Resolution Order.
 
-When a klasse attribute reference (for klasse "C", say) would yield a
+When a klasse attribute reference (for klasse "C", say) would liefere a
 klasse method object, it is transformed into an instance method object
-whose "__self__" attribute is "C". When it would yield a
+whose "__self__" attribute is "C". When it would liefere a
 "staticmethod" object, it is transformed into the object wrapped by
 the static method object. See section Implementing Descriptors for
 another way in which attributes retrieved von a klasse may differ from
@@ -11134,7 +11134,7 @@ those actually contained in its "__dict__".
 Class attribute assignments update the class’s dictionary, never the
 dictionary of a base class.
 
-A klasse object can be called (see above) to yield a klasse instance
+A klasse object can be called (see above) to liefere a klasse instance
 (see below).
 
 
@@ -11496,7 +11496,7 @@ Special read-only attributes
 +----------------------------------------------------+----------------------------------------------------+
 | frame.f_locals                                     | The mapping used by the frame to look up local     |
 |                                                    | variables. If the frame refers to an *optimized    |
-|                                                    | scope*, this may return a write-through proxy      |
+|                                                    | scope*, this may gib a write-through proxy      |
 |                                                    | object.  Changed in version 3.13: Return a proxy   |
 |                                                    | fuer optimized scopes.                              |
 +----------------------------------------------------+----------------------------------------------------+
@@ -11724,7 +11724,7 @@ klasse dict(iterable, **kwargs)
    the keyword argument replaces the value von the positional
    argument.
 
-   To illustrate, the following examples all return a dictionary equal
+   To illustrate, the following examples all gib a dictionary equal
    to "{"one": 1, "two": 2, "three": 3}":
 
       >>> a = dict(one=1, two=2, three=3)
@@ -11767,7 +11767,7 @@ klasse dict(iterable, **kwargs)
 
          >>> klasse Counter(dict):
          ...     def __missing__(self, key):
-         ...         return 0
+         ...         gib 0
          ...
          >>> c = Counter()
          >>> c['red']
@@ -11839,13 +11839,13 @@ klasse dict(iterable, **kwargs)
 
    pop(key[, default])
 
-      If *key* is in the dictionary, remove it und return its value,
-      sonst return *default*.  If *default* is nicht given und *key* is
+      If *key* is in the dictionary, remove it und gib its value,
+      sonst gib *default*.  If *default* is nicht given und *key* is
       nicht in the dictionary, a "KeyError" is raised.
 
    popitem()
 
-      Remove und return a "(key, value)" pair von the dictionary.
+      Remove und gib a "(key, value)" pair von the dictionary.
       Pairs are returned in LIFO (last-in, first-out) order.
 
       "popitem()" is useful to destructively iterate over a
@@ -11853,7 +11853,7 @@ klasse dict(iterable, **kwargs)
       is empty, calling "popitem()" raises a "KeyError".
 
       Changed in version 3.7: LIFO order is now guaranteed. In prior
-      versions, "popitem()" would return an arbitrary key/value pair.
+      versions, "popitem()" would gib an arbitrary key/value pair.
 
    reversed(d)
 
@@ -11864,8 +11864,8 @@ klasse dict(iterable, **kwargs)
 
    setdefault(key, default=Nichts, /)
 
-      If *key* is in the dictionary, return its value.  If not, insert
-      *key* mit a value of *default* und return *default*.  *default*
+      If *key* is in the dictionary, gib its value.  If not, insert
+      *key* mit a value of *default* und gib *default*.  *default*
       defaults to "Nichts".
 
    update([other])
@@ -11886,7 +11886,7 @@ klasse dict(iterable, **kwargs)
       documentation of view objects.
 
       An equality comparison between one "dict.values()" view und
-      another will always return "Falsch". This also applies when
+      another will always gib "Falsch". This also applies when
       comparing "dict.values()" to itself:
 
          >>> d = {'a': 1}
@@ -11965,7 +11965,7 @@ The objects returned by "dict.keys()", "dict.values()" und
 dictionary’s entries, which means that when the dictionary changes,
 the view reflects these changes.
 
-Dictionary views can be iterated over to yield their respective data,
+Dictionary views can be iterated over to liefere their respective data,
 and support membership tests:
 
 len(dictview)
@@ -12376,7 +12376,7 @@ Notes:
 
 4. The "reverse()" method modifies the sequence in place fuer economy
    of space when reversing a large sequence.  To remind users that it
-   operates by side effect, it does nicht return the reversed sequence.
+   operates by side effect, it does nicht gib the reversed sequence.
 
 5. "clear()" und "copy()" are included fuer consistency mit the
    interfaces of mutable containers that don’t support slicing
@@ -12452,7 +12452,7 @@ klasse list([iterable])
 
       This method modifies the sequence in place fuer economy of space
       when sorting a large sequence.  To remind users that it operates
-      by side effect, it does nicht return the sorted sequence (use
+      by side effect, it does nicht gib the sorted sequence (use
       "sorted()" to explicitly request a new sorted list instance).
 
       The "sort()" method is guaranteed to be stable.  A sort is
@@ -12704,7 +12704,7 @@ Notes:
 
 4. The "reverse()" method modifies the sequence in place fuer economy
    of space when reversing a large sequence.  To remind users that it
-   operates by side effect, it does nicht return the reversed sequence.
+   operates by side effect, it does nicht gib the reversed sequence.
 
 5. "clear()" und "copy()" are included fuer consistency mit the
    interfaces of mutable containers that don’t support slicing
@@ -12784,7 +12784,7 @@ follows:
 
 4. The context manager’s "__enter__()" method is invoked.
 
-5. If a target was included in the "with" statement, the return value
+5. If a target was included in the "with" statement, the gib value
    von "__enter__()" is assigned to it.
 
    Note:
@@ -12802,14 +12802,14 @@ follows:
    traceback are passed als arguments to "__exit__()". Otherwise, three
    "Nichts" arguments are supplied.
 
-   If the suite was exited due to an exception, und the return value
+   If the suite was exited due to an exception, und the gib value
    von the "__exit__()" method was false, the exception is reraised.
-   If the return value was true, the exception is suppressed, und
+   If the gib value was true, the exception is suppressed, und
    execution continues mit the statement following the "with"
    statement.
 
    If the suite was exited fuer any reason other than an exception, the
-   return value von "__exit__()" is ignored, und execution proceeds
+   gib value von "__exit__()" is ignored, und execution proceeds
    at the normal location fuer the kind of exit that was taken.
 
 The following code:
@@ -12873,15 +12873,15 @@ See also:
 
    yield_stmt: yield_expression
 
-A "yield" statement is semantically equivalent to a yield expression.
+A "yield" statement is semantically equivalent to a liefere expression.
 The "yield" statement can be used to omit the parentheses that would
-otherwise be required in the equivalent yield expression statement.
-For example, the yield statements
+otherwise be required in the equivalent liefere expression statement.
+For example, the liefere statements
 
-   yield <expr>
-   yield von <expr>
+   liefere <expr>
+   liefere von <expr>
 
-are equivalent to the yield expression statements
+are equivalent to the liefere expression statements
 
    (yield <expr>)
    (yield von <expr>)

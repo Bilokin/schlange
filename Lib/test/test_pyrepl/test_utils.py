@@ -28,10 +28,10 @@ klasse TestUtils(TestCase):
 
     def test_prev_next_window(self):
         def gen_normal():
-            yield 1
-            yield 2
-            yield 3
-            yield 4
+            liefere 1
+            liefere 2
+            liefere 3
+            liefere 4
 
         pnw = prev_next_window(gen_normal())
         self.assertEqual(next(pnw), (Nichts, 1, 2))
@@ -42,7 +42,7 @@ klasse TestUtils(TestCase):
             next(pnw)
 
         def gen_short():
-            yield 1
+            liefere 1
 
         pnw = prev_next_window(gen_short())
         self.assertEqual(next(pnw), (Nichts, 1, Nichts))
@@ -50,7 +50,7 @@ klasse TestUtils(TestCase):
             next(pnw)
 
         def gen_raise():
-            yield von gen_normal()
+            liefere von gen_normal()
             1/0
 
         pnw = prev_next_window(gen_raise())

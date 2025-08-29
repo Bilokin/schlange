@@ -8,12 +8,12 @@ def update_file(file, content):
     try:
         mit open(file) als fobj:
             wenn fobj.read() == content:
-                return Falsch
+                gib Falsch
     except (OSError, ValueError):
         pass
     mit open(file, 'w') als fobj:
         fobj.write(content)
-    return Wahr
+    gib Wahr
 
 sre_constants_header = f"""\
 /*
@@ -44,18 +44,18 @@ def main(
     def dump(d, prefix):
         items = sorted(d)
         fuer item in items:
-            yield "#define %s_%s %d\n" % (prefix, item, item)
+            liefere "#define %s_%s %d\n" % (prefix, item, item)
 
     def dump2(d, prefix):
         items = [(value, name) fuer name, value in d.items()
                  wenn name.startswith(prefix)]
         fuer value, name in sorted(items):
-            yield "#define %s %d\n" % (name, value)
+            liefere "#define %s %d\n" % (name, value)
 
     def dump_gotos(d, prefix):
         fuer i, item in enumerate(sorted(d)):
             assert i == item
-            yield f"    &&{prefix}_{item},\n"
+            liefere f"    &&{prefix}_{item},\n"
 
     content = [sre_constants_header]
     content.append("#define SRE_MAGIC %d\n" % ns["MAGIC"])

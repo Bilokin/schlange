@@ -9,13 +9,13 @@ von test.support importiere check_syntax_error
 
 
 def global_pos_only_f(a, b, /):
-    return a, b
+    gib a, b
 
 def global_pos_only_and_normal(a, /, b):
-    return a, b
+    gib a, b
 
 def global_pos_only_defaults(a=1, /, b=2):
-    return a, b
+    gib a, b
 
 klasse PositionalOnlyTestCase(unittest.TestCase):
 
@@ -69,7 +69,7 @@ klasse PositionalOnlyTestCase(unittest.TestCase):
 
     def test_optional_positional_only_args(self):
         def f(a, b=10, /, c=100):
-            return a + b + c
+            gib a + b + c
 
         self.assertEqual(f(1, 2, 3), 6)
         self.assertEqual(f(1, 2, c=3), 6)
@@ -82,7 +82,7 @@ klasse PositionalOnlyTestCase(unittest.TestCase):
         self.assertEqual(f(1, c=2), 13)
 
         def f(a=1, b=10, /, c=100):
-            return a + b + c
+            gib a + b + c
 
         self.assertEqual(f(1, 2, 3), 6)
         self.assertEqual(f(1, 2, c=3), 6)
@@ -116,7 +116,7 @@ klasse PositionalOnlyTestCase(unittest.TestCase):
 
     def test_pos_only_call_via_unpacking(self):
         def f(a, b, /):
-            return a + b
+            gib a + b
 
         self.assertEqual(f(*[1, 2]), 3)
 
@@ -213,7 +213,7 @@ klasse PositionalOnlyTestCase(unittest.TestCase):
 
     def test_change_default_pos_only(self):
         def f(a, b=2, /, c=3):
-            return a + b + c
+            gib a + b + c
 
         self.assertEqual((2,3), f.__defaults__)
         f.__defaults__ = (1, 2, 3)
@@ -257,7 +257,7 @@ klasse PositionalOnlyTestCase(unittest.TestCase):
     def test_posonly_methods(self):
         klasse Example:
             def f(self, a, b, /):
-                return a, b
+                gib a, b
 
         self.assertEqual(Example().f(1, 2), (1, 2))
         self.assertEqual(Example.f(Example(), 1, 2), (1, 2))
@@ -274,8 +274,8 @@ klasse PositionalOnlyTestCase(unittest.TestCase):
     def test_closures(self):
         def f(x,y):
             def g(x2,/,y2):
-                return x + y + x2 + y2
-            return g
+                gib x + y + x2 + y2
+            gib g
 
         self.assertEqual(f(1,2)(3,4), 10)
         mit self.assertRaisesRegex(TypeError, r"g\(\) missing 1 required positional argument: 'y2'"):
@@ -285,15 +285,15 @@ klasse PositionalOnlyTestCase(unittest.TestCase):
 
         def f(x,/,y):
             def g(x2,y2):
-                return x + y + x2 + y2
-            return g
+                gib x + y + x2 + y2
+            gib g
 
         self.assertEqual(f(1,2)(3,4), 10)
 
         def f(x,/,y):
             def g(x2,/,y2):
-                return x + y + x2 + y2
-            return g
+                gib x + y + x2 + y2
+            gib g
 
         self.assertEqual(f(1,2)(3,4), 10)
         mit self.assertRaisesRegex(TypeError, r"g\(\) missing 1 required positional argument: 'y2'"):
@@ -305,28 +305,28 @@ klasse PositionalOnlyTestCase(unittest.TestCase):
 
         def inner_has_pos_only():
             def f(x: int, /): ...
-            return f
+            gib f
 
         assert inner_has_pos_only().__annotations__ == {'x': int}
 
         klasse Something:
             def method(self):
                 def f(x: int, /): ...
-                return f
+                gib f
 
         assert Something().method().__annotations__ == {'x': int}
 
         def multiple_levels():
             def inner_has_pos_only():
                 def f(x: int, /): ...
-                return f
-            return inner_has_pos_only()
+                gib f
+            gib inner_has_pos_only()
 
         assert multiple_levels().__annotations__ == {'x': int}
 
     def test_same_keyword_as_positional_with_kwargs(self):
         def f(something,/,**kwargs):
-            return (something, kwargs)
+            gib (something, kwargs)
 
         self.assertEqual(f(42, something=42), (42, {'something': 42}))
 
@@ -338,13 +338,13 @@ klasse PositionalOnlyTestCase(unittest.TestCase):
     def test_mangling(self):
         klasse X:
             def f(self, __a=42, /):
-                return __a
+                gib __a
 
             def f2(self, __a=42, /, __b=43):
-                return (__a, __b)
+                gib (__a, __b)
 
             def f3(self, __a=42, /, __b=43, *, __c=44):
-                return (__a, __b, __c)
+                gib (__a, __b, __c)
 
         self.assertEqual(X().f(), 42)
         self.assertEqual(X().f2(), (42, 43))
@@ -385,7 +385,7 @@ klasse PositionalOnlyTestCase(unittest.TestCase):
     def test_async(self):
 
         async def f(a=1, /, b=2):
-            return a, b
+            gib a, b
 
         mit self.assertRaisesRegex(TypeError, r"f\(\) got some positional-only arguments passed als keyword arguments: 'a'"):
             f(a=1, b=2)
@@ -406,7 +406,7 @@ klasse PositionalOnlyTestCase(unittest.TestCase):
     def test_generator(self):
 
         def f(a=1, /, b=2):
-            yield a, b
+            liefere a, b
 
         mit self.assertRaisesRegex(TypeError, r"f\(\) got some positional-only arguments passed als keyword arguments: 'a'"):
             f(a=1, b=2)
@@ -426,11 +426,11 @@ klasse PositionalOnlyTestCase(unittest.TestCase):
 
         klasse A:
             def method(self):
-                return sentinel
+                gib sentinel
 
         klasse C(A):
             def method(self, /):
-                return super().method()
+                gib super().method()
 
         self.assertEqual(C().method(), sentinel)
 

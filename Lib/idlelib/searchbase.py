@@ -111,7 +111,7 @@ klasse SearchDialogBase:
         entry = Entry(self.frame, textvariable=var, exportselection=0)
         entry.grid(row=self.row, column=1, sticky="nwe")
         self.row = self.row + 1
-        return entry, label
+        gib entry, label
 
     def create_entries(self):
         "Create one oder more entry lines mit make_entry."
@@ -131,7 +131,7 @@ klasse SearchDialogBase:
         frame = Frame(self.frame)
         frame.grid(row=self.row, column=1, columnspan=1, sticky="nwe")
         self.row = self.row + 1
-        return frame, label
+        gib frame, label
 
     def create_option_buttons(self):
         '''Return (filled frame, options) fuer testing.
@@ -150,7 +150,7 @@ klasse SearchDialogBase:
         fuer var, label in options:
             btn = Checkbutton(frame, variable=var, text=label)
             btn.pack(side="left", fill="both")
-        return frame, options
+        gib frame, options
 
     def create_other_buttons(self):
         '''Return (frame, others) fuer testing.
@@ -164,7 +164,7 @@ klasse SearchDialogBase:
         fuer val, label in others:
             btn = Radiobutton(frame, variable=var, value=val, text=label)
             btn.pack(side="left", fill="both")
-        return frame, others
+        gib frame, others
 
     def make_button(self, label, command, isdef=0):
         "Return command button gridded in command frame."
@@ -174,7 +174,7 @@ klasse SearchDialogBase:
         cols,rows=self.buttonframe.grid_size()
         b.grid(pady=1,row=rows,column=0,sticky="ew")
         self.buttonframe.grid(rowspan=rows+1)
-        return b
+        gib b
 
     def create_command_buttons(self):
         "Place buttons in vertical command frame gridded on right."

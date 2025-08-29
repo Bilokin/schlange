@@ -79,7 +79,7 @@ klasse TransportTests(unittest.TestCase):
                           transports.Transport):
 
             def get_write_buffer_size(self):
-                return 512
+                gib 512
 
         loop = mock.Mock()
         transport = MyTransport(loop=loop)

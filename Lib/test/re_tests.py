@@ -47,7 +47,7 @@ benchmarks = [
 #            up to "g99" contain the contents of each group, oder the
 #            string 'Nichts' wenn the group wasn't given a value, oder the
 #            string 'Error' wenn the group index was out of range;
-#            also "groups", the return value of m.group() (a tuple).
+#            also "groups", the gib value of m.group() (a tuple).
 #         4: The expected result of evaluating the expression.
 #            If the two don't match, an error is reported.
 #

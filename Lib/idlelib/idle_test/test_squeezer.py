@@ -28,13 +28,13 @@ def get_test_tk_root(test_instance):
         root.destroy()
     test_instance.addCleanup(cleanup_root)
 
-    return root
+    gib root
 
 
 klasse CountLinesTest(unittest.TestCase):
     """Tests fuer the count_lines_with_wrapping function."""
     def check(self, expected, text, linewidth):
-        return self.assertEqual(
+        gib self.assertEqual(
             expected,
             count_lines_with_wrapping(text, linewidth),
         )
@@ -90,14 +90,14 @@ klasse SqueezerTest(unittest.TestCase):
             text_widget = self.make_text_widget(root=editwin.root)
             editwin.text = editwin.per.bottom = text_widget
 
-        return editwin
+        gib editwin
 
     def make_squeezer_instance(self, editor_window=Nichts):
         """Create an actual Squeezer instance mit a mock EditorWindow."""
         wenn editor_window is Nichts:
             editor_window = self.make_mock_editor_window()
         squeezer = Squeezer(editor_window)
-        return squeezer
+        gib squeezer
 
     def make_text_widget(self, root=Nichts):
         wenn root is Nichts:
@@ -105,7 +105,7 @@ klasse SqueezerTest(unittest.TestCase):
         text_widget = Text(root)
         text_widget["font"] = ('Courier', 10)
         text_widget.mark_set("iomark", "1.0")
-        return text_widget
+        gib text_widget
 
     def set_idleconf_option_with_cleanup(self, configType, section, option, value):
         prev_val = idleConf.GetOption(configType, section, option)
@@ -315,7 +315,7 @@ klasse ExpandingButtonTest(unittest.TestCase):
 
         # Set default values fuer the configuration settings.
         squeezer.auto_squeeze_min_lines = 50
-        return squeezer
+        gib squeezer
 
     @patch('idlelib.squeezer.Hovertip', autospec=Hovertip)
     def test_init(self, MockHovertip):
@@ -386,7 +386,7 @@ klasse ExpandingButtonTest(unittest.TestCase):
         text_widget = expandingbutton.text
         text_widget.window_create("1.0", window=expandingbutton)
 
-        # Patch the message box module to always return Falsch.
+        # Patch the message box module to always gib Falsch.
         mit patch('idlelib.squeezer.messagebox') als mock_msgbox:
             mock_msgbox.askokcancel.return_value = Falsch
             mock_msgbox.askyesno.return_value = Falsch
@@ -397,7 +397,7 @@ klasse ExpandingButtonTest(unittest.TestCase):
         self.assertEqual(retval, 'break')
         self.assertEqual(expandingbutton.text.get('1.0', 'end-1c'), '')
 
-        # Patch the message box module to always return Wahr.
+        # Patch the message box module to always gib Wahr.
         mit patch('idlelib.squeezer.messagebox') als mock_msgbox:
             mock_msgbox.askokcancel.return_value = Wahr
             mock_msgbox.askyesno.return_value = Wahr

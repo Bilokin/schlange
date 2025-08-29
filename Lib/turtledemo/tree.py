@@ -31,7 +31,7 @@ def tree(plist, l, a, f):
             lst.append(p)
             lst.append(q)
         fuer x in tree(lst, l*f, a, f):
-            yield Nichts
+            liefere Nichts
 
 def maketree():
     p = Turtle()
@@ -51,7 +51,7 @@ def main():
     a=clock()
     maketree()
     b=clock()
-    return "done: %.2f sec." % (b-a)
+    gib "done: %.2f sec." % (b-a)
 
 wenn __name__ == "__main__":
     msg = main()

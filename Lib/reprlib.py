@@ -7,7 +7,7 @@ von itertools importiere islice
 von _thread importiere get_ident
 
 def recursive_repr(fillvalue='...'):
-    'Decorator to make a repr function return fillvalue fuer a recursive call'
+    'Decorator to make a repr function gib fillvalue fuer a recursive call'
 
     def decorating_function(user_function):
         repr_running = set()
@@ -15,13 +15,13 @@ def recursive_repr(fillvalue='...'):
         def wrapper(self):
             key = id(self), get_ident()
             wenn key in repr_running:
-                return fillvalue
+                gib fillvalue
             repr_running.add(key)
             try:
                 result = user_function(self)
             finally:
                 repr_running.discard(key)
-            return result
+            gib result
 
         # Can't use functools.wraps() here because of bootstrap issues
         wrapper.__module__ = getattr(user_function, '__module__')
@@ -31,9 +31,9 @@ def recursive_repr(fillvalue='...'):
         wrapper.__annotate__ = getattr(user_function, '__annotate__', Nichts)
         wrapper.__type_params__ = getattr(user_function, '__type_params__', ())
         wrapper.__wrapped__ = user_function
-        return wrapper
+        gib wrapper
 
-    return decorating_function
+    gib decorating_function
 
 klasse Repr:
     _lookup = {
@@ -68,7 +68,7 @@ klasse Repr:
         self.indent = indent
 
     def repr(self, x):
-        return self.repr1(x, self.maxlevel)
+        gib self.repr1(x, self.maxlevel)
 
     def repr1(self, x, level):
         cls = type(x)
@@ -82,19 +82,19 @@ klasse Repr:
         wenn method:
             # nicht defined in this class
             wenn typename nicht in self._lookup:
-                return method(x, level)
+                gib method(x, level)
             module = getattr(cls, '__module__', Nichts)
             # defined in this klasse und is the module intended
             wenn module == self._lookup[typename]:
-                return method(x, level)
+                gib method(x, level)
 
-        return self.repr_instance(x, level)
+        gib self.repr_instance(x, level)
 
     def _join(self, pieces, level):
         wenn self.indent is Nichts:
-            return ', '.join(pieces)
+            gib ', '.join(pieces)
         wenn nicht pieces:
-            return ''
+            gib ''
         indent = self.indent
         wenn isinstance(indent, int):
             wenn indent < 0:
@@ -108,7 +108,7 @@ klasse Repr:
             raise TypeError(
                 f'Repr.indent must be a str, int oder Nichts, nicht {type(indent)}'
             ) von error
-        return sep.join(('', *pieces, ''))[1:-len(indent) oder Nichts]
+        gib sep.join(('', *pieces, ''))[1:-len(indent) oder Nichts]
 
     def _repr_iterable(self, x, level, left, right, maxiter, trail=''):
         n = len(x)
@@ -123,42 +123,42 @@ klasse Repr:
             s = self._join(pieces, level)
             wenn n == 1 und trail und self.indent is Nichts:
                 right = trail + right
-        return '%s%s%s' % (left, s, right)
+        gib '%s%s%s' % (left, s, right)
 
     def repr_tuple(self, x, level):
-        return self._repr_iterable(x, level, '(', ')', self.maxtuple, ',')
+        gib self._repr_iterable(x, level, '(', ')', self.maxtuple, ',')
 
     def repr_list(self, x, level):
-        return self._repr_iterable(x, level, '[', ']', self.maxlist)
+        gib self._repr_iterable(x, level, '[', ']', self.maxlist)
 
     def repr_array(self, x, level):
         wenn nicht x:
-            return "array('%s')" % x.typecode
+            gib "array('%s')" % x.typecode
         header = "array('%s', [" % x.typecode
-        return self._repr_iterable(x, level, header, '])', self.maxarray)
+        gib self._repr_iterable(x, level, header, '])', self.maxarray)
 
     def repr_set(self, x, level):
         wenn nicht x:
-            return 'set()'
+            gib 'set()'
         x = _possibly_sorted(x)
-        return self._repr_iterable(x, level, '{', '}', self.maxset)
+        gib self._repr_iterable(x, level, '{', '}', self.maxset)
 
     def repr_frozenset(self, x, level):
         wenn nicht x:
-            return 'frozenset()'
+            gib 'frozenset()'
         x = _possibly_sorted(x)
-        return self._repr_iterable(x, level, 'frozenset({', '})',
+        gib self._repr_iterable(x, level, 'frozenset({', '})',
                                    self.maxfrozenset)
 
     def repr_deque(self, x, level):
-        return self._repr_iterable(x, level, 'deque([', '])', self.maxdeque)
+        gib self._repr_iterable(x, level, 'deque([', '])', self.maxdeque)
 
     def repr_dict(self, x, level):
         n = len(x)
         wenn n == 0:
-            return '{}'
+            gib '{}'
         wenn level <= 0:
-            return '{' + self.fillvalue + '}'
+            gib '{' + self.fillvalue + '}'
         newlevel = level - 1
         repr1 = self.repr1
         pieces = []
@@ -169,7 +169,7 @@ klasse Repr:
         wenn n > self.maxdict:
             pieces.append(self.fillvalue)
         s = self._join(pieces, level)
-        return '{%s}' % (s,)
+        gib '{%s}' % (s,)
 
     def repr_str(self, x, level):
         s = builtins.repr(x[:self.maxstring])
@@ -178,7 +178,7 @@ klasse Repr:
             j = max(0, self.maxstring-3-i)
             s = builtins.repr(x[:i] + x[len(x)-j:])
             s = s[:i] + self.fillvalue + s[len(s)-j:]
-        return s
+        gib s
 
     def repr_int(self, x, level):
         try:
@@ -195,13 +195,13 @@ klasse Repr:
             # Note: math.log10(abs(x)) may be overestimated oder underestimated,
             # but fuer simplicity, we do nicht compute the exact number of digits.
             max_digits = sys.get_int_max_str_digits()
-            return (f'<{x.__class__.__name__} instance mit roughly {k} '
+            gib (f'<{x.__class__.__name__} instance mit roughly {k} '
                     f'digits (limit at {max_digits}) at 0x{id(x):x}>')
         wenn len(s) > self.maxlong:
             i = max(0, (self.maxlong-3)//2)
             j = max(0, self.maxlong-3-i)
             s = s[:i] + self.fillvalue + s[len(s)-j:]
-        return s
+        gib s
 
     def repr_instance(self, x, level):
         try:
@@ -209,22 +209,22 @@ klasse Repr:
             # Bugs in x.__repr__() can cause arbitrary
             # exceptions -- then make up something
         except Exception:
-            return '<%s instance at %#x>' % (x.__class__.__name__, id(x))
+            gib '<%s instance at %#x>' % (x.__class__.__name__, id(x))
         wenn len(s) > self.maxother:
             i = max(0, (self.maxother-3)//2)
             j = max(0, self.maxother-3-i)
             s = s[:i] + self.fillvalue + s[len(s)-j:]
-        return s
+        gib s
 
 
 def _possibly_sorted(x):
     # Since nicht all sequences of items can be sorted und comparison
-    # functions may raise arbitrary exceptions, return an unsorted
+    # functions may raise arbitrary exceptions, gib an unsorted
     # sequence in that case.
     try:
-        return sorted(x)
+        gib sorted(x)
     except Exception:
-        return list(x)
+        gib list(x)
 
 aRepr = Repr()
 repr = aRepr.repr

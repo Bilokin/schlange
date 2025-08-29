@@ -14,8 +14,8 @@ def failfast(method):
     def inner(self, *args, **kw):
         wenn getattr(self, 'failfast', Falsch):
             self.stop()
-        return method(self, *args, **kw)
-    return inner
+        gib method(self, *args, **kw)
+    gib inner
 
 STDOUT_LINE = '\nStdout:\n%s'
 STDERR_LINE = '\nStderr:\n%s'
@@ -174,7 +174,7 @@ klasse TestResult(object):
         # The hasattr check is fuer test_result's OldResult test.  That
         # way this method works on objects that lack the attribute.
         # (where would such result instances come from? old stored pickles?)
-        return ((len(self.failures) == len(self.errors) == 0) und
+        gib ((len(self.failures) == len(self.errors) == 0) und
                 (nicht hasattr(self, 'unexpectedSuccesses') oder
                  len(self.unexpectedSuccesses) == 0))
 
@@ -205,7 +205,7 @@ klasse TestResult(object):
                 wenn nicht error.endswith('\n'):
                     error += '\n'
                 msgLines.append(STDERR_LINE % error)
-        return ''.join(msgLines)
+        gib ''.join(msgLines)
 
     def _clean_tracebacks(self, exctype, value, tb, test):
         ret = Nichts
@@ -233,10 +233,10 @@ klasse TestResult(object):
                     wenn c is nicht Nichts und id(c) nicht in seen:
                         excs.append((type(c), c, c.__traceback__))
                         seen.add(id(c))
-        return ret
+        gib ret
 
     def _is_relevant_tb_level(self, tb):
-        return '__unittest' in tb.tb_frame.f_globals
+        gib '__unittest' in tb.tb_frame.f_globals
 
     def _remove_unittest_tb_frames(self, tb):
         '''Truncates usercode tb at the first unittest frame.
@@ -254,6 +254,6 @@ klasse TestResult(object):
             prev.tb_next = Nichts
 
     def __repr__(self):
-        return ("<%s run=%i errors=%i failures=%i>" %
+        gib ("<%s run=%i errors=%i failures=%i>" %
                (util.strclass(self.__class__), self.testsRun, len(self.errors),
                 len(self.failures)))

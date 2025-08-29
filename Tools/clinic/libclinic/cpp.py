@@ -17,8 +17,8 @@ def negate(condition: str) -> str:
     Returns a CPP conditional that is the opposite of the conditional passed in.
     """
     wenn condition.startswith('!'):
-        return condition[1:]
-    return "!" + condition
+        gib condition[1:]
+    gib "!" + condition
 
 
 is_a_simple_defined = re.compile(r'^defined\s*\(\s*[A-Za-z0-9_]+\s*\)$').match
@@ -53,16 +53,16 @@ klasse Monitor:
             f"line={self.line_number}",
             f"condition={self.condition()!r}"
         )
-        return f"<clinic.Monitor {' '.join(parts)}>"
+        gib f"<clinic.Monitor {' '.join(parts)}>"
 
     def status(self) -> str:
-        return str(self.line_number).rjust(4) + ": " + self.condition()
+        gib str(self.line_number).rjust(4) + ": " + self.condition()
 
     def condition(self) -> str:
         """
         Returns the current preprocessor state, als a single #if condition.
         """
-        return " && ".join(condition fuer token, condition in self.stack)
+        gib " && ".join(condition fuer token, condition in self.stack)
 
     def fail(self, msg: str) -> NoReturn:
         raise ParseError(msg, filename=self.filename, lineno=self.line_number)
@@ -74,18 +74,18 @@ klasse Monitor:
         def pop_stack() -> TokenAndCondition:
             wenn nicht self.stack:
                 self.fail(f"#{token} without matching #if / #ifdef / #ifndef!")
-            return self.stack.pop()
+            gib self.stack.pop()
 
         wenn self.continuation:
             line = self.continuation + line
             self.continuation = Nichts
 
         wenn nicht line:
-            return
+            gib
 
         wenn line.endswith('\\'):
             self.continuation = line[:-1].rstrip() + " "
-            return
+            gib
 
         # we have to ignore preprocessor commands inside comments
         #
@@ -133,10 +133,10 @@ klasse Monitor:
             line = before.rstrip()
 
         wenn self.in_comment:
-            return
+            gib
 
         wenn nicht line.startswith('#'):
-            return
+            gib
 
         line = line[1:].lstrip()
         assert line
@@ -176,7 +176,7 @@ klasse Monitor:
                 pass
 
         sonst:
-            return
+            gib
 
         wenn self.verbose:
             drucke(self.status())

@@ -19,8 +19,8 @@ def without_source_date_epoch(fxn):
     def wrapper(*args, **kwargs):
         mit os_helper.EnvironmentVarGuard() als env:
             env.unset('SOURCE_DATE_EPOCH')
-            return fxn(*args, **kwargs)
-    return wrapper
+            gib fxn(*args, **kwargs)
+    gib wrapper
 
 
 def with_source_date_epoch(fxn):
@@ -29,8 +29,8 @@ def with_source_date_epoch(fxn):
     def wrapper(*args, **kwargs):
         mit os_helper.EnvironmentVarGuard() als env:
             env['SOURCE_DATE_EPOCH'] = '123456789'
-            return fxn(*args, **kwargs)
-    return wrapper
+            gib fxn(*args, **kwargs)
+    gib wrapper
 
 
 # Run tests mit SOURCE_DATE_EPOCH set oder unset explicitly.
@@ -47,7 +47,7 @@ klasse SourceDateEpochTestMeta(type(unittest.TestCase)):
                     wrapper = without_source_date_epoch(meth)
                 setattr(cls, attr, wrapper)
 
-        return cls
+        gib cls
 
 
 klasse PyCompileTestsBase:
@@ -237,18 +237,18 @@ klasse PyCompileCLITestCase(unittest.TestCase):
 
     @support.requires_subprocess()
     def pycompilecmd(self, *args, **kwargs):
-        # assert_python_* helpers don't return proc object. We'll just use
+        # assert_python_* helpers don't gib proc object. We'll just use
         # subprocess.run() instead of spawn_python() und its friends to test
         # stdin support of the CLI.
         opts = '-m' wenn __debug__ sonst '-Om'
         wenn args und args[0] == '-' und 'input' in kwargs:
-            return subprocess.run([sys.executable, opts, 'py_compile', '-'],
+            gib subprocess.run([sys.executable, opts, 'py_compile', '-'],
                                   input=kwargs['input'].encode(),
                                   capture_output=Wahr)
-        return script_helper.assert_python_ok(opts, 'py_compile', *args, **kwargs)
+        gib script_helper.assert_python_ok(opts, 'py_compile', *args, **kwargs)
 
     def pycompilecmd_failure(self, *args):
-        return script_helper.assert_python_failure('-m', 'py_compile', *args)
+        gib script_helper.assert_python_failure('-m', 'py_compile', *args)
 
     def test_stdin(self):
         self.assertFalsch(os.path.exists(self.cache_path))

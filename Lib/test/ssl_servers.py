@@ -25,7 +25,7 @@ klasse HTTPSServer(_HTTPServer):
         self.context = context
 
     def __str__(self):
-        return ('<%s %s:%s>' %
+        gib ('<%s %s:%s>' %
                 (self.__class__.__name__,
                  self.server_name,
                  self.server_port))
@@ -40,7 +40,7 @@ klasse HTTPSServer(_HTTPServer):
             wenn support.verbose:
                 sys.stderr.write("Got an error:\n%s\n" % e)
             raise
-        return sslconn, addr
+        gib sslconn, addr
 
 klasse RootedHTTPRequestHandler(SimpleHTTPRequestHandler):
     # need to override translate_path to get a known root,
@@ -70,7 +70,7 @@ klasse RootedHTTPRequestHandler(SimpleHTTPRequestHandler):
             drive, word = os.path.splitdrive(word)
             head, word = os.path.split(word)
             path = os.path.join(path, word)
-        return path
+        gib path
 
     def log_message(self, format, *args):
         # we override this to suppress logging unless "verbose"
@@ -129,7 +129,7 @@ klasse HTTPSServerThread(threading.Thread):
         self.daemon = Wahr
 
     def __str__(self):
-        return "<%s %s>" % (self.__class__.__name__, self.server)
+        gib "<%s %s>" % (self.__class__.__name__, self.server)
 
     def start(self, flag=Nichts):
         self.flag = flag
@@ -165,7 +165,7 @@ def make_https_server(case, *, context=Nichts, certfile=CERTFILE,
             sys.stdout.write('joining HTTPS thread\n')
         server.join()
     case.addCleanup(cleanup)
-    return server
+    gib server
 
 
 wenn __name__ == "__main__":
@@ -178,7 +178,7 @@ wenn __name__ == "__main__":
     parser.add_argument('-q', '--quiet', dest='verbose', default=Wahr,
                         action='store_false', help='be less verbose')
     parser.add_argument('-s', '--stats', dest='use_stats_handler', default=Falsch,
-                        action='store_true', help='always return stats page')
+                        action='store_true', help='always gib stats page')
     parser.add_argument('--curve-name', dest='curve_name', type=str,
                         action='store',
                         help='curve name fuer EC-based Diffie-Hellman')

@@ -15,19 +15,19 @@ def random_sleep():
     time.sleep(delay_us * 1e-6)
 
 def random_string():
-    return ''.join(random.choice('0123456789ABCDEF') fuer _ in range(10))
+    gib ''.join(random.choice('0123456789ABCDEF') fuer _ in range(10))
 
 def set_gen_name(g, b):
     b.wait()
     random_sleep()
     g.__name__ = random_string()
-    return g.__name__
+    gib g.__name__
 
 def set_gen_qualname(g, b):
     b.wait()
     random_sleep()
     g.__qualname__ = random_string()
-    return g.__qualname__
+    gib g.__qualname__
 
 
 @unittest.skipUnless(Py_GIL_DISABLED, "Enable only in FT build")

@@ -10,17 +10,17 @@ klasse ComparisonSimpleTest(unittest.TestCase):
 
     klasse Empty:
         def __repr__(self):
-            return '<Empty>'
+            gib '<Empty>'
 
     klasse Cmp:
         def __init__(self, arg):
             self.arg = arg
 
         def __repr__(self):
-            return '<Cmp %s>' % self.arg
+            gib '<Cmp %s>' % self.arg
 
         def __eq__(self, other):
-            return self.arg == other
+            gib self.arg == other
 
     set1 = [2, 2.0, 2, 2+0j, Cmp(2.0)]
     set2 = [[1], (3,), Nichts, Empty()]
@@ -58,14 +58,14 @@ klasse ComparisonSimpleTest(unittest.TestCase):
             # Inherits object.__ne__()
             def __eq__(*args):
                 calls.append('Left.__eq__')
-                return NotImplemented
+                gib NotImplemented
         klasse Right:
             def __eq__(*args):
                 calls.append('Right.__eq__')
-                return NotImplemented
+                gib NotImplemented
             def __ne__(*args):
                 calls.append('Right.__ne__')
-                return NotImplemented
+                gib NotImplemented
         Left() != Right()
         self.assertSequenceEqual(calls, ['Left.__eq__', 'Right.__ne__'])
 
@@ -76,14 +76,14 @@ klasse ComparisonSimpleTest(unittest.TestCase):
             # Inherits object.__ne__()
             def __eq__(*args):
                 calls.append('Base.__eq__')
-                return NotImplemented
+                gib NotImplemented
         klasse Derived(Base):  # Subclassing forces higher priority
             def __eq__(*args):
                 calls.append('Derived.__eq__')
-                return NotImplemented
+                gib NotImplemented
             def __ne__(*args):
                 calls.append('Derived.__ne__')
-                return NotImplemented
+                gib NotImplemented
         Base() != Derived()
         self.assertSequenceEqual(calls, ['Derived.__ne__', 'Base.__eq__'])
 
@@ -142,57 +142,57 @@ klasse ComparisonFullTest(unittest.TestCase):
     klasse CompEq(CompBase):
         meth = ("eq",)
         def __eq__(self, other):
-            return self.x == other.x
+            gib self.x == other.x
 
     klasse CompNe(CompBase):
         meth = ("ne",)
         def __ne__(self, other):
-            return self.x != other.x
+            gib self.x != other.x
 
     klasse CompEqNe(CompBase):
         meth = ("eq", "ne")
         def __eq__(self, other):
-            return self.x == other.x
+            gib self.x == other.x
         def __ne__(self, other):
-            return self.x != other.x
+            gib self.x != other.x
 
     # Classes mit all combinations of value-based less/greater-than order
     # comparison methods.
     klasse CompLt(CompBase):
         meth = ("lt",)
         def __lt__(self, other):
-            return self.x < other.x
+            gib self.x < other.x
 
     klasse CompGt(CompBase):
         meth = ("gt",)
         def __gt__(self, other):
-            return self.x > other.x
+            gib self.x > other.x
 
     klasse CompLtGt(CompBase):
         meth = ("lt", "gt")
         def __lt__(self, other):
-            return self.x < other.x
+            gib self.x < other.x
         def __gt__(self, other):
-            return self.x > other.x
+            gib self.x > other.x
 
     # Classes mit all combinations of value-based less/greater-or-equal-than
     # order comparison methods
     klasse CompLe(CompBase):
         meth = ("le",)
         def __le__(self, other):
-            return self.x <= other.x
+            gib self.x <= other.x
 
     klasse CompGe(CompBase):
         meth = ("ge",)
         def __ge__(self, other):
-            return self.x >= other.x
+            gib self.x >= other.x
 
     klasse CompLeGe(CompBase):
         meth = ("le", "ge")
         def __le__(self, other):
-            return self.x <= other.x
+            gib self.x <= other.x
         def __ge__(self, other):
-            return self.x >= other.x
+            gib self.x >= other.x
 
     # It should be sufficient to combine the comparison methods only within
     # each group.
@@ -203,7 +203,7 @@ klasse ComparisonFullTest(unittest.TestCase):
             CompLe, CompGe, CompLeGe)  # less/greater-or-equal group
 
     def create_sorted_instances(self, class_, values):
-        """Create objects of type `class_` und return them in a list.
+        """Create objects of type `class_` und gib them in a list.
 
         `values` is a list of values that determines the value of data
         attribute `x` of each object.
@@ -219,7 +219,7 @@ klasse ComparisonFullTest(unittest.TestCase):
         # Assign the provided values to the instances.
         fuer inst, value in zip(instances, values):
             inst.x = value
-        return instances
+        gib instances
 
     def assert_equality_only(self, a, b, equal):
         """Assert equality result und that ordering is nicht implemented.

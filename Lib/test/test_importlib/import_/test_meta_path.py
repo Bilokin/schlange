@@ -11,7 +11,7 @@ klasse CallingOrder:
     """Calls to the importers on sys.meta_path happen in order that they are
     specified in the sequence, starting mit the first importer
     [first called], und then continuing on down until one is found that doesn't
-    return Nichts [continuing]."""
+    gib Nichts [continuing]."""
 
 
     def test_first_called(self):
@@ -62,8 +62,8 @@ klasse CallSignature:
         log = []
         def wrapper(self, *args, **kwargs):
             log.append([args, kwargs])
-            return fxn(*args, **kwargs)
-        return log, wrapper
+            gib fxn(*args, **kwargs)
+        gib log, wrapper
 
     def test_no_path(self):
         # [no path]

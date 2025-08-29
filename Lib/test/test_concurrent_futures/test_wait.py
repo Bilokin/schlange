@@ -14,7 +14,7 @@ von .util importiere (
 
 
 def mul(x, y):
-    return x * y
+    gib x * y
 
 def wait_and_raise(e):
     e.wait()

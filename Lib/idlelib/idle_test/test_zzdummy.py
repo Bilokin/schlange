@@ -80,7 +80,7 @@ klasse ZZDummyTest(unittest.TestCase):
         fuer line in range(1, end_line):
             txt = text.get(f'{line}.0', f'{line}.end')
             actual.append(txt.startswith(value))
-        return actual
+        gib actual
 
     def test_init(self):
         zz = self.zz

@@ -20,14 +20,14 @@ klasse TypeParamsInvalidTest(unittest.TestCase):
         check_syntax_error(self, 'class C[*A, **A](): ...', "duplicate type parameter 'A'")
 
     def test_name_non_collision_02(self):
-        ns = run_code("""def func[A](A): return A""")
+        ns = run_code("""def func[A](A): gib A""")
         func = ns["func"]
         self.assertEqual(func(1), 1)
         A, = func.__type_params__
         self.assertEqual(A.__name__, "A")
 
     def test_name_non_collision_03(self):
-        ns = run_code("""def func[A](*A): return A""")
+        ns = run_code("""def func[A](*A): gib A""")
         func = ns["func"]
         self.assertEqual(func(1), (1,))
         A, = func.__type_params__
@@ -37,7 +37,7 @@ klasse TypeParamsInvalidTest(unittest.TestCase):
         # Mangled names should nicht cause a conflict.
         ns = run_code("""
             klasse ClassA:
-                def func[__A](self, __A): return __A
+                def func[__A](self, __A): gib __A
             """
         )
         cls = ns["ClassA"]
@@ -48,7 +48,7 @@ klasse TypeParamsInvalidTest(unittest.TestCase):
     def test_name_non_collision_05(self):
         ns = run_code("""
             klasse ClassA:
-                def func[_ClassA__A](self, __A): return __A
+                def func[_ClassA__A](self, __A): gib __A
             """
         )
         cls = ns["ClassA"]
@@ -59,7 +59,7 @@ klasse TypeParamsInvalidTest(unittest.TestCase):
     def test_name_non_collision_06(self):
         ns = run_code("""
             klasse ClassA[X]:
-                def func(self, X): return X
+                def func(self, X): gib X
             """
         )
         cls = ns["ClassA"]
@@ -72,7 +72,7 @@ klasse TypeParamsInvalidTest(unittest.TestCase):
             klasse ClassA[X]:
                 def func(self):
                     X = 1
-                    return X
+                    gib X
             """
         )
         cls = ns["ClassA"]
@@ -84,7 +84,7 @@ klasse TypeParamsInvalidTest(unittest.TestCase):
         ns = run_code("""
             klasse ClassA[X]:
                 def func(self):
-                    return [X fuer X in [1, 2]]
+                    gib [X fuer X in [1, 2]]
             """
         )
         cls = ns["ClassA"]
@@ -124,7 +124,7 @@ klasse TypeParamsInvalidTest(unittest.TestCase):
                 def inner[X]():
                     global X
                     X = 2
-                return inner
+                gib inner
             """
         )
         self.assertEqual(ns["X"], 1)
@@ -160,7 +160,7 @@ klasse TypeParamsNonlocalTest(unittest.TestCase):
                 X = 1
                 def inner[X]():
                     nonlocal X
-                return X
+                gib X
             """
         check_syntax_error(self, code)
 
@@ -283,8 +283,8 @@ klasse TypeParamsAccessTest(unittest.TestCase):
                 def funcB[B](self):
                     klasse ClassC[C]:
                         def funcD[D](self):
-                            return lambda: (A, B, C, D)
-                    return ClassC
+                            gib lambda: (A, B, C, D)
+                    gib ClassC
             """
         )
         cls = ns["ClassA"]
@@ -351,8 +351,8 @@ klasse TypeParamsAccessTest(unittest.TestCase):
                 def inner():
                     nonlocal T
                     T = "inner"
-                    return T
-                return lambda: T, inner
+                    gib T
+                gib lambda: T, inner
         """)
         outer = ns["outer"]
         T, = outer.__type_params__
@@ -372,13 +372,13 @@ klasse TypeParamsAccessTest(unittest.TestCase):
     def test_super(self):
         klasse Base:
             def meth(self):
-                return "base"
+                gib "base"
 
         klasse Child(Base):
             # Having int in the annotation ensures the klasse gets cells fuer both
             # __class__ und __classdict__
             def meth[T](self, arg: int) -> T:
-                return super().meth() + "child"
+                gib super().meth() + "child"
 
         c = Child()
         self.assertEqual(c.meth(1), "basechild")
@@ -413,7 +413,7 @@ klasse TypeParamsAccessTest(unittest.TestCase):
         self.assertEqual(func(), 1)
 
     def test_comprehension_03(self):
-        def F[T: [lambda: T fuer T in (T, [1])[1]]](): return [lambda: T fuer T in T.__name__]
+        def F[T: [lambda: T fuer T in (T, [1])[1]]](): gib [lambda: T fuer T in T.__name__]
         func, = F()
         self.assertEqual(func(), "T")
         T, = F.__type_params__
@@ -572,7 +572,7 @@ klasse TypeParamsAccessTest(unittest.TestCase):
 def make_base(arg):
     klasse Base:
         __arg__ = arg
-    return Base
+    gib Base
 
 
 def global_generic_func[T]():
@@ -687,7 +687,7 @@ klasse TypeParamsClassScopeTest(unittest.TestCase):
                     bound = meth.__type_params__[0].__bound__
                     annotation = meth.__annotations__["arg"]
                     x = "class"
-                return Cls
+                gib Cls
         """)
         cls = ns["outer"]()
         self.assertEqual(cls.val, "global")
@@ -704,7 +704,7 @@ klasse TypeParamsClassScopeTest(unittest.TestCase):
                     val = Alias.__value__
                     def meth[T: x](self, arg: x): ...
                     bound = meth.__type_params__[0].__bound__
-                return Cls
+                gib Cls
         """)
         cls = ns["outer"]()
         self.assertEqual(cls.val, "nonlocal")
@@ -720,7 +720,7 @@ klasse TypeParamsClassScopeTest(unittest.TestCase):
                     global x
                     type Alias = x
                 Cls.x = "class"
-                return Cls
+                gib Cls
         """)
         cls = ns["outer"]()
         self.assertEqual(cls.Alias.__value__, "global")
@@ -732,7 +732,7 @@ klasse TypeParamsClassScopeTest(unittest.TestCase):
                     global x
                     type Alias = x
                 Cls.x = "class"
-                return Cls
+                gib Cls
         """)
         ns["x"] = "global"
         cls = ns["outer"]()
@@ -748,7 +748,7 @@ klasse TypeParamsClassScopeTest(unittest.TestCase):
                     type Alias = x
                     x = "global von class"
                 Cls.x = "class"
-                return Cls
+                gib Cls
         """)
         cls = ns["outer"]()
         self.assertEqual(cls.Alias.__value__, "global von class")
@@ -762,7 +762,7 @@ klasse TypeParamsClassScopeTest(unittest.TestCase):
                     nonlocal x
                     type Alias = x
                     x = "class"
-                return Cls
+                gib Cls
         """)
         cls = ns["outer"]()
         self.assertEqual(cls.Alias.__value__, "class")
@@ -775,7 +775,7 @@ klasse TypeParamsClassScopeTest(unittest.TestCase):
                     T = int
                     klasse D[U](T):
                         x = T
-                return C
+                gib C
         """)
         C = ns["f"]()
         self.assertIn(int, C.D.__bases__)
@@ -811,7 +811,7 @@ klasse TypeParamsManglingTest(unittest.TestCase):
         klasse Foo[__T]:
             param = __T
             def meth[__U](self, arg: __T, arg2: __U):
-                return (__T, __U)
+                gib (__T, __U)
             type Alias[__V] = (__T, __V)
 
         T = Foo.__type_params__[0]
@@ -844,7 +844,7 @@ klasse TypeParamsManglingTest(unittest.TestCase):
                 _X_foo = 2
                 __foo = 1
                 assert locals()['__foo'] == 1
-                return __foo
+                gib __foo
         """)
         self.assertEqual(ns["f"](), 1)
 
@@ -928,7 +928,7 @@ klasse TypeParamsComplexCallsTest(unittest.TestCase):
         # Generic functions mit both defaults und kwdefaults trigger a specific code path
         # in the compiler.
         def func[T](a: T = "a", *, b: T = "b"):
-            return (a, b)
+            gib (a, b)
 
         T, = func.__type_params__
         self.assertIs(func.__annotations__["a"], T)
@@ -999,13 +999,13 @@ klasse TypeParamsTraditionalTypeVarsTest(unittest.TestCase):
         von typing importiere TypeVar
         S = TypeVar("S")
         def func[T](a: T, b: S) -> T | S:
-            return a
+            gib a
 
 
 klasse TypeParamsTypeVarTest(unittest.TestCase):
     def test_typevar_01(self):
         def func1[A: str, B: str | int, C: (int, str)]():
-            return (A, B, C)
+            gib (A, B, C)
 
         a, b, c = func1()
 
@@ -1031,13 +1031,13 @@ klasse TypeParamsTypeVarTest(unittest.TestCase):
     def test_typevar_generator(self):
         def get_generator[A]():
             def generator1[C]():
-                yield C
+                liefere C
 
             def generator2[B]():
-                yield A
-                yield B
-                yield von generator1()
-            return generator2
+                liefere A
+                liefere B
+                liefere von generator1()
+            gib generator2
 
         gen = get_generator()
 
@@ -1053,8 +1053,8 @@ klasse TypeParamsTypeVarTest(unittest.TestCase):
     def test_typevar_coroutine(self):
         def get_coroutine[A]():
             async def coroutine[B]():
-                return (A, B)
-            return coroutine
+                gib (A, B)
+            gib coroutine
 
         co = get_coroutine()
 
@@ -1083,7 +1083,7 @@ klasse TypeParamsTypeVarTupleTest(unittest.TestCase):
 
     def test_typevartuple_02(self):
         def func1[*A]():
-            return A
+            gib A
 
         a = func1()
         self.assertIsInstance(a, TypeVarTuple)
@@ -1106,7 +1106,7 @@ klasse TypeParamsTypeVarParamSpecTest(unittest.TestCase):
 
     def test_paramspec_02(self):
         def func1[**A]():
-            return A
+            gib A
 
         a = func1()
         self.assertIsInstance(a, ParamSpec)
@@ -1121,7 +1121,7 @@ klasse TypeParamsTypeParamsDunder(unittest.TestCase):
             klasse Inner[C, D]:
                 @staticmethod
                 def get_typeparams():
-                    return A, B, C, D
+                    gib A, B, C, D
 
         a, b, c, d = Outer.Inner.get_typeparams()
         self.assertEqual(Outer.__type_params__, (a, b))
@@ -1150,9 +1150,9 @@ klasse TypeParamsTypeParamsDunder(unittest.TestCase):
     def test_typeparams_dunder_function_01(self):
         def outer[A, B]():
             def inner[C, D]():
-                return A, B, C, D
+                gib A, B, C, D
 
-            return inner
+            gib inner
 
         inner = outer()
         a, b, c, d = inner()
@@ -1301,7 +1301,7 @@ klasse TypeParamsRuntimeTest(unittest.TestCase):
 
         klasse Meta(type):
             def __prepare__(name, bases):
-                return WeirdMapping()
+                gib WeirdMapping()
 
         klasse MyClass[V](metaclass=Meta):
             klasse Inner[U](T):

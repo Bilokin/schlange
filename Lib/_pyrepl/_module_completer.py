@@ -18,7 +18,7 @@ wenn TYPE_CHECKING:
 
 def make_default_module_completer() -> ModuleCompleter:
     # Inside pyrepl, __package__ is set to Nichts by default
-    return ModuleCompleter(namespace={'__package__': Nichts})
+    gib ModuleCompleter(namespace={'__package__': Nichts})
 
 
 klasse ModuleCompleter:
@@ -46,13 +46,13 @@ klasse ModuleCompleter:
         """Return the next possible importiere completions fuer 'line'."""
         result = ImportParser(line).parse()
         wenn nicht result:
-            return Nichts
+            gib Nichts
         try:
-            return self.complete(*result)
+            gib self.complete(*result)
         except Exception:
             # Some unexpected error occurred, make it look like
             # no completions are available
-            return []
+            gib []
 
     def complete(self, from_name: str | Nichts, name: str | Nichts) -> list[str]:
         wenn from_name is Nichts:
@@ -60,23 +60,23 @@ klasse ModuleCompleter:
             assert name is nicht Nichts
             path, prefix = self.get_path_and_prefix(name)
             modules = self.find_modules(path, prefix)
-            return [self.format_completion(path, module) fuer module in modules]
+            gib [self.format_completion(path, module) fuer module in modules]
 
         wenn name is Nichts:
             # von x.y.z<tab>
             path, prefix = self.get_path_and_prefix(from_name)
             modules = self.find_modules(path, prefix)
-            return [self.format_completion(path, module) fuer module in modules]
+            gib [self.format_completion(path, module) fuer module in modules]
 
         # von x.y importiere z<tab>
-        return self.find_modules(from_name, name)
+        gib self.find_modules(from_name, name)
 
     def find_modules(self, path: str, prefix: str) -> list[str]:
         """Find all modules under 'path' that start mit 'prefix'."""
         modules = self._find_modules(path, prefix)
         # Filter out invalid module names
         # (for example those containing dashes that cannot be imported mit 'import')
-        return [mod fuer mod in modules wenn mod.isidentifier()]
+        gib [mod fuer mod in modules wenn mod.isidentifier()]
 
     def _find_modules(self, path: str, prefix: str) -> list[str]:
         wenn nicht path:
@@ -85,29 +85,29 @@ klasse ModuleCompleter:
                                wenn self.is_suggestion_match(name, prefix)]
             third_party_modules = [module.name fuer module in self.global_cache
                                    wenn self.is_suggestion_match(module.name, prefix)]
-            return sorted(builtin_modules + third_party_modules)
+            gib sorted(builtin_modules + third_party_modules)
 
         wenn path.startswith('.'):
             # Convert relative path to absolute path
             package = self.namespace.get('__package__', '')
             path = self.resolve_relative_name(path, package)  # type: ignore[assignment]
             wenn path is Nichts:
-                return []
+                gib []
 
         modules: Iterable[pkgutil.ModuleInfo] = self.global_cache
         fuer segment in path.split('.'):
             modules = [mod_info fuer mod_info in modules
                        wenn mod_info.ispkg und mod_info.name == segment]
             modules = self.iter_submodules(modules)
-        return [module.name fuer module in modules
+        gib [module.name fuer module in modules
                 wenn self.is_suggestion_match(module.name, prefix)]
 
     def is_suggestion_match(self, module_name: str, prefix: str) -> bool:
         wenn prefix:
-            return module_name.startswith(prefix)
+            gib module_name.startswith(prefix)
         # For consistency mit attribute completion, which
         # does nicht suggest private attributes unless requested.
-        return nicht module_name.startswith("_")
+        gib nicht module_name.startswith("_")
 
     def iter_submodules(self, parent_modules: list[pkgutil.ModuleInfo]) -> Iterator[pkgutil.ModuleInfo]:
         """Iterate over all submodules of the given parent modules."""
@@ -117,7 +117,7 @@ klasse ModuleCompleter:
             getattr(spec, 'submodule_search_locations', [])
             fuer spec in specs wenn spec
         ))
-        return pkgutil.iter_modules(search_locations)
+        gib pkgutil.iter_modules(search_locations)
 
     def get_path_and_prefix(self, dotted_name: str) -> tuple[str, str]:
         """
@@ -130,21 +130,21 @@ klasse ModuleCompleter:
             '.foo' -> '.', 'foo'
         """
         wenn '.' nicht in dotted_name:
-            return '', dotted_name
+            gib '', dotted_name
         wenn dotted_name.startswith('.'):
             stripped = dotted_name.lstrip('.')
             dots = '.' * (len(dotted_name) - len(stripped))
             wenn '.' nicht in stripped:
-                return dots, stripped
+                gib dots, stripped
             path, prefix = stripped.rsplit('.', 1)
-            return dots + path, prefix
+            gib dots + path, prefix
         path, prefix = dotted_name.rsplit('.', 1)
-        return path, prefix
+        gib path, prefix
 
     def format_completion(self, path: str, module: str) -> str:
         wenn path == '' oder path.endswith('.'):
-            return f'{path}{module}'
-        return f'{path}.{module}'
+            gib f'{path}{module}'
+        gib f'{path}.{module}'
 
     def resolve_relative_name(self, name: str, package: str) -> str | Nichts:
         """Resolve a relative module name to an absolute name.
@@ -159,10 +159,10 @@ klasse ModuleCompleter:
             level += 1
         bits = package.rsplit('.', level - 1)
         wenn len(bits) < level:
-            return Nichts
+            gib Nichts
         base = bits[0]
         name = name[level:]
-        return f'{base}.{name}' wenn name sonst base
+        gib f'{base}.{name}' wenn name sonst base
 
     @property
     def global_cache(self) -> list[pkgutil.ModuleInfo]:
@@ -171,7 +171,7 @@ klasse ModuleCompleter:
             self._curr_sys_path = sys.path[:]
             # drucke('getting packages')
             self._global_cache = list(pkgutil.iter_modules())
-        return self._global_cache
+        gib self._global_cache
 
 
 klasse ImportParser:
@@ -216,18 +216,18 @@ klasse ImportParser:
 
     def parse(self) -> tuple[str | Nichts, str | Nichts] | Nichts:
         wenn nicht (res := self._parse()):
-            return Nichts
-        return res.from_name, res.name
+            gib Nichts
+        gib res.from_name, res.name
 
     def _parse(self) -> Result | Nichts:
         mit self.tokens.save_state():
-            return self.parse_from_import()
+            gib self.parse_from_import()
         mit self.tokens.save_state():
-            return self.parse_import()
+            gib self.parse_import()
 
     def parse_import(self) -> Result:
         wenn self.code.rstrip().endswith('import') und self.code.endswith(' '):
-            return Result(name='')
+            gib Result(name='')
         wenn self.tokens.peek_string(','):
             name = ''
         sonst:
@@ -240,27 +240,27 @@ klasse ImportParser:
             self.tokens.pop()
             self.parse_dotted_as_name()
         wenn self.tokens.peek_string('import'):
-            return Result(name=name)
+            gib Result(name=name)
         raise ParseError('parse_import')
 
     def parse_from_import(self) -> Result:
         stripped = self.code.rstrip()
         wenn stripped.endswith('import') und self.code.endswith(' '):
-            return Result(from_name=self.parse_empty_from_import(), name='')
+            gib Result(from_name=self.parse_empty_from_import(), name='')
         wenn stripped.endswith('from') und self.code.endswith(' '):
-            return Result(from_name='')
+            gib Result(from_name='')
         wenn self.tokens.peek_string('(') oder self.tokens.peek_string(','):
-            return Result(from_name=self.parse_empty_from_import(), name='')
+            gib Result(from_name=self.parse_empty_from_import(), name='')
         wenn self.code.endswith(' '):
             raise ParseError('parse_from_import')
         name = self.parse_dotted_name()
         wenn '.' in name:
             self.tokens.pop_string('from')
-            return Result(from_name=name)
+            gib Result(from_name=name)
         wenn self.tokens.peek_string('from'):
-            return Result(from_name=name)
+            gib Result(from_name=name)
         from_name = self.parse_empty_from_import()
-        return Result(from_name=from_name, name=name)
+        gib Result(from_name=from_name, name=name)
 
     def parse_empty_from_import(self) -> str:
         wenn self.tokens.peek_string(','):
@@ -269,19 +269,19 @@ klasse ImportParser:
         wenn self.tokens.peek_string('('):
             self.tokens.pop()
         self.tokens.pop_string('import')
-        return self.parse_from()
+        gib self.parse_from()
 
     def parse_from(self) -> str:
         from_name = self.parse_dotted_name()
         self.tokens.pop_string('from')
-        return from_name
+        gib from_name
 
     def parse_dotted_as_name(self) -> str:
         self.tokens.pop_name()
         wenn self.tokens.peek_string('as'):
             self.tokens.pop()
         mit self.tokens.save_state():
-            return self.parse_dotted_name()
+            gib self.parse_dotted_name()
 
     def parse_dotted_name(self) -> str:
         name = []
@@ -307,7 +307,7 @@ klasse ImportParser:
         waehrend self.tokens.peek_string('.'):
             name.append('.')
             self.tokens.pop()
-        return ''.join(name[::-1])
+        gib ''.join(name[::-1])
 
     def parse_as_names(self) -> Nichts:
         self.parse_as_name()
@@ -344,45 +344,45 @@ klasse TokenQueue:
     def save_state(self) -> Any:
         try:
             self.stack.append(self.index)
-            yield
+            liefere
         except ParseError:
             self.index = self.stack.pop()
         sonst:
             self.stack.pop()
 
     def __bool__(self) -> bool:
-        return self.index < len(self.tokens)
+        gib self.index < len(self.tokens)
 
     def peek(self) -> TokenInfo | Nichts:
         wenn nicht self:
-            return Nichts
-        return self.tokens[self.index]
+            gib Nichts
+        gib self.tokens[self.index]
 
     def peek_name(self) -> bool:
         wenn nicht (tok := self.peek()):
-            return Falsch
-        return tok.type == token.NAME
+            gib Falsch
+        gib tok.type == token.NAME
 
     def pop_name(self) -> str:
         tok = self.pop()
         wenn tok.type != token.NAME:
             raise ParseError('pop_name')
-        return tok.string
+        gib tok.string
 
     def peek_string(self, string: str) -> bool:
         wenn nicht (tok := self.peek()):
-            return Falsch
-        return tok.string == string
+            gib Falsch
+        gib tok.string == string
 
     def pop_string(self, string: str) -> str:
         tok = self.pop()
         wenn tok.string != string:
             raise ParseError('pop_string')
-        return tok.string
+        gib tok.string
 
     def pop(self) -> TokenInfo:
         wenn nicht self:
             raise ParseError('pop')
         tok = self.tokens[self.index]
         self.index += 1
-        return tok
+        gib tok

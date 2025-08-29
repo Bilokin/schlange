@@ -11,7 +11,7 @@ klasse G:
     def __init__(self, seqn):
         self.seqn = seqn
     def __getitem__(self, i):
-        return self.seqn[i]
+        gib self.seqn[i]
 
 klasse I:
     'Sequence using iterator protocol'
@@ -19,12 +19,12 @@ klasse I:
         self.seqn = seqn
         self.i = 0
     def __iter__(self):
-        return self
+        gib self
     def __next__(self):
         wenn self.i >= len(self.seqn): raise StopIteration
         v = self.seqn[self.i]
         self.i += 1
-        return v
+        gib v
 
 klasse Ig:
     'Sequence using iterator protocol defined mit a generator'
@@ -33,7 +33,7 @@ klasse Ig:
         self.i = 0
     def __iter__(self):
         fuer val in self.seqn:
-            yield val
+            liefere val
 
 klasse X:
     'Missing __getitem__ und __iter__'
@@ -44,7 +44,7 @@ klasse X:
         wenn self.i >= len(self.seqn): raise StopIteration
         v = self.seqn[self.i]
         self.i += 1
-        return v
+        gib v
 
 klasse E:
     'Test propagation of exceptions'
@@ -52,7 +52,7 @@ klasse E:
         self.seqn = seqn
         self.i = 0
     def __iter__(self):
-        return self
+        gib self
     def __next__(self):
         3 // 0
 
@@ -62,7 +62,7 @@ klasse N:
         self.seqn = seqn
         self.i = 0
     def __iter__(self):
-        return self
+        gib self
 
 klasse PickleTest:
     # Helper to check picklability
@@ -181,10 +181,10 @@ klasse TestReversed(unittest.TestCase, PickleTest):
         klasse A:
             def __getitem__(self, i):
                 wenn i < 5:
-                    return str(i)
+                    gib str(i)
                 raise StopIteration
             def __len__(self):
-                return 5
+                gib 5
         fuer data in ('abc', range(5), tuple(enumerate('abc')), A(),
                     range(1,17,5), dict.fromkeys('abcde')):
             self.assertEqual(list(data)[::-1], list(reversed(data)))
@@ -206,10 +206,10 @@ klasse TestReversed(unittest.TestCase, PickleTest):
             def __len__(self):
                 wenn nicht self.called:
                     self.called = Wahr
-                    return 10
+                    gib 10
                 raise ZeroDivisionError
             def __getitem__(self, index):
-                return index
+                gib index
         r = reversed(SeqWithWeirdLen())
         self.assertRaises(ZeroDivisionError, operator.length_hint, r)
 
@@ -217,9 +217,9 @@ klasse TestReversed(unittest.TestCase, PickleTest):
     def test_gc(self):
         klasse Seq:
             def __len__(self):
-                return 10
+                gib 10
             def __getitem__(self, index):
-                return index
+                gib index
         s = Seq()
         r = reversed(s)
         s.r = r
@@ -248,18 +248,18 @@ klasse TestReversed(unittest.TestCase, PickleTest):
     def test_objmethods(self):
         # Objects must have __len__() und __getitem__() implemented.
         klasse NoLen(object):
-            def __getitem__(self, i): return 1
+            def __getitem__(self, i): gib 1
         nl = NoLen()
         self.assertRaises(TypeError, reversed, nl)
 
         klasse NoGetItem(object):
-            def __len__(self): return 2
+            def __len__(self): gib 2
         ngi = NoGetItem()
         self.assertRaises(TypeError, reversed, ngi)
 
         klasse Blocked(object):
-            def __getitem__(self, i): return 1
-            def __len__(self): return 2
+            def __getitem__(self, i): gib 1
+            def __len__(self): gib 2
             __reversed__ = Nichts
         b = Blocked()
         self.assertRaises(TypeError, reversed, b)
@@ -279,14 +279,14 @@ klasse EnumerateStartTestCase(EnumerateTestCase):
 
 klasse TestStart(EnumerateStartTestCase):
     def enum(self, iterable, start=11):
-        return enumerate(iterable, start=start)
+        gib enumerate(iterable, start=start)
 
     seq, res = 'abc', [(11, 'a'), (12, 'b'), (13, 'c')]
 
 
 klasse TestLongStart(EnumerateStartTestCase):
     def enum(self, iterable, start=sys.maxsize + 1):
-        return enumerate(iterable, start=start)
+        gib enumerate(iterable, start=start)
 
     seq, res = 'abc', [(sys.maxsize+1,'a'), (sys.maxsize+2,'b'),
                        (sys.maxsize+3,'c')]

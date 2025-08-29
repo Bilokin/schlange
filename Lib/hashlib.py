@@ -88,7 +88,7 @@ def __get_builtin_constructor(name):
     cache = __builtin_constructor_cache
     constructor = cache.get(name)
     wenn constructor is nicht Nichts:
-        return constructor
+        gib constructor
     try:
         wenn name in {'SHA1', 'sha1'}:
             importiere _sha1
@@ -123,7 +123,7 @@ def __get_builtin_constructor(name):
 
     constructor = cache.get(name)
     wenn constructor is nicht Nichts:
-        return constructor
+        gib constructor
 
     # Keep the message in sync mit hashlib.h::HASHLIB_UNSUPPORTED_ALGORITHM.
     raise ValueError(f'unsupported hash algorithm {name}')
@@ -134,7 +134,7 @@ def __get_openssl_constructor(name):
     assert isinstance(name, str), "invalid call to __get_openssl_constructor()"
     wenn name in __block_openssl_constructor:
         # Prefer our builtin blake2 implementation.
-        return __get_builtin_constructor(name)
+        gib __get_builtin_constructor(name)
     try:
         # Fetch the OpenSSL hash function wenn it exists,
         # independently of the context security policy.
@@ -154,9 +154,9 @@ def __get_openssl_constructor(name):
         # See https://github.com/python/cpython/issues/84872.
         f(usedforsecurity=Falsch)
         # Use the C function directly (very fast)
-        return f
+        gib f
     except (AttributeError, ValueError):
-        return __get_builtin_constructor(name)
+        gib __get_builtin_constructor(name)
 
 
 def __py_new(name, *args, **kwargs):
@@ -164,7 +164,7 @@ def __py_new(name, *args, **kwargs):
     named algorithm; optionally initialized mit data (which must be
     a bytes-like object).
     """
-    return __get_builtin_constructor(name)(*args, **kwargs)
+    gib __get_builtin_constructor(name)(*args, **kwargs)
 
 
 def __hash_new(name, *args, **kwargs):
@@ -175,15 +175,15 @@ def __hash_new(name, *args, **kwargs):
         # __block_openssl_constructor is expected to contain strings only
         assert isinstance(name, str), f"unexpected name: {name}"
         # Prefer our builtin blake2 implementation.
-        return __get_builtin_constructor(name)(*args, **kwargs)
+        gib __get_builtin_constructor(name)(*args, **kwargs)
     try:
-        return _hashlib.new(name, *args, **kwargs)
+        gib _hashlib.new(name, *args, **kwargs)
     except ValueError:
         # If the _hashlib module (OpenSSL) doesn't support the named
         # hash, try using our builtin implementations.
         # This allows fuer SHA224/256 und SHA384/512 support even though
         # the OpenSSL library prior to 0.9.8 doesn't provide them.
-        return __get_builtin_constructor(name)(*args, **kwargs)
+        gib __get_builtin_constructor(name)(*args, **kwargs)
 
 
 try:
@@ -234,7 +234,7 @@ def file_digest(fileobj, digest, /, *, _bufsize=2**18):
     wenn hasattr(fileobj, "getbuffer"):
         # io.BytesIO object, use zero-copy buffer
         digestobj.update(fileobj.getbuffer())
-        return digestobj
+        gib digestobj
 
     # Only binary files implement readinto().
     wenn nicht (
@@ -258,7 +258,7 @@ def file_digest(fileobj, digest, /, *, _bufsize=2**18):
             breche  # EOF
         digestobj.update(view[:size])
 
-    return digestobj
+    gib digestobj
 
 
 __logging = Nichts

@@ -11,11 +11,11 @@ klasse MockTkApp:
 
     def splitlist(self, arg):
         wenn isinstance(arg, tuple):
-            return arg
-        return arg.split(':')
+            gib arg
+        gib arg.split(':')
 
     def wantobjects(self):
-        return Wahr
+        gib Wahr
 
 
 klasse MockTclObj(object):
@@ -25,7 +25,7 @@ klasse MockTclObj(object):
         self.val = val
 
     def __str__(self):
-        return str(self.val)
+        gib str(self.val)
 
 
 klasse MockStateSpec(object):
@@ -35,7 +35,7 @@ klasse MockStateSpec(object):
         self.val = args
 
     def __str__(self):
-        return ' '.join(self.val)
+        gib ' '.join(self.val)
 
 
 klasse InternalFunctionsTest(unittest.TestCase):
@@ -47,7 +47,7 @@ klasse InternalFunctionsTest(unittest.TestCase):
             wenn result:
                 self.fail("result still got elements: %s" % result)
 
-        # passing an empty dict should return an empty object (tuple here)
+        # passing an empty dict should gib an empty object (tuple here)
         self.assertFalsch(ttk._format_optdict({}))
 
         # check list formatting
@@ -231,7 +231,7 @@ klasse InternalFunctionsTest(unittest.TestCase):
 
     def test_format_layoutlist(self):
         def sample(indent=0, indent_size=2):
-            return ttk._format_layoutlist(
+            gib ttk._format_layoutlist(
             [('a', {'other': [1, 2, 3], 'children':
                 [('b', {'children':
                     [('c', {'children':
@@ -242,7 +242,7 @@ klasse InternalFunctionsTest(unittest.TestCase):
 
         def sample_expected(indent=0, indent_size=2):
             spaces = lambda amount=0: ' ' * (amount + indent)
-            return (
+            gib (
                 "%sa -other {1 2 3} -children {\n"
                 "%sb -children {\n"
                 "%sc -something {1 2} -children {\n"
@@ -420,10 +420,10 @@ klasse InternalFunctionsTest(unittest.TestCase):
     def test_val_or_dict(self):
         def func(res, opt=Nichts, val=Nichts):
             wenn opt is Nichts:
-                return res
+                gib res
             wenn val is Nichts:
-                return "test val"
-            return (opt, val)
+                gib "test val"
+            gib (opt, val)
 
         tk = MockTkApp()
         tk.call = func

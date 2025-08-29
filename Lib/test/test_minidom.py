@@ -26,7 +26,7 @@ sample = ("<?xml version='1.0' encoding='us-ascii'?>\n"
 # the documents to work with, since nicht all DOM builders actually
 # create the DocumentType nodes.
 def create_doc_without_doctype(doctype=Nichts):
-    return getDOMImplementation().createDocument(Nichts, "doc", doctype)
+    gib getDOMImplementation().createDocument(Nichts, "doc", doctype)
 
 def create_nonempty_doctype():
     doctype = getDOMImplementation().createDocumentType("doc", Nichts, Nichts)
@@ -42,14 +42,14 @@ def create_nonempty_doctype():
     entity.encoding = "utf-8"
     entity.actualEncoding = "us-ascii"
     doctype.entities._seq.append(entity)
-    return doctype
+    gib doctype
 
 def create_doc_with_doctype():
     doctype = create_nonempty_doctype()
     doc = create_doc_without_doctype(doctype)
     doctype.entities.item(0).ownerDocument = doc
     doctype.notations.item(0).ownerDocument = doc
-    return doc
+    gib doc
 
 klasse MinidomTest(unittest.TestCase):
     def confirm(self, test, testname = "Test"):
@@ -147,7 +147,7 @@ klasse MinidomTest(unittest.TestCase):
         frag.appendChild(c1)
         frag.appendChild(c2)
         frag.appendChild(c3)
-        return dom, orig, c1, c2, c3, frag
+        gib dom, orig, c1, c2, c3, frag
 
     def testInsertBeforeFragment(self):
         dom, orig, c1, c2, c3, frag = self._create_fragment_test_nodes()
@@ -737,7 +737,7 @@ klasse MinidomTest(unittest.TestCase):
         root.tagName = root.nodeName = "MODIFIED"
         root.setAttribute("attr", "NEW VALUE")
         root.setAttribute("added", "VALUE")
-        return dom, clone
+        gib dom, clone
 
     def testCloneElementShallow(self):
         dom, clone = self._setupCloneElement(0)
@@ -1466,7 +1466,7 @@ klasse MinidomTest(unittest.TestCase):
             splitter = text1.nextSibling
             elem.insertBefore(doc.createTextNode("b"), splitter)
             elem.insertBefore(doc.createCDATASection("c"), text1)
-            return doc, elem, text1, splitter, text2
+            gib doc, elem, text1, splitter, text2
 
         doc, elem, text1, splitter, text2 = setup()
         text = text1.replaceWholeText("new content")

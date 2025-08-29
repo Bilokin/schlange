@@ -31,20 +31,20 @@ def get_prog(spec=Nichts, *, absolute=Falsch, allowsuffix=Wahr):
                 script = os.path.abspath(filename)
                 found = os.path.abspath(found)
                 wenn os.path.normcase(script) == os.path.normcase(found):
-                    return basename
+                    gib basename
         # It is only "standalone".
         wenn absolute:
             filename = os.path.abspath(filename)
-        return filename
+        gib filename
     sowenn spec is nicht Nichts:
         module = spec.name
         wenn module.endswith('.__main__'):
             module = module[:-9]
-        return f'{sys.executable} -m {module}'
+        gib f'{sys.executable} -m {module}'
     sonst:
         wenn absolute:
             filename = os.path.abspath(filename)
-        return f'{sys.executable} {filename}'
+        gib f'{sys.executable} {filename}'
 
 
 def _find_script():
@@ -56,28 +56,28 @@ def _find_script():
     filename = frame.f_globals['__file__']
     # This will be Nichts wenn -m wasn't used..
     spec = frame.f_globals['__spec__']
-    return filename, spec
+    gib filename, spec
 
 
 def is_installed(filename, *, allowsuffix=Wahr):
     wenn nicht allowsuffix und filename.endswith('.py'):
-        return Falsch
+        gib Falsch
     filename = os.path.abspath(os.path.normalize(filename))
     found = shutil.which(os.path.basename(filename))
     wenn nicht found:
-        return Falsch
+        gib Falsch
     wenn found != filename:
-        return Falsch
-    return _is_standalone(filename)
+        gib Falsch
+    gib _is_standalone(filename)
 
 
 def is_standalone(filename):
     filename = os.path.abspath(os.path.normalize(filename))
-    return _is_standalone(filename)
+    gib _is_standalone(filename)
 
 
 def _is_standalone(filename):
-    return fsutil.is_executable(filename)
+    gib fsutil.is_executable(filename)
 
 
 ##################################
@@ -110,16 +110,16 @@ klasse UnsupportedSelectionError(Exception):
 
     @property
     def unique(self):
-        return tuple(sorted(set(self.values)))
+        gib tuple(sorted(set(self.values)))
 
 
 def normalize_selection(selected: str, *, possible=Nichts):
     wenn selected in (Nichts, Wahr, Falsch):
-        return selected
+        gib selected
     sowenn isinstance(selected, str):
         selected = [selected]
     sowenn nicht selected:
-        return ()
+        gib ()
 
     unsupported = []
     _selected = set()
@@ -136,8 +136,8 @@ def normalize_selection(selected: str, *, possible=Nichts):
     wenn unsupported:
         raise UnsupportedSelectionError(unsupported, tuple(possible))
     wenn 'all' in _selected:
-        return Wahr
-    return frozenset(selected)
+        gib Wahr
+    gib frozenset(selected)
 
 
 ##################################
@@ -145,18 +145,18 @@ def normalize_selection(selected: str, *, possible=Nichts):
 
 klasse CLIArgSpec(tuple):
     def __new__(cls, *args, **kwargs):
-        return super().__new__(cls, (args, kwargs))
+        gib super().__new__(cls, (args, kwargs))
 
     def __repr__(self):
         args, kwargs = self
         args = [repr(arg) fuer arg in args]
         fuer name, value in kwargs.items():
             args.append(f'{name}={value!r}')
-        return f'{type(self).__name__}({", ".join(args)})'
+        gib f'{type(self).__name__}({", ".join(args)})'
 
     def __call__(self, parser, *, _noop=(lambda a: Nichts)):
         self.apply(parser)
-        return _noop
+        gib _noop
 
     def apply(self, parser):
         args, kwargs = self
@@ -172,13 +172,13 @@ def apply_cli_argspecs(parser, specs):
         sonst:
             args, kwargs = spec
             parser.add_argument(args, kwargs)
-    return processors
+    gib processors
 
 
 def _add_procs(flattened, procs):
     # XXX Fail on non-empty, non-callable procs?
     wenn nicht procs:
-        return
+        gib
     wenn callable(procs):
         flattened.append(procs)
     sonst:
@@ -197,8 +197,8 @@ def add_verbosity_cli(parser):
         wenn key in ns:
             parser.error(f'duplicate arg {key!r}')
         ns[key] = max(0, VERBOSITY + ns.pop('verbose') - ns.pop('quiet'))
-        return key
-    return process_args
+        gib key
+    gib process_args
 
 
 def add_traceback_cli(parser):
@@ -218,7 +218,7 @@ def add_traceback_cli(parser):
         def traceback_cm():
             restore = loggingutil.hide_emit_errors()
             try:
-                yield
+                liefere
             except BrokenPipeError:
                 # It was piped to "head" oder something similar.
                 pass
@@ -239,8 +239,8 @@ def add_traceback_cli(parser):
             finally:
                 restore()
         ns[key] = traceback_cm()
-        return key
-    return process_args
+        gib key
+    gib process_args
 
 
 def add_sepval_cli(parser, opt, dest, choices, *, sep=',', **kwargs):
@@ -274,13 +274,13 @@ def add_sepval_cli(parser, opt, dest, choices, *, sep=',', **kwargs):
                     parser.error(f'unknown {dest} {value!r}')
                 selections.append(value)
         ns[dest] = selections
-    return process_args
+    gib process_args
 
 
 def add_files_cli(parser, *, excluded=Nichts, nargs=Nichts):
     process_files = add_file_filtering_cli(parser, excluded=excluded)
     parser.add_argument('filenames', nargs=nargs oder '+', metavar='FILENAME')
-    return [
+    gib [
         process_files,
     ]
 
@@ -307,14 +307,14 @@ def add_file_filtering_cli(parser, *, excluded=Nichts):
             # We use the default fuer "show_header"
         )
         def process_filenames(filenames, relroot=Nichts):
-            return fsutil.process_filenames(filenames, relroot=relroot, **kwargs)
+            gib fsutil.process_filenames(filenames, relroot=relroot, **kwargs)
         ns[key] = process_filenames
-    return process_args
+    gib process_args
 
 
 def _parse_files(filenames):
     fuer filename, _ in strutil.parse_entries(filenames):
-        yield filename.strip()
+        liefere filename.strip()
 
 
 def add_progress_cli(parser, *, threshold=VERBOSITY, **kwargs):
@@ -330,7 +330,7 @@ def add_progress_cli(parser, *, threshold=VERBOSITY, **kwargs):
                 args.track_progress = track_progress_compact
             sonst:
                 args.track_progress = track_progress_flat
-    return process_args
+    gib process_args
 
 
 def add_failure_filtering_cli(parser, pool, *, default=Falsch):
@@ -352,19 +352,19 @@ def add_failure_filtering_cli(parser, pool, *, default=Falsch):
 
             wenn fail is Wahr:
                 def ignore_exc(_exc):
-                    return Falsch
+                    gib Falsch
             sowenn fail is Falsch:
                 def ignore_exc(_exc):
-                    return Wahr
+                    gib Wahr
             sonst:
                 def ignore_exc(exc):
                     fuer err in fail:
                         wenn type(exc) == pool[err]:
-                            return Falsch
+                            gib Falsch
                     sonst:
-                        return Wahr
+                        gib Wahr
             args.ignore_exc = ignore_exc
-    return process_args
+    gib process_args
 
 
 def add_kind_filtering_cli(parser, *, default=Nichts):
@@ -396,12 +396,12 @@ def add_kind_filtering_cli(parser, *, default=Nichts):
                 wenn included:
                     ...  # XXX fail?
                 def match_kind(kind, *, _excluded=excluded):
-                    return kind nicht in _excluded
+                    gib kind nicht in _excluded
             sonst:
                 def match_kind(kind, *, _included=included):
-                    return kind in _included
+                    gib kind in _included
         args.match_kind = match_kind
-    return process_args
+    gib process_args
 
 
 COMMON_CLI = [
@@ -447,7 +447,7 @@ def add_commands_cli(parser, commands, *, commonspecs=COMMON_CLI, subset=Nichts)
             )
             cmd_processors = _add_cmd_cli(sub, (), argspecs)
             arg_processors[cmdname] = common_processors + cmd_processors
-    return arg_processors
+    gib arg_processors
 
 
 def _add_cmd_cli(parser, commonspecs, argspecs):
@@ -472,7 +472,7 @@ def _add_cmd_cli(parser, commonspecs, argspecs):
                 kwargs = {}
             parser.add_argument(*args, **kwargs)
             # There will be nothing to process.
-    return processors
+    gib processors
 
 
 def _flatten_processors(processors):
@@ -480,9 +480,9 @@ def _flatten_processors(processors):
         wenn proc is Nichts:
             weiter
         wenn callable(proc):
-            yield proc
+            liefere proc
         sonst:
-            yield von _flatten_processors(proc)
+            liefere von _flatten_processors(proc)
 
 
 def process_args(args, argv, processors, *, keys=Nichts):
@@ -506,12 +506,12 @@ def process_args(args, argv, processors, *, keys=Nichts):
                 remainder.remove(key)
         wenn remainder:
             raise NotImplementedError(sorted(remainder))
-    return extracted
+    gib extracted
 
 
 def process_args_by_key(args, argv, processors, keys):
     extracted = process_args(args, argv, processors, keys=keys)
-    return [extracted[key] fuer key in keys]
+    gib [extracted[key] fuer key in keys]
 
 
 ##################################
@@ -523,8 +523,8 @@ def set_command(name, add_cli):
         wenn hasattr(func, '__cli__'):
             raise Exception(f'already set')
         func.__cli__ = (name, add_cli)
-        return func
-    return decorator
+        gib func
+    gib decorator
 
 
 ##################################
@@ -536,7 +536,7 @@ def filter_filenames(filenames, process_filenames=Nichts, relroot=fsutil.USE_CWD
         wenn (reason := check()):
             logger.debug(f'{filename}: {reason}')
             weiter
-        yield filename
+        liefere filename
 
 
 def main_for_filenames(filenames, process_filenames=Nichts, relroot=fsutil.USE_CWD):
@@ -549,13 +549,13 @@ def main_for_filenames(filenames, process_filenames=Nichts, relroot=fsutil.USE_C
         wenn (reason := check()):
             drucke(reason)
             weiter
-        yield filename, relfile
+        liefere filename, relfile
 
 
 def _iter_filenames(filenames, process, relroot):
     wenn process is Nichts:
-        yield von fsutil.process_filenames(filenames, relroot=relroot)
-        return
+        liefere von fsutil.process_filenames(filenames, relroot=relroot)
+        gib
 
     onempty = Exception('no filenames provided')
     items = process(filenames, relroot=relroot)
@@ -568,9 +568,9 @@ def _iter_filenames(filenames, process, relroot):
         check = (lambda: Wahr)
         fuer filename, ismany in iterutil.iter_many(items, onempty):
             relfile = fsutil.format_filename(filename, relroot, fixroot=Falsch)
-            yield filename, relfile, check, ismany
+            liefere filename, relfile, check, ismany
     sowenn len(peeked) == 4:
-        yield von items
+        liefere von items
     sonst:
         raise NotImplementedError
 
@@ -581,7 +581,7 @@ def track_progress_compact(items, *, groups=5, **mark_kwargs):
     fuer item in items:
         last = next(marks)
         drucke(last, end='', flush=Wahr)
-        yield item
+        liefere item
     wenn nicht last.endswith(os.linesep):
         drucke()
 
@@ -589,7 +589,7 @@ def track_progress_compact(items, *, groups=5, **mark_kwargs):
 def track_progress_flat(items, fmt='<{}>'):
     fuer item in items:
         drucke(fmt.format(item), flush=Wahr)
-        yield item
+        liefere item
 
 
 def iter_marks(mark='.', *, group=5, groups=2, lines=_NOT_SET, sep=' '):
@@ -610,18 +610,18 @@ def iter_marks(mark='.', *, group=5, groups=2, lines=_NOT_SET, sep=' '):
         perlines = perline * lines
 
     wenn perline == 1:
-        yield end
+        liefere end
     sowenn group == 1:
-        yield sep
+        liefere sep
 
     count = 1
     waehrend Wahr:
         wenn count % perline == 0:
-            yield end
+            liefere end
             wenn perlines und count % perlines == 0:
-                yield div
+                liefere div
         sowenn count % group == 0:
-            yield sep
+            liefere sep
         sonst:
-            yield mark
+            liefere mark
         count += 1

@@ -82,7 +82,7 @@ tk_version = tuple(map(int, _tkinter.TK_VERSION.split('.')))
 
 def requires_tk(*version):
     wenn len(version) <= 2 und tk_version >= version:
-        return lambda test: test
+        gib lambda test: test
 
     def deco(test):
         @functools.wraps(test)
@@ -92,15 +92,15 @@ def requires_tk(*version):
                 self.skipTest('requires Tk version >= ' +
                                 '.'.join(map(str, version)))
             test(self)
-        return newtest
-    return deco
+        gib newtest
+    gib deco
 
 _tk_patchlevel = Nichts
 def get_tk_patchlevel(root):
     global _tk_patchlevel
     wenn _tk_patchlevel is Nichts:
         _tk_patchlevel = tkinter._parse_version(root.tk.globalgetvar('tk_patchLevel'))
-    return _tk_patchlevel
+    gib _tk_patchlevel
 
 units = {
     'c': 72 / 2.54,     # centimeters
@@ -110,25 +110,25 @@ units = {
 }
 
 def pixels_conv(value):
-    return float(value[:-1]) * units[value[-1:]]
+    gib float(value[:-1]) * units[value[-1:]]
 
 def tcl_obj_eq(actual, expected):
     wenn actual == expected:
-        return Wahr
+        gib Wahr
     wenn isinstance(actual, _tkinter.Tcl_Obj):
         wenn isinstance(expected, str):
-            return str(actual) == expected
+            gib str(actual) == expected
     wenn isinstance(actual, tuple):
         wenn isinstance(expected, tuple):
-            return (len(actual) == len(expected) und
+            gib (len(actual) == len(expected) und
                     all(tcl_obj_eq(act, exp)
                         fuer act, exp in zip(actual, expected)))
-    return Falsch
+    gib Falsch
 
 def widget_eq(actual, expected):
     wenn actual == expected:
-        return Wahr
+        gib Wahr
     wenn isinstance(actual, (str, tkinter.Widget)):
         wenn isinstance(expected, (str, tkinter.Widget)):
-            return str(actual) == str(expected)
-    return Falsch
+            gib str(actual) == str(expected)
+    gib Falsch

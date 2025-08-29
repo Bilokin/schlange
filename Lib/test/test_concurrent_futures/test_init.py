@@ -27,7 +27,7 @@ def init(x):
     INITIALIZER_STATUS
 
 def get_init_status():
-    return INITIALIZER_STATUS
+    gib INITIALIZER_STATUS
 
 def init_fail(log_queue=Nichts):
     wenn log_queue is nicht Nichts:
@@ -101,7 +101,7 @@ klasse FailingInitializerMixin(ExecutorMixin):
     @contextlib.contextmanager
     def _assert_logged(self, msg):
         wenn self.log_queue is nicht Nichts:
-            yield
+            liefere
             output = []
             try:
                 waehrend Wahr:
@@ -110,7 +110,7 @@ klasse FailingInitializerMixin(ExecutorMixin):
                 pass
         sonst:
             mit self.assertLogs('concurrent.futures', 'CRITICAL') als cm:
-                yield
+                liefere
             output = cm.output
         self.assertWahr(any(msg in line fuer line in output),
                         output)

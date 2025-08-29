@@ -13,10 +13,10 @@ def import_singlephase():
         importiere _testsinglephase  # noqa: F401
     except ImportError:
         sys.modules.pop('_testsinglephase', Nichts)
-        return Falsch
+        gib Falsch
     sonst:
         del sys.modules['_testsinglephase']
-        return Wahr
+        gib Wahr
 
 
 def check_singlephase(override):
@@ -51,7 +51,7 @@ def check_singlephase(override):
     override_restored = _imp._override_multi_interp_extensions_check(override_initial)
     assert(_testinternalcapi.get_interp_settings() == settings_restored)
 
-    return dict({
+    gib dict({
         'requested': override,
         'override__initial': override_initial,
         'override_after': override_after,

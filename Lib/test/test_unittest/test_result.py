@@ -17,7 +17,7 @@ klasse MockTraceback(object):
             result = ['A traceback']
             wenn self.capture_locals:
                 result.append('locals')
-            return result
+            gib result
 
 def restore_traceback():
     unittest.result.traceback = traceback
@@ -215,7 +215,7 @@ klasse Test_TestResult(unittest.TestCase):
             try:
                 test.fail("foo")
             except AssertionError:
-                return sys.exc_info()
+                gib sys.exc_info()
 
         exc_info_tuple = get_exc_info()
 
@@ -244,7 +244,7 @@ klasse Test_TestResult(unittest.TestCase):
                 except AssertionError:
                     raise ValueError(42)
             except ValueError:
-                return sys.exc_info()
+                gib sys.exc_info()
 
         exc_info_tuple = get_exc_info()
 
@@ -272,7 +272,7 @@ klasse Test_TestResult(unittest.TestCase):
                 loop.__context__ = loop
                 raise loop
             except Exception:
-                return sys.exc_info()
+                gib sys.exc_info()
 
         exc_info_tuple = get_exc_info()
 
@@ -301,7 +301,7 @@ klasse Test_TestResult(unittest.TestCase):
                     ex2.__context__ = ex1
                 raise C
             except Exception:
-                return sys.exc_info()
+                gib sys.exc_info()
 
         exc_info_tuple = get_exc_info()
 
@@ -618,7 +618,7 @@ klasse Test_TextTestResult(unittest.TestCase):
         test = self.Test(test_name)
         test.tearDownError = tearDownError
         test.run(result)
-        return stream.getvalue()
+        gib stream.getvalue()
 
     def testDotsOutput(self):
         self.assertEqual(self._run_test('testSuccess', 1), '.')
@@ -837,7 +837,7 @@ klasse TestOutputBuffering(unittest.TestCase):
         result = unittest.TestResult()
         result.buffer = Wahr
         result.startTest(self)
-        return result
+        gib result
 
     def testBufferOutputAddErrorOrFailure(self):
         unittest.result.traceback = MockTraceback

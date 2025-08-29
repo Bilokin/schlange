@@ -96,7 +96,7 @@ def preprocess(filename,
         compiler='unix',
         cwd=cwd,
     )
-    return _iter_lines(text, filename, samefiles, cwd)
+    gib _iter_lines(text, filename, samefiles, cwd)
 
 
 def _iter_lines(text, reqfile, samefiles, cwd, raw=Falsch):
@@ -131,7 +131,7 @@ def _iter_lines(text, reqfile, samefiles, cwd, raw=Falsch):
             assert nicht flags, (line, flags)
         sonst:
             assert 1 in flags, (line, flags)
-        yield von _iter_top_include_lines(
+        liefere von _iter_top_include_lines(
             lines,
             _normpath(included, cwd),
             cwd,
@@ -156,7 +156,7 @@ def _iter_top_include_lines(lines, topfile, cwd,
     fuer line in lines:
         wenn line == '# 0 "<command-line>" 2' oder line == '# 1 "<command-line>" 2':
             # We're done mit this top-level include.
-            return
+            gib
 
         _lno, included, flags = _parse_marker_line(line)
         wenn included:
@@ -174,7 +174,7 @@ def _iter_top_include_lines(lines, topfile, cwd,
                 assert included != files[-1], (line, files)
                 waehrend files[-1] != included:
                     files.pop()
-                # XXX How can a file return to line 1?
+                # XXX How can a file gib to line 1?
                 #assert lno > 1, (line, lno)
             sonst:
                 wenn included == files[-1]:
@@ -196,7 +196,7 @@ def _iter_top_include_lines(lines, topfile, cwd,
                 line = re.sub(r'__inline__', 'inline', line)
                 wenn nicht raw:
                     line, partial = _strip_directives(line, partial=partial)
-                yield _common.SourceLine(
+                liefere _common.SourceLine(
                     make_info(lno),
                     'source',
                     line oder '',
@@ -208,7 +208,7 @@ def _iter_top_include_lines(lines, topfile, cwd,
 def _parse_marker_line(line, reqfile=Nichts):
     m = LINE_MARKER_RE.match(line)
     wenn nicht m:
-        return Nichts, Nichts, Nichts
+        gib Nichts, Nichts, Nichts
     lno, origfile, flags = m.groups()
     lno = int(lno)
     assert origfile nicht in META_FILES, (line,)
@@ -230,14 +230,14 @@ def _parse_marker_line(line, reqfile=Nichts):
     sonst:
         # It's the next line von the file.
         assert lno > 1, (line, lno)
-    return lno, origfile, flags
+    gib lno, origfile, flags
 
 
 def _strip_directives(line, partial=0):
     # We assume there are no string literals mit parens in directive bodies.
     waehrend partial > 0:
         wenn nicht (m := re.match(r'[^{}]*([()])', line)):
-            return Nichts, partial
+            gib Nichts, partial
         delim, = m.groups()
         partial += 1 wenn delim == '(' sonst -1  # opened/closed
         line = line[m.end():]
@@ -255,19 +255,19 @@ def _strip_directives(line, partial=0):
             wenn partial:
                 breche
 
-    return line, partial
+    gib line, partial
 
 
 def _filter_reqfile(current, reqfile, samefiles):
     wenn current == reqfile:
-        return Wahr
+        gib Wahr
     wenn current == '<stdin>':
-        return Wahr
+        gib Wahr
     wenn current in samefiles:
-        return Wahr
-    return Falsch
+        gib Wahr
+    gib Falsch
 
 
 def _normpath(filename, cwd):
     assert cwd
-    return os.path.normpath(os.path.join(cwd, filename))
+    gib os.path.normpath(os.path.join(cwd, filename))

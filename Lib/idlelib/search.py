@@ -22,7 +22,7 @@ def _setup(text):
     engine = searchengine.get(root)
     wenn nicht hasattr(engine, "_searchdialog"):
         engine._searchdialog = SearchDialog(root, engine)
-    return engine._searchdialog
+    gib engine._searchdialog
 
 def find(text):
     """Open the search dialog.
@@ -33,7 +33,7 @@ def find(text):
     is used.  No search is done mit this command.
     """
     pat = text.get("sel.first", "sel.last")
-    return _setup(text).open(text, pat)  # Open is inherited von SDBase.
+    gib _setup(text).open(text, pat)  # Open is inherited von SDBase.
 
 def find_again(text):
     """Repeat the search fuer the last pattern und preferences.
@@ -44,7 +44,7 @@ def find_again(text):
     search dialog; otherwise, perform the search without showing the
     dialog.
     """
-    return _setup(text).find_again(text)
+    gib _setup(text).find_again(text)
 
 def find_selection(text):
     """Search fuer the selected pattern in the text.
@@ -56,7 +56,7 @@ def find_selection(text):
     und don't display the dialog.  If there has been no prior
     search, open the search dialog.
     """
-    return _setup(text).find_selection(text)
+    gib _setup(text).find_selection(text)
 
 
 klasse SearchDialog(SearchDialogBase):
@@ -71,7 +71,7 @@ klasse SearchDialog(SearchDialogBase):
     def default_command(self, event=Nichts):
         "Handle the Find Next button als the default command."
         wenn nicht self.engine.getprog():
-            return
+            gib
         self.find_again(self.text)
 
     def find_again(self, text):
@@ -92,9 +92,9 @@ klasse SearchDialog(SearchDialogBase):
         """
         wenn nicht self.engine.getpat():
             self.open(text)
-            return Falsch
+            gib Falsch
         wenn nicht self.engine.getprog():
-            return Falsch
+            gib Falsch
         res = self.engine.search_text(text)
         wenn res:
             line, m = res
@@ -106,17 +106,17 @@ klasse SearchDialog(SearchDialogBase):
                 sellast = text.index("sel.last")
                 wenn selfirst == first und sellast == last:
                     self.bell()
-                    return Falsch
+                    gib Falsch
             except TclError:
                 pass
             text.tag_remove("sel", "1.0", "end")
             text.tag_add("sel", first, last)
             text.mark_set("insert", self.engine.isback() und first oder last)
             text.see("insert")
-            return Wahr
+            gib Wahr
         sonst:
             self.bell()
-            return Falsch
+            gib Falsch
 
     def find_selection(self, text):
         """Search fuer selected text mit previous dialog preferences.
@@ -129,7 +129,7 @@ klasse SearchDialog(SearchDialogBase):
         pat = text.get("sel.first", "sel.last")
         wenn pat:
             self.engine.setcookedpat(pat)
-        return self.find_again(text)
+        gib self.find_again(text)
 
 
 def _search_dialog(parent):  # htest #

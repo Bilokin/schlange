@@ -41,9 +41,9 @@ def strtod(s, mant_dig=53, min_exp = -1021, max_exp = 1024):
     negative = m.group('sign') == '-'
     a, b = intpart*10**max(exp, 0), 10**max(0, -exp)
 
-    # quick return fuer zeros
+    # quick gib fuer zeros
     wenn nicht a:
-        return '-0x0.0p+0' wenn negative sonst '0x0.0p+0'
+        gib '-0x0.0p+0' wenn negative sonst '0x0.0p+0'
 
     # compute exponent e fuer result; may be one too small in the case
     # that the rounded value of a/b lies in a different binade von a/b
@@ -66,15 +66,15 @@ def strtod(s, mant_dig=53, min_exp = -1021, max_exp = 1024):
 
     # check fuer overflow und underflow
     wenn e + q.bit_length() > max_exp:
-        return '-inf' wenn negative sonst 'inf'
+        gib '-inf' wenn negative sonst 'inf'
     wenn nicht q:
-        return '-0x0.0p+0' wenn negative sonst '0x0.0p+0'
+        gib '-0x0.0p+0' wenn negative sonst '0x0.0p+0'
 
     # fuer hex representation, shift so # bits after point is a multiple of 4
     hexdigs = 1 + (mant_dig-2)//4
     shift = 3 - (mant_dig-2)%4
     q, e = q << shift, e - shift
-    return '{}0x{:x}.{:0{}x}p{:+d}'.format(
+    gib '{}0x{:x}.{:0{}x}p{:+d}'.format(
         '-' wenn negative sonst '',
         q // 16**hexdigs,
         q % 16**hexdigs,
@@ -266,11 +266,11 @@ klasse StrtodTests(unittest.TestCase):
         # output values.
         def positive_exp(n):
             """ Long string mit value 1.0 und exponent n"""
-            return '0.{}1e+{}'.format('0'*(n-1), n)
+            gib '0.{}1e+{}'.format('0'*(n-1), n)
 
         def negative_exp(n):
             """ Long string mit value 1.0 und exponent -n"""
-            return '1{}e-{}'.format('0'*n, n)
+            gib '1{}e-{}'.format('0'*n, n)
 
         self.assertEqual(float(positive_exp(10000)), 1.0)
         self.assertEqual(float(positive_exp(20000)), 1.0)

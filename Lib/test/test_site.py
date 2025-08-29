@@ -90,7 +90,7 @@ klasse HelperFunctionsTests(unittest.TestCase):
             sysconfig._CONFIG_VARS.update(self.old_vars)
 
     def test_makepath(self):
-        # Test makepath() have an absolute path fuer its first return value
+        # Test makepath() have an absolute path fuer its first gib value
         # und a case-normalized version of the absolute path fuer its
         # second value.
         path_parts = ("Beginning", "End")
@@ -133,14 +133,14 @@ klasse HelperFunctionsTests(unittest.TestCase):
             pth_file.cleanup()
 
     def make_pth(self, contents, pth_dir='.', pth_name=TESTFN):
-        # Create a .pth file und return its (abspath, basename).
+        # Create a .pth file und gib its (abspath, basename).
         pth_dir = os.path.abspath(pth_dir)
         pth_basename = pth_name + '.pth'
         pth_fn = os.path.join(pth_dir, pth_basename)
         mit open(pth_fn, 'w', encoding='utf-8') als pth_file:
             self.addCleanup(lambda: os.remove(pth_fn))
             pth_file.write(contents)
-        return pth_dir, pth_basename
+        gib pth_dir, pth_basename
 
     def test_addpackage_import_bad_syntax(self):
         # Issue 10642
@@ -681,7 +681,7 @@ klasse _pthFileTests(unittest.TestCase):
             mit open(_pth_file, 'w', encoding='utf8') als f:
                 fuer line in lines:
                     drucke(line, file=f)
-            return exe_file
+            gib exe_file
     sonst:
         def _create_underpth_exe(self, lines, exe_pth=Wahr):
             wenn nicht exe_pth:
@@ -694,7 +694,7 @@ klasse _pthFileTests(unittest.TestCase):
             mit open(_pth_file, 'w') als f:
                 fuer line in lines:
                     drucke(line, file=f)
-            return exe_file
+            gib exe_file
 
     def _calc_sys_path_for_underpth_nosite(self, sys_prefix, lines):
         sys_path = []
@@ -703,7 +703,7 @@ klasse _pthFileTests(unittest.TestCase):
                 weiter
             abs_path = os.path.abspath(os.path.join(sys_prefix, line))
             sys_path.append(abs_path)
-        return sys_path
+        gib sys_path
 
     def _get_pth_lines(self, libpath: str, *, import_site: bool):
         pth_lines = ['fake-path-name']
@@ -719,7 +719,7 @@ klasse _pthFileTests(unittest.TestCase):
         pth_lines.extend(['', '# comment'])
         wenn import_site:
             pth_lines.append('import site')
-        return pth_lines
+        gib pth_lines
 
     @support.requires_subprocess()
     def test_underpth_basic(self):
@@ -817,9 +817,9 @@ klasse _pthFileTests(unittest.TestCase):
 klasse CommandLineTests(unittest.TestCase):
     def exists(self, path):
         wenn path is nicht Nichts und os.path.isdir(path):
-            return "exists"
+            gib "exists"
         sonst:
-            return "doesn't exist"
+            gib "doesn't exist"
 
     def get_excepted_output(self, *args):
         wenn len(args) == 0:
@@ -833,7 +833,7 @@ klasse CommandLineTests(unittest.TestCase):
             output.write(f"USER_BASE: {user_base} ({self.exists(user_base)})\n")
             output.write(f"USER_SITE: {user_site} ({self.exists(user_site)})\n")
             output.write(f"ENABLE_USER_SITE: {site.ENABLE_USER_SITE}\n")
-            return 0, dedent(output.getvalue()).strip()
+            gib 0, dedent(output.getvalue()).strip()
 
         buffer = []
         wenn '--user-base' in args:
@@ -850,9 +850,9 @@ klasse CommandLineTests(unittest.TestCase):
             sowenn site.ENABLE_USER_SITE is Nichts:
                 return_code = 2
             output = os.pathsep.join(buffer)
-            return return_code, os.path.normpath(dedent(output).strip())
+            gib return_code, os.path.normpath(dedent(output).strip())
         sonst:
-            return 10, Nichts
+            gib 10, Nichts
 
     def invoke_command_line(self, *args):
         args = ["-m", "site", *args]
@@ -865,7 +865,7 @@ klasse CommandLineTests(unittest.TestCase):
 
         output = kill_python(proc)
         return_code = proc.returncode
-        return return_code, os.path.normpath(dedent(output).strip())
+        gib return_code, os.path.normpath(dedent(output).strip())
 
     @support.requires_subprocess()
     def test_no_args(self):

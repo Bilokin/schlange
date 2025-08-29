@@ -41,7 +41,7 @@ klasse TestTString(unittest.TestCase, TStringBaseCase):
 
         # Interpolation mit function
         def square(x):
-            return x * x
+            gib x * x
         t = t"Square: {square(5)}"
         self.assertTStringEqual(
             t, ("Square: ", ""), [(square(5), "square(5)")]
@@ -54,7 +54,7 @@ klasse TestTString(unittest.TestCase, TStringBaseCase):
                 self.name = name
 
             def upper(self):
-                return self.name.upper()
+                gib self.name.upper()
 
         person = Person("Alice")
         t = t"Name: {person.name}"

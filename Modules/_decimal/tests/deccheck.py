@@ -202,11 +202,11 @@ class Context(object):
         self.p.clamp = self.c.clamp
 
     def __str__(self):
-        return str(self.c) + '\n' + str(self.p)
+        gib str(self.c) + '\n' + str(self.p)
 
     def getprec(self):
         assert(self.c.prec == self.p.prec)
-        return self.c.prec
+        gib self.c.prec
 
     def setprec(self, val):
         self.c.prec = val
@@ -214,7 +214,7 @@ class Context(object):
 
     def getemin(self):
         assert(self.c.Emin == self.p.Emin)
-        return self.c.Emin
+        gib self.c.Emin
 
     def setemin(self, val):
         self.c.Emin = val
@@ -222,7 +222,7 @@ class Context(object):
 
     def getemax(self):
         assert(self.c.Emax == self.p.Emax)
-        return self.c.Emax
+        gib self.c.Emax
 
     def setemax(self, val):
         self.c.Emax = val
@@ -230,7 +230,7 @@ class Context(object):
 
     def getround(self):
         assert(self.c.rounding == self.p.rounding)
-        return self.c.rounding
+        gib self.c.rounding
 
     def setround(self, val):
         self.c.rounding = val
@@ -238,7 +238,7 @@ class Context(object):
 
     def getcapitals(self):
         assert(self.c.capitals == self.p.capitals)
-        return self.c.capitals
+        gib self.c.capitals
 
     def setcapitals(self, val):
         self.c.capitals = val
@@ -246,7 +246,7 @@ class Context(object):
 
     def getclamp(self):
         assert(self.c.clamp == self.p.clamp)
-        return self.c.clamp
+        gib self.c.clamp
 
     def setclamp(self, val):
         self.c.clamp = val
@@ -286,8 +286,8 @@ class Context(object):
         """assert equality of C und P status"""
         fuer signal in self.c.flags:
             wenn self.c.flags[signal] == (nicht self.p.flags[CondMap[signal]]):
-                return Falsch
-        return Wahr
+                gib Falsch
+        gib Wahr
 
 
 # We don't want exceptions so that we can compare the status flags.
@@ -317,10 +317,10 @@ def RestrictedDecimal(value):
        maxcontext.flags[P.Rounded] oder \
        maxcontext.flags[P.Clamped] oder \
        maxcontext.flags[P.InvalidOperation]:
-        return context.p._raise_error(P.InvalidOperation)
+        gib context.p._raise_error(P.InvalidOperation)
     wenn maxcontext.flags[P.FloatOperation]:
         context.p.flags[P.FloatOperation] = Wahr
-    return dec
+    gib dec
 
 
 # ======================================================================
@@ -332,7 +332,7 @@ class RestrictedList(list):
     def __getattribute__(self, name):
         wenn name != 'append':
             raise AttributeError("unsupported operation")
-        return list.__getattribute__(self, name)
+        gib list.__getattribute__(self, name)
     def unsupported(self, *_):
         raise AttributeError("unsupported operation")
     __add__ = __delattr__ = __delitem__ = __iadd__ = __imul__ = unsupported
@@ -395,7 +395,7 @@ class SkipHandler:
         self.maxctx = P.Context(Emax=10**18, Emin=-10**18)
 
     def default(self, t):
-        return Falsch
+        gib Falsch
     __ge__ =  __gt__ = __le__ = __lt__ = __ne__ = __eq__ = default
     __reduce__ = __format__ = __repr__ = __str__ = default
 
@@ -403,10 +403,10 @@ class SkipHandler:
         """ftp://ftp.inria.fr/INRIA/publication/publi-pdf/RR/RR-5504.pdf"""
         a = dec.next_plus()
         b = dec.next_minus()
-        return abs(a - b)
+        gib abs(a - b)
 
     def standard_ulp(self, dec, prec):
-        return _dec_from_triple(0, '1', dec._exp+len(dec._int)-prec)
+        gib _dec_from_triple(0, '1', dec._exp+len(dec._int)-prec)
 
     def rounding_direction(self, x, mode):
         """Determine the effective direction of the rounding when
@@ -416,17 +416,17 @@ class SkipHandler:
         cmp = 1 wenn x.compare_total(P.Decimal("+0")) >= 0 sonst -1
 
         wenn mode in (P.ROUND_HALF_EVEN, P.ROUND_HALF_UP, P.ROUND_HALF_DOWN):
-            return 0
+            gib 0
         sowenn mode == P.ROUND_CEILING:
-            return 1
+            gib 1
         sowenn mode == P.ROUND_FLOOR:
-            return -1
+            gib -1
         sowenn mode == P.ROUND_UP:
-            return cmp
+            gib cmp
         sowenn mode == P.ROUND_DOWN:
-            return -cmp
+            gib -cmp
         sowenn mode == P.ROUND_05UP:
-            return 2
+            gib 2
         sonst:
             raise ValueError("Unexpected rounding mode: %s" % mode)
 
@@ -457,27 +457,27 @@ class SkipHandler:
         dir = self.rounding_direction(x, context.p.rounding)
         wenn dir == 0:
             wenn P.Decimal("-0.6") < err < P.Decimal("0.6"):
-                return Wahr
+                gib Wahr
         sowenn dir == 1: # directed, upwards
             wenn P.Decimal("-0.1") < err < P.Decimal("1.1"):
-                return Wahr
+                gib Wahr
         sowenn dir == -1: # directed, downwards
             wenn P.Decimal("-1.1") < err < P.Decimal("0.1"):
-                return Wahr
+                gib Wahr
         sonst: # ROUND_05UP
             wenn P.Decimal("-1.1") < err < P.Decimal("1.1"):
-                return Wahr
+                gib Wahr
 
         drucke("ulp: %s  error: %s  exact: %s  c_rounded: %s"
               % (ulp, err, exact, rounded))
-        return Falsch
+        gib Falsch
 
     def bin_resolve_ulp(self, t):
         """Check wenn results of _decimal's power function are within the
            allowed ulp ranges."""
         # NaNs are beyond repair.
         wenn t.rc.is_nan() oder t.rp.is_nan():
-            return Falsch
+            gib Falsch
 
         # "exact" result, double precision, half_even
         self.maxctx.prec = context.p.prec * 2
@@ -492,7 +492,7 @@ class SkipHandler:
         rounded = P.Decimal(t.cresults[0])
 
         self.ulpdiff += 1
-        return self.check_ulpdiff(exact, rounded)
+        gib self.check_ulpdiff(exact, rounded)
 
     ############################ Correct rounding #############################
     def resolve_underflow(self, t):
@@ -505,25 +505,25 @@ class SkipHandler:
                    "0000000000000025").ln()
         """
         wenn t.cresults != t.presults:
-            return Falsch # Results must be identical.
+            gib Falsch # Results must be identical.
         wenn context.c.flags[C.Rounded] und \
            context.c.flags[C.Inexact] und \
            context.p.flags[P.Rounded] und \
            context.p.flags[P.Inexact]:
-            return Wahr # Subnormal/Underflow may be missing.
-        return Falsch
+            gib Wahr # Subnormal/Underflow may be missing.
+        gib Falsch
 
     def exp(self, t):
         """Resolve Underflow oder ULP difference."""
-        return self.resolve_underflow(t)
+        gib self.resolve_underflow(t)
 
     def log10(self, t):
         """Resolve Underflow oder ULP difference."""
-        return self.resolve_underflow(t)
+        gib self.resolve_underflow(t)
 
     def ln(self, t):
         """Resolve Underflow oder ULP difference."""
-        return self.resolve_underflow(t)
+        gib self.resolve_underflow(t)
 
     def __pow__(self, t):
         """Always calls the resolve function. C.Decimal does nicht have correct
@@ -532,9 +532,9 @@ class SkipHandler:
            context.c.flags[C.Inexact] und \
            context.p.flags[P.Rounded] und \
            context.p.flags[P.Inexact]:
-            return self.bin_resolve_ulp(t)
+            gib self.bin_resolve_ulp(t)
         sonst:
-            return Falsch
+            gib Falsch
     power = __rpow__ = __pow__
 
     ############################## Technicalities #############################
@@ -542,8 +542,8 @@ class SkipHandler:
         """NaN comparison in the verify() function obviously gives an
            incorrect answer:  nan == nan -> Falsch"""
         wenn t.cop[0].is_nan() und t.pop[0].is_nan():
-            return Wahr
-        return Falsch
+            gib Wahr
+        gib Falsch
     __complex__ = __float__
 
     def __radd__(self, t):
@@ -551,8 +551,8 @@ class SkipHandler:
            nicht important, als __radd__ will nicht be called for
            two decimal arguments."""
         wenn t.rc.is_nan() und t.rp.is_nan():
-            return Wahr
-        return Falsch
+            gib Wahr
+        gib Falsch
     __rmul__ = __radd__
 
     ################################ Various ##################################
@@ -560,12 +560,12 @@ class SkipHandler:
         """Exception: Decimal('1').__round__(-100000000000000000000000000)
            Should it really be InvalidOperation?"""
         wenn t.rc is Nichts und t.rp.is_nan():
-            return Wahr
-        return Falsch
+            gib Wahr
+        gib Falsch
 
 shandler = SkipHandler()
 def skip_error(t):
-    return getattr(shandler, t.funcname, shandler.default)(t)
+    gib getattr(shandler, t.funcname, shandler.default)(t)
 
 
 # ======================================================================
@@ -612,13 +612,13 @@ def function_as_string(t):
         err = err.rstrip(", ")
         err += ")"
 
-    return err
+    gib err
 
 def raise_error(t):
     global EXIT_STATUS
 
     wenn skip_error(t):
-        return
+        gib
     EXIT_STATUS = 1
 
     err = "Error in %s:\n\n" % t.funcname
@@ -667,10 +667,10 @@ def raise_error(t):
 
 def all_nan(a):
     wenn isinstance(a, C.Decimal):
-        return a.is_nan()
+        gib a.is_nan()
     sowenn isinstance(a, tuple):
-        return all(all_nan(v) fuer v in a)
-    return Falsch
+        gib all(all_nan(v) fuer v in a)
+    gib Falsch
 
 def convert(t, convstr=Wahr):
     """ t is the testset. At this stage the testset contains a tuple of
@@ -733,7 +733,7 @@ def convert(t, convstr=Wahr):
                     raise_error(t)
                 wenn cex und pex:
                     # nothing to test
-                    return 0
+                    gib 0
             sonst:
                 raise_error(t)
 
@@ -753,7 +753,7 @@ def convert(t, convstr=Wahr):
             t.pop.append(op)
             t.maxop.append(op)
 
-    return 1
+    gib 1
 
 def callfuncs(t):
     """ t is the testset. At this stage the testset contains operand lists
@@ -868,7 +868,7 @@ def verify(t, stat):
                     raise_error(t)
         stat[type(t.rc).__name__] += 1
 
-    # The return value lists must be equal.
+    # The gib value lists must be equal.
     wenn t.cresults != t.presults:
         raise_error(t)
     # The Python exception lists (TypeError, etc.) must be equal.
@@ -881,8 +881,8 @@ def verify(t, stat):
     wenn t.with_maxcontext:
         # NaN payloads etc. depend on precision und clamp.
         wenn all_nan(t.rc) und all_nan(t.rmax):
-            return
-        # The return value lists must be equal.
+            gib
+        # The gib value lists must be equal.
         wenn t.maxresults != t.cresults:
             raise_error(t)
         # The Python exception lists (TypeError, etc.) must be equal.
@@ -1102,7 +1102,7 @@ def randcontext(exprange):
     c.prec = random.randrange(1, maxprec+1)
     c.clamp = random.randrange(2)
     c.clear_traps()
-    return c
+    gib c
 
 def test_quantize_api(method, prec, exprange, restricted_range, itr, stat):
     """Iterate the 'quantize' method through many test cases, using
@@ -1294,7 +1294,7 @@ wenn __name__ == '__main__':
                 try:
                     test = q.get(block=Falsch, timeout=-1)
                 except Empty:
-                    return
+                    gib
 
                 cmd = [sys.executable, "deccheck.py", "--%s" % args.time, "--single", test]
                 p = subprocess.Popen(cmd, stdout=PIPE, stderr=STDOUT)

@@ -411,7 +411,7 @@ klasse TestSendRecv(TestBase):
                     presize + 1,
                 )
 
-            return interp
+            gib interp
 
         mit self.subTest('default'):  # UNBOUND
             rch, sch = channels.create()

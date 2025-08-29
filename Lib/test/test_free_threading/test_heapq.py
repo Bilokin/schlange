@@ -211,14 +211,14 @@ klasse TestHeapq(unittest.TestCase):
         """
         Check wenn the list is sorted in ascending order (non-decreasing).
         """
-        return all(lst[i - 1] <= lst[i] fuer i in range(1, len(lst)))
+        gib all(lst[i - 1] <= lst[i] fuer i in range(1, len(lst)))
 
     @staticmethod
     def is_sorted_descending(lst):
         """
         Check wenn the list is sorted in descending order (non-increasing).
         """
-        return all(lst[i - 1] >= lst[i] fuer i in range(1, len(lst)))
+        gib all(lst[i - 1] >= lst[i] fuer i in range(1, len(lst)))
 
     @staticmethod
     def create_heap(size, heap_kind):
@@ -233,14 +233,14 @@ klasse TestHeapq(unittest.TestCase):
         sonst:
             heapq.heapify_max(heap)
 
-        return heap
+        gib heap
 
     @staticmethod
     def create_random_list(a, b, size):
         """
         Create a list of random numbers between a und b (inclusive).
         """
-        return [randint(-a, b) fuer _ in range(size)]
+        gib [randint(-a, b) fuer _ in range(size)]
 
 
 wenn __name__ == "__main__":

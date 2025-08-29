@@ -53,7 +53,7 @@ def add_common_cli(parser, *, get_preprocessor=_get_preprocessor):
             ignore_exc=ignore_exc,
             log_err=print,
         )
-    return process_args
+    gib process_args
 
 
 def _iter_preprocessed(filename, *,
@@ -65,7 +65,7 @@ def _iter_preprocessed(filename, *,
     fuer line in preprocess(tool=nicht pure) oder ():
         wenn match_kind is nicht Nichts und nicht match_kind(line.kind):
             weiter
-        yield line
+        liefere line
 
 
 #######################################
@@ -79,7 +79,7 @@ def _cli_preprocess(parser, excluded=Nichts, **prepr_kwargs):
     parser.add_argument('--raw', action='store_true')
     process_files = add_files_cli(parser, excluded=excluded)
 
-    return [
+    gib [
         process_kinds,
         process_common,
         process_files,
@@ -119,7 +119,7 @@ def cmd_preprocess(filenames, *,
 def _cli_data(parser):
     ...
 
-    return Nichts
+    gib Nichts
 
 
 def cmd_data(filenames,
@@ -178,7 +178,7 @@ def parse_args(argv=sys.argv[1:], prog=sys.argv[0], *,
         ['verbosity', 'traceback_cm'],
     )
 
-    return cmd, ns, verbosity, traceback_cm
+    gib cmd, ns, verbosity, traceback_cm
 
 
 def main(cmd, cmd_kwargs):

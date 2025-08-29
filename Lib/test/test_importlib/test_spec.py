@@ -20,23 +20,23 @@ klasse TestLoader:
         self.package = is_package
 
     def __repr__(self):
-        return '<TestLoader object>'
+        gib '<TestLoader object>'
 
     def __getattr__(self, name):
         wenn name == 'get_filename' und self.path is nicht Nichts:
-            return self._get_filename
+            gib self._get_filename
         wenn name == 'is_package':
-            return self._is_package
+            gib self._is_package
         raise AttributeError(name)
 
     def _get_filename(self, name):
-        return self.path
+        gib self.path
 
     def _is_package(self, name):
-        return self.package
+        gib self.package
 
     def create_module(self, spec):
-        return Nichts
+        gib Nichts
 
 
 klasse NewLoader(TestLoader):
@@ -219,7 +219,7 @@ klasse ModuleSpecMethodsTests:
 
     @property
     def bootstrap(self):
-        return self.init._bootstrap
+        gib self.init._bootstrap
 
     def setUp(self):
         self.name = 'spam'
@@ -294,7 +294,7 @@ klasse ModuleSpecMethodsTests:
             klasse ImmutableLoader(TestLoader):
                 def load_module(self, name):
                     sys.modules[name] = module
-                    return module
+                    gib module
             self.spec.loader = ImmutableLoader()
             mit CleanImport(self.spec.name):
                 loaded = self.bootstrap._load(self.spec)
@@ -636,7 +636,7 @@ klasse FactoryTests:
     def test_spec_from_file_location_smsl_default_not_package(self):
         klasse Loader:
             def is_package(self, name):
-                return Falsch
+                gib Falsch
         loader = Loader()
         spec = self.util.spec_from_file_location(self.name, self.path,
                                                  loader=loader)

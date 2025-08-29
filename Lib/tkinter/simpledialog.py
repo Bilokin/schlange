@@ -67,7 +67,7 @@ klasse SimpleDialog:
         self.root.grab_set()
         self.root.mainloop()
         self.root.destroy()
-        return self.num
+        gib self.num
 
     def return_event(self, event):
         wenn self.default is Nichts:
@@ -156,7 +156,7 @@ klasse Dialog(Toplevel):
     def body(self, master):
         '''create dialog body.
 
-        return widget that should have initial focus.
+        gib widget that should have initial focus.
         This method should be overridden, und is called
         by the __init__ method.
         '''
@@ -187,7 +187,7 @@ klasse Dialog(Toplevel):
 
         wenn nicht self.validate():
             self.initial_focus.focus_set() # put focus back
-            return
+            gib
 
         self.withdraw()
         self.update_idletasks()
@@ -214,7 +214,7 @@ klasse Dialog(Toplevel):
         dialog is destroyed. By default, it always validates OK.
         '''
 
-        return 1 # override
+        gib 1 # override
 
     def apply(self):
         '''process the data
@@ -298,7 +298,7 @@ klasse _QueryDialog(Dialog):
             self.entry.insert(0, self.initialvalue)
             self.entry.select_range(0, END)
 
-        return self.entry
+        gib self.entry
 
     def validate(self):
         try:
@@ -309,7 +309,7 @@ klasse _QueryDialog(Dialog):
                 self.errormessage + "\nPlease try again",
                 parent = self
             )
-            return 0
+            gib 0
 
         wenn self.minvalue is nicht Nichts und result < self.minvalue:
             messagebox.showwarning(
@@ -318,7 +318,7 @@ klasse _QueryDialog(Dialog):
                 "Please try again." % self.minvalue,
                 parent = self
             )
-            return 0
+            gib 0
 
         wenn self.maxvalue is nicht Nichts und result > self.maxvalue:
             messagebox.showwarning(
@@ -327,18 +327,18 @@ klasse _QueryDialog(Dialog):
                 "Please try again." % self.maxvalue,
                 parent = self
             )
-            return 0
+            gib 0
 
         self.result = result
 
-        return 1
+        gib 1
 
 
 klasse _QueryInteger(_QueryDialog):
     errormessage = "Not an integer."
 
     def getresult(self):
-        return self.getint(self.entry.get())
+        gib self.getint(self.entry.get())
 
 
 def askinteger(title, prompt, **kw):
@@ -353,14 +353,14 @@ def askinteger(title, prompt, **kw):
     Return value is an integer
     '''
     d = _QueryInteger(title, prompt, **kw)
-    return d.result
+    gib d.result
 
 
 klasse _QueryFloat(_QueryDialog):
     errormessage = "Not a floating-point value."
 
     def getresult(self):
-        return self.getdouble(self.entry.get())
+        gib self.getdouble(self.entry.get())
 
 
 def askfloat(title, prompt, **kw):
@@ -375,7 +375,7 @@ def askfloat(title, prompt, **kw):
     Return value is a float
     '''
     d = _QueryFloat(title, prompt, **kw)
-    return d.result
+    gib d.result
 
 
 klasse _QueryString(_QueryDialog):
@@ -391,10 +391,10 @@ klasse _QueryString(_QueryDialog):
         entry = _QueryDialog.body(self, master)
         wenn self.__show is nicht Nichts:
             entry.configure(show=self.__show)
-        return entry
+        gib entry
 
     def getresult(self):
-        return self.entry.get()
+        gib self.entry.get()
 
 
 def askstring(title, prompt, **kw):
@@ -409,7 +409,7 @@ def askstring(title, prompt, **kw):
     Return value is a string
     '''
     d = _QueryString(title, prompt, **kw)
-    return d.result
+    gib d.result
 
 
 wenn __name__ == '__main__':

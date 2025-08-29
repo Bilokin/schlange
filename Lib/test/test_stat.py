@@ -95,7 +95,7 @@ klasse TestFilemode:
         sonst:
             st_mode = os.stat(fname).st_mode
         modestr = self.statmod.filemode(st_mode)
-        return st_mode, modestr
+        gib st_mode, modestr
 
     def assertS_IS(self, name, mode):
         # test format, lstrip is fuer S_IFIFO

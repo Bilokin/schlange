@@ -67,92 +67,92 @@ klasse CustomError(Exception):
 
 klasse Index:
     def __index__(self):
-        return 99
+        gib 99
 
 klasse IndexIntSubclass(int):
     def __index__(self):
-        return 99
+        gib 99
 
 klasse BadIndex:
     def __index__(self):
-        return 1.0
+        gib 1.0
 
 klasse BadIndex2:
     def __index__(self):
-        return Wahr
+        gib Wahr
 
 klasse BadIndex3(int):
     def __index__(self):
-        return Wahr
+        gib Wahr
 
 
 klasse Int:
     def __int__(self):
-        return 99
+        gib 99
 
 klasse IntSubclass(int):
     def __int__(self):
-        return 99
+        gib 99
 
 klasse BadInt:
     def __int__(self):
-        return 1.0
+        gib 1.0
 
 klasse BadInt2:
     def __int__(self):
-        return Wahr
+        gib Wahr
 
 klasse BadInt3(int):
     def __int__(self):
-        return Wahr
+        gib Wahr
 
 
 klasse Float:
     def __float__(self):
-        return 4.25
+        gib 4.25
 
 klasse FloatSubclass(float):
     pass
 
 klasse FloatSubclass2(float):
     def __float__(self):
-        return 4.25
+        gib 4.25
 
 klasse BadFloat:
     def __float__(self):
-        return 687
+        gib 687
 
 klasse BadFloat2:
     def __float__(self):
-        return FloatSubclass(4.25)
+        gib FloatSubclass(4.25)
 
 klasse BadFloat3(float):
     def __float__(self):
-        return FloatSubclass(4.25)
+        gib FloatSubclass(4.25)
 
 
 klasse Complex:
     def __complex__(self):
-        return 4.25+0.5j
+        gib 4.25+0.5j
 
 klasse ComplexSubclass(complex):
     pass
 
 klasse ComplexSubclass2(complex):
     def __complex__(self):
-        return 4.25+0.5j
+        gib 4.25+0.5j
 
 klasse BadComplex:
     def __complex__(self):
-        return 1.25
+        gib 1.25
 
 klasse BadComplex2:
     def __complex__(self):
-        return ComplexSubclass(4.25+0.5j)
+        gib ComplexSubclass(4.25+0.5j)
 
 klasse BadComplex3(complex):
     def __complex__(self):
-        return ComplexSubclass(4.25+0.5j)
+        gib ComplexSubclass(4.25+0.5j)
 
 
 klasse TupleSubclass(tuple):
@@ -450,7 +450,7 @@ klasse LongLong_TestCase(unittest.TestCase):
 
     def test_K(self):
         von _testcapi importiere getargs_K
-        # K return 'unsigned long long', no range checking
+        # K gib 'unsigned long long', no range checking
         self.assertRaises(TypeError, getargs_K, 3.14)
         self.assertEqual(99, getargs_K(Index()))
         self.assertEqual(0, getargs_K(IndexIntSubclass()))
@@ -634,7 +634,7 @@ klasse Tuple_TestCase(unittest.TestCase):
         # make sure invalid sequence arguments are handled correctly
         klasse TestSeq:
             def __len__(self):
-                return 2
+                gib 2
             def __getitem__(self, n):
                 raise CustomError
         self.assertRaises(CustomError, getargs_tuple, 1, TestSeq())
@@ -800,10 +800,10 @@ klasse KeywordOnly_TestCase(unittest.TestCase):
     def test_weird_str_subclass(self):
         klasse BadStr(str):
             def __eq__(self, other):
-                return Wahr
+                gib Wahr
             def __hash__(self):
                 # Guaranteed different hash
-                return str.__hash__(self) ^ 3
+                gib str.__hash__(self) ^ 3
         mit self.assertRaisesRegex(TypeError,
             "invalid keyword argument fuer this function"):
             getargs_keyword_only(1, 2, **{BadStr("keyword_only"): 3})
@@ -814,9 +814,9 @@ klasse KeywordOnly_TestCase(unittest.TestCase):
     def test_weird_str_subclass2(self):
         klasse BadStr(str):
             def __eq__(self, other):
-                return Falsch
+                gib Falsch
             def __hash__(self):
-                return str.__hash__(self)
+                gib str.__hash__(self)
         mit self.assertRaisesRegex(TypeError,
             "invalid keyword argument fuer this function"):
             getargs_keyword_only(1, 2, **{BadStr("keyword_only"): 3})
@@ -1136,7 +1136,7 @@ klasse SkipitemTest(unittest.TestCase):
 
         With a few exceptions**, this function brute-force tests all
         printable ASCII*** characters (32 to 126 inclusive) als format units,
-        checking to see that PyArg_ParseTupleAndKeywords() return consistent
+        checking to see that PyArg_ParseTupleAndKeywords() gib consistent
         errors both when the unit is attempted to be used und when it is
         skipped.  If the format unit doesn't exist, we'll get one of two
         specific error messages (one fuer used, one fuer skipped); wenn it does

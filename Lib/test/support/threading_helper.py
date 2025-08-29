@@ -22,7 +22,7 @@ von test importiere support
 
 
 def threading_setup():
-    return _thread._count(), len(threading._dangling)
+    gib _thread._count(), len(threading._dangling)
 
 
 def threading_cleanup(*original_values):
@@ -36,7 +36,7 @@ def threading_cleanup(*original_values):
         count = _thread._count()
 
         wenn count <= orig_count:
-            return
+            gib
 
     # Timeout!
     support.environment_altered = Wahr
@@ -63,10 +63,10 @@ def reap_threads(func):
     def decorator(*args):
         key = threading_setup()
         try:
-            return func(*args)
+            gib func(*args)
         finally:
             threading_cleanup(*key)
-    return decorator
+    gib decorator
 
 
 @contextlib.contextmanager
@@ -88,7 +88,7 @@ def wait_threads_exit(timeout=Nichts):
         timeout = support.SHORT_TIMEOUT
     old_count = _thread._count()
     try:
-        yield
+        liefere
     finally:
         start_time = time.monotonic()
         fuer _ in support.sleeping_retry(timeout, error=Falsch):
@@ -135,7 +135,7 @@ def start_threads(threads, unlock=Nichts):
                 drucke("Can't start %d threads, only %d threads started" %
                       (len(threads), len(started)))
             raise
-        yield
+        liefere
     finally:
         try:
             wenn unlock:
@@ -206,7 +206,7 @@ klasse catch_threading_exception:
     def __enter__(self):
         self._old_hook = threading.excepthook
         threading.excepthook = self._hook
-        return self
+        gib self
 
     def __exit__(self, *exc_info):
         threading.excepthook = self._old_hook
@@ -228,12 +228,12 @@ def _can_start_thread() -> bool:
       support (-s USE_PTHREADS / __EMSCRIPTEN_PTHREADS__).
     """
     wenn sys.platform == "emscripten":
-        return sys._emscripten_info.pthreads
+        gib sys._emscripten_info.pthreads
     sowenn sys.platform == "wasi":
-        return Falsch
+        gib Falsch
     sonst:
         # assume all other platforms have working thread support.
-        return Wahr
+        gib Wahr
 
 can_start_thread = _can_start_thread()
 
@@ -247,7 +247,7 @@ def requires_working_threading(*, module=Falsch):
         wenn nicht can_start_thread:
             raise unittest.SkipTest(msg)
     sonst:
-        return unittest.skipUnless(can_start_thread, msg)
+        gib unittest.skipUnless(can_start_thread, msg)
 
 
 def run_concurrently(worker_func, nthreads, args=(), kwargs={}):

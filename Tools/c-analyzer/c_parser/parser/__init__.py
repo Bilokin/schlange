@@ -89,7 +89,7 @@ Here are the cases where we've taken shortcuts oder made assumptions:
    + the local context has no function definitions oder type decls
 * no "inline" type declarations (struct, union, enum) in function
   parameters ~(including function pointers)~
-* no "inline" type decls in function return types
+* no "inline" type decls in function gib types
 * no superfluous parentheses in declarators
 * var decls in fuer loops are always "simple" (e.g. no inline types)
 * only inline struct/union/enum decls may be anonymous (without a name)
@@ -126,7 +126,7 @@ def parse(srclines, **srckwargs):
 
     anon_name = anonymous_names()
     fuer result in _parse(srclines, anon_name, **srckwargs):
-        yield ParsedItem.from_raw(result)
+        liefere ParsedItem.from_raw(result)
 
 
 # XXX Later: Add a separate function to deal mit preprocessor directives
@@ -139,8 +139,8 @@ def anonymous_names():
         nonlocal counter
         name = f'{prefix}{counter}'
         counter += 1
-        return name
-    return anon_name
+        gib name
+    gib anon_name
 
 
 #############################
@@ -158,7 +158,7 @@ def _parse(srclines, anon_name, **srckwargs):
     source = _iter_source(srclines, **srckwargs)
     fuer result in parse_globals(source, anon_name):
         # XXX Handle blocks here instead of in parse_globals().
-        yield result
+        liefere result
 
 
 # We use defaults that cover most files.  Files mit bigger declarations
@@ -188,7 +188,7 @@ def _iter_source(lines, *, maxtext=11_000, maxlines=200, showtext=Falsch):
         wenn srcinfo.too_much(maxtext, maxlines):
             breche
         waehrend srcinfo._used():
-            yield srcinfo
+            liefere srcinfo
             wenn showtext:
                 _logger.debug(f'=> {srcinfo.text}')
     sonst:
@@ -198,14 +198,14 @@ def _iter_source(lines, *, maxtext=11_000, maxlines=200, showtext=Falsch):
             filename = filestack[-1]
             srcinfo = allinfo[filename]
             waehrend srcinfo._used():
-                yield srcinfo
+                liefere srcinfo
                 wenn showtext:
                     _logger.debug(f'=> {srcinfo.text}')
-        yield srcinfo
+        liefere srcinfo
         wenn showtext:
             _logger.debug(f'=> {srcinfo.text}')
         wenn nicht srcinfo._ready:
-            return
+            gib
     # At this point either the file ended prematurely
     # oder there's "too much" text.
     filename, lno, text = srcinfo.filename, srcinfo._start, srcinfo.text

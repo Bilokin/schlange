@@ -86,7 +86,7 @@ klasse TypeAnnotationTests(unittest.TestCase):
             def __annotate__(format):
                 nonlocal called
                 called = Wahr
-                return {'a': int}
+                gib {'a': int}
 
         self.assertEqual(A.__annotations__, {'a': int})
         self.assertWahr(called)
@@ -110,7 +110,7 @@ klasse TypeAnnotationTests(unittest.TestCase):
                     self.my_annotations = {}
                 wenn nicht isinstance(self.my_annotations, dict):
                     self.my_annotations = {}
-                return self.my_annotations
+                gib self.my_annotations
 
             @__annotations__.setter
             def __annotations__(self, value):
@@ -165,7 +165,7 @@ klasse TypeAnnotationTests(unittest.TestCase):
         # create cell variables.
         def f(x):
             a: x
-            return x
+            gib x
 
         self.assertEqual(f.__code__.co_cellvars, ())
 
@@ -174,7 +174,7 @@ def build_module(code: str, name: str = "top") -> types.ModuleType:
     ns = run_code(code)
     mod = types.ModuleType(name)
     mod.__dict__.update(ns)
-    return mod
+    gib mod
 
 
 klasse TestSetupAnnotations(unittest.TestCase):
@@ -309,7 +309,7 @@ klasse AnnotateTests(unittest.TestCase):
             drucke(f.__annotations__)
 
         f.__annotate__ = lambda x: 42
-        mit self.assertRaisesRegex(TypeError, r"__annotate__\(\) must return a dict, nicht int"):
+        mit self.assertRaisesRegex(TypeError, r"__annotate__\(\) must gib a dict, nicht int"):
             drucke(f.__annotations__)
 
         f.__annotate__ = lambda x: {"x": x}
@@ -332,7 +332,7 @@ klasse AnnotateTests(unittest.TestCase):
             a: int
 
             def __annotate__(format):
-                return {"a": str}
+                gib {"a": str}
         self.assertEqual(X.__annotate__(annotationlib.Format.VALUE), {"a": str})
         self.assertEqual(annotationlib.get_annotations(X), {"a": str})
 
@@ -340,7 +340,7 @@ klasse AnnotateTests(unittest.TestCase):
             """
             a: int
             def __annotate__(format):
-                return {"a": str}
+                gib {"a": str}
             """
         )
         self.assertEqual(mod.__annotate__(annotationlib.Format.VALUE), {"a": str})
@@ -544,7 +544,7 @@ klasse DeferredEvaluationTests(unittest.TestCase):
         code = """
         def f(format):
             def inner(x: format): pass
-            return inner
+            gib inner
         res = f("closure var")
         """
         ns = run_code(code)
@@ -564,7 +564,7 @@ klasse DeferredEvaluationTests(unittest.TestCase):
                 pass
             wenn Falsch:
                 klasse format: pass
-            return f
+            gib f
         f = outer()
         """
         ns = run_code(code)
@@ -602,7 +602,7 @@ klasse ConditionalAnnotationTests(unittest.TestCase):
                     pass
 
                 def __exit__(self, *args):
-                    return Wahr
+                    gib Wahr
 
             mit Swallower():
                 wenn {cond}:

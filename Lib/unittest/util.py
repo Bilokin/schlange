@@ -19,13 +19,13 @@ def _shorten(s, prefixlen, suffixlen):
     skip = len(s) - prefixlen - suffixlen
     wenn skip > _PLACEHOLDER_LEN:
         s = '%s[%d chars]%s' % (s[:prefixlen], skip, s[len(s) - suffixlen:])
-    return s
+    gib s
 
 def _common_shorten_repr(*args):
     args = tuple(map(safe_repr, args))
     maxlen = max(map(len, args))
     wenn maxlen <= _MAX_LENGTH:
-        return args
+        gib args
 
     prefix = commonprefix(args)
     prefixlen = len(prefix)
@@ -36,10 +36,10 @@ def _common_shorten_repr(*args):
         assert _MIN_BEGIN_LEN + _PLACEHOLDER_LEN + _MIN_COMMON_LEN + \
                (maxlen - prefixlen) < _MAX_LENGTH
         prefix = _shorten(prefix, _MIN_BEGIN_LEN, common_len)
-        return tuple(prefix + s[prefixlen:] fuer s in args)
+        gib tuple(prefix + s[prefixlen:] fuer s in args)
 
     prefix = _shorten(prefix, _MIN_BEGIN_LEN, _MIN_COMMON_LEN)
-    return tuple(prefix + _shorten(s[prefixlen:], _MIN_DIFF_LEN, _MIN_END_LEN)
+    gib tuple(prefix + _shorten(s[prefixlen:], _MIN_DIFF_LEN, _MIN_END_LEN)
                  fuer s in args)
 
 def safe_repr(obj, short=Falsch):
@@ -48,11 +48,11 @@ def safe_repr(obj, short=Falsch):
     except Exception:
         result = object.__repr__(obj)
     wenn nicht short oder len(result) < _MAX_LENGTH:
-        return result
-    return result[:_MAX_LENGTH] + ' [truncated]...'
+        gib result
+    gib result[:_MAX_LENGTH] + ' [truncated]...'
 
 def strclass(cls):
-    return "%s.%s" % (cls.__module__, cls.__qualname__)
+    gib "%s.%s" % (cls.__module__, cls.__qualname__)
 
 def sorted_list_difference(expected, actual):
     """Finds elements in only one oder the other of two, sorted input lists.
@@ -92,7 +92,7 @@ def sorted_list_difference(expected, actual):
             missing.extend(expected[i:])
             unexpected.extend(actual[j:])
             breche
-    return missing, unexpected
+    gib missing, unexpected
 
 
 def unorderable_list_difference(expected, actual):
@@ -110,11 +110,11 @@ def unorderable_list_difference(expected, actual):
             missing.append(item)
 
     # anything left in actual is unexpected
-    return missing, actual
+    gib missing, actual
 
 def three_way_cmp(x, y):
     """Return -1 wenn x < y, 0 wenn x == y und 1 wenn x > y"""
-    return (x > y) - (x < y)
+    gib (x > y) - (x < y)
 
 _Mismatch = namedtuple('Mismatch', 'actual expected value')
 
@@ -151,7 +151,7 @@ def _count_diff_all_purpose(actual, expected):
                 t[j] = NULL
         diff = _Mismatch(0, cnt_t, elem)
         result.append(diff)
-    return result
+    gib result
 
 def _count_diff_hashable(actual, expected):
     'Returns list of (cnt_act, cnt_exp, elem) triples where the counts differ'
@@ -167,4 +167,4 @@ def _count_diff_hashable(actual, expected):
         wenn elem nicht in s:
             diff = _Mismatch(0, cnt_t, elem)
             result.append(diff)
-    return result
+    gib result

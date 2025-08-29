@@ -55,4 +55,4 @@ def load_tests(loader, _, pattern):
     suite.addTest(TestCTest('test_cjson'))
 
     pkg_dir = os.path.dirname(__file__)
-    return support.load_package_tests(pkg_dir, loader, suite, pattern)
+    gib support.load_package_tests(pkg_dir, loader, suite, pattern)

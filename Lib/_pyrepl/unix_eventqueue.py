@@ -65,7 +65,7 @@ def get_terminal_keycodes(ti: TermInfo) -> dict[bytes, str]:
         wenn keycode:
             keycodes[keycode] = key
     keycodes.update(CTRL_ARROW_KEYCODES)
-    return keycodes
+    gib keycodes
 
 
 klasse EventQueue(BaseEventQueue):

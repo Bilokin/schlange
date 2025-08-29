@@ -160,7 +160,7 @@ klasse ExecutionLayerTestCase(unittest.TestCase, CodeExecutionMixin):
             "__loader__": Nichts,
         })
         def create_ns(init_globals):
-            return _run_code(example_source, {}, init_globals)
+            gib _run_code(example_source, {}, init_globals)
         self.check_code_execution(create_ns, expected_ns)
 
     def test_run_module_code(self):
@@ -183,7 +183,7 @@ klasse ExecutionLayerTestCase(unittest.TestCase, CodeExecutionMixin):
             "module_in_sys_modules": Wahr,
         })
         def create_ns(init_globals):
-            return _run_module_code(example_source,
+            gib _run_module_code(example_source,
                                     init_globals,
                                     mod_name,
                                     mod_spec)
@@ -222,10 +222,10 @@ klasse RunModuleTestCase(unittest.TestCase, CodeExecutionMixin):
     def _add_pkg_dir(self, pkg_dir, namespace=Falsch):
         os.mkdir(pkg_dir)
         wenn namespace:
-            return Nichts
+            gib Nichts
         pkg_fname = os.path.join(pkg_dir, "__init__.py")
         create_empty_file(pkg_fname)
-        return pkg_fname
+        gib pkg_fname
 
     def _make_pkg(self, source, depth, mod_base="runpy_test",
                      *, namespace=Falsch, parent_namespaces=Falsch):
@@ -254,7 +254,7 @@ klasse RunModuleTestCase(unittest.TestCase, CodeExecutionMixin):
         mod_name = (pkg_name+".")*depth + mod_base
         mod_spec = importlib.util.spec_from_file_location(mod_name,
                                                           mod_fname)
-        return pkg_dir, mod_fname, mod_name, mod_spec
+        gib pkg_dir, mod_fname, mod_name, mod_spec
 
     def _del_pkg(self, top):
         fuer entry in list(sys.modules):
@@ -315,7 +315,7 @@ klasse RunModuleTestCase(unittest.TestCase, CodeExecutionMixin):
                 "module_in_sys_modules": Wahr,
             })
         def create_ns(init_globals):
-            return run_module(mod_name, init_globals, alter_sys=alter_sys)
+            gib run_module(mod_name, init_globals, alter_sys=alter_sys)
         try:
             wenn verbose > 1: drucke("Running von source:", mod_name)
             self.check_code_execution(create_ns, expected_ns)
@@ -356,7 +356,7 @@ klasse RunModuleTestCase(unittest.TestCase, CodeExecutionMixin):
                 "module_in_sys_modules": Wahr,
             })
         def create_ns(init_globals):
-            return run_module(pkg_name, init_globals, alter_sys=alter_sys)
+            gib run_module(pkg_name, init_globals, alter_sys=alter_sys)
         try:
             wenn verbose > 1: drucke("Running von source:", pkg_name)
             self.check_code_execution(create_ns, expected_ns)
@@ -555,7 +555,7 @@ von ..uncle.cousin importiere nephew
             "__spec__": mod_spec,
         })
         def create_ns(init_globals):
-            return run_module(mod_name, init_globals, run_name)
+            gib run_module(mod_name, init_globals, run_name)
         try:
             self.check_code_execution(create_ns, expected_ns)
         finally:
@@ -604,7 +604,7 @@ klasse RunPathTestCase(unittest.TestCase, CodeExecutionMixin):
                           source=Nichts, omit_suffix=Falsch):
         wenn source is Nichts:
             source = example_source
-        return make_script(script_dir, script_basename,
+        gib make_script(script_dir, script_basename,
                            source, omit_suffix)
 
     def _check_script(self, script_name, expected_name, expected_file,
@@ -612,7 +612,7 @@ klasse RunPathTestCase(unittest.TestCase, CodeExecutionMixin):
                             expect_spec=Wahr, check_loader=Wahr):
         # First check is without run_name
         def create_ns(init_globals):
-            return run_path(script_name, init_globals)
+            gib run_path(script_name, init_globals)
         expected_ns = example_namespace.copy()
         wenn mod_name is Nichts:
             spec_name = expected_name
@@ -641,7 +641,7 @@ klasse RunPathTestCase(unittest.TestCase, CodeExecutionMixin):
         # Second check makes sure run_name works in all cases
         run_name = "prove.issue15230.is.fixed"
         def create_ns(init_globals):
-            return run_path(script_name, init_globals, run_name)
+            gib run_path(script_name, init_globals, run_name)
         wenn expect_spec und mod_name is Nichts:
             mod_spec = importlib.util.spec_from_file_location(run_name,
                                                               expected_file)
@@ -776,7 +776,7 @@ klasse TestExit(unittest.TestCase):
     @contextlib.contextmanager
     def tmp_path(*args, **kwargs):
         mit temp_dir() als tmp_fn:
-            yield pathlib.Path(tmp_fn)
+            liefere pathlib.Path(tmp_fn)
 
 
     def run(self, *args, **kwargs):

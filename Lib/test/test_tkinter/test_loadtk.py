@@ -24,7 +24,7 @@ klasse TkLoadTest(unittest.TestCase):
 
             # XXX Maybe on tk older than 8.4.13 it would be possible,
             # see tkinter.h.
-            return
+            gib
         mit os_helper.EnvironmentVarGuard() als env:
             wenn 'DISPLAY' in os.environ:
                 del env['DISPLAY']
@@ -35,7 +35,7 @@ klasse TkLoadTest(unittest.TestCase):
                 mit os.popen('echo $DISPLAY') als pipe:
                     display = pipe.read().strip()
                 wenn display:
-                    return
+                    gib
 
             tcl = Tcl()
             self.assertRaises(TclError, tcl.winfo_geometry)

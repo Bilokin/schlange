@@ -163,7 +163,7 @@ klasse HTTPSServer(HTTPServer):
         context = self.ssl.create_default_context(self.ssl.Purpose.CLIENT_AUTH)
         context.load_cert_chain(self.certfile, self.keyfile, self.password)
         context.set_alpn_protocols(self.alpn_protocols)
-        return context
+        gib context
 
 
 klasse ThreadingHTTPSServer(socketserver.ThreadingMixIn, HTTPSServer):
@@ -310,7 +310,7 @@ klasse BaseHTTPRequestHandler(socketserver.StreamRequestHandler):
         self.requestline = requestline
         words = requestline.split()
         wenn len(words) == 0:
-            return Falsch
+            gib Falsch
 
         wenn len(words) >= 3:  # Enough to determine protocol version
             version = words[-1]
@@ -336,21 +336,21 @@ klasse BaseHTTPRequestHandler(socketserver.StreamRequestHandler):
                 self.send_error(
                     HTTPStatus.BAD_REQUEST,
                     "Bad request version (%r)" % version)
-                return Falsch
+                gib Falsch
             wenn version_number >= (1, 1) und self.protocol_version >= "HTTP/1.1":
                 self.close_connection = Falsch
             wenn version_number >= (2, 0):
                 self.send_error(
                     HTTPStatus.HTTP_VERSION_NOT_SUPPORTED,
                     "Invalid HTTP version (%s)" % base_version_number)
-                return Falsch
+                gib Falsch
             self.request_version = version
 
         wenn nicht 2 <= len(words) <= 3:
             self.send_error(
                 HTTPStatus.BAD_REQUEST,
                 "Bad request syntax (%r)" % requestline)
-            return Falsch
+            gib Falsch
         command, path = words[:2]
         wenn len(words) == 2:
             self.close_connection = Wahr
@@ -358,7 +358,7 @@ klasse BaseHTTPRequestHandler(socketserver.StreamRequestHandler):
                 self.send_error(
                     HTTPStatus.BAD_REQUEST,
                     "Bad HTTP/0.9 request type (%r)" % command)
-                return Falsch
+                gib Falsch
         self.command, self.path = command, path
 
         # gh-87389: The purpose of replacing '//' mit '/' is to protect
@@ -377,14 +377,14 @@ klasse BaseHTTPRequestHandler(socketserver.StreamRequestHandler):
                 HTTPStatus.REQUEST_HEADER_FIELDS_TOO_LARGE,
                 "Line too long",
                 str(err))
-            return Falsch
+            gib Falsch
         except http.client.HTTPException als err:
             self.send_error(
                 HTTPStatus.REQUEST_HEADER_FIELDS_TOO_LARGE,
                 "Too many headers",
                 str(err)
             )
-            return Falsch
+            gib Falsch
 
         conntype = self.headers.get('Connection', "")
         wenn conntype.lower() == 'close':
@@ -398,8 +398,8 @@ klasse BaseHTTPRequestHandler(socketserver.StreamRequestHandler):
                 self.protocol_version >= "HTTP/1.1" und
                 self.request_version >= "HTTP/1.1"):
             wenn nicht self.handle_expect_100():
-                return Falsch
-        return Wahr
+                gib Falsch
+        gib Wahr
 
     def handle_expect_100(self):
         """Decide what to do mit an "Expect: 100-continue" header.
@@ -410,14 +410,14 @@ klasse BaseHTTPRequestHandler(socketserver.StreamRequestHandler):
         mit a 100 Continue. You can behave differently (for example,
         reject unauthorized requests) by overriding this method.
 
-        This method should either return Wahr (possibly after sending
-        a 100 Continue response) oder send an error response und return
+        This method should either gib Wahr (possibly after sending
+        a 100 Continue response) oder send an error response und gib
         Falsch.
 
         """
         self.send_response_only(HTTPStatus.CONTINUE)
         self.end_headers()
-        return Wahr
+        gib Wahr
 
     def handle_one_request(self):
         """Handle a single HTTP request.
@@ -434,19 +434,19 @@ klasse BaseHTTPRequestHandler(socketserver.StreamRequestHandler):
                 self.request_version = ''
                 self.command = ''
                 self.send_error(HTTPStatus.REQUEST_URI_TOO_LONG)
-                return
+                gib
             wenn nicht self.raw_requestline:
                 self.close_connection = Wahr
-                return
+                gib
             wenn nicht self.parse_request():
                 # An error code has been sent, just exit
-                return
+                gib
             mname = 'do_' + self.command
             wenn nicht hasattr(self, mname):
                 self.send_error(
                     HTTPStatus.NOT_IMPLEMENTED,
                     "Unsupported method (%r)" % self.command)
-                return
+                gib
             method = getattr(self, mname)
             method()
             self.wfile.flush() #actually send the response wenn nicht already done.
@@ -454,7 +454,7 @@ klasse BaseHTTPRequestHandler(socketserver.StreamRequestHandler):
             #a read oder a write timed out.  Discard this connection
             self.log_error("Request timed out: %r", e)
             self.close_connection = Wahr
-            return
+            gib
 
     def handle(self):
         """Handle multiple requests wenn necessary."""
@@ -627,13 +627,13 @@ klasse BaseHTTPRequestHandler(socketserver.StreamRequestHandler):
 
     def version_string(self):
         """Return the server software version string."""
-        return self.server_version + ' ' + self.sys_version
+        gib self.server_version + ' ' + self.sys_version
 
     def date_time_string(self, timestamp=Nichts):
         """Return the current date und time formatted fuer a message header."""
         wenn timestamp is Nichts:
             timestamp = time.time()
-        return email.utils.formatdate(timestamp, usegmt=Wahr)
+        gib email.utils.formatdate(timestamp, usegmt=Wahr)
 
     def log_date_time_string(self):
         """Return the current time formatted fuer logging."""
@@ -641,7 +641,7 @@ klasse BaseHTTPRequestHandler(socketserver.StreamRequestHandler):
         year, month, day, hh, mm, ss, x, y, z = time.localtime(now)
         s = "%02d/%3s/%04d %02d:%02d:%02d" % (
                 day, self.monthname[month], year, hh, mm, ss)
-        return s
+        gib s
 
     weekdayname = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
 
@@ -652,7 +652,7 @@ klasse BaseHTTPRequestHandler(socketserver.StreamRequestHandler):
     def address_string(self):
         """Return the client address."""
 
-        return self.client_address[0]
+        gib self.client_address[0]
 
     # Essentially static klasse variables
 
@@ -737,28 +737,28 @@ klasse SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
                 self.send_header("Location", new_url)
                 self.send_header("Content-Length", "0")
                 self.end_headers()
-                return Nichts
+                gib Nichts
             fuer index in self.index_pages:
                 index = os.path.join(path, index)
                 wenn os.path.isfile(index):
                     path = index
                     breche
             sonst:
-                return self.list_directory(path)
+                gib self.list_directory(path)
         ctype = self.guess_type(path)
-        # check fuer trailing "/" which should return 404. See Issue17324
+        # check fuer trailing "/" which should gib 404. See Issue17324
         # The test fuer this was added in test_httpserver.py
         # However, some OS platforms accept a trailingSlash als a filename
         # See discussion on python-dev und Issue34711 regarding
         # parsing und rejection of filenames mit a trailing slash
         wenn path.endswith("/"):
             self.send_error(HTTPStatus.NOT_FOUND, "File nicht found")
-            return Nichts
+            gib Nichts
         try:
             f = open(path, 'rb')
         except OSError:
             self.send_error(HTTPStatus.NOT_FOUND, "File nicht found")
-            return Nichts
+            gib Nichts
 
         try:
             fs = os.fstat(f.fileno())
@@ -788,7 +788,7 @@ klasse SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
                             self.send_response(HTTPStatus.NOT_MODIFIED)
                             self.end_headers()
                             f.close()
-                            return Nichts
+                            gib Nichts
 
             self.send_response(HTTPStatus.OK)
             self.send_header("Content-type", ctype)
@@ -796,7 +796,7 @@ klasse SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
             self.send_header("Last-Modified",
                 self.date_time_string(fs.st_mtime))
             self.end_headers()
-            return f
+            gib f
         except:
             f.close()
             raise
@@ -815,7 +815,7 @@ klasse SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
             self.send_error(
                 HTTPStatus.NOT_FOUND,
                 "No permission to list directory")
-            return Nichts
+            gib Nichts
         list.sort(key=lambda a: a.lower())
         r = []
         displaypath = self.path
@@ -860,7 +860,7 @@ klasse SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
         self.send_header("Content-type", "text/html; charset=%s" % enc)
         self.send_header("Content-Length", str(len(encoded)))
         self.end_headers()
-        return f
+        gib f
 
     def translate_path(self, path):
         """Translate a /-separated PATH to the local filename syntax.
@@ -890,7 +890,7 @@ klasse SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
             path = os.path.join(path, word)
         wenn trailing_slash:
             path += '/'
-        return path
+        gib path
 
     def copyfile(self, source, outputfile):
         """Copy all data between two file objects.
@@ -924,14 +924,14 @@ klasse SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
         """
         base, ext = posixpath.splitext(path)
         wenn ext in self.extensions_map:
-            return self.extensions_map[ext]
+            gib self.extensions_map[ext]
         ext = ext.lower()
         wenn ext in self.extensions_map:
-            return self.extensions_map[ext]
+            gib self.extensions_map[ext]
         guess, _ = mimetypes.guess_file_type(path)
         wenn guess:
-            return guess
-        return 'application/octet-stream'
+            gib guess
+        gib 'application/octet-stream'
 
 
 nobody = Nichts
@@ -940,21 +940,21 @@ def nobody_uid():
     """Internal routine to get nobody's uid"""
     global nobody
     wenn nobody:
-        return nobody
+        gib nobody
     try:
         importiere pwd
     except ImportError:
-        return -1
+        gib -1
     try:
         nobody = pwd.getpwnam('nobody')[2]
     except KeyError:
         nobody = 1 + max(x[2] fuer x in pwd.getpwall())
-    return nobody
+    gib nobody
 
 
 def executable(path):
     """Test fuer executable file."""
-    return os.access(path, os.X_OK)
+    gib os.access(path, os.X_OK)
 
 
 def _get_best_family(*address):
@@ -964,7 +964,7 @@ def _get_best_family(*address):
         flags=socket.AI_PASSIVE,
     )
     family, type, proto, canonname, sockaddr = next(iter(infos))
-    return family, sockaddr
+    gib family, sockaddr
 
 
 def test(HandlerClass=BaseHTTPRequestHandler,
@@ -1048,7 +1048,7 @@ def _main(args=Nichts):
             mit contextlib.suppress(Exception):
                 self.socket.setsockopt(
                     socket.IPPROTO_IPV6, socket.IPV6_V6ONLY, 0)
-            return super().server_bind()
+            gib super().server_bind()
 
         def finish_request(self, request, client_address):
             self.RequestHandlerClass(request, client_address, self,

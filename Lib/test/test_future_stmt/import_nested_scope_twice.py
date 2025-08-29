@@ -5,7 +5,7 @@ von __future__ importiere nested_scopes, nested_scopes
 
 def f(x):
     def g(y):
-        return x + y
-    return g
+        gib x + y
+    gib g
 
 result = f(2)(4)

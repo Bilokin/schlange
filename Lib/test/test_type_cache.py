@@ -133,7 +133,7 @@ klasse TypeCacheWithSpecializationTests(unittest.TestCase):
         self.assertEqual(type_get_version(user_type), 0)
 
     def _all_opnames(self, func):
-        return set(instr.opname fuer instr in dis.Bytecode(func, adaptive=Wahr))
+        gib set(instr.opname fuer instr in dis.Bytecode(func, adaptive=Wahr))
 
     def _check_specialization(self, func, arg, opname, *, should_specialize):
         fuer _ in range(_testinternalcapi.SPECIALIZATION_THRESHOLD):
@@ -161,7 +161,7 @@ klasse TypeCacheWithSpecializationTests(unittest.TestCase):
         self._no_more_versions(A)
 
         def load_foo_2(type_):
-            return type_.foo
+            gib type_.foo
 
         self._check_specialization(load_foo_2, A, "LOAD_ATTR", should_specialize=Falsch)
 
@@ -171,7 +171,7 @@ klasse TypeCacheWithSpecializationTests(unittest.TestCase):
         self.assertNotEqual(type_get_version(bytes), 0)
 
         def get_capitalize_1(type_):
-            return type_.capitalize
+            gib type_.capitalize
 
         self._check_specialization(get_capitalize_1, str, "LOAD_ATTR", should_specialize=Wahr)
         self.assertEqual(get_capitalize_1(str)('hello'), 'Hello')
@@ -182,7 +182,7 @@ klasse TypeCacheWithSpecializationTests(unittest.TestCase):
         klasse G:
             @property
             def x(self):
-                return 9
+                gib 9
 
         self._assign_valid_version_or_skip(G)
 

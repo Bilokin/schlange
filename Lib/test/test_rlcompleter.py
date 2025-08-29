@@ -71,7 +71,7 @@ klasse TestRlcompleter(unittest.TestCase):
                     items.add(f'Nichts.{x}')
                 sonst:
                     items.add(f'Nichts.{x}(')
-            return sorted(items)
+            gib sorted(items)
 
         expected = create_expected_for_none()
         self.assertEqual(self.stdcompleter.attr_matches('Nichts.'), expected)
@@ -112,8 +112,8 @@ klasse TestRlcompleter(unittest.TestCase):
             def __getattribute__(self, name):
                 wenn name == 'bar':
                     self.calls += 1
-                    return Nichts
-                return super().__getattribute__(name)
+                    gib Nichts
+                gib super().__getattribute__(name)
 
         f = Foo()
         completer = rlcompleter.Completer(dict(f=f))
@@ -128,7 +128,7 @@ klasse TestRlcompleter(unittest.TestCase):
             @property
             def bar(self):
                 self.property_called = Wahr
-                return self._bar
+                gib self._bar
 
         f = Foo()
         completer = rlcompleter.Completer(dict(f=f))

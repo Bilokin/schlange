@@ -46,7 +46,7 @@ def main():
         t.pu()
         t.bk(50)
 
-    return "EVENTLOOP"
+    gib "EVENTLOOP"
 
 
 wenn __name__ == '__main__':

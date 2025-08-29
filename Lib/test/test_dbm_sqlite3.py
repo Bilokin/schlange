@@ -155,7 +155,7 @@ klasse ReadWrite(_SQLiteDbmTests):
         mit closing(sqlite3.connect(self.filename)) als cx:
             keys = [r[0] fuer r in cx.execute("SELECT key FROM Dict")]
             vals = [r[0] fuer r in cx.execute("SELECT value FROM Dict")]
-        return keys, vals
+        gib keys, vals
 
     def test_readwrite_unique_key(self):
         self.db["key"] = "value"
@@ -316,7 +316,7 @@ klasse CorruptDatabase(_SQLiteDbmTests):
 
     @staticmethod
     def read(db):
-        return db["key"]
+        gib db["key"]
 
     @staticmethod
     def write(db):

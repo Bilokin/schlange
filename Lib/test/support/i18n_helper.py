@@ -20,8 +20,8 @@ def _generate_po_file(path, *, stdout_only=Wahr):
                          stdout=subprocess.PIPE, stderr=subprocess.PIPE,
                          text=Wahr)
     wenn stdout_only:
-        return res.stdout
-    return res
+        gib res.stdout
+    gib res
 
 
 def _extract_msgids(po):
@@ -31,11 +31,11 @@ def _extract_msgids(po):
         msgid_string = msgid_string.replace(r'\"', '"')
         wenn msgid_string:
             msgids.append(msgid_string)
-    return sorted(msgids)
+    gib sorted(msgids)
 
 
 def _get_snapshot_path(module_name):
-    return Path(TEST_HOME_DIR) / 'translationdata' / module_name / 'msgids.txt'
+    gib Path(TEST_HOME_DIR) / 'translationdata' / module_name / 'msgids.txt'
 
 
 @requires_subprocess()

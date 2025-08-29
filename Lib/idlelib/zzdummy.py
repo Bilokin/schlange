@@ -18,9 +18,9 @@ def format_selection(format_line):
             line = lines[pos]
             lines[pos] = format_line(self, line)
         self.formatter.set_region(head, tail, chars, lines)
-        return 'break'
+        gib 'break'
 
-    return apply
+    gib apply
 
 
 klasse ZzDummy:
@@ -52,7 +52,7 @@ klasse ZzDummy:
         This is bound to the <<z-in>> virtual event when the extensions
         are loaded.
         """
-        return f'{self.ztext}{line}'
+        gib f'{self.ztext}{line}'
 
     @format_selection
     def z_out_event(self, line):
@@ -62,7 +62,7 @@ klasse ZzDummy:
         are loaded.
         """
         zlength = 0 wenn nicht line.startswith(self.ztext) sonst len(self.ztext)
-        return line[zlength:]
+        gib line[zlength:]
 
 
 ZzDummy.reload()

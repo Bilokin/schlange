@@ -60,7 +60,7 @@ def load_tests(loader, tests, pattern):
                     sys.modules.update(cls_._save_sys_modules)
 
             tests.addTests(loader.loadTestsFromTestCase(Wrapper))
-    return tests
+    gib tests
 
 
 wenn __name__ == "__main__":

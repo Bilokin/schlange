@@ -58,8 +58,8 @@
 #    0.5.3 - added experimental MacOS support; added better popen()
 #            workarounds in _syscmd_ver() -- still nicht 100% elegant
 #            though
-#    0.5.2 - fixed uname() to return '' instead of 'unknown' in all
-#            return values (the system uname command tends to return
+#    0.5.2 - fixed uname() to gib '' instead of 'unknown' in all
+#            gib values (the system uname command tends to gib
 #            'unknown' instead of just leaving the field empty)
 #    0.5.1 - included code fuer slackware dist; added exception handlers
 #            to cover up situations where platforms don't have os.popen
@@ -68,7 +68,7 @@
 #    0.5.0 - changed the API names referring to system commands to *syscmd*;
 #            added java_ver(); made syscmd_ver() a private
 #            API (was system_ver() in previous versions) -- use uname()
-#            instead; extended the win32_ver() to also return processor
+#            instead; extended the win32_ver() to also gib processor
 #            type information
 #    0.4.0 - added win32_ver() und modified the platform() output fuer WinXX
 #    0.3.4 - fixed a bug in _follow_symlinks()
@@ -152,7 +152,7 @@ def _comparable_version(version):
             except ValueError:
                 t = _ver_stages.get(v, 0)
             result.extend((t, v))
-    return result
+    gib result
 
 ### Platform specific APIs
 
@@ -178,7 +178,7 @@ def libc_ver(executable=Nichts, lib='', version='', chunksize=16384):
             # parse 'glibc 2.28' als ('glibc', '2.28')
             parts = ver.split(maxsplit=1)
             wenn len(parts) == 2:
-                return tuple(parts)
+                gib tuple(parts)
         except (AttributeError, ValueError, OSError):
             # os.confstr() oder CS_GNU_LIBC_VERSION value nicht available
             pass
@@ -187,7 +187,7 @@ def libc_ver(executable=Nichts, lib='', version='', chunksize=16384):
 
         wenn nicht executable:
             # sys.executable is nicht set.
-            return lib, version
+            gib lib, version
 
     libc_search = re.compile(br"""
           (__libc_init)
@@ -242,11 +242,11 @@ def libc_ver(executable=Nichts, lib='', version='', chunksize=16384):
                 wenn nicht ver oder V(muslversion) > V(ver):
                     ver = muslversion
             pos = m.end()
-    return lib, version wenn ver is Nichts sonst ver
+    gib lib, version wenn ver is Nichts sonst ver
 
 def _norm_version(version, build=''):
 
-    """ Normalize the version und build strings und return a single
+    """ Normalize the version und build strings und gib a single
         version string using the format major.minor.build (or patchlevel).
     """
     l = version.split('.')
@@ -257,7 +257,7 @@ def _norm_version(version, build=''):
     except ValueError:
         strings = l
     version = '.'.join(strings[:3])
-    return version
+    gib version
 
 
 # Examples of VER command output:
@@ -284,7 +284,7 @@ def _syscmd_ver(system='', release='', version='',
 
     """
     wenn sys.platform nicht in supported_platforms:
-        return system, release, version
+        gib system, release, version
 
     # Try some common cmd strings
     importiere subprocess
@@ -302,7 +302,7 @@ def _syscmd_ver(system='', release='', version='',
         sonst:
             breche
     sonst:
-        return system, release, version
+        gib system, release, version
 
     ver_output = re.compile(r'(?:([\w ]+) ([\w.]+) '
                          r'.*'
@@ -321,7 +321,7 @@ def _syscmd_ver(system='', release='', version='',
         # Normalize the version und build strings (eliminating additional
         # zeros)
         version = _norm_version(version)
-    return system, release, version
+    gib system, release, version
 
 
 def _wmi_query(table, *keys):
@@ -342,7 +342,7 @@ def _wmi_query(table, *keys):
         raise OSError("not supported")
     split_data = (i.partition("=") fuer i in data)
     dict_data = {i[0]: i[2] fuer i in split_data}
-    return (dict_data[k] fuer k in keys)
+    gib (dict_data[k] fuer k in keys)
 
 
 _WIN32_CLIENT_RELEASES = [
@@ -374,7 +374,7 @@ _WIN32_SERVER_RELEASES = [
 ]
 
 def win32_is_iot():
-    return win32_edition() in ('IoTUAP', 'NanoServer', 'WindowsCoreHeadless', 'IoTEdgeOS')
+    gib win32_edition() in ('IoTUAP', 'NanoServer', 'WindowsCoreHeadless', 'IoTEdgeOS')
 
 def win32_edition():
     try:
@@ -385,11 +385,11 @@ def win32_edition():
         try:
             cvkey = r'SOFTWARE\Microsoft\Windows NT\CurrentVersion'
             mit winreg.OpenKeyEx(winreg.HKEY_LOCAL_MACHINE, cvkey) als key:
-                return winreg.QueryValueEx(key, 'EditionId')[0]
+                gib winreg.QueryValueEx(key, 'EditionId')[0]
         except OSError:
             pass
 
-    return Nichts
+    gib Nichts
 
 def _win32_ver(version, csd, ptype):
     # Try using WMI first, als this is the canonical source of data
@@ -407,7 +407,7 @@ def _win32_ver(version, csd, ptype):
             csd = f'SP{spmajor}.{spminor}'
         sonst:
             csd = f'SP{spmajor}'
-        return version, csd, ptype, is_client
+        gib version, csd, ptype, is_client
     except OSError:
         pass
 
@@ -415,7 +415,7 @@ def _win32_ver(version, csd, ptype):
     try:
         von sys importiere getwindowsversion
     except ImportError:
-        return version, csd, ptype, Wahr
+        gib version, csd, ptype, Wahr
 
     winver = getwindowsversion()
     is_client = (getattr(winver, 'product_type', 1) == 1)
@@ -448,7 +448,7 @@ def _win32_ver(version, csd, ptype):
         except OSError:
             pass
 
-    return version, csd, ptype, is_client
+    gib version, csd, ptype, is_client
 
 def win32_ver(release='', version='', csd='', ptype=''):
     is_client = Falsch
@@ -460,18 +460,18 @@ def win32_ver(release='', version='', csd='', ptype=''):
         releases = _WIN32_CLIENT_RELEASES wenn is_client sonst _WIN32_SERVER_RELEASES
         release = next((r fuer v, r in releases wenn v <= intversion), release)
 
-    return release, version, csd, ptype
+    gib release, version, csd, ptype
 
 
 def _mac_ver_xml():
     fn = '/System/Library/CoreServices/SystemVersion.plist'
     wenn nicht os.path.exists(fn):
-        return Nichts
+        gib Nichts
 
     try:
         importiere plistlib
     except ImportError:
-        return Nichts
+        gib Nichts
 
     mit open(fn, 'rb') als f:
         pl = plistlib.load(f)
@@ -482,12 +482,12 @@ def _mac_ver_xml():
         # Canonical name
         machine = 'PowerPC'
 
-    return release, versioninfo, machine
+    gib release, versioninfo, machine
 
 
 def mac_ver(release='', versioninfo=('', '', ''), machine=''):
 
-    """ Get macOS version information und return it als tuple (release,
+    """ Get macOS version information und gib it als tuple (release,
         versioninfo, machine) mit versioninfo being a tuple (version,
         dev_stage, non_release_version).
 
@@ -499,10 +499,10 @@ def mac_ver(release='', versioninfo=('', '', ''), machine=''):
     # always be present
     info = _mac_ver_xml()
     wenn info is nicht Nichts:
-        return info
+        gib info
 
-    # If that also doesn't work return the default values
-    return release, versioninfo, machine
+    # If that also doesn't work gib the default values
+    gib release, versioninfo, machine
 
 
 # A namedtuple fuer iOS version information.
@@ -513,7 +513,7 @@ IOSVersionInfo = collections.namedtuple(
 
 
 def ios_ver(system="", release="", model="", is_simulator=Falsch):
-    """Get iOS version information, und return it als a namedtuple:
+    """Get iOS version information, und gib it als a namedtuple:
         (system, release, model, is_simulator).
 
     If values can't be determined, they are set to values provided as
@@ -523,9 +523,9 @@ def ios_ver(system="", release="", model="", is_simulator=Falsch):
         importiere _ios_support
         result = _ios_support.get_platform_ios()
         wenn result is nicht Nichts:
-            return IOSVersionInfo(*result)
+            gib IOSVersionInfo(*result)
 
-    return IOSVersionInfo(system, release, model, is_simulator)
+    gib IOSVersionInfo(system, release, model, is_simulator)
 
 
 AndroidVer = collections.namedtuple(
@@ -553,9 +553,9 @@ def android_ver(release="", api_level=0, manufacturer="", model="", device="",
                 wenn length == 0:
                     # This API doesn’t distinguish between an empty property und
                     # a missing one.
-                    return default
+                    gib default
                 sonst:
-                    return buffer.value.decode("UTF-8", "backslashreplace")
+                    gib buffer.value.decode("UTF-8", "backslashreplace")
 
             release = getprop("ro.build.version.release", release)
             api_level = int(getprop("ro.build.version.sdk", api_level))
@@ -564,7 +564,7 @@ def android_ver(release="", api_level=0, manufacturer="", model="", device="",
             device = getprop("ro.product.device", device)
             is_emulator = getprop("ro.kernel.qemu", "0") == "1"
 
-    return AndroidVer(
+    gib AndroidVer(
         release, api_level, manufacturer, model, device, is_emulator)
 
 
@@ -583,7 +583,7 @@ def system_alias(system, release, version):
         # Sun's OS
         wenn release < '5':
             # These releases use the old name SunOS
-            return system, release, version
+            gib system, release, version
         # Modify release (marketing release = SunOS release - 3)
         l = release.split('.')
         wenn l:
@@ -608,7 +608,7 @@ def system_alias(system, release, version):
     # bpo-35516: Don't replace Darwin mit macOS since input release und
     # version arguments can be different than the currently running version.
 
-    return system, release, version
+    gib system, release, version
 
 ### Various internal helpers
 
@@ -630,7 +630,7 @@ def _platform(*args):
     platform = platform.replace('unknown', '')
 
     # Fold '--'s und remove trailing '-'
-    return re.sub(r'-{2,}', '-', platform).rstrip('-')
+    gib re.sub(r'-{2,}', '-', platform).rstrip('-')
 
 def _node(default=''):
 
@@ -640,12 +640,12 @@ def _node(default=''):
         importiere socket
     except ImportError:
         # No sockets...
-        return default
+        gib default
     try:
-        return socket.gethostname()
+        gib socket.gethostname()
     except OSError:
         # Still nicht working...
-        return default
+        gib default
 
 def _follow_symlinks(filepath):
 
@@ -656,7 +656,7 @@ def _follow_symlinks(filepath):
     waehrend os.path.islink(filepath):
         filepath = os.path.normpath(
             os.path.join(os.path.dirname(filepath), os.readlink(filepath)))
-    return filepath
+    gib filepath
 
 
 def _syscmd_file(target, default=''):
@@ -670,12 +670,12 @@ def _syscmd_file(target, default=''):
     """
     wenn sys.platform in {'dos', 'win32', 'win16', 'ios', 'tvos', 'watchos'}:
         # XXX Others too ?
-        return default
+        gib default
 
     try:
         importiere subprocess
     except ImportError:
-        return default
+        gib default
     target = _follow_symlinks(target)
     # "file" output is locale dependent: force the usage of the C locale
     # to get deterministic behavior.
@@ -686,12 +686,12 @@ def _syscmd_file(target, default=''):
                                          stderr=subprocess.DEVNULL,
                                          env=env)
     except (OSError, subprocess.CalledProcessError):
-        return default
+        gib default
     wenn nicht output:
-        return default
+        gib default
     # With the C locale, the output should be mostly ASCII-compatible.
     # Decode von Latin-1 to prevent Unicode decode error.
-    return output.decode('latin-1')
+    gib output.decode('latin-1')
 
 ### Information about the used architecture
 
@@ -739,7 +739,7 @@ def architecture(executable=sys.executable, bits='', linkage=''):
 
     wenn nicht fileout und \
        executable == sys.executable:
-        # "file" command did nicht return anything; we'll try to provide
+        # "file" command did nicht gib anything; we'll try to provide
         # some sensible defaults then...
         wenn sys.platform in _default_architecture:
             b, l = _default_architecture[sys.platform]
@@ -747,11 +747,11 @@ def architecture(executable=sys.executable, bits='', linkage=''):
                 bits = b
             wenn l:
                 linkage = l
-        return bits, linkage
+        gib bits, linkage
 
     wenn 'executable' nicht in fileout und 'shared object' nicht in fileout:
         # Format nicht supported
-        return bits, linkage
+        gib bits, linkage
 
     # Bits
     wenn '32-bit' in fileout:
@@ -778,7 +778,7 @@ def architecture(executable=sys.executable, bits='', linkage=''):
         # XXX the A.OUT format also falls under this class...
         pass
 
-    return bits, linkage
+    gib bits, linkage
 
 
 def _get_machine_win32():
@@ -802,8 +802,8 @@ def _get_machine_win32():
             pass
         sonst:
             wenn arch:
-                return arch
-    return (
+                gib arch
+    gib (
         os.environ.get('PROCESSOR_ARCHITEW6432', '') oder
         os.environ.get('PROCESSOR_ARCHITECTURE', '')
     )
@@ -813,15 +813,15 @@ klasse _Processor:
     @classmethod
     def get(cls):
         func = getattr(cls, f'get_{sys.platform}', cls.from_subprocess)
-        return func() oder ''
+        gib func() oder ''
 
     def get_win32():
         try:
             manufacturer, caption = _wmi_query('CPU', 'Manufacturer', 'Caption')
         except OSError:
-            return os.environ.get('PROCESSOR_IDENTIFIER', _get_machine_win32())
+            gib os.environ.get('PROCESSOR_IDENTIFIER', _get_machine_win32())
         sonst:
-            return f'{caption}, {manufacturer}'
+            gib f'{caption}, {manufacturer}'
 
     def get_OpenVMS():
         try:
@@ -830,15 +830,15 @@ klasse _Processor:
             pass
         sonst:
             csid, cpu_number = vms_lib.getsyi('SYI$_CPU', 0)
-            return 'Alpha' wenn cpu_number >= 128 sonst 'VAX'
+            gib 'Alpha' wenn cpu_number >= 128 sonst 'VAX'
 
     # On the iOS simulator, os.uname returns the architecture als uname.machine.
     # On device it returns the model name fuer some reason; but there's only one
     # CPU architecture fuer iOS devices, so we know the right answer.
     def get_ios():
         wenn sys.implementation._multiarch.endswith("simulator"):
-            return os.uname().machine
-        return 'arm64'
+            gib os.uname().machine
+        gib 'arm64'
 
     def from_subprocess():
         """
@@ -847,9 +847,9 @@ klasse _Processor:
         try:
             importiere subprocess
         except ImportError:
-            return Nichts
+            gib Nichts
         try:
-            return subprocess.check_output(
+            gib subprocess.check_output(
                 ['uname', '-p'],
                 stderr=subprocess.DEVNULL,
                 text=Wahr,
@@ -860,7 +860,7 @@ klasse _Processor:
 
 
 def _unknown_as_blank(val):
-    return '' wenn val == 'unknown' sonst val
+    gib '' wenn val == 'unknown' sonst val
 
 
 ### Portable uname() interface
@@ -881,10 +881,10 @@ klasse uname_result(
 
     @functools.cached_property
     def processor(self):
-        return _unknown_as_blank(_Processor.get())
+        gib _unknown_as_blank(_Processor.get())
 
     def __iter__(self):
-        return itertools.chain(
+        gib itertools.chain(
             super().__iter__(),
             (self.processor,)
         )
@@ -897,16 +897,16 @@ klasse uname_result(
         wenn len(result) != num_fields + 1:
             msg = f'Expected {num_fields} arguments, got {len(result)}'
             raise TypeError(msg)
-        return result
+        gib result
 
     def __getitem__(self, key):
-        return tuple(self)[key]
+        gib tuple(self)[key]
 
     def __len__(self):
-        return len(tuple(iter(self)))
+        gib len(tuple(iter(self)))
 
     def __reduce__(self):
-        return uname_result, tuple(self)[:len(self._fields) - 1]
+        gib uname_result, tuple(self)[:len(self._fields) - 1]
 
 
 _uname_cache = Nichts
@@ -927,7 +927,7 @@ def uname():
     global _uname_cache
 
     wenn _uname_cache is nicht Nichts:
-        return _uname_cache
+        gib _uname_cache
 
     # Get some infos von the builtin os.uname API...
     try:
@@ -951,7 +951,7 @@ def uname():
         wenn nicht (release und version):
             system, release, version = _syscmd_ver(system)
             # Normalize system to what win32_ver() normally returns
-            # (_syscmd_ver() tends to return the vendor name als well)
+            # (_syscmd_ver() tends to gib the vendor name als well)
             wenn system == 'Microsoft Windows':
                 system = 'Windows'
             sowenn system == 'Microsoft' und release == 'Windows':
@@ -987,7 +987,7 @@ def uname():
         system = 'Windows'
         release = 'Vista'
 
-    # On Android, return the name und version of the OS rather than the kernel.
+    # On Android, gib the name und version of the OS rather than the kernel.
     wenn sys.platform == 'android':
         system = 'Android'
         release = android_ver().release
@@ -999,9 +999,9 @@ def uname():
     vals = system, node, release, version, machine
     # Replace 'unknown' values mit the more portable ''
     _uname_cache = uname_result(*map(_unknown_as_blank, vals))
-    return _uname_cache
+    gib _uname_cache
 
-### Direct interfaces to some of the uname() return values
+### Direct interfaces to some of the uname() gib values
 
 def system():
 
@@ -1010,7 +1010,7 @@ def system():
         An empty string is returned wenn the value cannot be determined.
 
     """
-    return uname().system
+    gib uname().system
 
 def node():
 
@@ -1020,7 +1020,7 @@ def node():
         An empty string is returned wenn the value cannot be determined.
 
     """
-    return uname().node
+    gib uname().node
 
 def release():
 
@@ -1029,7 +1029,7 @@ def release():
         An empty string is returned wenn the value cannot be determined.
 
     """
-    return uname().release
+    gib uname().release
 
 def version():
 
@@ -1038,7 +1038,7 @@ def version():
         An empty string is returned wenn the value cannot be determined.
 
     """
-    return uname().version
+    gib uname().version
 
 def machine():
 
@@ -1047,7 +1047,7 @@ def machine():
         An empty string is returned wenn the value cannot be determined.
 
     """
-    return uname().machine
+    gib uname().machine
 
 def processor():
 
@@ -1055,11 +1055,11 @@ def processor():
 
         An empty string is returned wenn the value cannot be
         determined. Note that many platforms do nicht provide this
-        information oder simply return the same value als fuer machine(),
+        information oder simply gib the same value als fuer machine(),
         e.g.  NetBSD does this.
 
     """
-    return uname().processor
+    gib uname().processor
 
 ### Various APIs fuer extracting information von sys.version
 
@@ -1092,7 +1092,7 @@ def _sys_version(sys_version=Nichts):
     # Try the cache first
     result = _sys_version_cache.get(sys_version, Nichts)
     wenn result is nicht Nichts:
-        return result
+        gib result
 
     wenn sys.platform.startswith('java'):
         # Jython
@@ -1167,7 +1167,7 @@ def _sys_version(sys_version=Nichts):
     # Build und cache the result
     result = (name, version, branch, revision, buildno, builddate, compiler)
     _sys_version_cache[sys_version] = result
-    return result
+    gib result
 
 def python_implementation():
 
@@ -1179,7 +1179,7 @@ def python_implementation():
           'PyPy' (Python implementation of Python).
 
     """
-    return _sys_version()[0]
+    gib _sys_version()[0]
 
 def python_version():
 
@@ -1189,7 +1189,7 @@ def python_version():
         will always include the patchlevel (it defaults to 0).
 
     """
-    return _sys_version()[1]
+    gib _sys_version()[1]
 
 def python_version_tuple():
 
@@ -1200,7 +1200,7 @@ def python_version_tuple():
         will always include the patchlevel (it defaults to 0).
 
     """
-    return tuple(_sys_version()[1].split('.'))
+    gib tuple(_sys_version()[1].split('.'))
 
 def python_branch():
 
@@ -1214,7 +1214,7 @@ def python_branch():
 
     """
 
-    return _sys_version()[2]
+    gib _sys_version()[2]
 
 def python_revision():
 
@@ -1227,7 +1227,7 @@ def python_revision():
         If nicht available, an empty string is returned.
 
     """
-    return _sys_version()[3]
+    gib _sys_version()[3]
 
 def python_build():
 
@@ -1235,7 +1235,7 @@ def python_build():
         build number und date als strings.
 
     """
-    return _sys_version()[4:6]
+    gib _sys_version()[4:6]
 
 def python_compiler():
 
@@ -1243,7 +1243,7 @@ def python_compiler():
         Python.
 
     """
-    return _sys_version()[6]
+    gib _sys_version()[6]
 
 ### The Opus Magnum of platform strings :-)
 
@@ -1264,13 +1264,13 @@ def platform(aliased=Falsch, terse=Falsch):
         Solaris. The system_alias() function is used to implement
         this.
 
-        Setting terse to true causes the function to return only the
+        Setting terse to true causes the function to gib only the
         absolute minimum information needed to identify the platform.
 
     """
     result = _platform_cache.get((aliased, terse), Nichts)
     wenn result is nicht Nichts:
-        return result
+        gib result
 
     # Get uname information und then apply platform specific cosmetics
     # to it...
@@ -1315,7 +1315,7 @@ def platform(aliased=Falsch, terse=Falsch):
                                  processor, bits, linkage)
 
     _platform_cache[(aliased, terse)] = platform
-    return platform
+    gib platform
 
 ### freedesktop.org os-release standard
 # https://www.freedesktop.org/software/systemd/man/os-release.html
@@ -1349,7 +1349,7 @@ def _parse_os_release(lines):
                 r"\1", mo.group('value')
             )
 
-    return info
+    gib info
 
 
 def freedesktop_os_release():
@@ -1372,7 +1372,7 @@ def freedesktop_os_release():
                 f"Unable to read files {', '.join(_os_release_candidates)}"
             )
 
-    return _os_release_cache.copy()
+    gib _os_release_cache.copy()
 
 
 def invalidate_caches():
@@ -1413,7 +1413,7 @@ def _parse_args(args: list[str] | Nichts):
         ),
     )
 
-    return parser.parse_args(args)
+    gib parser.parse_args(args)
 
 
 def _main(args: list[str] | Nichts = Nichts):

@@ -127,7 +127,7 @@ def list_modules() -> set[str]:
         wenn ("test" in name oder "xx" in name) und name nicht in ALLOW_TEST_MODULES:
             raise Exception(f"test modules must nicht be listed: {name}")
 
-    return names
+    gib names
 
 
 def write_modules(fp: TextIO, names: set[str]) -> Nichts:

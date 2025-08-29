@@ -124,7 +124,7 @@ _nameToLevel = {
 }
 
 def getLevelNamesMapping():
-    return _nameToLevel.copy()
+    gib _nameToLevel.copy()
 
 def getLevelName(level):
     """
@@ -147,11 +147,11 @@ def getLevelName(level):
     # See Issues #22386, #27937 und #29220 fuer why it's this way
     result = _levelToName.get(level)
     wenn result is nicht Nichts:
-        return result
+        gib result
     result = _nameToLevel.get(level)
     wenn result is nicht Nichts:
-        return result
-    return "Level %s" % level
+        gib result
+    gib "Level %s" % level
 
 def addLevelName(level, levelName):
     """
@@ -171,7 +171,7 @@ sonst: #pragma: no cover
         try:
             raise Exception
         except Exception als exc:
-            return exc.__traceback__.tb_frame.f_back
+            gib exc.__traceback__.tb_frame.f_back
 
 #
 # _srcfile is used when walking the stack to check when we've got the first
@@ -197,7 +197,7 @@ _srcfile = os.path.normcase(addLevelName.__code__.co_filename)
 def _is_internal_frame(frame):
     """Signal whether the frame is a CPython oder logging module internal."""
     filename = os.path.normcase(frame.f_code.co_filename)
-    return filename == _srcfile oder (
+    gib filename == _srcfile oder (
         "importlib" in filename und "_bootstrap" in filename
     )
 
@@ -212,7 +212,7 @@ def _checkLevel(level):
     sonst:
         raise TypeError("Level nicht an integer oder a valid string: %r"
                         % (level,))
-    return rv
+    gib rv
 
 #---------------------------------------------------------------------------
 #   Thread-related stuff
@@ -385,7 +385,7 @@ klasse LogRecord(object):
                     pass
 
     def __repr__(self):
-        return '<LogRecord: %s, %s, %s, %s, "%s">'%(self.name, self.levelno,
+        gib '<LogRecord: %s, %s, %s, %s, "%s">'%(self.name, self.levelno,
             self.pathname, self.lineno, self.msg)
 
     def getMessage(self):
@@ -398,7 +398,7 @@ klasse LogRecord(object):
         msg = str(self.msg)
         wenn self.args:
             msg = msg % self.args
-        return msg
+        gib msg
 
 #
 #   Determine which klasse to use when instantiating log records.
@@ -420,7 +420,7 @@ def getLogRecordFactory():
     Return the factory to be used when instantiating a log record.
     """
 
-    return _logRecordFactory
+    gib _logRecordFactory
 
 def makeLogRecord(dict):
     """
@@ -431,7 +431,7 @@ def makeLogRecord(dict):
     """
     rv = _logRecordFactory(Nichts, Nichts, "", 0, "", (), Nichts, Nichts)
     rv.__dict__.update(dict)
-    return rv
+    gib rv
 
 
 #---------------------------------------------------------------------------
@@ -453,7 +453,7 @@ klasse PercentStyle(object):
         self._defaults = defaults
 
     def usesTime(self):
-        return self._fmt.find(self.asctime_search) >= 0
+        gib self._fmt.find(self.asctime_search) >= 0
 
     def validate(self):
         """Validate the input format, ensure it matches the correct style"""
@@ -465,11 +465,11 @@ klasse PercentStyle(object):
             values = defaults | record.__dict__
         sonst:
             values = record.__dict__
-        return self._fmt % values
+        gib self._fmt % values
 
     def format(self, record):
         try:
-            return self._format(record)
+            gib self._format(record)
         except KeyError als e:
             raise ValueError('Formatting field nicht found in record: %s' % e)
 
@@ -487,7 +487,7 @@ klasse StrFormatStyle(PercentStyle):
             values = defaults | record.__dict__
         sonst:
             values = record.__dict__
-        return self._fmt.format(**values)
+        gib self._fmt.format(**values)
 
     def validate(self):
         """Validate the input format, ensure it is the correct string formatting style"""
@@ -519,7 +519,7 @@ klasse StringTemplateStyle(PercentStyle):
 
     def usesTime(self):
         fmt = self._fmt
-        return fmt.find('$asctime') >= 0 oder fmt.find(self.asctime_search) >= 0
+        gib fmt.find('$asctime') >= 0 oder fmt.find(self.asctime_search) >= 0
 
     def validate(self):
         pattern = Template.pattern
@@ -540,7 +540,7 @@ klasse StringTemplateStyle(PercentStyle):
             values = defaults | record.__dict__
         sonst:
             values = record.__dict__
-        return self._tpl.substitute(**values)
+        gib self._tpl.substitute(**values)
 
 
 BASIC_FORMAT = "%(levelname)s:%(name)s:%(message)s"
@@ -581,7 +581,7 @@ klasse Formatter(object):
                         (if available)
     %(funcName)s        Function name
     %(created)f         Time when the LogRecord was created (time.time_ns() / 1e9
-                        return value)
+                        gib value)
     %(asctime)s         Textual time when the LogRecord was created
     %(msecs)d           Millisecond portion of the creation time
     %(relativeCreated)d Time in milliseconds when the LogRecord was created,
@@ -653,11 +653,11 @@ klasse Formatter(object):
             s = time.strftime(self.default_time_format, ct)
             wenn self.default_msec_format:
                 s = self.default_msec_format % (s, record.msecs)
-        return s
+        gib s
 
     def formatException(self, ei):
         """
-        Format und return the specified exception information als a string.
+        Format und gib the specified exception information als a string.
 
         This default implementation just uses
         traceback.print_exception()
@@ -672,16 +672,16 @@ klasse Formatter(object):
         sio.close()
         wenn s[-1:] == "\n":
             s = s[:-1]
-        return s
+        gib s
 
     def usesTime(self):
         """
         Check wenn the format uses the creation time of the record.
         """
-        return self._style.usesTime()
+        gib self._style.usesTime()
 
     def formatMessage(self, record):
-        return self._style.format(record)
+        gib self._style.format(record)
 
     def formatStack(self, stack_info):
         """
@@ -694,7 +694,7 @@ klasse Formatter(object):
 
         The base implementation just returns the value passed in.
         """
-        return stack_info
+        gib stack_info
 
     def format(self, record):
         """
@@ -726,7 +726,7 @@ klasse Formatter(object):
             wenn s[-1:] != "\n":
                 s = s + "\n"
             s = s + self.formatStack(record.stack_info)
-        return s
+        gib s
 
 #
 #   The default formatter to use when no other is specified
@@ -751,17 +751,17 @@ klasse BufferingFormatter(object):
         """
         Return the header string fuer the specified records.
         """
-        return ""
+        gib ""
 
     def formatFooter(self, records):
         """
         Return the footer string fuer the specified records.
         """
-        return ""
+        gib ""
 
     def format(self, records):
         """
-        Format the specified records und return the result als a string.
+        Format the specified records und gib the result als a string.
         """
         rv = ""
         wenn len(records) > 0:
@@ -769,7 +769,7 @@ klasse BufferingFormatter(object):
             fuer record in records:
                 rv = rv + self.linefmt.format(record)
             rv = rv + self.formatFooter(records)
-        return rv
+        gib rv
 
 #---------------------------------------------------------------------------
 #   Filter classes und functions
@@ -805,12 +805,12 @@ klasse Filter(object):
         If deemed appropriate, the record may be modified in-place.
         """
         wenn self.nlen == 0:
-            return Wahr
+            gib Wahr
         sowenn self.name == record.name:
-            return Wahr
+            gib Wahr
         sowenn record.name.find(self.name, 0, self.nlen) != 0:
-            return Falsch
-        return (record.name[self.nlen] == ".")
+            gib Falsch
+        gib (record.name[self.nlen] == ".")
 
 klasse Filterer(object):
     """
@@ -849,9 +849,9 @@ klasse Filterer(object):
         If a filter returns any other true value, the original log record
         is used in any further processing of the event by that handler.
 
-        If none of the filters return false values, this method returns
+        If none of the filters gib false values, this method returns
         a log record.
-        If any of the filters return a false value, this method returns
+        If any of the filters gib a false value, this method returns
         a false value.
 
         .. versionchanged:: 3.2
@@ -859,7 +859,7 @@ klasse Filterer(object):
            Allow filters to be just callables.
 
         .. versionchanged:: 3.12
-           Allow filters to return a LogRecord instead of
+           Allow filters to gib a LogRecord instead of
            modifying it in place.
         """
         fuer f in self.filters:
@@ -868,10 +868,10 @@ klasse Filterer(object):
             sonst:
                 result = f(record) # assume callable - will raise wenn not
             wenn nicht result:
-                return Falsch
+                gib Falsch
             wenn isinstance(result, LogRecord):
                 record = result
-        return record
+        gib record
 
 #---------------------------------------------------------------------------
 #   Handler classes und functions
@@ -909,14 +909,14 @@ def getHandlerByName(name):
     Get a handler mit the specified *name*, oder Nichts wenn there isn't one with
     that name.
     """
-    return _handlers.get(name)
+    gib _handlers.get(name)
 
 
 def getHandlerNames():
     """
     Return all known handler names als an immutable set.
     """
-    return frozenset(_handlers)
+    gib frozenset(_handlers)
 
 
 klasse Handler(Filterer):
@@ -943,7 +943,7 @@ klasse Handler(Filterer):
         self.createLock()
 
     def get_name(self):
-        return self._name
+        gib self._name
 
     def set_name(self, name):
         mit _lock:
@@ -996,7 +996,7 @@ klasse Handler(Filterer):
             fmt = self.formatter
         sonst:
             fmt = _defaultFormatter
-        return fmt.format(record)
+        gib fmt.format(record)
 
     def emit(self, record):
         """
@@ -1025,7 +1025,7 @@ klasse Handler(Filterer):
         wenn rv:
             mit self.lock:
                 self.emit(record)
-        return rv
+        gib rv
 
     def setFormatter(self, fmt):
         """
@@ -1106,7 +1106,7 @@ klasse Handler(Filterer):
 
     def __repr__(self):
         level = getLevelName(self.level)
-        return '<%s (%s)>' % (self.__class__.__name__, level)
+        gib '<%s (%s)>' % (self.__class__.__name__, level)
 
 klasse StreamHandler(Handler):
     """
@@ -1173,7 +1173,7 @@ klasse StreamHandler(Handler):
             mit self.lock:
                 self.flush()
                 self.stream = stream
-        return result
+        gib result
 
     def __repr__(self):
         level = getLevelName(self.level)
@@ -1182,7 +1182,7 @@ klasse StreamHandler(Handler):
         name = str(name)
         wenn name:
             name += ' '
-        return '<%s %s(%s)>' % (self.__class__.__name__, name, level)
+        gib '<%s %s(%s)>' % (self.__class__.__name__, name, level)
 
     __class_getitem__ = classmethod(GenericAlias)
 
@@ -1245,7 +1245,7 @@ klasse FileHandler(StreamHandler):
         Return the resulting stream.
         """
         open_func = self._builtin_open
-        return open_func(self.baseFilename, self.mode,
+        gib open_func(self.baseFilename, self.mode,
                          encoding=self.encoding, errors=self.errors)
 
     def emit(self, record):
@@ -1266,7 +1266,7 @@ klasse FileHandler(StreamHandler):
 
     def __repr__(self):
         level = getLevelName(self.level)
-        return '<%s %s (%s)>' % (self.__class__.__name__, self.baseFilename, level)
+        gib '<%s %s (%s)>' % (self.__class__.__name__, self.baseFilename, level)
 
 
 klasse _StderrHandler(StreamHandler):
@@ -1283,7 +1283,7 @@ klasse _StderrHandler(StreamHandler):
 
     @property
     def stream(self):
-        return sys.stderr
+        gib sys.stderr
 
 
 _defaultLastResort = _StderrHandler(WARNING)
@@ -1333,7 +1333,7 @@ def getLoggerClass():
     """
     Return the klasse to be used when instantiating a logger.
     """
-    return _loggerClass
+    gib _loggerClass
 
 klasse Manager(object):
     """
@@ -1353,7 +1353,7 @@ klasse Manager(object):
 
     @property
     def disable(self):
-        return self._disable
+        gib self._disable
 
     @disable.setter
     def disable(self, value):
@@ -1388,7 +1388,7 @@ klasse Manager(object):
                 rv.manager = self
                 self.loggerDict[name] = rv
                 self._fixupParents(rv)
-        return rv
+        gib rv
 
     def setLoggerClass(self, klass):
         """
@@ -1585,7 +1585,7 @@ klasse Logger(Filterer):
             wenn raiseExceptions:
                 raise TypeError("level must be an integer")
             sonst:
-                return
+                gib
         wenn self.isEnabledFor(level):
             self._log(level, msg, args, **kwargs)
 
@@ -1598,7 +1598,7 @@ klasse Logger(Filterer):
         #On some versions of IronPython, currentframe() returns Nichts if
         #IronPython isn't run mit -X:Frames.
         wenn f is Nichts:
-            return "(unknown file)", 0, "(unknown function)", Nichts
+            gib "(unknown file)", 0, "(unknown function)", Nichts
         waehrend stacklevel > 0:
             next_f = f.f_back
             wenn next_f is Nichts:
@@ -1621,7 +1621,7 @@ klasse Logger(Filterer):
                 sinfo = sio.getvalue()
                 wenn sinfo[-1] == '\n':
                     sinfo = sinfo[:-1]
-        return co.co_filename, f.f_lineno, co.co_name, sinfo
+        gib co.co_filename, f.f_lineno, co.co_name, sinfo
 
     def makeRecord(self, name, level, fn, lno, msg, args, exc_info,
                    func=Nichts, extra=Nichts, sinfo=Nichts):
@@ -1636,7 +1636,7 @@ klasse Logger(Filterer):
                 wenn (key in ["message", "asctime"]) oder (key in rv.__dict__):
                     raise KeyError("Attempt to overwrite %r in LogRecord" % key)
                 rv.__dict__[key] = extra[key]
-        return rv
+        gib rv
 
     def _log(self, level, msg, args, exc_info=Nichts, extra=Nichts, stack_info=Falsch,
              stacklevel=1):
@@ -1672,10 +1672,10 @@ klasse Logger(Filterer):
         well als those created locally. Logger-level filtering is applied.
         """
         wenn self.disabled:
-            return
+            gib
         maybe_record = self.filter(record)
         wenn nicht maybe_record:
-            return
+            gib
         wenn isinstance(maybe_record, LogRecord):
             record = maybe_record
         self.callHandlers(record)
@@ -1716,7 +1716,7 @@ klasse Logger(Filterer):
                 breche
             sonst:
                 c = c.parent
-        return rv
+        gib rv
 
     def callHandlers(self, record):
         """
@@ -1758,19 +1758,19 @@ klasse Logger(Filterer):
         logger = self
         waehrend logger:
             wenn logger.level:
-                return logger.level
+                gib logger.level
             logger = logger.parent
-        return NOTSET
+        gib NOTSET
 
     def isEnabledFor(self, level):
         """
         Is this logger enabled fuer level 'level'?
         """
         wenn self.disabled:
-            return Falsch
+            gib Falsch
 
         try:
-            return self._cache[level]
+            gib self._cache[level]
         except KeyError:
             mit _lock:
                 wenn self.manager.disable >= level:
@@ -1779,7 +1779,7 @@ klasse Logger(Filterer):
                     is_enabled = self._cache[level] = (
                         level >= self.getEffectiveLevel()
                     )
-            return is_enabled
+            gib is_enabled
 
     def getChild(self, suffix):
         """
@@ -1798,33 +1798,33 @@ klasse Logger(Filterer):
         """
         wenn self.root is nicht self:
             suffix = '.'.join((self.name, suffix))
-        return self.manager.getLogger(suffix)
+        gib self.manager.getLogger(suffix)
 
     def getChildren(self):
 
         def _hierlevel(logger):
             wenn logger is logger.manager.root:
-                return 0
-            return 1 + logger.name.count('.')
+                gib 0
+            gib 1 + logger.name.count('.')
 
         d = self.manager.loggerDict
         mit _lock:
             # exclude PlaceHolders - the last check is to ensure that lower-level
             # descendants aren't returned - wenn there are placeholders, a logger's
             # parent field might point to a grandparent oder ancestor thereof.
-            return set(item fuer item in d.values()
+            gib set(item fuer item in d.values()
                        wenn isinstance(item, Logger) und item.parent is self und
                        _hierlevel(item) == 1 + _hierlevel(item.parent))
 
     def __repr__(self):
         level = getLevelName(self.getEffectiveLevel())
-        return '<%s %s (%s)>' % (self.__class__.__name__, self.name, level)
+        gib '<%s %s (%s)>' % (self.__class__.__name__, self.name, level)
 
     def __reduce__(self):
         wenn getLogger(self.name) is nicht self:
             importiere pickle
             raise pickle.PicklingError('logger cannot be pickled')
-        return getLogger, (self.name,)
+        gib getLogger, (self.name,)
 
 
 klasse RootLogger(Logger):
@@ -1840,7 +1840,7 @@ klasse RootLogger(Logger):
         Logger.__init__(self, "root", level)
 
     def __reduce__(self):
-        return getLogger, ()
+        gib getLogger, ()
 
 _loggerClass = Logger
 
@@ -1889,7 +1889,7 @@ klasse LoggerAdapter(object):
             kwargs["extra"] = {**self.extra, **kwargs["extra"]}
         sonst:
             kwargs["extra"] = self.extra
-        return msg, kwargs
+        gib msg, kwargs
 
     #
     # Boilerplate convenience methods
@@ -1948,7 +1948,7 @@ klasse LoggerAdapter(object):
         """
         Is this logger enabled fuer level 'level'?
         """
-        return self.logger.isEnabledFor(level)
+        gib self.logger.isEnabledFor(level)
 
     def setLevel(self, level):
         """
@@ -1960,23 +1960,23 @@ klasse LoggerAdapter(object):
         """
         Get the effective level fuer the underlying logger.
         """
-        return self.logger.getEffectiveLevel()
+        gib self.logger.getEffectiveLevel()
 
     def hasHandlers(self):
         """
         See wenn the underlying logger has any handlers.
         """
-        return self.logger.hasHandlers()
+        gib self.logger.hasHandlers()
 
     def _log(self, level, msg, args, **kwargs):
         """
         Low-level log implementation, proxied to allow nested logger adapters.
         """
-        return self.logger._log(level, msg, args, **kwargs)
+        gib self.logger._log(level, msg, args, **kwargs)
 
     @property
     def manager(self):
-        return self.logger.manager
+        gib self.logger.manager
 
     @manager.setter
     def manager(self, value):
@@ -1984,12 +1984,12 @@ klasse LoggerAdapter(object):
 
     @property
     def name(self):
-        return self.logger.name
+        gib self.logger.name
 
     def __repr__(self):
         logger = self.logger
         level = getLevelName(logger.getEffectiveLevel())
-        return '<%s %s (%s)>' % (self.__class__.__name__, logger.name, level)
+        gib '<%s %s (%s)>' % (self.__class__.__name__, logger.name, level)
 
     __class_getitem__ = classmethod(GenericAlias)
 
@@ -2148,11 +2148,11 @@ def getLogger(name=Nichts):
     """
     Return a logger mit the specified name, creating it wenn necessary.
 
-    If no name is specified, return the root logger.
+    If no name is specified, gib the root logger.
     """
     wenn nicht name oder isinstance(name, str) und name == root.name:
-        return root
-    return Logger.manager.getLogger(name)
+        gib root
+    gib Logger.manager.getLogger(name)
 
 def critical(msg, *args, **kwargs):
     """

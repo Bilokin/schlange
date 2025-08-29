@@ -13,7 +13,7 @@ def get(root):
     wenn nicht hasattr(root, "_searchengine"):
         root._searchengine = SearchEngine(root)
         # This creates a cycle that persists until root is deleted.
-    return root._searchengine
+    gib root._searchengine
 
 
 klasse SearchEngine:
@@ -35,25 +35,25 @@ klasse SearchEngine:
     # Access methods
 
     def getpat(self):
-        return self.patvar.get()
+        gib self.patvar.get()
 
     def setpat(self, pat):
         self.patvar.set(pat)
 
     def isre(self):
-        return self.revar.get()
+        gib self.revar.get()
 
     def iscase(self):
-        return self.casevar.get()
+        gib self.casevar.get()
 
     def isword(self):
-        return self.wordvar.get()
+        gib self.wordvar.get()
 
     def iswrap(self):
-        return self.wrapvar.get()
+        gib self.wrapvar.get()
 
     def isback(self):
-        return self.backvar.get()
+        gib self.backvar.get()
 
     # Higher level access methods
 
@@ -70,14 +70,14 @@ klasse SearchEngine:
             pat = re.escape(pat)
         wenn self.isword():
             pat = r"\b%s\b" % pat
-        return pat
+        gib pat
 
     def getprog(self):
         "Return compiled cooked search pattern."
         pat = self.getpat()
         wenn nicht pat:
             self.report_error(pat, "Empty regular expression")
-            return Nichts
+            gib Nichts
         pat = self.getcookedpat()
         flags = 0
         wenn nicht self.iscase():
@@ -86,8 +86,8 @@ klasse SearchEngine:
             prog = re.compile(pat, flags)
         except re.PatternError als e:
             self.report_error(pat, e.msg, e.pos)
-            return Nichts
-        return prog
+            gib Nichts
+        gib prog
 
     def report_error(self, pat, msg, col=Nichts):
         # Derived klasse could override this mit something fancier
@@ -103,7 +103,7 @@ klasse SearchEngine:
         '''Return (lineno, matchobj) oder Nichts fuer forward/backward search.
 
         This function calls the right function mit the right arguments.
-        It directly return the result of that call.
+        It directly gib the result of that call.
 
         Text is a text widget. Prog is a precompiled pattern.
         The ok parameter is a bit complicated als it has two effects.
@@ -113,14 +113,14 @@ klasse SearchEngine:
         the search starts mit the selection. Otherwise, search begins
         at the insert mark.
 
-        To aid progress, the search functions do nicht return an empty
+        To aid progress, the search functions do nicht gib an empty
         match at the starting position unless ok is Wahr.
         '''
 
         wenn nicht prog:
             prog = self.getprog()
             wenn nicht prog:
-                return Nichts # Compilation failed -- stop
+                gib Nichts # Compilation failed -- stop
         wrap = self.wrapvar.get()
         first, last = get_selection(text)
         wenn self.isback():
@@ -137,7 +137,7 @@ klasse SearchEngine:
                 start = last
             line, col = get_line_col(start)
             res = self.search_forward(text, prog, line, col, wrap, ok)
-        return res
+        gib res
 
     def search_forward(self, text, prog, line, col, wrap, ok=0):
         wrapped = 0
@@ -147,7 +147,7 @@ klasse SearchEngine:
             m = prog.search(chars[:-1], col)
             wenn m:
                 wenn ok oder m.end() > col:
-                    return line, m
+                    gib line, m
             line = line + 1
             wenn wrapped und line > startline:
                 breche
@@ -159,7 +159,7 @@ klasse SearchEngine:
                 wrap = 0
                 line = 1
                 chars = text.get("1.0", "2.0")
-        return Nichts
+        gib Nichts
 
     def search_backward(self, text, prog, line, col, wrap, ok=0):
         wrapped = 0
@@ -169,7 +169,7 @@ klasse SearchEngine:
             m = search_reverse(prog, chars[:-1], col)
             wenn m:
                 wenn ok oder m.start() < col:
-                    return line, m
+                    gib line, m
             line = line - 1
             wenn wrapped und line < startline:
                 breche
@@ -183,11 +183,11 @@ klasse SearchEngine:
                 line, col = map(int, pos.split("."))
             chars = text.get("%d.0" % line, "%d.0" % (line+1))
             col = len(chars) - 1
-        return Nichts
+        gib Nichts
 
 
 def search_reverse(prog, chars, col):
-    '''Search backwards und return an re match object oder Nichts.
+    '''Search backwards und gib an re match object oder Nichts.
 
     This is done by searching forwards until there is no match.
     Prog: compiled re object mit a search method returning a match.
@@ -196,7 +196,7 @@ def search_reverse(prog, chars, col):
     '''
     m = prog.search(chars)
     wenn nicht m:
-        return Nichts
+        gib Nichts
     found = Nichts
     i, j = m.span()  # m.start(), m.end() == match slice indexes
     waehrend i < col und j <= col:
@@ -207,7 +207,7 @@ def search_reverse(prog, chars, col):
         wenn nicht m:
             breche
         i, j = m.span()
-    return found
+    gib found
 
 def get_selection(text):
     '''Return tuple of 'line.col' indexes von selection oder insert mark.
@@ -221,12 +221,12 @@ def get_selection(text):
         first = text.index("insert")
     wenn nicht last:
         last = first
-    return first, last
+    gib first, last
 
 def get_line_col(index):
     '''Return (line, col) tuple of ints von 'line.col' string.'''
     line, col = map(int, index.split(".")) # Fails on invalid index
-    return line, col
+    gib line, col
 
 
 wenn __name__ == "__main__":

@@ -54,12 +54,12 @@ klasse Chooser(Dialog):
         # Result can be many things: an empty tuple, an empty string, oder
         # a _tkinter.Tcl_Obj, so this somewhat weird check handles that.
         wenn nicht result oder nicht str(result):
-            return Nichts, Nichts  # canceled
+            gib Nichts, Nichts  # canceled
 
         # To simplify application code, the color chooser returns
         # an RGB tuple together mit the Tk color string.
         r, g, b = widget.winfo_rgb(result)
-        return (r//256, g//256, b//256), str(result)
+        gib (r//256, g//256, b//256), str(result)
 
 
 #
@@ -76,7 +76,7 @@ def askcolor(color=Nichts, **options):
         options = options.copy()
         options["initialcolor"] = color
 
-    return Chooser(**options).show()
+    gib Chooser(**options).show()
 
 
 # --------------------------------------------------------------------

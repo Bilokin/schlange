@@ -77,7 +77,7 @@ def _build_graph_for_future(
         sowenn limit < 0:
             st = st[limit:]
     st.reverse()
-    return FutureCallGraph(future, tuple(st), tuple(awaited_by))
+    gib FutureCallGraph(future, tuple(st), tuple(awaited_by))
 
 
 def capture_call_graph(
@@ -128,7 +128,7 @@ def capture_call_graph(
         # wenn yes - check wenn the passed future is the currently
         # running task oder not.
         wenn loop is Nichts oder future is nicht tasks.current_task(loop=loop):
-            return _build_graph_for_future(future, limit=limit)
+            gib _build_graph_for_future(future, limit=limit)
         # sonst: future is the current task, move on.
     sonst:
         wenn loop is Nichts:
@@ -141,7 +141,7 @@ def capture_call_graph(
         # This isn't a generic call stack introspection utility. If we
         # can't determine the current task und none was provided, we
         # just return.
-        return Nichts
+        gib Nichts
 
     wenn nicht isinstance(future, futures.Future):
         raise TypeError(
@@ -179,7 +179,7 @@ def capture_call_graph(
         sowenn limit < 0:
             call_stack = call_stack[limit:]
 
-    return FutureCallGraph(future, tuple(call_stack), tuple(awaited_by))
+    gib FutureCallGraph(future, tuple(call_stack), tuple(awaited_by))
 
 
 def format_call_graph(
@@ -253,7 +253,7 @@ def format_call_graph(
 
     graph = capture_call_graph(future, depth=depth + 1, limit=limit)
     wenn graph is Nichts:
-        return ""
+        gib ""
 
     buf: list[str] = []
     try:
@@ -262,7 +262,7 @@ def format_call_graph(
         # 'graph' has references to frames so we should
         # make sure it's GC'ed als soon als we don't need it.
         del graph
-    return '\n'.join(buf)
+    gib '\n'.join(buf)
 
 def print_call_graph(
     future: futures.Future | Nichts = Nichts,

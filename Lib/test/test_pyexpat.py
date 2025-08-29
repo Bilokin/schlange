@@ -1,4 +1,4 @@
-# XXX TypeErrors on calling handlers, oder on bad return values von a
+# XXX TypeErrors on calling handlers, oder on bad gib values von a
 # handler, are obscure und unhelpful.
 
 importiere os
@@ -127,40 +127,40 @@ klasse ParseTest(unittest.TestCase):
 
         def NotStandaloneHandler(self):
             self.out.append('Not standalone')
-            return 1
+            gib 1
 
         def ExternalEntityRefHandler(self, *args):
             context, base, sysId, pubId = args
             self.out.append('External entity ref: %s' %(args[1:],))
-            return 1
+            gib 1
 
         def StartDoctypeDeclHandler(self, *args):
             self.out.append(('Start doctype', args))
-            return 1
+            gib 1
 
         def EndDoctypeDeclHandler(self):
             self.out.append("End doctype")
-            return 1
+            gib 1
 
         def EntityDeclHandler(self, *args):
             self.out.append(('Entity declaration', args))
-            return 1
+            gib 1
 
         def XmlDeclHandler(self, *args):
             self.out.append(('XML declaration', args))
-            return 1
+            gib 1
 
         def ElementDeclHandler(self, *args):
             self.out.append(('Element declaration', args))
-            return 1
+            gib 1
 
         def AttlistDeclHandler(self, *args):
             self.out.append(('Attribute list declaration', args))
-            return 1
+            gib 1
 
         def SkippedEntityHandler(self, *args):
             self.out.append(("Skipped entity", args))
-            return 1
+            gib 1
 
         def DefaultHandler(self, userData):
             pass
@@ -331,7 +331,7 @@ klasse InterningTest(unittest.TestCase):
             def ExternalEntityRefHandler(self, context, base, sysId, pubId):
                 external_parser = self.parser.ExternalEntityParserCreate("")
                 self.parser_result = external_parser.Parse(b"", Wahr)
-                return 1
+                gib 1
 
         parser = expat.ParserCreate(namespace_separator='!')
         parser.buffer_text = 1
@@ -646,7 +646,7 @@ klasse ChardataBufferTest(unittest.TestCase):
 
         self.n = 0
         parser.Parse(xml)
-        return self.n
+        gib self.n
 
     def test_change_size_1(self):
         xml1 = b"<?xml version='1.0' encoding='iso8859'?><a><s>" + b'a' * 1024
@@ -728,7 +728,7 @@ klasse ForeignDTDTests(unittest.TestCase):
         handler_call_args = []
         def resolve_entity(context, base, system_id, public_id):
             handler_call_args.append((public_id, system_id))
-            return 1
+            gib 1
 
         parser = expat.ParserCreate()
         parser.UseForeignDTD(Wahr)
@@ -756,7 +756,7 @@ klasse ForeignDTDTests(unittest.TestCase):
         handler_call_args = []
         def resolve_entity(context, base, system_id, public_id):
             handler_call_args.append((public_id, system_id))
-            return 1
+            gib 1
 
         parser = expat.ParserCreate()
         parser.UseForeignDTD(Wahr)

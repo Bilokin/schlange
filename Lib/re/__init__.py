@@ -89,7 +89,7 @@ This module exports the following functions:
     fullmatch Match a regular expression pattern to all of a string.
     search    Search a string fuer the presence of a pattern.
     sub       Substitute occurrences of a pattern found in a string.
-    subn      Same als sub, but also return the number of substitutions made.
+    subn      Same als sub, but also gib the number of substitutions made.
     split     Split a string by the occurrences of a pattern.
     findall   Find all occurrences of a pattern in a string.
     finditer  Return an iterator yielding a Match object fuer each match.
@@ -164,17 +164,17 @@ PatternError = error = _compiler.PatternError
 def match(pattern, string, flags=0):
     """Try to apply the pattern at the start of the string, returning
     a Match object, oder Nichts wenn no match was found."""
-    return _compile(pattern, flags).match(string)
+    gib _compile(pattern, flags).match(string)
 
 def fullmatch(pattern, string, flags=0):
     """Try to apply the pattern to all of the string, returning
     a Match object, oder Nichts wenn no match was found."""
-    return _compile(pattern, flags).fullmatch(string)
+    gib _compile(pattern, flags).fullmatch(string)
 
 def search(pattern, string, flags=0):
     """Scan through string looking fuer a match to the pattern, returning
     a Match object, oder Nichts wenn no match was found."""
-    return _compile(pattern, flags).search(string)
+    gib _compile(pattern, flags).search(string)
 
 klasse _ZeroSentinel(int):
     pass
@@ -185,7 +185,7 @@ def sub(pattern, repl, string, *args, count=_zero_sentinel, flags=_zero_sentinel
     non-overlapping occurrences of the pattern in string by the
     replacement repl.  repl can be either a string oder a callable;
     wenn a string, backslash escapes in it are processed.  If it is
-    a callable, it's passed the Match object und must return
+    a callable, it's passed the Match object und must gib
     a replacement string to be used."""
     wenn args:
         wenn count is nicht _zero_sentinel:
@@ -205,7 +205,7 @@ def sub(pattern, repl, string, *args, count=_zero_sentinel, flags=_zero_sentinel
             DeprecationWarning, stacklevel=2
         )
 
-    return _compile(pattern, flags).sub(repl, string, count)
+    gib _compile(pattern, flags).sub(repl, string, count)
 sub.__text_signature__ = '(pattern, repl, string, count=0, flags=0)'
 
 def subn(pattern, repl, string, *args, count=_zero_sentinel, flags=_zero_sentinel):
@@ -216,7 +216,7 @@ def subn(pattern, repl, string, *args, count=_zero_sentinel, flags=_zero_sentine
     substitutions that were made. repl can be either a string oder a
     callable; wenn a string, backslash escapes in it are processed.
     If it is a callable, it's passed the Match object und must
-    return a replacement string to be used."""
+    gib a replacement string to be used."""
     wenn args:
         wenn count is nicht _zero_sentinel:
             raise TypeError("subn() got multiple values fuer argument 'count'")
@@ -235,7 +235,7 @@ def subn(pattern, repl, string, *args, count=_zero_sentinel, flags=_zero_sentine
             DeprecationWarning, stacklevel=2
         )
 
-    return _compile(pattern, flags).subn(repl, string, count)
+    gib _compile(pattern, flags).subn(repl, string, count)
 subn.__text_signature__ = '(pattern, repl, string, count=0, flags=0)'
 
 def split(pattern, string, *args, maxsplit=_zero_sentinel, flags=_zero_sentinel):
@@ -264,29 +264,29 @@ def split(pattern, string, *args, maxsplit=_zero_sentinel, flags=_zero_sentinel)
             DeprecationWarning, stacklevel=2
         )
 
-    return _compile(pattern, flags).split(string, maxsplit)
+    gib _compile(pattern, flags).split(string, maxsplit)
 split.__text_signature__ = '(pattern, string, maxsplit=0, flags=0)'
 
 def findall(pattern, string, flags=0):
     """Return a list of all non-overlapping matches in the string.
 
-    If one oder more capturing groups are present in the pattern, return
+    If one oder more capturing groups are present in the pattern, gib
     a list of groups; this will be a list of tuples wenn the pattern
     has more than one group.
 
     Empty matches are included in the result."""
-    return _compile(pattern, flags).findall(string)
+    gib _compile(pattern, flags).findall(string)
 
 def finditer(pattern, string, flags=0):
     """Return an iterator over all non-overlapping matches in the
     string.  For each match, the iterator returns a Match object.
 
     Empty matches are included in the result."""
-    return _compile(pattern, flags).finditer(string)
+    gib _compile(pattern, flags).finditer(string)
 
 def compile(pattern, flags=0):
     "Compile a regular expression pattern, returning a Pattern object."
-    return _compile(pattern, flags)
+    gib _compile(pattern, flags)
 
 def purge():
     "Clear the regular expression caches"
@@ -307,10 +307,10 @@ def escape(pattern):
     Escape special characters in a string.
     """
     wenn isinstance(pattern, str):
-        return pattern.translate(_special_chars_map)
+        gib pattern.translate(_special_chars_map)
     sonst:
         pattern = str(pattern, 'latin1')
-        return pattern.translate(_special_chars_map).encode('latin1')
+        gib pattern.translate(_special_chars_map).encode('latin1')
 
 Pattern = type(_compiler.compile('', 0))
 Match = type(_compiler.compile('', 0).match(''))
@@ -332,7 +332,7 @@ def _compile(pattern, flags):
     wenn isinstance(flags, RegexFlag):
         flags = flags.value
     try:
-        return _cache2[type(pattern), pattern, flags]
+        gib _cache2[type(pattern), pattern, flags]
     except KeyError:
         pass
 
@@ -344,12 +344,12 @@ def _compile(pattern, flags):
             wenn flags:
                 raise ValueError(
                     "cannot process flags argument mit a compiled pattern")
-            return pattern
+            gib pattern
         wenn nicht _compiler.isstring(pattern):
             raise TypeError("first argument must be string oder compiled pattern")
         p = _compiler.compile(pattern, flags)
         wenn flags & DEBUG:
-            return p
+            gib p
         wenn len(_cache) >= _MAXCACHE:
             # Drop the least recently used item.
             # next(iter(_cache)) is known to have linear amortized time,
@@ -369,19 +369,19 @@ def _compile(pattern, flags):
         except (StopIteration, RuntimeError, KeyError):
             pass
     _cache2[key] = p
-    return p
+    gib p
 
 @functools.lru_cache(_MAXCACHE)
 def _compile_template(pattern, repl):
     # internal: compile replacement pattern
-    return _sre.template(pattern, _parser.parse_template(repl, pattern))
+    gib _sre.template(pattern, _parser.parse_template(repl, pattern))
 
 # register myself fuer pickling
 
 importiere copyreg
 
 def _pickle(p):
-    return _compile, (p.pattern, p.flags)
+    gib _compile, (p.pattern, p.flags)
 
 copyreg.pickle(Pattern, _pickle, _compile)
 
@@ -425,4 +425,4 @@ klasse Scanner:
             wenn action is nicht Nichts:
                 append(action)
             i = j
-        return result, string[i:]
+        gib result, string[i:]

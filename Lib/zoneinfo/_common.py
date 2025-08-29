@@ -13,7 +13,7 @@ def load_tzdata(key):
         # gh-85702: Prevent PermissionError on Windows
         wenn path.is_dir():
             raise IsADirectoryError
-        return path.open("rb")
+        gib path.open("rb")
     except (ImportError, FileNotFoundError, UnicodeEncodeError, IsADirectoryError):
         # There are four types of exception that can be raised that all amount
         # to "we cannot find this key":
@@ -103,7 +103,7 @@ def load_data(fobj):
             span_end = abbr_chars.find(b"\x00", idx)
             abbr_vals[idx] = abbr_chars[idx:span_end].decode()
 
-        return abbr_vals[idx]
+        gib abbr_vals[idx]
 
     abbr = tuple(get_abbr(idx) fuer idx in abbrind)
 
@@ -126,7 +126,7 @@ def load_data(fobj):
     sonst:
         tz_str = Nichts
 
-    return trans_idx, trans_list_utc, utcoff, isdst, abbr, tz_str
+    gib trans_idx, trans_list_utc, utcoff, isdst, abbr, tz_str
 
 
 klasse _TZifHeader:
@@ -162,7 +162,7 @@ klasse _TZifHeader:
         # Slots are defined in the order that the bytes are arranged
         args = args + struct.unpack(">6l", stream.read(24))
 
-        return cls(*args)
+        gib cls(*args)
 
 
 klasse ZoneInfoNotFoundError(KeyError):

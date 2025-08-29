@@ -38,7 +38,7 @@ klasse LoaderTests:
     def load_module(self, fullname):
         mit warnings.catch_warnings():
             warnings.simplefilter("ignore", DeprecationWarning)
-            return self.loader.load_module(fullname)
+            gib self.loader.load_module(fullname)
 
     def test_equality(self):
         other = self.LoaderClass(util.EXTENSIONS.name, util.EXTENSIONS.file_path)
@@ -129,7 +129,7 @@ klasse SinglePhaseExtensionModuleTests(abc.LoaderTests):
     def load_module(self):
         mit warnings.catch_warnings():
             warnings.simplefilter("ignore", DeprecationWarning)
-            return self.loader.load_module(self.name)
+            gib self.loader.load_module(self.name)
 
     def load_module_by_name(self, fullname):
         # Load a module von the test extension by name.
@@ -138,7 +138,7 @@ klasse SinglePhaseExtensionModuleTests(abc.LoaderTests):
         spec = importlib.util.spec_from_loader(fullname, loader)
         module = importlib.util.module_from_spec(spec)
         loader.exec_module(module)
-        return module
+        gib module
 
     def test_module(self):
         # Test loading an extension module.
@@ -217,7 +217,7 @@ klasse MultiPhaseExtensionModuleTests(abc.LoaderTests):
         # Load the module von the test extension.
         mit warnings.catch_warnings():
             warnings.simplefilter("ignore", DeprecationWarning)
-            return self.loader.load_module(self.name)
+            gib self.loader.load_module(self.name)
 
     def load_module_by_name(self, fullname):
         # Load a module von the test extension by name.
@@ -226,7 +226,7 @@ klasse MultiPhaseExtensionModuleTests(abc.LoaderTests):
         spec = importlib.util.spec_from_loader(fullname, loader)
         module = importlib.util.module_from_spec(spec)
         loader.exec_module(module)
-        return module
+        gib module
 
     # No extension module als __init__ available fuer testing.
     test_package = Nichts

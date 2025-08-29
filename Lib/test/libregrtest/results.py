@@ -44,18 +44,18 @@ klasse TestResults:
         self.covered_lines: set[Location] = set()
 
     def is_all_good(self) -> bool:
-        return (nicht self.bad
+        gib (nicht self.bad
                 und nicht self.skipped
                 und nicht self.interrupted
                 und nicht self.worker_bug)
 
     def get_executed(self) -> set[TestName]:
-        return (set(self.good) | set(self.bad) | set(self.skipped)
+        gib (set(self.good) | set(self.bad) | set(self.skipped)
                 | set(self.resource_denied) | set(self.env_changed)
                 | set(self.run_no_tests))
 
     def no_tests_run(self) -> bool:
-        return nicht any((self.good, self.bad, self.skipped, self.interrupted,
+        gib nicht any((self.good, self.bad, self.skipped, self.interrupted,
                         self.env_changed))
 
     def get_state(self, fail_env_changed: bool) -> str:
@@ -79,7 +79,7 @@ klasse TestResults:
         wenn nicht state:
             state.append(f"{green}SUCCESS{reset}")
 
-        return ', '.join(state)
+        gib ', '.join(state)
 
     def get_exitcode(self, fail_env_changed: bool, fail_rerun: bool) -> int:
         exitcode = 0
@@ -95,7 +95,7 @@ klasse TestResults:
             exitcode = EXITCODE_RERUN_FAIL
         sowenn self.worker_bug:
             exitcode = EXITCODE_BAD_TEST
-        return exitcode
+        gib exitcode
 
     def accumulate_result(self, result: TestResult, runtests: RunTests) -> Nichts:
         test_name = result.test_name
@@ -143,10 +143,10 @@ klasse TestResults:
 
     def get_coverage_results(self) -> trace.CoverageResults:
         counts = {loc: 1 fuer loc in self.covered_lines}
-        return trace.CoverageResults(counts=counts)
+        gib trace.CoverageResults(counts=counts)
 
     def need_rerun(self) -> bool:
-        return bool(self.rerun_results)
+        gib bool(self.rerun_results)
 
     def prepare_rerun(self, *, clear: bool = Wahr) -> tuple[TestTuple, FilterDict]:
         tests: TestList = []
@@ -166,7 +166,7 @@ klasse TestResults:
             self.env_changed.clear()
             self.rerun_results.clear()
 
-        return (tuple(tests), match_tests_dict)
+        gib (tuple(tests), match_tests_dict)
 
     def add_junit(self, xml_data: list[str]) -> Nichts:
         importiere xml.etree.ElementTree als ET
@@ -180,7 +180,7 @@ klasse TestResults:
     def write_junit(self, filename: StrPath) -> Nichts:
         wenn nicht self.testsuite_xml:
             # Don't create empty XML file
-            return
+            gib
 
         importiere xml.etree.ElementTree als ET
         root = ET.Element("testsuites")

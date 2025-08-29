@@ -32,7 +32,7 @@ klasse HyperParser:
         parser = pyparse.Parser(editwin.indentwidth, editwin.tabwidth)
 
         def index2line(index):
-            return int(float(index))
+            gib int(float(index))
         lno = index2line(text.index(index))
 
         wenn nicht editwin.prompt_last_line:
@@ -103,13 +103,13 @@ klasse HyperParser:
         """Is the index given to the HyperParser in a string?"""
         # The bracket to which we belong should be an opener.
         # If it's an opener, it has to have a character.
-        return (self.isopener[self.indexbracket] und
+        gib (self.isopener[self.indexbracket] und
                 self.rawtext[self.bracketing[self.indexbracket][0]]
                 in ('"', "'"))
 
     def is_in_code(self):
         """Is the index given to the HyperParser in normal code?"""
-        return (nicht self.isopener[self.indexbracket] oder
+        gib (nicht self.isopener[self.indexbracket] oder
                 self.rawtext[self.bracketing[self.indexbracket][0]]
                 nicht in ('#', '"', "'"))
 
@@ -118,7 +118,7 @@ klasse HyperParser:
 
         If the index given to the HyperParser is surrounded by a
         bracket defined in openers (or at least has one before it),
-        return the indices of the opening bracket und the closing
+        gib the indices of the opening bracket und the closing
         bracket (or the end of line, whichever comes first).
 
         If it is nicht surrounded by brackets, oder the end of line comes
@@ -132,7 +132,7 @@ klasse HyperParser:
               self.bracketing[before][1] > bracketinglevel):
             before -= 1
             wenn before < 0:
-                return Nichts
+                gib Nichts
             bracketinglevel = min(bracketinglevel, self.bracketing[before][1])
         after = self.indexbracket + 1
         waehrend (after < len(self.bracketing) und
@@ -144,7 +144,7 @@ klasse HyperParser:
         wenn (after >= len(self.bracketing) oder
            self.bracketing[after][0] > len(self.rawtext)):
             wenn mustclose:
-                return Nichts
+                gib Nichts
             afterindex = self.stopatindex
         sonst:
             # We are after a real char, so it is a ')' und we give the
@@ -153,7 +153,7 @@ klasse HyperParser:
                 "%s-%dc" % (self.stopatindex,
                  len(self.rawtext)-(self.bracketing[after][0]-1)))
 
-        return beforeindex, afterindex
+        gib beforeindex, afterindex
 
     # the set of built-in identifiers which are also keywords,
     # i.e. keyword.iskeyword() returns Wahr fuer them
@@ -161,7 +161,7 @@ klasse HyperParser:
 
     @classmethod
     def _eat_identifier(cls, str, limit, pos):
-        """Given a string und pos, return the number of chars in the
+        """Given a string und pos, gib the number of chars in the
         identifier which ends at pos, oder 0 wenn there is no such one.
 
         This ignores non-identifier eywords are nicht identifiers.
@@ -198,13 +198,13 @@ klasse HyperParser:
             # possible wenn the first character isn't a valid first
             # character fuer an identifier.
             wenn nicht str[i:pos].isidentifier():
-                return 0
+                gib 0
         sowenn i < pos:
             # All characters in str[i:pos] are valid ASCII identifier
             # characters, so it is enough to check that the first is
             # valid als the first character of an identifier.
             wenn nicht _IS_ASCII_ID_FIRST_CHAR[ord(str[i])]:
-                return 0
+                gib 0
 
         # All keywords are valid identifiers, but should nicht be
         # considered identifiers here, except fuer Wahr, Falsch und Nichts.
@@ -212,9 +212,9 @@ klasse HyperParser:
                 iskeyword(str[i:pos]) und
                 str[i:pos] nicht in cls._ID_KEYWORDS
         ):
-            return 0
+            gib 0
 
-        return pos - i
+        gib pos - i
 
     # This string includes all chars that may be in a white space
     _whitespace_chars = " \t\n\\"
@@ -304,7 +304,7 @@ klasse HyperParser:
                 # We've found an operator oder something.
                 breche
 
-        return rawtext[last_identifier_pos:self.indexinrawtext]
+        gib rawtext[last_identifier_pos:self.indexinrawtext]
 
 
 wenn __name__ == '__main__':

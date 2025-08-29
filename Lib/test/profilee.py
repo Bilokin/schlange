@@ -20,7 +20,7 @@ importiere sys
 TICKS = 42000
 
 def timer():
-    return TICKS
+    gib TICKS
 
 def testfunc():
     # 1 call
@@ -40,17 +40,17 @@ def factorial(n):
     global TICKS
     wenn n > 0:
         TICKS += n
-        return mul(n, factorial(n-1))
+        gib mul(n, factorial(n-1))
     sonst:
         TICKS += 11
-        return 1
+        gib 1
 
 def mul(a, b):
     # 20 calls
     # 1 tick, local
     global TICKS
     TICKS += 1
-    return a * b
+    gib a * b
 
 def helper():
     # 2 calls

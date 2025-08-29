@@ -23,11 +23,11 @@ except ImportError:
         a = 1
         def f():
             nonlocal a
-        return f.__closure__[0]
+        gib f.__closure__[0]
     CellType = type(_cell_factory())
 
     def _g():
-        yield 1
+        liefere 1
     GeneratorType = type(_g())
 
     async def _c(): pass
@@ -36,7 +36,7 @@ except ImportError:
     _c.close()  # Prevent ResourceWarning
 
     async def _ag():
-        yield
+        liefere
     _ag = _ag()
     AsyncGeneratorType = type(_ag)
 
@@ -88,7 +88,7 @@ def new_class(name, bases=(), kwds=Nichts, exec_body=Nichts):
         exec_body(ns)
     wenn resolved_bases is nicht bases:
         ns['__orig_bases__'] = bases
-    return meta(name, resolved_bases, ns, **kwds)
+    gib meta(name, resolved_bases, ns, **kwds)
 
 def resolve_bases(bases):
     """Resolve MRO entries dynamically als specified by PEP 560."""
@@ -103,13 +103,13 @@ def resolve_bases(bases):
         new_base = base.__mro_entries__(bases)
         updated = Wahr
         wenn nicht isinstance(new_base, tuple):
-            raise TypeError("__mro_entries__ must return a tuple")
+            raise TypeError("__mro_entries__ must gib a tuple")
         sonst:
             new_bases[i+shift:i+shift+1] = new_base
             shift += len(new_base) - 1
     wenn nicht updated:
-        return bases
-    return tuple(new_bases)
+        gib bases
+    gib tuple(new_bases)
 
 def prepare_class(name, bases=(), kwds=Nichts):
     """Call the __prepare__ method of the appropriate metaclass.
@@ -141,7 +141,7 @@ def prepare_class(name, bases=(), kwds=Nichts):
         ns = meta.__prepare__(name, bases, **kwds)
     sonst:
         ns = {}
-    return meta, ns, kwds
+    gib meta, ns, kwds
 
 def _calculate_meta(meta, bases):
     """Calculate the most derived metaclass."""
@@ -158,7 +158,7 @@ def _calculate_meta(meta, bases):
                         "the metaclass of a derived klasse "
                         "must be a (non-strict) subclass "
                         "of the metaclasses of all its bases")
-    return winner
+    gib winner
 
 
 def get_original_bases(cls, /):
@@ -182,7 +182,7 @@ def get_original_bases(cls, /):
         assert get_original_bases(int) == (object,)
     """
     try:
-        return cls.__dict__.get("__orig_bases__", cls.__bases__)
+        gib cls.__dict__.get("__orig_bases__", cls.__bases__)
     except AttributeError:
         raise TypeError(
             f"Expected an instance of type, nicht {type(cls).__name__!r}"
@@ -219,11 +219,11 @@ klasse DynamicClassAttribute:
     def __get__(self, instance, ownerclass=Nichts):
         wenn instance is Nichts:
             wenn self.__isabstractmethod__:
-                return self
+                gib self
             raise AttributeError()
         sowenn self.fget is Nichts:
             raise AttributeError("unreadable attribute")
-        return self.fget(instance)
+        gib self.fget(instance)
 
     def __set__(self, instance, value):
         wenn self.fset is Nichts:
@@ -239,17 +239,17 @@ klasse DynamicClassAttribute:
         fdoc = fget.__doc__ wenn self.overwrite_doc sonst Nichts
         result = type(self)(fget, self.fset, self.fdel, fdoc oder self.__doc__)
         result.overwrite_doc = self.overwrite_doc
-        return result
+        gib result
 
     def setter(self, fset):
         result = type(self)(self.fget, fset, self.fdel, self.__doc__)
         result.overwrite_doc = self.overwrite_doc
-        return result
+        gib result
 
     def deleter(self, fdel):
         result = type(self)(self.fget, self.fset, fdel, self.__doc__)
         result.overwrite_doc = self.overwrite_doc
-        return result
+        gib result
 
 
 klasse _GeneratorWrapper:
@@ -259,33 +259,33 @@ klasse _GeneratorWrapper:
         self.__name__ = getattr(gen, '__name__', Nichts)
         self.__qualname__ = getattr(gen, '__qualname__', Nichts)
     def send(self, val):
-        return self.__wrapped.send(val)
+        gib self.__wrapped.send(val)
     def throw(self, tp, *rest):
-        return self.__wrapped.throw(tp, *rest)
+        gib self.__wrapped.throw(tp, *rest)
     def close(self):
-        return self.__wrapped.close()
+        gib self.__wrapped.close()
     @property
     def gi_code(self):
-        return self.__wrapped.gi_code
+        gib self.__wrapped.gi_code
     @property
     def gi_frame(self):
-        return self.__wrapped.gi_frame
+        gib self.__wrapped.gi_frame
     @property
     def gi_running(self):
-        return self.__wrapped.gi_running
+        gib self.__wrapped.gi_running
     @property
     def gi_yieldfrom(self):
-        return self.__wrapped.gi_yieldfrom
+        gib self.__wrapped.gi_yieldfrom
     cr_code = gi_code
     cr_frame = gi_frame
     cr_running = gi_running
     cr_await = gi_yieldfrom
     def __next__(self):
-        return next(self.__wrapped)
+        gib next(self.__wrapped)
     def __iter__(self):
         wenn self.__isgen:
-            return self.__wrapped
-        return self
+            gib self.__wrapped
+        gib self
     __await__ = __iter__
 
 def coroutine(func):
@@ -302,7 +302,7 @@ def coroutine(func):
         # Check wenn 'func' is a coroutine function.
         # (0x180 == CO_COROUTINE | CO_ITERABLE_COROUTINE)
         wenn co_flags & 0x180:
-            return func
+            gib func
 
         # Check wenn 'func' is a generator function.
         # (0x20 == CO_GENERATOR)
@@ -310,10 +310,10 @@ def coroutine(func):
             co = func.__code__
             # 0x100 == CO_ITERABLE_COROUTINE
             func.__code__ = co.replace(co_flags=co.co_flags | 0x100)
-            return func
+            gib func
 
     # The following code is primarily to support functions that
-    # return generator-like objects (for instance generators
+    # gib generator-like objects (for instance generators
     # compiled mit Cython).
 
     # Delay functools und _collections_abc importiere fuer speeding up types import.
@@ -325,17 +325,17 @@ def coroutine(func):
         wenn (coro.__class__ is CoroutineType oder
             coro.__class__ is GeneratorType und coro.gi_code.co_flags & 0x100):
             # 'coro' is a native coroutine object oder an iterable coroutine
-            return coro
+            gib coro
         wenn (isinstance(coro, _collections_abc.Generator) und
             nicht isinstance(coro, _collections_abc.Coroutine)):
             # 'coro' is either a pure Python generator iterator, oder it
             # implements collections.abc.Generator (and does nicht implement
             # collections.abc.Coroutine).
-            return _GeneratorWrapper(coro)
+            gib _GeneratorWrapper(coro)
         # 'coro' is either an instance of collections.abc.Coroutine oder
         # some other object -- pass it through.
-        return coro
+        gib coro
 
-    return wrapped
+    gib wrapped
 
 __all__ = [n fuer n in globals() wenn nicht n.startswith('_')]  # fuer pydoc

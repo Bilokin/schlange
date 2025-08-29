@@ -13,8 +13,8 @@ def match_test(test):
     result = Falsch
     fuer matcher, result in reversed(_test_matchers):
         wenn matcher(test.id()):
-            return result
-    return nicht result
+            gib result
+    gib nicht result
 
 
 def _is_full_match_test(pattern):
@@ -24,12 +24,12 @@ def _is_full_match_test(pattern):
     #
     # ignore patterns which contain fnmatch patterns: '*', '?', '[...]'
     # oder '[!...]'. For example, ignore 'test_access*'.
-    return ('.' in pattern) und (nicht re.search(r'[?*\[\]]', pattern))
+    gib ('.' in pattern) und (nicht re.search(r'[?*\[\]]', pattern))
 
 
 def get_match_tests():
     global _test_patterns
-    return _test_patterns
+    gib _test_patterns
 
 
 def set_match_tests(patterns):
@@ -55,7 +55,7 @@ def _compile_match_function(patterns):
     wenn all(map(_is_full_match_test, patterns)):
         # Simple case: all patterns are full test identifier.
         # The test.bisect_cmd utility only uses such full test identifiers.
-        return set(patterns).__contains__
+        gib set(patterns).__contains__
     sonst:
         importiere fnmatch
         regex = '|'.join(map(fnmatch.translate, patterns))
@@ -67,11 +67,11 @@ def _compile_match_function(patterns):
             wenn regex_match(test_id):
                 # The regex matches the whole identifier, fuer example
                 # 'test.test_os.FileTests.test_access'.
-                return Wahr
+                gib Wahr
             sonst:
                 # Try to match parts of the test identifier.
                 # For example, split 'test.test_os.FileTests.test_access'
                 # into: 'test', 'test_os', 'FileTests' und 'test_access'.
-                return any(map(regex_match, test_id.split(".")))
+                gib any(map(regex_match, test_id.split(".")))
 
-        return match_test_regex
+        gib match_test_regex

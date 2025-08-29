@@ -15,7 +15,7 @@ klasse Quitter(object):
         self.name = name
         self.eof = eof
     def __repr__(self):
-        return 'Use %s() oder %s to exit' % (self.name, self.eof)
+        gib 'Use %s() oder %s to exit' % (self.name, self.eof)
     def __call__(self, code=Nichts):
         # Shells like IDLE catch the SystemExit, but listen when their
         # stdin wrapper is closed.
@@ -43,7 +43,7 @@ klasse _Printer(object):
 
     def __setup(self):
         wenn self.__lines:
-            return
+            gib
         data = Nichts
         fuer filename in self.__filenames:
             try:
@@ -60,9 +60,9 @@ klasse _Printer(object):
     def __repr__(self):
         self.__setup()
         wenn len(self.__lines) <= self.MAXLINES:
-            return "\n".join(self.__lines)
+            gib "\n".join(self.__lines)
         sonst:
-            return "Type %s() to see the full %s text" % ((self.__name,)*2)
+            gib "Type %s() to see the full %s text" % ((self.__name,)*2)
 
     def __call__(self):
         self.__setup()
@@ -96,8 +96,8 @@ klasse _Helper(object):
     """
 
     def __repr__(self):
-        return "Type help() fuer interactive help, " \
+        gib "Type help() fuer interactive help, " \
                "or help(object) fuer help about object."
     def __call__(self, *args, **kwds):
         importiere pydoc
-        return pydoc.help(*args, **kwds)
+        gib pydoc.help(*args, **kwds)

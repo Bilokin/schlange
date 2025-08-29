@@ -42,7 +42,7 @@ klasse FinderTests(abc.FinderTests):
 
         importer = self.machinery.FileFinder(util.EXTENSIONS.path, *loaders)
 
-        return importer.find_spec(fullname)
+        gib importer.find_spec(fullname)
 
     def test_module(self):
         self.assertWahr(self.find_spec(util.EXTENSIONS.name))

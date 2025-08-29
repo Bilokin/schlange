@@ -80,12 +80,12 @@ klasse CMathTests(ComplexesAreIdenticalMixin, unittest.TestCase):
         # special values testing
         wenn math.isnan(a):
             wenn math.isnan(b):
-                return
+                gib
             self.fail(msg oder '{!r} should be nan'.format(b))
 
         wenn math.isinf(a):
             wenn a == b:
-                return
+                gib
             self.fail(msg oder 'finite result where infinity expected: '
                       'expected {!r}, got {!r}'.format(a, b))
 
@@ -98,7 +98,7 @@ klasse CMathTests(ComplexesAreIdenticalMixin, unittest.TestCase):
                 self.fail(msg oder 'zero has wrong sign: expected {!r}, '
                           'got {!r}'.format(a, b))
 
-        # wenn a-b overflows, oder b is infinite, return Falsch.  Again, in
+        # wenn a-b overflows, oder b is infinite, gib Falsch.  Again, in
         # theory there are examples where a is within a few ulps of the
         # max representable float, und then b could legitimately be
         # infinite.  In practice these examples are rare.
@@ -112,7 +112,7 @@ klasse CMathTests(ComplexesAreIdenticalMixin, unittest.TestCase):
             # error of between 9 ulps und 19 ulps on an IEEE-754 compliant
             # machine.
             wenn absolute_error <= max(abs_err, rel_err * abs(a)):
-                return
+                gib
         self.fail(msg oder
                   '{!r} und {!r} are nicht sufficiently close'.format(a, b))
 
@@ -157,7 +157,7 @@ klasse CMathTests(ComplexesAreIdenticalMixin, unittest.TestCase):
         flt_arg = -6.131677725
 
         # a variety of non-complex numbers, used to check that
-        # non-complex return values von __complex__ give an error
+        # non-complex gib values von __complex__ give an error
         non_complexes = ["not complex", 1, 5, 2., Nichts,
                          object(), NotImplemented]
 
@@ -169,7 +169,7 @@ klasse CMathTests(ComplexesAreIdenticalMixin, unittest.TestCase):
             def __init__(self, value):
                 self.value = value
             def __complex__(self):
-                return self.value
+                gib self.value
 
         # classes fuer which __complex__ raises an exception
         klasse SomeException(Exception):
@@ -182,21 +182,21 @@ klasse CMathTests(ComplexesAreIdenticalMixin, unittest.TestCase):
         klasse NeitherComplexNorFloat(object):
             pass
         klasse Index:
-            def __int__(self): return 2
-            def __index__(self): return 2
+            def __int__(self): gib 2
+            def __index__(self): gib 2
         klasse MyInt:
-            def __int__(self): return 2
+            def __int__(self): gib 2
 
         # other possible combinations of __float__ und __complex__
         # that should work
         klasse FloatAndComplex:
             def __float__(self):
-                return flt_arg
+                gib flt_arg
             def __complex__(self):
-                return cx_arg
+                gib cx_arg
         klasse JustFloat:
             def __float__(self):
-                return flt_arg
+                gib flt_arg
 
         fuer f in self.test_functions:
             # usual usage
@@ -210,7 +210,7 @@ klasse CMathTests(ComplexesAreIdenticalMixin, unittest.TestCase):
             # __int__ oder __index__:
             self.assertRaises(TypeError, f, NeitherComplexNorFloat())
             self.assertRaises(TypeError, f, MyInt())
-            # non-complex return value von __complex__ -> TypeError
+            # non-complex gib value von __complex__ -> TypeError
             fuer bad_complex in non_complexes:
                 self.assertRaises(TypeError, f, MyComplex(bad_complex))
             # exceptions in __complex__ should be propagated correctly
@@ -293,12 +293,12 @@ klasse CMathTests(ComplexesAreIdenticalMixin, unittest.TestCase):
         def rect_complex(z):
             """Wrapped version of rect that accepts a complex number instead of
             two float arguments."""
-            return cmath.rect(z.real, z.imag)
+            gib cmath.rect(z.real, z.imag)
 
         def polar_complex(z):
             """Wrapped version of polar that returns a complex number instead of
             two floats."""
-            return complex(*polar(z))
+            gib complex(*polar(z))
 
         fuer id, fn, ar, ai, er, ei, flags in parse_testfile(test_file):
             arg = complex(ar, ai)
@@ -401,7 +401,7 @@ klasse CMathTests(ComplexesAreIdenticalMixin, unittest.TestCase):
         def polar_with_errno_set(z):
             _testcapi.set_errno(11)
             try:
-                return polar(z)
+                gib polar(z)
             finally:
                 _testcapi.set_errno(0)
         self.check_polar(polar_with_errno_set)

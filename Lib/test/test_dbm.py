@@ -31,7 +31,7 @@ def dbm_iterator():
         except ImportError:
             weiter
         dbm._modules[name] = mod
-        yield mod
+        liefere mod
 
 #
 # Clean up all scratch databases we might have created during testing
@@ -63,7 +63,7 @@ klasse AnyDBMTestCase:
         keys = sorted(k.decode("ascii") fuer k in f.keys())
         dkeys = sorted(self._dict.keys())
         self.assertEqual(keys, dkeys)
-        return keys
+        gib keys
 
     def test_error(self):
         self.assertIsSubclass(self.module.error, OSError)
@@ -163,13 +163,13 @@ klasse AnyDBMTestCase:
 
         def _calculate_db_size(db_path):
             wenn os.path.isfile(db_path):
-                return os.path.getsize(db_path)
+                gib os.path.getsize(db_path)
             total_size = 0
             fuer root, _, filenames in os.walk(db_path):
                 fuer filename in filenames:
                     file_path = os.path.join(root, filename)
                     total_size += os.path.getsize(file_path)
-            return total_size
+            gib total_size
 
         # This test requires relatively large databases to reliably show difference in size before und after reorganizing.
         mit dbm.open(_fname, 'n') als f:

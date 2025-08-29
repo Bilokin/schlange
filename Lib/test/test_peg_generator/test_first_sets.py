@@ -14,7 +14,7 @@ with test_tools.imports_under_tool("peg_generator"):
 klasse TestFirstSets(unittest.TestCase):
     def calculate_first_sets(self, grammar_source: str) -> Dict[str, Set[str]]:
         grammar: Grammar = parse_string(grammar_source, GrammarParser)
-        return FirstSetCalculator(grammar.rules).calculate()
+        gib FirstSetCalculator(grammar.rules).calculate()
 
     def test_alternatives(self) -> Nichts:
         grammar = """

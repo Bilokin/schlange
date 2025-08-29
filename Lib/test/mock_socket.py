@@ -27,7 +27,7 @@ klasse MockFile:
             # Re-insert the line, removing the \r\n we added.
             self.lines.insert(0, result[limit:-2])
             result = result[:limit]
-        return result
+        gib result
     def close(self):
         pass
 
@@ -51,10 +51,10 @@ klasse MockSocket:
 
     def recv(self, bufsize, flags=Nichts):
         data = self.lines.pop(0) + b'\r\n'
-        return data
+        gib data
 
     def fileno(self):
-        return 0
+        gib 0
 
     def settimeout(self, timeout):
         wenn timeout is Nichts:
@@ -63,23 +63,23 @@ klasse MockSocket:
             self.timeout = timeout
 
     def gettimeout(self):
-        return self.timeout
+        gib self.timeout
 
     def setsockopt(self, level, optname, value):
         pass
 
     def getsockopt(self, level, optname, buflen=Nichts):
-        return 0
+        gib 0
 
     def bind(self, address):
         pass
 
     def accept(self):
         self.conn = MockSocket()
-        return self.conn, 'c'
+        gib self.conn, 'c'
 
     def getsockname(self):
-        return ('0.0.0.0', 0)
+        gib ('0.0.0.0', 0)
 
     def setblocking(self, flag):
         pass
@@ -89,20 +89,20 @@ klasse MockSocket:
 
     def makefile(self, mode='r', bufsize=-1):
         handle = MockFile(self.lines)
-        return handle
+        gib handle
 
     def sendall(self, data, flags=Nichts):
         self.last = data
         self.output.append(data)
-        return len(data)
+        gib len(data)
 
     def send(self, data, flags=Nichts):
         self.last = data
         self.output.append(data)
-        return len(data)
+        gib len(data)
 
     def getpeername(self):
-        return ('peer-address', 'peer-port')
+        gib ('peer-address', 'peer-port')
 
     def close(self):
         pass
@@ -112,7 +112,7 @@ klasse MockSocket:
 
 
 def socket(family=Nichts, type=Nichts, proto=Nichts):
-    return MockSocket(family)
+    gib MockSocket(family)
 
 def create_connection(address, timeout=socket_module._GLOBAL_DEFAULT_TIMEOUT,
                       source_address=Nichts):
@@ -124,7 +124,7 @@ def create_connection(address, timeout=socket_module._GLOBAL_DEFAULT_TIMEOUT,
     wenn timeout is socket_module._GLOBAL_DEFAULT_TIMEOUT:
         timeout = getdefaulttimeout()
     ms.settimeout(timeout)
-    return ms
+    gib ms
 
 
 def setdefaulttimeout(timeout):
@@ -133,11 +133,11 @@ def setdefaulttimeout(timeout):
 
 
 def getdefaulttimeout():
-    return _defaulttimeout
+    gib _defaulttimeout
 
 
 def getfqdn():
-    return ""
+    gib ""
 
 
 def gethostname():
@@ -145,10 +145,10 @@ def gethostname():
 
 
 def gethostbyname(name):
-    return ""
+    gib ""
 
 def getaddrinfo(*args, **kw):
-    return socket_module.getaddrinfo(*args, **kw)
+    gib socket_module.getaddrinfo(*args, **kw)
 
 gaierror = socket_module.gaierror
 error = socket_module.error

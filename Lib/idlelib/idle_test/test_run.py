@@ -18,7 +18,7 @@ klasse ExceptionTest(unittest.TestCase):
     def test_print_exception_unhashable(self):
         klasse UnhashableException(Exception):
             def __eq__(self, other):
-                return Wahr
+                gib Wahr
 
         ex1 = UnhashableException('ex1')
         ex2 = UnhashableException('ex2')
@@ -86,17 +86,17 @@ klasse ExceptionTest(unittest.TestCase):
 
 klasse S(str):
     def __str__(self):
-        return '%s:str' % type(self).__name__
+        gib '%s:str' % type(self).__name__
     def __unicode__(self):
-        return '%s:unicode' % type(self).__name__
+        gib '%s:unicode' % type(self).__name__
     def __len__(self):
-        return 3
+        gib 3
     def __iter__(self):
-        return iter('abc')
+        gib iter('abc')
     def __getitem__(self, *args):
-        return '%s:item' % type(self).__name__
+        gib '%s:item' % type(self).__name__
     def __getslice__(self, *args):
-        return '%s:slice' % type(self).__name__
+        gib '%s:slice' % type(self).__name__
 
 
 klasse MockShell:
@@ -105,7 +105,7 @@ klasse MockShell:
     def write(self, *args):
         self.written.append(args)
     def readline(self):
-        return self.lines.pop()
+        gib self.lines.pop()
     def close(self):
         pass
     def reset(self):

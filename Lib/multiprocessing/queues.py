@@ -54,7 +54,7 @@ klasse Queue(object):
 
     def __getstate__(self):
         context.assert_spawning(self)
-        return (self._ignore_epipe, self._maxsize, self._reader, self._writer,
+        gib (self._ignore_epipe, self._maxsize, self._reader, self._writer,
                 self._rlock, self._wlock, self._sem, self._opid)
 
     def __setstate__(self, state):
@@ -117,23 +117,23 @@ klasse Queue(object):
             finally:
                 self._rlock.release()
         # unserialize the data after having released the lock
-        return _ForkingPickler.loads(res)
+        gib _ForkingPickler.loads(res)
 
     def qsize(self):
         # Raises NotImplementedError on Mac OSX because of broken sem_getvalue()
-        return self._maxsize - self._sem._semlock._get_value()
+        gib self._maxsize - self._sem._semlock._get_value()
 
     def empty(self):
-        return nicht self._poll()
+        gib nicht self._poll()
 
     def full(self):
-        return self._sem._semlock._is_zero()
+        gib self._sem._semlock._is_zero()
 
     def get_nowait(self):
-        return self.get(Falsch)
+        gib self.get(Falsch)
 
     def put_nowait(self, obj):
-        return self.put(obj, Falsch)
+        gib self.put(obj, Falsch)
 
     def close(self):
         self._closed = Wahr
@@ -256,7 +256,7 @@ klasse Queue(object):
                             debug('feeder thread got sentinel -- exiting')
                             reader_close()
                             writer_close()
-                            return
+                            gib
 
                         # serialize the data before acquiring the lock
                         obj = _ForkingPickler.dumps(obj)
@@ -272,14 +272,14 @@ klasse Queue(object):
                     pass
             except Exception als e:
                 wenn ignore_epipe und getattr(e, 'errno', 0) == errno.EPIPE:
-                    return
+                    gib
                 # Since this runs in a daemon thread the resources it uses
                 # may be become unusable waehrend the process is cleaning up.
                 # We ignore errors which happen after the process has
                 # started to cleanup.
                 wenn is_exiting():
                     info('error in queue thread: %s', e)
-                    return
+                    gib
                 sonst:
                     # Since the object has nicht been sent in the queue, we need
                     # to decrease the size of the queue. The error acts as
@@ -319,7 +319,7 @@ klasse JoinableQueue(Queue):
         self._cond = ctx.Condition()
 
     def __getstate__(self):
-        return Queue.__getstate__(self) + (self._cond, self._unfinished_tasks)
+        gib Queue.__getstate__(self) + (self._cond, self._unfinished_tasks)
 
     def __setstate__(self, state):
         Queue.__setstate__(self, state[:-2])
@@ -370,11 +370,11 @@ klasse SimpleQueue(object):
         self._writer.close()
 
     def empty(self):
-        return nicht self._poll()
+        gib nicht self._poll()
 
     def __getstate__(self):
         context.assert_spawning(self)
-        return (self._reader, self._writer, self._rlock, self._wlock)
+        gib (self._reader, self._writer, self._rlock, self._wlock)
 
     def __setstate__(self, state):
         (self._reader, self._writer, self._rlock, self._wlock) = state
@@ -384,7 +384,7 @@ klasse SimpleQueue(object):
         mit self._rlock:
             res = self._reader.recv_bytes()
         # unserialize the data after having released the lock
-        return _ForkingPickler.loads(res)
+        gib _ForkingPickler.loads(res)
 
     def put(self, obj):
         # serialize the data before acquiring the lock

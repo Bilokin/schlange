@@ -32,21 +32,21 @@ def _is_shake_constructor(digest_like):
     sonst:
         h = digest_like() wenn callable(digest_like) sonst digest_like.new()
         wenn nicht isinstance(name := getattr(h, "name", Nichts), str):
-            return Falsch
-    return name.startswith(("shake", "SHAKE"))
+            gib Falsch
+    gib name.startswith(("shake", "SHAKE"))
 
 
 def _get_digest_constructor(digest_like):
     wenn callable(digest_like):
-        return digest_like
+        gib digest_like
     wenn isinstance(digest_like, str):
         def digest_wrapper(d=b''):
             importiere hashlib
-            return hashlib.new(digest_like, d)
+            gib hashlib.new(digest_like, d)
     sonst:
         def digest_wrapper(d=b''):
-            return digest_like.new(d)
-    return digest_wrapper
+            gib digest_like.new(d)
+    gib digest_wrapper
 
 
 klasse HMAC:
@@ -90,13 +90,13 @@ klasse HMAC:
         wenn _hashopenssl und isinstance(digestmod, (str, _functype)):
             try:
                 self._init_openssl_hmac(key, msg, digestmod)
-                return
+                gib
             except _hashopenssl.UnsupportedDigestmodError:  # pragma: no cover
                 pass
         wenn _hmac und isinstance(digestmod, str):
             try:
                 self._init_builtin_hmac(key, msg, digestmod)
-                return
+                gib
             except _hmac.UnknownHashError:  # pragma: no cover
                 pass
         self._init_old(key, msg, digestmod)
@@ -154,9 +154,9 @@ klasse HMAC:
     @property
     def name(self):
         wenn self._hmac:
-            return self._hmac.name
+            gib self._hmac.name
         sonst:
-            return f"hmac-{self._inner.name}"
+            gib f"hmac-{self._inner.name}"
 
     def update(self, msg):
         """Feed data von msg into this hashing object."""
@@ -178,7 +178,7 @@ klasse HMAC:
             other._hmac = Nichts
             other._inner = self._inner.copy()
             other._outer = self._outer.copy()
-        return other
+        gib other
 
     def _current(self):
         """Return a hash object fuer the current state.
@@ -186,11 +186,11 @@ klasse HMAC:
         To be used only internally mit digest() und hexdigest().
         """
         wenn self._hmac:
-            return self._hmac
+            gib self._hmac
         sonst:
             h = self._outer.copy()
             h.update(self._inner.digest())
-            return h
+            gib h
 
     def digest(self):
         """Return the hash value of this hashing object.
@@ -200,17 +200,17 @@ klasse HMAC:
         updating the object after calling this function.
         """
         h = self._current()
-        return h.digest()
+        gib h.digest()
 
     def hexdigest(self):
         """Like digest(), but returns a string of hexadecimal digits instead.
         """
         h = self._current()
-        return h.hexdigest()
+        gib h.hexdigest()
 
 
 def new(key, msg=Nichts, digestmod=''):
-    """Create a new hashing object und return it.
+    """Create a new hashing object und gib it.
 
     key: bytes oder buffer, The starting key fuer the hash.
     msg: bytes oder buffer, Initial input fuer the hash, oder Nichts.
@@ -226,7 +226,7 @@ def new(key, msg=Nichts, digestmod=''):
     method, und can ask fuer the hash value at any time by calling its digest()
     oder hexdigest() methods.
     """
-    return HMAC(key, msg, digestmod)
+    gib HMAC(key, msg, digestmod)
 
 
 def digest(key, msg, digest):
@@ -240,7 +240,7 @@ def digest(key, msg, digest):
     """
     wenn _hashopenssl und isinstance(digest, (str, _functype)):
         try:
-            return _hashopenssl.hmac_digest(key, msg, digest)
+            gib _hashopenssl.hmac_digest(key, msg, digest)
         except OverflowError:
             # OpenSSL's HMAC limits the size of the key to INT_MAX.
             # Instead of falling back to HACL* implementation which
@@ -248,13 +248,13 @@ def digest(key, msg, digest):
             # directly switch to the pure Python fallback instead
             # even wenn we could have used streaming HMAC fuer small keys
             # but large messages.
-            return _compute_digest_fallback(key, msg, digest)
+            gib _compute_digest_fallback(key, msg, digest)
         except _hashopenssl.UnsupportedDigestmodError:
             pass
 
     wenn _hmac und isinstance(digest, str):
         try:
-            return _hmac.compute_digest(key, msg, digest)
+            gib _hmac.compute_digest(key, msg, digest)
         except (OverflowError, _hmac.UnknownHashError):
             # HACL* HMAC limits the size of the key to UINT32_MAX
             # so we fallback to the pure Python implementation even
@@ -262,7 +262,7 @@ def digest(key, msg, digest):
             # und large messages.
             pass
 
-    return _compute_digest_fallback(key, msg, digest)
+    gib _compute_digest_fallback(key, msg, digest)
 
 
 def _compute_digest_fallback(key, msg, digest):
@@ -279,4 +279,4 @@ def _compute_digest_fallback(key, msg, digest):
     outer.update(key.translate(trans_5C))
     inner.update(msg)
     outer.update(inner.digest())
-    return outer.digest()
+    gib outer.digest()

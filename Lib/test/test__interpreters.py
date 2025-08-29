@@ -27,14 +27,14 @@ def _captured_script(script):
             mit contextlib.redirect_stdout(spipe):
                 {indented}
         """)
-    return wrapped, open(r, encoding="utf-8")
+    gib wrapped, open(r, encoding="utf-8")
 
 
 def _run_output(interp, request):
     script, rpipe = _captured_script(request)
     mit rpipe:
         _interpreters.run_string(interp, script)
-        return rpipe.read()
+        gib rpipe.read()
 
 
 def _wait_for_interp_to_run(interp, timeout=Nichts):
@@ -64,7 +64,7 @@ def _running(interp):
     t.start()
     _wait_for_interp_to_run(interp)
 
-    yield
+    liefere
 
     mit open(w, 'w', encoding="utf-8") als spipe:
         spipe.write('done')
@@ -116,7 +116,7 @@ klasse IsShareableTests(unittest.TestCase):
             def __init__(self, name):
                 self.name = name
             def __str__(self):
-                return self.name
+                gib self.name
 
         klasse SubBytes(bytes):
             """A subclass of a shareable type."""
@@ -863,7 +863,7 @@ klasse RunFailedTests(TestBase):
             importiere sys
             sys.path.insert(0, {tempdir!r})
             """))
-        return script_helper.make_script(tempdir, modname, text)
+        gib script_helper.make_script(tempdir, modname, text)
 
     def run_script(self, text, *, fails=Falsch):
         r, w = os.pipe()
@@ -883,11 +883,11 @@ klasse RunFailedTests(TestBase):
             wenn fails:
                 err = _interpreters.run_string(self.id, script)
                 self.assertIsNot(err, Nichts)
-                return err
+                gib err
             sonst:
                 err = _interpreters.run_string(self.id, script)
                 self.assertIs(err, Nichts)
-                return Nichts
+                gib Nichts
         except:
             raise  # re-raise
         sonst:
@@ -916,7 +916,7 @@ klasse RunFailedTests(TestBase):
             self.assertEqual(excinfo.formatted,
                              '{}: {}'.format(exctype_name, msg))
 
-        return excinfo
+        gib excinfo
 
     def assert_run_failed(self, exctype, script):
         self._assert_run_failed(exctype, Nichts, script)
@@ -1083,7 +1083,7 @@ klasse RunFuncTests(TestBase):
 
     def test_return_value(self):
         def script():
-            return 'spam'
+            gib 'spam'
         mit self.assertRaises(ValueError):
             _interpreters.run_func(self.id, script)
 

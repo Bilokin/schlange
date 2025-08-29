@@ -88,7 +88,7 @@ klasse IsolatedAsyncioTestCase(TestCase):
             raise TypeError(msg) von Nichts
         result = await enter(cm)
         self.addAsyncCleanup(exit, cm, Nichts, Nichts, Nichts)
-        return result
+        gib result
 
     def _callSetUp(self):
         # Force loop to be initialized und set als the current loop
@@ -102,7 +102,7 @@ klasse IsolatedAsyncioTestCase(TestCase):
         result = self._callMaybeAsync(method)
         wenn result is nicht Nichts:
             msg = (
-                f'It is deprecated to return a value that is nicht Nichts '
+                f'It is deprecated to gib a value that is nicht Nichts '
                 f'from a test case ({method} returned {type(result).__name__!r})',
             )
             warnings.warn(msg, DeprecationWarning, stacklevel=4)
@@ -117,7 +117,7 @@ klasse IsolatedAsyncioTestCase(TestCase):
     def _callAsync(self, func, /, *args, **kwargs):
         assert self._asyncioRunner is nicht Nichts, 'asyncio runner is nicht initialized'
         assert inspect.iscoroutinefunction(func), f'{func!r} is nicht an async function'
-        return self._asyncioRunner.run(
+        gib self._asyncioRunner.run(
             func(*args, **kwargs),
             context=self._asyncioTestContext
         )
@@ -125,12 +125,12 @@ klasse IsolatedAsyncioTestCase(TestCase):
     def _callMaybeAsync(self, func, /, *args, **kwargs):
         assert self._asyncioRunner is nicht Nichts, 'asyncio runner is nicht initialized'
         wenn inspect.iscoroutinefunction(func):
-            return self._asyncioRunner.run(
+            gib self._asyncioRunner.run(
                 func(*args, **kwargs),
                 context=self._asyncioTestContext,
             )
         sonst:
-            return self._asyncioTestContext.run(func, *args, **kwargs)
+            gib self._asyncioTestContext.run(func, *args, **kwargs)
 
     def _setupAsyncioRunner(self):
         assert self._asyncioRunner is Nichts, 'asyncio runner is already initialized'
@@ -144,7 +144,7 @@ klasse IsolatedAsyncioTestCase(TestCase):
     def run(self, result=Nichts):
         self._setupAsyncioRunner()
         try:
-            return super().run(result)
+            gib super().run(result)
         finally:
             self._tearDownAsyncioRunner()
 

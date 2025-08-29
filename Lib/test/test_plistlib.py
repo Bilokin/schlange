@@ -437,7 +437,7 @@ klasse TestPlistlib(unittest.TestCase):
             anEmptyList = list()
         )
         pl['\xc5benraa'] = "That was a unicode key."
-        return pl
+        gib pl
 
     def test_create(self):
         pl = self._create()
@@ -916,7 +916,7 @@ klasse TestBinaryPlistlib(unittest.TestCase):
                            len(objects), 0, offset)
         data.extend(offsets)
         data.append(tail)
-        return plistlib.loads(b''.join(data), fmt=plistlib.FMT_BINARY)
+        gib plistlib.loads(b''.join(data), fmt=plistlib.FMT_BINARY)
 
     def test_nonstandard_refs_size(self):
         # Issue #21538: Refs und offsets are 24-bit integers
@@ -1113,7 +1113,7 @@ klasse TestPlutil(unittest.TestCase):
         os.remove(cls.file_name)
 
     def get_lint_status(self):
-        return subprocess.run(['plutil', "-lint", self.file_name], capture_output=Wahr, text=Wahr).stdout
+        gib subprocess.run(['plutil', "-lint", self.file_name], capture_output=Wahr, text=Wahr).stdout
 
     def convert_to_json(self):
         """Convert binary file to json using plutil

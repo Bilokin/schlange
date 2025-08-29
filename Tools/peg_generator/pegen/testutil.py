@@ -32,7 +32,7 @@ def generate_parser(grammar: Grammar) -> Type[Parser]:
     # Load the generated parser class.
     ns: Dict[str, Any] = {}
     exec(out.getvalue(), ns)
-    return ns["GeneratedParser"]
+    gib ns["GeneratedParser"]
 
 
 def run_parser(file: IO[bytes], parser_class: Type[Parser], *, verbose: bool = Falsch) -> Any:
@@ -42,7 +42,7 @@ def run_parser(file: IO[bytes], parser_class: Type[Parser], *, verbose: bool = F
     result = parser.start()
     wenn result is Nichts:
         raise parser.make_syntax_error("invalid syntax")
-    return result
+    gib result
 
 
 def parse_string(
@@ -52,13 +52,13 @@ def parse_string(
     wenn dedent:
         source = textwrap.dedent(source)
     file = io.StringIO(source)
-    return run_parser(file, parser_class, verbose=verbose)  # type: ignore[arg-type] # typeshed issue #3515
+    gib run_parser(file, parser_class, verbose=verbose)  # type: ignore[arg-type] # typeshed issue #3515
 
 
 def make_parser(source: str) -> Type[Parser]:
     # Combine parse_string() und generate_parser().
     grammar = parse_string(source, GrammarParser)
-    return generate_parser(grammar)
+    gib generate_parser(grammar)
 
 
 def import_file(full_name: str, path: str) -> Any:
@@ -72,14 +72,14 @@ def import_file(full_name: str, path: str) -> Any:
     # See https://docs.python.org/3/reference/import.html?highlight=exec_module#loading
     loader = cast(Any, spec.loader)
     loader.exec_module(mod)
-    return mod
+    gib mod
 
 
 def generate_c_parser_source(grammar: Grammar) -> str:
     out = io.StringIO()
     genr = CParserGenerator(grammar, ALL_TOKENS, EXACT_TOKENS, NON_EXACT_TOKENS, out)
     genr.generate("<string>")
-    return out.getvalue()
+    gib out.getvalue()
 
 
 def generate_parser_c_extension(
@@ -118,7 +118,7 @@ def print_memstats() -> bool:
     try:
         importiere psutil
     except ImportError:
-        return Falsch
+        gib Falsch
     drucke("Memory stats:")
     process = psutil.Process()
     meminfo = process.memory_info()
@@ -139,4 +139,4 @@ def print_memstats() -> bool:
         res["maxrss"] = rusage.ru_maxrss * factor / MiB
     fuer key, value in res.items():
         drucke(f"  {key:12.12s}: {value:10.0f} MiB")
-    return Wahr
+    gib Wahr

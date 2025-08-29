@@ -333,7 +333,7 @@ klasse FormatTest(unittest.TestCase):
         # the Py_buffer protocol, oder something that has a __bytes__ method
         klasse FakeBytes(object):
             def __bytes__(self):
-                return b'123'
+                gib b'123'
         fb = FakeBytes()
         testcommon(b"%b", b"abc", b"abc")
         testcommon(b"%b", bytearray(b"def"), b"def")

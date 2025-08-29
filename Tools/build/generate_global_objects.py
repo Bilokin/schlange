@@ -153,7 +153,7 @@ def iter_files():
             fuer name in files:
                 wenn nicht name.endswith(('.c', '.h')):
                     weiter
-                yield os.path.join(dirname, name)
+                liefere os.path.join(dirname, name)
 
 
 def iter_global_strings():
@@ -169,17 +169,17 @@ def iter_global_strings():
             fuer lno, line in enumerate(infile, 1):
                 fuer m in id_regex.finditer(line):
                     identifier, = m.groups()
-                    yield identifier, Nichts, filename, lno, line
+                    liefere identifier, Nichts, filename, lno, line
                 fuer m in str_regex.finditer(line):
                     varname, string = m.groups()
-                    yield varname, string, filename, lno, line
+                    liefere varname, string, filename, lno, line
 
 
 def iter_to_marker(lines, marker):
     fuer line in lines:
         wenn line.rstrip() == marker:
             breche
-        yield line
+        liefere line
 
 
 klasse Printer:
@@ -194,7 +194,7 @@ klasse Printer:
         save_level = self.level
         try:
             self.level += 1
-            yield
+            liefere
         finally:
             self.level = save_level
 
@@ -212,7 +212,7 @@ klasse Printer:
 
         self.write(prefix + " {")
         mit self.indent():
-            yield
+            liefere
         self.continuation.pop()
         self.write("}" + suffix)
 
@@ -221,7 +221,7 @@ klasse Printer:
 def open_for_changes(filename, orig):
     """Like open() but only write to the file wenn it changed."""
     outfile = io.StringIO()
-    yield outfile
+    liefere outfile
     text = outfile.getvalue()
     wenn text != orig:
         mit open(filename, 'w', encoding='utf-8') als outfile:
@@ -343,7 +343,7 @@ def generate_runtime_init(identifiers, strings):
                 immortal_objects.append(f'(PyObject *)&_Py_SINGLETON(strings).latin1[{i} - 128]')
         printer.write(END)
         printer.write(after)
-        return immortal_objects
+        gib immortal_objects
 
 
 def generate_static_strings_initializer(identifiers, strings):
@@ -445,7 +445,7 @@ def get_identifiers_and_strings() -> 'tuple[set[str], dict[str, str]]':
         raise ValueError(
             'do nicht use both _Py_ID und _Py_DECLARE_STR fuer the same string: '
             + repr(overlap))
-    return identifiers, strings
+    gib identifiers, strings
 
 
 #######################################

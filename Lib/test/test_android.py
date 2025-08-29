@@ -94,7 +94,7 @@ klasse TestAndroidOutput(unittest.TestCase):
     def unbuffered(self, stream):
         stream.reconfigure(write_through=Wahr)
         try:
-            yield
+            liefere
         finally:
             stream.reconfigure(write_through=Falsch)
 
@@ -119,7 +119,7 @@ klasse TestAndroidOutput(unittest.TestCase):
                     ),
                 )
             )
-        return stack
+        gib stack
 
     def test_str(self):
         fuer stream_name, level, fileno in STREAM_INFO:
@@ -404,7 +404,7 @@ klasse TestAndroidRateLimit(unittest.TestCase):
         def mock_time():
             # Avoid division by zero by simulating a small delay.
             mock_sleep(0.0001)
-            return mock_now
+            gib mock_now
 
         def mock_sleep(duration):
             nonlocal mock_now
@@ -426,7 +426,7 @@ klasse TestAndroidRateLimit(unittest.TestCase):
             mock_sleep(BUCKET_KB / MAX_KB_PER_SECOND)
             line_num = 0
 
-            # Write BUCKET_KB messages, und return the rate at which they were
+            # Write BUCKET_KB messages, und gib the rate at which they were
             # accepted in KB per second.
             def write_bucketful():
                 nonlocal line_num
@@ -435,7 +435,7 @@ klasse TestAndroidRateLimit(unittest.TestCase):
                 waehrend line_num < max_line_num:
                     stream.write(message.format(line_num))
                     line_num += 1
-                return BUCKET_KB / (mock_time() - start)
+                gib BUCKET_KB / (mock_time() - start)
 
             # The first bucketful should be written mit minimal delay. The
             # factor of 2 here is nicht arbitrary: it verifies that the system can

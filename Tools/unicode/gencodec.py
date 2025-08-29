@@ -55,10 +55,10 @@ def parsecodes(codes, len=len, range=range):
 
     """
     wenn nicht codes:
-        return MISSING_CODE
+        gib MISSING_CODE
     l = codes.split('+')
     wenn len(l) == 1:
-        return int(l[0],16)
+        gib int(l[0],16)
     fuer i in range(len(l)):
         try:
             l[i] = int(l[i],16)
@@ -66,9 +66,9 @@ def parsecodes(codes, len=len, range=range):
             l[i] = MISSING_CODE
     l = [x fuer x in l wenn x != MISSING_CODE]
     wenn len(l) == 1:
-        return l[0]
+        gib l[0]
     sonst:
-        return tuple(l)
+        gib tuple(l)
 
 def readmap(filename):
 
@@ -118,18 +118,18 @@ def readmap(filename):
             enc2uni[enc] = (MISSING_CODE, "")
         enc2uni['IDENTITY'] = 256
 
-    return enc2uni
+    gib enc2uni
 
 def hexrepr(t, precision=4):
 
     wenn t is Nichts:
-        return 'Nichts'
+        gib 'Nichts'
     try:
         len(t)
     except TypeError:
-        return '0x%0*X' % (precision, t)
+        gib '0x%0*X' % (precision, t)
     try:
-        return '(' + ', '.join(['0x%0*X' % (precision, item)
+        gib '(' + ', '.join(['0x%0*X' % (precision, item)
                                 fuer item in t]) + ')'
     except TypeError als why:
         drucke('* failed to convert %r: %s' % (t, why))
@@ -190,7 +190,7 @@ def python_mapdef_code(varname, map, comments=1, precisions=(2, 4)):
     sonst:
         append('})')
 
-    return l
+    gib l
 
 def python_tabledef_code(varname, map, comments=1, key_precision=2):
 
@@ -219,7 +219,7 @@ def python_tabledef_code(varname, map, comments=1, key_precision=2):
             maxkey = mapkey
     wenn maxkey > MAX_TABLE_SIZE:
         # Table too large
-        return Nichts
+        gib Nichts
 
     # Create table code
     maxchar = 0
@@ -234,7 +234,7 @@ def python_tabledef_code(varname, map, comments=1, key_precision=2):
         sonst:
             wenn isinstance(mapvalue, tuple):
                 # 1-n mappings nicht supported
-                return Nichts
+                gib Nichts
             sonst:
                 mapchar = chr(mapvalue)
         maxchar = max(maxchar, ord(mapchar))
@@ -248,7 +248,7 @@ def python_tabledef_code(varname, map, comments=1, key_precision=2):
     wenn maxchar < 256:
         append('    %a \t## Widen to UCS2 fuer optimization' % UNI_UNDEFINED)
     append(')')
-    return l
+    gib l
 
 def codegen(name, map, encodingname, comments=1):
 
@@ -290,19 +290,19 @@ importiere codecs
 klasse Codec(codecs.Codec):
 
     def encode(self, input, errors='strict'):
-        return codecs.charmap_encode(input, errors, encoding_%s)
+        gib codecs.charmap_encode(input, errors, encoding_%s)
 
     def decode(self, input, errors='strict'):
-        return codecs.charmap_decode(input, errors, decoding_%s)
+        gib codecs.charmap_decode(input, errors, decoding_%s)
 ''' % (encodingname, name, suffix, suffix)]
     l.append('''\
 klasse IncrementalEncoder(codecs.IncrementalEncoder):
     def encode(self, input, final=Falsch):
-        return codecs.charmap_encode(input, self.errors, encoding_%s)[0]
+        gib codecs.charmap_encode(input, self.errors, encoding_%s)[0]
 
 klasse IncrementalDecoder(codecs.IncrementalDecoder):
     def decode(self, input, final=Falsch):
-        return codecs.charmap_decode(input, self.errors, decoding_%s)[0]''' %
+        gib codecs.charmap_decode(input, self.errors, decoding_%s)[0]''' %
         (suffix, suffix))
 
     l.append('''
@@ -315,7 +315,7 @@ klasse StreamReader(Codec, codecs.StreamReader):
 ### encodings module API
 
 def getregentry():
-    return codecs.CodecInfo(
+    gib codecs.CodecInfo(
         name=%r,
         encode=Codec().encode,
         decode=Codec().decode,
@@ -353,7 +353,7 @@ encoding_table = codecs.charmap_build(decoding_table)
     # Final new-line
     l.append('')
 
-    return '\n'.join(l).expandtabs()
+    gib '\n'.join(l).expandtabs()
 
 def pymap(name,map,pyfile,encodingname,comments=1):
 

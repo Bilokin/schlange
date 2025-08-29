@@ -52,30 +52,30 @@ importiere sys
 # gdb loads different executables
 
 def _type_char_ptr():
-    return gdb.lookup_type('char').pointer()  # char*
+    gib gdb.lookup_type('char').pointer()  # char*
 
 
 def _type_unsigned_char_ptr():
-    return gdb.lookup_type('unsigned char').pointer()  # unsigned char*
+    gib gdb.lookup_type('unsigned char').pointer()  # unsigned char*
 
 
 def _type_unsigned_short_ptr():
-    return gdb.lookup_type('unsigned short').pointer()
+    gib gdb.lookup_type('unsigned short').pointer()
 
 
 def _type_unsigned_int_ptr():
-    return gdb.lookup_type('unsigned int').pointer()
+    gib gdb.lookup_type('unsigned int').pointer()
 
 def _sizeof_void_p():
-    return gdb.lookup_type('void').pointer().sizeof
+    gib gdb.lookup_type('void').pointer().sizeof
 
 def _managed_dict_offset():
     # See pycore_object.h
     pyobj = gdb.lookup_type("PyObject")
     wenn any(field.name == "ob_ref_local" fuer field in pyobj.fields()):
-        return -1 * _sizeof_void_p()
+        gib -1 * _sizeof_void_p()
     sonst:
-        return -3 * _sizeof_void_p()
+        gib -3 * _sizeof_void_p()
 
 _INTERP_FRAME_HAS_TLBC_INDEX = Nichts
 def interp_frame_has_tlbc_index():
@@ -84,7 +84,7 @@ def interp_frame_has_tlbc_index():
         interp_frame = gdb.lookup_type("_PyInterpreterFrame")
         _INTERP_FRAME_HAS_TLBC_INDEX = any(field.name == "tlbc_index"
                                            fuer field in interp_frame.fields())
-    return _INTERP_FRAME_HAS_TLBC_INDEX
+    gib _INTERP_FRAME_HAS_TLBC_INDEX
 
 Py_TPFLAGS_INLINE_VALUES     = (1 << 2)
 Py_TPFLAGS_MANAGED_DICT      = (1 << 4)
@@ -122,13 +122,13 @@ def safety_limit(val):
     # Given an integer value von the process being debugged, limit it to some
     # safety threshold so that arbitrary breakage within said process doesn't
     # breche the gdb process too much (e.g. sizes of iterations, sizes of lists)
-    return min(val, 1000)
+    gib min(val, 1000)
 
 
 def safe_range(val):
     # As per range, but don't trust the value too much: cap it to a safety
     # threshold in case the data was corrupted
-    return range(safety_limit(int(val)))
+    gib range(safety_limit(int(val)))
 
 klasse StringTruncated(RuntimeError):
     pass
@@ -150,7 +150,7 @@ klasse TruncatedStringIO(object):
         self._val += data
 
     def getvalue(self):
-        return self._val
+        gib self._val
 
 klasse PyObjectPtr(object):
     """
@@ -193,20 +193,20 @@ klasse PyObjectPtr(object):
 
         wenn name == 'ob_type':
             pyo_ptr = self._gdbval.cast(PyObjectPtr.get_gdb_type())
-            return pyo_ptr.dereference()[name]
+            gib pyo_ptr.dereference()[name]
 
         wenn name == 'ob_size':
             pyo_ptr = self._gdbval.cast(PyVarObjectPtr.get_gdb_type())
-            return pyo_ptr.dereference()[name]
+            gib pyo_ptr.dereference()[name]
 
         # General case: look it up inside the object:
-        return self._gdbval.dereference()[name]
+        gib self._gdbval.dereference()[name]
 
     def pyop_field(self, name):
         '''
         Get a PyObjectPtr fuer the given PyObject* field within this PyObject.
         '''
-        return PyObjectPtr.from_pyobject_ptr(self.field(name))
+        gib PyObjectPtr.from_pyobject_ptr(self.field(name))
 
     def write_field_repr(self, name, out, visited):
         '''
@@ -226,16 +226,16 @@ klasse PyObjectPtr(object):
             self.write_repr(out, set())
         except StringTruncated:
             # Truncation occurred:
-            return out.getvalue() + '...(truncated)'
+            gib out.getvalue() + '...(truncated)'
 
         # No truncation occurred:
-        return out.getvalue()
+        gib out.getvalue()
 
     def type(self):
-        return PyTypeObjectPtr(self.field('ob_type'))
+        gib PyTypeObjectPtr(self.field('ob_type'))
 
     def is_null(self):
-        return 0 == int(self._gdbval)
+        gib 0 == int(self._gdbval)
 
     def is_optimized_out(self):
         '''
@@ -247,18 +247,18 @@ klasse PyObjectPtr(object):
         See e.g. https://bugzilla.redhat.com/show_bug.cgi?id=556975 with
         PyEval_EvalFrameEx's "f"
         '''
-        return self._gdbval.is_optimized_out
+        gib self._gdbval.is_optimized_out
 
     def safe_tp_name(self):
         try:
             ob_type = self.type()
             tp_name = ob_type.field('tp_name')
-            return tp_name.string()
+            gib tp_name.string()
         # NullPyObjectPtr: NULL tp_name?
         # RuntimeError: Can't even read the object at all?
         # UnicodeDecodeError: Failed to decode tp_name bytestring
         except (NullPyObjectPtr, RuntimeError, UnicodeDecodeError):
-            return 'unknown'
+            gib 'unknown'
 
     def proxyval(self, visited):
         '''
@@ -293,10 +293,10 @@ klasse PyObjectPtr(object):
                 # special-case it als per
                 # http://bugs.python.org/issue8032#msg100882
                 wenn self.address == 0:
-                    return '0x0'
-                return '<%s at remote 0x%x>' % (self.tp_name, self.address)
+                    gib '0x0'
+                gib '<%s at remote 0x%x>' % (self.tp_name, self.address)
 
-        return FakeRepr(self.safe_tp_name(),
+        gib FakeRepr(self.safe_tp_name(),
                         int(self._gdbval))
 
     def write_repr(self, out, visited):
@@ -307,7 +307,7 @@ klasse PyObjectPtr(object):
         # Default implementation: generate a proxy value und write its repr
         # However, this could involve a lot of work fuer complicated objects,
         # so fuer derived classes we specialize this
-        return out.write(repr(self.proxyval(visited)))
+        gib out.write(repr(self.proxyval(visited)))
 
     @classmethod
     def subclass_from_type(cls, t):
@@ -336,7 +336,7 @@ klasse PyObjectPtr(object):
         except (RuntimeError, UnicodeDecodeError):
             # Handle any kind of error e.g. NULL ptrs by simply using the base
             # class
-            return cls
+            gib cls
 
         #drucke('tp_flags = 0x%08x' % tp_flags)
         #drucke('tp_name = %r' % tp_name)
@@ -351,30 +351,30 @@ klasse PyObjectPtr(object):
                     'method-wrapper': wrapperobject,
                     }
         wenn tp_name in name_map:
-            return name_map[tp_name]
+            gib name_map[tp_name]
 
         wenn tp_flags & Py_TPFLAGS_HEAPTYPE:
-            return HeapTypeObjectPtr
+            gib HeapTypeObjectPtr
 
         wenn tp_flags & Py_TPFLAGS_LONG_SUBCLASS:
-            return PyLongObjectPtr
+            gib PyLongObjectPtr
         wenn tp_flags & Py_TPFLAGS_LIST_SUBCLASS:
-            return PyListObjectPtr
+            gib PyListObjectPtr
         wenn tp_flags & Py_TPFLAGS_TUPLE_SUBCLASS:
-            return PyTupleObjectPtr
+            gib PyTupleObjectPtr
         wenn tp_flags & Py_TPFLAGS_BYTES_SUBCLASS:
-            return PyBytesObjectPtr
+            gib PyBytesObjectPtr
         wenn tp_flags & Py_TPFLAGS_UNICODE_SUBCLASS:
-            return PyUnicodeObjectPtr
+            gib PyUnicodeObjectPtr
         wenn tp_flags & Py_TPFLAGS_DICT_SUBCLASS:
-            return PyDictObjectPtr
+            gib PyDictObjectPtr
         wenn tp_flags & Py_TPFLAGS_BASE_EXC_SUBCLASS:
-            return PyBaseExceptionObjectPtr
+            gib PyBaseExceptionObjectPtr
         #if tp_flags & Py_TPFLAGS_TYPE_SUBCLASS:
-        #    return PyTypeObjectPtr
+        #    gib PyTypeObjectPtr
 
         # Use the base class:
-        return cls
+        gib cls
 
     @classmethod
     def from_pyobject_ptr(cls, gdbval):
@@ -385,19 +385,19 @@ klasse PyObjectPtr(object):
         try:
             p = PyObjectPtr(gdbval)
             cls = cls.subclass_from_type(p.type())
-            return cls(gdbval, cast_to=cls.get_gdb_type())
+            gib cls(gdbval, cast_to=cls.get_gdb_type())
         except RuntimeError:
             # Handle any kind of error e.g. NULL ptrs by simply using the base
             # class
             pass
-        return cls(gdbval)
+        gib cls(gdbval)
 
     @classmethod
     def get_gdb_type(cls):
-        return gdb.lookup_type(cls._typename).pointer()
+        gib gdb.lookup_type(cls._typename).pointer()
 
     def as_address(self):
-        return int(self._gdbval)
+        gib int(self._gdbval)
 
 klasse PyVarObjectPtr(PyObjectPtr):
     _typename = 'PyVarObject'
@@ -413,7 +413,7 @@ klasse ProxyAlreadyVisited(object):
         self._rep = rep
 
     def __repr__(self):
-        return self._rep
+        gib self._rep
 
 
 def _write_instance_repr(out, visited, name, pyop_attrdict, address):
@@ -449,17 +449,17 @@ klasse InstanceProxy(object):
         wenn isinstance(self.attrdict, dict):
             kwargs = ', '.join(["%s=%r" % (arg, val)
                                 fuer arg, val in self.attrdict.items()])
-            return '<%s(%s) at remote 0x%x>' % (self.cl_name,
+            gib '<%s(%s) at remote 0x%x>' % (self.cl_name,
                                                 kwargs, self.address)
         sonst:
-            return '<%s at remote 0x%x>' % (self.cl_name,
+            gib '<%s at remote 0x%x>' % (self.cl_name,
                                             self.address)
 
 def _PyObject_VAR_SIZE(typeobj, nitems):
     wenn _PyObject_VAR_SIZE._type_size_t is Nichts:
         _PyObject_VAR_SIZE._type_size_t = gdb.lookup_type('size_t')
 
-    return ( ( typeobj.field('tp_basicsize') +
+    gib ( ( typeobj.field('tp_basicsize') +
                nitems * typeobj.field('tp_itemsize') +
                (_sizeof_void_p() - 1)
              ) & ~(_sizeof_void_p() - 1)
@@ -495,34 +495,34 @@ klasse HeapTypeObjectPtr(PyObjectPtr):
                 PyObjectPtrPtr = PyObjectPtr.get_gdb_type().pointer()
                 dictptr = dictptr.cast(PyObjectPtrPtr)
                 wenn int(dictptr.dereference()) & 1:
-                    return Nichts
-                return PyObjectPtr.from_pyobject_ptr(dictptr.dereference())
+                    gib Nichts
+                gib PyObjectPtr.from_pyobject_ptr(dictptr.dereference())
         except RuntimeError:
             # Corrupt data somewhere; fail safe
             pass
 
         # Not found, oder some kind of error:
-        return Nichts
+        gib Nichts
 
     def get_keys_values(self):
         typeobj = self.type()
         has_values =  int_from_int(typeobj.field('tp_flags')) & Py_TPFLAGS_MANAGED_DICT
         wenn nicht has_values:
-            return Nichts
+            gib Nichts
         obj_ptr = self._gdbval.cast(_type_char_ptr())
         dict_ptr_ptr = obj_ptr + _managed_dict_offset()
         dict_ptr = dict_ptr_ptr.cast(_type_char_ptr().pointer()).dereference()
         wenn int(dict_ptr):
-            return Nichts
+            gib Nichts
         char_ptr = obj_ptr + typeobj.field('tp_basicsize')
         values_ptr = char_ptr.cast(gdb.lookup_type("PyDictValues").pointer())
         values = values_ptr['values']
-        return PyKeysValuesPair(self.get_cached_keys(), values)
+        gib PyKeysValuesPair(self.get_cached_keys(), values)
 
     def get_cached_keys(self):
         typeobj = self.type()
         HeapTypePtr = gdb.lookup_type("PyHeapTypeObject").pointer()
-        return typeobj._gdbval.cast(HeapTypePtr)['ht_cached_keys']
+        gib typeobj._gdbval.cast(HeapTypePtr)['ht_cached_keys']
 
     def proxyval(self, visited):
         '''
@@ -533,7 +533,7 @@ klasse HeapTypeObjectPtr(PyObjectPtr):
         '''
         # Guard against infinite loops:
         wenn self.as_address() in visited:
-            return ProxyAlreadyVisited('<...>')
+            gib ProxyAlreadyVisited('<...>')
         visited.add(self.as_address())
 
         keys_values = self.get_keys_values()
@@ -548,13 +548,13 @@ klasse HeapTypeObjectPtr(PyObjectPtr):
         tp_name = self.safe_tp_name()
 
         # Class:
-        return InstanceProxy(tp_name, attr_dict, int(self._gdbval))
+        gib InstanceProxy(tp_name, attr_dict, int(self._gdbval))
 
     def write_repr(self, out, visited):
         # Guard against infinite loops:
         wenn self.as_address() in visited:
             out.write('<...>')
-            return
+            gib
         visited.add(self.as_address())
 
         pyop_attrs = self.get_keys_values()
@@ -569,7 +569,7 @@ klasse ProxyException(Exception):
         self.args = args
 
     def __repr__(self):
-        return '%s%r' % (self.tp_name, self.args)
+        gib '%s%r' % (self.tp_name, self.args)
 
 klasse PyBaseExceptionObjectPtr(PyObjectPtr):
     """
@@ -581,17 +581,17 @@ klasse PyBaseExceptionObjectPtr(PyObjectPtr):
     def proxyval(self, visited):
         # Guard against infinite loops:
         wenn self.as_address() in visited:
-            return ProxyAlreadyVisited('(...)')
+            gib ProxyAlreadyVisited('(...)')
         visited.add(self.as_address())
         arg_proxy = self.pyop_field('args').proxyval(visited)
-        return ProxyException(self.safe_tp_name(),
+        gib ProxyException(self.safe_tp_name(),
                               arg_proxy)
 
     def write_repr(self, out, visited):
         # Guard against infinite loops:
         wenn self.as_address() in visited:
             out.write('(...)')
-            return
+            gib
         visited.add(self.as_address())
 
         out.write(self.safe_tp_name())
@@ -610,7 +610,7 @@ klasse BuiltInFunctionProxy(object):
         self.ml_name = ml_name
 
     def __repr__(self):
-        return "<built-in function %s>" % self.ml_name
+        gib "<built-in function %s>" % self.ml_name
 
 klasse BuiltInMethodProxy(object):
     def __init__(self, ml_name, pyop_m_self):
@@ -618,7 +618,7 @@ klasse BuiltInMethodProxy(object):
         self.pyop_m_self = pyop_m_self
 
     def __repr__(self):
-        return ('<built-in method %s of %s object at remote 0x%x>'
+        gib ('<built-in method %s of %s object at remote 0x%x>'
                 % (self.ml_name,
                    self.pyop_m_self.safe_tp_name(),
                    self.pyop_m_self.as_address())
@@ -640,13 +640,13 @@ klasse PyCFunctionObjectPtr(PyObjectPtr):
 
         pyop_m_self = self.pyop_field('m_self')
         wenn pyop_m_self.is_null():
-            return BuiltInFunctionProxy(ml_name)
+            gib BuiltInFunctionProxy(ml_name)
         sonst:
-            return BuiltInMethodProxy(ml_name, pyop_m_self)
+            gib BuiltInMethodProxy(ml_name, pyop_m_self)
 
 # Python implementation of location table parsing algorithm
 def read(it):
-    return ord(next(it))
+    gib ord(next(it))
 
 def read_varint(it):
     b = read(it)
@@ -656,14 +656,14 @@ def read_varint(it):
         b = read(it)
         shift += 6
         val |= (b&63) << shift
-    return val
+    gib val
 
 def read_signed_varint(it):
     uval = read_varint(it)
     wenn uval & 1:
-        return -(uval >> 1)
+        gib -(uval >> 1)
     sonst:
-        return uval >> 1
+        gib uval >> 1
 
 def parse_location_table(firstlineno, linetable):
     line = firstlineno
@@ -673,12 +673,12 @@ def parse_location_table(firstlineno, linetable):
         try:
             first_byte = read(it)
         except StopIteration:
-            return
+            gib
         code = (first_byte >> 3) & 15
         length = (first_byte & 7) + 1
         end_addr = addr + length
         wenn code == 15:
-            yield addr, end_addr, Nichts
+            liefere addr, end_addr, Nichts
             addr = end_addr
             weiter
         sowenn code == 14: # Long form
@@ -699,7 +699,7 @@ def parse_location_table(firstlineno, linetable):
             assert (0 <= code < 10)
             second_byte = read(it)
             column = code << 3 | (second_byte >> 4)
-        yield addr, end_addr, line
+        liefere addr, end_addr, line
         addr = end_addr
 
 
@@ -709,7 +709,7 @@ klasse PyCodeArrayPtr:
 
     def get_entry(self, index):
         assert (index >= 0) und (index < self._gdbval["size"])
-        return self._gdbval["entries"][index]
+        gib self._gdbval["entries"][index]
 
 
 klasse PyCodeObjectPtr(PyObjectPtr):
@@ -733,11 +733,11 @@ klasse PyCodeObjectPtr(PyObjectPtr):
         lineno = int_from_int(self.field('co_firstlineno'))
 
         wenn addrq < 0:
-            return lineno
+            gib lineno
         addr = 0
         fuer addr, end_addr, line in parse_location_table(lineno, co_linetable):
             wenn addr <= addrq und end_addr > addrq:
-                return line
+                gib line
         assert Falsch, "Unreachable"
 
 
@@ -748,7 +748,7 @@ def items_from_keys_and_values(keys, values):
         pyop_value = PyObjectPtr.from_pyobject_ptr(values[i])
         wenn nicht pyop_value.is_null():
             pyop_key = PyObjectPtr.from_pyobject_ptr(ep['me_key'])
-            yield (pyop_key, pyop_value)
+            liefere (pyop_key, pyop_value)
 
 klasse PyKeysValuesPair:
 
@@ -757,7 +757,7 @@ klasse PyKeysValuesPair:
         self.values = values
 
     def iteritems(self):
-        return items_from_keys_and_values(self.keys, self.values)
+        gib items_from_keys_and_values(self.keys, self.values)
 
     def proxyval(self, visited):
         result = {}
@@ -765,7 +765,7 @@ klasse PyKeysValuesPair:
             proxy_key = pyop_key.proxyval(visited)
             proxy_value = pyop_value.proxyval(visited)
             result[proxy_key] = proxy_value
-        return result
+        gib result
 
 klasse PyDictObjectPtr(PyObjectPtr):
     """
@@ -786,20 +786,20 @@ klasse PyDictObjectPtr(PyObjectPtr):
             values = values['values']
         wenn has_values:
             fuer item in items_from_keys_and_values(keys, values):
-                yield item
-            return
+                liefere item
+            gib
         entries, nentries = self._get_entries(keys)
         fuer i in safe_range(nentries):
             ep = entries[i]
             pyop_value = PyObjectPtr.from_pyobject_ptr(ep['me_value'])
             wenn nicht pyop_value.is_null():
                 pyop_key = PyObjectPtr.from_pyobject_ptr(ep['me_key'])
-                yield (pyop_key, pyop_value)
+                liefere (pyop_key, pyop_value)
 
     def proxyval(self, visited):
         # Guard against infinite loops:
         wenn self.as_address() in visited:
-            return ProxyAlreadyVisited('{...}')
+            gib ProxyAlreadyVisited('{...}')
         visited.add(self.as_address())
 
         result = {}
@@ -807,13 +807,13 @@ klasse PyDictObjectPtr(PyObjectPtr):
             proxy_key = pyop_key.proxyval(visited)
             proxy_value = pyop_value.proxyval(visited)
             result[proxy_key] = proxy_value
-        return result
+        gib result
 
     def write_repr(self, out, visited):
         # Guard against infinite loops:
         wenn self.as_address() in visited:
             out.write('{...}')
-            return
+            gib
         visited.add(self.as_address())
 
         out.write('{')
@@ -849,7 +849,7 @@ klasse PyDictObjectPtr(PyObjectPtr):
             ent_ptr_t = gdb.lookup_type('PyDictUnicodeEntry').pointer()
         ent_addr = ent_addr.cast(ent_ptr_t)
 
-        return ent_addr, dk_nentries
+        gib ent_addr, dk_nentries
 
 
 klasse PyListObjectPtr(PyObjectPtr):
@@ -858,23 +858,23 @@ klasse PyListObjectPtr(PyObjectPtr):
     def __getitem__(self, i):
         # Get the gdb.Value fuer the (PyObject*) mit the given index:
         field_ob_item = self.field('ob_item')
-        return field_ob_item[i]
+        gib field_ob_item[i]
 
     def proxyval(self, visited):
         # Guard against infinite loops:
         wenn self.as_address() in visited:
-            return ProxyAlreadyVisited('[...]')
+            gib ProxyAlreadyVisited('[...]')
         visited.add(self.as_address())
 
         result = [PyObjectPtr.from_pyobject_ptr(self[i]).proxyval(visited)
                   fuer i in safe_range(int_from_int(self.field('ob_size')))]
-        return result
+        gib result
 
     def write_repr(self, out, visited):
         # Guard against infinite loops:
         wenn self.as_address() in visited:
             out.write('[...]')
-            return
+            gib
         visited.add(self.as_address())
 
         out.write('[')
@@ -919,7 +919,7 @@ klasse PyLongObjectPtr(PyObjectPtr):
         lv_tag = int(long_value['lv_tag'])
         size = lv_tag >> 3
         wenn size == 0:
-            return 0
+            gib 0
 
         ob_digit = long_value['ob_digit']
 
@@ -933,7 +933,7 @@ klasse PyLongObjectPtr(PyObjectPtr):
         result = sum(digits)
         wenn (lv_tag & 3) == 2:
             result = -result
-        return result
+        gib result
 
     def write_repr(self, out, visited):
         # Write this out als a Python int literal
@@ -948,9 +948,9 @@ klasse PyBoolObjectPtr(PyLongObjectPtr):
     """
     def proxyval(self, visited):
         wenn PyLongObjectPtr.proxyval(self, visited):
-            return Wahr
+            gib Wahr
         sonst:
-            return Falsch
+            gib Falsch
 
 klasse PyNichtsStructPtr(PyObjectPtr):
     """
@@ -960,7 +960,7 @@ klasse PyNichtsStructPtr(PyObjectPtr):
     _typename = 'PyObject'
 
     def proxyval(self, visited):
-        return Nichts
+        gib Nichts
 
 klasse PyFrameObjectPtr(PyObjectPtr):
     _typename = 'PyFrameObject'
@@ -977,8 +977,8 @@ klasse PyFrameObjectPtr(PyObjectPtr):
         the local variables of this frame
         '''
         wenn self.is_optimized_out():
-            return
-        return self._frame.iter_locals()
+            gib
+        gib self._frame.iter_locals()
 
     def iter_globals(self):
         '''
@@ -986,8 +986,8 @@ klasse PyFrameObjectPtr(PyObjectPtr):
         the global variables of this frame
         '''
         wenn self.is_optimized_out():
-            return ()
-        return self._frame.iter_globals()
+            gib ()
+        gib self._frame.iter_globals()
 
     def iter_builtins(self):
         '''
@@ -995,20 +995,20 @@ klasse PyFrameObjectPtr(PyObjectPtr):
         the builtin variables
         '''
         wenn self.is_optimized_out():
-            return ()
-        return self._frame.iter_builtins()
+            gib ()
+        gib self._frame.iter_builtins()
 
     def get_var_by_name(self, name):
 
         wenn self.is_optimized_out():
-            return Nichts, Nichts
-        return self._frame.get_var_by_name(name)
+            gib Nichts, Nichts
+        gib self._frame.get_var_by_name(name)
 
     def filename(self):
         '''Get the path of the current Python source file, als a string'''
         wenn self.is_optimized_out():
-            return FRAME_INFO_OPTIMIZED_OUT
-        return self._frame.filename()
+            gib FRAME_INFO_OPTIMIZED_OUT
+        gib self._frame.filename()
 
     def current_line_num(self):
         '''Get current line number als an integer (1-based)
@@ -1018,27 +1018,27 @@ klasse PyFrameObjectPtr(PyObjectPtr):
         See Objects/lnotab_notes.txt
         '''
         wenn self.is_optimized_out():
-            return Nichts
-        return self._frame.current_line_num()
+            gib Nichts
+        gib self._frame.current_line_num()
 
     def current_line(self):
         '''Get the text of the current source line als a string, mit a trailing
         newline character'''
         wenn self.is_optimized_out():
-            return FRAME_INFO_OPTIMIZED_OUT
-        return self._frame.current_line()
+            gib FRAME_INFO_OPTIMIZED_OUT
+        gib self._frame.current_line()
 
     def write_repr(self, out, visited):
         wenn self.is_optimized_out():
             out.write(FRAME_INFO_OPTIMIZED_OUT)
-            return
-        return self._frame.write_repr(out, visited)
+            gib
+        gib self._frame.write_repr(out, visited)
 
     def print_traceback(self):
         wenn self.is_optimized_out():
             sys.stdout.write('  %s\n' % FRAME_INFO_OPTIMIZED_OUT)
-            return
-        return self._frame.print_traceback()
+            gib
+        gib self._frame.print_traceback()
 
 klasse PyFramePtr:
 
@@ -1060,7 +1060,7 @@ klasse PyFramePtr:
                 self._is_code = Falsch
 
     def is_optimized_out(self):
-        return self._gdbval.is_optimized_out
+        gib self._gdbval.is_optimized_out
 
     def iter_locals(self):
         '''
@@ -1068,7 +1068,7 @@ klasse PyFramePtr:
         the local variables of this frame
         '''
         wenn self.is_optimized_out():
-            return
+            gib
 
 
         obj_ptr_ptr = gdb.lookup_type("PyObject").pointer().pointer()
@@ -1080,25 +1080,25 @@ klasse PyFramePtr:
             wenn pyop_value.is_null():
                 weiter
             pyop_name = PyObjectPtr.from_pyobject_ptr(self.co_localsplusnames[i])
-            yield (pyop_name, pyop_value)
+            liefere (pyop_name, pyop_value)
 
     def _f_special(self, name, convert=PyObjectPtr.from_pyobject_ptr):
-        return convert(self._gdbval[name])
+        gib convert(self._gdbval[name])
 
     def _f_globals(self):
-        return self._f_special("f_globals")
+        gib self._f_special("f_globals")
 
     def _f_builtins(self):
-        return self._f_special("f_builtins")
+        gib self._f_special("f_builtins")
 
     def _f_code(self):
-        return self._f_special("f_executable", PyCodeObjectPtr.from_pyobject_ptr)
+        gib self._f_special("f_executable", PyCodeObjectPtr.from_pyobject_ptr)
 
     def _f_executable(self):
-        return self._f_special("f_executable")
+        gib self._f_special("f_executable")
 
     def _f_nlocalsplus(self):
-        return self._f_special("nlocalsplus", int_from_int)
+        gib self._f_special("nlocalsplus", int_from_int)
 
     def _f_lasti(self):
         codeunit_p = gdb.lookup_type("_Py_CODEUNIT").pointer()
@@ -1109,13 +1109,13 @@ klasse PyFramePtr:
             first_instr = code_arr.get_entry(tlbc_index).cast(codeunit_p)
         sonst:
             first_instr = self._f_code().field("co_code_adaptive").cast(codeunit_p)
-        return int(instr_ptr - first_instr)
+        gib int(instr_ptr - first_instr)
 
     def is_shim(self):
-        return self._f_special("owner", int) == FRAME_OWNED_BY_INTERPRETER
+        gib self._f_special("owner", int) == FRAME_OWNED_BY_INTERPRETER
 
     def previous(self):
-        return self._f_special("previous", PyFramePtr)
+        gib self._f_special("previous", PyFramePtr)
 
     def iter_globals(self):
         '''
@@ -1123,10 +1123,10 @@ klasse PyFramePtr:
         the global variables of this frame
         '''
         wenn self.is_optimized_out():
-            return ()
+            gib ()
 
         pyop_globals = self._f_globals()
-        return pyop_globals.iteritems()
+        gib pyop_globals.iteritems()
 
     def iter_builtins(self):
         '''
@@ -1134,34 +1134,34 @@ klasse PyFramePtr:
         the builtin variables
         '''
         wenn self.is_optimized_out():
-            return ()
+            gib ()
 
         pyop_builtins = self._f_builtins()
-        return pyop_builtins.iteritems()
+        gib pyop_builtins.iteritems()
 
     def get_var_by_name(self, name):
         '''
         Look fuer the named local variable, returning a (PyObjectPtr, scope) pair
         where scope is a string 'local', 'global', 'builtin'
 
-        If nicht found, return (Nichts, Nichts)
+        If nicht found, gib (Nichts, Nichts)
         '''
         fuer pyop_name, pyop_value in self.iter_locals():
             wenn name == pyop_name.proxyval(set()):
-                return pyop_value, 'local'
+                gib pyop_value, 'local'
         fuer pyop_name, pyop_value in self.iter_globals():
             wenn name == pyop_name.proxyval(set()):
-                return pyop_value, 'global'
+                gib pyop_value, 'global'
         fuer pyop_name, pyop_value in self.iter_builtins():
             wenn name == pyop_name.proxyval(set()):
-                return pyop_value, 'builtin'
-        return Nichts, Nichts
+                gib pyop_value, 'builtin'
+        gib Nichts, Nichts
 
     def filename(self):
         '''Get the path of the current Python source file, als a string'''
         wenn self.is_optimized_out():
-            return FRAME_INFO_OPTIMIZED_OUT
-        return self.co_filename.proxyval(set())
+            gib FRAME_INFO_OPTIMIZED_OUT
+        gib self.co_filename.proxyval(set())
 
     def current_line_num(self):
         '''Get current line number als an integer (1-based)
@@ -1171,44 +1171,44 @@ klasse PyFramePtr:
         See Objects/lnotab_notes.txt
         '''
         wenn self.is_optimized_out():
-            return Nichts
+            gib Nichts
         try:
-            return self.co.addr2line(self.f_lasti)
+            gib self.co.addr2line(self.f_lasti)
         except Exception als ex:
             # bpo-34989: addr2line() is a complex function, it can fail in many
             # ways. For example, it fails mit a TypeError on "FakeRepr" if
             # gdb fails to load debug symbols. Use a catch-all "except
             # Exception" to make the whole function safe. The caller has to
             # handle Nichts anyway fuer optimized Python.
-            return Nichts
+            gib Nichts
 
     def current_line(self):
         '''Get the text of the current source line als a string, mit a trailing
         newline character'''
         wenn self.is_optimized_out():
-            return FRAME_INFO_OPTIMIZED_OUT
+            gib FRAME_INFO_OPTIMIZED_OUT
 
         lineno = self.current_line_num()
         wenn lineno is Nichts:
-            return '(failed to get frame line number)'
+            gib '(failed to get frame line number)'
 
         filename = self.filename()
         try:
             mit open(os.fsencode(filename), 'r', encoding="utf-8") als fp:
                 lines = fp.readlines()
         except IOError:
-            return Nichts
+            gib Nichts
 
         try:
             # Convert von 1-based current_line_num to 0-based list offset
-            return lines[lineno - 1]
+            gib lines[lineno - 1]
         except IndexError:
-            return Nichts
+            gib Nichts
 
     def write_repr(self, out, visited):
         wenn self.is_optimized_out():
             out.write(FRAME_INFO_OPTIMIZED_OUT)
-            return
+            gib
         lineno = self.current_line_num()
         lineno = str(lineno) wenn lineno is nicht Nichts sonst "?"
         out.write('Frame 0x%x, fuer file %s, line %s, in %s ('
@@ -1229,12 +1229,12 @@ klasse PyFramePtr:
         out.write(')')
 
     def as_address(self):
-        return int(self._gdbval)
+        gib int(self._gdbval)
 
     def print_traceback(self):
         wenn self.is_optimized_out():
             sys.stdout.write('  %s\n' % FRAME_INFO_OPTIMIZED_OUT)
-            return
+            gib
         visited = set()
         lineno = self.current_line_num()
         lineno = str(lineno) wenn lineno is nicht Nichts sonst "?"
@@ -1253,17 +1253,17 @@ klasse PyFramePtr:
             self.write_repr(out, set())
         except StringTruncated:
             # Truncation occurred:
-            return out.getvalue() + '...(truncated)'
+            gib out.getvalue() + '...(truncated)'
 
         # No truncation occurred:
-        return out.getvalue()
+        gib out.getvalue()
 
 klasse PySetObjectPtr(PyObjectPtr):
     _typename = 'PySetObject'
 
     @classmethod
     def _dummy_key(self):
-        return gdb.lookup_global_symbol('_PySet_Dummy').value()
+        gib gdb.lookup_global_symbol('_PySet_Dummy').value()
 
     def __iter__(self):
         dummy_ptr = self._dummy_key()
@@ -1272,19 +1272,19 @@ klasse PySetObjectPtr(PyObjectPtr):
             setentry = table[i]
             key = setentry['key']
             wenn key != 0 und key != dummy_ptr:
-                yield PyObjectPtr.from_pyobject_ptr(key)
+                liefere PyObjectPtr.from_pyobject_ptr(key)
 
     def proxyval(self, visited):
         # Guard against infinite loops:
         wenn self.as_address() in visited:
-            return ProxyAlreadyVisited('%s(...)' % self.safe_tp_name())
+            gib ProxyAlreadyVisited('%s(...)' % self.safe_tp_name())
         visited.add(self.as_address())
 
         members = (key.proxyval(visited) fuer key in self)
         wenn self.safe_tp_name() == 'frozenset':
-            return frozenset(members)
+            gib frozenset(members)
         sonst:
-            return set(members)
+            gib set(members)
 
     def write_repr(self, out, visited):
         # Emulate Python's set_repr
@@ -1293,14 +1293,14 @@ klasse PySetObjectPtr(PyObjectPtr):
         # Guard against infinite loops:
         wenn self.as_address() in visited:
             out.write('(...)')
-            return
+            gib
         visited.add(self.as_address())
 
         # Python's set_repr special-cases the empty set:
         wenn nicht self.field('used'):
             out.write(tp_name)
             out.write('()')
-            return
+            gib
 
         # Python uses {} fuer set literals:
         wenn tp_name != 'set':
@@ -1327,10 +1327,10 @@ klasse PyBytesObjectPtr(PyObjectPtr):
         field_ob_size = self.field('ob_size')
         field_ob_sval = self.field('ob_sval')
         char_ptr = field_ob_sval.address.cast(_type_unsigned_char_ptr())
-        return ''.join([chr(char_ptr[i]) fuer i in safe_range(field_ob_size)])
+        gib ''.join([chr(char_ptr[i]) fuer i in safe_range(field_ob_size)])
 
     def proxyval(self, visited):
-        return str(self)
+        gib str(self)
 
     def write_repr(self, out, visited):
         # Write this out als a Python bytes literal, i.e. mit a "b" prefix
@@ -1369,23 +1369,23 @@ klasse PyTupleObjectPtr(PyObjectPtr):
     def __getitem__(self, i):
         # Get the gdb.Value fuer the (PyObject*) mit the given index:
         field_ob_item = self.field('ob_item')
-        return field_ob_item[i]
+        gib field_ob_item[i]
 
     def proxyval(self, visited):
         # Guard against infinite loops:
         wenn self.as_address() in visited:
-            return ProxyAlreadyVisited('(...)')
+            gib ProxyAlreadyVisited('(...)')
         visited.add(self.as_address())
 
         result = tuple(PyObjectPtr.from_pyobject_ptr(self[i]).proxyval(visited)
                        fuer i in safe_range(int_from_int(self.field('ob_size'))))
-        return result
+        gib result
 
     def write_repr(self, out, visited):
         # Guard against infinite loops:
         wenn self.as_address() in visited:
             out.write('(...)')
-            return
+            gib
         visited.add(self.as_address())
 
         out.write('(')
@@ -1406,9 +1406,9 @@ klasse PyTypeObjectPtr(PyObjectPtr):
 def _unichr_is_printable(char):
     # Logic adapted von Python's Tools/unicode/makeunicodedata.py
     wenn char == u" ":
-        return Wahr
+        gib Wahr
     importiere unicodedata
-    return unicodedata.category(char) nicht in ("C", "Z")
+    gib unicodedata.category(char) nicht in ("C", "Z")
 
 
 klasse PyUnicodeObjectPtr(PyObjectPtr):
@@ -1441,7 +1441,7 @@ klasse PyUnicodeObjectPtr(PyObjectPtr):
         # Convert the int code points to unicode characters, und generate a
         # local unicode instance.
         result = ''.join(map(chr, code_points))
-        return result
+        gib result
 
     def write_repr(self, out, visited):
         # Write this out als a Python str literal
@@ -1547,28 +1547,28 @@ klasse wrapperobject(PyObjectPtr):
     def safe_name(self):
         try:
             name = self.field('descr')['d_base']['name'].string()
-            return repr(name)
+            gib repr(name)
         except (NullPyObjectPtr, RuntimeError, UnicodeDecodeError):
-            return '<unknown name>'
+            gib '<unknown name>'
 
     def safe_tp_name(self):
         try:
-            return self.field('self')['ob_type']['tp_name'].string()
+            gib self.field('self')['ob_type']['tp_name'].string()
         except (NullPyObjectPtr, RuntimeError, UnicodeDecodeError):
-            return '<unknown tp_name>'
+            gib '<unknown tp_name>'
 
     def safe_self_addresss(self):
         try:
             address = int(self.field('self'))
-            return '%#x' % address
+            gib '%#x' % address
         except (NullPyObjectPtr, RuntimeError):
-            return '<failed to get self address>'
+            gib '<failed to get self address>'
 
     def proxyval(self, visited):
         name = self.safe_name()
         tp_name = self.safe_tp_name()
         self_address = self.safe_self_addresss()
-        return ("<method-wrapper %s of %s object at %s>"
+        gib ("<method-wrapper %s of %s object at %s>"
                 % (name, tp_name, self_address))
 
     def write_repr(self, out, visited):
@@ -1577,17 +1577,17 @@ klasse wrapperobject(PyObjectPtr):
 
 
 def int_from_int(gdbval):
-    return int(gdbval)
+    gib int(gdbval)
 
 
 def stringify(val):
     # TODO: repr() puts everything on one line; pformat can be nicer, but
     # can lead to v.long results; this function isolates the choice
     wenn Wahr:
-        return repr(val)
+        gib repr(val)
     sonst:
         von pprint importiere pformat
-        return pformat(val)
+        gib pformat(val)
 
 
 klasse PyObjectPtrPrinter:
@@ -1599,25 +1599,25 @@ klasse PyObjectPtrPrinter:
     def to_string (self):
         pyop = PyObjectPtr.from_pyobject_ptr(self.gdbval)
         wenn Wahr:
-            return pyop.get_truncated_repr(MAX_OUTPUT_LEN)
+            gib pyop.get_truncated_repr(MAX_OUTPUT_LEN)
         sonst:
             # Generate full proxy value then stringify it.
             # Doing so could be expensive
             proxyval = pyop.proxyval(set())
-            return stringify(proxyval)
+            gib stringify(proxyval)
 
 def pretty_printer_lookup(gdbval):
     type = gdbval.type.strip_typedefs().unqualified()
     wenn type.code == gdb.TYPE_CODE_UNION und type.tag == '_PyStackRef':
-        return PyObjectPtrPrinter(gdbval)
+        gib PyObjectPtrPrinter(gdbval)
 
     wenn type.code != gdb.TYPE_CODE_PTR:
-        return Nichts
+        gib Nichts
 
     type = type.target().unqualified()
     t = str(type)
     wenn t in ("PyObject", "PyFrameObject", "PyUnicodeObject", "wrapperobject"):
-        return PyObjectPtrPrinter(gdbval)
+        gib PyObjectPtrPrinter(gdbval)
 
 """
 During development, I've been manually invoking the code in this way:
@@ -1663,28 +1663,28 @@ klasse Frame(object):
     def older(self):
         older = self._gdbframe.older()
         wenn older:
-            return Frame(older)
+            gib Frame(older)
         sonst:
-            return Nichts
+            gib Nichts
 
     def newer(self):
         newer = self._gdbframe.newer()
         wenn newer:
-            return Frame(newer)
+            gib Frame(newer)
         sonst:
-            return Nichts
+            gib Nichts
 
     def select(self):
-        '''If supported, select this frame und return Wahr; return Falsch wenn unsupported
+        '''If supported, select this frame und gib Wahr; gib Falsch wenn unsupported
 
         Not all builds have a gdb.Frame.select method; seems to be present on Fedora 12
         onwards, but absent on Ubuntu buildbot'''
         wenn nicht hasattr(self._gdbframe, 'select'):
             print ('Unable to select frame: '
                    'this build of gdb does nicht expose a gdb.Frame.select method')
-            return Falsch
+            gib Falsch
         self._gdbframe.select()
-        return Wahr
+        gib Wahr
 
     def get_index(self):
         '''Calculate index of frame, starting at 0 fuer the newest frame within
@@ -1695,7 +1695,7 @@ klasse Frame(object):
         waehrend iter_frame.newer():
             index += 1
             iter_frame = iter_frame.newer()
-        return index
+        gib index
 
     # We divide frames into:
     #   - "python frames":
@@ -1709,10 +1709,10 @@ klasse Frame(object):
         frame? (see is_other_python_frame fuer what "important" means in this
         context)'''
         wenn self.is_evalframe():
-            return Wahr
+            gib Wahr
         wenn self.is_other_python_frame():
-            return Wahr
-        return Falsch
+            gib Wahr
+        gib Falsch
 
     def is_evalframe(self):
         '''Is this a _PyEval_EvalFrameDefault frame?'''
@@ -1726,9 +1726,9 @@ klasse Frame(object):
             '''
             wenn self._gdbframe.type() == gdb.NORMAL_FRAME:
                 # We have a _PyEval_EvalFrameDefault frame:
-                return Wahr
+                gib Wahr
 
-        return Falsch
+        gib Falsch
 
     def is_other_python_frame(self):
         '''Is this frame worth displaying in python backtraces?
@@ -1736,20 +1736,20 @@ klasse Frame(object):
           - waiting on the GIL
           - garbage-collecting
           - within a CFunction
-         If it is, return a descriptive string
-         For other frames, return Falsch
+         If it is, gib a descriptive string
+         For other frames, gib Falsch
          '''
         wenn self.is_waiting_for_gil():
-            return 'Waiting fuer the GIL'
+            gib 'Waiting fuer the GIL'
 
         wenn self.is_gc_collect():
-            return 'Garbage-collecting'
+            gib 'Garbage-collecting'
 
         # Detect invocations of PyCFunction instances:
         frame = self._gdbframe
         caller = frame.name()
         wenn nicht caller:
-            return Falsch
+            gib Falsch
 
         wenn (caller.startswith('cfunction_vectorcall_') or
             caller == 'cfunction_call'):
@@ -1762,37 +1762,37 @@ klasse Frame(object):
             try:
                 # Use the prettyprinter fuer the func:
                 func = frame.read_var(arg_name)
-                return str(func)
+                gib str(func)
             except ValueError:
-                return ('PyCFunction invocation (unable to read %s: '
+                gib ('PyCFunction invocation (unable to read %s: '
                         'missing debuginfos?)' % arg_name)
             except RuntimeError:
-                return 'PyCFunction invocation (unable to read %s)' % arg_name
+                gib 'PyCFunction invocation (unable to read %s)' % arg_name
 
         wenn caller == 'wrapper_call':
             arg_name = 'wp'
             try:
                 func = frame.read_var(arg_name)
-                return str(func)
+                gib str(func)
             except ValueError:
-                return ('<wrapper_call invocation (unable to read %s: '
+                gib ('<wrapper_call invocation (unable to read %s: '
                         'missing debuginfos?)>' % arg_name)
             except RuntimeError:
-                return '<wrapper_call invocation (unable to read %s)>' % arg_name
+                gib '<wrapper_call invocation (unable to read %s)>' % arg_name
 
         # This frame isn't worth reporting:
-        return Falsch
+        gib Falsch
 
     def is_waiting_for_gil(self):
         '''Is this frame waiting on the GIL?'''
         # This assumes the _POSIX_THREADS version of Python/ceval_gil.c:
         name = self._gdbframe.name()
         wenn name:
-            return (name == 'take_gil')
+            gib (name == 'take_gil')
 
     def is_gc_collect(self):
         '''Is this frame a collector within the garbage-collector?'''
-        return self._gdbframe.name() in (
+        gib self._gdbframe.name() in (
             'collect', 'gc_collect_full', 'gc_collect_main',
             'gc_collect_young', 'gc_collect_increment',
         )
@@ -1802,23 +1802,23 @@ klasse Frame(object):
             frame = self._gdbframe.read_var('frame')
             frame = PyFramePtr(frame)
             wenn nicht frame.is_optimized_out():
-                return frame
+                gib frame
             cframe = self._gdbframe.read_var('cframe')
             wenn cframe is Nichts:
-                return Nichts
+                gib Nichts
             frame = PyFramePtr(cframe["current_frame"])
             wenn frame und nicht frame.is_optimized_out():
-                return frame
-            return Nichts
+                gib frame
+            gib Nichts
         except ValueError:
-            return Nichts
+            gib Nichts
 
     @classmethod
     def get_selected_frame(cls):
         _gdbframe = gdb.selected_frame()
         wenn _gdbframe:
-            return Frame(_gdbframe)
-        return Nichts
+            gib Frame(_gdbframe)
+        gib Nichts
 
     @classmethod
     def get_selected_python_frame(cls):
@@ -1828,15 +1828,15 @@ klasse Frame(object):
             frame = cls.get_selected_frame()
         except gdb.error:
             # No frame: Python didn't start yet
-            return Nichts
+            gib Nichts
 
         waehrend frame:
             wenn frame.is_python_frame():
-                return frame
+                gib frame
             frame = frame.older()
 
         # Not found:
-        return Nichts
+        gib Nichts
 
     @classmethod
     def get_selected_bytecode_frame(cls):
@@ -1846,11 +1846,11 @@ klasse Frame(object):
 
         waehrend frame:
             wenn frame.is_evalframe():
-                return frame
+                gib frame
             frame = frame.older()
 
         # Not found:
-        return Nichts
+        gib Nichts
 
     def print_summary(self):
         wenn self.is_evalframe():
@@ -1937,18 +1937,18 @@ klasse PyList(gdb.Command):
         frame = Frame.get_selected_bytecode_frame()
         wenn nicht frame:
             drucke('Unable to locate gdb frame fuer python bytecode interpreter')
-            return
+            gib
 
         pyop = frame.get_pyop()
         wenn nicht pyop oder pyop.is_optimized_out():
             drucke(UNABLE_READ_INFO_PYTHON_FRAME)
-            return
+            gib
 
         filename = pyop.filename()
         lineno = pyop.current_line_num()
         wenn lineno is Nichts:
             drucke('Unable to read python frame line number')
-            return
+            gib
 
         wenn start is Nichts:
             start = lineno - 5
@@ -1962,7 +1962,7 @@ klasse PyList(gdb.Command):
         except IOError als err:
             sys.stdout.write('Unable to open %s: %s\n'
                              % (filename, err))
-            return
+            gib
         mit f:
             all_lines = f.readlines()
             # start und end are 1-based, all_lines is 0-based;
@@ -1989,7 +1989,7 @@ def move_in_stack(move_up):
     frame = Frame.get_selected_python_frame()
     wenn nicht frame:
         drucke('Unable to locate python frame')
-        return
+        gib
     waehrend frame:
         wenn move_up:
             iter_frame = frame.older()
@@ -2003,7 +2003,7 @@ def move_in_stack(move_up):
             # Result:
             wenn iter_frame.select():
                 iter_frame.print_summary()
-            return
+            gib
 
         frame = iter_frame
 
@@ -2055,7 +2055,7 @@ klasse PyBacktraceFull(gdb.Command):
         frame = Frame.get_selected_python_frame()
         wenn nicht frame:
             drucke('Unable to locate python frame')
-            return
+            gib
 
         waehrend frame:
             wenn frame.is_python_frame():
@@ -2077,7 +2077,7 @@ klasse PyBacktrace(gdb.Command):
         frame = Frame.get_selected_python_frame()
         wenn nicht frame:
             drucke('Unable to locate python frame')
-            return
+            gib
 
         sys.stdout.write('Traceback (most recent call first):\n')
         waehrend frame:
@@ -2102,12 +2102,12 @@ klasse PyPrint(gdb.Command):
         frame = Frame.get_selected_python_frame()
         wenn nicht frame:
             drucke('Unable to locate python frame')
-            return
+            gib
 
         pyop_frame = frame.get_pyop()
         wenn nicht pyop_frame:
             drucke(UNABLE_READ_INFO_PYTHON_FRAME)
-            return
+            gib
 
         pyop_var, scope = pyop_frame.get_var_by_name(name)
 
@@ -2136,7 +2136,7 @@ klasse PyLocals(gdb.Command):
         frame = Frame.get_selected_python_frame()
         wenn nicht frame:
             drucke('Unable to locate python frame')
-            return
+            gib
 
         pyop_frame = frame.get_pyop()
         waehrend Wahr:

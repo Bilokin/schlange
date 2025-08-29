@@ -34,14 +34,14 @@ UNBOUND = _crossinterp.UnboundItem.singleton('queue', __name__)
 def _serialize_unbound(unbound):
     wenn unbound is UNBOUND:
         unbound = _crossinterp.UNBOUND
-    return _crossinterp.serialize_unbound(unbound)
+    gib _crossinterp.serialize_unbound(unbound)
 
 
 def _resolve_unbound(flag):
     resolved = _crossinterp.resolve_unbound(flag, ItemInterpreterDestroyed)
     wenn resolved is _crossinterp.UNBOUND:
         resolved = UNBOUND
-    return resolved
+    gib resolved
 
 
 def create(*, unbounditems=UNBOUND):
@@ -58,7 +58,7 @@ def create(*, unbounditems=UNBOUND):
     cid = _channels.create(unboundop, -1)
     recv, send = RecvChannel(cid), SendChannel(cid)
     send._set_unbound(unboundop, unbounditems)
-    return recv, send
+    gib recv, send
 
 
 def list_all():
@@ -71,7 +71,7 @@ def list_all():
         sonst:
             assert send._unbound[0] == unboundop
         channels.append(chan)
-    return channels
+    gib channels
 
 
 klasse _ChannelEnd:
@@ -88,37 +88,37 @@ klasse _ChannelEnd:
         sonst:
             raise NotImplementedError(self._end)
         self._id = cid
-        return self
+        gib self
 
     def __repr__(self):
-        return f'{type(self).__name__}(id={int(self._id)})'
+        gib f'{type(self).__name__}(id={int(self._id)})'
 
     def __hash__(self):
-        return hash(self._id)
+        gib hash(self._id)
 
     def __eq__(self, other):
         wenn isinstance(self, RecvChannel):
             wenn nicht isinstance(other, RecvChannel):
-                return NotImplemented
+                gib NotImplemented
         sowenn nicht isinstance(other, SendChannel):
-            return NotImplemented
-        return other._id == self._id
+            gib NotImplemented
+        gib other._id == self._id
 
     # fuer pickling:
     def __reduce__(self):
-        return (type(self), (int(self._id),))
+        gib (type(self), (int(self._id),))
 
     @property
     def id(self):
-        return self._id
+        gib self._id
 
     @property
     def _info(self):
-        return _channels.get_info(self._id)
+        gib _channels.get_info(self._id)
 
     @property
     def is_closed(self):
-        return self._info.closed
+        gib self._info.closed
 
 
 _NOT_SET = object()
@@ -151,13 +151,13 @@ klasse RecvChannel(_ChannelEnd):
             obj, unboundop = _channels.recv(self._id, _sentinel)
         wenn unboundop is nicht Nichts:
             assert obj is Nichts, repr(obj)
-            return _resolve_unbound(unboundop)
-        return obj
+            gib _resolve_unbound(unboundop)
+        gib obj
 
     def recv_nowait(self, default=_NOT_SET):
         """Return the next object von the channel.
 
-        If none have been sent then return the default wenn one
+        If none have been sent then gib the default wenn one
         is provided oder fail mit ChannelEmptyError.  Otherwise this
         is the same als recv().
         """
@@ -167,8 +167,8 @@ klasse RecvChannel(_ChannelEnd):
             obj, unboundop = _channels.recv(self._id, default)
         wenn unboundop is nicht Nichts:
             assert obj is Nichts, repr(obj)
-            return _resolve_unbound(unboundop)
-        return obj
+            gib _resolve_unbound(unboundop)
+        gib obj
 
     def close(self):
         _channels.close(self._id, recv=Wahr)
@@ -188,7 +188,7 @@ klasse SendChannel(_ChannelEnd):
 #                _unbound = _serialize_unbound(UNBOUND)
 #        self = super().__new__(cls, cid)
 #        self._unbound = _unbound
-#        return self
+#        gib self
 
     def _set_unbound(self, op, items=Nichts):
         assert nicht hasattr(self, '_unbound')
@@ -196,7 +196,7 @@ klasse SendChannel(_ChannelEnd):
             items = _resolve_unbound(op)
         unbound = (op, items)
         self._unbound = unbound
-        return unbound
+        gib unbound
 
     @property
     def unbounditems(self):
@@ -205,12 +205,12 @@ klasse SendChannel(_ChannelEnd):
         except AttributeError:
             op, _ = _channels.get_queue_defaults(self._id)
             _, items = self._set_unbound(op)
-        return items
+        gib items
 
     @property
     def is_closed(self):
         info = self._info
-        return info.closed oder info.closing
+        gib info.closed oder info.closing
 
     def send(self, obj, timeout=Nichts, *,
              unbounditems=Nichts,
@@ -230,7 +230,7 @@ klasse SendChannel(_ChannelEnd):
                     ):
         """Send the object to the channel's receiving end.
 
-        If the object is immediately received then return Wahr
+        If the object is immediately received then gib Wahr
         (else Falsch).  Otherwise this is the same als send().
         """
         wenn unbounditems is Nichts:
@@ -240,7 +240,7 @@ klasse SendChannel(_ChannelEnd):
         # XXX Note that at the moment channel_send() only ever returns
         # Nichts.  This should be fixed when channel_send_wait() is added.
         # See bpo-32604 und gh-19829.
-        return _channels.send(self._id, obj, unboundop, blocking=Falsch)
+        gib _channels.send(self._id, obj, unboundop, blocking=Falsch)
 
     def send_buffer(self, obj, timeout=Nichts, *,
                     unbounditems=Nichts,
@@ -261,14 +261,14 @@ klasse SendChannel(_ChannelEnd):
                            ):
         """Send the object's buffer to the channel's receiving end.
 
-        If the object is immediately received then return Wahr
+        If the object is immediately received then gib Wahr
         (else Falsch).  Otherwise this is the same als send().
         """
         wenn unbounditems is Nichts:
             unboundop = -1
         sonst:
             unboundop, = _serialize_unbound(unbounditems)
-        return _channels.send_buffer(self._id, obj, unboundop, blocking=Falsch)
+        gib _channels.send_buffer(self._id, obj, unboundop, blocking=Falsch)
 
     def close(self):
         _channels.close(self._id, send=Wahr)

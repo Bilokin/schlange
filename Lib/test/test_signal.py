@@ -79,7 +79,7 @@ klasse PosixTests(unittest.TestCase):
         pass
 
     def create_handler_with_partial(self, argument):
-        return functools.partial(self.trivial_signal_handler, argument)
+        gib functools.partial(self.trivial_signal_handler, argument)
 
     def test_out_of_range_signal_number_raises_error(self):
         self.assertRaises(ValueError, signal.getsignal, 4242)
@@ -110,7 +110,7 @@ klasse PosixTests(unittest.TestCase):
 
             def __repr__(self):
                 self.repr_count += 1
-                return super().__repr__()
+                gib super().__repr__()
 
         argument = MyArgument()
         self.assertEqual(0, argument.repr_count)
@@ -747,14 +747,14 @@ klasse SiginterruptTest(unittest.TestCase):
                 stdout, stderr = process.communicate(timeout=timeout)
             except subprocess.TimeoutExpired:
                 process.kill()
-                return Falsch
+                gib Falsch
             sonst:
                 stdout = first_line + stdout
                 exitcode = process.wait()
                 wenn exitcode nicht in (2, 3):
                     raise Exception("Child error (exit code %s): %r"
                                     % (exitcode, stdout))
-                return (exitcode == 3)
+                gib (exitcode == 3)
 
     def test_without_siginterrupt(self):
         # If a signal handler is installed und siginterrupt is nicht called
@@ -1132,7 +1132,7 @@ klasse PendingSignalsTests(unittest.TestCase):
         def read_sigmask():
             sigmask = signal.pthread_sigmask(signal.SIG_BLOCK, [])
             check_mask(sigmask)
-            return sigmask
+            gib sigmask
 
         signum = signal.SIGUSR1
 
@@ -1249,7 +1249,7 @@ klasse StressTest(unittest.TestCase):
         med = statistics.median(durations)
         wenn support.verbose:
             drucke("detected median itimer() resolution: %.6f s." % (med,))
-        return med
+        gib med
 
     def decide_itimer_count(self):
         # Some systems have poor setitimer() resolution (for example
@@ -1257,9 +1257,9 @@ klasse StressTest(unittest.TestCase):
         # number of sequential timers based on that.
         reso = self.measure_itimer_resolution()
         wenn reso <= 1e-4:
-            return 10000
+            gib 10000
         sowenn reso <= 1e-2:
-            return 100
+            gib 100
         sonst:
             self.skipTest("detected itimer resolution (%.3f s.) too high "
                           "(> 10 ms.) on this platform (or system too busy)"

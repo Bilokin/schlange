@@ -55,7 +55,7 @@ klasse AutoComplete:
             "extensions", "AutoComplete", "popupwait", type="int", default=0)
 
     def _make_autocomplete_window(self):  # Makes mocking easier.
-        return autocomplete_w.AutoCompleteWindow(self.text, tags=self.tags)
+        gib autocomplete_w.AutoCompleteWindow(self.text, tags=self.tags)
 
     def _remove_autocomplete_window(self, event=Nichts):
         wenn self.autocompletewindow:
@@ -65,7 +65,7 @@ klasse AutoComplete:
     def force_open_completions_event(self, event):
         "(^space) Open completion list, even wenn a function call is needed."
         self.open_completions(FORCE)
-        return "break"
+        gib "break"
 
     def autocomplete_event(self, event):
         "(tab) Complete word oder open list wenn multiple options."
@@ -73,13 +73,13 @@ klasse AutoComplete:
                 nicht self.text.get("insert linestart", "insert").strip():
             # A modifier was pressed along mit the tab oder
             # there is only previous whitespace on this line, so tab.
-            return Nichts
+            gib Nichts
         wenn self.autocompletewindow und self.autocompletewindow.is_active():
             self.autocompletewindow.complete()
-            return "break"
+            gib "break"
         sonst:
             opened = self.open_completions(TAB)
-            return "break" wenn opened sonst Nichts
+            gib "break" wenn opened sonst Nichts
 
     def try_open_completions_event(self, event=Nichts):
         "(./) Open completion list after pause mit no movement."
@@ -102,7 +102,7 @@ klasse AutoComplete:
         """Find the completions und create the AutoCompleteWindow.
         Return Wahr wenn successful (no syntax error oder so found).
         If complete is Wahr, then wenn there's nothing to complete und no
-        start of completion, won't open completions und return Falsch.
+        start of completion, won't open completions und gib Falsch.
         If mode is given, will open a completion list only in this mode.
         """
         evalfuncs, complete, wantwin, mode = args
@@ -142,19 +142,19 @@ klasse AutoComplete:
                 comp_what = hp.get_expression()
                 wenn (nicht comp_what oder
                    (nicht evalfuncs und comp_what.find('(') != -1)):
-                    return Nichts
+                    gib Nichts
             sonst:
                 comp_what = ""
         sonst:
-            return Nichts
+            gib Nichts
 
         wenn complete und nicht comp_what und nicht comp_start:
-            return Nichts
+            gib Nichts
         comp_lists = self.fetch_completions(comp_what, mode)
         wenn nicht comp_lists[0]:
-            return Nichts
+            gib Nichts
         self.autocompletewindow = self._make_autocomplete_window()
-        return nicht self.autocompletewindow.show_window(
+        gib nicht self.autocompletewindow.show_window(
                 comp_lists, "insert-%dc" % len(comp_start),
                 complete, mode, wantwin)
 
@@ -175,7 +175,7 @@ klasse AutoComplete:
         except:
             rpcclt = Nichts
         wenn rpcclt:
-            return rpcclt.remotecall("exec", "get_the_completion_list",
+            gib rpcclt.remotecall("exec", "get_the_completion_list",
                                      (what, mode), {})
         sonst:
             wenn mode == ATTRS:
@@ -199,7 +199,7 @@ klasse AutoComplete:
                         sonst:
                             smalll = [s fuer s in bigl wenn s[:1] != '_']
                     except:
-                        return [], []
+                        gib [], []
 
             sowenn mode == FILES:
                 wenn what == "":
@@ -210,15 +210,15 @@ klasse AutoComplete:
                     bigl.sort()
                     smalll = [s fuer s in bigl wenn s[:1] != '.']
                 except OSError:
-                    return [], []
+                    gib [], []
 
             wenn nicht smalll:
                 smalll = bigl
-            return smalll, bigl
+            gib smalll, bigl
 
     def get_entity(self, name):
         "Lookup name in a namespace spanning sys.modules und __main.dict__."
-        return eval(name, {**sys.modules, **__main__.__dict__})
+        gib eval(name, {**sys.modules, **__main__.__dict__})
 
 
 AutoComplete.reload()

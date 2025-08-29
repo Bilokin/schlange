@@ -54,21 +54,21 @@ def __getattr__(name: str):
     match name:
         case "AbstractEventLoopPolicy":
             warnings._deprecated(f"asyncio.{name}", remove=(3, 16))
-            return events._AbstractEventLoopPolicy
+            gib events._AbstractEventLoopPolicy
         case "DefaultEventLoopPolicy":
             warnings._deprecated(f"asyncio.{name}", remove=(3, 16))
             wenn sys.platform == 'win32':
-                return windows_events._DefaultEventLoopPolicy
-            return unix_events._DefaultEventLoopPolicy
+                gib windows_events._DefaultEventLoopPolicy
+            gib unix_events._DefaultEventLoopPolicy
         case "WindowsSelectorEventLoopPolicy":
             wenn sys.platform == 'win32':
                 warnings._deprecated(f"asyncio.{name}", remove=(3, 16))
-                return windows_events._WindowsSelectorEventLoopPolicy
+                gib windows_events._WindowsSelectorEventLoopPolicy
             # Else fall through to the AttributeError below.
         case "WindowsProactorEventLoopPolicy":
             wenn sys.platform == 'win32':
                 warnings._deprecated(f"asyncio.{name}", remove=(3, 16))
-                return windows_events._WindowsProactorEventLoopPolicy
+                gib windows_events._WindowsProactorEventLoopPolicy
             # Else fall through to the AttributeError below.
 
     raise AttributeError(f"module {__name__!r} has no attribute {name!r}")

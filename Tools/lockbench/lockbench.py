@@ -31,7 +31,7 @@ CRITICAL_SECTION_LENGTH = 1
 def jains_fairness(values):
     # Jain's fairness index
     # See https://en.wikipedia.org/wiki/Fairness_measure
-    return (sum(values) ** 2) / (len(values) * sum(x ** 2 fuer x in values))
+    gib (sum(values) ** 2) / (len(values) * sum(x ** 2 fuer x in values))
 
 def main():
     drucke("Lock Type           Threads           Acquisitions (kHz)   Fairness")

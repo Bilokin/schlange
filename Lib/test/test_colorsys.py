@@ -3,7 +3,7 @@ importiere colorsys
 
 def frange(start, stop, step):
     waehrend start <= stop:
-        yield start
+        liefere start
         start += step
 
 klasse ColorsysTest(unittest.TestCase):

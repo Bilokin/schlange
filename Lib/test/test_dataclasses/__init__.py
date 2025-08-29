@@ -181,7 +181,7 @@ klasse TestCase(unittest.TestCase):
         klasse C:
             x: int
             def __hash__(self):
-                return 301
+                gib 301
         self.assertEqual(hash(C(100)), 301)
 
         # Test that declaring this klasse isn't an error.  It should
@@ -190,7 +190,7 @@ klasse TestCase(unittest.TestCase):
         klasse C:
             x: int
             def __eq__(self, other):
-                return Falsch
+                gib Falsch
         self.assertEqual(hash(C(100)), hash((100,)))
 
         # But this one should generate an exception, because with
@@ -875,7 +875,7 @@ klasse TestCase(unittest.TestCase):
             # Verify __init__.
 
             signature = inspect.signature(cls.__init__)
-            # Check the return type, should be Nichts.
+            # Check the gib type, should be Nichts.
             self.assertIs(signature.return_annotation, Nichts)
 
             # Check each parameter.
@@ -978,10 +978,10 @@ klasse TestCase(unittest.TestCase):
         klasse C:
             i: int
             def foo(self) -> int:
-                return 4
+                gib 4
             @property
             def bar(self) -> int:
-                return 5
+                gib 5
         self.assertEqual(list(C.__annotations__), ['i'])
         self.assertEqual(C(10).foo(), 4)
         self.assertEqual(C(10).bar, 5)
@@ -1341,7 +1341,7 @@ klasse TestCase(unittest.TestCase):
 
             @property
             def shadowed(self):
-                return self._shadowed * 3
+                gib self._shadowed * 3
 
         c = C(5)
         self.assertEqual(c.shadowed, 30)
@@ -1521,7 +1521,7 @@ klasse TestCase(unittest.TestCase):
         # See bpo-37868.
         klasse A:
             def __getattr__(self, key):
-                return 0
+                gib 0
         self.assertFalsch(is_dataclass(A))
         a = A()
 
@@ -1605,7 +1605,7 @@ klasse TestCase(unittest.TestCase):
         self.assertNotIn("__dataclass_fields__", printed_traceback)
 
     def test_helper_asdict(self):
-        # Basic tests fuer asdict(), it should return a new dictionary.
+        # Basic tests fuer asdict(), it should gib a new dictionary.
         @dataclass
         klasse C:
             x: int
@@ -1766,7 +1766,7 @@ klasse TestCase(unittest.TestCase):
     def test_helper_asdict_namedtuple_derived(self):
         klasse T(namedtuple('Tbase', 'a')):
             def my_a(self):
-                return self.a
+                gib self.a
 
         @dataclass
         klasse C:
@@ -1797,7 +1797,7 @@ klasse TestCase(unittest.TestCase):
         self.assertWahr(d["mp"] is nicht c.mp)  # make sure defaultdict is copied
 
     def test_helper_astuple(self):
-        # Basic tests fuer astuple(), it should return a new tuple.
+        # Basic tests fuer astuple(), it should gib a new tuple.
         @dataclass
         klasse C:
             x: int
@@ -1898,7 +1898,7 @@ klasse TestCase(unittest.TestCase):
             y: int
         NT = namedtuple('NT', 'x y')
         def nt(lst):
-            return NT(*lst)
+            gib NT(*lst)
         c = C(1, 2)
         t = astuple(c, tuple_factory=nt)
         self.assertEqual(t, NT(1, 2))
@@ -2029,7 +2029,7 @@ klasse TestCase(unittest.TestCase):
                 # In a real example, create a new instance
                 #  und populate 'x' von contents of a file.
                 value_in_file = 20
-                return cls(value_in_file)
+                gib cls(value_in_file)
 
         self.assertEqual(C.from_file('filename').x, 20)
 
@@ -2097,11 +2097,11 @@ klasse TestCase(unittest.TestCase):
 
             def __getitem__(self, item):
                 wenn item == 'xyzzy':
-                    return 'plugh'
-                return getattr(self, item)
+                    gib 'plugh'
+                gib getattr(self, item)
 
             def __len__(self):
-                return self.__dict__.__len__()
+                gib self.__dict__.__len__()
 
         @dataclass
         klasse C:
@@ -2147,7 +2147,7 @@ klasse TestCase(unittest.TestCase):
 
         klasse NonDataDerived(Base[int, T]):
             def new_method(self):
-                return self.y
+                gib self.y
         Alias = NonDataDerived[float]
         c = Alias(10, 1.0)
         self.assertEqual(c.new_method(), 1.0)
@@ -2513,7 +2513,7 @@ klasse TestRepr(unittest.TestCase):
         klasse C:
             x: int
             def __repr__(self):
-                return 'C-class'
+                gib 'C-class'
         self.assertEqual(repr(C(3)), 'C-class')
 
     def test_overwriting_repr(self):
@@ -2524,21 +2524,21 @@ klasse TestRepr(unittest.TestCase):
         klasse C:
             x: int
             def __repr__(self):
-                return 'x'
+                gib 'x'
         self.assertEqual(repr(C(0)), 'x')
 
         @dataclass(repr=Wahr)
         klasse C:
             x: int
             def __repr__(self):
-                return 'x'
+                gib 'x'
         self.assertEqual(repr(C(0)), 'x')
 
         @dataclass(repr=Falsch)
         klasse C:
             x: int
             def __repr__(self):
-                return 'x'
+                gib 'x'
         self.assertEqual(repr(C(0)), 'x')
 
 
@@ -2566,7 +2566,7 @@ klasse TestEq(unittest.TestCase):
         klasse C:
             x: int
             def __eq__(self, other):
-                return other == 10
+                gib other == 10
         self.assertEqual(C(3), 10)
 
     def test_overwriting_eq(self):
@@ -2577,7 +2577,7 @@ klasse TestEq(unittest.TestCase):
         klasse C:
             x: int
             def __eq__(self, other):
-                return other == 3
+                gib other == 3
         self.assertEqual(C(1), 3)
         self.assertNotEqual(C(1), 1)
 
@@ -2585,7 +2585,7 @@ klasse TestEq(unittest.TestCase):
         klasse C:
             x: int
             def __eq__(self, other):
-                return other == 4
+                gib other == 4
         self.assertEqual(C(1), 4)
         self.assertNotEqual(C(1), 1)
 
@@ -2593,7 +2593,7 @@ klasse TestEq(unittest.TestCase):
         klasse C:
             x: int
             def __eq__(self, other):
-                return other == 5
+                gib other == 5
         self.assertEqual(C(1), 5)
         self.assertNotEqual(C(1), 1)
 
@@ -2608,7 +2608,7 @@ klasse TestOrdering(unittest.TestCase):
             def __lt__(self, other):
                 # Perform the test "backward", just to make
                 #  sure this is being called.
-                return self.x >= other
+                gib self.x >= other
 
         self.assertLess(C(0), -1)
         self.assertLessEqual(C(0), -1)
@@ -2631,7 +2631,7 @@ klasse TestOrdering(unittest.TestCase):
         klasse C:
             x: int
             def __lt__(self, other):
-                return Falsch
+                gib Falsch
         # Make sure other methods aren't added.
         self.assertNotIn('__le__', C.__dict__)
         self.assertNotIn('__ge__', C.__dict__)
@@ -2686,10 +2686,10 @@ klasse TestHash(unittest.TestCase):
         def non_bool(value):
             # Map to something sonst that's Wahr, but nicht a bool.
             wenn value is Nichts:
-                return Nichts
+                gib Nichts
             wenn value:
-                return (3,)
-            return 0
+                gib (3,)
+            gib 0
 
         def test(case, unsafe_hash, eq, frozen, with_hash, result):
             mit self.subTest(case=case, unsafe_hash=unsafe_hash, eq=eq,
@@ -2699,7 +2699,7 @@ klasse TestHash(unittest.TestCase):
                         @dataclass(unsafe_hash=unsafe_hash, eq=eq, frozen=frozen)
                         klasse C:
                             def __hash__(self):
-                                return 0
+                                gib 0
                     sonst:
                         @dataclass(unsafe_hash=unsafe_hash, eq=eq, frozen=frozen)
                         klasse C:
@@ -2729,7 +2729,7 @@ klasse TestHash(unittest.TestCase):
                         @dataclass(unsafe_hash=unsafe_hash, eq=eq, frozen=frozen)
                         klasse C:
                             def __hash__(self):
-                                return 0
+                                gib 0
 
                 sonst:
                     assert Falsch, f'unknown result {result!r}'
@@ -2770,7 +2770,7 @@ klasse TestHash(unittest.TestCase):
         klasse C:
             i: int
             def __eq__(self, other):
-                return self.i == other.i
+                gib self.i == other.i
         self.assertEqual(C(1), C(1))
         self.assertNotEqual(C(1), C(4))
 
@@ -2780,7 +2780,7 @@ klasse TestHash(unittest.TestCase):
         klasse C:
             i: int
             def __eq__(self, other):
-                return self.i == other.i
+                gib self.i == other.i
         self.assertEqual(C(1), C(1.0))
         self.assertEqual(hash(C(1)), hash(C(1.0)))
 
@@ -2790,7 +2790,7 @@ klasse TestHash(unittest.TestCase):
         klasse C:
             i: int
             def __eq__(self, other):
-                return self.i == 3 und self.i == other.i
+                gib self.i == 3 und self.i == other.i
         self.assertEqual(C(3), C(3))
         self.assertNotEqual(C(1), C(1))
         self.assertEqual(hash(C(1)), hash(C(1.0)))
@@ -2827,7 +2827,7 @@ klasse TestHash(unittest.TestCase):
 
         klasse Base:
             def __hash__(self):
-                return 301
+                gib 301
 
         # If frozen oder eq is Nichts, then use the default value (do not
         #  specify any value in the decorator).
@@ -3432,7 +3432,7 @@ klasse TestSlots(unittest.TestCase):
 
         def __getstate__(self):
             object.__setattr__(self, 'getstate_called', Wahr)
-            return [self.foo, self.bar]
+            gib [self.foo, self.bar]
 
     @dataclass(frozen=Wahr, slots=Wahr)
     klasse FrozenSlotsSetStateClass:
@@ -3456,7 +3456,7 @@ klasse TestSlots(unittest.TestCase):
 
         def __getstate__(self):
             object.__setattr__(self, 'getstate_called', Wahr)
-            return [self.foo, self.bar]
+            gib [self.foo, self.bar]
 
         def __setstate__(self, state):
             object.__setattr__(self, 'setstate_called', Wahr)
@@ -3812,14 +3812,14 @@ klasse TestSlots(unittest.TestCase):
             klasse SlotsTest:
                 pass
 
-            return SlotsTest
+            gib SlotsTest
 
         def make_with_annotations():
             @dataclass(slots=Wahr)
             klasse SlotsTest:
                 x: int
 
-            return SlotsTest
+            gib SlotsTest
 
         def make_with_annotations_and_method():
             @dataclass(slots=Wahr)
@@ -3827,9 +3827,9 @@ klasse TestSlots(unittest.TestCase):
                 x: int
 
                 def method(self) -> int:
-                    return self.x
+                    gib self.x
 
-            return SlotsTest
+            gib SlotsTest
 
         fuer make in (make_simple, make_with_annotations, make_with_annotations_and_method):
             mit self.subTest(make=make):
@@ -3850,8 +3850,8 @@ klasse TestDescriptors(unittest.TestCase):
                 self.name = name + 'x'
             def __get__(self, instance, owner):
                 wenn instance is nicht Nichts:
-                    return 1
-                return self
+                    gib 1
+                gib self
 
         # This is the case of just normal descriptor behavior, no
         #  dataclass code is involved in initializing the descriptor.
@@ -3986,9 +3986,9 @@ klasse TestDescriptors(unittest.TestCase):
         klasse D:
             def __get__(self, instance: Any, owner: object) -> int:
                 wenn instance is Nichts:
-                    return 100
+                    gib 100
 
-                return instance._x
+                gib instance._x
 
             def __set__(self, instance: Any, value: int) -> Nichts:
                 instance._x = value
@@ -4009,7 +4009,7 @@ klasse TestDescriptors(unittest.TestCase):
                 wenn instance is Nichts:
                     raise AttributeError()
 
-                return instance._x
+                gib instance._x
 
             def __set__(self, instance: Any, value: int) -> Nichts:
                 instance._x = value
@@ -4428,7 +4428,7 @@ klasse TestMakeDataclass(unittest.TestCase):
         def custom_dataclass(cls, *args, **kwargs):
             dc = dataclass(cls, *args, **kwargs)
             dc.__custom__ = Wahr
-            return dc
+            gib dc
 
         C = make_dataclass('C', [('x', int)], decorator=custom_dataclass)
         c = C(10)
@@ -5065,7 +5065,7 @@ klasse TestZeroArgumentSuperWithSlots(unittest.TestCase):
             def _get_foo(slf):
                 self.assertIs(__class__, type(slf))
                 self.assertIs(__class__, slf.__class__)
-                return __class__
+                gib __class__
 
             def _set_foo(slf, value):
                 self.assertIs(__class__, type(slf))
@@ -5087,7 +5087,7 @@ klasse TestZeroArgumentSuperWithSlots(unittest.TestCase):
         klasse A:
             @property
             def foo(slf):
-                return slf.__class__
+                gib slf.__class__
 
             @foo.setter
             def foo(slf, value):
@@ -5108,7 +5108,7 @@ klasse TestZeroArgumentSuperWithSlots(unittest.TestCase):
         klasse A:
             @property
             def foo(slf):
-                return __class__
+                gib __class__
 
         a = A()
         self.assertIs(a.foo, A)
@@ -5139,8 +5139,8 @@ klasse TestZeroArgumentSuperWithSlots(unittest.TestCase):
         def mydecorator(f):
             @wraps(f)
             def wrapper(*args, **kwargs):
-                return f(*args, **kwargs)
-            return wrapper
+                gib f(*args, **kwargs)
+            gib wrapper
 
         @dataclass(slots=Wahr)
         klasse A:
@@ -5156,7 +5156,7 @@ klasse TestZeroArgumentSuperWithSlots(unittest.TestCase):
         # undecorated class.
         klasse A:
             def cls(self):
-                return __class__
+                gib __class__
 
         self.assertIs(A().cls(), A)
 

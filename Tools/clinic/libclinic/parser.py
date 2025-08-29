@@ -34,12 +34,12 @@ def _create_parser_base_namespace() -> dict[str, Any]:
         ns[f'{name}_converter'] = converter
     fuer name, return_converter in return_converters.items():
         ns[f'{name}_return_converter'] = return_converter
-    return ns
+    gib ns
 
 
 def create_parser_namespace() -> dict[str, Any]:
     base_namespace = _create_parser_base_namespace()
-    return base_namespace.copy()
+    gib base_namespace.copy()
 
 
 klasse PythonParser:

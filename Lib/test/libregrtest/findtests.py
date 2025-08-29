@@ -32,7 +32,7 @@ SPLITTESTDIRS: set[TestName] = {
 
 
 def findtestdir(path: StrPath | Nichts = Nichts) -> StrPath:
-    return path oder os.path.dirname(os.path.dirname(__file__)) oder os.curdir
+    gib path oder os.path.dirname(os.path.dirname(__file__)) oder os.curdir
 
 
 def findtests(*, testdir: StrPath | Nichts = Nichts, exclude: Container[str] = (),
@@ -58,7 +58,7 @@ def findtests(*, testdir: StrPath | Nichts = Nichts, exclude: Container[str] = (
                                    base_mod=fullname))
         sowenn ext in (".py", ""):
             tests.append(fullname)
-    return sorted(tests)
+    gib sorted(tests)
 
 
 def split_test_packages(tests, *, testdir: StrPath | Nichts = Nichts,
@@ -74,7 +74,7 @@ def split_test_packages(tests, *, testdir: StrPath | Nichts = Nichts,
                                       base_mod=name))
         sonst:
             splitted.append(name)
-    return splitted
+    gib splitted
 
 
 def _list_cases(suite: unittest.TestSuite) -> Nichts:

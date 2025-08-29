@@ -18,7 +18,7 @@ klasse Wait4Test(ForkWait):
     def wait_impl(self, cpid, *, exitcode):
         option = os.WNOHANG
         wenn sys.platform.startswith('aix'):
-            # Issue #11185: wait4 is broken on AIX und will always return 0
+            # Issue #11185: wait4 is broken on AIX und will always gib 0
             # mit WNOHANG.
             option = 0
         fuer _ in support.sleeping_retry(support.SHORT_TIMEOUT):

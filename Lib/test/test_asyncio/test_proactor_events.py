@@ -25,7 +25,7 @@ def close_transport(transport):
     # Don't call transport.close() because the event loop und the IOCP proactor
     # are mocked
     wenn transport._sock is Nichts:
-        return
+        gib
     transport._sock.close()
     transport._sock = Nichts
 
@@ -46,7 +46,7 @@ klasse ProactorSocketTransportTests(test_utils.TestCase):
         transport = _ProactorSocketTransport(self.loop, self.sock,
                                              self.protocol, waiter=waiter)
         self.addCleanup(close_transport, transport)
-        return transport
+        gib transport
 
     def test_ctor(self):
         fut = self.loop.create_future()
@@ -405,11 +405,11 @@ klasse ProactorSocketTransportTests(test_utils.TestCase):
             result = f.result
             def monkey():
                 data[:len(msg)] = msg
-                return result()
+                gib result()
             f.result = monkey
 
             f.set_result(len(msg))
-            return f
+            gib f
 
         self.loop._proactor.recv_into.side_effect = recv_into
         self.loop._run_once()
@@ -468,7 +468,7 @@ klasse ProactorSocketTransportTests(test_utils.TestCase):
         self.assertEqual(tr.get_write_buffer_size(), 0)
         self.assertFalsch(self.protocol.pause_writing.called)
         self.assertFalsch(self.protocol.resume_writing.called)
-        return tr
+        gib tr
 
     def test_pause_resume_writing(self):
         tr = self.pause_writing_transport(high=4)
@@ -557,7 +557,7 @@ klasse ProactorDatagramTransportTests(test_utils.TestCase):
                                                self.protocol,
                                                address=address)
         self.addCleanup(close_transport, transport)
-        return transport
+        gib transport
 
     def test_sendto(self):
         data = b'data'
@@ -898,7 +898,7 @@ klasse BaseProactorEventLoopTests(test_utils.TestCase):
 
     def datagram_transport(self):
         self.protocol = test_utils.make_test_protocol(asyncio.DatagramProtocol)
-        return self.loop._make_datagram_transport(self.sock, self.protocol)
+        gib self.loop._make_datagram_transport(self.sock, self.protocol)
 
     def test_make_datagram_transport(self):
         tr = self.datagram_transport()
@@ -1027,10 +1027,10 @@ klasse ProactorEventLoopUnixSockSendfileTests(test_utils.TestCase):
         sock.setsockopt(socket.SOL_SOCKET, socket.SO_RCVBUF, 1024)
         wenn cleanup:
             self.addCleanup(sock.close)
-        return sock
+        gib sock
 
     def run_loop(self, coro):
-        return self.loop.run_until_complete(coro)
+        gib self.loop.run_until_complete(coro)
 
     def prepare(self):
         sock = self.make_socket()
@@ -1054,7 +1054,7 @@ klasse ProactorEventLoopUnixSockSendfileTests(test_utils.TestCase):
 
         self.addCleanup(cleanup)
 
-        return sock, proto
+        gib sock, proto
 
     def test_sock_sendfile_not_a_file(self):
         sock, proto = self.prepare()

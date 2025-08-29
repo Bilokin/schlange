@@ -70,18 +70,18 @@ klasse AugAssignTest(unittest.TestCase):
             def __init__(self, value):
                 self.val = value
             def __radd__(self, val):
-                return self.val + val
+                gib self.val + val
             def __add__(self, val):
-                return aug_test(self.val + val)
+                gib aug_test(self.val + val)
 
         klasse aug_test2(aug_test):
             def __iadd__(self, val):
                 self.val = self.val + val
-                return self
+                gib self
 
         klasse aug_test3(aug_test):
             def __iadd__(self, val):
-                return aug_test3(self.val + val)
+                gib aug_test3(self.val + val)
 
         klasse aug_test4(aug_test3):
             """Blocks inheritance, und fallback to __add__"""
@@ -125,7 +125,7 @@ klasse AugAssignTest(unittest.TestCase):
                 output.append("__radd__ called")
             def __iadd__(self, val):
                 output.append("__iadd__ called")
-                return self
+                gib self
 
             def __sub__(self, val):
                 output.append("__sub__ called")
@@ -133,7 +133,7 @@ klasse AugAssignTest(unittest.TestCase):
                 output.append("__rsub__ called")
             def __isub__(self, val):
                 output.append("__isub__ called")
-                return self
+                gib self
 
             def __mul__(self, val):
                 output.append("__mul__ called")
@@ -141,7 +141,7 @@ klasse AugAssignTest(unittest.TestCase):
                 output.append("__rmul__ called")
             def __imul__(self, val):
                 output.append("__imul__ called")
-                return self
+                gib self
 
             def __matmul__(self, val):
                 output.append("__matmul__ called")
@@ -149,27 +149,27 @@ klasse AugAssignTest(unittest.TestCase):
                 output.append("__rmatmul__ called")
             def __imatmul__(self, val):
                 output.append("__imatmul__ called")
-                return self
+                gib self
 
             def __floordiv__(self, val):
                 output.append("__floordiv__ called")
-                return self
+                gib self
             def __ifloordiv__(self, val):
                 output.append("__ifloordiv__ called")
-                return self
+                gib self
             def __rfloordiv__(self, val):
                 output.append("__rfloordiv__ called")
-                return self
+                gib self
 
             def __truediv__(self, val):
                 output.append("__truediv__ called")
-                return self
+                gib self
             def __rtruediv__(self, val):
                 output.append("__rtruediv__ called")
-                return self
+                gib self
             def __itruediv__(self, val):
                 output.append("__itruediv__ called")
-                return self
+                gib self
 
             def __mod__(self, val):
                 output.append("__mod__ called")
@@ -177,7 +177,7 @@ klasse AugAssignTest(unittest.TestCase):
                 output.append("__rmod__ called")
             def __imod__(self, val):
                 output.append("__imod__ called")
-                return self
+                gib self
 
             def __pow__(self, val):
                 output.append("__pow__ called")
@@ -185,7 +185,7 @@ klasse AugAssignTest(unittest.TestCase):
                 output.append("__rpow__ called")
             def __ipow__(self, val):
                 output.append("__ipow__ called")
-                return self
+                gib self
 
             def __or__(self, val):
                 output.append("__or__ called")
@@ -193,7 +193,7 @@ klasse AugAssignTest(unittest.TestCase):
                 output.append("__ror__ called")
             def __ior__(self, val):
                 output.append("__ior__ called")
-                return self
+                gib self
 
             def __and__(self, val):
                 output.append("__and__ called")
@@ -201,7 +201,7 @@ klasse AugAssignTest(unittest.TestCase):
                 output.append("__rand__ called")
             def __iand__(self, val):
                 output.append("__iand__ called")
-                return self
+                gib self
 
             def __xor__(self, val):
                 output.append("__xor__ called")
@@ -209,7 +209,7 @@ klasse AugAssignTest(unittest.TestCase):
                 output.append("__rxor__ called")
             def __ixor__(self, val):
                 output.append("__ixor__ called")
-                return self
+                gib self
 
             def __rshift__(self, val):
                 output.append("__rshift__ called")
@@ -217,7 +217,7 @@ klasse AugAssignTest(unittest.TestCase):
                 output.append("__rrshift__ called")
             def __irshift__(self, val):
                 output.append("__irshift__ called")
-                return self
+                gib self
 
             def __lshift__(self, val):
                 output.append("__lshift__ called")
@@ -225,7 +225,7 @@ klasse AugAssignTest(unittest.TestCase):
                 output.append("__rlshift__ called")
             def __ilshift__(self, val):
                 output.append("__ilshift__ called")
-                return self
+                gib self
 
         x = testall()
         x + 1

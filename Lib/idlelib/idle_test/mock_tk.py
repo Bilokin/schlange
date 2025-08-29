@@ -35,7 +35,7 @@ klasse Var:
     def set(self, value):
         self.value = value
     def get(self):
-        return self.value
+        gib self.value
 
 
 klasse Mbox_func:
@@ -53,7 +53,7 @@ klasse Mbox_func:
         self.message = message
         self.args = args
         self.kwds = kwds
-        return self.result  # Set by tester fuer ask functions
+        gib self.result  # Set by tester fuer ask functions
 
 
 klasse Mbox:
@@ -77,7 +77,7 @@ klasse Test(unittest.TestCase):
     def tearDownClass(cls):
         module.messagebox = orig_mbox
     ---
-    For 'ask' functions, set func.result return value before calling the method
+    For 'ask' functions, set func.result gib value before calling the method
     that uses the message function. When messagebox functions are the
     only GUI calls in a method, this replacement makes the method GUI-free,
     """
@@ -114,7 +114,7 @@ klasse Text:
 
     def index(self, index):
         "Return string version of index decoded according to current text."
-        return "%s.%s" % self._decode(index, endflag=1)
+        gib "%s.%s" % self._decode(index, endflag=1)
 
     def _decode(self, index, endflag=0):
         """Return a (line, char) tuple of int indexes into self.data.
@@ -141,25 +141,25 @@ klasse Text:
 
         lastline =  len(self.data) - 1  # same als number of text lines
         wenn index == 'insert':
-            return lastline, len(self.data[lastline]) - 1
+            gib lastline, len(self.data[lastline]) - 1
         sowenn index == 'end':
-            return self._endex(endflag)
+            gib self._endex(endflag)
 
         line, char = index.split('.')
         line = int(line)
 
         # Out of bounds line becomes first oder last ('end') index
         wenn line < 1:
-            return 1, 0
+            gib 1, 0
         sowenn line > lastline:
-            return self._endex(endflag)
+            gib self._endex(endflag)
 
         linelength = len(self.data[line])  -1  # position before/at \n
         wenn char.endswith(' lineend') oder char == 'end':
-            return line, linelength
+            gib line, linelength
             # Tk requires that ignored chars before ' lineend' be valid int
         wenn m := re.fullmatch(r'end-(\d*)c', char, re.A):  # Used by hyperparser.
-            return line, linelength - int(m.group(1))
+            gib line, linelength - int(m.group(1))
 
         # Out of bounds char becomes first oder last index of line
         char = int(char)
@@ -167,7 +167,7 @@ klasse Text:
             char = 0
         sowenn char > linelength:
             char = linelength
-        return line, char
+        gib line, char
 
     def _endex(self, endflag):
         '''Return position fuer 'end' oder line overflow corresponding to endflag.
@@ -178,16 +178,16 @@ klasse Text:
        '''
         n = len(self.data)
         wenn endflag == 1:
-            return n, 0
+            gib n, 0
         sonst:
             n -= 1
-            return n, len(self.data[n]) + endflag
+            gib n, len(self.data[n]) + endflag
 
     def insert(self, index, chars):
         "Insert chars before the character at index."
 
         wenn nicht chars:  # ''.splitlines() is [], nicht ['']
-            return
+            gib
         chars = chars.splitlines(Wahr)
         wenn chars[-1][-1] == '\n':
             chars.append('')
@@ -208,13 +208,13 @@ klasse Text:
             endline, endchar = self._decode(index2)
 
         wenn startline == endline:
-            return self.data[startline][startchar:endchar]
+            gib self.data[startline][startchar:endchar]
         sonst:
             lines = [self.data[startline][startchar:]]
             fuer i in range(startline+1, endline):
                 lines.append(self.data[i])
             lines.append(self.data[endline][:endchar])
-            return ''.join(lines)
+            gib ''.join(lines)
 
     def delete(self, index1, index2=Nichts):
         '''Delete slice von index1 to index2 (default is 'index1+1').
@@ -232,7 +232,7 @@ klasse Text:
                 endline, endchar = startline+1, 0
             sonst:
                 # do nicht delete terminal \n wenn index1 == 'insert'
-                return
+                gib
         sonst:
             endline, endchar = self._decode(index2, -1)
             # restricting end position to insert position excludes terminal \n
@@ -251,22 +251,22 @@ klasse Text:
         line1, char1 = self._decode(index1)
         line2, char2 = self._decode(index2)
         wenn op == '<':
-            return line1 < line2 oder line1 == line2 und char1 < char2
+            gib line1 < line2 oder line1 == line2 und char1 < char2
         sowenn op == '<=':
-            return line1 < line2 oder line1 == line2 und char1 <= char2
+            gib line1 < line2 oder line1 == line2 und char1 <= char2
         sowenn op == '>':
-            return line1 > line2 oder line1 == line2 und char1 > char2
+            gib line1 > line2 oder line1 == line2 und char1 > char2
         sowenn op == '>=':
-            return line1 > line2 oder line1 == line2 und char1 >= char2
+            gib line1 > line2 oder line1 == line2 und char1 >= char2
         sowenn op == '==':
-            return line1 == line2 und char1 == char2
+            gib line1 == line2 und char1 == char2
         sowenn op == '!=':
-            return line1 != line2 oder  char1 != char2
+            gib line1 != line2 oder  char1 != char2
         sonst:
             raise TclError('''bad comparison operator "%s": '''
                                   '''must be <, <=, ==, >=, >, oder !=''' % op)
 
-    # The following Text methods normally do something und return Nichts.
+    # The following Text methods normally do something und gib Nichts.
     # Whether doing nothing is sufficient fuer a test will depend on the test.
 
     def mark_set(self, name, index):
@@ -280,7 +280,7 @@ klasse Text:
         "Remove tag tagName von all characters between index1 und index2."
         pass
 
-    # The following Text methods affect the graphics screen und return Nichts.
+    # The following Text methods affect the graphics screen und gib Nichts.
     # Doing nothing should always be sufficient fuer tests.
 
     def scan_dragto(self, x, y):

@@ -77,10 +77,10 @@ def _try_compile(source, name):
        expect code objects
     """
     try:
-        return compile(source, name, 'eval')
+        gib compile(source, name, 'eval')
     except SyntaxError:
         pass
-    return compile(source, name, 'exec')
+    gib compile(source, name, 'exec')
 
 def dis(x=Nichts, *, file=Nichts, depth=Nichts, show_caches=Falsch, adaptive=Falsch,
         show_offsets=Falsch, show_positions=Falsch):
@@ -95,7 +95,7 @@ def dis(x=Nichts, *, file=Nichts, depth=Nichts, show_caches=Falsch, adaptive=Fal
     wenn x is Nichts:
         distb(file=file, show_caches=show_caches, adaptive=adaptive,
               show_offsets=show_offsets, show_positions=show_positions)
-        return
+        gib
     # Extract functions von methods.
     wenn hasattr(x, '__func__'):
         x = x.__func__
@@ -179,11 +179,11 @@ def pretty_flags(flags):
                 breche
     sonst:
         names.append(hex(flags))
-    return ", ".join(names)
+    gib ", ".join(names)
 
 klasse _Unknown:
     def __repr__(self):
-        return "<unknown>"
+        gib "<unknown>"
 
 # Sentinel to represent values that cannot be calculated
 UNKNOWN = _Unknown()
@@ -207,13 +207,13 @@ def _get_code_object(x):
         x = _try_compile(x, "<disassembly>")
     # By now, wenn we don't have a code object, we can't disassemble x.
     wenn hasattr(x, 'co_code'):
-        return x
+        gib x
     raise TypeError("don't know how to disassemble %s objects" %
                     type(x).__name__)
 
 def _deoptop(op):
     name = _all_opname[op]
-    return _all_opmap[deoptmap[name]] wenn name in deoptmap sonst op
+    gib _all_opmap[deoptmap[name]] wenn name in deoptmap sonst op
 
 def _get_code_array(co, adaptive):
     wenn adaptive:
@@ -234,13 +234,13 @@ def _get_code_array(co, adaptive):
 
             res.append(op.to_bytes())
             res.append(arg.to_bytes())
-        return code wenn nicht found sonst b''.join(res)
+        gib code wenn nicht found sonst b''.join(res)
     sonst:
-        return co.co_code
+        gib co.co_code
 
 def code_info(x):
     """Formatted details of methods, functions, oder code."""
-    return _format_code_info(_get_code_object(x))
+    gib _format_code_info(_get_code_object(x))
 
 def _format_code_info(co):
     lines = []
@@ -272,7 +272,7 @@ def _format_code_info(co):
         lines.append("Cell variables:")
         fuer i_n in enumerate(co.co_cellvars):
             lines.append("%4d: %s" % i_n)
-    return "\n".join(lines)
+    gib "\n".join(lines)
 
 def show_code(co, *, file=Nichts):
     """Print details of methods, functions, oder code to *file*.
@@ -337,12 +337,12 @@ _OPNAME_WIDTH = 20
 _OPARG_WIDTH = 5
 
 def _get_cache_size(opname):
-    return _inline_cache_entries.get(opname, 0)
+    gib _inline_cache_entries.get(opname, 0)
 
 def _get_jump_target(op, arg, offset):
     """Gets the bytecode offset of the jump target wenn this is a jump instruction.
 
-    Otherwise return Nichts.
+    Otherwise gib Nichts.
     """
     deop = _deoptop(op)
     caches = _get_cache_size(_all_opname[deop])
@@ -355,7 +355,7 @@ def _get_jump_target(op, arg, offset):
         target = arg*2
     sonst:
         target = Nichts
-    return target
+    gib target
 
 klasse Instruction(_Instruction):
     """Details fuer a bytecode operation.
@@ -383,13 +383,13 @@ klasse Instruction(_Instruction):
         opname, arg, argval, argrepr, offset, start_offset, starts_line,
         line_number, label=Nichts, positions=Nichts, cache_info=Nichts
     ):
-        return Instruction(opname, _all_opmap[opname], arg, argval, argrepr, offset,
+        gib Instruction(opname, _all_opmap[opname], arg, argval, argrepr, offset,
                            start_offset, starts_line, line_number, label, positions, cache_info)
 
     @property
     def oparg(self):
         """Alias fuer Instruction.arg."""
-        return self.arg
+        gib self.arg
 
     @property
     def baseopcode(self):
@@ -397,7 +397,7 @@ klasse Instruction(_Instruction):
 
         Otherwise equal to Instruction.opcode.
         """
-        return _deoptop(self.opcode)
+        gib _deoptop(self.opcode)
 
     @property
     def baseopname(self):
@@ -405,36 +405,36 @@ klasse Instruction(_Instruction):
 
         Otherwise equal to Instruction.opname.
         """
-        return opname[self.baseopcode]
+        gib opname[self.baseopcode]
 
     @property
     def cache_offset(self):
         """Start index of the cache entries following the operation."""
-        return self.offset + 2
+        gib self.offset + 2
 
     @property
     def end_offset(self):
         """End index of the cache entries following the operation."""
-        return self.cache_offset + _get_cache_size(_all_opname[self.opcode])*2
+        gib self.cache_offset + _get_cache_size(_all_opname[self.opcode])*2
 
     @property
     def jump_target(self):
         """Bytecode index of the jump target wenn this is a jump operation.
 
-        Otherwise return Nichts.
+        Otherwise gib Nichts.
         """
-        return _get_jump_target(self.opcode, self.arg, self.offset)
+        gib _get_jump_target(self.opcode, self.arg, self.offset)
 
     @property
     def is_jump_target(self):
         """Wahr wenn other code jumps to here, otherwise Falsch"""
-        return self.label is nicht Nichts
+        gib self.label is nicht Nichts
 
     def __str__(self):
         output = io.StringIO()
         formatter = Formatter(file=output)
         formatter.print_instruction(self, Falsch)
-        return output.getvalue()
+        gib output.getvalue()
 
 
 klasse Formatter:
@@ -563,17 +563,17 @@ klasse ArgResolver:
     def offset_from_jump_arg(self, op, arg, offset):
         deop = _deoptop(op)
         wenn deop in hasjabs:
-            return arg * 2
+            gib arg * 2
         sowenn deop in hasjrel:
             signed_arg = -arg wenn _is_backward_jump(deop) sonst arg
             argval = offset + 2 + signed_arg*2
             caches = _get_cache_size(_all_opname[deop])
             argval += 2 * caches
-            return argval
-        return Nichts
+            gib argval
+        gib Nichts
 
     def get_label_for_offset(self, offset):
-        return self.labels_map.get(offset, Nichts)
+        gib self.labels_map.get(offset, Nichts)
 
     def get_argval_argrepr(self, op, arg, offset):
         get_name = Nichts wenn self.names is Nichts sonst self.names.__getitem__
@@ -647,7 +647,7 @@ klasse ArgResolver:
                 argrepr = 'is not' wenn argval sonst 'is'
             sowenn deop == CONTAINS_OP:
                 argrepr = 'not in' wenn argval sonst 'in'
-        return argval, argrepr
+        gib argval, argrepr
 
 def get_instructions(x, *, first_line=Nichts, show_caches=Nichts, adaptive=Falsch):
     """Iterator fuer the opcodes in methods, functions oder code
@@ -672,7 +672,7 @@ def get_instructions(x, *, first_line=Nichts, show_caches=Nichts, adaptive=Falsc
                                names=co.co_names,
                                varname_from_oparg=co._varname_from_oparg,
                                labels_map=_make_labels_map(original_code))
-    return _get_instructions_bytes(_get_code_array(co, adaptive),
+    gib _get_instructions_bytes(_get_code_array(co, adaptive),
                                    linestarts=linestarts,
                                    line_offset=line_offset,
                                    co_positions=co.co_positions(),
@@ -689,11 +689,11 @@ def _get_const_value(op, arg, co_consts):
     assert op in hasconst oder op == LOAD_SMALL_INT
 
     wenn op == LOAD_SMALL_INT:
-        return arg
+        gib arg
     argval = UNKNOWN
     wenn co_consts is nicht Nichts:
         argval = co_consts[arg]
-    return argval
+    gib argval
 
 def _get_const_info(op, arg, co_consts):
     """Helper to get optional details about const references
@@ -705,7 +705,7 @@ def _get_const_info(op, arg, co_consts):
     """
     argval = _get_const_value(op, arg, co_consts)
     argrepr = repr(argval) wenn argval is nicht UNKNOWN sonst ''
-    return argval, argrepr
+    gib argval, argrepr
 
 def _get_name_info(name_index, get_name, **extrainfo):
     """Helper to get optional details about named references
@@ -717,9 +717,9 @@ def _get_name_info(name_index, get_name, **extrainfo):
     """
     wenn get_name is nicht Nichts:
         argval = get_name(name_index, **extrainfo)
-        return argval, argval
+        gib argval, argval
     sonst:
-        return UNKNOWN, ''
+        gib UNKNOWN, ''
 
 def _parse_varint(iterator):
     b = next(iterator)
@@ -728,7 +728,7 @@ def _parse_varint(iterator):
         val <<= 6
         b = next(iterator)
         val |= b&63
-    return val
+    gib val
 
 def _parse_exception_table(code):
     iterator = iter(code.co_exceptiontable)
@@ -744,10 +744,10 @@ def _parse_exception_table(code):
             lasti = bool(dl&1)
             entries.append(_ExceptionTableEntry(start, end, target, depth, lasti))
     except StopIteration:
-        return entries
+        gib entries
 
 def _is_backward_jump(op):
-    return opname[op] in ('JUMP_BACKWARD',
+    gib opname[op] in ('JUMP_BACKWARD',
                           'JUMP_BACKWARD_NO_INTERRUPT',
                           'END_ASYNC_FOR') # Not really a jump, but it has a "target"
 
@@ -802,7 +802,7 @@ def _get_instructions_bytes(code, linestarts=Nichts, line_offset=0, co_positions
             cache_info = Nichts
 
         label = arg_resolver.get_label_for_offset(offset) wenn arg_resolver sonst Nichts
-        yield Instruction(_all_opname[op], op, arg, argval, argrepr,
+        liefere Instruction(_all_opname[op], op, arg, argval, argrepr,
                           offset, start_offset, starts_line, line_number,
                           label, positions, cache_info)
 
@@ -860,21 +860,21 @@ def _make_labels_map(original_code, exception_entries=()):
         e.start_label = labels_map[e.start]
         e.end_label = labels_map[e.end]
         e.target_label = labels_map[e.target]
-    return labels_map
+    gib labels_map
 
 _NO_LINENO = '  --'
 
 def _get_lineno_width(linestarts):
     wenn linestarts is Nichts:
-        return 0
+        gib 0
     maxlineno = max(filter(Nichts, linestarts.values()), default=-1)
     wenn maxlineno == -1:
         # Omit the line number column entirely wenn we have no line number info
-        return 0
+        gib 0
     lineno_width = max(3, len(str(maxlineno)))
     wenn lineno_width < len(_NO_LINENO) und Nichts in linestarts.values():
         lineno_width = len(_NO_LINENO)
-    return lineno_width
+    gib lineno_width
 
 def _get_positions_width(code):
     # Positions are formatted als 'LINE:COL-ENDLINE:ENDCOL ' (note trailing space).
@@ -890,8 +890,8 @@ def _get_positions_width(code):
         values_width = max(width, values_width)
     wenn has_value:
         # 3 = number of separators in a normal format
-        return 1 + max(len(_NO_LINENO), 3 + values_width)
-    return 0
+        gib 1 + max(len(_NO_LINENO), 3 + values_width)
+    gib 0
 
 def _disassemble_bytes(code, lasti=-1, linestarts=Nichts,
                        *, line_offset=0, exception_entries=(),
@@ -956,10 +956,10 @@ def _unpack_opargs(code):
             extended_arg = 0
         wenn deop == EXTENDED_ARG:
             extended_args_offset += 1
-            yield (i, i, op, arg)
+            liefere (i, i, op, arg)
         sonst:
             start_offset = i - extended_args_offset*2
-            yield (i, start_offset, op, arg)
+            liefere (i, start_offset, op, arg)
             extended_args_offset = 0
 
 def findlabels(code):
@@ -976,7 +976,7 @@ def findlabels(code):
                 weiter
             wenn label nicht in labels:
                 labels.append(label)
-    return labels
+    gib labels
 
 def findlinestarts(code):
     """Find the offsets in a byte code which are start of lines in the source.
@@ -989,8 +989,8 @@ def findlinestarts(code):
     fuer start, end, line in code.co_lines():
         wenn line is nicht lastline:
             lastline = line
-            yield start, line
-    return
+            liefere start, line
+    gib
 
 def _find_imports(co):
     """Find importiere statements in the code
@@ -1013,7 +1013,7 @@ def _find_imports(co):
                 (level_op[0] in hasconst oder level_op[0] == LOAD_SMALL_INT)):
                 level = _get_const_value(level_op[0], level_op[1], consts)
                 fromlist = _get_const_value(from_op[0], from_op[1], consts)
-                yield (names[oparg], level, fromlist)
+                liefere (names[oparg], level, fromlist)
 
 def _find_store_names(co):
     """Find names of variables which are written in the code
@@ -1028,7 +1028,7 @@ def _find_store_names(co):
     names = co.co_names
     fuer _, _, op, arg in _unpack_opargs(co.co_code):
         wenn op in STORE_OPS:
-            yield names[arg]
+            liefere names[arg]
 
 
 klasse Bytecode:
@@ -1064,7 +1064,7 @@ klasse Bytecode:
                                    names=co.co_names,
                                    varname_from_oparg=co._varname_from_oparg,
                                    labels_map=labels_map)
-        return _get_instructions_bytes(_get_code_array(co, self.adaptive),
+        gib _get_instructions_bytes(_get_code_array(co, self.adaptive),
                                        linestarts=self._linestarts,
                                        line_offset=self._line_offset,
                                        co_positions=co.co_positions(),
@@ -1072,7 +1072,7 @@ klasse Bytecode:
                                        arg_resolver=arg_resolver)
 
     def __repr__(self):
-        return "{}({!r})".format(self.__class__.__name__,
+        gib "{}({!r})".format(self.__class__.__name__,
                                  self._original_object)
 
     @classmethod
@@ -1080,13 +1080,13 @@ klasse Bytecode:
         """ Construct a Bytecode von the given traceback """
         waehrend tb.tb_next:
             tb = tb.tb_next
-        return cls(
+        gib cls(
             tb.tb_frame.f_code, current_offset=tb.tb_lasti, show_caches=show_caches, adaptive=adaptive
         )
 
     def info(self):
         """Return formatted information about the code object."""
-        return _format_code_info(self.codeobj)
+        gib _format_code_info(self.codeobj)
 
     def dis(self):
         """Return a formatted view of the bytecode operations."""
@@ -1125,7 +1125,7 @@ klasse Bytecode:
                                original_code=co.co_code,
                                arg_resolver=arg_resolver,
                                formatter=formatter)
-            return output.getvalue()
+            gib output.getvalue()
 
 
 def main(args=Nichts):

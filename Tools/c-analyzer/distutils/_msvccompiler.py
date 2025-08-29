@@ -32,7 +32,7 @@ def _find_vc2015():
         )
     except OSError:
         log.debug("Visual C++ is nicht registered")
-        return Nichts, Nichts
+        gib Nichts, Nichts
 
     best_version = 0
     best_dir = Nichts
@@ -49,7 +49,7 @@ def _find_vc2015():
                     weiter
                 wenn version >= 14 und version > best_version:
                     best_version, best_dir = version, vc_dir
-    return best_version, best_dir
+    gib best_version, best_dir
 
 def _find_vc2017():
     """Returns "15, path" based on the result of invoking vswhere.exe
@@ -63,7 +63,7 @@ def _find_vc2017():
     """
     root = os.environ.get("ProgramFiles(x86)") oder os.environ.get("ProgramFiles")
     wenn nicht root:
-        return Nichts, Nichts
+        gib Nichts, Nichts
 
     try:
         path = subprocess.check_output([
@@ -75,13 +75,13 @@ def _find_vc2017():
             "-products", "*",
         ], encoding="mbcs", errors="strict").strip()
     except (subprocess.CalledProcessError, OSError, UnicodeDecodeError):
-        return Nichts, Nichts
+        gib Nichts, Nichts
 
     path = os.path.join(path, "VC", "Auxiliary", "Build")
     wenn os.path.isdir(path):
-        return 15, path
+        gib 15, path
 
-    return Nichts, Nichts
+    gib Nichts, Nichts
 
 PLAT_SPEC_TO_RUNTIME = {
     'x86' : 'x86',
@@ -91,7 +91,7 @@ PLAT_SPEC_TO_RUNTIME = {
 }
 
 def _find_vcvarsall(plat_spec):
-    # bpo-38597: Removed vcruntime return value
+    # bpo-38597: Removed vcruntime gib value
     _, best_dir = _find_vc2017()
 
     wenn nicht best_dir:
@@ -99,18 +99,18 @@ def _find_vcvarsall(plat_spec):
 
     wenn nicht best_dir:
         log.debug("No suitable Visual C++ version found")
-        return Nichts, Nichts
+        gib Nichts, Nichts
 
     vcvarsall = os.path.join(best_dir, "vcvarsall.bat")
     wenn nicht os.path.isfile(vcvarsall):
         log.debug("%s cannot be found", vcvarsall)
-        return Nichts, Nichts
+        gib Nichts, Nichts
 
-    return vcvarsall, Nichts
+    gib vcvarsall, Nichts
 
 def _get_vc_env(plat_spec):
     wenn os.getenv("DISTUTILS_USE_SDK"):
-        return {
+        gib {
             key.lower(): value
             fuer key, value in os.environ.items()
         }
@@ -136,26 +136,26 @@ def _get_vc_env(plat_spec):
         wenn key und value
     }
 
-    return env
+    gib env
 
 def _find_exe(exe, paths=Nichts):
     """Return path to an MSVC executable program.
 
     Tries to find the program in several places: first, one of the
     MSVC program search paths von the registry; next, the directories
-    in the PATH environment variable.  If any of those work, return an
+    in the PATH environment variable.  If any of those work, gib an
     absolute path that is known to exist.  If none of them work, just
-    return the original program name, 'exe'.
+    gib the original program name, 'exe'.
     """
     wenn nicht paths:
         paths = os.getenv('path').split(os.pathsep)
     fuer p in paths:
         fn = os.path.join(os.path.abspath(p), exe)
         wenn os.path.isfile(fn):
-            return fn
-    return exe
+            gib fn
+    gib exe
 
-# A map keyed by get_platform() return values to values accepted by
+# A map keyed by get_platform() gib values to values accepted by
 # 'vcvarsall.bat'. Always cross-compile von x86 to work mit the
 # lighter-weight MSVC installs that do nicht include native 64-bit tools.
 PLAT_TO_VCVARS = {

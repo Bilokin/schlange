@@ -29,7 +29,7 @@ klasse RebindBuiltinsTests(unittest.TestCase):
     def test_globals_shadow_builtins(self):
         # Modify globals() to shadow an entry in builtins.
         def foo():
-            return len([1, 2, 3])
+            gib len([1, 2, 3])
         self.configure_func(foo)
 
         self.assertEqual(foo(), 3)
@@ -39,7 +39,7 @@ klasse RebindBuiltinsTests(unittest.TestCase):
     def test_modify_builtins(self):
         # Modify the builtins module directly.
         def foo():
-            return len([1, 2, 3])
+            gib len([1, 2, 3])
         self.configure_func(foo)
 
         self.assertEqual(foo(), 3)
@@ -50,8 +50,8 @@ klasse RebindBuiltinsTests(unittest.TestCase):
         # Modify the builtins out von under a live generator.
         def foo():
             x = range(3)
-            yield len(x)
-            yield len(x)
+            liefere len(x)
+            liefere len(x)
         self.configure_func(foo)
 
         g = foo()
@@ -71,14 +71,14 @@ klasse RebindBuiltinsTests(unittest.TestCase):
                 l.append(len(range(7)))
                 modifier()
                 l.append(len(range(7)))
-                return l
+                gib l
             self.configure_func(foo, lambda: Nichts)
 
             self.assertEqual(foo(bar), [7, 4])
 
     def test_cannot_change_globals_or_builtins_with_eval(self):
         def foo():
-            return len([1, 2, 3])
+            gib len([1, 2, 3])
         self.configure_func(foo)
 
         # Note that this *doesn't* change the definition of len() seen by foo().
@@ -91,7 +91,7 @@ klasse RebindBuiltinsTests(unittest.TestCase):
 
     def test_cannot_change_globals_or_builtins_with_exec(self):
         def foo():
-            return len([1, 2, 3])
+            gib len([1, 2, 3])
         self.configure_func(foo)
 
         globals_dict = {"foo": foo}
@@ -109,8 +109,8 @@ klasse RebindBuiltinsTests(unittest.TestCase):
     def test_cannot_replace_builtins_dict_while_active(self):
         def foo():
             x = range(3)
-            yield len(x)
-            yield len(x)
+            liefere len(x)
+            liefere len(x)
         self.configure_func(foo)
 
         g = foo()
@@ -120,7 +120,7 @@ klasse RebindBuiltinsTests(unittest.TestCase):
 
     def test_cannot_replace_builtins_dict_between_calls(self):
         def foo():
-            return len([1, 2, 3])
+            gib len([1, 2, 3])
         self.configure_func(foo)
 
         self.assertEqual(foo(), 3)
@@ -140,7 +140,7 @@ klasse RebindBuiltinsTests(unittest.TestCase):
         # https://github.com/python/cpython/issues/91625
         klasse MyGlobals(dict):
             def __missing__(self, key):
-                return int(key.removeprefix("_number_"))
+                gib int(key.removeprefix("_number_"))
 
         # Need more than 256 variables to use EXTENDED_ARGS
         variables = 400
@@ -161,7 +161,7 @@ klasse TestTracing(unittest.TestCase):
     def test_after_specialization(self):
 
         def trace(frame, event, arg):
-            return trace
+            gib trace
 
         turn_on_trace = Falsch
 

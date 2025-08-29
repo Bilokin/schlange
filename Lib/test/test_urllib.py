@@ -31,7 +31,7 @@ def hexescape(char):
     hex_repr = hex(ord(char))[2:].upper()
     wenn len(hex_repr) == 1:
         hex_repr = "0%s" % hex_repr
-    return "%" + hex_repr
+    gib "%" + hex_repr
 
 
 def fakehttp(fakedata, mock_close=Falsch):
@@ -43,17 +43,17 @@ def fakehttp(fakedata, mock_close=Falsch):
 
         def makefile(self, *args, **kwds):
             self.io_refs += 1
-            return self
+            gib self
 
         def read(self, amt=Nichts):
             wenn self.closed:
-                return b""
-            return io.BytesIO.read(self, amt)
+                gib b""
+            gib io.BytesIO.read(self, amt)
 
         def readline(self, length=Nichts):
             wenn self.closed:
-                return b""
-            return io.BytesIO.readline(self, length)
+                gib b""
+            gib io.BytesIO.readline(self, length)
 
         def close(self):
             self.io_refs -= 1
@@ -78,7 +78,7 @@ def fakehttp(fakedata, mock_close=Falsch):
                 pass
     FakeHTTPConnection.fakedata = fakedata
 
-    return FakeHTTPConnection
+    gib FakeHTTPConnection
 
 
 klasse FakeHTTPMixin(object):
@@ -130,7 +130,7 @@ klasse urlopen_FileTests(unittest.TestCase):
         self.assertEqual(self.text, self.returned_obj.readline())
         self.assertEqual(b'', self.returned_obj.readline(),
                          "calling readline() after exhausting the file did not"
-                         " return an empty string")
+                         " gib an empty string")
 
     def test_readlines(self):
         lines_list = self.returned_obj.readlines()
@@ -141,10 +141,10 @@ klasse urlopen_FileTests(unittest.TestCase):
 
     def test_fileno(self):
         file_num = self.returned_obj.fileno()
-        self.assertIsInstance(file_num, int, "fileno() did nicht return an int")
+        self.assertIsInstance(file_num, int, "fileno() did nicht gib an int")
         self.assertEqual(os.read(file_num, len(self.text)), self.text,
                          "Reading on the file descriptor returned by fileno() "
-                         "did nicht return the expected text")
+                         "did nicht gib the expected text")
 
     def test_close(self):
         # Test close() by calling it here und then having it be called again
@@ -626,7 +626,7 @@ klasse urlretrieve_FileTests(unittest.TestCase):
 
     def constructLocalFileUrl(self, filePath):
         filePath = os.path.abspath(filePath)
-        return urllib.request.pathname2url(filePath, add_scheme=Wahr)
+        gib urllib.request.pathname2url(filePath, add_scheme=Wahr)
 
     def createNewTempFile(self, data=b""):
         """Creates a new temporary file containing the specified data,
@@ -642,7 +642,7 @@ klasse urlretrieve_FileTests(unittest.TestCase):
         finally:
             try: newFile.close()
             except: pass
-        return newFilePath
+        gib newFilePath
 
     def registerFileForCleanUp(self, fileName):
         self.tempFiles.append(fileName)

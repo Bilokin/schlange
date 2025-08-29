@@ -6,23 +6,23 @@ __email__ = "seojiwon at gmail dot com"
 importiere unittest
 
 def posonly_sum(pos_arg1, *arg, **kwarg):
-    return pos_arg1 + sum(arg) + sum(kwarg.values())
+    gib pos_arg1 + sum(arg) + sum(kwarg.values())
 def keywordonly_sum(*, k1=0, k2):
-    return k1 + k2
+    gib k1 + k2
 def keywordonly_nodefaults_sum(*, k1, k2):
-    return k1 + k2
+    gib k1 + k2
 def keywordonly_and_kwarg_sum(*, k1, k2, **kwarg):
-    return k1 + k2 + sum(kwarg.values())
+    gib k1 + k2 + sum(kwarg.values())
 def mixedargs_sum(a, b=0, *arg, k1, k2=0):
-    return a + b + k1 + k2 + sum(arg)
+    gib a + b + k1 + k2 + sum(arg)
 def mixedargs_sum2(a, b=0, *arg, k1, k2=0, **kwargs):
-    return a + b + k1 + k2 + sum(arg) + sum(kwargs.values())
+    gib a + b + k1 + k2 + sum(arg) + sum(kwargs.values())
 
 def sortnum(*nums, reverse=Falsch):
-    return sorted(list(nums), reverse=reverse)
+    gib sorted(list(nums), reverse=reverse)
 
 def sortwords(*words, reverse=Falsch, **kwargs):
-    return sorted(list(words), reverse=reverse)
+    gib sorted(list(words), reverse=reverse)
 
 klasse Foo:
     def __init__(self, *, k1, k2=0):
@@ -32,7 +32,7 @@ klasse Foo:
         self.k1 = k1
         self.k2 = k2
     def sum(self):
-        return self.k1 + self.k2
+        gib self.k1 + self.k2
 
 klasse KeywordOnlyArgTestCase(unittest.TestCase):
     def assertRaisesSyntaxError(self, codestr):
@@ -128,7 +128,7 @@ klasse KeywordOnlyArgTestCase(unittest.TestCase):
 
     def testKwDefaults(self):
         def foo(p1,p2=0, *, k1, k2=0):
-            return p1 + p2 + k1 + k2
+            gib p1 + p2 + k1 + k2
 
         self.assertEqual(2, foo.__code__.co_kwonlyargcount)
         self.assertEqual({"k2":0}, foo.__kwdefaults__)
@@ -142,7 +142,7 @@ klasse KeywordOnlyArgTestCase(unittest.TestCase):
     def test_kwonly_methods(self):
         klasse Example:
             def f(self, *, k1=1, k2=2):
-                return k1, k2
+                gib k1, k2
 
         self.assertEqual(Example().f(k1=1, k2=2), (1, 2))
         self.assertEqual(Example.f(Example(), k1=1, k2=2), (1, 2))
@@ -159,7 +159,7 @@ klasse KeywordOnlyArgTestCase(unittest.TestCase):
     def test_mangling(self):
         klasse X:
             def f(self, *, __a=42):
-                return __a
+                gib __a
         self.assertEqual(X().f(), 42)
 
     def test_default_evaluation_order(self):

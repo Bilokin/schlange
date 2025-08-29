@@ -19,7 +19,7 @@ klasse SimpleLoader:
         self.reader = reader
 
     def get_resource_reader(self, package):
-        return self.reader
+        gib self.reader
 
 
 klasse MagicResources(TraversableResources):
@@ -31,7 +31,7 @@ klasse MagicResources(TraversableResources):
         self.path = path
 
     def files(self):
-        return self.path
+        gib self.path
 
 
 klasse CustomTraversableResourcesTests(unittest.TestCase):

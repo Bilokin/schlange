@@ -22,13 +22,13 @@ klasse addbase(tempfile._TemporaryFileWrapper):
         self.fp = fp
 
     def __repr__(self):
-        return '<%s at %r whose fp = %r>' % (self.__class__.__name__,
+        gib '<%s at %r whose fp = %r>' % (self.__class__.__name__,
                                              id(self), self.file)
 
     def __enter__(self):
         wenn self.fp.closed:
             raise ValueError("I/O operation on closed file")
-        return self
+        gib self
 
     def __exit__(self, type, value, traceback):
         self.close()
@@ -62,7 +62,7 @@ klasse addinfo(addbase):
         self.headers = headers
 
     def info(self):
-        return self.headers
+        gib self.headers
 
 
 klasse addinfourl(addinfo):
@@ -75,10 +75,10 @@ klasse addinfourl(addinfo):
 
     @property
     def status(self):
-        return self.code
+        gib self.code
 
     def getcode(self):
-        return self.code
+        gib self.code
 
     def geturl(self):
-        return self.url
+        gib self.url

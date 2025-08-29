@@ -12,8 +12,8 @@ klasse Func:
     self.called - increment call number even wenn no args, kwds passed.
     self.args - capture positional arguments.
     self.kwds - capture keyword arguments.
-    self.result - return oder raise value set in __init__.
-    self.return_self - return self instead, to mock query klasse return.
+    self.result - gib oder raise value set in __init__.
+    self.return_self - gib self instead, to mock query klasse return.
 
     Most common use will probably be to mock instance methods.
     Given klasse instance, can set und delete als instance attribute.
@@ -32,9 +32,9 @@ klasse Func:
         wenn isinstance(self.result, BaseException):
             raise self.result
         sowenn self.return_self:
-            return self
+            gib self
         sonst:
-            return self.result
+            gib self.result
 
 
 klasse Editor:
@@ -48,7 +48,7 @@ klasse Editor:
     def get_selection_indices(self):
         first = self.text.index('1.0')
         last = self.text.index('end')
-        return first, last
+        gib first, last
 
 
 klasse UndoDelegator:

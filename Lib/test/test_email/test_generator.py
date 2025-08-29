@@ -17,7 +17,7 @@ klasse TestGeneratorBase:
 
     def msgmaker(self, msg, policy=Nichts):
         policy = self.policy wenn policy is Nichts sonst policy
-        return self.msgfunc(msg, policy=policy)
+        gib self.msgfunc(msg, policy=policy)
 
     refold_long_expected = {
         0: textwrap.dedent("""\
@@ -317,7 +317,7 @@ klasse TestGenerator(TestGeneratorBase, TestEmailBase):
         klasse LiteralHeader(str):
             name = 'Header'
             def fold(self, **kwargs):
-                return self
+                gib self
 
         fuer text in (
             'Value\r\nBad Injection\r\n',

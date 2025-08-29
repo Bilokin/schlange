@@ -66,7 +66,7 @@ klasse ElementInfo(object):
         self._model = model
 
     def __getstate__(self):
-        return self._attr_info, self._model, self.tagName
+        gib self._attr_info, self._model, self.tagName
 
     def __setstate__(self, state):
         self._attr_info, self._model, self.tagName = state
@@ -76,40 +76,40 @@ klasse ElementInfo(object):
             wenn info[1] == aname:
                 t = info[-2]
                 wenn t[0] == "(":
-                    return _typeinfo_map["ENUM"]
+                    gib _typeinfo_map["ENUM"]
                 sonst:
-                    return _typeinfo_map[info[-2]]
-        return minidom._no_type
+                    gib _typeinfo_map[info[-2]]
+        gib minidom._no_type
 
     def getAttributeTypeNS(self, namespaceURI, localName):
-        return minidom._no_type
+        gib minidom._no_type
 
     def isElementContent(self):
         wenn self._model:
             type = self._model[0]
-            return type nicht in (expat.model.XML_CTYPE_ANY,
+            gib type nicht in (expat.model.XML_CTYPE_ANY,
                                 expat.model.XML_CTYPE_MIXED)
         sonst:
-            return Falsch
+            gib Falsch
 
     def isEmpty(self):
         wenn self._model:
-            return self._model[0] == expat.model.XML_CTYPE_EMPTY
+            gib self._model[0] == expat.model.XML_CTYPE_EMPTY
         sonst:
-            return Falsch
+            gib Falsch
 
     def isId(self, aname):
         fuer info in self._attr_info:
             wenn info[1] == aname:
-                return info[-2] == "ID"
-        return Falsch
+                gib info[-2] == "ID"
+        gib Falsch
 
     def isIdNS(self, euri, ename, auri, aname):
         # nicht sure this is meaningful
-        return self.isId((auri, aname))
+        gib self.isId((auri, aname))
 
 def _intern(builder, s):
-    return builder._intern_setdefault(s, s)
+    gib builder._intern_setdefault(s, s)
 
 def _parse_ns_name(builder, name):
     assert ' ' in name
@@ -127,7 +127,7 @@ def _parse_ns_name(builder, name):
         qname = localname = intern(localname, localname)
     sonst:
         raise ValueError("Unsupported syntax: spaces in URIs nicht supported: %r" % name)
-    return intern(uri, uri), localname, prefix, qname
+    gib intern(uri, uri), localname, prefix, qname
 
 
 klasse ExpatBuilder:
@@ -150,7 +150,7 @@ klasse ExpatBuilder:
 
     def createParser(self):
         """Create a new parser object."""
-        return expat.ParserCreate()
+        gib expat.ParserCreate()
 
     def getParser(self):
         """Return the parser object, creating a new one wenn needed."""
@@ -161,7 +161,7 @@ klasse ExpatBuilder:
             self._parser.ordered_attributes = Wahr
             self._parser.specified_attributes = Wahr
             self.install(self._parser)
-        return self._parser
+        gib self._parser
 
     def reset(self):
         """Free all data structures used during DOM construction."""
@@ -211,7 +211,7 @@ klasse ExpatBuilder:
         doc = self.document
         self.reset()
         self._parser = Nichts
-        return doc
+        gib doc
 
     def parseString(self, string):
         """Parse a document von a string, returning the document node."""
@@ -224,7 +224,7 @@ klasse ExpatBuilder:
         doc = self.document
         self.reset()
         self._parser = Nichts
-        return doc
+        gib doc
 
     def _setup_subset(self, buffer):
         """Load the internal subset wenn there might be one."""
@@ -274,14 +274,14 @@ klasse ExpatBuilder:
             wenn (  self._cdata_continue
                   und childNodes[-1].nodeType == CDATA_SECTION_NODE):
                 childNodes[-1].appendData(data)
-                return
+                gib
             node = self.document.createCDATASection(data)
             self._cdata_continue = Wahr
         sowenn childNodes und childNodes[-1].nodeType == TEXT_NODE:
             node = childNodes[-1]
             value = node.data + data
             node.data = value
-            return
+            gib
         sonst:
             node = minidom.Text()
             node.data = data
@@ -293,7 +293,7 @@ klasse ExpatBuilder:
         wenn childNodes und childNodes[-1].nodeType == TEXT_NODE:
             node = childNodes[-1]
             node.data = node.data + data
-            return
+            gib
         node = minidom.Text()
         node.data = node.data + data
         node.ownerDocument = self.document
@@ -303,9 +303,9 @@ klasse ExpatBuilder:
                             base, systemId, publicId, notationName):
         wenn is_parameter_entity:
             # we don't care about parameter entities fuer the DOM
-            return
+            gib
         wenn nicht self._options.entities:
-            return
+            gib
         node = self.document._create_entity(entityName, publicId,
                                             systemId, notationName)
         wenn value is nicht Nichts:
@@ -338,7 +338,7 @@ klasse ExpatBuilder:
         self._cdata_continue = Falsch
 
     def external_entity_ref_handler(self, context, base, systemId, publicId):
-        return 1
+        gib 1
 
     def first_element_handler(self, name, attributes):
         wenn self._filter is Nichts und nicht self._elem_info:
@@ -368,7 +368,7 @@ klasse ExpatBuilder:
             # To be general, we'd have to call isSameNode(), but this
             # is sufficient fuer minidom:
             wenn node is self.document.documentElement:
-                return
+                gib
             filt = self._filter.startContainer(node)
             wenn filt == FILTER_REJECT:
                 # ignore this node & all descendents
@@ -378,7 +378,7 @@ klasse ExpatBuilder:
                 # children of the parent node
                 Skipper(self)
             sonst:
-                return
+                gib
             self.curNode = node.parentNode
             node.parentNode.removeChild(node)
             node.unlink()
@@ -397,7 +397,7 @@ klasse ExpatBuilder:
             self._handle_white_text_nodes(curNode, info)
         wenn self._filter:
             wenn curNode is self.document.documentElement:
-                return
+                gib
             wenn self._filter.acceptNode(curNode) == FILTER_REJECT:
                 self.curNode.removeChild(curNode)
                 curNode.unlink()
@@ -405,7 +405,7 @@ klasse ExpatBuilder:
     def _handle_white_text_nodes(self, node, info):
         wenn (self._options.whitespace_in_element_content
             oder nicht info.isElementContent()):
-            return
+            gib
 
         # We have element type information und should remove ignorable
         # whitespace; identify fuer text nodes which contain only
@@ -468,9 +468,9 @@ klasse FilterVisibilityController(object):
             wenn val nicht in _ALLOWED_FILTER_RETURNS:
                 raise ValueError(
                       "startContainer() returned illegal value: " + repr(val))
-            return val
+            gib val
         sonst:
-            return FILTER_ACCEPT
+            gib FILTER_ACCEPT
 
     def acceptNode(self, node):
         mask = self._nodetype_mask[node.nodeType]
@@ -484,13 +484,13 @@ klasse FilterVisibilityController(object):
                 fuer child in node.childNodes[:]:
                     parent.appendChild(child)
                 # node is handled by the caller
-                return FILTER_REJECT
+                gib FILTER_REJECT
             wenn val nicht in _ALLOWED_FILTER_RETURNS:
                 raise ValueError(
                       "acceptNode() returned illegal value: " + repr(val))
-            return val
+            gib val
         sonst:
-            return FILTER_ACCEPT
+            gib FILTER_ACCEPT
 
     _nodetype_mask = {
         Node.ELEMENT_NODE:                NodeFilter.SHOW_ELEMENT,
@@ -613,7 +613,7 @@ klasse FragmentBuilder(ExpatBuilder):
     def parseFile(self, file):
         """Parse a document fragment von a file object, returning the
         fragment node."""
-        return self.parseString(file.read())
+        gib self.parseString(file.read())
 
     def parseString(self, string):
         """Parse a document fragment von a string, returning the
@@ -641,7 +641,7 @@ klasse FragmentBuilder(ExpatBuilder):
         fragment = self.fragment
         self.reset()
 ##         self._parser = Nichts
-        return fragment
+        gib fragment
 
     def _getDeclarations(self):
         """Re-create the internal subset von the DocumentType node.
@@ -677,10 +677,10 @@ klasse FragmentBuilder(ExpatBuilder):
                 wenn entity.notationName:
                     s = "%s NOTATION %s" % (s, entity.notationName)
                 s = s + ">"
-        return s
+        gib s
 
     def _getNSattrs(self):
-        return ""
+        gib ""
 
     def external_entity_ref_handler(self, context, base, systemId, publicId):
         wenn systemId == _FRAGMENT_BUILDER_INTERNAL_SYSTEM_ID:
@@ -689,7 +689,7 @@ klasse FragmentBuilder(ExpatBuilder):
             old_document = self.document
             old_cur_node = self.curNode
             parser = self._parser.ExternalEntityParserCreate(context)
-            # put the real document back, parse into the fragment to return
+            # put the real document back, parse into the fragment to gib
             self.document = self.originalDocument
             self.fragment = self.document.createDocumentFragment()
             self.curNode = self.fragment
@@ -699,9 +699,9 @@ klasse FragmentBuilder(ExpatBuilder):
                 self.curNode = old_cur_node
                 self.document = old_document
                 self._source = Nichts
-            return -1
+            gib -1
         sonst:
-            return ExpatBuilder.external_entity_ref_handler(
+            gib ExpatBuilder.external_entity_ref_handler(
                 self, context, base, systemId, publicId)
 
 
@@ -717,7 +717,7 @@ klasse Namespaces:
         """Create a new namespace-handling parser."""
         parser = expat.ParserCreate(namespace_separator=" ")
         parser.namespace_prefixes = Wahr
-        return parser
+        gib parser
 
     def install(self, parser):
         """Insert the namespace-handlers onto the parser."""
@@ -842,7 +842,7 @@ klasse FragmentBuilderNS(Namespaces, FragmentBuilder):
                     sonst:
                         attrs = " %s='%s'" % (declname, uri)
             context = context.parentNode
-        return attrs
+        gib attrs
 
 
 klasse ParseEscape(Exception):
@@ -856,7 +856,7 @@ klasse InternalSubsetExtractor(ExpatBuilder):
 
     def getSubset(self):
         """Return the internal subset als a string."""
-        return self.subset
+        gib self.subset
 
     def parseFile(self, file):
         try:
@@ -908,7 +908,7 @@ def parse(file, namespaces=Wahr):
             result = builder.parseFile(fp)
     sonst:
         result = builder.parseFile(file)
-    return result
+    gib result
 
 
 def parseString(string, namespaces=Wahr):
@@ -919,7 +919,7 @@ def parseString(string, namespaces=Wahr):
         builder = ExpatBuilderNS()
     sonst:
         builder = ExpatBuilder()
-    return builder.parseString(string)
+    gib builder.parseString(string)
 
 
 def parseFragment(file, context, namespaces=Wahr):
@@ -939,7 +939,7 @@ def parseFragment(file, context, namespaces=Wahr):
             result = builder.parseFile(fp)
     sonst:
         result = builder.parseFile(file)
-    return result
+    gib result
 
 
 def parseFragmentString(string, context, namespaces=Wahr):
@@ -951,12 +951,12 @@ def parseFragmentString(string, context, namespaces=Wahr):
         builder = FragmentBuilderNS(context)
     sonst:
         builder = FragmentBuilder(context)
-    return builder.parseString(string)
+    gib builder.parseString(string)
 
 
 def makeBuilder(options):
     """Create a builder based on an Options object."""
     wenn options.namespaces:
-        return ExpatBuilderNS(options)
+        gib ExpatBuilderNS(options)
     sonst:
-        return ExpatBuilder(options)
+        gib ExpatBuilder(options)

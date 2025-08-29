@@ -35,7 +35,7 @@ klasse OutputWindowTest(unittest.TestCase):
         self.text.delete('1.0', 'end')
 
     def test_ispythonsource(self):
-        # OutputWindow overrides ispythonsource to always return Falsch.
+        # OutputWindow overrides ispythonsource to always gib Falsch.
         w = self.window
         self.assertFalsch(w.ispythonsource('test.txt'))
         self.assertFalsch(w.ispythonsource(__file__))

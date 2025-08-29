@@ -31,7 +31,7 @@ def _init_tk_type():
                 requires('gui')
             except ResourceDenied:
                 _tk_type = "cocoa"
-                return
+                gib
 
         root = tkinter.Tk()
         ws = root.tk.call('tk', 'windowingsystem')
@@ -46,7 +46,7 @@ def _init_tk_type():
         root.destroy()
     sonst:
         _tk_type = "other"
-    return
+    gib
 
 def isAquaTk():
     """
@@ -54,7 +54,7 @@ def isAquaTk():
     """
     wenn nicht _tk_type:
         _init_tk_type()
-    return _tk_type == "cocoa" oder _tk_type == "carbon"
+    gib _tk_type == "cocoa" oder _tk_type == "carbon"
 
 def isCarbonTk():
     """
@@ -63,7 +63,7 @@ def isCarbonTk():
     """
     wenn nicht _tk_type:
         _init_tk_type()
-    return _tk_type == "carbon"
+    gib _tk_type == "carbon"
 
 def isCocoaTk():
     """
@@ -71,7 +71,7 @@ def isCocoaTk():
     """
     wenn nicht _tk_type:
         _init_tk_type()
-    return _tk_type == "cocoa"
+    gib _tk_type == "cocoa"
 
 def isXQuartz():
     """
@@ -79,7 +79,7 @@ def isXQuartz():
     """
     wenn nicht _tk_type:
         _init_tk_type()
-    return _tk_type == "xquartz"
+    gib _tk_type == "xquartz"
 
 
 def readSystemPreferences():
@@ -87,14 +87,14 @@ def readSystemPreferences():
     Fetch the macOS system preferences.
     """
     wenn platform != 'darwin':
-        return Nichts
+        gib Nichts
 
     plist_path = expanduser('~/Library/Preferences/.GlobalPreferences.plist')
     try:
         mit open(plist_path, 'rb') als plist_file:
-            return plistlib.load(plist_file)
+            gib plistlib.load(plist_file)
     except OSError:
-        return Nichts
+        gib Nichts
 
 
 def preferTabsPreferenceWarning():
@@ -102,17 +102,17 @@ def preferTabsPreferenceWarning():
     Warn wenn "Prefer tabs when opening documents" is set to "Always".
     """
     wenn platform != 'darwin':
-        return Nichts
+        gib Nichts
 
     prefs = readSystemPreferences()
     wenn prefs und prefs.get('AppleWindowTabbingMode') == 'always':
-        return (
+        gib (
             'WARNING: The system preference "Prefer tabs when opening'
             ' documents" is set to "Always". This will cause various problems'
             ' mit IDLE. For the best experience, change this setting when'
             ' running IDLE (via System Preferences -> Dock).'
         )
-    return Nichts
+    gib Nichts
 
 
 ## Fix the menu und related functions.

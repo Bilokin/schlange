@@ -33,7 +33,7 @@ klasse TestCopy(unittest.TestCase):
             def __init__(self, foo):
                 self.foo = foo
             def __copy__(self):
-                return C(self.foo)
+                gib C(self.foo)
         x = C(42)
         y = copy.copy(x)
         self.assertEqual(y.__class__, x.__class__)
@@ -44,9 +44,9 @@ klasse TestCopy(unittest.TestCase):
             def __new__(cls, foo):
                 obj = object.__new__(cls)
                 obj.foo = foo
-                return obj
+                gib obj
         def pickle_C(obj):
-            return (C, (obj.foo,))
+            gib (C, (obj.foo,))
         x = C(42)
         self.assertRaises(TypeError, copy.copy, x)
         copyreg.pickle(C, pickle_C, C)
@@ -59,7 +59,7 @@ klasse TestCopy(unittest.TestCase):
         klasse C(object):
             def __reduce_ex__(self, proto):
                 c.append(1)
-                return ""
+                gib ""
             def __reduce__(self):
                 self.fail("shouldn't call this")
         c = []
@@ -72,7 +72,7 @@ klasse TestCopy(unittest.TestCase):
         klasse C(object):
             def __reduce__(self):
                 c.append(1)
-                return ""
+                gib ""
         c = []
         x = C()
         y = copy.copy(x)
@@ -84,7 +84,7 @@ klasse TestCopy(unittest.TestCase):
             def __getattribute__(self, name):
                 wenn name.startswith("__reduce"):
                     raise AttributeError(name)
-                return object.__getattribute__(self, name)
+                gib object.__getattribute__(self, name)
         x = C()
         self.assertRaises(copy.Error, copy.copy, x)
 
@@ -164,7 +164,7 @@ klasse TestCopy(unittest.TestCase):
             def __init__(self, foo):
                 self.foo = foo
             def __eq__(self, other):
-                return self.foo == other.foo
+                gib self.foo == other.foo
         x = C(42)
         self.assertEqual(copy.copy(x), x)
 
@@ -173,9 +173,9 @@ klasse TestCopy(unittest.TestCase):
             def __init__(self, foo):
                 self.foo = foo
             def __copy__(self):
-                return C(self.foo)
+                gib C(self.foo)
             def __eq__(self, other):
-                return self.foo == other.foo
+                gib self.foo == other.foo
         x = C(42)
         self.assertEqual(copy.copy(x), x)
 
@@ -184,9 +184,9 @@ klasse TestCopy(unittest.TestCase):
             def __init__(self, foo):
                 self.foo = foo
             def __getinitargs__(self):
-                return (self.foo,)
+                gib (self.foo,)
             def __eq__(self, other):
-                return self.foo == other.foo
+                gib self.foo == other.foo
         x = C(42)
         self.assertEqual(copy.copy(x), x)
 
@@ -195,11 +195,11 @@ klasse TestCopy(unittest.TestCase):
             def __new__(cls, foo):
                 self = int.__new__(cls)
                 self.foo = foo
-                return self
+                gib self
             def __getnewargs__(self):
-                return self.foo,
+                gib self.foo,
             def __eq__(self, other):
-                return self.foo == other.foo
+                gib self.foo == other.foo
         x = C(42)
         y = copy.copy(x)
         self.assertIsInstance(y, C)
@@ -212,11 +212,11 @@ klasse TestCopy(unittest.TestCase):
             def __new__(cls, *, foo):
                 self = int.__new__(cls)
                 self.foo = foo
-                return self
+                gib self
             def __getnewargs_ex__(self):
-                return (), {'foo': self.foo}
+                gib (), {'foo': self.foo}
             def __eq__(self, other):
-                return self.foo == other.foo
+                gib self.foo == other.foo
         x = C(foo=42)
         y = copy.copy(x)
         self.assertIsInstance(y, C)
@@ -229,9 +229,9 @@ klasse TestCopy(unittest.TestCase):
             def __init__(self, foo):
                 self.foo = foo
             def __getstate__(self):
-                return {"foo": self.foo}
+                gib {"foo": self.foo}
             def __eq__(self, other):
-                return self.foo == other.foo
+                gib self.foo == other.foo
         x = C(42)
         self.assertEqual(copy.copy(x), x)
 
@@ -242,7 +242,7 @@ klasse TestCopy(unittest.TestCase):
             def __setstate__(self, state):
                 self.foo = state["foo"]
             def __eq__(self, other):
-                return self.foo == other.foo
+                gib self.foo == other.foo
         x = C(42)
         self.assertEqual(copy.copy(x), x)
 
@@ -251,11 +251,11 @@ klasse TestCopy(unittest.TestCase):
             def __init__(self, foo):
                 self.foo = foo
             def __getstate__(self):
-                return self.foo
+                gib self.foo
             def __setstate__(self, state):
                 self.foo = state
             def __eq__(self, other):
-                return self.foo == other.foo
+                gib self.foo == other.foo
         x = C(42)
         self.assertEqual(copy.copy(x), x)
         # State mit boolean value is false (issue #25718)
@@ -296,7 +296,7 @@ klasse TestCopy(unittest.TestCase):
             def __init__(self, foo):
                 self.foo = foo
             def __deepcopy__(self, memo=Nichts):
-                return C(self.foo)
+                gib C(self.foo)
         x = C(42)
         y = copy.deepcopy(x)
         self.assertEqual(y.__class__, x.__class__)
@@ -307,9 +307,9 @@ klasse TestCopy(unittest.TestCase):
             def __new__(cls, foo):
                 obj = object.__new__(cls)
                 obj.foo = foo
-                return obj
+                gib obj
         def pickle_C(obj):
-            return (C, (obj.foo,))
+            gib (C, (obj.foo,))
         x = C(42)
         self.assertRaises(TypeError, copy.deepcopy, x)
         copyreg.pickle(C, pickle_C, C)
@@ -322,7 +322,7 @@ klasse TestCopy(unittest.TestCase):
         klasse C(object):
             def __reduce_ex__(self, proto):
                 c.append(1)
-                return ""
+                gib ""
             def __reduce__(self):
                 self.fail("shouldn't call this")
         c = []
@@ -335,7 +335,7 @@ klasse TestCopy(unittest.TestCase):
         klasse C(object):
             def __reduce__(self):
                 c.append(1)
-                return ""
+                gib ""
         c = []
         x = C()
         y = copy.deepcopy(x)
@@ -347,7 +347,7 @@ klasse TestCopy(unittest.TestCase):
             def __getattribute__(self, name):
                 wenn name.startswith("__reduce"):
                     raise AttributeError(name)
-                return object.__getattribute__(self, name)
+                gib object.__getattribute__(self, name)
         x = C()
         self.assertRaises(copy.Error, copy.deepcopy, x)
 
@@ -459,7 +459,7 @@ klasse TestCopy(unittest.TestCase):
             def __init__(self, foo):
                 self.foo = foo
             def __eq__(self, other):
-                return self.foo == other.foo
+                gib self.foo == other.foo
         x = C([42])
         y = copy.deepcopy(x)
         self.assertEqual(y, x)
@@ -470,9 +470,9 @@ klasse TestCopy(unittest.TestCase):
             def __init__(self, foo):
                 self.foo = foo
             def __deepcopy__(self, memo):
-                return C(copy.deepcopy(self.foo, memo))
+                gib C(copy.deepcopy(self.foo, memo))
             def __eq__(self, other):
-                return self.foo == other.foo
+                gib self.foo == other.foo
         x = C([42])
         y = copy.deepcopy(x)
         self.assertEqual(y, x)
@@ -484,9 +484,9 @@ klasse TestCopy(unittest.TestCase):
             def __init__(self, foo):
                 self.foo = foo
             def __getinitargs__(self):
-                return (self.foo,)
+                gib (self.foo,)
             def __eq__(self, other):
-                return self.foo == other.foo
+                gib self.foo == other.foo
         x = C([42])
         y = copy.deepcopy(x)
         self.assertEqual(y, x)
@@ -498,11 +498,11 @@ klasse TestCopy(unittest.TestCase):
             def __new__(cls, foo):
                 self = int.__new__(cls)
                 self.foo = foo
-                return self
+                gib self
             def __getnewargs__(self):
-                return self.foo,
+                gib self.foo,
             def __eq__(self, other):
-                return self.foo == other.foo
+                gib self.foo == other.foo
         x = C([42])
         y = copy.deepcopy(x)
         self.assertIsInstance(y, C)
@@ -516,11 +516,11 @@ klasse TestCopy(unittest.TestCase):
             def __new__(cls, *, foo):
                 self = int.__new__(cls)
                 self.foo = foo
-                return self
+                gib self
             def __getnewargs_ex__(self):
-                return (), {'foo': self.foo}
+                gib (), {'foo': self.foo}
             def __eq__(self, other):
-                return self.foo == other.foo
+                gib self.foo == other.foo
         x = C(foo=[42])
         y = copy.deepcopy(x)
         self.assertIsInstance(y, C)
@@ -534,9 +534,9 @@ klasse TestCopy(unittest.TestCase):
             def __init__(self, foo):
                 self.foo = foo
             def __getstate__(self):
-                return {"foo": self.foo}
+                gib {"foo": self.foo}
             def __eq__(self, other):
-                return self.foo == other.foo
+                gib self.foo == other.foo
         x = C([42])
         y = copy.deepcopy(x)
         self.assertEqual(y, x)
@@ -550,7 +550,7 @@ klasse TestCopy(unittest.TestCase):
             def __setstate__(self, state):
                 self.foo = state["foo"]
             def __eq__(self, other):
-                return self.foo == other.foo
+                gib self.foo == other.foo
         x = C([42])
         y = copy.deepcopy(x)
         self.assertEqual(y, x)
@@ -562,11 +562,11 @@ klasse TestCopy(unittest.TestCase):
             def __init__(self, foo):
                 self.foo = foo
             def __getstate__(self):
-                return self.foo
+                gib self.foo
             def __setstate__(self, state):
                 self.foo = state
             def __eq__(self, other):
-                return self.foo == other.foo
+                gib self.foo == other.foo
         x = C([42])
         y = copy.deepcopy(x)
         self.assertEqual(y, x)
@@ -593,7 +593,7 @@ klasse TestCopy(unittest.TestCase):
     def test_reconstruct_string(self):
         klasse C(object):
             def __reduce__(self):
-                return ""
+                gib ""
         x = C()
         y = copy.copy(x)
         self.assertIs(y, x)
@@ -603,7 +603,7 @@ klasse TestCopy(unittest.TestCase):
     def test_reconstruct_nostate(self):
         klasse C(object):
             def __reduce__(self):
-                return (C, ())
+                gib (C, ())
         x = C()
         x.foo = 42
         y = copy.copy(x)
@@ -614,9 +614,9 @@ klasse TestCopy(unittest.TestCase):
     def test_reconstruct_state(self):
         klasse C(object):
             def __reduce__(self):
-                return (C, (), self.__dict__)
+                gib (C, (), self.__dict__)
             def __eq__(self, other):
-                return self.__dict__ == other.__dict__
+                gib self.__dict__ == other.__dict__
         x = C()
         x.foo = [42]
         y = copy.copy(x)
@@ -628,11 +628,11 @@ klasse TestCopy(unittest.TestCase):
     def test_reconstruct_state_setstate(self):
         klasse C(object):
             def __reduce__(self):
-                return (C, (), self.__dict__)
+                gib (C, (), self.__dict__)
             def __setstate__(self, state):
                 self.__dict__.update(state)
             def __eq__(self, other):
-                return self.__dict__ == other.__dict__
+                gib self.__dict__ == other.__dict__
         x = C()
         x.foo = [42]
         y = copy.copy(x)
@@ -655,9 +655,9 @@ klasse TestCopy(unittest.TestCase):
     def test_reduce_4tuple(self):
         klasse C(list):
             def __reduce__(self):
-                return (C, (), self.__dict__, iter(self))
+                gib (C, (), self.__dict__, iter(self))
             def __eq__(self, other):
-                return (list(self) == list(other) und
+                gib (list(self) == list(other) und
                         self.__dict__ == other.__dict__)
         x = C([[1, 2], 3])
         y = copy.copy(x)
@@ -672,9 +672,9 @@ klasse TestCopy(unittest.TestCase):
     def test_reduce_5tuple(self):
         klasse C(dict):
             def __reduce__(self):
-                return (C, (), self.__dict__, Nichts, self.items())
+                gib (C, (), self.__dict__, Nichts, self.items())
             def __eq__(self, other):
-                return (dict(self) == dict(other) und
+                gib (dict(self) == dict(other) und
                         self.__dict__ == other.__dict__)
         x = C([("foo", [1, 2]), ("bar", 3)])
         y = copy.copy(x)
@@ -691,7 +691,7 @@ klasse TestCopy(unittest.TestCase):
             self.fail("shouldn't call this")
         klasse C:
             def __reduce__(self):
-                return C, (), self.__dict__, Nichts, Nichts, state_setter
+                gib C, (), self.__dict__, Nichts, Nichts, state_setter
         x = C()
         mit self.assertRaises(TypeError):
             copy.copy(x)
@@ -701,7 +701,7 @@ klasse TestCopy(unittest.TestCase):
     def test_reduce_6tuple_none(self):
         klasse C:
             def __reduce__(self):
-                return C, (), self.__dict__, Nichts, Nichts, Nichts
+                gib C, (), self.__dict__, Nichts, Nichts, Nichts
         x = C()
         mit self.assertRaises(TypeError):
             copy.copy(x)
@@ -793,14 +793,14 @@ klasse TestCopy(unittest.TestCase):
 
     def test_copy_function(self):
         self.assertEqual(copy.copy(global_foo), global_foo)
-        def foo(x, y): return x+y
+        def foo(x, y): gib x+y
         self.assertEqual(copy.copy(foo), foo)
         bar = lambda: Nichts
         self.assertEqual(copy.copy(bar), bar)
 
     def test_deepcopy_function(self):
         self.assertEqual(copy.deepcopy(global_foo), global_foo)
-        def foo(x, y): return x+y
+        def foo(x, y): gib x+y
         self.assertEqual(copy.deepcopy(foo), foo)
         bar = lambda: Nichts
         self.assertEqual(copy.deepcopy(bar), bar)
@@ -923,7 +923,7 @@ klasse TestReplace(unittest.TestCase):
                 self = object.__new__(cls)
                 self.x = x
                 self.y = y
-                return self
+                gib self
 
             def __init__(self, *args, **kwargs):
                 self.z = self.x + self.y
@@ -931,7 +931,7 @@ klasse TestReplace(unittest.TestCase):
             def __replace__(self, **changes):
                 x = changes.get('x', self.x)
                 y = changes.get('y', self.y)
-                return type(self)(x, y)
+                gib type(self)(x, y)
 
         attrs = attrgetter('x', 'y', 'z')
         a = A(11, 22)
@@ -982,7 +982,7 @@ klasse MiscTestCase(unittest.TestCase):
     def test__all__(self):
         support.check__all__(self, copy, not_exported={"dispatch_table", "error"})
 
-def global_foo(x, y): return x+y
+def global_foo(x, y): gib x+y
 
 
 wenn __name__ == "__main__":

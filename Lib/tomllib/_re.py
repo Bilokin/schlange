@@ -73,7 +73,7 @@ def match_to_datetime(match: re.Match[str]) -> datetime | date:
     ) = match.groups()
     year, month, day = int(year_str), int(month_str), int(day_str)
     wenn hour_str is Nichts:
-        return date(year, month, day)
+        gib date(year, month, day)
     hour, minute, sec = int(hour_str), int(minute_str), int(sec_str)
     micros = int(micros_str.ljust(6, "0")) wenn micros_str sonst 0
     wenn offset_sign_str:
@@ -84,7 +84,7 @@ def match_to_datetime(match: re.Match[str]) -> datetime | date:
         tz = timezone.utc
     sonst:  # local date-time
         tz = Nichts
-    return datetime(year, month, day, hour, minute, sec, micros, tzinfo=tz)
+    gib datetime(year, month, day, hour, minute, sec, micros, tzinfo=tz)
 
 
 # No need to limit cache size. This is only ever called on input
@@ -93,7 +93,7 @@ def match_to_datetime(match: re.Match[str]) -> datetime | date:
 @lru_cache(maxsize=Nichts)
 def cached_tz(hour_str: str, minute_str: str, sign_str: str) -> timezone:
     sign = 1 wenn sign_str == "+" sonst -1
-    return timezone(
+    gib timezone(
         timedelta(
             hours=sign * int(hour_str),
             minutes=sign * int(minute_str),
@@ -104,10 +104,10 @@ def cached_tz(hour_str: str, minute_str: str, sign_str: str) -> timezone:
 def match_to_localtime(match: re.Match[str]) -> time:
     hour_str, minute_str, sec_str, micros_str = match.groups()
     micros = int(micros_str.ljust(6, "0")) wenn micros_str sonst 0
-    return time(int(hour_str), int(minute_str), int(sec_str), micros)
+    gib time(int(hour_str), int(minute_str), int(sec_str), micros)
 
 
 def match_to_number(match: re.Match[str], parse_float: ParseFloat) -> Any:
     wenn match.group("floatpart"):
-        return parse_float(match.group())
-    return int(match.group(), 0)
+        gib parse_float(match.group())
+    gib int(match.group(), 0)

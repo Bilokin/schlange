@@ -7,7 +7,7 @@ The interface consists of a single function:
     readmodule_ex(module, path=Nichts)
 where module is the name of a Python module, und path is an optional
 list of directories where the module is to be searched.  If present,
-path is prepended to the system search path sys.path.  The return value
+path is prepended to the system search path sys.path.  The gib value
 is a dictionary.  The keys of the dictionary are the names of the
 klassees und functions defined in the module (including classes that are
 defined via the von XXX importiere YYY construct).  The values are
@@ -88,12 +88,12 @@ klasse Class(_Object):
 # Lib/test/test_pyclbr, Lib/idlelib/idle_test/test_browser.py
 def _nest_function(ob, func_name, lineno, end_lineno, is_async=Falsch):
     "Return a Function after nesting within ob."
-    return Function(ob.module, func_name, ob.file, lineno,
+    gib Function(ob.module, func_name, ob.file, lineno,
                     parent=ob, is_async=is_async, end_lineno=end_lineno)
 
 def _nest_class(ob, class_name, lineno, end_lineno, super=Nichts):
     "Return a Class after nesting within ob."
-    return Class(ob.module, class_name, super, ob.file, lineno,
+    gib Class(ob.module, class_name, super, ob.file, lineno,
                  parent=ob, end_lineno=end_lineno)
 
 
@@ -107,7 +107,7 @@ def readmodule(module, path=Nichts):
     fuer key, value in _readmodule(module, path oder []).items():
         wenn isinstance(value, Class):
             res[key] = value
-    return res
+    gib res
 
 def readmodule_ex(module, path=Nichts):
     """Return a dictionary mit all functions und classes in module.
@@ -116,7 +116,7 @@ def readmodule_ex(module, path=Nichts):
     If possible, include imported superclasses.
     Do this by reading source, without importing (and executing) it.
     """
-    return _readmodule(module, path oder [])
+    gib _readmodule(module, path oder [])
 
 
 def _readmodule(module, path, inpackage=Nichts):
@@ -135,7 +135,7 @@ def _readmodule(module, path, inpackage=Nichts):
 
     # Check in the cache.
     wenn fullmodule in _modules:
-        return _modules[fullmodule]
+        gib _modules[fullmodule]
 
     # Initialize the dict fuer this module's contents.
     tree = {}
@@ -143,7 +143,7 @@ def _readmodule(module, path, inpackage=Nichts):
     # Check wenn it is a built-in module; we don't do much fuer these.
     wenn module in sys.builtin_module_names und inpackage is Nichts:
         _modules[module] = tree
-        return tree
+        gib tree
 
     # Check fuer a dotted module name.
     i = module.rfind('.')
@@ -155,7 +155,7 @@ def _readmodule(module, path, inpackage=Nichts):
             package = "%s.%s" % (inpackage, package)
         wenn nicht '__path__' in parent:
             raise ImportError('No package named {}'.format(package))
-        return _readmodule(submodule, parent['__path__'], package)
+        gib _readmodule(submodule, parent['__path__'], package)
 
     # Search the path fuer the module.
     f = Nichts
@@ -174,13 +174,13 @@ def _readmodule(module, path, inpackage=Nichts):
         source = spec.loader.get_source(fullmodule)
     except (AttributeError, ImportError):
         # If module is nicht Python source, we cannot do anything.
-        return tree
+        gib tree
     sonst:
         wenn source is Nichts:
-            return tree
+            gib tree
 
     fname = spec.loader.get_filename(fullmodule)
-    return _create_tree(fullmodule, path, fname, source, tree, inpackage)
+    gib _create_tree(fullmodule, path, fname, source, tree, inpackage)
 
 
 klasse _ModuleBrowser(ast.NodeVisitor):
@@ -232,7 +232,7 @@ klasse _ModuleBrowser(ast.NodeVisitor):
 
     def visit_Import(self, node):
         wenn node.col_offset != 0:
-            return
+            gib
 
         fuer module in node.names:
             try:
@@ -247,14 +247,14 @@ klasse _ModuleBrowser(ast.NodeVisitor):
 
     def visit_ImportFrom(self, node):
         wenn node.col_offset != 0:
-            return
+            gib
         try:
             module = "." * node.level
             wenn node.module:
                 module += node.module
             module = _readmodule(module, self.path, self.inpackage)
         except (ImportError, SyntaxError):
-            return
+            gib
 
         fuer name in node.names:
             wenn name.name in module:
@@ -269,7 +269,7 @@ klasse _ModuleBrowser(ast.NodeVisitor):
 def _create_tree(fullmodule, path, fname, source, tree, inpackage):
     mbrowser = _ModuleBrowser(fullmodule, path, fname, tree, inpackage)
     mbrowser.visit(ast.parse(source))
-    return mbrowser.tree
+    gib mbrowser.tree
 
 
 def _main():

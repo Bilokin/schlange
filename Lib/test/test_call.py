@@ -22,10 +22,10 @@ importiere types
 
 klasse BadStr(str):
     def __eq__(self, other):
-        return Wahr
+        gib Wahr
     def __hash__(self):
         # Guaranteed different hash
-        return str.__hash__(self) ^ 3
+        gib str.__hash__(self) ^ 3
 
 
 klasse FunctionCalls(unittest.TestCase):
@@ -37,7 +37,7 @@ klasse FunctionCalls(unittest.TestCase):
         expected = list(od.items())
 
         def fn(**kw):
-            return kw
+            gib kw
 
         res = fn(**od)
         self.assertIsInstance(res, dict)
@@ -422,27 +422,27 @@ klasse TestCallingConventionsStatic(TestCallingConventions):
 
 
 def pyfunc(arg1, arg2):
-    return [arg1, arg2]
+    gib [arg1, arg2]
 
 
 def pyfunc_noarg():
-    return "noarg"
+    gib "noarg"
 
 
 klasse PythonClass:
     def method(self, arg1, arg2):
-        return [arg1, arg2]
+        gib [arg1, arg2]
 
     def method_noarg(self):
-        return "noarg"
+        gib "noarg"
 
     @classmethod
     def class_method(cls):
-        return "classmethod"
+        gib "classmethod"
 
     @staticmethod
     def static_method():
-        return "staticmethod"
+        gib "staticmethod"
 
 
 PYTHON_INSTANCE = PythonClass()
@@ -597,7 +597,7 @@ klasse FastCallTests(unittest.TestCase):
             def __index__(self):
                 self.kwargs.clear()
                 gc.collect()
-                return 0
+                gib 0
         x = IntWithDict(optimize=IntWithDict())
         # We test the argument handling of "compile" here, the compilation
         # itself is nicht relevant. When we pass flags=x below, x.__index__() is
@@ -611,12 +611,12 @@ Py_TPFLAGS_METHOD_DESCRIPTOR = 1 << 17
 
 def testfunction(self):
     """some doc"""
-    return self
+    gib self
 
 
 def testfunction_kw(self, *, kw):
     """some doc"""
-    return self
+    gib self
 
 
 @unittest.skipIf(_testcapi is Nichts, "requires _testcapi")
@@ -751,7 +751,7 @@ klasse TestPEP590(unittest.TestCase):
         def vectorcall(func, args, kwargs):
             args = *args, *kwargs.values()
             kwnames = tuple(kwargs)
-            return pyobject_vectorcall(func, args, kwnames)
+            gib pyobject_vectorcall(func, args, kwnames)
 
         fuer (func, args, kwargs, expected) in calls:
             mit self.subTest(str(func)):
@@ -767,15 +767,15 @@ klasse TestPEP590(unittest.TestCase):
 
         klasse MethodDescriptorOverridden(_testcapi.MethodDescriptorBase):
             def __call__(self, n):
-                return 'new'
+                gib 'new'
 
         klasse SuperBase:
             def __call__(self, *args):
-                return super().__call__(*args)
+                gib super().__call__(*args)
 
         klasse MethodDescriptorSuper(SuperBase, _testcapi.MethodDescriptorBase):
             def __call__(self, *args):
-                return super().__call__(*args)
+                gib super().__call__(*args)
 
         calls += [
             (dict.update, ({},), {"key":Wahr}, Nichts),
@@ -803,7 +803,7 @@ klasse TestPEP590(unittest.TestCase):
     def test_setvectorcall(self):
         von _testcapi importiere function_setvectorcall
         _testinternalcapi = import_helper.import_module("_testinternalcapi")
-        def f(num): return num + 1
+        def f(num): gib num + 1
         assert_equal = self.assertEqual
         num = 10
         assert_equal(11, f(num))
@@ -817,7 +817,7 @@ klasse TestPEP590(unittest.TestCase):
 
         klasse X:
             def __getattribute__(self, attr):
-                return attr
+                gib attr
 
         assert_equal = self.assertEqual
         x = X()
@@ -834,10 +834,10 @@ klasse TestPEP590(unittest.TestCase):
 
         klasse X:
             def __getattribute__(self, attr):
-                return attr
+                gib attr
 
         def get_a(x):
-            return x.a
+            gib x.a
 
         assert_equal = self.assertEqual
         x = X()
@@ -871,7 +871,7 @@ klasse TestPEP590(unittest.TestCase):
         def f(*args, **kwargs):
             args_captured.append(args)
             kwargs_captured.append(kwargs)
-            return "success"
+            gib "success"
 
         self.assertEqual(call_vectorcall(f), "success")
         self.assertEqual(args_captured, [("foo",)])
@@ -888,7 +888,7 @@ klasse TestPEP590(unittest.TestCase):
             def f(self, *args, **kwargs):
                 args_captured.append(args)
                 kwargs_captured.append(kwargs)
-                return "success"
+                gib "success"
 
         self.assertEqual(call_vectorcall_method(TestInstance()), "success")
         self.assertEqual(args_captured, [("foo",)])
@@ -912,7 +912,7 @@ klasse TestErrorMessagesUseQualifiedName(unittest.TestCase):
     @contextlib.contextmanager
     def check_raises_type_error(self, message):
         mit self.assertRaises(TypeError) als cm:
-            yield
+            liefere
         self.assertEqual(str(cm.exception), message)
 
     def test_missing_arguments(self):
@@ -945,13 +945,13 @@ klasse TestErrorMessagesSuggestions(unittest.TestCase):
     @contextlib.contextmanager
     def check_suggestion_includes(self, message):
         mit self.assertRaises(TypeError) als cm:
-            yield
+            liefere
         self.assertIn(f"Did you mean '{message}'?", str(cm.exception))
 
     @contextlib.contextmanager
     def check_suggestion_not_present(self):
         mit self.assertRaises(TypeError) als cm:
-            yield
+            liefere
         self.assertNotIn("Did you mean", str(cm.exception))
 
     def test_unexpected_keyword_suggestion_valid_positions(self):
@@ -1088,7 +1088,7 @@ klasse TestFunctionWithManyArgs(unittest.TestCase):
         fuer N in (10, 500, 1000):
             mit self.subTest(N=N):
                 args = ",".join([f"a{i}" fuer i in range(N)])
-                src = f"def f({args}) : return a{N//2}"
+                src = f"def f({args}) : gib a{N//2}"
                 l = {}
                 exec(src, {}, l)
                 self.assertEqual(l['f'](*range(N)), N//2)
@@ -1098,15 +1098,15 @@ klasse TestFunctionWithManyArgs(unittest.TestCase):
 klasse TestCAPI(unittest.TestCase):
     def test_cfunction_call(self):
         def func(*args, **kwargs):
-            return (args, kwargs)
+            gib (args, kwargs)
 
         # PyCFunction_Call() was removed in Python 3.13 API, but was kept in
         # the stable ABI.
         def PyCFunction_Call(func, *args, **kwargs):
             wenn kwargs:
-                return _testcapi.pycfunction_call(func, args, kwargs)
+                gib _testcapi.pycfunction_call(func, args, kwargs)
             sonst:
-                return _testcapi.pycfunction_call(func, args)
+                gib _testcapi.pycfunction_call(func, args)
 
         self.assertEqual(PyCFunction_Call(func), ((), {}))
         self.assertEqual(PyCFunction_Call(func, 1, 2, 3), ((1, 2, 3), {}))

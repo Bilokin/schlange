@@ -76,7 +76,7 @@ klasse TestHeaderBase(TestEmailBase):
     factory = headerregistry.HeaderRegistry()
 
     def make_header(self, name, value):
-        return self.factory(name, value)
+        gib self.factory(name, value)
 
 
 klasse TestBaseHeaderFeatures(TestHeaderBase):

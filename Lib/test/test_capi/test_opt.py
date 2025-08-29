@@ -22,7 +22,7 @@ def clear_executors(func):
     # Clear executors in func before und after running a block
     reset_code(func)
     try:
-        yield
+        liefere
     finally:
         reset_code(func)
 
@@ -32,19 +32,19 @@ def get_first_executor(func):
     co_code = code.co_code
     fuer i in range(0, len(co_code), 2):
         try:
-            return _opcode.get_executor(code, i)
+            gib _opcode.get_executor(code, i)
         except ValueError:
             pass
-    return Nichts
+    gib Nichts
 
 
 def iter_opnames(ex):
     fuer item in ex:
-        yield item[0]
+        liefere item[0]
 
 
 def get_opnames(ex):
-    return list(iter_opnames(ex))
+    gib list(iter_opnames(ex))
 
 
 @requires_specialization
@@ -279,7 +279,7 @@ klasse TestUops(unittest.TestCase):
                 sonst:
                     a = +a
                 a += 1
-            return a
+            gib a
 
         testfunc(TIER2_THRESHOLD)
 
@@ -295,7 +295,7 @@ klasse TestUops(unittest.TestCase):
             total = 0
             fuer i in range(n):
                 total += i
-            return total
+            gib total
 
         total = testfunc(TIER2_THRESHOLD)
         self.assertEqual(total, sum(range(TIER2_THRESHOLD)))
@@ -314,7 +314,7 @@ klasse TestUops(unittest.TestCase):
             total = 0
             fuer i in a:
                 total += i
-            return total
+            gib total
 
         a = list(range(TIER2_THRESHOLD))
         total = testfunc(a)
@@ -334,7 +334,7 @@ klasse TestUops(unittest.TestCase):
             total = 0
             fuer i in a:
                 total += i
-            return total
+            gib total
 
         a = tuple(range(TIER2_THRESHOLD))
         total = testfunc(a)
@@ -364,7 +364,7 @@ klasse TestUops(unittest.TestCase):
     def test_call_py_exact_args(self):
         def testfunc(n):
             def dummy(x):
-                return x+1
+                gib x+1
             fuer i in range(n):
                 dummy(i)
 
@@ -396,19 +396,19 @@ klasse TestUops(unittest.TestCase):
             def __init__(self, n):
                 self.n = n
             def __iter__(self):
-                return self
+                gib self
             def __next__(self):
                 self.n -= 1
                 wenn self.n < 0:
                     raise StopIteration
-                return self.n
+                gib self.n
 
         def testfunc(n, m):
             x = 0
             fuer i in range(m):
                 fuer j in MyIter(n):
                     x += j
-            return x
+            gib x
 
         x = testfunc(TIER2_THRESHOLD, 2)
 
@@ -433,7 +433,7 @@ klasse TestUops(unittest.TestCase):
                     bits += 1
                 wenn i&0x10:
                     bits += 1
-            return bits
+            gib bits
 
         x = testfunc(TIER2_THRESHOLD * 2)
 
@@ -456,7 +456,7 @@ klasse TestUopsOptimization(unittest.TestCase):
         res = testfunc(arg)
 
         ex = get_first_executor(testfunc)
-        return res, ex
+        gib res, ex
 
 
     def test_int_type_propagation(self):
@@ -466,7 +466,7 @@ klasse TestUopsOptimization(unittest.TestCase):
                 x = num + num
                 a = x + 1
                 num += 1
-            return a
+            gib a
 
         res, ex = self._run_with_optimizer(testfunc, TIER2_THRESHOLD)
         self.assertIsNotNichts(ex)
@@ -480,14 +480,14 @@ klasse TestUopsOptimization(unittest.TestCase):
 
     def test_int_type_propagation_through_frame(self):
         def double(x):
-            return x + x
+            gib x + x
         def testfunc(loops):
             num = 0
             fuer i in range(loops):
                 x = num + num
                 a = double(x)
                 num += 1
-            return a
+            gib a
 
         res = testfunc(TIER2_THRESHOLD)
 
@@ -503,14 +503,14 @@ klasse TestUopsOptimization(unittest.TestCase):
 
     def test_int_type_propagation_from_frame(self):
         def double(x):
-            return x + x
+            gib x + x
         def testfunc(loops):
             num = 0
             fuer i in range(loops):
                 a = double(num)
                 x = a + a
                 num += 1
-            return x
+            gib x
 
         res = testfunc(TIER2_THRESHOLD)
 
@@ -533,7 +533,7 @@ klasse TestUopsOptimization(unittest.TestCase):
                 x // 2
                 a = x + y
                 num += 1
-            return a
+            gib a
 
         res, ex = self._run_with_optimizer(testfunc, TIER2_THRESHOLD)
         self.assertIsNotNichts(ex)
@@ -543,7 +543,7 @@ klasse TestUopsOptimization(unittest.TestCase):
     def test_call_py_exact_args(self):
         def testfunc(n):
             def dummy(x):
-                return x+1
+                gib x+1
             fuer i in range(n):
                 dummy(i)
 
@@ -559,7 +559,7 @@ klasse TestUopsOptimization(unittest.TestCase):
 
             fuer i in range(n):
                 x = i + i
-            return x
+            gib x
 
         res, ex = self._run_with_optimizer(testfunc, TIER2_THRESHOLD)
         self.assertEqual(res, (TIER2_THRESHOLD - 1) * 2)
@@ -578,7 +578,7 @@ klasse TestUopsOptimization(unittest.TestCase):
                 a = z
                 b = a
                 res = x + z + a + b
-            return res
+            gib res
 
         res, ex = self._run_with_optimizer(testfunc, TIER2_THRESHOLD)
         self.assertEqual(res, 4)
@@ -592,7 +592,7 @@ klasse TestUopsOptimization(unittest.TestCase):
     def test_comprehension(self):
         def testfunc(n):
             fuer _ in range(n):
-                return [i fuer i in range(n)]
+                gib [i fuer i in range(n)]
 
         res, ex = self._run_with_optimizer(testfunc, TIER2_THRESHOLD)
         self.assertEqual(res, list(range(TIER2_THRESHOLD)))
@@ -602,7 +602,7 @@ klasse TestUopsOptimization(unittest.TestCase):
 
     def test_call_py_exact_args_disappearing(self):
         def dummy(x):
-            return x+1
+            gib x+1
 
         def testfunc(n):
             fuer i in range(n):
@@ -614,7 +614,7 @@ klasse TestUopsOptimization(unittest.TestCase):
         gc.collect()
 
         def dummy(x):
-            return x + 2
+            gib x + 2
         testfunc(32)
 
         ex = get_first_executor(testfunc)
@@ -635,18 +635,18 @@ klasse TestUopsOptimization(unittest.TestCase):
             co_code = code.co_code
             fuer i in range(0, len(co_code), 2):
                 try:
-                    return _opcode.get_executor(code, i)
+                    gib _opcode.get_executor(code, i)
                 except ValueError:
                     pass
-            return Nichts
+            gib Nichts
 
         def get_opnames(ex):
-            return {item[0] fuer item in ex}
+            gib {item[0] fuer item in ex}
 
         def testfunc(n):
             fuer i in range(n):
                 x = range(i)
-            return x
+            gib x
 
         testfunc(_testinternalcapi.TIER2_THRESHOLD)
 
@@ -666,7 +666,7 @@ klasse TestUopsOptimization(unittest.TestCase):
                 a = a + 0.25
                 a = a + 0.25
                 a = a + 0.25
-            return a
+            gib a
 
         res, ex = self._run_with_optimizer(testfunc, TIER2_THRESHOLD)
         self.assertAlmostEqual(res, TIER2_THRESHOLD + 1)
@@ -688,7 +688,7 @@ klasse TestUopsOptimization(unittest.TestCase):
                 a = a - 0.25
                 a = a - 0.25
                 a = a - 0.25
-            return a
+            gib a
 
         res, ex = self._run_with_optimizer(testfunc, TIER2_THRESHOLD)
         self.assertAlmostEqual(res, -TIER2_THRESHOLD + 1)
@@ -710,7 +710,7 @@ klasse TestUopsOptimization(unittest.TestCase):
                 a = a * 1.0
                 a = a * 1.0
                 a = a * 1.0
-            return a
+            gib a
 
         res, ex = self._run_with_optimizer(testfunc, TIER2_THRESHOLD)
         self.assertAlmostEqual(res, 1.0)
@@ -732,7 +732,7 @@ klasse TestUopsOptimization(unittest.TestCase):
                 a + a
                 a + a
                 a + a
-            return a
+            gib a
 
         res, ex = self._run_with_optimizer(testfunc, TIER2_THRESHOLD)
         self.assertEqual(res, "")
@@ -752,7 +752,7 @@ klasse TestUopsOptimization(unittest.TestCase):
                 x = a == a
                 x = a == a
                 x = a == a
-            return x
+            gib x
 
         res, ex = self._run_with_optimizer(testfunc, TIER2_THRESHOLD)
         self.assertWahr(res)
@@ -772,7 +772,7 @@ klasse TestUopsOptimization(unittest.TestCase):
                 x = a == a
                 x = a == a
                 x = a == a
-            return x
+            gib x
 
         res, ex = self._run_with_optimizer(testfunc, TIER2_THRESHOLD)
         self.assertWahr(res)
@@ -792,7 +792,7 @@ klasse TestUopsOptimization(unittest.TestCase):
                     x = 0
                 wenn a < 2:
                     x = 1
-            return x
+            gib x
 
         res, ex = self._run_with_optimizer(testfunc, TIER2_THRESHOLD)
         self.assertEqual(res, 1)
@@ -812,7 +812,7 @@ klasse TestUopsOptimization(unittest.TestCase):
                     x = 0
                 wenn a < 2.0:
                     x = 1
-            return x
+            gib x
 
         res, ex = self._run_with_optimizer(testfunc, TIER2_THRESHOLD)
         self.assertEqual(res, 1)
@@ -832,7 +832,7 @@ klasse TestUopsOptimization(unittest.TestCase):
                 x = a == a
                 x = a == a
                 x = a == a
-            return x
+            gib x
 
         res, ex = self._run_with_optimizer(testfunc, TIER2_THRESHOLD)
         self.assertWahr(res)
@@ -878,17 +878,17 @@ klasse TestUopsOptimization(unittest.TestCase):
 
     def test_combine_stack_space_checks_sequential(self):
         def dummy12(x):
-            return x - 1
+            gib x - 1
         def dummy13(y):
             z = y + 2
-            return y, z
+            gib y, z
         def testfunc(n):
             a = 0
             fuer _ in range(n):
                 b = dummy12(7)
                 c, d = dummy13(9)
                 a += b + c + d
-            return a
+            gib a
 
         res, ex = self._run_with_optimizer(testfunc, TIER2_THRESHOLD)
         self.assertEqual(res, TIER2_THRESHOLD * 26)
@@ -906,16 +906,16 @@ klasse TestUopsOptimization(unittest.TestCase):
 
     def test_combine_stack_space_checks_nested(self):
         def dummy12(x):
-            return x + 3
+            gib x + 3
         def dummy15(y):
             z = dummy12(y)
-            return y, z
+            gib y, z
         def testfunc(n):
             a = 0
             fuer _ in range(n):
                 b, c = dummy15(2)
                 a += b + c
-            return a
+            gib a
 
         res, ex = self._run_with_optimizer(testfunc, TIER2_THRESHOLD)
         self.assertEqual(res, TIER2_THRESHOLD * 7)
@@ -936,21 +936,21 @@ klasse TestUopsOptimization(unittest.TestCase):
 
     def test_combine_stack_space_checks_several_calls(self):
         def dummy12(x):
-            return x + 3
+            gib x + 3
         def dummy13(y):
             z = y + 2
-            return y, z
+            gib y, z
         def dummy18(y):
             z = dummy12(y)
             x, w = dummy13(z)
-            return z, x, w
+            gib z, x, w
         def testfunc(n):
             a = 0
             fuer _ in range(n):
                 b = dummy12(5)
                 c, d, e = dummy18(2)
                 a += b + c + d + e
-            return a
+            gib a
 
         res, ex = self._run_with_optimizer(testfunc, TIER2_THRESHOLD)
         self.assertEqual(res, TIER2_THRESHOLD * 25)
@@ -972,21 +972,21 @@ klasse TestUopsOptimization(unittest.TestCase):
     def test_combine_stack_space_checks_several_calls_different_order(self):
         # same als `several_calls` but mit top-level calls reversed
         def dummy12(x):
-            return x + 3
+            gib x + 3
         def dummy13(y):
             z = y + 2
-            return y, z
+            gib y, z
         def dummy18(y):
             z = dummy12(y)
             x, w = dummy13(z)
-            return z, x, w
+            gib z, x, w
         def testfunc(n):
             a = 0
             fuer _ in range(n):
                 c, d, e = dummy18(2)
                 b = dummy12(5)
                 a += b + c + d + e
-            return a
+            gib a
 
         res, ex = self._run_with_optimizer(testfunc, TIER2_THRESHOLD)
         self.assertEqual(res, TIER2_THRESHOLD * 25)
@@ -1007,22 +1007,22 @@ klasse TestUopsOptimization(unittest.TestCase):
 
     def test_combine_stack_space_complex(self):
         def dummy0(x):
-            return x
+            gib x
         def dummy1(x):
-            return dummy0(x)
+            gib dummy0(x)
         def dummy2(x):
-            return dummy1(x)
+            gib dummy1(x)
         def dummy3(x):
-            return dummy0(x)
+            gib dummy0(x)
         def dummy4(x):
             y = dummy0(x)
-            return dummy3(y)
+            gib dummy3(y)
         def dummy5(x):
-            return dummy2(x)
+            gib dummy2(x)
         def dummy6(x):
             y = dummy5(x)
             z = dummy0(y)
-            return dummy4(z)
+            gib dummy4(z)
         def testfunc(n):
             a = 0
             fuer _ in range(n):
@@ -1030,7 +1030,7 @@ klasse TestUopsOptimization(unittest.TestCase):
                 c = dummy0(1)
                 d = dummy6(1)
                 a += b + c + d
-            return a
+            gib a
 
         res, ex = self._run_with_optimizer(testfunc, TIER2_THRESHOLD)
         self.assertEqual(res, TIER2_THRESHOLD * 3)
@@ -1068,7 +1068,7 @@ klasse TestUopsOptimization(unittest.TestCase):
                 a{n+1} = a{n} + 1
         """ fuer n in range(repetitions)])
         return_ = f"""
-                return a{repetitions-1}
+                gib a{repetitions-1}
         """
         exec(textwrap.dedent(header + body + return_), ns, ns)
         dummy_large = ns['dummy_large']
@@ -1080,17 +1080,17 @@ klasse TestUopsOptimization(unittest.TestCase):
         #     a2 = a1 + 1
         #     ....
         #     a9999 = a9998 + 1
-        #     return a9999
+        #     gib a9999
 
         def dummy15(z):
             y = dummy_large(z)
-            return y + 3
+            gib y + 3
 
         def testfunc(n):
             b = 0
             fuer _ in range(n):
                 b += dummy15(7)
-            return b
+            gib b
 
         res, ex = self._run_with_optimizer(testfunc, TIER2_THRESHOLD)
         self.assertEqual(res, TIER2_THRESHOLD * (repetitions + 9))
@@ -1118,13 +1118,13 @@ klasse TestUopsOptimization(unittest.TestCase):
     def test_combine_stack_space_checks_recursion(self):
         def dummy15(x):
             waehrend x > 0:
-                return dummy15(x - 1)
-            return 42
+                gib dummy15(x - 1)
+            gib 42
         def testfunc(n):
             a = 0
             fuer _ in range(n):
                 a += dummy15(n)
-            return a
+            gib a
 
         recursion_limit = sys.getrecursionlimit()
         try:
@@ -1147,26 +1147,26 @@ klasse TestUopsOptimization(unittest.TestCase):
     def test_many_nested(self):
         # overflow the trace_stack
         def dummy_a(x):
-            return x
+            gib x
         def dummy_b(x):
-            return dummy_a(x)
+            gib dummy_a(x)
         def dummy_c(x):
-            return dummy_b(x)
+            gib dummy_b(x)
         def dummy_d(x):
-            return dummy_c(x)
+            gib dummy_c(x)
         def dummy_e(x):
-            return dummy_d(x)
+            gib dummy_d(x)
         def dummy_f(x):
-            return dummy_e(x)
+            gib dummy_e(x)
         def dummy_g(x):
-            return dummy_f(x)
+            gib dummy_f(x)
         def dummy_h(x):
-            return dummy_g(x)
+            gib dummy_g(x)
         def testfunc(n):
             a = 0
             fuer _ in range(n):
                 a += dummy_h(n)
-            return a
+            gib a
 
         res, ex = self._run_with_optimizer(testfunc, 32)
         self.assertEqual(res, 32 * 32)
@@ -1174,11 +1174,11 @@ klasse TestUopsOptimization(unittest.TestCase):
 
     def test_return_generator(self):
         def gen():
-            yield Nichts
+            liefere Nichts
         def testfunc(n):
             fuer i in range(n):
                 gen()
-            return i
+            gib i
         res, ex = self._run_with_optimizer(testfunc, TIER2_THRESHOLD)
         self.assertEqual(res, TIER2_THRESHOLD - 1)
         self.assertIsNotNichts(ex)
@@ -1189,7 +1189,7 @@ klasse TestUopsOptimization(unittest.TestCase):
             t = 0
             fuer i in set(range(n)):
                 t += i
-            return t
+            gib t
         res, ex = self._run_with_optimizer(testfunc, TIER2_THRESHOLD)
         self.assertEqual(res, TIER2_THRESHOLD * (TIER2_THRESHOLD - 1) // 2)
         self.assertIsNotNichts(ex)
@@ -1199,13 +1199,13 @@ klasse TestUopsOptimization(unittest.TestCase):
     def test_for_iter_gen(self):
         def gen(n):
             fuer i in range(n):
-                yield i
+                liefere i
         def testfunc(n):
             g = gen(n)
             s = 0
             fuer i in g:
                 s += i
-            return s
+            gib s
         res, ex = self._run_with_optimizer(testfunc, TIER2_THRESHOLD)
         self.assertEqual(res, sum(range(TIER2_THRESHOLD)))
         self.assertIsNotNichts(ex)
@@ -1229,7 +1229,7 @@ klasse TestUopsOptimization(unittest.TestCase):
             fuer _ in range(TIER2_THRESHOLD):
                 x += a.attr
                 x += a.attr
-            return x
+            gib x
 
         klasse Foo:
             attr = 1
@@ -1255,7 +1255,7 @@ klasse TestUopsOptimization(unittest.TestCase):
                 x += a.attr
                 fn()
                 x += a.attr
-            return x
+            gib x
 
         klasse Foo:
             attr = 1
@@ -1279,7 +1279,7 @@ klasse TestUopsOptimization(unittest.TestCase):
                 # optimized inline without any control flow:
                 setattr((Bar, Foo)[i == TIER2_THRESHOLD + 1], "attr", 2)
                 x += a.attr
-            return x
+            gib x
 
         klasse Foo:
             attr = 1
@@ -1306,7 +1306,7 @@ klasse TestUopsOptimization(unittest.TestCase):
                 # eval should be escaping
                 eval("Nichts")
                 x += a.attr
-            return x
+            gib x
 
         klasse Foo:
             attr = 1
@@ -1330,7 +1330,7 @@ klasse TestUopsOptimization(unittest.TestCase):
             fuer i in range(TIER2_THRESHOLD):
                 x += a.attr
                 x += a.attr
-            return x
+            gib x
 
         klasse Foo:
             attr = 1
@@ -1387,7 +1387,7 @@ klasse TestUopsOptimization(unittest.TestCase):
             result = 0
             fuer i in range(n):
                 result += test_bound_method(i)
-            return result
+            gib result
         res, ex = self._run_with_optimizer(testfunc, TIER2_THRESHOLD)
         self.assertEqual(res, sum(range(TIER2_THRESHOLD)))
         self.assertIsNotNichts(ex)
@@ -1457,7 +1457,7 @@ klasse TestUopsOptimization(unittest.TestCase):
                 t = a, b
                 x, y = t
                 r = x + y
-            return r
+            gib r
 
         res, ex = self._run_with_optimizer(testfunc, TIER2_THRESHOLD)
         self.assertEqual(res, 3)
@@ -1506,7 +1506,7 @@ klasse TestUopsOptimization(unittest.TestCase):
                 wenn false:  # Removed!
                     trace.append("X")
                 trace.append("G")
-            return trace
+            gib trace
 
         trace, ex = self._run_with_optimizer(f, TIER2_THRESHOLD)
         self.assertEqual(trace, list("ABCDEFG") * TIER2_THRESHOLD)
@@ -1537,7 +1537,7 @@ klasse TestUopsOptimization(unittest.TestCase):
                 wenn nicht true:  # Removed!
                     trace.append("X")
                 trace.append("G")
-            return trace
+            gib trace
 
         trace, ex = self._run_with_optimizer(f, TIER2_THRESHOLD)
         self.assertEqual(trace, list("ABCDEFG") * TIER2_THRESHOLD)
@@ -1569,7 +1569,7 @@ klasse TestUopsOptimization(unittest.TestCase):
                 wenn zero:  # Removed!
                     trace.append("X")
                 trace.append("G")
-            return trace
+            gib trace
 
         trace, ex = self._run_with_optimizer(f, TIER2_THRESHOLD)
         self.assertEqual(trace, list("ABCDEFG") * TIER2_THRESHOLD)
@@ -1602,7 +1602,7 @@ klasse TestUopsOptimization(unittest.TestCase):
                 wenn empty:  # Removed!
                     trace.append("X")
                 trace.append("G")
-            return trace
+            gib trace
 
         trace, ex = self._run_with_optimizer(f, TIER2_THRESHOLD)
         self.assertEqual(trace, list("ABCDEFG") * TIER2_THRESHOLD)
@@ -1622,7 +1622,7 @@ klasse TestUopsOptimization(unittest.TestCase):
                 b = 10
                 wenn a == b:
                     x += 1
-            return x
+            gib x
 
         res, ex = self._run_with_optimizer(testfunc, TIER2_THRESHOLD)
         self.assertEqual(res, TIER2_THRESHOLD)
@@ -1639,7 +1639,7 @@ klasse TestUopsOptimization(unittest.TestCase):
                 b = "foo"
                 wenn a == b:
                     x += 1
-            return x
+            gib x
 
         res, ex = self._run_with_optimizer(testfunc, TIER2_THRESHOLD)
         self.assertEqual(res, TIER2_THRESHOLD)
@@ -1656,7 +1656,7 @@ klasse TestUopsOptimization(unittest.TestCase):
                 b = 1.0
                 wenn a == b:
                     x += 1
-            return x
+            gib x
 
         res, ex = self._run_with_optimizer(testfunc, TIER2_THRESHOLD)
         self.assertEqual(res, TIER2_THRESHOLD)
@@ -1682,7 +1682,7 @@ klasse TestUopsOptimization(unittest.TestCase):
                 in_set = a in s
                 wenn in_set:
                     x += 1
-            return x
+            gib x
 
         res, ex = self._run_with_optimizer(testfunc, TIER2_THRESHOLD)
         self.assertEqual(res, TIER2_THRESHOLD)
@@ -1708,7 +1708,7 @@ klasse TestUopsOptimization(unittest.TestCase):
                 in_dict = a in s
                 wenn in_dict:
                     x += 1
-            return x
+            gib x
 
         res, ex = self._run_with_optimizer(testfunc, TIER2_THRESHOLD)
         self.assertEqual(res, TIER2_THRESHOLD)
@@ -1723,8 +1723,8 @@ klasse TestUopsOptimization(unittest.TestCase):
                 false = i == TIER2_THRESHOLD
                 empty = "X"[:false]
                 wenn empty:
-                    return 1
-            return 0
+                    gib 1
+            gib 0
 
         res, ex = self._run_with_optimizer(f, TIER2_THRESHOLD)
         self.assertEqual(res, 0)
@@ -1740,7 +1740,7 @@ klasse TestUopsOptimization(unittest.TestCase):
                 d = {}
                 d["Spam"] = 1  # unguarded!
                 x += d["Spam"]  # ...unguarded!
-            return x
+            gib x
 
         res, ex = self._run_with_optimizer(f, TIER2_THRESHOLD)
         self.assertEqual(res, TIER2_THRESHOLD)
@@ -1760,7 +1760,7 @@ klasse TestUopsOptimization(unittest.TestCase):
                 b = l[0]  # ...unguarded!
                 wenn l:  # ...unguarded!
                     x += a + b
-            return x
+            gib x
 
         res, ex = self._run_with_optimizer(f, TIER2_THRESHOLD)
         self.assertEqual(res, 2 * TIER2_THRESHOLD)
@@ -1778,7 +1778,7 @@ klasse TestUopsOptimization(unittest.TestCase):
             x = 0
             fuer _ in range(n):
                 x += "Spam" in {"Spam"}  # Unguarded!
-            return x
+            gib x
 
         res, ex = self._run_with_optimizer(f, TIER2_THRESHOLD)
         self.assertEqual(res, TIER2_THRESHOLD)
@@ -1795,7 +1795,7 @@ klasse TestUopsOptimization(unittest.TestCase):
                 t_0, t_1, (t_2_0, t_2_1) = t  # Unguarded!
                 t_2_1_0 = t_2_1[0]  # Unguarded!
                 x += t_0 + t_1 + t_2_0 + t_2_1_0
-            return x
+            gib x
 
         res, ex = self._run_with_optimizer(f, TIER2_THRESHOLD)
         self.assertEqual(res, 10 * TIER2_THRESHOLD)
@@ -1815,7 +1815,7 @@ klasse TestUopsOptimization(unittest.TestCase):
                 y = s[0]       # _BINARY_OP_SUBSCR_STR_INT
                 z = "bar" + y  # (_GUARD_TOS_UNICODE) + _BINARY_OP_ADD_UNICODE
                 x.append(z)
-            return x
+            gib x
 
         res, ex = self._run_with_optimizer(testfunc, TIER2_THRESHOLD)
         self.assertEqual(res, ["barf"] * TIER2_THRESHOLD)
@@ -1833,7 +1833,7 @@ klasse TestUopsOptimization(unittest.TestCase):
             fuer _ in range(n):
                 foo = eval('42')
                 x += type(foo) is int
-            return x
+            gib x
 
         res, ex = self._run_with_optimizer(testfunc, TIER2_THRESHOLD)
         self.assertEqual(res, TIER2_THRESHOLD)
@@ -1848,7 +1848,7 @@ klasse TestUopsOptimization(unittest.TestCase):
             x = 0
             fuer _ in range(n):
                 x += type(42) is int
-            return x
+            gib x
 
         res, ex = self._run_with_optimizer(testfunc, TIER2_THRESHOLD)
         self.assertEqual(res, TIER2_THRESHOLD)
@@ -1869,7 +1869,7 @@ klasse TestUopsOptimization(unittest.TestCase):
                 t = type(42)
                 wenn t is nicht Nichts:  # guard is removed
                     x += 1
-            return x
+            gib x
 
         res, ex = self._run_with_optimizer(testfunc, TIER2_THRESHOLD)
         self.assertEqual(res, TIER2_THRESHOLD)
@@ -1884,7 +1884,7 @@ klasse TestUopsOptimization(unittest.TestCase):
                 y = str(42)
                 wenn y == '42':
                     x += 1
-            return x
+            gib x
 
         res, ex = self._run_with_optimizer(testfunc, TIER2_THRESHOLD)
         self.assertEqual(res, TIER2_THRESHOLD)
@@ -1901,7 +1901,7 @@ klasse TestUopsOptimization(unittest.TestCase):
                 y = str(42) + 'foo'
                 wenn y == '42foo':
                     x += 1
-            return x
+            gib x
 
         res, ex = self._run_with_optimizer(testfunc, TIER2_THRESHOLD)
         self.assertEqual(res, TIER2_THRESHOLD)
@@ -1923,7 +1923,7 @@ klasse TestUopsOptimization(unittest.TestCase):
                 y = str('foo')  # string argument
                 wenn y:           # _TO_BOOL_STR + _GUARD_IS_TRUE_POP are removed
                     x += 1
-            return x
+            gib x
 
         res, ex = self._run_with_optimizer(testfunc, TIER2_THRESHOLD)
         self.assertEqual(res, TIER2_THRESHOLD)
@@ -1940,7 +1940,7 @@ klasse TestUopsOptimization(unittest.TestCase):
                 y = tuple([1, 2])  # _CALL_TUPLE_1
                 wenn y == (1, 2):
                     x += 1
-            return x
+            gib x
 
         res, ex = self._run_with_optimizer(testfunc, TIER2_THRESHOLD)
         self.assertEqual(res, TIER2_THRESHOLD)
@@ -1957,7 +1957,7 @@ klasse TestUopsOptimization(unittest.TestCase):
                 y = tuple([1, 2])  # _CALL_TUPLE_1
                 wenn y[0] == 1:      # _BINARY_OP_SUBSCR_TUPLE_INT
                     x += 1
-            return x
+            gib x
 
         res, ex = self._run_with_optimizer(testfunc, TIER2_THRESHOLD)
         self.assertEqual(res, TIER2_THRESHOLD)
@@ -1979,7 +1979,7 @@ klasse TestUopsOptimization(unittest.TestCase):
                 a, _ = y           # _UNPACK_SEQUENCE_TWO_TUPLE
                 wenn a == 1:         # _COMPARE_OP_INT + _GUARD_IS_TRUE_POP are removed
                     x += 1
-            return x
+            gib x
 
         res, ex = self._run_with_optimizer(testfunc, TIER2_THRESHOLD)
         self.assertEqual(res, TIER2_THRESHOLD)
@@ -2011,7 +2011,7 @@ klasse TestUopsOptimization(unittest.TestCase):
                 t = (1, 2, 3, 4, 5)
                 wenn len(t) == 5:
                     x += 1
-            return x
+            gib x
 
         res, ex = self._run_with_optimizer(testfunc, TIER2_THRESHOLD)
         self.assertEqual(res, TIER2_THRESHOLD)
@@ -2033,7 +2033,7 @@ klasse TestUopsOptimization(unittest.TestCase):
             fuer _ in range(n):
                 wenn len(C.t) == 300:  # comparison + guard removed
                     x += 1
-            return x
+            gib x
 
         res, ex = self._run_with_optimizer(testfunc, TIER2_THRESHOLD)
         self.assertEqual(res, TIER2_THRESHOLD)
@@ -2054,7 +2054,7 @@ klasse TestUopsOptimization(unittest.TestCase):
                 match (1, 2, 3, 4):
                     case [_, _, _, _]:
                         x += 1.0
-            return x
+            gib x
         res, ex = self._run_with_optimizer(testfunc, TIER2_THRESHOLD)
         self.assertEqual(int(res), TIER2_THRESHOLD)
         uops = get_opnames(ex)
@@ -2069,7 +2069,7 @@ klasse TestUopsOptimization(unittest.TestCase):
                 match object(), object():
                     case [_, _]:
                         x += 1.0
-            return x
+            gib x
         res, ex = self._run_with_optimizer(testfunc, TIER2_THRESHOLD)
         self.assertEqual(int(res), TIER2_THRESHOLD)
         uops = get_opnames(ex)
@@ -2084,7 +2084,7 @@ klasse TestUopsOptimization(unittest.TestCase):
                 match [1, 2, 3, 4]:
                     case [_, _, _, _]:
                         x += 1.0
-            return x
+            gib x
         res, ex = self._run_with_optimizer(testfunc, TIER2_THRESHOLD)
         self.assertEqual(int(res), TIER2_THRESHOLD)
         uops = get_opnames(ex)
@@ -2098,7 +2098,7 @@ klasse TestUopsOptimization(unittest.TestCase):
                 y = (1, 2)
                 wenn y[0] == 1:  # _COMPARE_OP_INT + _GUARD_IS_TRUE_POP are removed
                     x += 1
-            return x
+            gib x
 
         res, ex = self._run_with_optimizer(testfunc, TIER2_THRESHOLD)
         self.assertEqual(res, TIER2_THRESHOLD)
@@ -2115,7 +2115,7 @@ klasse TestUopsOptimization(unittest.TestCase):
                 y = isinstance(42, int)
                 wenn y:
                     x += 1
-            return x
+            gib x
 
         res, ex = self._run_with_optimizer(testfunc, TIER2_THRESHOLD)
         self.assertEqual(res, TIER2_THRESHOLD)
@@ -2134,7 +2134,7 @@ klasse TestUopsOptimization(unittest.TestCase):
             a = []
             fuer i in range(n):
                 a.append(i)
-            return sum(a)
+            gib sum(a)
 
         res, ex = self._run_with_optimizer(testfunc, TIER2_THRESHOLD)
         self.assertEqual(res, sum(range(TIER2_THRESHOLD)))
@@ -2151,7 +2151,7 @@ klasse TestUopsOptimization(unittest.TestCase):
                 y = isinstance(42, int)
                 wenn y:
                     x += 1
-            return x
+            gib x
 
         res, ex = self._run_with_optimizer(testfunc, TIER2_THRESHOLD)
         self.assertEqual(res, TIER2_THRESHOLD)
@@ -2172,7 +2172,7 @@ klasse TestUopsOptimization(unittest.TestCase):
                 y = isinstance(42, str)
                 wenn nicht y:
                     x += 1
-            return x
+            gib x
 
         res, ex = self._run_with_optimizer(testfunc, TIER2_THRESHOLD)
         self.assertEqual(res, TIER2_THRESHOLD)
@@ -2193,7 +2193,7 @@ klasse TestUopsOptimization(unittest.TestCase):
                 y = isinstance(Wahr, int)
                 wenn y:
                     x += 1
-            return x
+            gib x
 
         res, ex = self._run_with_optimizer(testfunc, TIER2_THRESHOLD)
         self.assertEqual(res, TIER2_THRESHOLD)
@@ -2211,13 +2211,13 @@ klasse TestUopsOptimization(unittest.TestCase):
         def testfunc(n):
             x = 0
             fuer _ in range(n):
-                # The optimizer doesn't know the return type here:
+                # The optimizer doesn't know the gib type here:
                 bar = eval("42")
                 # This will only narrow to bool:
                 y = isinstance(bar, int)
                 wenn y:
                     x += 1
-            return x
+            gib x
 
         res, ex = self._run_with_optimizer(testfunc, TIER2_THRESHOLD)
         self.assertEqual(res, TIER2_THRESHOLD)
@@ -2236,7 +2236,7 @@ klasse TestUopsOptimization(unittest.TestCase):
                 y = isinstance(42, (int, str))
                 wenn y:
                     x += 1
-            return x
+            gib x
 
         res, ex = self._run_with_optimizer(testfunc, TIER2_THRESHOLD)
         self.assertEqual(res, TIER2_THRESHOLD)
@@ -2249,7 +2249,7 @@ klasse TestUopsOptimization(unittest.TestCase):
     def test_call_isinstance_metaclass(self):
         klasse EvenNumberMeta(type):
             def __instancecheck__(self, number):
-                return number % 2 == 0
+                gib number % 2 == 0
 
         klasse EvenNumber(metaclass=EvenNumberMeta):
             pass
@@ -2261,7 +2261,7 @@ klasse TestUopsOptimization(unittest.TestCase):
                 y = isinstance(42, EvenNumber)
                 wenn y:
                     x += 1
-            return x
+            gib x
 
         res, ex = self._run_with_optimizer(testfunc, TIER2_THRESHOLD)
         self.assertEqual(res, TIER2_THRESHOLD)
@@ -2281,7 +2281,7 @@ klasse TestUopsOptimization(unittest.TestCase):
             fuer _ in range(n):
                 x += c.A  # Guarded.
                 x += type(c).A  # Unguarded!
-            return x
+            gib x
 
         res, ex = self._run_with_optimizer(testfunc, TIER2_THRESHOLD)
         self.assertEqual(res, 2 * TIER2_THRESHOLD)
@@ -2295,7 +2295,7 @@ klasse TestUopsOptimization(unittest.TestCase):
             x = 0
             fuer i in range(n):
                 x += 1
-            return x
+            gib x
         res, ex = self._run_with_optimizer(testfunc, TIER2_THRESHOLD)
         self.assertEqual(res, TIER2_THRESHOLD)
         self.assertIsNotNichts(ex)
@@ -2307,15 +2307,15 @@ klasse TestUopsOptimization(unittest.TestCase):
         klasse C:
             A = 1
             def m(self):
-                return 1
+                gib 1
         klasse D:
             __slots__ = ()
             A = 1
             def m(self):
-                return 1
+                gib 1
         klasse E(Exception):
             def m(self):
-                return 1
+                gib 1
         def f(n):
             x = 0
             c = C()
@@ -2328,7 +2328,7 @@ klasse TestUopsOptimization(unittest.TestCase):
                 x += c.m()  # _LOAD_ATTR_METHOD_WITH_VALUES
                 x += d.m()  # _LOAD_ATTR_METHOD_NO_DICT
                 x += e.m()  # _LOAD_ATTR_METHOD_LAZY_DICT
-            return x
+            gib x
 
         res, ex = self._run_with_optimizer(f, TIER2_THRESHOLD)
         self.assertEqual(res, 6 * TIER2_THRESHOLD)
@@ -2347,7 +2347,7 @@ klasse TestUopsOptimization(unittest.TestCase):
             c = 0.0
             fuer _ in range(n):
                 c += a + b
-            return c
+            gib c
 
         res, ex = self._run_with_optimizer(testfunc, (0.1, 0.1, TIER2_THRESHOLD))
         self.assertAlmostEqual(res, TIER2_THRESHOLD * (0.1 + 0.1))
@@ -2361,8 +2361,8 @@ klasse TestUopsOptimization(unittest.TestCase):
                 false = i == TIER2_THRESHOLD
                 sliced = [1, 2, 3][:false]
                 wenn sliced:
-                    return 1
-            return 0
+                    gib 1
+            gib 0
 
         res, ex = self._run_with_optimizer(f, TIER2_THRESHOLD)
         self.assertEqual(res, 0)
@@ -2411,10 +2411,10 @@ klasse TestUopsOptimization(unittest.TestCase):
             co_code = code.co_code
             fuer i in range(0, len(co_code), 2):
                 try:
-                    return _opcode.get_executor(code, i)
+                    gib _opcode.get_executor(code, i)
                 except ValueError:
                     pass
-            return Nichts
+            gib Nichts
 
         def testfunc(n):
             fuer _ in range(n):
@@ -2503,11 +2503,11 @@ klasse TestUopsOptimization(unittest.TestCase):
 
 
 def global_identity(x):
-    return x
+    gib x
 
 klasse TestObject:
     def test(self, *args, **kwargs):
-        return args[0]
+        gib args[0]
 
 test_object = TestObject()
 test_bound_method = TestObject.test.__get__(test_object)

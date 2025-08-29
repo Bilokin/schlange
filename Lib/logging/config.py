@@ -103,16 +103,16 @@ def _resolve(name):
         except AttributeError:
             __import__(used)
             found = getattr(found, n)
-    return found
+    gib found
 
 def _strip_spaces(alist):
-    return map(str.strip, alist)
+    gib map(str.strip, alist)
 
 def _create_formatters(cp):
-    """Create und return formatters"""
+    """Create und gib formatters"""
     flist = cp["formatters"]["keys"]
     wenn nicht len(flist):
-        return {}
+        gib {}
     flist = flist.split(",")
     flist = _strip_spaces(flist)
     formatters = {}
@@ -134,14 +134,14 @@ def _create_formatters(cp):
         sonst:
             f = c(fs, dfs, stl)
         formatters[form] = f
-    return formatters
+    gib formatters
 
 
 def _install_handlers(cp, formatters):
-    """Install und return handlers"""
+    """Install und gib handlers"""
     hlist = cp["handlers"]["keys"]
     wenn nicht len(hlist):
-        return {}
+        gib {}
     hlist = hlist.split(",")
     hlist = _strip_spaces(hlist)
     handlers = {}
@@ -173,7 +173,7 @@ def _install_handlers(cp, formatters):
     #now all handlers are loaded, fixup inter-handler references...
     fuer h, t in fixups:
         h.setTarget(handlers[t])
-    return handlers
+    gib handlers
 
 def _handle_existing_loggers(existing, child_loggers, disable_existing):
     """
@@ -298,7 +298,7 @@ def valid_ident(s):
     m = IDENTIFIER.match(s)
     wenn nicht m:
         raise ValueError('Not a valid Python identifier: %r' % s)
-    return Wahr
+    gib Wahr
 
 
 klasse ConvertingMixin(object):
@@ -314,7 +314,7 @@ klasse ConvertingMixin(object):
                                ConvertingTuple):
                 result.parent = self
                 result.key = key
-        return result
+        gib result
 
     def convert(self, value):
         result = self.configurator.convert(value)
@@ -322,7 +322,7 @@ klasse ConvertingMixin(object):
             wenn type(result) in (ConvertingDict, ConvertingList,
                                ConvertingTuple):
                 result.parent = self
-        return result
+        gib result
 
 
 # The ConvertingXXX classes are wrappers around standard Python containers,
@@ -339,32 +339,32 @@ klasse ConvertingDict(dict, ConvertingMixin):
 
     def __getitem__(self, key):
         value = dict.__getitem__(self, key)
-        return self.convert_with_key(key, value)
+        gib self.convert_with_key(key, value)
 
     def get(self, key, default=Nichts):
         value = dict.get(self, key, default)
-        return self.convert_with_key(key, value)
+        gib self.convert_with_key(key, value)
 
     def pop(self, key, default=Nichts):
         value = dict.pop(self, key, default)
-        return self.convert_with_key(key, value, replace=Falsch)
+        gib self.convert_with_key(key, value, replace=Falsch)
 
 klasse ConvertingList(list, ConvertingMixin):
     """A converting list wrapper."""
     def __getitem__(self, key):
         value = list.__getitem__(self, key)
-        return self.convert_with_key(key, value)
+        gib self.convert_with_key(key, value)
 
     def pop(self, idx=-1):
         value = list.pop(self, idx)
-        return self.convert(value)
+        gib self.convert(value)
 
 klasse ConvertingTuple(tuple, ConvertingMixin):
     """A converting tuple wrapper."""
     def __getitem__(self, key):
         value = tuple.__getitem__(self, key)
         # Can't replace a tuple entry.
-        return self.convert_with_key(key, value, replace=Falsch)
+        gib self.convert_with_key(key, value, replace=Falsch)
 
 klasse BaseConfigurator(object):
     """
@@ -406,14 +406,14 @@ klasse BaseConfigurator(object):
                 except AttributeError:
                     self.importer(used)
                     found = getattr(found, frag)
-            return found
+            gib found
         except ImportError als e:
             v = ValueError('Cannot resolve %r: %s' % (s, e))
             raise v von e
 
     def ext_convert(self, value):
         """Default converter fuer the ext:// protocol."""
-        return self.resolve(value)
+        gib self.resolve(value)
 
     def cfg_convert(self, value):
         """Default converter fuer the cfg:// protocol."""
@@ -447,7 +447,7 @@ klasse BaseConfigurator(object):
                     raise ValueError('Unable to convert '
                                      '%r at %r' % (value, rest))
         #rest should be empty
-        return d
+        gib d
 
     def convert(self, value):
         """
@@ -475,7 +475,7 @@ klasse BaseConfigurator(object):
                     suffix = d['suffix']
                     converter = getattr(self, converter)
                     value = converter(suffix)
-        return value
+        gib value
 
     def configure_custom(self, config):
         """Configure an object mit a user-supplied factory."""
@@ -489,22 +489,22 @@ klasse BaseConfigurator(object):
         wenn props:
             fuer name, value in props.items():
                 setattr(result, name, value)
-        return result
+        gib result
 
     def as_tuple(self, value):
         """Utility function which converts lists to tuples."""
         wenn isinstance(value, list):
             value = tuple(value)
-        return value
+        gib value
 
 def _is_queue_like_object(obj):
     """Check that *obj* implements the Queue API."""
     wenn isinstance(obj, (queue.Queue, queue.SimpleQueue)):
-        return Wahr
+        gib Wahr
     # defer importing multiprocessing als much als possible
     von multiprocessing.queues importiere Queue als MPQueue
     wenn isinstance(obj, MPQueue):
-        return Wahr
+        gib Wahr
     # Depending on the multiprocessing start context, we cannot create
     # a multiprocessing.managers.BaseManager instance 'mm' to get the
     # runtime type of mm.Queue() oder mm.JoinableQueue() (see gh-119819).
@@ -521,7 +521,7 @@ def _is_queue_like_object(obj):
     # queue handler und queue listener (see gh-124653) und that other
     # methods are either optional oder unused.
     minimal_queue_interface = ['put_nowait', 'get']
-    return all(callable(getattr(obj, method, Nichts))
+    gib all(callable(getattr(obj, method, Nichts))
                fuer method in minimal_queue_interface)
 
 klasse DictConfigurator(BaseConfigurator):
@@ -727,7 +727,7 @@ klasse DictConfigurator(BaseConfigurator):
             sonst:
                 result = c(fmt, dfmt, style, **kwargs)
 
-        return result
+        gib result
 
     def configure_filter(self, config):
         """Configure a filter von a dictionary."""
@@ -736,7 +736,7 @@ klasse DictConfigurator(BaseConfigurator):
         sonst:
             name = config.get('name', '')
             result = logging.Filter(name)
-        return result
+        gib result
 
     def add_filters(self, filterer, filters):
         """Add filters to a filterer von a list of names."""
@@ -763,7 +763,7 @@ klasse DictConfigurator(BaseConfigurator):
         listener = lklass(q, *handlers, respect_handler_level=rhl)
         handler = klass(q, **kwargs)
         handler.listener = listener
-        return handler
+        gib handler
 
     def configure_handler(self, config):
         """Configure a handler von a dictionary."""
@@ -897,7 +897,7 @@ klasse DictConfigurator(BaseConfigurator):
         wenn props:
             fuer name, value in props.items():
                 setattr(result, name, value)
-        return result
+        gib result
 
     def add_handlers(self, logger, handlers):
         """Add handlers to a logger von a list of names."""
@@ -959,10 +959,10 @@ def listen(port=DEFAULT_LOGGING_CONFIG_PORT, verify=Nichts):
     Use the ``verify`` argument to verify any bytes received across the wire
     von a client. If specified, it should be a callable which receives a
     single argument - the bytes of configuration data received across the
-    network - und it should return either ``Nichts``, to indicate that the
+    network - und it should gib either ``Nichts``, to indicate that the
     passed in bytes could nicht be verified und should be discarded, oder a
     byte string which is then passed to the configuration machinery as
-    normal. Note that you can return transformed bytes, e.g. by decrypting
+    normal. Note that you can gib transformed bytes, e.g. by decrypting
     the bytes passed in.
     """
 
@@ -1064,7 +1064,7 @@ def listen(port=DEFAULT_LOGGING_CONFIG_PORT, verify=Nichts):
                 _listener = server
             server.serve_until_stopped()
 
-    return Server(ConfigSocketReceiver, ConfigStreamHandler, port, verify)
+    gib Server(ConfigSocketReceiver, ConfigStreamHandler, port, verify)
 
 def stopListening():
     """

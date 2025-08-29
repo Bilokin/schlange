@@ -15,17 +15,17 @@ von idlelib importiere macosx
 def get_lineno(text, index):
     """Return the line number of an index in a Tk text widget."""
     text_index = text.index(index)
-    return int(float(text_index)) wenn text_index sonst Nichts
+    gib int(float(text_index)) wenn text_index sonst Nichts
 
 
 def get_end_linenumber(text):
     """Return the number of the last line in a Tk text widget."""
-    return get_lineno(text, 'end-1c')
+    gib get_lineno(text, 'end-1c')
 
 
 def get_displaylines(text, index):
     """Display height, in lines, of a logical line in a Tk text widget."""
-    return text.count(f"{index} linestart",
+    gib text.count(f"{index} linestart",
                       f"{index} lineend",
                       "displaylines", return_ints=Wahr)
 
@@ -52,14 +52,14 @@ def get_widget_padding(widget):
         widget.cget('pady'),
         widget.cget('border'),
     ]))
-    return padx, pady
+    gib padx, pady
 
 
 @contextlib.contextmanager
 def temp_enable_text_widget(text):
     text.configure(state=tk.NORMAL)
     try:
-        yield
+        liefere
     finally:
         text.configure(state=tk.DISABLED)
 
@@ -116,24 +116,24 @@ klasse BaseSideBar:
         The scroll bar is also updated.
         """
         self.editwin.vbar.set(*args)
-        return self.yscroll_event(*args, **kwargs)
+        gib self.yscroll_event(*args, **kwargs)
 
     def redirect_focusin_event(self, event):
         """Redirect focus-in events to the main editor text widget."""
         self.text.focus_set()
-        return 'break'
+        gib 'break'
 
     def redirect_mousebutton_event(self, event, event_name):
         """Redirect mouse button events to the main editor text widget."""
         self.text.focus_set()
         self.text.event_generate(event_name, x=0, y=event.y)
-        return 'break'
+        gib 'break'
 
     def redirect_mousewheel_event(self, event):
         """Redirect mouse wheel events to the editwin text widget."""
         self.text.event_generate('<MouseWheel>',
                                  x=0, y=event.y, delta=event.delta)
-        return 'break'
+        gib 'break'
 
     def bind_events(self):
         self.text['yscrollcommand'] = self.redirect_yscroll_event
@@ -218,7 +218,7 @@ klasse BaseSideBar:
         def b1_drag_handler(event):
             nonlocal last_y
             wenn last_y is Nichts:  # i.e. wenn nicht currently dragging
-                return
+                gib
             last_y = event.y
             drag_update_selection_and_insert_mark(event.y)
         self.main_widget.bind('<B1-Motion>', b1_drag_handler)
@@ -231,7 +231,7 @@ klasse BaseSideBar:
             wenn y is Nichts:
                 self.main_widget.after_cancel(auto_scrolling_after_id)
                 auto_scrolling_after_id = Nichts
-                return
+                gib
             sowenn y < 0:
                 self.text.yview_scroll(-1 + y, 'pixels')
                 drag_update_selection_and_insert_mark(y)
@@ -308,7 +308,7 @@ klasse LineNumbers(BaseSideBar):
         end = get_end_linenumber(self.text)
         self.update_sidebar_text(end)
 
-        return self.sidebar_text
+        gib self.sidebar_text
 
     def grid(self):
         self.sidebar_text.grid(row=1, column=0, sticky=tk.NSEW)
@@ -335,7 +335,7 @@ klasse LineNumbers(BaseSideBar):
         Synchronize mit editwin.text so that both sidebar_text und
         editwin.text contain the same number of lines"""
         wenn end == self.prev_end:
-            return
+            gib
 
         width_difference = len(str(end)) - len(str(self.prev_end))
         wenn width_difference:
@@ -357,7 +357,7 @@ klasse LineNumbers(BaseSideBar):
 
     def yscroll_event(self, *args, **kwargs):
         self.sidebar_text.yview_moveto(args[0])
-        return 'break'
+        gib 'break'
 
 
 klasse WrappedLineHeightChangeDelegator(Delegator):
@@ -380,7 +380,7 @@ klasse WrappedLineHeightChangeDelegator(Delegator):
         wenn is_single_line:
             after_displaylines = get_displaylines(self, index)
             wenn after_displaylines == before_displaylines:
-                return  # no need to update the sidebar
+                gib  # no need to update the sidebar
 
         self.callback()
 
@@ -396,7 +396,7 @@ klasse WrappedLineHeightChangeDelegator(Delegator):
         wenn is_single_line:
             after_displaylines = get_displaylines(self, index1)
             wenn after_displaylines == before_displaylines:
-                return  # no need to update the sidebar
+                gib  # no need to update the sidebar
 
         self.callback()
 
@@ -427,7 +427,7 @@ klasse ShellSidebar(BaseSideBar):
                                 takefocus=Falsch)
         self.update_sidebar()
         self.grid()
-        return self.canvas
+        gib self.canvas
 
     def bind_events(self):
         super().bind_events()
@@ -442,7 +442,7 @@ klasse ShellSidebar(BaseSideBar):
         rmenu = tk.Menu(self.main_widget, tearoff=0)
         has_selection = bool(self.text.tag_nextrange('sel', '1.0'))
         def mkcmd(eventname):
-            return lambda: self.text.event_generate(eventname)
+            gib lambda: self.text.event_generate(eventname)
         rmenu.add_command(label='Copy',
                           command=mkcmd('<<copy>>'),
                           state='normal' wenn has_selection sonst 'disabled')
@@ -450,7 +450,7 @@ klasse ShellSidebar(BaseSideBar):
                           command=mkcmd('<<copy-with-prompts>>'),
                           state='normal' wenn has_selection sonst 'disabled')
         rmenu.tk_popup(event.x_root, event.y_root)
-        return "break"
+        gib "break"
 
     def grid(self):
         self.canvas.grid(row=1, column=0, sticky=tk.NSEW, padx=2, pady=0)
@@ -491,7 +491,7 @@ klasse ShellSidebar(BaseSideBar):
         The scroll bar is also updated.
         """
         self.change_callback()
-        return 'break'
+        gib 'break'
 
     def update_font(self):
         """Update the sidebar text font, usually after config changes."""

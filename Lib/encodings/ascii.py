@@ -19,11 +19,11 @@ klasse Codec(codecs.Codec):
 
 klasse IncrementalEncoder(codecs.IncrementalEncoder):
     def encode(self, input, final=Falsch):
-        return codecs.ascii_encode(input, self.errors)[0]
+        gib codecs.ascii_encode(input, self.errors)[0]
 
 klasse IncrementalDecoder(codecs.IncrementalDecoder):
     def decode(self, input, final=Falsch):
-        return codecs.ascii_decode(input, self.errors)[0]
+        gib codecs.ascii_decode(input, self.errors)[0]
 
 klasse StreamWriter(Codec,codecs.StreamWriter):
     pass
@@ -39,7 +39,7 @@ klasse StreamConverter(StreamWriter,StreamReader):
 ### encodings module API
 
 def getregentry():
-    return codecs.CodecInfo(
+    gib codecs.CodecInfo(
         name='ascii',
         encode=Codec.encode,
         decode=Codec.decode,

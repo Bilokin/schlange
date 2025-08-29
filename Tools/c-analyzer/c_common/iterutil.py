@@ -1,44 +1,44 @@
 def peek_and_iter(items):
     wenn nicht items:
-        return Nichts, Nichts
+        gib Nichts, Nichts
     items = iter(items)
     try:
         peeked = next(items)
     except StopIteration:
-        return Nichts, Nichts
+        gib Nichts, Nichts
     def chain():
-        yield peeked
-        yield von items
-    return chain(), peeked
+        liefere peeked
+        liefere von items
+    gib chain(), peeked
 
 
 def iter_many(items, onempty=Nichts):
     wenn nicht items:
         wenn onempty is Nichts:
-            return
+            gib
         wenn nicht callable(onempty):
             raise onEmpty
         items = onempty(items)
-        yield von iter_many(items, onempty=Nichts)
-        return
+        liefere von iter_many(items, onempty=Nichts)
+        gib
     items = iter(items)
     try:
         first = next(items)
     except StopIteration:
         wenn onempty is Nichts:
-            return
+            gib
         wenn nicht callable(onempty):
             raise onEmpty
         items = onempty(items)
-        yield von iter_many(items, onempty=Nichts)
+        liefere von iter_many(items, onempty=Nichts)
     sonst:
         try:
             second = next(items)
         except StopIteration:
-            yield first, Falsch
-            return
+            liefere first, Falsch
+            gib
         sonst:
-            yield first, Wahr
-            yield second, Wahr
+            liefere first, Wahr
+            liefere second, Wahr
         fuer item in items:
-            yield item, Wahr
+            liefere item, Wahr

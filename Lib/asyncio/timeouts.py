@@ -43,7 +43,7 @@ klasse Timeout:
 
     def when(self) -> float | Nichts:
         """Return the current deadline."""
-        return self._when
+        gib self._when
 
     def reschedule(self, when: float | Nichts) -> Nichts:
         """Reschedule the timeout."""
@@ -70,7 +70,7 @@ klasse Timeout:
 
     def expired(self) -> bool:
         """Is timeout expired during execution?"""
-        return self._state in (_State.EXPIRING, _State.EXPIRED)
+        gib self._state in (_State.EXPIRING, _State.EXPIRED)
 
     def __repr__(self) -> str:
         info = ['']
@@ -78,7 +78,7 @@ klasse Timeout:
             when = round(self._when, 3) wenn self._when is nicht Nichts sonst Nichts
             info.append(f"when={when}")
         info_str = ' '.join(info)
-        return f"<Timeout [{self._state.value}]{info_str}>"
+        gib f"<Timeout [{self._state.value}]{info_str}>"
 
     async def __aenter__(self) -> "Timeout":
         wenn self._state is nicht _State.CREATED:
@@ -90,7 +90,7 @@ klasse Timeout:
         self._task = task
         self._cancelling = self._task.cancelling()
         self.reschedule(self._when)
-        return self
+        gib self
 
     async def __aexit__(
         self,
@@ -120,7 +120,7 @@ klasse Timeout:
         sowenn self._state is _State.ENTERED:
             self._state = _State.EXITED
 
-        return Nichts
+        gib Nichts
 
     def _on_timeout(self) -> Nichts:
         assert self._state is _State.ENTERED
@@ -157,7 +157,7 @@ def timeout(delay: float | Nichts) -> Timeout:
     into TimeoutError.
     """
     loop = events.get_running_loop()
-    return Timeout(loop.time() + delay wenn delay is nicht Nichts sonst Nichts)
+    gib Timeout(loop.time() + delay wenn delay is nicht Nichts sonst Nichts)
 
 
 def timeout_at(when: float | Nichts) -> Timeout:
@@ -179,4 +179,4 @@ def timeout_at(when: float | Nichts) -> Timeout:
     the top-most affected timeout() context manager converts CancelledError
     into TimeoutError.
     """
-    return Timeout(when)
+    gib Timeout(when)

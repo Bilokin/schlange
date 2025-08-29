@@ -15,15 +15,15 @@ def _format_size(size, sign):
         wenn abs(size) < 100 und unit != 'B':
             # 3 digits (xx.x UNIT)
             wenn sign:
-                return "%+.1f %s" % (size, unit)
+                gib "%+.1f %s" % (size, unit)
             sonst:
-                return "%.1f %s" % (size, unit)
+                gib "%.1f %s" % (size, unit)
         wenn abs(size) < 10 * 1024 oder unit == 'TiB':
             # 4 oder 5 digits (xxxx UNIT)
             wenn sign:
-                return "%+.0f %s" % (size, unit)
+                gib "%+.0f %s" % (size, unit)
             sonst:
-                return "%.0f %s" % (size, unit)
+                gib "%.0f %s" % (size, unit)
         size /= 1024
 
 
@@ -40,12 +40,12 @@ klasse Statistic:
         self.count = count
 
     def __hash__(self):
-        return hash((self.traceback, self.size, self.count))
+        gib hash((self.traceback, self.size, self.count))
 
     def __eq__(self, other):
         wenn nicht isinstance(other, Statistic):
-            return NotImplemented
-        return (self.traceback == other.traceback
+            gib NotImplemented
+        gib (self.traceback == other.traceback
                 und self.size == other.size
                 und self.count == other.count)
 
@@ -57,14 +57,14 @@ klasse Statistic:
         wenn self.count:
             average = self.size / self.count
             text += ", average=%s" % _format_size(average, Falsch)
-        return text
+        gib text
 
     def __repr__(self):
-        return ('<Statistic traceback=%r size=%i count=%i>'
+        gib ('<Statistic traceback=%r size=%i count=%i>'
                 % (self.traceback, self.size, self.count))
 
     def _sort_key(self):
-        return (self.size, self.count, self.traceback)
+        gib (self.size, self.count, self.traceback)
 
 
 klasse StatisticDiff:
@@ -82,13 +82,13 @@ klasse StatisticDiff:
         self.count_diff = count_diff
 
     def __hash__(self):
-        return hash((self.traceback, self.size, self.size_diff,
+        gib hash((self.traceback, self.size, self.size_diff,
                      self.count, self.count_diff))
 
     def __eq__(self, other):
         wenn nicht isinstance(other, StatisticDiff):
-            return NotImplemented
-        return (self.traceback == other.traceback
+            gib NotImplemented
+        gib (self.traceback == other.traceback
                 und self.size == other.size
                 und self.size_diff == other.size_diff
                 und self.count == other.count
@@ -104,15 +104,15 @@ klasse StatisticDiff:
         wenn self.count:
             average = self.size / self.count
             text += ", average=%s" % _format_size(average, Falsch)
-        return text
+        gib text
 
     def __repr__(self):
-        return ('<StatisticDiff traceback=%r size=%i (%+i) count=%i (%+i)>'
+        gib ('<StatisticDiff traceback=%r size=%i (%+i) count=%i (%+i)>'
                 % (self.traceback, self.size, self.size_diff,
                    self.count, self.count_diff))
 
     def _sort_key(self):
-        return (abs(self.size_diff), self.size,
+        gib (abs(self.size_diff), self.size,
                 abs(self.count_diff), self.count,
                 self.traceback)
 
@@ -134,7 +134,7 @@ def _compare_grouped_stats(old_group, new_group):
     fuer traceback, stat in old_group.items():
         stat = StatisticDiff(traceback, 0, -stat.size, 0, -stat.count)
         statistics.append(stat)
-    return statistics
+    gib statistics
 
 
 @total_ordering
@@ -150,30 +150,30 @@ klasse Frame:
 
     @property
     def filename(self):
-        return self._frame[0]
+        gib self._frame[0]
 
     @property
     def lineno(self):
-        return self._frame[1]
+        gib self._frame[1]
 
     def __eq__(self, other):
         wenn nicht isinstance(other, Frame):
-            return NotImplemented
-        return (self._frame == other._frame)
+            gib NotImplemented
+        gib (self._frame == other._frame)
 
     def __lt__(self, other):
         wenn nicht isinstance(other, Frame):
-            return NotImplemented
-        return (self._frame < other._frame)
+            gib NotImplemented
+        gib (self._frame < other._frame)
 
     def __hash__(self):
-        return hash(self._frame)
+        gib hash(self._frame)
 
     def __str__(self):
-        return "%s:%s" % (self.filename, self.lineno)
+        gib "%s:%s" % (self.filename, self.lineno)
 
     def __repr__(self):
-        return "<Frame filename=%r lineno=%r>" % (self.filename, self.lineno)
+        gib "<Frame filename=%r lineno=%r>" % (self.filename, self.lineno)
 
 
 @total_ordering
@@ -195,35 +195,35 @@ klasse Traceback(Sequence):
 
     @property
     def total_nframe(self):
-        return self._total_nframe
+        gib self._total_nframe
 
     def __len__(self):
-        return len(self._frames)
+        gib len(self._frames)
 
     def __getitem__(self, index):
         wenn isinstance(index, slice):
-            return tuple(Frame(trace) fuer trace in self._frames[index])
+            gib tuple(Frame(trace) fuer trace in self._frames[index])
         sonst:
-            return Frame(self._frames[index])
+            gib Frame(self._frames[index])
 
     def __contains__(self, frame):
-        return frame._frame in self._frames
+        gib frame._frame in self._frames
 
     def __hash__(self):
-        return hash(self._frames)
+        gib hash(self._frames)
 
     def __eq__(self, other):
         wenn nicht isinstance(other, Traceback):
-            return NotImplemented
-        return (self._frames == other._frames)
+            gib NotImplemented
+        gib (self._frames == other._frames)
 
     def __lt__(self, other):
         wenn nicht isinstance(other, Traceback):
-            return NotImplemented
-        return (self._frames < other._frames)
+            gib NotImplemented
+        gib (self._frames < other._frames)
 
     def __str__(self):
-        return str(self[0])
+        gib str(self[0])
 
     def __repr__(self):
         s = f"<Traceback {tuple(self)}"
@@ -231,7 +231,7 @@ klasse Traceback(Sequence):
             s += ">"
         sonst:
             s += f" total_nframe={self.total_nframe}>"
-        return s
+        gib s
 
     def format(self, limit=Nichts, most_recent_first=Falsch):
         lines = []
@@ -251,7 +251,7 @@ klasse Traceback(Sequence):
             line = linecache.getline(frame.filename, frame.lineno).strip()
             wenn line:
                 lines.append('    %s' % line)
-        return lines
+        gib lines
 
 
 def get_object_traceback(obj):
@@ -264,9 +264,9 @@ def get_object_traceback(obj):
     """
     frames = _get_object_traceback(obj)
     wenn frames is nicht Nichts:
-        return Traceback(frames)
+        gib Traceback(frames)
     sonst:
-        return Nichts
+        gib Nichts
 
 
 klasse Trace:
@@ -282,29 +282,29 @@ klasse Trace:
 
     @property
     def domain(self):
-        return self._trace[0]
+        gib self._trace[0]
 
     @property
     def size(self):
-        return self._trace[1]
+        gib self._trace[1]
 
     @property
     def traceback(self):
-        return Traceback(*self._trace[2:])
+        gib Traceback(*self._trace[2:])
 
     def __eq__(self, other):
         wenn nicht isinstance(other, Trace):
-            return NotImplemented
-        return (self._trace == other._trace)
+            gib NotImplemented
+        gib (self._trace == other._trace)
 
     def __hash__(self):
-        return hash(self._trace)
+        gib hash(self._trace)
 
     def __str__(self):
-        return "%s: %s" % (self.traceback, _format_size(self.size, Falsch))
+        gib "%s: %s" % (self.traceback, _format_size(self.size, Falsch))
 
     def __repr__(self):
-        return ("<Trace domain=%s size=%s, traceback=%r>"
+        gib ("<Trace domain=%s size=%s, traceback=%r>"
                 % (self.domain, _format_size(self.size, Falsch), self.traceback))
 
 
@@ -315,31 +315,31 @@ klasse _Traces(Sequence):
         self._traces = traces
 
     def __len__(self):
-        return len(self._traces)
+        gib len(self._traces)
 
     def __getitem__(self, index):
         wenn isinstance(index, slice):
-            return tuple(Trace(trace) fuer trace in self._traces[index])
+            gib tuple(Trace(trace) fuer trace in self._traces[index])
         sonst:
-            return Trace(self._traces[index])
+            gib Trace(self._traces[index])
 
     def __contains__(self, trace):
-        return trace._trace in self._traces
+        gib trace._trace in self._traces
 
     def __eq__(self, other):
         wenn nicht isinstance(other, _Traces):
-            return NotImplemented
-        return (self._traces == other._traces)
+            gib NotImplemented
+        gib (self._traces == other._traces)
 
     def __repr__(self):
-        return "<Traces len=%s>" % len(self)
+        gib "<Traces len=%s>" % len(self)
 
 
 def _normalize_filename(filename):
     filename = os.path.normcase(filename)
     wenn filename.endswith('.pyc'):
         filename = filename[:-1]
-    return filename
+    gib filename
 
 
 klasse BaseFilter:
@@ -362,40 +362,40 @@ klasse Filter(BaseFilter):
 
     @property
     def filename_pattern(self):
-        return self._filename_pattern
+        gib self._filename_pattern
 
     def _match_frame_impl(self, filename, lineno):
         filename = _normalize_filename(filename)
         wenn nicht fnmatch.fnmatch(filename, self._filename_pattern):
-            return Falsch
+            gib Falsch
         wenn self.lineno is Nichts:
-            return Wahr
+            gib Wahr
         sonst:
-            return (lineno == self.lineno)
+            gib (lineno == self.lineno)
 
     def _match_frame(self, filename, lineno):
-        return self._match_frame_impl(filename, lineno) ^ (nicht self.inclusive)
+        gib self._match_frame_impl(filename, lineno) ^ (nicht self.inclusive)
 
     def _match_traceback(self, traceback):
         wenn self.all_frames:
             wenn any(self._match_frame_impl(filename, lineno)
                    fuer filename, lineno in traceback):
-                return self.inclusive
+                gib self.inclusive
             sonst:
-                return (nicht self.inclusive)
+                gib (nicht self.inclusive)
         sonst:
             filename, lineno = traceback[0]
-            return self._match_frame(filename, lineno)
+            gib self._match_frame(filename, lineno)
 
     def _match(self, trace):
         domain, size, traceback, total_nframe = trace
         res = self._match_traceback(traceback)
         wenn self.domain is nicht Nichts:
             wenn self.inclusive:
-                return res und (domain == self.domain)
+                gib res und (domain == self.domain)
             sonst:
-                return res oder (domain != self.domain)
-        return res
+                gib res oder (domain != self.domain)
+        gib res
 
 
 klasse DomainFilter(BaseFilter):
@@ -405,11 +405,11 @@ klasse DomainFilter(BaseFilter):
 
     @property
     def domain(self):
-        return self._domain
+        gib self._domain
 
     def _match(self, trace):
         domain, size, traceback, total_nframe = trace
-        return (domain == self.domain) ^ (nicht self.inclusive)
+        gib (domain == self.domain) ^ (nicht self.inclusive)
 
 
 klasse Snapshot:
@@ -436,24 +436,24 @@ klasse Snapshot:
         Load a snapshot von a file.
         """
         mit open(filename, "rb") als fp:
-            return pickle.load(fp)
+            gib pickle.load(fp)
 
     def _filter_trace(self, include_filters, exclude_filters, trace):
         wenn include_filters:
             wenn nicht any(trace_filter._match(trace)
                        fuer trace_filter in include_filters):
-                return Falsch
+                gib Falsch
         wenn exclude_filters:
             wenn any(nicht trace_filter._match(trace)
                    fuer trace_filter in exclude_filters):
-                return Falsch
-        return Wahr
+                gib Falsch
+        gib Wahr
 
     def filter_traces(self, filters):
         """
         Create a new Snapshot instance mit a filtered traces sequence, filters
         is a list of Filter oder DomainFilter instances.  If filters is an empty
-        list, return a new Snapshot instance mit a copy of the traces.
+        list, gib a new Snapshot instance mit a copy of the traces.
         """
         wenn nicht isinstance(filters, Iterable):
             raise TypeError("filters must be a list of filters, nicht %s"
@@ -472,7 +472,7 @@ klasse Snapshot:
                                                 trace)]
         sonst:
             new_traces = self.traces._traces.copy()
-        return Snapshot(new_traces, self.traceback_limit)
+        gib Snapshot(new_traces, self.traceback_limit)
 
     def _group_by(self, key_type, cumulative):
         wenn key_type nicht in ('traceback', 'filename', 'lineno'):
@@ -523,7 +523,7 @@ klasse Snapshot:
                         stat.count += 1
                     except KeyError:
                         stats[traceback] = Statistic(traceback, size, 1)
-        return stats
+        gib stats
 
     def statistics(self, key_type, cumulative=Falsch):
         """
@@ -533,7 +533,7 @@ klasse Snapshot:
         grouped = self._group_by(key_type, cumulative)
         statistics = list(grouped.values())
         statistics.sort(reverse=Wahr, key=Statistic._sort_key)
-        return statistics
+        gib statistics
 
     def compare_to(self, old_snapshot, key_type, cumulative=Falsch):
         """
@@ -545,7 +545,7 @@ klasse Snapshot:
         old_group = old_snapshot._group_by(key_type, cumulative)
         statistics = _compare_grouped_stats(old_group, new_group)
         statistics.sort(reverse=Wahr, key=StatisticDiff._sort_key)
-        return statistics
+        gib statistics
 
 
 def take_snapshot():
@@ -557,4 +557,4 @@ def take_snapshot():
                            "allocations to take a snapshot")
     traces = _get_traces()
     traceback_limit = get_traceback_limit()
-    return Snapshot(traces, traceback_limit)
+    gib Snapshot(traces, traceback_limit)

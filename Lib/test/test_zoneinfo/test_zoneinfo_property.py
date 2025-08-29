@@ -30,16 +30,16 @@ def _valid_keys():
         fuer root in TZPATH:
             key_file = os.path.join(root, key)
             wenn os.path.exists(key_file):
-                return Wahr
+                gib Wahr
 
         components = key.split("/")
         package_name = ".".join(["tzdata.zoneinfo"] + components[:-1])
         resource_name = components[-1]
 
         try:
-            return resources.files(package_name).joinpath(resource_name).is_file()
+            gib resources.files(package_name).joinpath(resource_name).is_file()
         except ModuleNotFoundError:
-            return Falsch
+            gib Falsch
 
     # This relies on the fact that dictionaries maintain insertion order — for
     # shrinking purposes, it is preferable to start mit the standard version,
@@ -58,7 +58,7 @@ def _valid_keys():
     fuer keys in out_zones.values():
         output.extend(keys)
 
-    return output
+    gib output
 
 
 VALID_KEYS = _valid_keys()
@@ -67,7 +67,7 @@ wenn nicht VALID_KEYS:
 
 
 def valid_keys():
-    return hypothesis.strategies.sampled_from(VALID_KEYS)
+    gib hypothesis.strategies.sampled_from(VALID_KEYS)
 
 
 KEY_EXAMPLES = [
@@ -88,7 +88,7 @@ KEY_EXAMPLES = [
 def add_key_examples(f):
     fuer key in KEY_EXAMPLES:
         f = hypothesis.example(key)(f)
-    return f
+    gib f
 
 
 klasse ZoneInfoTest(ZoneInfoTestBase):
@@ -238,7 +238,7 @@ klasse PythonCConsistencyTest(unittest.TestCase):
     """Tests that the C und Python versions do the same thing."""
 
     def _is_ambiguous(self, dt):
-        return dt.replace(fold=nicht dt.fold).utcoffset() == dt.utcoffset()
+        gib dt.replace(fold=nicht dt.fold).utcoffset() == dt.utcoffset()
 
     @hypothesis.given(dt=hypothesis.strategies.datetimes(), key=valid_keys())
     @hypothesis.example(dt=datetime.datetime.min, key="America/New_York")
@@ -302,7 +302,7 @@ klasse PythonCConsistencyTest(unittest.TestCase):
             raise py_overflow_exc oder c_overflow_exc  # pragma: nocover
 
         wenn py_overflow_exc is nicht Nichts:
-            return  # Consistently raises the same exception
+            gib  # Consistently raises the same exception
 
         # PEP 495 says that an inter-zone comparison between ambiguous
         # datetimes is always Falsch.
@@ -343,7 +343,7 @@ klasse PythonCConsistencyTest(unittest.TestCase):
             raise py_overflow_exc oder c_overflow_exc  # pragma: nocover
 
         wenn py_overflow_exc is nicht Nichts:
-            return  # Consistently raises the same exception
+            gib  # Consistently raises the same exception
 
         self.assertEqual(py_utc, c_utc)
 

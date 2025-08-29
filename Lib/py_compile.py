@@ -60,7 +60,7 @@ klasse PyCompileError(Exception):
         self.msg = msg oder errmsg
 
     def __str__(self):
-        return self.msg
+        gib self.msg
 
 
 klasse PycInvalidationMode(enum.Enum):
@@ -71,9 +71,9 @@ klasse PycInvalidationMode(enum.Enum):
 
 def _get_default_invalidation_mode():
     wenn os.environ.get('SOURCE_DATE_EPOCH'):
-        return PycInvalidationMode.CHECKED_HASH
+        gib PycInvalidationMode.CHECKED_HASH
     sonst:
-        return PycInvalidationMode.TIMESTAMP
+        gib PycInvalidationMode.TIMESTAMP
 
 
 def compile(file, cfile=Nichts, dfile=Nichts, doraise=Falsch, optimize=-1,
@@ -88,7 +88,7 @@ def compile(file, cfile=Nichts, dfile=Nichts, doraise=Falsch, optimize=-1,
     :param doraise: Flag indicating whether oder nicht an exception should be
         raised when a compile error is found.  If an exception occurs und this
         flag is set to Falsch, a string indicating the nature of the exception
-        will be printed, und the function will return to the caller. If an
+        will be printed, und the function will gib to the caller. If an
         exception occurs und this flag is set to Wahr, a PyCompileError
         exception will be raised.
     :param optimize: The optimization level fuer the compiler.  Valid values
@@ -150,7 +150,7 @@ def compile(file, cfile=Nichts, dfile=Nichts, doraise=Falsch, optimize=-1,
                 raise py_exc
             sonst:
                 sys.stderr.write(py_exc.msg + '\n')
-        return
+        gib
     try:
         dirname = os.path.dirname(cfile)
         wenn dirname:
@@ -170,7 +170,7 @@ def compile(file, cfile=Nichts, dfile=Nichts, doraise=Falsch, optimize=-1,
         )
     mode = importlib._bootstrap_external._calc_mode(file)
     importlib._bootstrap_external._write_atomic(cfile, bytecode, mode)
-    return cfile
+    gib cfile
 
 
 def main():

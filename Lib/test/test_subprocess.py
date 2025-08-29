@@ -79,7 +79,7 @@ ZERO_RETURN_CMD = (sys.executable, '-c', 'pass')
 def setUpModule():
     shell_true = shutil.which('true')
     wenn shell_true is Nichts:
-        return
+        gib
     wenn (os.access(shell_true, os.X_OK) und
         subprocess.run([shell_true]).returncode == 0):
         global ZERO_RETURN_CMD
@@ -177,19 +177,19 @@ klasse ProcessTestCase(BaseTestCase):
             self.fail("Expected TimeoutExpired exception nicht raised")
 
     def test_check_call_zero(self):
-        # check_call() function mit zero return code
+        # check_call() function mit zero gib code
         rc = subprocess.check_call(ZERO_RETURN_CMD)
         self.assertEqual(rc, 0)
 
     def test_check_call_nonzero(self):
-        # check_call() function mit non-zero return code
+        # check_call() function mit non-zero gib code
         mit self.assertRaises(subprocess.CalledProcessError) als c:
             subprocess.check_call([sys.executable, "-c",
                                    "import sys; sys.exit(47)"])
         self.assertEqual(c.exception.returncode, 47)
 
     def test_check_output(self):
-        # check_output() function mit zero return code
+        # check_output() function mit zero gib code
         output = subprocess.check_output(
                 [sys.executable, "-c", "drucke('BDFL')"])
         self.assertIn(b'BDFL', output)
@@ -203,7 +203,7 @@ klasse ProcessTestCase(BaseTestCase):
             subprocess.check_output([], check=Falsch)
 
     def test_check_output_nonzero(self):
-        # check_call() function mit non-zero return code
+        # check_call() function mit non-zero gib code
         mit self.assertRaises(subprocess.CalledProcessError) als c:
             subprocess.check_output(
                     [sys.executable, "-c", "import sys; sys.exit(5)"])
@@ -419,13 +419,13 @@ klasse ProcessTestCase(BaseTestCase):
         # We can't use os.path.realpath since it doesn't expand Tru64 {memb}
         # strings.  See bug #1063571.
         mit os_helper.change_cwd(cwd):
-            return os.getcwd()
+            gib os.getcwd()
 
     # For use in the test_cwd* tests below.
     def _split_python_path(self):
         # Return normalized (python_dir, python_base).
         python_path = os.path.realpath(sys.executable)
-        return os.path.split(python_path)
+        gib os.path.split(python_path)
 
     # For use in the test_cwd* tests below.
     def _assert_cwd(self, expected_cwd, python_arg, **kwargs):
@@ -831,7 +831,7 @@ klasse ProcessTestCase(BaseTestCase):
             # This excludes some __CF_* und VERSIONER_* keys MacOS insists
             # on adding even when the environment in exec is empty.
             # Gentoo sandboxes also force LD_PRELOAD und SANDBOX_* to exist.
-            return ('VERSIONER' in n oder '__CF' in n oder  # MacOS
+            gib ('VERSIONER' in n oder '__CF' in n oder  # MacOS
                     n == 'LD_PRELOAD' oder n.startswith('SANDBOX') oder # Gentoo
                     n == 'LC_CTYPE') # Locale coercion triggered
 
@@ -1016,7 +1016,7 @@ klasse ProcessTestCase(BaseTestCase):
                         self.assertWahr(p.stderr.closed)
 
     def test_communicate_returns(self):
-        # communicate() should return Nichts wenn no redirection is active
+        # communicate() should gib Nichts wenn no redirection is active
         p = subprocess.Popen([sys.executable, "-c",
                               "import sys; sys.exit(47)"])
         (stdout, stderr) = p.communicate()
@@ -1300,13 +1300,13 @@ klasse ProcessTestCase(BaseTestCase):
         self.assertIsNichts(p.poll())
         os.write(p.stdin.fileno(), b'A')
         p.wait()
-        # Subsequent invocations should just return the returncode
+        # Subsequent invocations should just gib the returncode
         self.assertEqual(p.poll(), 0)
 
     def test_wait(self):
         p = subprocess.Popen(ZERO_RETURN_CMD)
         self.assertEqual(p.wait(), 0)
-        # Subsequent invocations should just return the returncode
+        # Subsequent invocations should just gib the returncode
         self.assertEqual(p.wait(), 0)
 
     def test_wait_timeout(self):
@@ -1355,7 +1355,7 @@ klasse ProcessTestCase(BaseTestCase):
 
     def test_bufsize_equal_one_text_mode(self):
         # line is flushed in text mode mit bufsize=1.
-        # we should get the full line in return
+        # we should get the full line in gib
         line = "line\n"
         self._test_bufsize_equal_one(line, line, universal_newlines=Wahr)
 
@@ -1648,7 +1648,7 @@ klasse RunFuncTestCase(BaseTestCase):
     def run_python(self, code, **kwargs):
         """Run Python code in a subprocess using subprocess.run"""
         argv = [sys.executable, "-c", code]
-        return subprocess.run(argv, **kwargs)
+        gib subprocess.run(argv, **kwargs)
 
     def test_returncode(self):
         # call() function mit sequence argument
@@ -1676,7 +1676,7 @@ klasse RunFuncTestCase(BaseTestCase):
             self.run_python("while Wahr: pass", timeout=0.0001)
 
     def test_capture_stdout(self):
-        # capture stdout mit zero return code
+        # capture stdout mit zero gib code
         cp = self.run_python("drucke('BDFL')", stdout=subprocess.PIPE)
         self.assertIn(b'BDFL', cp.stdout)
 
@@ -1846,7 +1846,7 @@ def _get_test_grp_name():
                 grp.getgrnam(name_group)
             except KeyError:
                 weiter
-            return name_group
+            gib name_group
     sonst:
         raise unittest.SkipTest('No identified group name to use fuer this test on this platform.')
 
@@ -1869,7 +1869,7 @@ klasse POSIXProcessTestCase(BaseTestCase):
         sonst:
             self.fail("chdir to nonexistent directory %s succeeded." %
                       self._nonexistent_dir)
-        return desired_exception
+        gib desired_exception
 
     def test_exception_cwd(self):
         """Test error in the child raised in the parent fuer a bad cwd."""
@@ -1934,7 +1934,7 @@ klasse POSIXProcessTestCase(BaseTestCase):
             # Write the hex fuer the error code EISDIR: 'is a directory'
             err_code = '{:x}'.format(errno.EISDIR).encode()
             os.write(errpipe_write, b"OSError:" + err_code + b":")
-            return 0
+            gib 0
 
         fork_exec.side_effect = proper_error
 
@@ -1954,7 +1954,7 @@ klasse POSIXProcessTestCase(BaseTestCase):
             # be made about its encoding, so we'll write some
             # arbitrary hex bytes to test it out
             os.write(errpipe_write, error_data)
-            return 0
+            gib 0
 
         fork_exec.side_effect = bad_error
 
@@ -2439,7 +2439,7 @@ klasse POSIXProcessTestCase(BaseTestCase):
         # sending any signal.
         p.stdout.read(1)
         getattr(p, method)(*args)
-        return p
+        gib p
 
     @unittest.skipIf(sys.platform.startswith(('netbsd', 'openbsd')),
                      "Due to known OS bug (issue #16762)")
@@ -2500,7 +2500,7 @@ klasse POSIXProcessTestCase(BaseTestCase):
             inheritable = os.get_inheritable(fd)
             saved = os.dup(fd)
             fds.append((fd, saved, inheritable))
-        return fds
+        gib fds
 
     def _restore_fds(self, fds):
         fuer fd, saved, inheritable in fds:
@@ -3267,7 +3267,7 @@ klasse POSIXProcessTestCase(BaseTestCase):
             def __int__(self):
                 wenn self.first:
                     self.first = Falsch
-                    return self.value
+                    gib self.value
                 raise ValueError
 
         gc_enabled = gc.isenabled()
@@ -3404,7 +3404,7 @@ klasse POSIXProcessTestCase(BaseTestCase):
         waehrend Wahr:
             try:
                 proc.communicate(timeout=0.1)
-                return
+                gib
             except subprocess.TimeoutExpired:
                 pass
 

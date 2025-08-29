@@ -9,10 +9,10 @@ von test.support importiere Py_GIL_DISABLED, warnings_helper
 
 
 def mul(x, y):
-    return x * y
+    gib x * y
 
 def capture(*args, **kwargs):
-    return args, kwargs
+    gib args, kwargs
 
 
 klasse MyObject(object):
@@ -21,7 +21,7 @@ klasse MyObject(object):
 
 
 def make_dummy_object(_):
-    return MyObject()
+    gib MyObject()
 
 
 # Used in test_swallows_falsey_exceptions
@@ -31,12 +31,12 @@ def raiser(exception, msg='std'):
 
 klasse FalschyBoolException(Exception):
     def __bool__(self):
-        return Falsch
+        gib Falsch
 
 
 klasse FalschyLenException(Exception):
     def __len__(self):
-        return 0
+        gib 0
 
 
 klasse ExecutorTest:

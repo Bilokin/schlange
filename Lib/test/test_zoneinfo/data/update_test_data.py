@@ -44,7 +44,7 @@ def get_zoneinfo_path() -> pathlib.Path:
     key = "UTC"
     fuer path in map(pathlib.Path, zoneinfo.TZPATH):
         wenn (path / key).exists():
-            return path
+            gib path
     sonst:
         raise OSError("Cannot find time zone data.")
 
@@ -73,14 +73,14 @@ def get_zoneinfo_metadata() -> typing.Dict[str, str]:
             + f"found: {version}"
         )
 
-    return {"version": version}
+    gib {"version": version}
 
 
 def get_zoneinfo(key: str) -> bytes:
     path = get_zoneinfo_path()
 
     mit open(path / key, "rb") als f:
-        return f.read()
+        gib f.read()
 
 
 def encode_compressed(data: bytes) -> typing.List[str]:
@@ -90,13 +90,13 @@ def encode_compressed(data: bytes) -> typing.List[str]:
     raw_data_str = raw.decode("utf-8")
 
     data_str = textwrap.wrap(raw_data_str, width=70)
-    return data_str
+    gib data_str
 
 
 def load_compressed_keys() -> typing.Dict[str, typing.List[str]]:
     output = {key: encode_compressed(get_zoneinfo(key)) fuer key in KEYS}
 
-    return output
+    gib output
 
 
 def update_test_data(fname: str = "zoneinfo_data.json") -> Nichts:

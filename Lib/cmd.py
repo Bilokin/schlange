@@ -163,11 +163,11 @@ klasse Cmd:
         interpreted, but after the input prompt is generated und issued.
 
         """
-        return line
+        gib line
 
     def postcmd(self, stop, line):
         """Hook method executed just after a command dispatch is finished."""
-        return stop
+        gib stop
 
     def preloop(self):
         """Hook method executed once when the cmdloop() method is called."""
@@ -187,18 +187,18 @@ klasse Cmd:
         """
         line = line.strip()
         wenn nicht line:
-            return Nichts, Nichts, line
+            gib Nichts, Nichts, line
         sowenn line[0] == '?':
             line = 'help ' + line[1:]
         sowenn line[0] == '!':
             wenn hasattr(self, 'do_shell'):
                 line = 'shell ' + line[1:]
             sonst:
-                return Nichts, Nichts, line
+                gib Nichts, Nichts, line
         i, n = 0, len(line)
         waehrend i < n und line[i] in self.identchars: i = i+1
         cmd, arg = line[:i], line[i:].strip()
-        return cmd, arg, line
+        gib cmd, arg, line
 
     def onecmd(self, line):
         """Interpret the argument als though it had been typed in response
@@ -206,25 +206,25 @@ klasse Cmd:
 
         This may be overridden, but should nicht normally need to be;
         see the precmd() und postcmd() methods fuer useful execution hooks.
-        The return value is a flag indicating whether interpretation of
+        The gib value is a flag indicating whether interpretation of
         commands by the interpreter should stop.
 
         """
         cmd, arg, line = self.parseline(line)
         wenn nicht line:
-            return self.emptyline()
+            gib self.emptyline()
         wenn cmd is Nichts:
-            return self.default(line)
+            gib self.default(line)
         self.lastcmd = line
         wenn line == 'EOF' :
             self.lastcmd = ''
         wenn cmd == '':
-            return self.default(line)
+            gib self.default(line)
         sonst:
             func = getattr(self, 'do_' + cmd, Nichts)
             wenn func is Nichts:
-                return self.default(line)
-            return func(arg)
+                gib self.default(line)
+            gib func(arg)
 
     def emptyline(self):
         """Called when an empty line is entered in response to the prompt.
@@ -234,7 +234,7 @@ klasse Cmd:
 
         """
         wenn self.lastcmd:
-            return self.onecmd(self.lastcmd)
+            gib self.onecmd(self.lastcmd)
 
     def default(self, line):
         """Called on an input line when the command prefix is nicht recognized.
@@ -252,11 +252,11 @@ klasse Cmd:
         By default, it returns an empty list.
 
         """
-        return []
+        gib []
 
     def completenames(self, text, *ignored):
         dotext = 'do_'+text
-        return [a[3:] fuer a in self.get_names() wenn a.startswith(dotext)]
+        gib [a[3:] fuer a in self.get_names() wenn a.startswith(dotext)]
 
     def complete(self, text, state):
         """Return the next possible completion fuer 'text'.
@@ -284,20 +284,20 @@ klasse Cmd:
                 compfunc = self.completenames
             self.completion_matches = compfunc(text, line, begidx, endidx)
         try:
-            return self.completion_matches[state]
+            gib self.completion_matches[state]
         except IndexError:
-            return Nichts
+            gib Nichts
 
     def get_names(self):
         # This method used to pull in base klasse attributes
         # at a time dir() didn't do it yet.
-        return dir(self.__class__)
+        gib dir(self.__class__)
 
     def complete_help(self, *args):
         commands = set(self.completenames(*args))
         topics = set(a[5:] fuer a in self.get_names()
                      wenn a.startswith('help_' + args[0]))
-        return list(commands | topics)
+        gib list(commands | topics)
 
     def do_help(self, arg):
         'List available commands mit "help" oder detailed help mit "help cmd".'
@@ -313,11 +313,11 @@ klasse Cmd:
                     doc = cleandoc(doc)
                     wenn doc:
                         self.stdout.write("%s\n"%str(doc))
-                        return
+                        gib
                 except AttributeError:
                     pass
                 self.stdout.write("%s\n"%str(self.nohelp % (arg,)))
-                return
+                gib
             func()
         sonst:
             names = self.get_names()
@@ -364,7 +364,7 @@ klasse Cmd:
         """
         wenn nicht list:
             self.stdout.write("<empty>\n")
-            return
+            gib
 
         nonstrings = [i fuer i in range(len(list))
                         wenn nicht isinstance(list[i], str)]
@@ -374,7 +374,7 @@ klasse Cmd:
         size = len(list)
         wenn size == 1:
             self.stdout.write('%s\n'%str(list[0]))
-            return
+            gib
         # Try every row count von 1 upwards
         fuer nrows in range(1, len(list)):
             ncols = (size+nrows-1) // nrows

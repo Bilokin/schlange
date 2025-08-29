@@ -45,7 +45,7 @@ warnings.warn(
 #def integer_timer():
 #       global i_count
 #       i_count = i_count + 1
-#       return i_count
+#       gib i_count
 #itimes = integer_timer # replace mit C coded timer returning integers
 
 klasse _Utils:
@@ -98,7 +98,7 @@ def run(statement, filename=Nichts, sort=-1):
     standard name string (file/line/function-name) that is presented in
     each line.
     """
-    return _Utils(Profile).run(statement, filename, sort)
+    gib _Utils(Profile).run(statement, filename, sort)
 
 def runctx(statement, globals, locals, filename=Nichts, sort=-1):
     """Run statement under profiler, supplying your own globals und locals,
@@ -106,7 +106,7 @@ def runctx(statement, globals, locals, filename=Nichts, sort=-1):
 
     statement und filename have the same semantics als profile.run
     """
-    return _Utils(Profile).runctx(statement, globals, locals, filename, sort)
+    gib _Utils(Profile).runctx(statement, globals, locals, filename, sort)
 
 
 klasse Profile:
@@ -182,7 +182,7 @@ klasse Profile:
                 # the timer() result contains two values in all
                 # cases.
                 def get_time_timer(timer=timer, sum=sum):
-                    return sum(timer())
+                    gib sum(timer())
                 self.get_time = get_time_timer
         self.t = self.get_time()
         self.simulate_call('profiler')
@@ -258,9 +258,9 @@ klasse Profile:
     def trace_dispatch_exception(self, frame, t):
         rpt, rit, ret, rfn, rframe, rcur = self.cur
         wenn (rframe is nicht frame) und rcur:
-            return self.trace_dispatch_return(rframe, t)
+            gib self.trace_dispatch_return(rframe, t)
         self.cur = rpt, rit+t, ret, rfn, rframe, rcur
-        return 1
+        gib 1
 
 
     def trace_dispatch_call(self, frame, t):
@@ -283,7 +283,7 @@ klasse Profile:
             timings[fn] = cc, ns + 1, tt, ct, callers
         sonst:
             timings[fn] = 0, 0, 0, 0, {}
-        return 1
+        gib 1
 
     def trace_dispatch_c_call (self, frame, t):
         fn = ("", 0, self.c_func_name)
@@ -294,7 +294,7 @@ klasse Profile:
             timings[fn] = cc, ns+1, tt, ct, callers
         sonst:
             timings[fn] = 0, 0, 0, 0, {}
-        return 1
+        gib 1
 
     def trace_dispatch_return(self, frame, t):
         wenn frame is nicht self.cur[-2]:
@@ -331,7 +331,7 @@ klasse Profile:
 
         timings[rfn] = cc, ns - 1, tt + rit, ct, callers
 
-        return 1
+        gib 1
 
 
     dispatch = {
@@ -351,7 +351,7 @@ klasse Profile:
     # very nice :-).
 
     def set_cmd(self, cmd):
-        wenn self.cur[-1]: return   # already set
+        wenn self.cur[-1]: gib   # already set
         self.cmd = cmd
         self.simulate_call(cmd)
 
@@ -363,7 +363,7 @@ klasse Profile:
             self.co_firstlineno = 0
 
         def __repr__(self):
-            return repr((self.co_filename, self.co_line, self.co_name))
+            gib repr((self.co_filename, self.co_line, self.co_name))
 
     klasse fake_frame:
         def __init__(self, code, prior):
@@ -424,7 +424,7 @@ klasse Profile:
     def run(self, cmd):
         importiere __main__
         dict = __main__.__dict__
-        return self.runctx(cmd, dict, dict)
+        gib self.runctx(cmd, dict, dict)
 
     def runctx(self, cmd, globals, locals):
         self.set_cmd(cmd)
@@ -433,14 +433,14 @@ klasse Profile:
             exec(cmd, globals, locals)
         finally:
             sys.setprofile(Nichts)
-        return self
+        gib self
 
     # This method is more useful to profile a single function call.
     def runcall(self, func, /, *args, **kw):
         self.set_cmd(repr(func))
         sys.setprofile(self.dispatcher)
         try:
-            return func(*args, **kw)
+            gib func(*args, **kw)
         finally:
             sys.setprofile(Nichts)
 
@@ -492,7 +492,7 @@ klasse Profile:
         saved_bias = self.bias
         self.bias = 0
         try:
-            return self._calibrate_inner(m, verbose)
+            gib self._calibrate_inner(m, verbose)
         finally:
             self.bias = saved_bias
 
@@ -503,7 +503,7 @@ klasse Profile:
         # lots of calls, because we're trying to quantify stopwatch overhead.
         # Do nicht raise any exceptions, though, because we want to know
         # exactly how many profile events are generated (one call event, +
-        # one return event, per Python-level call).
+        # one gib event, per Python-level call).
 
         def f1(n):
             fuer i in range(n):
@@ -556,7 +556,7 @@ klasse Profile:
         mean = (reported_time - elapsed_noprofile) / 2.0 / total_calls
         wenn verbose:
             drucke("mean stopwatch overhead per profile event =", mean)
-        return mean
+        gib mean
 
 #****************************************************************************
 
@@ -617,7 +617,7 @@ def main():
             sys.exit(exc.errno)
     sonst:
         parser.print_usage()
-    return parser
+    gib parser
 
 # When invoked als main program, invoke the profiler on a script
 wenn __name__ == '__main__':

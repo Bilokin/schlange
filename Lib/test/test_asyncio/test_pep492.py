@@ -26,7 +26,7 @@ klasse FakeCoro:
         pass
 
     def __await__(self):
-        yield
+        liefere
 
 
 klasse BaseTest(test_utils.TestCase):
@@ -100,7 +100,7 @@ klasse StreamReaderTests(BaseTest):
             data = []
             async fuer line in stream:
                 data.append(line)
-            return data
+            gib data
 
         data = self.loop.run_until_complete(reader())
         self.assertEqual(data, [b'line1\n', b'line2\n', b'line3'])
@@ -120,7 +120,7 @@ klasse CoroutineTests(BaseTest):
         self.assertWahr(asyncio.iscoroutine(FakeCoro()))
 
     def test_iscoroutine_generator(self):
-        def foo(): yield
+        def foo(): liefere
 
         self.assertFalsch(asyncio.iscoroutine(foo()))
 
@@ -131,9 +131,9 @@ klasse CoroutineTests(BaseTest):
 
     def test_async_def_coroutines(self):
         async def bar():
-            return 'spam'
+            gib 'spam'
         async def foo():
-            return await bar()
+            gib await bar()
 
         # production mode
         data = self.loop.run_until_complete(foo())
@@ -155,17 +155,17 @@ klasse CoroutineTests(BaseTest):
 
     def test_types_coroutine(self):
         def gen():
-            yield von ()
-            return 'spam'
+            liefere von ()
+            gib 'spam'
 
         @types.coroutine
         def func():
-            return gen()
+            gib gen()
 
         async def coro():
             wrapper = func()
             self.assertIsInstance(wrapper, types._GeneratorWrapper)
-            return await wrapper
+            gib await wrapper
 
         data = self.loop.run_until_complete(coro())
         self.assertEqual(data, 'spam')

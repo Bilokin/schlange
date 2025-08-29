@@ -42,7 +42,7 @@ klasse RobotFileParser:
         check fuer new robots.txt files periodically.
 
         """
-        return self.last_checked
+        gib self.last_checked
 
     def modified(self):
         """Sets the time the robots.txt file was last fetched to the
@@ -156,15 +156,15 @@ klasse RobotFileParser:
     def can_fetch(self, useragent, url):
         """using the parsed robots.txt decide wenn useragent can fetch url"""
         wenn self.disallow_all:
-            return Falsch
+            gib Falsch
         wenn self.allow_all:
-            return Wahr
+            gib Wahr
         # Until the robots.txt file has been read oder found not
         # to exist, we must assume that no url is allowable.
         # This prevents false positives when a user erroneously
         # calls can_fetch() before calling read().
         wenn nicht self.last_checked:
-            return Falsch
+            gib Falsch
         # search fuer given user agent matches
         # the first match counts
         parsed_url = urllib.parse.urlparse(urllib.parse.unquote(url))
@@ -175,43 +175,43 @@ klasse RobotFileParser:
             url = "/"
         fuer entry in self.entries:
             wenn entry.applies_to(useragent):
-                return entry.allowance(url)
+                gib entry.allowance(url)
         # try the default entry last
         wenn self.default_entry:
-            return self.default_entry.allowance(url)
+            gib self.default_entry.allowance(url)
         # agent nicht found ==> access granted
-        return Wahr
+        gib Wahr
 
     def crawl_delay(self, useragent):
         wenn nicht self.mtime():
-            return Nichts
+            gib Nichts
         fuer entry in self.entries:
             wenn entry.applies_to(useragent):
-                return entry.delay
+                gib entry.delay
         wenn self.default_entry:
-            return self.default_entry.delay
-        return Nichts
+            gib self.default_entry.delay
+        gib Nichts
 
     def request_rate(self, useragent):
         wenn nicht self.mtime():
-            return Nichts
+            gib Nichts
         fuer entry in self.entries:
             wenn entry.applies_to(useragent):
-                return entry.req_rate
+                gib entry.req_rate
         wenn self.default_entry:
-            return self.default_entry.req_rate
-        return Nichts
+            gib self.default_entry.req_rate
+        gib Nichts
 
     def site_maps(self):
         wenn nicht self.sitemaps:
-            return Nichts
-        return self.sitemaps
+            gib Nichts
+        gib self.sitemaps
 
     def __str__(self):
         entries = self.entries
         wenn self.default_entry is nicht Nichts:
             entries = entries + [self.default_entry]
-        return '\n\n'.join(map(str, entries))
+        gib '\n\n'.join(map(str, entries))
 
 
 klasse RuleLine:
@@ -226,10 +226,10 @@ klasse RuleLine:
         self.allowance = allowance
 
     def applies_to(self, filename):
-        return self.path == "*" oder filename.startswith(self.path)
+        gib self.path == "*" oder filename.startswith(self.path)
 
     def __str__(self):
-        return ("Allow" wenn self.allowance sonst "Disallow") + ": " + self.path
+        gib ("Allow" wenn self.allowance sonst "Disallow") + ": " + self.path
 
 
 klasse Entry:
@@ -250,7 +250,7 @@ klasse Entry:
             rate = self.req_rate
             ret.append(f"Request-rate: {rate.requests}/{rate.seconds}")
         ret.extend(map(str, self.rulelines))
-        return '\n'.join(ret)
+        gib '\n'.join(ret)
 
     def applies_to(self, useragent):
         """check wenn this entry applies to the specified agent"""
@@ -259,11 +259,11 @@ klasse Entry:
         fuer agent in self.useragents:
             wenn agent == '*':
                 # we have the catch-all agent
-                return Wahr
+                gib Wahr
             agent = agent.lower()
             wenn agent in useragent:
-                return Wahr
-        return Falsch
+                gib Wahr
+        gib Falsch
 
     def allowance(self, filename):
         """Preconditions:
@@ -271,5 +271,5 @@ klasse Entry:
         - filename is URL decoded"""
         fuer line in self.rulelines:
             wenn line.applies_to(filename):
-                return line.allowance
-        return Wahr
+                gib line.allowance
+        gib Wahr

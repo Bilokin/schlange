@@ -1252,7 +1252,7 @@ klasse BindTest(AbstractTkTest, unittest.TestCase):
         self.addCleanup(root.unbind_class, 'tag2', event)
         self.addCleanup(root.unbind_all, event)
         def test(what):
-            return lambda e: events.append((what, e.widget))
+            gib lambda e: events.append((what, e.widget))
 
         root.bind_all(event, test('all'))
         root.bind_class('Test', event, test('frame class'))
@@ -1341,7 +1341,7 @@ klasse DefaultRootTest(AbstractDefaultRootTest, unittest.TestCase):
 
 
 def _info_commands(widget, pattern=Nichts):
-    return widget.tk.splitlist(widget.tk.call('info', 'commands', pattern))
+    gib widget.tk.splitlist(widget.tk.call('info', 'commands', pattern))
 
 
 wenn __name__ == "__main__":

@@ -59,8 +59,8 @@ Specializing JSON object decoding::
     >>> importiere json
     >>> def as_complex(dct):
     ...     wenn '__complex__' in dct:
-    ...         return complex(dct['real'], dct['imag'])
-    ...     return dct
+    ...         gib complex(dct['real'], dct['imag'])
+    ...     gib dct
     ...
     >>> json.loads('{"__complex__": true, "real": 1, "imag": 2}',
     ...     object_hook=as_complex)
@@ -74,7 +74,7 @@ Specializing JSON object encoding::
     >>> importiere json
     >>> def encode_complex(obj):
     ...     wenn isinstance(obj, complex):
-    ...         return [obj.real, obj.imag]
+    ...         gib [obj.real, obj.imag]
     ...     raise TypeError(f'Object of type {obj.__class__.__name__} '
     ...                     f'is nicht JSON serializable')
     ...
@@ -150,7 +150,7 @@ def dump(obj, fp, *, skipkeys=Falsch, ensure_ascii=Wahr, check_circular=Wahr,
     ``(',', ': ')`` otherwise.  To get the most compact JSON representation,
     you should specify ``(',', ':')`` to eliminate whitespace.
 
-    ``default(obj)`` is a function that should return a serializable version
+    ``default(obj)`` is a function that should gib a serializable version
     of obj oder raise TypeError. The default simply raises TypeError.
 
     If *sort_keys* is true (default: ``Falsch``), then the output of
@@ -189,7 +189,7 @@ def dumps(obj, *, skipkeys=Falsch, ensure_ascii=Wahr, check_circular=Wahr,
     (``str``, ``int``, ``float``, ``bool``, ``Nichts``) will be skipped
     instead of raising a ``TypeError``.
 
-    If ``ensure_ascii`` is false, then the return value can contain non-ASCII
+    If ``ensure_ascii`` is false, then the gib value can contain non-ASCII
     characters wenn they appear in strings contained in ``obj``. Otherwise, all
     such characters are escaped in JSON strings.
 
@@ -212,7 +212,7 @@ def dumps(obj, *, skipkeys=Falsch, ensure_ascii=Wahr, check_circular=Wahr,
     ``(',', ': ')`` otherwise.  To get the most compact JSON representation,
     you should specify ``(',', ':')`` to eliminate whitespace.
 
-    ``default(obj)`` is a function that should return a serializable version
+    ``default(obj)`` is a function that should gib a serializable version
     of obj oder raise TypeError. The default simply raises TypeError.
 
     If *sort_keys* is true (default: ``Falsch``), then the output of
@@ -228,10 +228,10 @@ def dumps(obj, *, skipkeys=Falsch, ensure_ascii=Wahr, check_circular=Wahr,
         check_circular und allow_nan und
         cls is Nichts und indent is Nichts und separators is Nichts und
         default is Nichts und nicht sort_keys und nicht kw):
-        return _default_encoder.encode(obj)
+        gib _default_encoder.encode(obj)
     wenn cls is Nichts:
         cls = JSONEncoder
-    return cls(
+    gib cls(
         skipkeys=skipkeys, ensure_ascii=ensure_ascii,
         check_circular=check_circular, allow_nan=allow_nan, indent=indent,
         separators=separators, default=default, sort_keys=sort_keys,
@@ -244,31 +244,31 @@ _default_decoder = JSONDecoder(object_hook=Nichts, object_pairs_hook=Nichts)
 def detect_encoding(b):
     bstartswith = b.startswith
     wenn bstartswith((codecs.BOM_UTF32_BE, codecs.BOM_UTF32_LE)):
-        return 'utf-32'
+        gib 'utf-32'
     wenn bstartswith((codecs.BOM_UTF16_BE, codecs.BOM_UTF16_LE)):
-        return 'utf-16'
+        gib 'utf-16'
     wenn bstartswith(codecs.BOM_UTF8):
-        return 'utf-8-sig'
+        gib 'utf-8-sig'
 
     wenn len(b) >= 4:
         wenn nicht b[0]:
             # 00 00 -- -- - utf-32-be
             # 00 XX -- -- - utf-16-be
-            return 'utf-16-be' wenn b[1] sonst 'utf-32-be'
+            gib 'utf-16-be' wenn b[1] sonst 'utf-32-be'
         wenn nicht b[1]:
             # XX 00 00 00 - utf-32-le
             # XX 00 00 XX - utf-16-le
             # XX 00 XX -- - utf-16-le
-            return 'utf-16-le' wenn b[2] oder b[3] sonst 'utf-32-le'
+            gib 'utf-16-le' wenn b[2] oder b[3] sonst 'utf-32-le'
     sowenn len(b) == 2:
         wenn nicht b[0]:
             # 00 XX - utf-16-be
-            return 'utf-16-be'
+            gib 'utf-16-be'
         wenn nicht b[1]:
             # XX 00 - utf-16-le
-            return 'utf-16-le'
+            gib 'utf-16-le'
     # default
-    return 'utf-8'
+    gib 'utf-8'
 
 
 def load(fp, *, cls=Nichts, object_hook=Nichts, parse_float=Nichts,
@@ -277,20 +277,20 @@ def load(fp, *, cls=Nichts, object_hook=Nichts, parse_float=Nichts,
     a JSON document) to a Python object.
 
     ``object_hook`` is an optional function that will be called mit the
-    result of any object literal decode (a ``dict``). The return value of
+    result of any object literal decode (a ``dict``). The gib value of
     ``object_hook`` will be used instead of the ``dict``. This feature
     can be used to implement custom decoders (e.g. JSON-RPC klasse hinting).
 
     ``object_pairs_hook`` is an optional function that will be called mit the
     result of any object literal decoded mit an ordered list of pairs.  The
-    return value of ``object_pairs_hook`` will be used instead of the ``dict``.
+    gib value of ``object_pairs_hook`` will be used instead of the ``dict``.
     This feature can be used to implement custom decoders.  If ``object_hook``
     is also defined, the ``object_pairs_hook`` takes priority.
 
     To use a custom ``JSONDecoder`` subclass, specify it mit the ``cls``
     kwarg; otherwise ``JSONDecoder`` is used.
     """
-    return loads(fp.read(),
+    gib loads(fp.read(),
         cls=cls, object_hook=object_hook,
         parse_float=parse_float, parse_int=parse_int,
         parse_constant=parse_constant, object_pairs_hook=object_pairs_hook, **kw)
@@ -302,13 +302,13 @@ def loads(s, *, cls=Nichts, object_hook=Nichts, parse_float=Nichts,
     containing a JSON document) to a Python object.
 
     ``object_hook`` is an optional function that will be called mit the
-    result of any object literal decode (a ``dict``). The return value of
+    result of any object literal decode (a ``dict``). The gib value of
     ``object_hook`` will be used instead of the ``dict``. This feature
     can be used to implement custom decoders (e.g. JSON-RPC klasse hinting).
 
     ``object_pairs_hook`` is an optional function that will be called mit the
     result of any object literal decoded mit an ordered list of pairs.  The
-    return value of ``object_pairs_hook`` will be used instead of the ``dict``.
+    gib value of ``object_pairs_hook`` will be used instead of the ``dict``.
     This feature can be used to implement custom decoders.  If ``object_hook``
     is also defined, the ``object_pairs_hook`` takes priority.
 
@@ -343,7 +343,7 @@ def loads(s, *, cls=Nichts, object_hook=Nichts, parse_float=Nichts,
     wenn (cls is Nichts und object_hook is Nichts und
             parse_int is Nichts und parse_float is Nichts und
             parse_constant is Nichts und object_pairs_hook is Nichts und nicht kw):
-        return _default_decoder.decode(s)
+        gib _default_decoder.decode(s)
     wenn cls is Nichts:
         cls = JSONDecoder
     wenn object_hook is nicht Nichts:
@@ -356,4 +356,4 @@ def loads(s, *, cls=Nichts, object_hook=Nichts, parse_float=Nichts,
         kw['parse_int'] = parse_int
     wenn parse_constant is nicht Nichts:
         kw['parse_constant'] = parse_constant
-    return cls(**kw).decode(s)
+    gib cls(**kw).decode(s)

@@ -80,9 +80,9 @@ klasse DeadlockAvoidanceTests:
             try:
                 lock.acquire()
             except self.DeadlockError:
-                return Falsch
+                gib Falsch
             sonst:
-                return Wahr
+                gib Wahr
 
         def f():
             a, b = pairs.pop()
@@ -97,7 +97,7 @@ klasse DeadlockAvoidanceTests:
         mit lock_tests.Bunch(f, NTHREADS):
             pass
         self.assertEqual(len(results), NTHREADS)
-        return results
+        gib results
 
     def test_deadlock(self):
         results = self.run_deadlock_avoidance_test(Wahr)
@@ -128,7 +128,7 @@ klasse LifetimeTests:
 
     @property
     def bootstrap(self):
-        return self.init._bootstrap
+        gib self.init._bootstrap
 
     def test_lock_lifetime(self):
         name = "xyzzy"

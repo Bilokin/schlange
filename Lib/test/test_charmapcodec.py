@@ -17,8 +17,8 @@ importiere codecs
 def codec_search_function(encoding):
     wenn encoding == 'testcodec':
         von test importiere testcodec
-        return tuple(testcodec.getregentry())
-    return Nichts
+        gib tuple(testcodec.getregentry())
+    gib Nichts
 
 # test codec's name (see test/testcodec.py)
 codecname = 'testcodec'

@@ -16,7 +16,7 @@ rx = re.compile(r'\((\S+).py, line (\d+)')
 
 def get_error_location(msg):
     mo = rx.search(str(msg))
-    return mo.group(1, 2)
+    gib mo.group(1, 2)
 
 klasse FutureTest(unittest.TestCase):
 
@@ -237,7 +237,7 @@ klasse AnnotationsFutureTestCase(unittest.TestCase):
         self.assertEqual(func_ret_ann, async_func_arg_ann)
         self.assertEqual(func_ret_ann, var_ann1)
         self.assertEqual(func_ret_ann, var_ann2)
-        return func_ret_ann
+        gib func_ret_ann
 
     def assertAnnotationEqual(
         self, annotation, expected=Nichts, drop_parens=Falsch, is_tuple=Falsch,
@@ -257,7 +257,7 @@ klasse AnnotationsFutureTestCase(unittest.TestCase):
             "from __future__ importiere annotations\n"
             + code, scope
         )
-        return scope
+        gib scope
 
     def test_annotations(self):
         eq = self.assertAnnotationEqual
@@ -465,7 +465,7 @@ klasse AnnotationsFutureTestCase(unittest.TestCase):
             outer = 1
             def bar():
                 inner: outer = 1
-            return bar
+            gib bar
         """))
 
         foo = namespace.pop("foo")
@@ -513,7 +513,7 @@ klasse AnnotationsFutureTestCase(unittest.TestCase):
         klasse StarredC: pass
         klasse C:
           def __iter__(self):
-            yield StarredC()
+            liefere StarredC()
         c = C()
         def f(*args: *c): pass
         importiere typing

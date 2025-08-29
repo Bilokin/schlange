@@ -72,7 +72,7 @@ klasse ContentHandler:
         business rules). The information returned by the locator is
         probably nicht sufficient fuer use mit a search engine.
 
-        Note that the locator will return correct information only
+        Note that the locator will gib correct information only
         during the invocation of the events in this interface. The
         application should nicht attempt to use it at any other time."""
         self._locator = locator
@@ -159,7 +159,7 @@ klasse ContentHandler:
         """Receive notification of character data.
 
         The Parser will call this method to report each chunk of
-        character data. SAX parsers may return all contiguous
+        character data. SAX parsers may gib all contiguous
         character data in a single chunk, oder they may split it into
         several chunks; however, all of the characters in any single
         event must come von the same external entity so that the
@@ -173,7 +173,7 @@ klasse ContentHandler:
         section 2.10): non-validating parsers may also use this method
         wenn they are capable of parsing und using content models.
 
-        SAX parsers may return all contiguous whitespace in a single
+        SAX parsers may gib all contiguous whitespace in a single
         chunk, oder they may split it into several chunks; however, all
         of the characters in any single event must come von the same
         external entity, so that the Locator provides useful
@@ -228,10 +228,10 @@ klasse EntityResolver:
     this interface mit the default behaviour."""
 
     def resolveEntity(self, publicId, systemId):
-        """Resolve the system identifier of an entity und return either
+        """Resolve the system identifier of an entity und gib either
         the system identifier to read von als a string, oder an InputSource
         to read from."""
-        return systemId
+        gib systemId
 
 
 #============================================================================
@@ -321,7 +321,7 @@ property_encoding = "http://www.python.org/sax/properties/encoding"
 # access: write: set the encoding, e.g. established by a higher-level
 #                protocol. May change during parsing (e.g. after
 #                processing a META tag)
-#         read:  return the current encoding (possibly established through
+#         read:  gib the current encoding (possibly established through
 #                auto-detection.
 # initial value: UTF-8
 #
@@ -331,7 +331,7 @@ property_interning_dict = "http://www.python.org/sax/properties/interning-dict"
 # description: The dictionary used to intern common strings in the document
 # access: write: Request that the parser uses a specific dictionary, to
 #                allow interning across different documents
-#         read:  return the current interning dictionary, oder Nichts
+#         read:  gib the current interning dictionary, oder Nichts
 #
 
 all_properties = [property_lexical_handler,

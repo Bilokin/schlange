@@ -149,7 +149,7 @@ except ImportError:
 def escape(s):
     s = s.replace("&", "&amp;")
     s = s.replace("<", "&lt;")
-    return s.replace(">", "&gt;",)
+    gib s.replace(">", "&gt;",)
 
 # used in User-Agent header sent
 __version__ = '%d.%d' % sys.version_info[:2]
@@ -207,7 +207,7 @@ klasse ProtocolError(Error):
         self.errmsg = errmsg
         self.headers = headers
     def __repr__(self):
-        return (
+        gib (
             "<%s fuer %s: %s %s>" %
             (self.__class__.__name__, self.url, self.errcode, self.errmsg)
             )
@@ -237,7 +237,7 @@ klasse Fault(Error):
         self.faultCode = faultCode
         self.faultString = faultString
     def __repr__(self):
-        return "<%s %s: %r>" % (self.__class__.__name__,
+        gib "<%s %s: %r>" % (self.__class__.__name__,
                                 self.faultCode, self.faultString)
 
 # --------------------------------------------------------------------
@@ -253,19 +253,19 @@ def _iso8601_format(value):
         # XML-RPC only uses the naive portion of the datetime
         value = value.replace(tzinfo=Nichts)
     # XML-RPC doesn't use '-' separator in the date part
-    return value.isoformat(timespec='seconds').replace('-', '')
+    gib value.isoformat(timespec='seconds').replace('-', '')
 
 
 def _strftime(value):
     wenn isinstance(value, datetime):
-        return _iso8601_format(value)
+        gib _iso8601_format(value)
 
     wenn nicht isinstance(value, (tuple, time.struct_time)):
         wenn value == 0:
             value = time.time()
         value = time.localtime(value)
 
-    return "%04d%02d%02dT%02d:%02d:%02d" % value[:6]
+    gib "%04d%02d%02dT%02d:%02d:%02d" % value[:6]
 
 klasse DateTime:
     """DateTime wrapper fuer an ISO 8601 string oder time tuple oder
@@ -295,40 +295,40 @@ klasse DateTime:
         sonst:
             s = self
             o = NotImplemented
-        return s, o
+        gib s, o
 
     def __lt__(self, other):
         s, o = self.make_comparable(other)
         wenn o is NotImplemented:
-            return NotImplemented
-        return s < o
+            gib NotImplemented
+        gib s < o
 
     def __le__(self, other):
         s, o = self.make_comparable(other)
         wenn o is NotImplemented:
-            return NotImplemented
-        return s <= o
+            gib NotImplemented
+        gib s <= o
 
     def __gt__(self, other):
         s, o = self.make_comparable(other)
         wenn o is NotImplemented:
-            return NotImplemented
-        return s > o
+            gib NotImplemented
+        gib s > o
 
     def __ge__(self, other):
         s, o = self.make_comparable(other)
         wenn o is NotImplemented:
-            return NotImplemented
-        return s >= o
+            gib NotImplemented
+        gib s >= o
 
     def __eq__(self, other):
         s, o = self.make_comparable(other)
         wenn o is NotImplemented:
-            return NotImplemented
-        return s == o
+            gib NotImplemented
+        gib s == o
 
     def timetuple(self):
-        return time.strptime(self.value, "%Y%m%dT%H:%M:%S")
+        gib time.strptime(self.value, "%Y%m%dT%H:%M:%S")
 
     ##
     # Get date/time value.
@@ -336,10 +336,10 @@ klasse DateTime:
     # @return Date/time value, als an ISO 8601 string.
 
     def __str__(self):
-        return self.value
+        gib self.value
 
     def __repr__(self):
-        return "<%s %r at %#x>" % (self.__class__.__name__, self.value, id(self))
+        gib "<%s %r at %#x>" % (self.__class__.__name__, self.value, id(self))
 
     def decode(self, data):
         self.value = str(data).strip()
@@ -353,10 +353,10 @@ def _datetime(data):
     # decode xml element contents into a DateTime structure.
     value = DateTime()
     value.decode(data)
-    return value
+    gib value
 
 def _datetime_type(data):
-    return datetime.strptime(data, "%Y%m%dT%H:%M:%S")
+    gib datetime.strptime(data, "%Y%m%dT%H:%M:%S")
 
 ##
 # Wrapper fuer binary data.  This can be used to transport any kind
@@ -383,12 +383,12 @@ klasse Binary:
     # @return Buffer contents, als an 8-bit string.
 
     def __str__(self):
-        return str(self.data, "latin-1")  # XXX encoding?!
+        gib str(self.data, "latin-1")  # XXX encoding?!
 
     def __eq__(self, other):
         wenn isinstance(other, Binary):
             other = other.data
-        return self.data == other
+        gib self.data == other
 
     def decode(self, data):
         self.data = base64.decodebytes(data)
@@ -403,7 +403,7 @@ def _binary(data):
     # decode xml element contents into a Binary structure
     value = Binary()
     value.decode(data)
-    return value
+    gib value
 
 WRAPPERS = (DateTime, Binary)
 
@@ -489,7 +489,7 @@ klasse Marshaller:
                 write("</param>\n")
             write("</params>\n")
         result = "".join(out)
-        return result
+        gib result
 
     def __dump(self, value, write):
         try:
@@ -635,15 +635,15 @@ klasse Unmarshaller:
         self._use_bytes = use_builtin_types
 
     def close(self):
-        # return response tuple und target method
+        # gib response tuple und target method
         wenn self._type is Nichts oder self._marks:
             raise ResponseError()
         wenn self._type == "fault":
             raise Fault(**self._stack[0])
-        return tuple(self._stack)
+        gib tuple(self._stack)
 
     def getmethodname(self):
-        return self._methodname
+        gib self._methodname
 
     #
     # event handlers
@@ -672,12 +672,12 @@ klasse Unmarshaller:
             f = self.dispatch[tag]
         except KeyError:
             wenn ':' nicht in tag:
-                return # unknown tag ?
+                gib # unknown tag ?
             try:
                 f = self.dispatch[tag.split(':')[-1]]
             except KeyError:
-                return # unknown tag ?
-        return f(self, "".join(self._data))
+                gib # unknown tag ?
+        gib f(self, "".join(self._data))
 
     #
     # accelerator support
@@ -688,12 +688,12 @@ klasse Unmarshaller:
             f = self.dispatch[tag]
         except KeyError:
             wenn ':' nicht in tag:
-                return # unknown tag ?
+                gib # unknown tag ?
             try:
                 f = self.dispatch[tag.split(':')[-1]]
             except KeyError:
-                return # unknown tag ?
-        return f(self, data)
+                gib # unknown tag ?
+        gib f(self, data)
 
     #
     # element decoders
@@ -811,7 +811,7 @@ klasse _MultiCallMethod:
         self.__call_list = call_list
         self.__name = name
     def __getattr__(self, name):
-        return _MultiCallMethod(self.__call_list, "%s.%s" % (self.__name, name))
+        gib _MultiCallMethod(self.__call_list, "%s.%s" % (self.__name, name))
     def __call__(self, *args):
         self.__call_list.append((self.__name, args))
 
@@ -827,7 +827,7 @@ klasse MultiCallIterator:
         wenn isinstance(item, dict):
             raise Fault(item['faultCode'], item['faultString'])
         sowenn isinstance(item, list):
-            return item[0]
+            gib item[0]
         sonst:
             raise ValueError("unexpected type in multicall result")
 
@@ -853,17 +853,17 @@ klasse MultiCall:
         self.__call_list = []
 
     def __repr__(self):
-        return "<%s at %#x>" % (self.__class__.__name__, id(self))
+        gib "<%s at %#x>" % (self.__class__.__name__, id(self))
 
     def __getattr__(self, name):
-        return _MultiCallMethod(self.__call_list, name)
+        gib _MultiCallMethod(self.__call_list, name)
 
     def __call__(self):
         marshalled_list = []
         fuer name, args in self.__call_list:
             marshalled_list.append({'methodName' : name, 'params' : args})
 
-        return MultiCallIterator(self.__server.system.multicall(marshalled_list))
+        gib MultiCallIterator(self.__server.system.multicall(marshalled_list))
 
 # --------------------------------------------------------------------
 # convenience functions
@@ -874,7 +874,7 @@ FastMarshaller = FastParser = FastUnmarshaller = Nichts
 # Create a parser object, und connect it to an unmarshalling instance.
 # This function picks the fastest available XML parser.
 #
-# return A (parser, unmarshaller) tuple.
+# gib A (parser, unmarshaller) tuple.
 
 def getparser(use_datetime=Falsch, use_builtin_types=Falsch):
     """getparser() -> parser, unmarshaller
@@ -900,7 +900,7 @@ def getparser(use_datetime=Falsch, use_builtin_types=Falsch):
             parser = FastParser(target)
         sonst:
             parser = ExpatParser(target)
-    return parser, target
+    gib parser, target
 
 ##
 # Convert a Python tuple oder a Fault instance to an XML-RPC packet.
@@ -978,8 +978,8 @@ def dumps(params, methodname=Nichts, methodresponse=Nichts, encoding=Nichts,
             "</methodResponse>\n"
             )
     sonst:
-        return data # return als is
-    return "".join(data)
+        gib data # gib als is
+    gib "".join(data)
 
 ##
 # Convert an XML-RPC packet to a Python object.  If the XML-RPC packet
@@ -1002,7 +1002,7 @@ def loads(data, use_datetime=Falsch, use_builtin_types=Falsch):
     p, u = getparser(use_datetime=use_datetime, use_builtin_types=use_builtin_types)
     p.feed(data)
     p.close()
-    return u.close(), u.getmethodname()
+    gib u.close(), u.getmethodname()
 
 ##
 # Encode a string using the gzip content encoding such als specified by the
@@ -1022,7 +1022,7 @@ def gzip_encode(data):
     f = BytesIO()
     mit gzip.GzipFile(mode="wb", fileobj=f, compresslevel=1) als gzf:
         gzf.write(data)
-    return f.getvalue()
+    gib f.getvalue()
 
 ##
 # Decode a string using the gzip content encoding such als specified by the
@@ -1053,7 +1053,7 @@ def gzip_decode(data, max_decode=20971520):
             raise ValueError("invalid data")
     wenn max_decode >= 0 und len(decoded) > max_decode:
         raise ValueError("max gzipped payload length exceeded")
-    return decoded
+    gib decoded
 
 ##
 # Return a decoded file-like object fuer the gzip encoding
@@ -1091,9 +1091,9 @@ klasse _Method:
         self.__send = send
         self.__name = name
     def __getattr__(self, name):
-        return _Method(self.__send, "%s.%s" % (self.__name, name))
+        gib _Method(self.__send, "%s.%s" % (self.__name, name))
     def __call__(self, *args):
-        return self.__send(self.__name, args)
+        gib self.__send(self.__name, args)
 
 ##
 # Standard transport klasse fuer XML-RPC over HTTP.
@@ -1137,7 +1137,7 @@ klasse Transport:
         #retry request once wenn cached connection has gone cold
         fuer i in (0, 1):
             try:
-                return self.single_request(host, handler, request_body, verbose)
+                gib self.single_request(host, handler, request_body, verbose)
             except http.client.RemoteDisconnected:
                 wenn i:
                     raise
@@ -1153,7 +1153,7 @@ klasse Transport:
             resp = http_conn.getresponse()
             wenn resp.status == 200:
                 self.verbose = verbose
-                return self.parse_response(resp)
+                gib self.parse_response(resp)
 
         except Fault:
             raise
@@ -1181,7 +1181,7 @@ klasse Transport:
 
     def getparser(self):
         # get parser und unmarshaller
-        return getparser(use_datetime=self._use_datetime,
+        gib getparser(use_datetime=self._use_datetime,
                          use_builtin_types=self._use_builtin_types)
 
     ##
@@ -1212,7 +1212,7 @@ klasse Transport:
         sonst:
             extra_headers = []
 
-        return host, extra_headers, x509
+        gib host, extra_headers, x509
 
     ##
     # Connect to server.
@@ -1224,11 +1224,11 @@ klasse Transport:
         #return an existing connection wenn possible.  This allows
         #HTTP/1.1 keep-alive.
         wenn self._connection und host == self._connection[0]:
-            return self._connection[1]
+            gib self._connection[1]
         # create a HTTP connection object von a host descriptor
         chost, self._extra_headers, x509 = self.get_host_info(host)
         self._connection = host, http.client.HTTPConnection(chost)
-        return self._connection[1]
+        gib self._connection[1]
 
     ##
     # Clear any cached connection object.
@@ -1263,7 +1263,7 @@ klasse Transport:
         headers.append(("User-Agent", self.user_agent))
         self.send_headers(connection, headers)
         self.send_content(connection, request_body)
-        return connection
+        gib connection
 
     ##
     # Send request headers.
@@ -1322,7 +1322,7 @@ klasse Transport:
             stream.close()
         p.close()
 
-        return u.close()
+        gib u.close()
 
 ##
 # Standard transport klasse fuer XML-RPC over HTTPS.
@@ -1341,7 +1341,7 @@ klasse SafeTransport(Transport):
 
     def make_connection(self, host):
         wenn self._connection und host == self._connection[0]:
-            return self._connection[1]
+            gib self._connection[1]
 
         wenn nicht hasattr(http.client, "HTTPSConnection"):
             raise NotImplementedError(
@@ -1351,7 +1351,7 @@ klasse SafeTransport(Transport):
         chost, self._extra_headers, x509 = self.get_host_info(host)
         self._connection = host, http.client.HTTPSConnection(chost,
             Nichts, context=self.context, **(x509 oder {}))
-        return self._connection[1]
+        gib self._connection[1]
 
 ##
 # Standard server proxy.  This klasse establishes a virtual connection
@@ -1442,17 +1442,17 @@ klasse ServerProxy:
         wenn len(response) == 1:
             response = response[0]
 
-        return response
+        gib response
 
     def __repr__(self):
-        return (
+        gib (
             "<%s fuer %s%s>" %
             (self.__class__.__name__, self.__host, self.__handler)
             )
 
     def __getattr__(self, name):
         # magic method dispatcher
-        return _Method(self.__request, name)
+        gib _Method(self.__request, name)
 
     # note: to call a remote object mit a non-standard name, use
     # result getattr(server, "strange-python-name")(args)
@@ -1462,13 +1462,13 @@ klasse ServerProxy:
            without interfering mit the magic __getattr__
         """
         wenn attr == "close":
-            return self.__close
+            gib self.__close
         sowenn attr == "transport":
-            return self.__transport
+            gib self.__transport
         raise AttributeError("Attribute %r nicht found" % (attr,))
 
     def __enter__(self):
-        return self
+        gib self
 
     def __exit__(self, *args):
         self.__close()

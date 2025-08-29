@@ -17,8 +17,8 @@ klasse XMLReader:
     fuer document processing, und to initiate a document parse.
 
     All SAX interfaces are assumed to be synchronous: the parse
-    methods must nicht return until parsing is complete, und readers
-    must wait fuer an event-handler callback to return before reporting
+    methods must nicht gib until parsing is complete, und readers
+    must wait fuer an event-handler callback to gib before reporting
     the next event."""
 
     def __init__(self):
@@ -33,7 +33,7 @@ klasse XMLReader:
 
     def getContentHandler(self):
         "Returns the current ContentHandler."
-        return self._cont_handler
+        gib self._cont_handler
 
     def setContentHandler(self, handler):
         "Registers a new object to receive document content events."
@@ -41,7 +41,7 @@ klasse XMLReader:
 
     def getDTDHandler(self):
         "Returns the current DTD handler."
-        return self._dtd_handler
+        gib self._dtd_handler
 
     def setDTDHandler(self, handler):
         "Register an object to receive basic DTD-related events."
@@ -49,7 +49,7 @@ klasse XMLReader:
 
     def getEntityResolver(self):
         "Returns the current EntityResolver."
-        return self._ent_handler
+        gib self._ent_handler
 
     def setEntityResolver(self, resolver):
         "Register an object to resolve external entities."
@@ -57,7 +57,7 @@ klasse XMLReader:
 
     def getErrorHandler(self):
         "Returns the current ErrorHandler."
-        return self._err_handler
+        gib self._err_handler
 
     def setErrorHandler(self, handler):
         "Register an object to receive error-message events."
@@ -162,25 +162,25 @@ klasse IncrementalParser(XMLReader):
 
 klasse Locator:
     """Interface fuer associating a SAX event mit a document
-    location. A locator object will return valid results only during
+    location. A locator object will gib valid results only during
     calls to DocumentHandler methods; at any other time, the
     results are unpredictable."""
 
     def getColumnNumber(self):
         "Return the column number where the current event ends."
-        return -1
+        gib -1
 
     def getLineNumber(self):
         "Return the line number where the current event ends."
-        return -1
+        gib -1
 
     def getPublicId(self):
         "Return the public identifier fuer the current event."
-        return Nichts
+        gib Nichts
 
     def getSystemId(self):
         "Return the system identifier fuer the current event."
-        return Nichts
+        gib Nichts
 
 # ===== INPUTSOURCE =====
 
@@ -213,7 +213,7 @@ klasse InputSource:
 
     def getPublicId(self):
         "Returns the public identifier of this InputSource."
-        return self.__public_id
+        gib self.__public_id
 
     def setSystemId(self, system_id):
         "Sets the system identifier of this InputSource."
@@ -221,7 +221,7 @@ klasse InputSource:
 
     def getSystemId(self):
         "Returns the system identifier of this InputSource."
-        return self.__system_id
+        gib self.__system_id
 
     def setEncoding(self, encoding):
         """Sets the character encoding of this InputSource.
@@ -235,7 +235,7 @@ klasse InputSource:
 
     def getEncoding(self):
         "Get the character encoding of this InputSource."
-        return self.__encoding
+        gib self.__encoding
 
     def setByteStream(self, bytefile):
         """Set the byte stream (a Python file-like object which does
@@ -253,9 +253,9 @@ klasse InputSource:
     def getByteStream(self):
         """Get the byte stream fuer this input source.
 
-        The getEncoding method will return the character encoding for
+        The getEncoding method will gib the character encoding for
         this byte stream, oder Nichts wenn unknown."""
-        return self.__bytefile
+        gib self.__bytefile
 
     def setCharacterStream(self, charfile):
         """Set the character stream fuer this input source. (The stream
@@ -269,7 +269,7 @@ klasse InputSource:
 
     def getCharacterStream(self):
         "Get the character stream fuer this input source."
-        return self.__charfile
+        gib self.__charfile
 
 # ===== ATTRIBUTESIMPL =====
 
@@ -282,56 +282,56 @@ klasse AttributesImpl:
         self._attrs = attrs
 
     def getLength(self):
-        return len(self._attrs)
+        gib len(self._attrs)
 
     def getType(self, name):
-        return "CDATA"
+        gib "CDATA"
 
     def getValue(self, name):
-        return self._attrs[name]
+        gib self._attrs[name]
 
     def getValueByQName(self, name):
-        return self._attrs[name]
+        gib self._attrs[name]
 
     def getNameByQName(self, name):
         wenn name nicht in self._attrs:
             raise KeyError(name)
-        return name
+        gib name
 
     def getQNameByName(self, name):
         wenn name nicht in self._attrs:
             raise KeyError(name)
-        return name
+        gib name
 
     def getNames(self):
-        return list(self._attrs.keys())
+        gib list(self._attrs.keys())
 
     def getQNames(self):
-        return list(self._attrs.keys())
+        gib list(self._attrs.keys())
 
     def __len__(self):
-        return len(self._attrs)
+        gib len(self._attrs)
 
     def __getitem__(self, name):
-        return self._attrs[name]
+        gib self._attrs[name]
 
     def keys(self):
-        return list(self._attrs.keys())
+        gib list(self._attrs.keys())
 
     def __contains__(self, name):
-        return name in self._attrs
+        gib name in self._attrs
 
     def get(self, name, alternative=Nichts):
-        return self._attrs.get(name, alternative)
+        gib self._attrs.get(name, alternative)
 
     def copy(self):
-        return self.__class__(self._attrs)
+        gib self.__class__(self._attrs)
 
     def items(self):
-        return list(self._attrs.items())
+        gib list(self._attrs.items())
 
     def values(self):
-        return list(self._attrs.values())
+        gib list(self._attrs.values())
 
 # ===== ATTRIBUTESNSIMPL =====
 
@@ -348,25 +348,25 @@ klasse AttributesNSImpl(AttributesImpl):
     def getValueByQName(self, name):
         fuer (nsname, qname) in self._qnames.items():
             wenn qname == name:
-                return self._attrs[nsname]
+                gib self._attrs[nsname]
 
         raise KeyError(name)
 
     def getNameByQName(self, name):
         fuer (nsname, qname) in self._qnames.items():
             wenn qname == name:
-                return nsname
+                gib nsname
 
         raise KeyError(name)
 
     def getQNameByName(self, name):
-        return self._qnames[name]
+        gib self._qnames[name]
 
     def getQNames(self):
-        return list(self._qnames.values())
+        gib list(self._qnames.values())
 
     def copy(self):
-        return self.__class__(self._attrs, self._qnames)
+        gib self.__class__(self._attrs, self._qnames)
 
 
 def _test():

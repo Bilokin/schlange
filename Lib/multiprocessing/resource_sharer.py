@@ -37,7 +37,7 @@ wenn sys.platform == 'win32':
             '''Get the socket.  This should only be called once.'''
             mit _resource_sharer.get_connection(self._id) als conn:
                 share = conn.recv_bytes()
-                return socket.fromshare(share)
+                gib socket.fromshare(share)
 
 sonst:
     __all__ += ['DupFd']
@@ -55,7 +55,7 @@ sonst:
         def detach(self):
             '''Get the fd.  This should only be called once.'''
             mit _resource_sharer.get_connection(self._id) als conn:
-                return reduction.recv_handle(conn)
+                gib reduction.recv_handle(conn)
 
 
 klasse _ResourceSharer(object):
@@ -76,7 +76,7 @@ klasse _ResourceSharer(object):
                 self._start()
             self._key += 1
             self._cache[self._key] = (send, close)
-            return (self._address, self._key)
+            gib (self._address, self._key)
 
     @staticmethod
     def get_connection(ident):
@@ -85,7 +85,7 @@ klasse _ResourceSharer(object):
         address, key = ident
         c = Client(address, authkey=process.current_process().authkey)
         c.send((key, os.getpid()))
-        return c
+        gib c
 
     def stop(self, timeout=Nichts):
         '''Stop the background thread und clear registered resources.'''

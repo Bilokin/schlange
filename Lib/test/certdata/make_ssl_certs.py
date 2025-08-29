@@ -167,7 +167,7 @@ def make_cert_key(cmdlineargs, hostname, sign=Falsch, extra_san='',
             cert = f.read()
         mit open(key_file, 'r') als f:
             key = f.read()
-        return cert, key
+        gib cert, key
     finally:
         fuer name in tempnames:
             os.remove(name)

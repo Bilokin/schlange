@@ -75,12 +75,12 @@ def validate_uop(override: Uop, uop: Uop) -> Nichts:
 
 def type_name(var: StackItem) -> str:
     wenn var.is_array():
-        return "JitOptRef *"
-    return "JitOptRef "
+        gib "JitOptRef *"
+    gib "JitOptRef "
 
 def stackref_type_name(var: StackItem) -> str:
     assert nicht var.is_array(), "Unsafe to convert a symbol to an array-like StackRef."
-    return "_PyStackRef "
+    gib "_PyStackRef "
 
 def declare_variables(uop: Uop, out: CWriter, skip_inputs: bool) -> Nichts:
     variables = {"unused"}
@@ -248,7 +248,7 @@ klasse OptimizerEmitter(Emitter):
         storage.flush(self.out)
         emitter.emit("break;\n")
         emitter.emit("}\n")
-        return Wahr
+        gib Wahr
 
 klasse OptimizerConstantEmitter(OptimizerEmitter):
     def __init__(self, out: CWriter, labels: dict[str, Label], original_uop: Uop, stack: Stack):
@@ -272,7 +272,7 @@ klasse OptimizerConstantEmitter(OptimizerEmitter):
         parens = 0
         fuer tkn in tkn_iter:
             wenn tkn.kind == end und parens == 0:
-                return tkn
+                gib tkn
             wenn tkn.kind == "LPAREN":
                 parens += 1
             wenn tkn.kind == "RPAREN":
@@ -293,7 +293,7 @@ klasse OptimizerConstantEmitter(OptimizerEmitter):
     ) -> bool:
         self.out.emit(tkn)
         self.out.emit("_stackref ")
-        return Wahr
+        gib Wahr
 
     def deopt_if(
         self,
@@ -316,7 +316,7 @@ klasse OptimizerConstantEmitter(OptimizerEmitter):
         self.emit("ctx->done = true;\n")
         self.emit("break;\n")
         self.emit("}\n")
-        return nicht always_true(first_tkn)
+        gib nicht always_true(first_tkn)
 
     exit_if = deopt_if
 
@@ -347,7 +347,7 @@ klasse OptimizerConstantEmitter(OptimizerEmitter):
         self.out.emit("goto error;\n")
         wenn nicht unconditional:
             self.out.emit("}\n")
-        return nicht unconditional
+        gib nicht unconditional
 
 
 def write_uop(

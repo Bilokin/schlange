@@ -97,7 +97,7 @@ klasse QueueBasicTests(unittest.IsolatedAsyncioTestCase):
             fuer i in range(3):
                 await q.put(i)
                 have_been_put.append(i)
-            return Wahr
+            gib Wahr
 
         t = asyncio.create_task(putter())
         fuer i in range(2):
@@ -149,7 +149,7 @@ klasse QueueGetTests(unittest.IsolatedAsyncioTestCase):
             started.set()
             res = await q.get()
             finished = Wahr
-            return res
+            gib res
 
         queue_get_task = asyncio.create_task(queue_get())
         await started.wait()
@@ -339,7 +339,7 @@ klasse QueuePutTests(unittest.IsolatedAsyncioTestCase):
 
         async def queue_put():
             await q.put(1)
-            return Wahr
+            gib Wahr
 
         t = asyncio.create_task(queue_put())
 
@@ -526,7 +526,7 @@ klasse _QueueShutdownTestMixin:
     q_class = Nichts
 
     def assertRaisesShutdown(self, msg="Didn't appear to shut-down queue"):
-        return self.assertRaises(asyncio.QueueShutDown, msg=msg)
+        gib self.assertRaises(asyncio.QueueShutDown, msg=msg)
 
     async def test_format(self):
         q = self.q_class()

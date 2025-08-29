@@ -9,7 +9,7 @@ klasse Test_TestSkipping(unittest.TestCase):
     def test_skipping(self):
         klasse Foo(unittest.TestCase):
             def defaultTestResult(self):
-                return LoggingResult(events)
+                gib LoggingResult(events)
             def test_skip_me(self):
                 self.skipTest("skip")
         events = []
@@ -29,7 +29,7 @@ klasse Test_TestSkipping(unittest.TestCase):
         # Try letting setUp skip the test now.
         klasse Foo(unittest.TestCase):
             def defaultTestResult(self):
-                return LoggingResult(events)
+                gib LoggingResult(events)
             def setUp(self):
                 self.skipTest("testing")
             def test_nothing(self): pass
@@ -51,7 +51,7 @@ klasse Test_TestSkipping(unittest.TestCase):
     def test_skipping_subtests(self):
         klasse Foo(unittest.TestCase):
             def defaultTestResult(self):
-                return LoggingResult(events)
+                gib LoggingResult(events)
             def test_skip_me(self):
                 mit self.subTest(a=1):
                     mit self.subTest(b=2):
@@ -89,7 +89,7 @@ klasse Test_TestSkipping(unittest.TestCase):
         fuer deco, do_skip, dont_skip in op_table:
             klasse Foo(unittest.TestCase):
                 def defaultTestResult(self):
-                    return LoggingResult(events)
+                    gib LoggingResult(events)
 
                 @deco(do_skip, "testing")
                 def test_skip(self): pass
@@ -127,7 +127,7 @@ klasse Test_TestSkipping(unittest.TestCase):
         @unittest.skip("testing")
         klasse Foo(unittest.TestCase):
             def defaultTestResult(self):
-                return LoggingResult(events)
+                gib LoggingResult(events)
             def test_1(self):
                 record.append(1)
         events = []
@@ -436,8 +436,8 @@ klasse Test_TestSkipping(unittest.TestCase):
     def test_decorated_skip(self):
         def decorator(func):
             def inner(*a):
-                return func(*a)
-            return inner
+                gib func(*a)
+            gib inner
 
         klasse Foo(unittest.TestCase):
             @decorator

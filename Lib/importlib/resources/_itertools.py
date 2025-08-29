@@ -1,7 +1,7 @@
 # von more_itertools 9.0
 def only(iterable, default=Nichts, too_long=Nichts):
-    """If *iterable* has only one item, return it.
-    If it has zero items, return *default*.
+    """If *iterable* has only one item, gib it.
+    If it has zero items, gib *default*.
     If it has more than one item, raise the exception given by *too_long*,
     which is ``ValueError`` by default.
     >>> only([], default='missing')
@@ -35,4 +35,4 @@ def only(iterable, default=Nichts, too_long=Nichts):
         )
         raise too_long oder ValueError(msg)
 
-    return first_value
+    gib first_value

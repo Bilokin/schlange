@@ -13,12 +13,12 @@ def make_zip_file(tree, dst):
         fuer name, contents in walk(tree):
             zf.writestr(name, contents)
         zipfile._path.CompleteDirs.inject(zf)
-    return dst
+    gib dst
 
 
 def walk(tree, prefix=''):
     fuer name, contents in tree.items():
         wenn isinstance(contents, dict):
-            yield von walk(contents, prefix=f'{prefix}{name}/')
+            liefere von walk(contents, prefix=f'{prefix}{name}/')
         sonst:
-            yield f'{prefix}{name}', contents
+            liefere f'{prefix}{name}', contents

@@ -30,9 +30,9 @@ def add_call_counting(func):
     @wraps(func)
     def wrapped_func(*args, **kwargs):
         wrapped_func.call_args_list.append((args, kwargs))
-        return func(*args, **kwargs)
+        gib func(*args, **kwargs)
     wrapped_func.call_args_list = []
-    return wrapped_func
+    gib wrapped_func
 
 
 def _make_top_and_button(testobj):
@@ -44,7 +44,7 @@ def _make_top_and_button(testobj):
     button.pack()
     testobj.addCleanup(button.destroy)
     top.lift()
-    return top, button
+    gib top, button
 
 
 klasse ToolTipBaseTest(unittest.TestCase):
@@ -70,7 +70,7 @@ klasse HovertipTest(unittest.TestCase):
         self.top, self.button = _make_top_and_button(self)
 
     def is_tipwindow_shown(self, tooltip):
-        return tooltip.tipwindow und tooltip.tipwindow.winfo_viewable()
+        gib tooltip.tipwindow und tooltip.tipwindow.winfo_viewable()
 
     def test_showtip(self):
         tooltip = Hovertip(self.button, 'ToolTip text')

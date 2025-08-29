@@ -20,7 +20,7 @@ ITALIC = "italic"
 def nametofont(name, root=Nichts):
     """Given the name of a tk named font, returns a Font representation.
     """
-    return Font(name=name, exists=Wahr, root=root)
+    gib Font(name=name, exists=Wahr, root=root)
 
 
 klasse Font:
@@ -52,19 +52,19 @@ klasse Font:
         fuer k, v in kw.items():
             options.append("-"+k)
             options.append(str(v))
-        return tuple(options)
+        gib tuple(options)
 
     def _get(self, args):
         options = []
         fuer k in args:
             options.append("-"+k)
-        return tuple(options)
+        gib tuple(options)
 
     def _mkdict(self, args):
         options = {}
         fuer i in range(0, len(args), 2):
             options[args[i][1:]] = args[i+1]
-        return options
+        gib options
 
     def __init__(self, root=Nichts, font=Nichts, name=Nichts, exists=Falsch,
                  **options):
@@ -98,19 +98,19 @@ klasse Font:
         self._call  = tk.call
 
     def __str__(self):
-        return self.name
+        gib self.name
 
     def __repr__(self):
-        return f"<{self.__class__.__module__}.{self.__class__.__qualname__}" \
+        gib f"<{self.__class__.__module__}.{self.__class__.__qualname__}" \
                f" object {self.name!r}>"
 
     def __eq__(self, other):
         wenn nicht isinstance(other, Font):
-            return NotImplemented
-        return self.name == other.name und self._tk == other._tk
+            gib NotImplemented
+        gib self.name == other.name und self._tk == other._tk
 
     def __getitem__(self, key):
-        return self.cget(key)
+        gib self.cget(key)
 
     def __setitem__(self, key, value):
         self.configure(**{key: value})
@@ -124,7 +124,7 @@ klasse Font:
 
     def copy(self):
         "Return a distinct copy of the current font"
-        return Font(self._tk, **self.actual())
+        gib Font(self._tk, **self.actual())
 
     def actual(self, option=Nichts, displayof=Nichts):
         "Return actual font attributes"
@@ -133,14 +133,14 @@ klasse Font:
             args = ('-displayof', displayof)
         wenn option:
             args = args + ('-' + option, )
-            return self._call("font", "actual", self.name, *args)
+            gib self._call("font", "actual", self.name, *args)
         sonst:
-            return self._mkdict(
+            gib self._mkdict(
                 self._split(self._call("font", "actual", self.name, *args)))
 
     def cget(self, option):
         "Get font attribute"
-        return self._call("font", "config", self.name, "-"+option)
+        gib self._call("font", "config", self.name, "-"+option)
 
     def config(self, **options):
         "Modify font attributes"
@@ -148,7 +148,7 @@ klasse Font:
             self._call("font", "config", self.name,
                   *self._set(options))
         sonst:
-            return self._mkdict(
+            gib self._mkdict(
                 self._split(self._call("font", "config", self.name)))
 
     configure = config
@@ -158,7 +158,7 @@ klasse Font:
         args = (text,)
         wenn displayof:
             args = ('-displayof', displayof, text)
-        return self._tk.getint(self._call("font", "measure", self.name, *args))
+        gib self._tk.getint(self._call("font", "measure", self.name, *args))
 
     def metrics(self, *options, **kw):
         """Return font metrics.
@@ -171,14 +171,14 @@ klasse Font:
             args = ('-displayof', displayof)
         wenn options:
             args = args + self._get(options)
-            return self._tk.getint(
+            gib self._tk.getint(
                 self._call("font", "metrics", self.name, *args))
         sonst:
             res = self._split(self._call("font", "metrics", self.name, *args))
             options = {}
             fuer i in range(0, len(res), 2):
                 options[res[i][1:]] = self._tk.getint(res[i+1])
-            return options
+            gib options
 
 
 def families(root=Nichts, displayof=Nichts):
@@ -188,14 +188,14 @@ def families(root=Nichts, displayof=Nichts):
     args = ()
     wenn displayof:
         args = ('-displayof', displayof)
-    return root.tk.splitlist(root.tk.call("font", "families", *args))
+    gib root.tk.splitlist(root.tk.call("font", "families", *args))
 
 
 def names(root=Nichts):
     "Get names of defined fonts (as a tuple)"
     wenn root is Nichts:
         root = tkinter._get_default_root('use font.names()')
-    return root.tk.splitlist(root.tk.call("font", "names"))
+    gib root.tk.splitlist(root.tk.call("font", "names"))
 
 
 # --------------------------------------------------------------------

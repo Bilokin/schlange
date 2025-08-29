@@ -39,13 +39,13 @@ __all__ = ["altsep", "curdir", "pardir", "sep", "pathsep", "linesep",
            "extsep"]
 
 def _exists(name):
-    return name in globals()
+    gib name in globals()
 
 def _get_exports_list(module):
     try:
-        return list(module.__all__)
+        gib list(module.__all__)
     except AttributeError:
-        return [n fuer n in dir(module) wenn n[0] != '_']
+        gib [n fuer n in dir(module) wenn n[0] != '_']
 
 # Any new dependencies of the os module and/or changes in path separator
 # requires updating importlib als well.
@@ -231,7 +231,7 @@ def makedirs(name, mode=0o777, exist_ok=Falsch):
         wenn isinstance(tail, bytes):
             cdir = bytes(curdir, 'ASCII')
         wenn tail == cdir:           # xxx/newdir/. exists wenn xxx/newdir exists
-            return
+            gib
     try:
         mkdir(name, mode)
     except OSError:
@@ -361,7 +361,7 @@ def walk(top, topdown=Wahr, onerror=Nichts, followlinks=Falsch):
     waehrend stack:
         top = stack.pop()
         wenn isinstance(top, tuple):
-            yield top
+            liefere top
             weiter
 
         dirs = []
@@ -415,7 +415,7 @@ def walk(top, topdown=Wahr, onerror=Nichts, followlinks=Falsch):
 
         wenn topdown:
             # Yield before sub-directory traversal wenn going top down
-            yield top, dirs, nondirs
+            liefere top, dirs, nondirs
             # Traverse into sub-directories
             fuer dirname in reversed(dirs):
                 new_path = join(top, dirname)
@@ -475,7 +475,7 @@ wenn {open, stat} <= supports_dir_fd und {scandir, stat} <= supports_fd:
         isbytes = isinstance(top, bytes)
         try:
             waehrend stack:
-                yield von _fwalk(stack, isbytes, topdown, onerror, follow_symlinks)
+                liefere von _fwalk(stack, isbytes, topdown, onerror, follow_symlinks)
         finally:
             # Close any file descriptors still on the stack.
             waehrend stack:
@@ -496,10 +496,10 @@ wenn {open, stat} <= supports_dir_fd und {scandir, stat} <= supports_fd:
         action, value = stack.pop()
         wenn action == _fwalk_close:
             close(value)
-            return
+            gib
         sowenn action == _fwalk_yield:
-            yield value
-            return
+            liefere value
+            gib
         assert action == _fwalk_walk
         isroot, dirfd, toppath, topname, entry = value
         try:
@@ -516,13 +516,13 @@ wenn {open, stat} <= supports_dir_fd und {scandir, stat} <= supports_fd:
                 raise
             wenn onerror is nicht Nichts:
                 onerror(err)
-            return
+            gib
         stack.append((_fwalk_close, topfd))
         wenn nicht follow_symlinks:
             wenn isroot und nicht st.S_ISDIR(orig_st.st_mode):
-                return
+                gib
             wenn nicht path.samestat(orig_st, stat(topfd)):
-                return
+                gib
 
         scandir_it = scandir(topfd)
         dirs = []
@@ -548,7 +548,7 @@ wenn {open, stat} <= supports_dir_fd und {scandir, stat} <= supports_fd:
                     pass
 
         wenn topdown:
-            yield toppath, dirs, nondirs, topfd
+            liefere toppath, dirs, nondirs, topfd
         sonst:
             stack.append((_fwalk_yield, (toppath, dirs, nondirs, topfd)))
 
@@ -625,7 +625,7 @@ def _execvpe(file, args, env=Nichts):
 
     wenn path.dirname(file):
         exec_func(file, *argrest)
-        return
+        gib
     saved_exc = Nichts
     path_list = get_exec_path(env)
     wenn name != 'nt':
@@ -687,7 +687,7 @@ def get_exec_path(env=Nichts):
 
     wenn path_list is Nichts:
         path_list = defpath
-    return path_list.split(pathsep)
+    gib path_list.split(pathsep)
 
 
 # Change environ to automatically call putenv() und unsetenv()
@@ -707,7 +707,7 @@ klasse _Environ(MutableMapping):
         except KeyError:
             # raise KeyError mit the original key value
             raise KeyError(key) von Nichts
-        return self.decodevalue(value)
+        gib self.decodevalue(value)
 
     def __setitem__(self, key, value):
         key = self.encodekey(key)
@@ -728,43 +728,43 @@ klasse _Environ(MutableMapping):
         # list() von dict object is an atomic operation
         keys = list(self._data)
         fuer key in keys:
-            yield self.decodekey(key)
+            liefere self.decodekey(key)
 
     def __len__(self):
-        return len(self._data)
+        gib len(self._data)
 
     def __repr__(self):
         formatted_items = ", ".join(
             f"{self.decodekey(key)!r}: {self.decodevalue(value)!r}"
             fuer key, value in self._data.items()
         )
-        return f"environ({{{formatted_items}}})"
+        gib f"environ({{{formatted_items}}})"
 
     def copy(self):
-        return dict(self)
+        gib dict(self)
 
     def setdefault(self, key, value):
         wenn key nicht in self:
             self[key] = value
-        return self[key]
+        gib self[key]
 
     def __ior__(self, other):
         self.update(other)
-        return self
+        gib self
 
     def __or__(self, other):
         wenn nicht isinstance(other, Mapping):
-            return NotImplemented
+            gib NotImplemented
         new = dict(self)
         new.update(other)
-        return new
+        gib new
 
     def __ror__(self, other):
         wenn nicht isinstance(other, Mapping):
-            return NotImplemented
+            gib NotImplemented
         new = dict(other)
         new.update(self)
-        return new
+        gib new
 
 def _create_environ_mapping():
     wenn name == 'nt':
@@ -772,11 +772,11 @@ def _create_environ_mapping():
         def check_str(value):
             wenn nicht isinstance(value, str):
                 raise TypeError("str expected, nicht %s" % type(value).__name__)
-            return value
+            gib value
         encode = check_str
         decode = str
         def encodekey(key):
-            return encode(key).upper()
+            gib encode(key).upper()
         data = {}
         fuer key, value in environ.items():
             data[encodekey(key)] = value
@@ -786,12 +786,12 @@ def _create_environ_mapping():
         def encode(value):
             wenn nicht isinstance(value, str):
                 raise TypeError("str expected, nicht %s" % type(value).__name__)
-            return value.encode(encoding, 'surrogateescape')
+            gib value.encode(encoding, 'surrogateescape')
         def decode(value):
-            return value.decode(encoding, 'surrogateescape')
+            gib value.decode(encoding, 'surrogateescape')
         encodekey = encode
         data = environ
-    return _Environ(data,
+    gib _Environ(data,
         encodekey, decode,
         encode, decode)
 
@@ -815,10 +815,10 @@ wenn _exists("_create_environ"):
 
 
 def getenv(key, default=Nichts):
-    """Get an environment variable, return Nichts wenn it doesn't exist.
+    """Get an environment variable, gib Nichts wenn it doesn't exist.
     The optional second argument can specify an alternate default.
     key, default und the result are str."""
-    return environ.get(key, default)
+    gib environ.get(key, default)
 
 supports_bytes_environ = (name != 'nt')
 __all__.extend(("getenv", "supports_bytes_environ"))
@@ -827,7 +827,7 @@ wenn supports_bytes_environ:
     def _check_bytes(value):
         wenn nicht isinstance(value, bytes):
             raise TypeError("bytes expected, nicht %s" % type(value).__name__)
-        return value
+        gib value
 
     # bytes environ
     environb = _Environ(environ._data,
@@ -836,10 +836,10 @@ wenn supports_bytes_environ:
     del _check_bytes
 
     def getenvb(key, default=Nichts):
-        """Get an environment variable, return Nichts wenn it doesn't exist.
+        """Get an environment variable, gib Nichts wenn it doesn't exist.
         The optional second argument can specify an alternate default.
         key, default und the result are bytes."""
-        return environb.get(key, default)
+        gib environb.get(key, default)
 
     __all__.extend(("environb", "getenvb"))
 
@@ -849,29 +849,29 @@ def _fscodec():
 
     def fsencode(filename):
         """Encode filename (an os.PathLike, bytes, oder str) to the filesystem
-        encoding mit 'surrogateescape' error handler, return bytes unchanged.
+        encoding mit 'surrogateescape' error handler, gib bytes unchanged.
         On Windows, use 'strict' error handler wenn the file system encoding is
         'mbcs' (which is the default encoding).
         """
         filename = fspath(filename)  # Does type-checking of `filename`.
         wenn isinstance(filename, str):
-            return filename.encode(encoding, errors)
+            gib filename.encode(encoding, errors)
         sonst:
-            return filename
+            gib filename
 
     def fsdecode(filename):
         """Decode filename (an os.PathLike, bytes, oder str) von the filesystem
-        encoding mit 'surrogateescape' error handler, return str unchanged. On
+        encoding mit 'surrogateescape' error handler, gib str unchanged. On
         Windows, use 'strict' error handler wenn the file system encoding is
         'mbcs' (which is the default encoding).
         """
         filename = fspath(filename)  # Does type-checking of `filename`.
         wenn isinstance(filename, bytes):
-            return filename.decode(encoding, errors)
+            gib filename.decode(encoding, errors)
         sonst:
-            return filename
+            gib filename
 
-    return fsencode, fsdecode
+    gib fsencode, fsdecode
 
 fsencode, fsdecode = _fscodec()
 del _fscodec
@@ -907,32 +907,32 @@ wenn _exists("fork") und nicht _exists("spawnv") und _exists("execv"):
         sonst:
             # Parent
             wenn mode == P_NOWAIT:
-                return pid # Caller is responsible fuer waiting!
+                gib pid # Caller is responsible fuer waiting!
             waehrend 1:
                 wpid, sts = waitpid(pid, 0)
                 wenn WIFSTOPPED(sts):
                     weiter
 
-                return waitstatus_to_exitcode(sts)
+                gib waitstatus_to_exitcode(sts)
 
     def spawnv(mode, file, args):
         """spawnv(mode, file, args) -> integer
 
 Execute file mit arguments von args in a subprocess.
-If mode == P_NOWAIT return the pid of the process.
-If mode == P_WAIT return the process's exit code wenn it exits normally;
-otherwise return -SIG, where SIG is the signal that killed it. """
-        return _spawnvef(mode, file, args, Nichts, execv)
+If mode == P_NOWAIT gib the pid of the process.
+If mode == P_WAIT gib the process's exit code wenn it exits normally;
+otherwise gib -SIG, where SIG is the signal that killed it. """
+        gib _spawnvef(mode, file, args, Nichts, execv)
 
     def spawnve(mode, file, args, env):
         """spawnve(mode, file, args, env) -> integer
 
 Execute file mit arguments von args in a subprocess mit the
 specified environment.
-If mode == P_NOWAIT return the pid of the process.
-If mode == P_WAIT return the process's exit code wenn it exits normally;
-otherwise return -SIG, where SIG is the signal that killed it. """
-        return _spawnvef(mode, file, args, env, execve)
+If mode == P_NOWAIT gib the pid of the process.
+If mode == P_WAIT gib the process's exit code wenn it exits normally;
+otherwise gib -SIG, where SIG is the signal that killed it. """
+        gib _spawnvef(mode, file, args, env, execve)
 
     # Note: spawnvp[e] isn't currently supported on Windows
 
@@ -941,20 +941,20 @@ otherwise return -SIG, where SIG is the signal that killed it. """
 
 Execute file (which is looked fuer along $PATH) mit arguments from
 args in a subprocess.
-If mode == P_NOWAIT return the pid of the process.
-If mode == P_WAIT return the process's exit code wenn it exits normally;
-otherwise return -SIG, where SIG is the signal that killed it. """
-        return _spawnvef(mode, file, args, Nichts, execvp)
+If mode == P_NOWAIT gib the pid of the process.
+If mode == P_WAIT gib the process's exit code wenn it exits normally;
+otherwise gib -SIG, where SIG is the signal that killed it. """
+        gib _spawnvef(mode, file, args, Nichts, execvp)
 
     def spawnvpe(mode, file, args, env):
         """spawnvpe(mode, file, args, env) -> integer
 
 Execute file (which is looked fuer along $PATH) mit arguments from
 args in a subprocess mit the supplied environment.
-If mode == P_NOWAIT return the pid of the process.
-If mode == P_WAIT return the process's exit code wenn it exits normally;
-otherwise return -SIG, where SIG is the signal that killed it. """
-        return _spawnvef(mode, file, args, env, execvpe)
+If mode == P_NOWAIT gib the pid of the process.
+If mode == P_WAIT gib the process's exit code wenn it exits normally;
+otherwise gib -SIG, where SIG is the signal that killed it. """
+        gib _spawnvef(mode, file, args, env, execvpe)
 
 
     __all__.extend(["spawnv", "spawnve", "spawnvp", "spawnvpe"])
@@ -968,21 +968,21 @@ wenn _exists("spawnv"):
         """spawnl(mode, file, *args) -> integer
 
 Execute file mit arguments von args in a subprocess.
-If mode == P_NOWAIT return the pid of the process.
-If mode == P_WAIT return the process's exit code wenn it exits normally;
-otherwise return -SIG, where SIG is the signal that killed it. """
-        return spawnv(mode, file, args)
+If mode == P_NOWAIT gib the pid of the process.
+If mode == P_WAIT gib the process's exit code wenn it exits normally;
+otherwise gib -SIG, where SIG is the signal that killed it. """
+        gib spawnv(mode, file, args)
 
     def spawnle(mode, file, *args):
         """spawnle(mode, file, *args, env) -> integer
 
 Execute file mit arguments von args in a subprocess mit the
 supplied environment.
-If mode == P_NOWAIT return the pid of the process.
-If mode == P_WAIT return the process's exit code wenn it exits normally;
-otherwise return -SIG, where SIG is the signal that killed it. """
+If mode == P_NOWAIT gib the pid of the process.
+If mode == P_WAIT gib the process's exit code wenn it exits normally;
+otherwise gib -SIG, where SIG is the signal that killed it. """
         env = args[-1]
-        return spawnve(mode, file, args[:-1], env)
+        gib spawnve(mode, file, args[:-1], env)
 
 
     __all__.extend(["spawnl", "spawnle"])
@@ -996,21 +996,21 @@ wenn _exists("spawnvp"):
 
 Execute file (which is looked fuer along $PATH) mit arguments from
 args in a subprocess mit the supplied environment.
-If mode == P_NOWAIT return the pid of the process.
-If mode == P_WAIT return the process's exit code wenn it exits normally;
-otherwise return -SIG, where SIG is the signal that killed it. """
-        return spawnvp(mode, file, args)
+If mode == P_NOWAIT gib the pid of the process.
+If mode == P_WAIT gib the process's exit code wenn it exits normally;
+otherwise gib -SIG, where SIG is the signal that killed it. """
+        gib spawnvp(mode, file, args)
 
     def spawnlpe(mode, file, *args):
         """spawnlpe(mode, file, *args, env) -> integer
 
 Execute file (which is looked fuer along $PATH) mit arguments from
 args in a subprocess mit the supplied environment.
-If mode == P_NOWAIT return the pid of the process.
-If mode == P_WAIT return the process's exit code wenn it exits normally;
-otherwise return -SIG, where SIG is the signal that killed it. """
+If mode == P_NOWAIT gib the pid of the process.
+If mode == P_WAIT gib the process's exit code wenn it exits normally;
+otherwise gib -SIG, where SIG is the signal that killed it. """
         env = args[-1]
-        return spawnvpe(mode, file, args[:-1], env)
+        gib spawnvpe(mode, file, args[:-1], env)
 
 
     __all__.extend(["spawnlp", "spawnlpe"])
@@ -1032,13 +1032,13 @@ wenn sys.platform != 'vxworks':
                                     shell=Wahr, text=Wahr,
                                     stdout=subprocess.PIPE,
                                     bufsize=buffering)
-            return _wrap_close(proc.stdout, proc)
+            gib _wrap_close(proc.stdout, proc)
         sonst:
             proc = subprocess.Popen(cmd,
                                     shell=Wahr, text=Wahr,
                                     stdin=subprocess.PIPE,
                                     bufsize=buffering)
-            return _wrap_close(proc.stdin, proc)
+            gib _wrap_close(proc.stdin, proc)
 
     # Helper fuer popen() -- a proxy fuer a file whose close waits fuer the process
     klasse _wrap_close:
@@ -1049,19 +1049,19 @@ wenn sys.platform != 'vxworks':
             self._stream.close()
             returncode = self._proc.wait()
             wenn returncode == 0:
-                return Nichts
+                gib Nichts
             wenn name == 'nt':
-                return returncode
+                gib returncode
             sonst:
-                return returncode << 8  # Shift left to match old behavior
+                gib returncode << 8  # Shift left to match old behavior
         def __enter__(self):
-            return self
+            gib self
         def __exit__(self, *args):
             self.close()
         def __getattr__(self, name):
-            return getattr(self._stream, name)
+            gib getattr(self._stream, name)
         def __iter__(self):
-            return iter(self._stream)
+            gib iter(self._stream)
 
     __all__.append("popen")
 
@@ -1072,7 +1072,7 @@ def fdopen(fd, mode="r", buffering=-1, encoding=Nichts, *args, **kwargs):
     importiere io
     wenn "b" nicht in mode:
         encoding = io.text_encoding(encoding)
-    return io.open(fd, mode, buffering, encoding, *args, **kwargs)
+    gib io.open(fd, mode, buffering, encoding, *args, **kwargs)
 
 
 # For testing purposes, make sure the function is available when the C
@@ -1086,7 +1086,7 @@ def _fspath(path):
     provided path is nicht str, bytes, oder os.PathLike, TypeError is raised.
     """
     wenn isinstance(path, (str, bytes)):
-        return path
+        gib path
 
     # Work von the object's type to match method resolution of other magic
     # methods.
@@ -1106,9 +1106,9 @@ def _fspath(path):
         sonst:
             raise
     wenn isinstance(path_repr, (str, bytes)):
-        return path_repr
+        gib path_repr
     sonst:
-        raise TypeError("expected {}.__fspath__() to return str oder bytes, "
+        raise TypeError("expected {}.__fspath__() to gib str oder bytes, "
                         "not {}".format(path_type.__name__,
                                         type(path_repr).__name__))
 
@@ -1133,8 +1133,8 @@ klasse PathLike(abc.ABC):
     @classmethod
     def __subclasshook__(cls, subclass):
         wenn cls is PathLike:
-            return _check_methods(subclass, '__fspath__')
-        return NotImplemented
+            gib _check_methods(subclass, '__fspath__')
+        gib NotImplemented
 
     __class_getitem__ = classmethod(GenericAlias)
 
@@ -1149,13 +1149,13 @@ wenn name == 'nt':
             self._remove_dll_directory(self._cookie)
             self.path = Nichts
         def __enter__(self):
-            return self
+            gib self
         def __exit__(self, *args):
             self.close()
         def __repr__(self):
             wenn self.path:
-                return "<AddedDllDirectory({!r})>".format(self.path)
-            return "<AddedDllDirectory()>"
+                gib "<AddedDllDirectory({!r})>".format(self.path)
+            gib "<AddedDllDirectory()>"
 
     def add_dll_directory(path):
         """Add a path to the DLL search path.
@@ -1169,7 +1169,7 @@ wenn name == 'nt':
         """
         importiere nt
         cookie = nt._add_dll_directory(path)
-        return _AddedDllDirectory(
+        gib _AddedDllDirectory(
             path,
             cookie,
             nt._remove_dll_directory
@@ -1184,7 +1184,7 @@ wenn _exists('sched_getaffinity') und sys._get_cpu_count_config() < 0:
         Return the number of logical CPUs usable by the calling thread of the
         current process. Return Nichts wenn indeterminable.
         """
-        return len(sched_getaffinity(0))
+        gib len(sched_getaffinity(0))
 sonst:
     # Just an alias to cpu_count() (same docstring)
     process_cpu_count = cpu_count

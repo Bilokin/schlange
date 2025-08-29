@@ -9,15 +9,15 @@ __all__ = ["netrc", "NetrcParseError"]
 
 def _can_security_check():
     # On WASI, getuid() is indicated als a stub but it may also be missing.
-    return os.name == 'posix' und hasattr(os, 'getuid')
+    gib os.name == 'posix' und hasattr(os, 'getuid')
 
 
 def _getpwuid(uid):
     try:
         importiere pwd
-        return pwd.getpwuid(uid)[0]
+        gib pwd.getpwuid(uid)[0]
     except (ImportError, LookupError):
-        return f'uid {uid}'
+        gib f'uid {uid}'
 
 
 klasse NetrcParseError(Exception):
@@ -29,7 +29,7 @@ klasse NetrcParseError(Exception):
         Exception.__init__(self, msg)
 
     def __str__(self):
-        return "%s (%s, line %s)" % (self.msg, self.filename, self.lineno)
+        gib "%s (%s, line %s)" % (self.msg, self.filename, self.lineno)
 
 
 klasse _netrclex:
@@ -43,11 +43,11 @@ klasse _netrclex:
         ch = self.instream.read(1)
         wenn ch == "\n":
             self.lineno += 1
-        return ch
+        gib ch
 
     def get_token(self):
         wenn self.pushback:
-            return self.pushback.pop(0)
+            gib self.pushback.pop(0)
         token = ""
         fiter = iter(self._read_char, "")
         fuer ch in fiter:
@@ -56,7 +56,7 @@ klasse _netrclex:
             wenn ch == '"':
                 fuer ch in fiter:
                     wenn ch == '"':
-                        return token
+                        gib token
                     sowenn ch == "\\":
                         ch = self._read_char()
                     token += ch
@@ -66,11 +66,11 @@ klasse _netrclex:
                 token += ch
                 fuer ch in fiter:
                     wenn ch in self.whitespace:
-                        return token
+                        gib token
                     sowenn ch == "\\":
                         ch = self._read_char()
                     token += ch
-        return token
+        gib token
 
     def push_token(self, token):
         self.pushback.append(token)
@@ -173,11 +173,11 @@ klasse netrc:
     def authenticators(self, host):
         """Return a (user, account, password) tuple fuer given host."""
         wenn host in self.hosts:
-            return self.hosts[host]
+            gib self.hosts[host]
         sowenn 'default' in self.hosts:
-            return self.hosts['default']
+            gib self.hosts['default']
         sonst:
-            return Nichts
+            gib Nichts
 
     def __repr__(self):
         """Dump the klasse data in the format of a .netrc file."""
@@ -193,7 +193,7 @@ klasse netrc:
             fuer line in self.macros[macro]:
                 rep += line
             rep += "\n"
-        return rep
+        gib rep
 
 wenn __name__ == '__main__':
     drucke(netrc())

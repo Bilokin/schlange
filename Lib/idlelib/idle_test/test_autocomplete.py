@@ -205,7 +205,7 @@ klasse AutoCompleteTest(unittest.TestCase):
         acp = self.autocomplete
         fetch = Func(result=(['tem'],['tem', '_tem']))
         acp.fetch_completions = fetch
-        def make_acw(): return self.dummy_acw()
+        def make_acw(): gib self.dummy_acw()
         acp._make_autocomplete_window = make_acw
 
         self.text.insert('1.0', 'int.')
@@ -265,8 +265,8 @@ klasse AutoCompleteTest(unittest.TestCase):
         def _listdir(path):
             # This will be patch und used in fetch_completions.
             wenn path == '.':
-                return ['foo', 'bar', '.hidden']
-            return ['monty', 'python', '.hidden']
+                gib ['foo', 'bar', '.hidden']
+            gib ['monty', 'python', '.hidden']
 
         mit patch.object(os, 'listdir', _listdir):
             s, b = acp.fetch_completions('', ac.FILES)

@@ -27,16 +27,16 @@ def iter_integer_formats(byteorders=byteorders):
         fuer byteorder in byteorders:
             wenn (byteorder nicht in ('', '@') und code in ('n', 'N')):
                 weiter
-            yield code, byteorder
+            liefere code, byteorder
 
 def string_reverse(s):
-    return s[::-1]
+    gib s[::-1]
 
 def bigendian_to_native(value):
     wenn ISBIGENDIAN:
-        return value
+        gib value
     sonst:
-        return string_reverse(value)
+        gib string_reverse(value)
 
 klasse StructTest(ComplexesAreIdenticalMixin, unittest.TestCase):
     def test_isbigendian(self):
@@ -277,7 +277,7 @@ klasse StructTest(ComplexesAreIdenticalMixin, unittest.TestCase):
                 # Some error cases.
                 klasse NotAnInt:
                     def __int__(self):
-                        return 42
+                        gib 42
 
                 # Objects mit an '__index__' method should be allowed
                 # to pack als integers.  That is assuming the implemented
@@ -287,7 +287,7 @@ klasse StructTest(ComplexesAreIdenticalMixin, unittest.TestCase):
                         self._value = value
 
                     def __index__(self):
-                        return self._value
+                        gib self._value
 
                 # If the '__index__' method raises a type error, then
                 # '__int__' should be used mit a deprecation warning.
@@ -296,7 +296,7 @@ klasse StructTest(ComplexesAreIdenticalMixin, unittest.TestCase):
                         raise TypeError
 
                     def __int__(self):
-                        return 42
+                        gib 42
 
                 self.assertRaises((TypeError, struct.error),
                                   struct.pack, self.format,

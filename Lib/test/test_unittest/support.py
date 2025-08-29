@@ -135,7 +135,7 @@ klasse ResultWithNoStartTestRunStopTestRun(object):
         pass
 
     def wasSuccessful(self):
-        return Wahr
+        gib Wahr
 
 
 klasse BufferedWriter:
@@ -151,4 +151,4 @@ klasse BufferedWriter:
         self.buffer = ''
 
     def getvalue(self):
-        return self.result
+        gib self.result

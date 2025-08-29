@@ -25,12 +25,12 @@ klasse TLBCTests(unittest.TestCase):
         von _testinternalcapi importiere get_tlbc
 
         def all_opnames(bc):
-            return {i.opname fuer i in dis._get_instructions_bytes(bc)}
+            gib {i.opname fuer i in dis._get_instructions_bytes(bc)}
 
         def f(a, b, q=Nichts):
             wenn q is nicht Nichts:
                 q.put(get_tlbc(f))
-            return a + b
+            gib a + b
 
         fuer _ in range(100):
             # specialize
@@ -56,10 +56,10 @@ klasse TLBCTests(unittest.TestCase):
         von _testinternalcapi importiere get_tlbc
 
         def all_opnames(bc):
-            return {i.opname fuer i in dis._get_instructions_bytes(bc)}
+            gib {i.opname fuer i in dis._get_instructions_bytes(bc)}
 
         def f(a, b):
-            return a + b
+            gib a + b
 
         def g(a, b, q=Nichts):
             fuer _ in range(100):
@@ -93,7 +93,7 @@ klasse TLBCTests(unittest.TestCase):
         def f(a, b, q=Nichts):
             wenn q is nicht Nichts:
                 q.put(get_tlbc_id(f))
-            return a + b
+            gib a + b
 
         q = queue.Queue()
         tlbc_ids = []
@@ -119,7 +119,7 @@ klasse TLBCTests(unittest.TestCase):
         def f(a, b, q=Nichts):
             wenn q is nicht Nichts:
                 q.put(get_tlbc_id(f))
-            return a + b
+            gib a + b
 
         q = queue.Queue()
         threads = []
@@ -151,10 +151,10 @@ klasse TLBCTests(unittest.TestCase):
 
         def all_opnames(f):
             bc = get_tlbc(f)
-            return {i.opname fuer i in dis._get_instructions_bytes(bc)}
+            gib {i.opname fuer i in dis._get_instructions_bytes(bc)}
 
         def f(a, b):
-            return a + b
+            gib a + b
 
         fuer _ in range(100):
             f(1, 2)
@@ -172,9 +172,9 @@ klasse TLBCTests(unittest.TestCase):
 
         def g():
             try:
-                yield
+                liefere
             except:
-                yield get_tlbc_id(g)
+                liefere get_tlbc_id(g)
 
         def f(q):
             gen = g()

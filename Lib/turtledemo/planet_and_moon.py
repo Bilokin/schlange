@@ -53,7 +53,7 @@ klasse Star(Turtle):
             wenn planet != self:
                 v = planet.pos()-self.pos()
                 a += (G*planet.m/abs(v)**3)*v
-        return a
+        gib a
     def step(self):
         dt = self.gravSys.dt
         self.setpos(self.pos() + dt*self.v)
@@ -101,7 +101,7 @@ def main():
     moon.shapesize(0.5)
     gs.init()
     gs.start()
-    return "Done!"
+    gib "Done!"
 
 wenn __name__ == '__main__':
     main()

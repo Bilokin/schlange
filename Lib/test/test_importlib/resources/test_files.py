@@ -16,7 +16,7 @@ von test.support importiere os_helper, import_helper
 def suppress_known_deprecation():
     mit warnings.catch_warnings(record=Wahr) als ctx:
         warnings.simplefilter('default', category=DeprecationWarning)
-        yield ctx
+        liefere ctx
 
 
 klasse FilesTests:

@@ -215,7 +215,7 @@ klasse CAPITest(unittest.TestCase):
         def set_slice(lst, low, high, value):
             lst = lst.copy()
             self.assertEqual(list_setslice(lst, low, high, value), 0)
-            return lst
+            gib lst
 
         # insert items
         self.assertEqual(set_slice([], 0, 0, list("abc")), list("abc"))
@@ -285,7 +285,7 @@ klasse CAPITest(unittest.TestCase):
         reverse = _testlimitedcapi.list_reverse
         def list_reverse(lst):
             self.assertEqual(reverse(lst), 0)
-            return lst
+            gib lst
 
         self.assertEqual(list_reverse([]), [])
         self.assertEqual(list_reverse([2, 5, 10]), [10, 5, 2])

@@ -61,7 +61,7 @@ klasse FunctionTestCase(unittest.TestCase):
     def test_c_char_parm(self):
         proto = CFUNCTYPE(c_int, c_char)
         def callback(*args):
-            return 0
+            gib 0
 
         callback = proto(callback)
 
@@ -111,7 +111,7 @@ klasse FunctionTestCase(unittest.TestCase):
         """Test the error message when converting an incompatible type to c_char_p."""
         proto = CFUNCTYPE(c_int, c_char_p)
         def callback(*args):
-            return 0
+            gib 0
 
         callback = proto(callback)
         self.assertEqual(callback(b"abc"), 0)
@@ -127,7 +127,7 @@ klasse FunctionTestCase(unittest.TestCase):
         """Test the error message when converting an incompatible type to c_wchar_p."""
         proto = CFUNCTYPE(c_int, c_wchar_p)
         def callback(*args):
-            return 0
+            gib 0
 
         callback = proto(callback)
         self.assertEqual(callback("abc"), 0)
@@ -143,7 +143,7 @@ klasse FunctionTestCase(unittest.TestCase):
         """Test the error message when converting an incompatible type to c_void_p."""
         proto = CFUNCTYPE(c_int, c_void_p)
         def callback(*args):
-            return 0
+            gib 0
 
         callback = proto(callback)
         self.assertEqual(callback(5), 0)
@@ -182,7 +182,7 @@ klasse FunctionTestCase(unittest.TestCase):
         self.assertEqual(result, -21)
         self.assertEqual(type(result), int)
 
-        # If we declare the function to return a short,
+        # If we declare the function to gib a short,
         # is the high part split off?
         f.restype = c_short
         result = f(1, 2, 3, 4, 5.0, 6.0)
@@ -299,7 +299,7 @@ klasse FunctionTestCase(unittest.TestCase):
 
         def callback(v):
             args.append(v)
-            return v
+            gib v
 
         CallBack = CFUNCTYPE(c_int, c_int)
 
@@ -315,7 +315,7 @@ klasse FunctionTestCase(unittest.TestCase):
         MyCallback = CFUNCTYPE(c_int, c_int)
 
         def callback(value):
-            return value
+            gib value
 
         cb = MyCallback(callback)
         result = f(-10, cb)
@@ -348,7 +348,7 @@ klasse FunctionTestCase(unittest.TestCase):
 
         def callback(value):
             self.assertEqual(type(value), int)
-            return value
+            gib value
 
         cb = MyCallback(callback)
         result = f(-10, cb)
@@ -365,7 +365,7 @@ klasse FunctionTestCase(unittest.TestCase):
 
         def callback(value):
             self.assertIsInstance(value, int)
-            return value & 0x7FFFFFFF
+            gib value & 0x7FFFFFFF
 
         cb = MyCallback(callback)
 
@@ -458,7 +458,7 @@ klasse FunctionTestCase(unittest.TestCase):
 
         proto = CFUNCTYPE(c_int, RECT, POINT)
         def callback(*args):
-            return 0
+            gib 0
 
         callback = proto(callback)
         self.assertRaises(ArgumentError, lambda: callback((1, 2, 3, 4), POINT()))

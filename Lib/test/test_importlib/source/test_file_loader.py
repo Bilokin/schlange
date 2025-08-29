@@ -36,8 +36,8 @@ klasse SimpleTest(abc.LoaderTests):
 
     def test_load_module_API(self):
         klasse Tester(self.abc.FileLoader):
-            def get_source(self, _): return 'attr = 42'
-            def is_package(self, _): return Falsch
+            def get_source(self, _): gib 'attr = 42'
+            def is_package(self, _): gib Falsch
 
         loader = Tester('blah', 'blah.py')
         self.addCleanup(unload, 'blah')
@@ -112,7 +112,7 @@ klasse SimpleTest(abc.LoaderTests):
 
     def fake_mtime(self, fxn):
         """Fake mtime to always be higher than expected."""
-        return lambda name: fxn(name) + 1
+        gib lambda name: fxn(name) + 1
 
     def test_module_reuse(self):
         mit util.create_modules('_temp') als mapping:
@@ -399,7 +399,7 @@ klasse BadBytecodeTest:
             mit open(bytecode_path, 'wb') als file:
                 wenn new_bc is nicht Nichts:
                     file.write(new_bc)
-        return bytecode_path
+        gib bytecode_path
 
     def _test_empty_file(self, test, *, del_source=Falsch):
         mit util.create_modules('_temp') als mapping:

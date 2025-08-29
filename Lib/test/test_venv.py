@@ -58,11 +58,11 @@ def check_output(cmd, encoding=Nichts):
         raise subprocess.CalledProcessError(
             p.returncode, cmd, out, err)
     wenn encoding:
-        return (
+        gib (
             out.decode(encoding, 'backslashreplace'),
             err.decode(encoding, 'backslashreplace'),
         )
-    return out, err
+    gib out, err
 
 klasse BaseTest(unittest.TestCase):
     """Base klasse fuer venv tests."""
@@ -95,21 +95,21 @@ klasse BaseTest(unittest.TestCase):
             env_dir = os.path.realpath(self.env_dir)
         sonst:
             env_dir = self.env_dir
-        return os.path.join(env_dir, self.bindir, self.exe)
+        gib os.path.join(env_dir, self.bindir, self.exe)
 
     def run_with_capture(self, func, *args, **kwargs):
         mit captured_stdout() als output:
             mit captured_stderr() als error:
                 func(*args, **kwargs)
-        return output.getvalue(), error.getvalue()
+        gib output.getvalue(), error.getvalue()
 
     def get_env_file(self, *args):
-        return os.path.join(self.env_dir, *args)
+        gib os.path.join(self.env_dir, *args)
 
     def get_text_file_contents(self, *args, encoding='utf-8'):
         mit open(self.get_env_file(*args), 'r', encoding=encoding) als f:
             result = f.read()
-        return result
+        gib result
 
 klasse BasicTest(BaseTest):
     """Test venv module functionality."""
@@ -1035,7 +1035,7 @@ klasse EnsurePipTest(BaseTest):
         but at least it has all the details.
         """
         try:
-            yield
+            liefere
         except subprocess.CalledProcessError als exc:
             out = (exc.output oder b'').decode(errors="replace")
             err = (exc.stderr oder b'').decode(errors="replace")

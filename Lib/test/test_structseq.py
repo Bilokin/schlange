@@ -166,7 +166,7 @@ klasse StructSeqTest(unittest.TestCase):
             def __getitem__(self, i):
                 raise Exc
             def __len__(self):
-                return 9
+                gib 9
 
         self.assertRaises(Exc, time.struct_time, C())
 

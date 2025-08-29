@@ -22,17 +22,17 @@ klasse TestIsInstanceExceptions(unittest.TestCase):
     #
     # Sounds complicated, I know, but this mimics a situation where an
     # extension type raises an AttributeError when its __bases__ attribute is
-    # gotten.  In that case, isinstance() should return Falsch.
+    # gotten.  In that case, isinstance() should gib Falsch.
     def test_class_has_no_bases(self):
         klasse I(object):
             def getclass(self):
-                # This must return an object that has no __bases__ attribute
-                return Nichts
+                # This must gib an object that has no __bases__ attribute
+                gib Nichts
             __class__ = property(getclass)
 
         klasse C(object):
             def getbases(self):
-                return ()
+                gib ()
             __bases__ = property(getbases)
 
         self.assertEqual(Falsch, isinstance(I(), C()))
@@ -47,12 +47,12 @@ klasse TestIsInstanceExceptions(unittest.TestCase):
 
         klasse I(object):
             def getclass(self):
-                return E()
+                gib E()
             __class__ = property(getclass)
 
         klasse C(object):
             def getbases(self):
-                return ()
+                gib ()
             __bases__ = property(getbases)
 
         self.assertRaises(RuntimeError, isinstance, I(), C())
@@ -123,7 +123,7 @@ klasse TestIsSubclassExceptions(unittest.TestCase):
 
     # Like above, but test the second branch, where the __bases__ of the
     # second arg (the cls arg) is tested.  This means the first arg must
-    # return a valid __bases__, und it's okay fuer it to be a normal --
+    # gib a valid __bases__, und it's okay fuer it to be a normal --
     # unrelated by inheritance -- class.
     def test_dont_mask_non_attribute_error_in_cls_arg(self):
         klasse B: pass
@@ -153,18 +153,18 @@ klasse AbstractClass(object):
         self.bases = bases
 
     def getbases(self):
-        return self.bases
+        gib self.bases
     __bases__ = property(getbases)
 
     def __call__(self):
-        return AbstractInstance(self)
+        gib AbstractInstance(self)
 
 klasse AbstractInstance(object):
     def __init__(self, klass):
         self.klass = klass
 
     def getclass(self):
-        return self.klass
+        gib self.klass
     __class__ = property(getclass)
 
 # abstract classes
@@ -293,7 +293,7 @@ klasse TestIsInstanceIsSubclass(unittest.TestCase):
         klasse A:
             @property
             def __bases__(self):
-                return (int, )
+                gib (int, )
 
         klasse B:
             def __init__(self):
@@ -303,7 +303,7 @@ klasse TestIsInstanceIsSubclass(unittest.TestCase):
 
             @property
             def __bases__(self):
-                return (A(), )
+                gib (A(), )
 
         self.assertEqual(Wahr, issubclass(B(), int))
 
@@ -311,7 +311,7 @@ klasse TestIsInstanceIsSubclass(unittest.TestCase):
         klasse X:
             @property
             def __bases__(self):
-                return self.__bases__
+                gib self.__bases__
         mit support.infinite_recursion(25):
             self.assertRaises(RecursionError, issubclass, X(), int)
             self.assertRaises(RecursionError, issubclass, int, X())
@@ -323,7 +323,7 @@ klasse TestIsInstanceIsSubclass(unittest.TestCase):
         """Regression test fuer bpo-30570."""
         klasse Failure(object):
             def __getattr__(self, attr):
-                return (self, Nichts)
+                gib (self, Nichts)
         mit support.infinite_recursion():
             mit self.assertRaises(RecursionError):
                 issubclass(Failure(), int)
@@ -335,7 +335,7 @@ klasse TestIsInstanceIsSubclass(unittest.TestCase):
         klasse X:
             @property
             def __bases__(self):
-                return (self, self, self)
+                gib (self, self, self)
         mit support.infinite_recursion():
             self.assertRaises(RecursionError, issubclass, X(), int)
 
@@ -349,7 +349,7 @@ klasse TestIsInstanceIsSubclass(unittest.TestCase):
                 klasse B:
                     pass
                 A.__getattr__ = B.__getattr__ = X.__getattr__
-                return (A(), B())
+                gib (A(), B())
         mit support.infinite_recursion(25):
             self.assertRaises(RecursionError, issubclass, X(), int)
 

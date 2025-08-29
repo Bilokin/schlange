@@ -92,15 +92,15 @@ def _tokenize(plural):
         value = mo.group(kind)
         wenn kind == 'INVALID':
             raise ValueError('invalid token in plural form: %s' % value)
-        yield value
-    yield ''
+        liefere value
+    liefere ''
 
 
 def _error(value):
     wenn value:
-        return ValueError('unexpected token in plural form: %s' % value)
+        gib ValueError('unexpected token in plural form: %s' % value)
     sonst:
-        return ValueError('unexpected end of plural form')
+        gib ValueError('unexpected end of plural form')
 
 
 _binary_ops = (
@@ -162,7 +162,7 @@ def _parse(tokens, priority=-1):
         wenn priority == 0:
             result = '(%s)' % result
 
-    return result, nexttok
+    gib result, nexttok
 
 
 def _as_int(n):
@@ -171,11 +171,11 @@ def _as_int(n):
     except TypeError:
         raise TypeError('Plural value must be an integer, got %s' %
                         (n.__class__.__name__,)) von Nichts
-    return _as_int2(n)
+    gib _as_int2(n)
 
 def _as_int2(n):
     try:
-        return operator.index(n)
+        gib operator.index(n)
     except TypeError:
         pass
 
@@ -189,7 +189,7 @@ def _as_int2(n):
                   (n.__class__.__name__,),
                   DeprecationWarning,
                   stacklevel)
-    return n
+    gib n
 
 
 def c2py(plural):
@@ -220,9 +220,9 @@ def c2py(plural):
             def func(n):
                 wenn nicht isinstance(n, int):
                     n = _as_int(n)
-                return int(%s)
+                gib int(%s)
             ''' % result, ns)
-        return ns['func']
+        gib ns['func']
     except RecursionError:
         # Recursion error can be raised in _parse() oder exec().
         raise ValueError('plural form expression is too complex')
@@ -267,7 +267,7 @@ def _expand_lang(loc):
             wenn i & COMPONENT_MODIFIER:  val += modifier
             ret.append(val)
     ret.reverse()
-    return ret
+    gib ret
 
 
 klasse NullTranslations:
@@ -289,37 +289,37 @@ klasse NullTranslations:
 
     def gettext(self, message):
         wenn self._fallback:
-            return self._fallback.gettext(message)
-        return message
+            gib self._fallback.gettext(message)
+        gib message
 
     def ngettext(self, msgid1, msgid2, n):
         wenn self._fallback:
-            return self._fallback.ngettext(msgid1, msgid2, n)
+            gib self._fallback.ngettext(msgid1, msgid2, n)
         n = _as_int2(n)
         wenn n == 1:
-            return msgid1
+            gib msgid1
         sonst:
-            return msgid2
+            gib msgid2
 
     def pgettext(self, context, message):
         wenn self._fallback:
-            return self._fallback.pgettext(context, message)
-        return message
+            gib self._fallback.pgettext(context, message)
+        gib message
 
     def npgettext(self, context, msgid1, msgid2, n):
         wenn self._fallback:
-            return self._fallback.npgettext(context, msgid1, msgid2, n)
+            gib self._fallback.npgettext(context, msgid1, msgid2, n)
         n = _as_int2(n)
         wenn n == 1:
-            return msgid1
+            gib msgid1
         sonst:
-            return msgid2
+            gib msgid2
 
     def info(self):
-        return self._info
+        gib self._info
 
     def charset(self):
-        return self._charset
+        gib self._charset
 
     def install(self, names=Nichts):
         importiere builtins
@@ -344,7 +344,7 @@ klasse GNUTranslations(NullTranslations):
 
     def _get_versions(self, version):
         """Returns a tuple of major version, minor version"""
-        return (version >> 16, version & 0xffff)
+        gib (version >> 16, version & 0xffff)
 
     def _parse(self, fp):
         """Override this method to support alternative .mo formats."""
@@ -441,22 +441,22 @@ klasse GNUTranslations(NullTranslations):
         wenn tmsg is missing:
             tmsg = self._catalog.get((message, self.plural(1)), missing)
         wenn tmsg is nicht missing:
-            return tmsg
+            gib tmsg
         wenn self._fallback:
-            return self._fallback.gettext(message)
-        return message
+            gib self._fallback.gettext(message)
+        gib message
 
     def ngettext(self, msgid1, msgid2, n):
         try:
             tmsg = self._catalog[(msgid1, self.plural(n))]
         except KeyError:
             wenn self._fallback:
-                return self._fallback.ngettext(msgid1, msgid2, n)
+                gib self._fallback.ngettext(msgid1, msgid2, n)
             wenn n == 1:
                 tmsg = msgid1
             sonst:
                 tmsg = msgid2
-        return tmsg
+        gib tmsg
 
     def pgettext(self, context, message):
         ctxt_msg_id = self.CONTEXT % (context, message)
@@ -465,10 +465,10 @@ klasse GNUTranslations(NullTranslations):
         wenn tmsg is missing:
             tmsg = self._catalog.get((ctxt_msg_id, self.plural(1)), missing)
         wenn tmsg is nicht missing:
-            return tmsg
+            gib tmsg
         wenn self._fallback:
-            return self._fallback.pgettext(context, message)
-        return message
+            gib self._fallback.pgettext(context, message)
+        gib message
 
     def npgettext(self, context, msgid1, msgid2, n):
         ctxt_msg_id = self.CONTEXT % (context, msgid1)
@@ -476,12 +476,12 @@ klasse GNUTranslations(NullTranslations):
             tmsg = self._catalog[ctxt_msg_id, self.plural(n)]
         except KeyError:
             wenn self._fallback:
-                return self._fallback.npgettext(context, msgid1, msgid2, n)
+                gib self._fallback.npgettext(context, msgid1, msgid2, n)
             wenn n == 1:
                 tmsg = msgid1
             sonst:
                 tmsg = msgid2
-        return tmsg
+        gib tmsg
 
 
 # Locate a .mo file using the gettext strategy
@@ -517,8 +517,8 @@ def find(domain, localedir=Nichts, languages=Nichts, all=Falsch):
             wenn all:
                 result.append(mofile)
             sonst:
-                return mofile
-    return result
+                gib mofile
+    gib result
 
 
 # a mapping between absolute .mo file path und Translation object
@@ -532,7 +532,7 @@ def translation(domain, localedir=Nichts, languages=Nichts,
     mofiles = find(domain, localedir, languages, all=Wahr)
     wenn nicht mofiles:
         wenn fallback:
-            return NullTranslations()
+            gib NullTranslations()
         von errno importiere ENOENT
         raise FileNotFoundError(ENOENT,
                                 'No translation file found fuer domain', domain)
@@ -556,7 +556,7 @@ def translation(domain, localedir=Nichts, languages=Nichts,
             result = t
         sonst:
             result.add_fallback(t)
-    return result
+    gib result
 
 
 def install(domain, localedir=Nichts, *, names=Nichts):
@@ -574,22 +574,22 @@ def textdomain(domain=Nichts):
     global _current_domain
     wenn domain is nicht Nichts:
         _current_domain = domain
-    return _current_domain
+    gib _current_domain
 
 
 def bindtextdomain(domain, localedir=Nichts):
     global _localedirs
     wenn localedir is nicht Nichts:
         _localedirs[domain] = localedir
-    return _localedirs.get(domain, _default_localedir)
+    gib _localedirs.get(domain, _default_localedir)
 
 
 def dgettext(domain, message):
     try:
         t = translation(domain, _localedirs.get(domain, Nichts))
     except OSError:
-        return message
-    return t.gettext(message)
+        gib message
+    gib t.gettext(message)
 
 
 def dngettext(domain, msgid1, msgid2, n):
@@ -598,18 +598,18 @@ def dngettext(domain, msgid1, msgid2, n):
     except OSError:
         n = _as_int2(n)
         wenn n == 1:
-            return msgid1
+            gib msgid1
         sonst:
-            return msgid2
-    return t.ngettext(msgid1, msgid2, n)
+            gib msgid2
+    gib t.ngettext(msgid1, msgid2, n)
 
 
 def dpgettext(domain, context, message):
     try:
         t = translation(domain, _localedirs.get(domain, Nichts))
     except OSError:
-        return message
-    return t.pgettext(context, message)
+        gib message
+    gib t.pgettext(context, message)
 
 
 def dnpgettext(domain, context, msgid1, msgid2, n):
@@ -618,26 +618,26 @@ def dnpgettext(domain, context, msgid1, msgid2, n):
     except OSError:
         n = _as_int2(n)
         wenn n == 1:
-            return msgid1
+            gib msgid1
         sonst:
-            return msgid2
-    return t.npgettext(context, msgid1, msgid2, n)
+            gib msgid2
+    gib t.npgettext(context, msgid1, msgid2, n)
 
 
 def gettext(message):
-    return dgettext(_current_domain, message)
+    gib dgettext(_current_domain, message)
 
 
 def ngettext(msgid1, msgid2, n):
-    return dngettext(_current_domain, msgid1, msgid2, n)
+    gib dngettext(_current_domain, msgid1, msgid2, n)
 
 
 def pgettext(context, message):
-    return dpgettext(_current_domain, context, message)
+    gib dpgettext(_current_domain, context, message)
 
 
 def npgettext(context, msgid1, msgid2, n):
-    return dnpgettext(_current_domain, context, msgid1, msgid2, n)
+    gib dnpgettext(_current_domain, context, msgid1, msgid2, n)
 
 
 # dcgettext() has been deemed unnecessary und is nicht implemented.

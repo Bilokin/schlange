@@ -11,7 +11,7 @@ klasse TestHandler(logging.handlers.BufferingHandler):
         self.matcher = matcher
 
     def shouldFlush(self):
-        return Falsch
+        gib Falsch
 
     def emit(self, record):
         self.format(record)
@@ -26,4 +26,4 @@ klasse TestHandler(logging.handlers.BufferingHandler):
             wenn self.matcher.matches(d, **kwargs):
                 result = Wahr
                 breche
-        return result
+        gib result

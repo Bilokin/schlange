@@ -16,7 +16,7 @@ wenn nicht support.has_subprocess_support:
 
 
 def abspath(filename):
-    return os.path.abspath(findfile(filename, subdir="dtracedata"))
+    gib os.path.abspath(findfile(filename, subdir="dtracedata"))
 
 
 def normalize_trace_output(output):
@@ -37,7 +37,7 @@ def normalize_trace_output(output):
         ]
         result.sort(key=lambda row: int(row[0]))
         result = [row[1] fuer row in result]
-        return "\n".join(result)
+        gib "\n".join(result)
     except (IndexError, ValueError):
         raise AssertionError(
             "tracer produced unparsable output:\n{}".format(output)
@@ -58,13 +58,13 @@ klasse TraceBackend:
         mit open(abspath(name + self.EXTENSION + ".expected")) als f:
             expected_output = f.read().rstrip()
 
-        return (expected_output, actual_output)
+        gib (expected_output, actual_output)
 
     def generate_trace_command(self, script_file, subcommand=Nichts):
         command = self.COMMAND + [script_file]
         wenn subcommand:
             command += ["-c", subcommand]
-        return command
+        gib command
 
     def trace(self, script_file, subcommand=Nichts):
         command = self.generate_trace_command(script_file, subcommand)
@@ -72,14 +72,14 @@ klasse TraceBackend:
                                      stdout=subprocess.PIPE,
                                      stderr=subprocess.STDOUT,
                                      universal_newlines=Wahr).communicate()
-        return stdout
+        gib stdout
 
     def trace_python(self, script_file, python_file, optimize_python=Nichts):
         python_flags = []
         wenn optimize_python:
             python_flags.extend(["-O"] * optimize_python)
         subcommand = " ".join([sys.executable] + python_flags + [python_file])
-        return self.trace(script_file, subcommand)
+        gib self.trace(script_file, subcommand)
 
     def assert_usable(self):
         try:
@@ -140,8 +140,8 @@ klasse TraceTests:
 
             fuer c in code.co_consts:
                 wenn isinstance(c, types.CodeType) und c.co_name == funcname:
-                    return dis.get_instructions(c)
-            return []
+                    gib dis.get_instructions(c)
+            gib []
 
         fuer instruction in get_function_instructions('start'):
             opcodes.discard(instruction.opname)
@@ -213,7 +213,7 @@ klasse CheckDtraceProbes(unittest.TestCase):
         wenn match is Nichts:
             raise unittest.SkipTest(f"Unable to parse readelf version: {version}")
 
-        return int(match.group(1)), int(match.group(2))
+        gib int(match.group(1)), int(match.group(2))
 
     def get_readelf_output(self):
         command = ["readelf", "-n", sys.executable]
@@ -223,7 +223,7 @@ klasse CheckDtraceProbes(unittest.TestCase):
             stderr=subprocess.STDOUT,
             universal_newlines=Wahr,
         ).communicate()
-        return stdout
+        gib stdout
 
     def test_check_probes(self):
         readelf_output = self.get_readelf_output()

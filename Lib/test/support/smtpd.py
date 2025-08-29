@@ -117,9 +117,9 @@ klasse SMTPChannel(asynchat.async_chat):
     @property
     def max_command_size_limit(self):
         try:
-            return max(self.command_size_limits.values())
+            gib max(self.command_size_limits.values())
         except ValueError:
-            return self.command_size_limit
+            gib self.command_size_limit
 
     def __init__(self, server, conn, addr, data_size_limit=DATA_SIZE_DEFAULT,
                  map=Nichts, enable_SMTPUTF8=Falsch, decode_data=Falsch):
@@ -156,7 +156,7 @@ klasse SMTPChannel(asynchat.async_chat):
             self.close()
             wenn err.errno != errno.ENOTCONN:
                 raise
-            return
+            gib
         drucke('Peer:', repr(self.peer), file=DEBUGSTREAM)
         self.push('220 %s %s' % (self.fqdn, __version__))
 
@@ -181,7 +181,7 @@ klasse SMTPChannel(asynchat.async_chat):
     def __server(self):
         warn("Access to __server attribute on SMTPChannel is deprecated, "
             "use 'smtp_server' instead", DeprecationWarning, 2)
-        return self.smtp_server
+        gib self.smtp_server
     @__server.setter
     def __server(self, value):
         warn("Setting __server attribute on SMTPChannel is deprecated, "
@@ -192,7 +192,7 @@ klasse SMTPChannel(asynchat.async_chat):
     def __line(self):
         warn("Access to __line attribute on SMTPChannel is deprecated, "
             "use 'received_lines' instead", DeprecationWarning, 2)
-        return self.received_lines
+        gib self.received_lines
     @__line.setter
     def __line(self, value):
         warn("Setting __line attribute on SMTPChannel is deprecated, "
@@ -203,7 +203,7 @@ klasse SMTPChannel(asynchat.async_chat):
     def __state(self):
         warn("Access to __state attribute on SMTPChannel is deprecated, "
             "use 'smtp_state' instead", DeprecationWarning, 2)
-        return self.smtp_state
+        gib self.smtp_state
     @__state.setter
     def __state(self, value):
         warn("Setting __state attribute on SMTPChannel is deprecated, "
@@ -214,7 +214,7 @@ klasse SMTPChannel(asynchat.async_chat):
     def __greeting(self):
         warn("Access to __greeting attribute on SMTPChannel is deprecated, "
             "use 'seen_greeting' instead", DeprecationWarning, 2)
-        return self.seen_greeting
+        gib self.seen_greeting
     @__greeting.setter
     def __greeting(self, value):
         warn("Setting __greeting attribute on SMTPChannel is deprecated, "
@@ -225,7 +225,7 @@ klasse SMTPChannel(asynchat.async_chat):
     def __mailfrom(self):
         warn("Access to __mailfrom attribute on SMTPChannel is deprecated, "
             "use 'mailfrom' instead", DeprecationWarning, 2)
-        return self.mailfrom
+        gib self.mailfrom
     @__mailfrom.setter
     def __mailfrom(self, value):
         warn("Setting __mailfrom attribute on SMTPChannel is deprecated, "
@@ -236,7 +236,7 @@ klasse SMTPChannel(asynchat.async_chat):
     def __rcpttos(self):
         warn("Access to __rcpttos attribute on SMTPChannel is deprecated, "
             "use 'rcpttos' instead", DeprecationWarning, 2)
-        return self.rcpttos
+        gib self.rcpttos
     @__rcpttos.setter
     def __rcpttos(self, value):
         warn("Setting __rcpttos attribute on SMTPChannel is deprecated, "
@@ -247,7 +247,7 @@ klasse SMTPChannel(asynchat.async_chat):
     def __data(self):
         warn("Access to __data attribute on SMTPChannel is deprecated, "
             "use 'received_data' instead", DeprecationWarning, 2)
-        return self.received_data
+        gib self.received_data
     @__data.setter
     def __data(self, value):
         warn("Setting __data attribute on SMTPChannel is deprecated, "
@@ -258,7 +258,7 @@ klasse SMTPChannel(asynchat.async_chat):
     def __fqdn(self):
         warn("Access to __fqdn attribute on SMTPChannel is deprecated, "
             "use 'fqdn' instead", DeprecationWarning, 2)
-        return self.fqdn
+        gib self.fqdn
     @__fqdn.setter
     def __fqdn(self, value):
         warn("Setting __fqdn attribute on SMTPChannel is deprecated, "
@@ -269,7 +269,7 @@ klasse SMTPChannel(asynchat.async_chat):
     def __peer(self):
         warn("Access to __peer attribute on SMTPChannel is deprecated, "
             "use 'peer' instead", DeprecationWarning, 2)
-        return self.peer
+        gib self.peer
     @__peer.setter
     def __peer(self, value):
         warn("Setting __peer attribute on SMTPChannel is deprecated, "
@@ -280,7 +280,7 @@ klasse SMTPChannel(asynchat.async_chat):
     def __conn(self):
         warn("Access to __conn attribute on SMTPChannel is deprecated, "
             "use 'conn' instead", DeprecationWarning, 2)
-        return self.conn
+        gib self.conn
     @__conn.setter
     def __conn(self, value):
         warn("Setting __conn attribute on SMTPChannel is deprecated, "
@@ -291,7 +291,7 @@ klasse SMTPChannel(asynchat.async_chat):
     def __addr(self):
         warn("Access to __addr attribute on SMTPChannel is deprecated, "
             "use 'addr' instead", DeprecationWarning, 2)
-        return self.addr
+        gib self.addr
     @__addr.setter
     def __addr(self, value):
         warn("Setting __addr attribute on SMTPChannel is deprecated, "
@@ -311,7 +311,7 @@ klasse SMTPChannel(asynchat.async_chat):
         sowenn self.smtp_state == self.DATA:
             limit = self.data_size_limit
         wenn limit und self.num_bytes > limit:
-            return
+            gib
         sowenn limit:
             self.num_bytes += len(data)
         wenn self._decode_data:
@@ -328,7 +328,7 @@ klasse SMTPChannel(asynchat.async_chat):
             sz, self.num_bytes = self.num_bytes, 0
             wenn nicht line:
                 self.push('500 Error: bad syntax')
-                return
+                gib
             wenn nicht self._decode_data:
                 line = str(line, 'utf-8')
             i = line.find(' ')
@@ -342,22 +342,22 @@ klasse SMTPChannel(asynchat.async_chat):
                         wenn self.extended_smtp sonst self.command_size_limit)
             wenn sz > max_sz:
                 self.push('500 Error: line too long')
-                return
+                gib
             method = getattr(self, 'smtp_' + command, Nichts)
             wenn nicht method:
                 self.push('500 Error: command "%s" nicht recognized' % command)
-                return
+                gib
             method(arg)
-            return
+            gib
         sonst:
             wenn self.smtp_state != self.DATA:
                 self.push('451 Internal confusion')
                 self.num_bytes = 0
-                return
+                gib
             wenn self.data_size_limit und self.num_bytes > self.data_size_limit:
                 self.push('552 Error: Too much mail data')
                 self.num_bytes = 0
-                return
+                gib
             # Remove extraneous carriage returns und de-transparency according
             # to RFC 5321, Section 4.5.2.
             data = []
@@ -385,11 +385,11 @@ klasse SMTPChannel(asynchat.async_chat):
     def smtp_HELO(self, arg):
         wenn nicht arg:
             self.push('501 Syntax: HELO hostname')
-            return
+            gib
         # See issue #21783 fuer a discussion of this behavior.
         wenn self.seen_greeting:
             self.push('503 Duplicate HELO/EHLO')
-            return
+            gib
         self._set_rset_state()
         self.seen_greeting = arg
         self.push('250 %s' % self.fqdn)
@@ -397,11 +397,11 @@ klasse SMTPChannel(asynchat.async_chat):
     def smtp_EHLO(self, arg):
         wenn nicht arg:
             self.push('501 Syntax: EHLO hostname')
-            return
+            gib
         # See issue #21783 fuer a discussion of this behavior.
         wenn self.seen_greeting:
             self.push('503 Duplicate HELO/EHLO')
-            return
+            gib
         self._set_rset_state()
         self.seen_greeting = arg
         self.extended_smtp = Wahr
@@ -430,19 +430,19 @@ klasse SMTPChannel(asynchat.async_chat):
     def _strip_command_keyword(self, keyword, arg):
         keylen = len(keyword)
         wenn arg[:keylen].upper() == keyword:
-            return arg[keylen:].strip()
-        return ''
+            gib arg[keylen:].strip()
+        gib ''
 
     def _getaddr(self, arg):
         wenn nicht arg:
-            return '', ''
+            gib '', ''
         wenn arg.lstrip().startswith('<'):
             address, rest = get_angle_addr(arg)
         sonst:
             address, rest = get_addr_spec(arg)
         wenn nicht address:
-            return address, rest
-        return address.addr_spec, rest
+            gib address, rest
+        gib address.addr_spec, rest
 
     def _getparams(self, params):
         # Return params als dictionary. Return Nichts wenn nicht all parameters
@@ -451,9 +451,9 @@ klasse SMTPChannel(asynchat.async_chat):
         fuer param in params:
             param, eq, value = param.partition('=')
             wenn nicht param.isalnum() oder eq und nicht value:
-                return Nichts
+                gib Nichts
             result[param] = value wenn eq sonst Wahr
-        return result
+        gib result
 
     def smtp_HELP(self, arg):
         wenn arg:
@@ -504,53 +504,53 @@ klasse SMTPChannel(asynchat.async_chat):
     def smtp_MAIL(self, arg):
         wenn nicht self.seen_greeting:
             self.push('503 Error: send HELO first')
-            return
+            gib
         drucke('===> MAIL', arg, file=DEBUGSTREAM)
         syntaxerr = '501 Syntax: MAIL FROM: <address>'
         wenn self.extended_smtp:
             syntaxerr += ' [SP <mail-parameters>]'
         wenn arg is Nichts:
             self.push(syntaxerr)
-            return
+            gib
         arg = self._strip_command_keyword('FROM:', arg)
         address, params = self._getaddr(arg)
         wenn nicht address:
             self.push(syntaxerr)
-            return
+            gib
         wenn nicht self.extended_smtp und params:
             self.push(syntaxerr)
-            return
+            gib
         wenn self.mailfrom:
             self.push('503 Error: nested MAIL command')
-            return
+            gib
         self.mail_options = params.upper().split()
         params = self._getparams(self.mail_options)
         wenn params is Nichts:
             self.push(syntaxerr)
-            return
+            gib
         wenn nicht self._decode_data:
             body = params.pop('BODY', '7BIT')
             wenn body nicht in ['7BIT', '8BITMIME']:
                 self.push('501 Error: BODY can only be one of 7BIT, 8BITMIME')
-                return
+                gib
         wenn self.enable_SMTPUTF8:
             smtputf8 = params.pop('SMTPUTF8', Falsch)
             wenn smtputf8 is Wahr:
                 self.require_SMTPUTF8 = Wahr
             sowenn smtputf8 is nicht Falsch:
                 self.push('501 Error: SMTPUTF8 takes no arguments')
-                return
+                gib
         size = params.pop('SIZE', Nichts)
         wenn size:
             wenn nicht size.isdigit():
                 self.push(syntaxerr)
-                return
+                gib
             sowenn self.data_size_limit und int(size) > self.data_size_limit:
                 self.push('552 Error: message size exceeds fixed maximum message size')
-                return
+                gib
         wenn len(params.keys()) > 0:
             self.push('555 MAIL FROM parameters nicht recognized oder nicht implemented')
-            return
+            gib
         self.mailfrom = address
         drucke('sender:', self.mailfrom, file=DEBUGSTREAM)
         self.push('250 OK')
@@ -558,34 +558,34 @@ klasse SMTPChannel(asynchat.async_chat):
     def smtp_RCPT(self, arg):
         wenn nicht self.seen_greeting:
             self.push('503 Error: send HELO first');
-            return
+            gib
         drucke('===> RCPT', arg, file=DEBUGSTREAM)
         wenn nicht self.mailfrom:
             self.push('503 Error: need MAIL command')
-            return
+            gib
         syntaxerr = '501 Syntax: RCPT TO: <address>'
         wenn self.extended_smtp:
             syntaxerr += ' [SP <mail-parameters>]'
         wenn arg is Nichts:
             self.push(syntaxerr)
-            return
+            gib
         arg = self._strip_command_keyword('TO:', arg)
         address, params = self._getaddr(arg)
         wenn nicht address:
             self.push(syntaxerr)
-            return
+            gib
         wenn nicht self.extended_smtp und params:
             self.push(syntaxerr)
-            return
+            gib
         self.rcpt_options = params.upper().split()
         params = self._getparams(self.rcpt_options)
         wenn params is Nichts:
             self.push(syntaxerr)
-            return
+            gib
         # XXX currently there are no options we recognize.
         wenn len(params.keys()) > 0:
             self.push('555 RCPT TO parameters nicht recognized oder nicht implemented')
-            return
+            gib
         self.rcpttos.append(address)
         drucke('recips:', self.rcpttos, file=DEBUGSTREAM)
         self.push('250 OK')
@@ -593,20 +593,20 @@ klasse SMTPChannel(asynchat.async_chat):
     def smtp_RSET(self, arg):
         wenn arg:
             self.push('501 Syntax: RSET')
-            return
+            gib
         self._set_rset_state()
         self.push('250 OK')
 
     def smtp_DATA(self, arg):
         wenn nicht self.seen_greeting:
             self.push('503 Error: send HELO first');
-            return
+            gib
         wenn nicht self.rcpttos:
             self.push('503 Error: need RCPT command')
-            return
+            gib
         wenn arg:
             self.push('501 Syntax: DATA')
-            return
+            gib
         self.smtp_state = self.DATA
         self.set_terminator(b'\r\n.\r\n')
         self.push('354 End data mit <CR><LF>.<CR><LF>')
@@ -686,8 +686,8 @@ klasse SMTPServer(asyncore.dispatcher):
                             ['BODY=8BITMIME', 'SMTPUTF8'].
             'rcpt_options': same, fuer the rcpt command.
 
-        This function should return Nichts fuer a normal '250 Ok' response;
-        otherwise, it should return the desired response string in RFC 821
+        This function should gib Nichts fuer a normal '250 Ok' response;
+        otherwise, it should gib the desired response string in RFC 821
         format.
 
         """
@@ -766,7 +766,7 @@ klasse PureProxy(SMTPServer):
             errmsg = getattr(e, 'smtp_error', 'ignore')
             fuer r in rcpttos:
                 refused[r] = (errcode, errmsg)
-        return refused
+        gib refused
 
 
 klasse Options:
@@ -839,7 +839,7 @@ def parseargs():
         options.remoteport = int(remotespec[i+1:])
     except ValueError:
         usage(1, 'Bad remote port: %s' % remotespec)
-    return options
+    gib options
 
 
 wenn __name__ == '__main__':

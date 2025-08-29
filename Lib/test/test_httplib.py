@@ -73,7 +73,7 @@ klasse FakeSocket:
         # keep the file around so we can check how much was read von it
         self.file = self.fileclass(self.text)
         self.file.close = self.file_close #nerf close ()
-        return self.file
+        gib self.file
 
     def file_close(self):
         self.file_closed = Wahr
@@ -109,13 +109,13 @@ klasse NoEOFBytesIO(io.BytesIO):
         data = io.BytesIO.read(self, n)
         wenn data == b'':
             raise AssertionError('caller tried to read past EOF')
-        return data
+        gib data
 
     def readline(self, length=Nichts):
         data = io.BytesIO.readline(self, length)
         wenn data == b'':
             raise AssertionError('caller tried to read past EOF')
-        return data
+        gib data
 
 klasse FakeSocketHTTPConnection(client.HTTPConnection):
     """HTTPConnection subclass using FakeSocket; counts connect() calls"""
@@ -129,10 +129,10 @@ klasse FakeSocketHTTPConnection(client.HTTPConnection):
     def connect(self):
         """Count the number of times connect() is invoked"""
         self.connections += 1
-        return super().connect()
+        gib super().connect()
 
     def create_connection(self, *pos, **kw):
-        return FakeSocket(*self.fake_socket_args)
+        gib FakeSocket(*self.fake_socket_args)
 
 klasse HeaderTests(TestCase):
     def test_auto_headers(self):
@@ -537,11 +537,11 @@ klasse TransferEncodingTest(TestCase):
         fuer idx, line in enumerate(lines):
             # fuer testing handling empty lines
             wenn empty_lines und idx % 2:
-                yield b''
+                liefere b''
             wenn idx < len(lines) - 1:
-                yield line + b' '
+                liefere line + b' '
             sonst:
-                yield line
+                liefere line
 
     def _parse_request(self, data):
         lines = data.split(b'\r\n')
@@ -554,7 +554,7 @@ klasse TransferEncodingTest(TestCase):
             headers[key] = val.decode('latin-1').strip()
             n += 1
 
-        return request, headers, b'\r\n'.join(lines[n + 1:])
+        gib request, headers, b'\r\n'.join(lines[n + 1:])
 
     def _parse_chunked(self, data):
         body = []
@@ -580,7 +580,7 @@ klasse TransferEncodingTest(TestCase):
             wenn n > len(lines):
                 breche
 
-        return b''.join(body)
+        gib b''.join(body)
 
 
 klasse BasicTest(TestCase):
@@ -614,27 +614,27 @@ klasse BasicTest(TestCase):
 
                 obj.phrase = phrase
                 obj.description = description
-                return obj
+                gib obj
 
             @property
             def is_informational(self):
-                return 100 <= self <= 199
+                gib 100 <= self <= 199
 
             @property
             def is_success(self):
-                return 200 <= self <= 299
+                gib 200 <= self <= 299
 
             @property
             def is_redirection(self):
-                return 300 <= self <= 399
+                gib 300 <= self <= 399
 
             @property
             def is_client_error(self):
-                return 400 <= self <= 499
+                gib 400 <= self <= 499
 
             @property
             def is_server_error(self):
-                return 500 <= self <= 599
+                gib 500 <= self <= 599
 
             # informational
             CONTINUE = 100, 'Continue', 'Request received, please continue'
@@ -1064,15 +1064,15 @@ klasse BasicTest(TestCase):
 
     def test_send_updating_file(self):
         def data():
-            yield 'data'
-            yield Nichts
-            yield 'data_two'
+            liefere 'data'
+            liefere Nichts
+            liefere 'data_two'
 
         klasse UpdatingFile(io.TextIOBase):
             mode = 'r'
             d = data()
             def read(self, blocksize=-1):
-                return next(self.d)
+                gib next(self.d)
 
         expected = b'data'
 
@@ -1089,9 +1089,9 @@ klasse BasicTest(TestCase):
                    b'\r\nonetwothree'
 
         def body():
-            yield b"one"
-            yield b"two"
-            yield b"three"
+            liefere b"one"
+            liefere b"two"
+            liefere b"three"
 
         conn = client.HTTPConnection('example.com')
         sock = FakeSocket("")
@@ -1543,7 +1543,7 @@ klasse BasicTest(TestCase):
         """
         klasse UnsafeHTTPConnection(client.HTTPConnection):
             def _encode_request(self, str_url):
-                return str_url.encode('utf-8')
+                gib str_url.encode('utf-8')
 
         conn = UnsafeHTTPConnection('example.com')
         conn.sock = FakeSocket('')
@@ -1596,8 +1596,8 @@ klasse ExtendedReadTest(TestCase):
         def mypeek(n=-1):
             p = oldpeek(n)
             wenn n >= 0:
-                return p[:n]
-            return p[:10]
+                gib p[:n]
+            gib p[:10]
         resp.fp.peek = mypeek
 
         all = []
@@ -1646,7 +1646,7 @@ klasse ExtendedReadTest(TestCase):
         def r():
             res = resp.read1(4)
             self.assertLessEqual(len(res), 4)
-            return res
+            gib res
         readliner = Readliner(r)
         self._verify_readline(readliner.readline, self.lines_expected)
 
@@ -1737,7 +1737,7 @@ klasse Readliner:
             idx += 1
             data.append(read[:idx])
             self.remainder = read[idx:]
-            return b"".join(data)
+            gib b"".join(data)
         except:
             self.remainder = b"".join(data)
             raise
@@ -1860,7 +1860,7 @@ klasse SourceAddressTest(TestCase):
                 source_address=('', self.source_port))
         # We don't test anything here other than the constructor nicht barfing as
         # this code doesn't deal mit setting up an active running SSL server
-        # fuer an ssl_wrapped connect() to actually return from.
+        # fuer an ssl_wrapped connect() to actually gib from.
 
 
 klasse TimeoutTest(TestCase):
@@ -1950,9 +1950,9 @@ klasse PersistenceTest(TestCase):
                 size = io.BytesIO.readinto(stream, buffer)
                 wenn size == 0:
                     raise ConnectionResetError()
-                return size
+                gib size
             stream.readinto = readinto
-            return io.BufferedReader(stream)
+            gib io.BufferedReader(stream)
 
         tests = (
             (io.BytesIO, client.RemoteDisconnected),
@@ -1989,7 +1989,7 @@ klasse HTTPSTest(TestCase):
 
     def make_server(self, certfile):
         von test.ssl_servers importiere make_https_server
-        return make_https_server(self, certfile=certfile)
+        gib make_https_server(self, certfile=certfile)
 
     def test_attributes(self):
         # simple test to check it's storing the timeout
@@ -2178,7 +2178,7 @@ klasse RequestBodyTest(TestCase):
         f = io.BytesIO(self.sock.data)
         f.readline()  # read the request line
         message = client.parse_headers(f)
-        return message, f
+        gib message, f
 
     def test_list_body(self):
         # Note that no content-length is automatically calculated for
@@ -2314,8 +2314,8 @@ klasse TunnelTests(TestCase):
 
     def _create_connection(self, response_text):
         def create_connection(address, timeout=Nichts, source_address=Nichts):
-            return FakeSocket(response_text, host=address[0], port=address[1])
-        return create_connection
+            gib FakeSocket(response_text, host=address[0], port=address[1])
+        gib create_connection
 
     def test_set_tunnel_host_port_headers_add_host_missing(self):
         tunnel_host = 'destination.com'
@@ -2555,7 +2555,7 @@ klasse TunnelTests(TestCase):
                 host=address[0],
                 port=address[1],
             )
-            return sock
+            gib sock
 
         self.conn._create_connection = _create_connection
         self.conn.set_tunnel('destination.com')

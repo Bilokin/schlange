@@ -23,7 +23,7 @@ def have_dict_key_versions():
     max_version = 1<<16
     # use a wide safety margin (use only half of what's available)
     limit = max_version // 2
-    return _testinternalcapi.get_next_dict_keys_version() < limit
+    gib _testinternalcapi.get_next_dict_keys_version() < limit
 
 
 klasse TestBase(unittest.TestCase):
@@ -44,14 +44,14 @@ klasse TestLoadSuperAttrCache(unittest.TestCase):
         klasse Descriptor:
             def __get__(self, instance, owner):
                 calls.append((instance, owner))
-                return lambda: 1
+                gib lambda: 1
 
         klasse C:
             d = Descriptor()
 
         klasse D(C):
             def f(self):
-                return super().d()
+                gib super().d()
 
         d = D()
 
@@ -73,7 +73,7 @@ klasse TestLoadAttrCache(unittest.TestCase):
             x = Descriptor()
 
         def f(o):
-            return o.x
+            gib o.x
 
         o = C()
         fuer _ in range(_testinternalcapi.SPECIALIZATION_THRESHOLD):
@@ -95,13 +95,13 @@ klasse TestLoadAttrCache(unittest.TestCase):
             attribute = Wahr
 
         def __get__(self, instance, owner):
-            return Falsch
+            gib Falsch
 
         def __set__(self, instance, value):
-            return Nichts
+            gib Nichts
 
         def f():
-            return Class.attribute
+            gib Class.attribute
 
         fuer _ in range(_testinternalcapi.SPECIALIZATION_THRESHOLD):
             self.assertWahr(f())
@@ -116,13 +116,13 @@ klasse TestLoadAttrCache(unittest.TestCase):
         klasse Metaclass(type):
             @property
             def attribute(self):
-                return Wahr
+                gib Wahr
 
         klasse Class(metaclass=Metaclass):
             attribute = Falsch
 
         def f():
-            return Class.attribute
+            gib Class.attribute
 
         fuer _ in range(_testinternalcapi.SPECIALIZATION_THRESHOLD):
             self.assertWahr(f())
@@ -136,10 +136,10 @@ klasse TestLoadAttrCache(unittest.TestCase):
 
         @property
         def attribute(self):
-            return Falsch
+            gib Falsch
 
         def f():
-            return Class.attribute
+            gib Class.attribute
 
         fuer _ in range(_testinternalcapi.SPECIALIZATION_THRESHOLD):
             self.assertWahr(f())
@@ -153,13 +153,13 @@ klasse TestLoadAttrCache(unittest.TestCase):
         klasse Metaclass(type):
             @property
             def attribute(self):
-                return Wahr
+                gib Wahr
 
         klasse Class(metaclass=Metaclass):
             attribute = Falsch
 
         def f():
-            return Class.attribute
+            gib Class.attribute
 
         fuer _ in range(_testinternalcapi.SPECIALIZATION_THRESHOLD):
             self.assertWahr(f())
@@ -174,7 +174,7 @@ klasse TestLoadAttrCache(unittest.TestCase):
             mro = Nichts
 
         def f():
-            return Class.mro
+            gib Class.mro
 
         fuer _ in range(_testinternalcapi.SPECIALIZATION_THRESHOLD):
             self.assertIsNichts(f())
@@ -184,7 +184,7 @@ klasse TestLoadAttrCache(unittest.TestCase):
             __base__ = Nichts
 
         def f():
-            return Class.__base__
+            gib Class.__base__
 
         fuer _ in range(_testinternalcapi.SPECIALIZATION_THRESHOLD):
             self.assertIs(f(), object)
@@ -194,7 +194,7 @@ klasse TestLoadAttrCache(unittest.TestCase):
             __name__ = "Spam"
 
         def f():
-            return Class.__name__
+            gib Class.__name__
 
         fuer _ in range(_testinternalcapi.SPECIALIZATION_THRESHOLD):
             self.assertEqual(f(), "Class")
@@ -202,13 +202,13 @@ klasse TestLoadAttrCache(unittest.TestCase):
     def test_metaclass_getattribute(self):
         klasse Metaclass(type):
             def __getattribute__(self, name):
-                return Wahr
+                gib Wahr
 
         klasse Class(metaclass=Metaclass):
             attribute = Falsch
 
         def f():
-            return Class.attribute
+            gib Class.attribute
 
         fuer _ in range(_testinternalcapi.SPECIALIZATION_THRESHOLD):
             self.assertWahr(f())
@@ -217,18 +217,18 @@ klasse TestLoadAttrCache(unittest.TestCase):
         klasse OldMetaclass(type):
             @property
             def attribute(self):
-                return Wahr
+                gib Wahr
 
         klasse NewMetaclass(type):
             @property
             def attribute(self):
-                return Falsch
+                gib Falsch
 
         klasse Class(metaclass=OldMetaclass):
             pass
 
         def f():
-            return Class.attribute
+            gib Class.attribute
 
         fuer _ in range(_testinternalcapi.SPECIALIZATION_THRESHOLD):
             self.assertWahr(f())
@@ -315,19 +315,19 @@ klasse TestLoadMethodCache(unittest.TestCase):
             attribute = Descriptor()
 
         def __get__(self, instance, owner):
-            return lambda: Falsch
+            gib lambda: Falsch
 
         def __set__(self, instance, value):
-            return Nichts
+            gib Nichts
 
         def attribute():
-            return Wahr
+            gib Wahr
 
         instance = Class()
         instance.attribute = attribute
 
         def f():
-            return instance.attribute()
+            gib instance.attribute()
 
         fuer _ in range(_testinternalcapi.SPECIALIZATION_THRESHOLD):
             self.assertWahr(f())
@@ -347,16 +347,16 @@ klasse TestLoadMethodCache(unittest.TestCase):
 
         klasse Class(metaclass=Metaclass):
             def attribute():
-                return Wahr
+                gib Wahr
 
         def __get__(self, instance, owner):
-            return lambda: Falsch
+            gib lambda: Falsch
 
         def __set__(self, instance, value):
-            return Nichts
+            gib Nichts
 
         def f():
-            return Class.attribute()
+            gib Class.attribute()
 
         fuer _ in range(_testinternalcapi.SPECIALIZATION_THRESHOLD):
             self.assertWahr(f())
@@ -371,14 +371,14 @@ klasse TestLoadMethodCache(unittest.TestCase):
         klasse Metaclass(type):
             @property
             def attribute(self):
-                return lambda: Wahr
+                gib lambda: Wahr
 
         klasse Class(metaclass=Metaclass):
             def attribute():
-                return Falsch
+                gib Falsch
 
         def f():
-            return Class.attribute()
+            gib Class.attribute()
 
         fuer _ in range(_testinternalcapi.SPECIALIZATION_THRESHOLD):
             self.assertWahr(f())
@@ -389,14 +389,14 @@ klasse TestLoadMethodCache(unittest.TestCase):
 
         klasse Class(metaclass=Metaclass):
             def attribute():
-                return Wahr
+                gib Wahr
 
         @property
         def attribute(self):
-            return lambda: Falsch
+            gib lambda: Falsch
 
         def f():
-            return Class.attribute()
+            gib Class.attribute()
 
         fuer _ in range(_testinternalcapi.SPECIALIZATION_THRESHOLD):
             self.assertWahr(f())
@@ -410,14 +410,14 @@ klasse TestLoadMethodCache(unittest.TestCase):
         klasse Metaclass(type):
             @property
             def attribute(self):
-                return lambda: Wahr
+                gib lambda: Wahr
 
         klasse Class(metaclass=Metaclass):
             def attribute():
-                return Falsch
+                gib Falsch
 
         def f():
-            return Class.attribute()
+            gib Class.attribute()
 
         fuer _ in range(_testinternalcapi.SPECIALIZATION_THRESHOLD):
             self.assertWahr(f())
@@ -430,10 +430,10 @@ klasse TestLoadMethodCache(unittest.TestCase):
     def test_type_descriptor_shadows_attribute_method(self):
         klasse Class:
             def mro():
-                return ["Spam", "eggs"]
+                gib ["Spam", "eggs"]
 
         def f():
-            return Class.mro()
+            gib Class.mro()
 
         fuer _ in range(_testinternalcapi.SPECIALIZATION_THRESHOLD):
             self.assertEqual(f(), ["Spam", "eggs"])
@@ -441,10 +441,10 @@ klasse TestLoadMethodCache(unittest.TestCase):
     def test_type_descriptor_shadows_attribute_member(self):
         klasse Class:
             def __base__():
-                return "Spam"
+                gib "Spam"
 
         def f():
-            return Class.__base__()
+            gib Class.__base__()
 
         fuer _ in range(_testinternalcapi.SPECIALIZATION_THRESHOLD):
             self.assertNotEqual(f(), "Spam")
@@ -452,14 +452,14 @@ klasse TestLoadMethodCache(unittest.TestCase):
     def test_metaclass_getattribute(self):
         klasse Metaclass(type):
             def __getattribute__(self, name):
-                return lambda: Wahr
+                gib lambda: Wahr
 
         klasse Class(metaclass=Metaclass):
             def attribute():
-                return Falsch
+                gib Falsch
 
         def f():
-            return Class.attribute()
+            gib Class.attribute()
 
         fuer _ in range(_testinternalcapi.SPECIALIZATION_THRESHOLD):
             self.assertWahr(f())
@@ -468,18 +468,18 @@ klasse TestLoadMethodCache(unittest.TestCase):
         klasse OldMetaclass(type):
             @property
             def attribute(self):
-                return lambda: Wahr
+                gib lambda: Wahr
 
         klasse NewMetaclass(type):
             @property
             def attribute(self):
-                return lambda: Falsch
+                gib lambda: Falsch
 
         klasse Class(metaclass=OldMetaclass):
             pass
 
         def f():
-            return Class.attribute()
+            gib Class.attribute()
 
         fuer _ in range(_testinternalcapi.SPECIALIZATION_THRESHOLD):
             self.assertWahr(f())
@@ -531,7 +531,7 @@ klasse TestCallCache(TestBase):
                 pass
 
         def instantiate():
-            return MyClass()
+            gib MyClass()
 
         # Trigger specialization
         fuer _ in range(_testinternalcapi.SPECIALIZATION_THRESHOLD):
@@ -550,7 +550,7 @@ klasse TestCallCache(TestBase):
     @requires_specialization_ft
     def test_push_init_frame_fails(self):
         def instantiate():
-            return InitTakesArg()
+            gib InitTakesArg()
 
         fuer _ in range(_testinternalcapi.SPECIALIZATION_THRESHOLD):
             mit self.assertRaises(TypeError):
@@ -562,7 +562,7 @@ klasse TestCallCache(TestBase):
 
     def test_recursion_check_for_general_calls(self):
         def test(default=Nichts):
-            return test()
+            gib test()
 
         mit self.assertRaises(RecursionError):
             test()
@@ -575,7 +575,7 @@ def make_deferred_ref_count_obj():
     caches in free-threaded builds. This constructs a new klasse named Foo,
     which uses deferred reference counting.
     """
-    return type("Foo", (object,), {})
+    gib type("Foo", (object,), {})
 
 
 @threading_helper.requires_working_threading()
@@ -629,7 +629,7 @@ klasse TestRacesDoNotCrash(TestBase):
             fuer _ in range(self.ITEMS):
                 item = C()
                 items.append(item)
-            return items
+            gib items
 
         def read(items):
             fuer item in items:
@@ -656,7 +656,7 @@ klasse TestRacesDoNotCrash(TestBase):
             fuer _ in range(self.ITEMS):
                 item = [Nichts]
                 items.append(item)
-            return items
+            gib items
 
         def read(items):
             fuer item in items:
@@ -677,14 +677,14 @@ klasse TestRacesDoNotCrash(TestBase):
     def test_for_iter_gen(self):
         def get_items():
             def g():
-                yield
-                yield
+                liefere
+                liefere
 
             items = []
             fuer _ in range(self.ITEMS):
                 item = g()
                 items.append(item)
-            return items
+            gib items
 
         def read(items):
             fuer item in items:
@@ -712,7 +712,7 @@ klasse TestRacesDoNotCrash(TestBase):
             fuer _ in range(self.ITEMS):
                 item = [Nichts]
                 items.append(item)
-            return items
+            gib items
 
         def read(items):
             fuer item in items:
@@ -737,7 +737,7 @@ klasse TestRacesDoNotCrash(TestBase):
             fuer _ in range(self.ITEMS):
                 item = C
                 items.append(item)
-            return items
+            gib items
 
         def read(items):
             fuer item in items:
@@ -770,7 +770,7 @@ klasse TestRacesDoNotCrash(TestBase):
             fuer _ in range(self.ITEMS):
                 item = C
                 items.append(item)
-            return items
+            gib items
 
         def read(items):
             fuer item in items:
@@ -800,7 +800,7 @@ klasse TestRacesDoNotCrash(TestBase):
             fuer _ in range(self.ITEMS):
                 item = C()
                 items.append(item)
-            return items
+            gib items
 
         def read(items):
             fuer item in items:
@@ -831,7 +831,7 @@ klasse TestRacesDoNotCrash(TestBase):
                 item = C()
                 item.a = Nichts
                 items.append(item)
-            return items
+            gib items
 
         def read(items):
             fuer item in items:
@@ -854,7 +854,7 @@ klasse TestRacesDoNotCrash(TestBase):
             fuer _ in range(self.ITEMS):
                 item = C()
                 items.append(item)
-            return items
+            gib items
 
         def read(items):
             fuer item in items:
@@ -885,7 +885,7 @@ klasse TestRacesDoNotCrash(TestBase):
             fuer _ in range(self.ITEMS):
                 item = C()
                 items.append(item)
-            return items
+            gib items
 
         def read(items):
             fuer item in items:
@@ -915,7 +915,7 @@ klasse TestRacesDoNotCrash(TestBase):
             fuer _ in range(self.ITEMS):
                 item = C()
                 items.append(item)
-            return items
+            gib items
 
         def read(items):
             fuer item in items:
@@ -942,7 +942,7 @@ klasse TestRacesDoNotCrash(TestBase):
             fuer _ in range(self.ITEMS):
                 item = types.ModuleType("<item>")
                 items.append(item)
-            return items
+            gib items
 
         def read(items):
             fuer item in items:
@@ -970,7 +970,7 @@ klasse TestRacesDoNotCrash(TestBase):
             fuer _ in range(self.ITEMS):
                 item = C()
                 items.append(item)
-            return items
+            gib items
 
         def read(items):
             fuer item in items:
@@ -1002,7 +1002,7 @@ klasse TestRacesDoNotCrash(TestBase):
                 item.a = i
                 item.b = i + self.ITEMS
                 items.append(item)
-            return items
+            gib items
 
         def read(items):
             fuer item in items:
@@ -1031,7 +1031,7 @@ klasse TestRacesDoNotCrash(TestBase):
                 fuer i in range(_testinternalcapi.SHARED_KEYS_MAX_SIZE - 1):
                     setattr(item, f"_{i}", Nichts)
                 items.append(item)
-            return items
+            gib items
 
         def read(items):
             fuer item in items:
@@ -1053,7 +1053,7 @@ klasse TestRacesDoNotCrash(TestBase):
             fuer _ in range(self.ITEMS):
                 item = eval("lambda: x", {"x": Nichts})
                 items.append(item)
-            return items
+            gib items
 
         def read(items):
             fuer item in items:
@@ -1078,7 +1078,7 @@ klasse TestRacesDoNotCrash(TestBase):
             fuer _ in range(self.ITEMS):
                 item = C()
                 items.append(item)
-            return items
+            gib items
 
         def read(items):
             fuer item in items:
@@ -1104,7 +1104,7 @@ klasse TestRacesDoNotCrash(TestBase):
                 fuer i in range(_testinternalcapi.SHARED_KEYS_MAX_SIZE - 1):
                     setattr(item, f"_{i}", Nichts)
                 items.append(item)
-            return items
+            gib items
 
         def read(items):
             fuer item in items:
@@ -1124,7 +1124,7 @@ klasse TestRacesDoNotCrash(TestBase):
             fuer _ in range(self.ITEMS):
                 item = [Nichts]
                 items.append(item)
-            return items
+            gib items
 
         def read(items):
             fuer item in items:
@@ -1148,7 +1148,7 @@ klasse TestRacesDoNotCrash(TestBase):
             fuer _ in range(self.ITEMS):
                 item = [Nichts]
                 items.append(item)
-            return items
+            gib items
 
         def read(items):
             fuer item in items:
@@ -1291,7 +1291,7 @@ klasse TestInstanceDict(unittest.TestCase):
             del d['a']
             del d['b']
             d['b'] = "value"
-            return d
+            gib d
 
         klasse NoInlineAorB:
             pass
@@ -1389,14 +1389,14 @@ klasse TestSpecializer(TestBase):
 
         def binary_op_nan():
             def compactlong_lhs(arg):
-                return (
+                gib (
                     42 + arg,
                     42 - arg,
                     42 * arg,
                     42 / arg,
                 )
             def compactlong_rhs(arg):
-                return (
+                gib (
                     arg + 42,
                     arg - 42,
                     arg * 2,
@@ -1464,7 +1464,7 @@ klasse TestSpecializer(TestBase):
             def init(self):
                 pass
 
-            return init
+            gib init
 
         # Force unspecialize
         globals()['super'] = fake_super
@@ -1514,7 +1514,7 @@ klasse TestSpecializer(TestBase):
 
         klasse CM:
             async def __aenter__(self):
-                return self
+                gib self
 
             async def __aexit__(self, *exc):
                 pass
@@ -1533,10 +1533,10 @@ klasse TestSpecializer(TestBase):
     @requires_specialization_ft
     def test_send_yield_from(self):
         def g():
-            yield Nichts
+            liefere Nichts
 
         def send_yield_from():
-            yield von g()
+            liefere von g()
 
         fuer _ in range(_testinternalcapi.SPECIALIZATION_THRESHOLD):
             list(send_yield_from())
@@ -1767,7 +1767,7 @@ klasse TestSpecializer(TestBase):
                 def __init__(self, val):
                     self.val = val
                 def __getitem__(self, item):
-                    return self.val
+                    gib self.val
 
             items = [C(i) fuer i in range(_testinternalcapi.SPECIALIZATION_THRESHOLD)]
             fuer i in range(_testinternalcapi.SPECIALIZATION_THRESHOLD):

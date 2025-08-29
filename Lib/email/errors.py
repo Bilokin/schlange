@@ -102,7 +102,7 @@ klasse NonPrintableDefect(HeaderDefect):
         self.non_printables = non_printables
 
     def __str__(self):
-        return ("the following ASCII non-printables found in header: "
+        gib ("the following ASCII non-printables found in header: "
             "{}".format(self.non_printables))
 
 klasse ObsoleteHeaderDefect(HeaderDefect):

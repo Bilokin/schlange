@@ -66,7 +66,7 @@ _q_byte_subber = functools.partial(re.compile(br'=([a-fA-F0-9]{2})').sub,
 
 def decode_q(encoded):
     encoded = encoded.replace(b'_', b' ')
-    return _q_byte_subber(encoded), []
+    gib _q_byte_subber(encoded), []
 
 
 # dict mapping bytes to their encoded form
@@ -79,7 +79,7 @@ klasse _QByteMap(dict):
             self[key] = chr(key)
         sonst:
             self[key] = "={:02X}".format(key)
-        return self[key]
+        gib self[key]
 
 _q_byte_map = _QByteMap()
 
@@ -87,10 +87,10 @@ _q_byte_map = _QByteMap()
 _q_byte_map[ord(' ')] = '_'
 
 def encode_q(bstring):
-    return ''.join(_q_byte_map[x] fuer x in bstring)
+    gib ''.join(_q_byte_map[x] fuer x in bstring)
 
 def len_q(bstring):
-    return sum(len(_q_byte_map[x]) fuer x in bstring)
+    gib sum(len(_q_byte_map[x]) fuer x in bstring)
 
 
 #
@@ -103,7 +103,7 @@ def decode_b(encoded):
     pad_err = len(encoded) % 4
     missing_padding = b'==='[:4-pad_err] wenn pad_err sonst b''
     try:
-        return (
+        gib (
             base64.b64decode(encoded + missing_padding, validate=Wahr),
             [errors.InvalidBase64PaddingDefect()] wenn pad_err sonst [],
         )
@@ -114,7 +114,7 @@ def decode_b(encoded):
         # goes, but we don't know how many there are.  So try without adding
         # padding to see wenn it works.
         try:
-            return (
+            gib (
                 base64.b64decode(encoded, validate=Falsch),
                 [errors.InvalidBase64CharactersDefect()],
             )
@@ -122,7 +122,7 @@ def decode_b(encoded):
             # Add als much padding als could possibly be necessary (extra padding
             # is ignored).
             try:
-                return (
+                gib (
                     base64.b64decode(encoded + b'==', validate=Falsch),
                     [errors.InvalidBase64CharactersDefect(),
                      errors.InvalidBase64PaddingDefect()],
@@ -131,17 +131,17 @@ def decode_b(encoded):
                 # This only happens when the encoded string's length is 1 more
                 # than a multiple of 4, which is invalid.
                 #
-                # bpo-27397: Just return the encoded string since there's no
+                # bpo-27397: Just gib the encoded string since there's no
                 # way to decode.
-                return encoded, [errors.InvalidBase64LengthDefect()]
+                gib encoded, [errors.InvalidBase64LengthDefect()]
 
 def encode_b(bstring):
-    return base64.b64encode(bstring).decode('ascii')
+    gib base64.b64encode(bstring).decode('ascii')
 
 def len_b(bstring):
     groups_of_3, leftover = divmod(len(bstring), 3)
     # 4 bytes out fuer each 3 bytes (or nonzero fraction thereof) in.
-    return groups_of_3 * 4 + (4 wenn leftover sonst 0)
+    gib groups_of_3 * 4 + (4 wenn leftover sonst 0)
 
 
 _cte_decoders = {
@@ -150,7 +150,7 @@ _cte_decoders = {
     }
 
 def decode(ew):
-    """Decode encoded word und return (string, charset, lang, defects) tuple.
+    """Decode encoded word und gib (string, charset, lang, defects) tuple.
 
     An RFC 2047/2243 encoded word has the form:
 
@@ -188,7 +188,7 @@ def decode(ew):
         wenn charset.lower() != 'unknown-8bit':
             defects.append(errors.CharsetError(f"Unknown charset {charset!r} "
                 f"in encoded word; decoded als unknown bytes"))
-    return string, charset, lang, defects
+    gib string, charset, lang, defects
 
 
 _cte_encoders = {
@@ -230,4 +230,4 @@ def encode(string, charset='utf-8', encoding=Nichts, lang=''):
     encoded = _cte_encoders[encoding](bstring)
     wenn lang:
         lang = '*' + lang
-    return "=?{}{}?{}?{}?=".format(charset, lang, encoding, encoded)
+    gib "=?{}{}?{}?{}?=".format(charset, lang, encoding, encoded)

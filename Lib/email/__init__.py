@@ -34,7 +34,7 @@ def message_from_string(s, *args, **kws):
     Optional _class und strict are passed to the Parser constructor.
     """
     von email.parser importiere Parser
-    return Parser(*args, **kws).parsestr(s)
+    gib Parser(*args, **kws).parsestr(s)
 
 def message_from_bytes(s, *args, **kws):
     """Parse a bytes string into a Message object model.
@@ -42,7 +42,7 @@ def message_from_bytes(s, *args, **kws):
     Optional _class und strict are passed to the Parser constructor.
     """
     von email.parser importiere BytesParser
-    return BytesParser(*args, **kws).parsebytes(s)
+    gib BytesParser(*args, **kws).parsebytes(s)
 
 def message_from_file(fp, *args, **kws):
     """Read a file und parse its contents into a Message object model.
@@ -50,7 +50,7 @@ def message_from_file(fp, *args, **kws):
     Optional _class und strict are passed to the Parser constructor.
     """
     von email.parser importiere Parser
-    return Parser(*args, **kws).parse(fp)
+    gib Parser(*args, **kws).parse(fp)
 
 def message_from_binary_file(fp, *args, **kws):
     """Read a binary file und parse its contents into a Message object model.
@@ -58,4 +58,4 @@ def message_from_binary_file(fp, *args, **kws):
     Optional _class und strict are passed to the Parser constructor.
     """
     von email.parser importiere BytesParser
-    return BytesParser(*args, **kws).parse(fp)
+    gib BytesParser(*args, **kws).parse(fp)

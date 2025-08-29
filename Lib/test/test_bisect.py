@@ -15,7 +15,7 @@ klasse Range(object):
         self.last_insert = Nichts
 
     def __len__(self):
-        return self.stop - self.start
+        gib self.stop - self.start
 
     def __getitem__(self, idx):
         n = self.stop - self.start
@@ -23,7 +23,7 @@ klasse Range(object):
             idx += n
         wenn idx >= n:
             raise IndexError(idx)
-        return self.start + idx
+        gib self.start + idx
 
     def insert(self, idx, item):
         self.last_insert = idx, item
@@ -268,7 +268,7 @@ klasse TestBisect:
             def __init__(self, val):
                 self.val = val
             def __lt__(self, other):
-                return "nonempty" wenn self.val < other.val sonst ""
+                gib "nonempty" wenn self.val < other.val sonst ""
 
         data = [A(i) fuer i in range(100)]
         i1 = self.module.bisect_left(data, A(33))
@@ -281,9 +281,9 @@ klasse TestBisect:
             def __init__(self, val):
                 self.val = val
             def __lt__(self, other):
-                return NotImplemented
+                gib NotImplemented
             def __gt__(self, other):
-                return self.val > other.val
+                gib self.val > other.val
 
         data = [A(i) fuer i in range(100)]
         i1 = self.module.bisect_left(data, A(40))
@@ -337,12 +337,12 @@ klasse TestInsortC(TestInsort, unittest.TestCase):
 klasse LenOnly:
     "Dummy sequence klasse defining __len__ but nicht __getitem__."
     def __len__(self):
-        return 10
+        gib 10
 
 klasse GetOnly:
     "Dummy sequence klasse defining __getitem__ but nicht __len__."
     def __getitem__(self, ndx):
-        return 10
+        gib 10
 
 klasse CmpErr:
     "Dummy element that always raises an error during comparison"
@@ -393,7 +393,7 @@ klasse TestDocExample:
     def test_grades(self):
         def grade(score, breakpoints=[60, 70, 80, 90], grades='FDCBA'):
             i = self.module.bisect(breakpoints, score)
-            return grades[i]
+            gib grades[i]
 
         result = [grade(score) fuer score in [33, 99, 77, 70, 89, 90, 100]]
         self.assertEqual(result, ['F', 'A', 'C', 'C', 'B', 'A', 'A'])

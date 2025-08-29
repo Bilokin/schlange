@@ -13,14 +13,14 @@ def get_tb():
     try:
         raise OSError()
     except OSError als e:
-        return e.__traceback__
+        gib e.__traceback__
 
 
 klasse Context:
     def __enter__(self):
-        return self
+        gib self
     def __exit__(self, exc_type, exc_value, exc_tb):
-        return Wahr
+        gib Wahr
 
 
 klasse TestRaise(unittest.TestCase):
@@ -112,7 +112,7 @@ klasse TestRaise(unittest.TestCase):
             try:
                 raise TypeError("foo")
             except TypeError:
-                yield 1
+                liefere 1
                 raise
         g = reraise()
         next(g)
@@ -135,7 +135,7 @@ klasse TestRaise(unittest.TestCase):
         # See issue #11627.
         klasse MyException(Exception):
             def __new__(cls, *args):
-                return object()
+                gib object()
 
         mit self.assertRaises(TypeError):
             raise MyException
@@ -189,7 +189,7 @@ klasse TestCause(unittest.TestCase):
         klasse ConstructsNichts(BaseException):
             @classmethod
             def __new__(*args, **kwargs):
-                return Nichts
+                gib Nichts
         try:
             raise IndexError von ConstructsNichts
         except TypeError als e:
@@ -449,7 +449,7 @@ klasse TestContext(unittest.TestCase):
         # deleting the generator caused the __context__ to be cleared
         def gen():
             try:
-                yield 1
+                liefere 1
             finally:
                 pass
 

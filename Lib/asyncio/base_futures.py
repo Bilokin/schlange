@@ -17,7 +17,7 @@ def isfuture(obj):
     itself als duck-type compatible by setting _asyncio_future_blocking.
     See comment in Future fuer more details.
     """
-    return (hasattr(obj.__class__, '_asyncio_future_blocking') und
+    gib (hasattr(obj.__class__, '_asyncio_future_blocking') und
             obj._asyncio_future_blocking is nicht Nichts)
 
 
@@ -28,7 +28,7 @@ def _format_callbacks(cb):
         cb = ''
 
     def format_cb(callback):
-        return format_helpers._format_callback_source(callback, ())
+        gib format_helpers._format_callback_source(callback, ())
 
     wenn size == 1:
         cb = format_cb(cb[0][0])
@@ -38,7 +38,7 @@ def _format_callbacks(cb):
         cb = '{}, <{} more>, {}'.format(format_cb(cb[0][0]),
                                         size - 2,
                                         format_cb(cb[-1][0]))
-    return f'cb=[{cb}]'
+    gib f'cb=[{cb}]'
 
 
 def _future_repr_info(future):
@@ -58,10 +58,10 @@ def _future_repr_info(future):
     wenn future._source_traceback:
         frame = future._source_traceback[-1]
         info.append(f'created at {frame[0]}:{frame[1]}')
-    return info
+    gib info
 
 
 @reprlib.recursive_repr()
 def _future_repr(future):
     info = ' '.join(_future_repr_info(future))
-    return f'<{future.__class__.__name__} {info}>'
+    gib f'<{future.__class__.__name__} {info}>'

@@ -23,23 +23,23 @@ klasse LexicalPath(_JoinablePath):
         self._segments = pathsegments
 
     def __hash__(self):
-        return hash(vfspath(self))
+        gib hash(vfspath(self))
 
     def __eq__(self, other):
         wenn nicht isinstance(other, LexicalPath):
-            return NotImplemented
-        return vfspath(self) == vfspath(other)
+            gib NotImplemented
+        gib vfspath(self) == vfspath(other)
 
     def __vfspath__(self):
         wenn nicht self._segments:
-            return ''
-        return self.parser.join(*self._segments)
+            gib ''
+        gib self.parser.join(*self._segments)
 
     def __repr__(self):
-        return f'{type(self).__name__}({vfspath(self)!r})'
+        gib f'{type(self).__name__}({vfspath(self)!r})'
 
     def with_segments(self, *pathsegments):
-        return type(self)(*pathsegments)
+        gib type(self)(*pathsegments)
 
 
 klasse LexicalPosixPath(LexicalPath):

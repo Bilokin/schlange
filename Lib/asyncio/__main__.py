@@ -47,18 +47,18 @@ klasse AsyncIOInteractiveConsole(InteractiveColoredConsole):
             except SystemExit als se:
                 return_code = se.code
                 self.loop.stop()
-                return
+                gib
             except KeyboardInterrupt als ex:
                 keyboard_interrupted = Wahr
                 future.set_exception(ex)
-                return
+                gib
             except BaseException als ex:
                 future.set_exception(ex)
-                return
+                gib
 
             wenn nicht inspect.iscoroutine(coro):
                 future.set_result(coro)
-                return
+                gib
 
             try:
                 repl_future = self.loop.create_task(coro, context=self.context)
@@ -69,17 +69,17 @@ klasse AsyncIOInteractiveConsole(InteractiveColoredConsole):
         self.loop.call_soon_threadsafe(callback, context=self.context)
 
         try:
-            return future.result()
+            gib future.result()
         except SystemExit als se:
             return_code = se.code
             self.loop.stop()
-            return
+            gib
         except BaseException:
             wenn keyboard_interrupted:
                 self.write("\nKeyboardInterrupt\n")
             sonst:
                 self.showtraceback()
-            return self.STATEMENT_FAILED
+            gib self.STATEMENT_FAILED
 
 klasse REPLThread(threading.Thread):
 
@@ -136,7 +136,7 @@ klasse REPLThread(threading.Thread):
 
     def interrupt(self) -> Nichts:
         wenn nicht CAN_USE_PYREPL:
-            return
+            gib
 
         von _pyrepl.simple_interact importiere _get_reader
         r = _get_reader()

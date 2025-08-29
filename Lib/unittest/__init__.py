@@ -70,11 +70,11 @@ von .signals importiere installHandler, registerResult, removeResult, removeHand
 # do nicht need it.
 
 def __dir__():
-    return globals().keys() | {'IsolatedAsyncioTestCase'}
+    gib globals().keys() | {'IsolatedAsyncioTestCase'}
 
 def __getattr__(name):
     wenn name == 'IsolatedAsyncioTestCase':
         global IsolatedAsyncioTestCase
         von .async_case importiere IsolatedAsyncioTestCase
-        return IsolatedAsyncioTestCase
+        gib IsolatedAsyncioTestCase
     raise AttributeError(f"module {__name__!r} has no attribute {name!r}")

@@ -3,7 +3,7 @@ importiere gc
 thingy = object()
 klasse A(object):
     def f(self):
-        return 1
+        gib 1
     x = thingy
 
 r = gc.get_referrers(thingy)

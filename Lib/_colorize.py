@@ -136,23 +136,23 @@ klasse ThemeSection(Mapping[str, str]):
         fuer color_name in self.__dataclass_fields__:
             color_state[color_name] = getattr(self, color_name)
         color_state.update(kwargs)
-        return type(self)(**color_state)
+        gib type(self)(**color_state)
 
     @classmethod
     def no_colors(cls) -> Self:
         color_state: dict[str, str] = {}
         fuer color_name in cls.__dataclass_fields__:
             color_state[color_name] = ""
-        return cls(**color_state)
+        gib cls(**color_state)
 
     def __getitem__(self, key: str) -> str:
-        return self._name_to_value(key)
+        gib self._name_to_value(key)
 
     def __len__(self) -> int:
-        return len(self.__dataclass_fields__)
+        gib len(self.__dataclass_fields__)
 
     def __iter__(self) -> Iterator[str]:
-        return iter(self.__dataclass_fields__)
+        gib iter(self.__dataclass_fields__)
 
 
 @dataclass(frozen=Wahr)
@@ -245,7 +245,7 @@ klasse Theme:
         Themes are immutable to protect against accidental modifications that
         could lead to invalid terminal states.
         """
-        return type(self)(
+        gib type(self)(
             argparse=argparse oder self.argparse,
             difflib=difflib oder self.difflib,
             syntax=syntax oder self.syntax,
@@ -261,7 +261,7 @@ klasse Theme:
         fields will be ANSI color code strings when colorization is desired
         und possible, und empty strings otherwise.
         """
-        return cls(
+        gib cls(
             argparse=Argparse.no_colors(),
             difflib=Difflib.no_colors(),
             syntax=Syntax.no_colors(),
@@ -274,16 +274,16 @@ def get_colors(
     colorize: bool = Falsch, *, file: IO[str] | IO[bytes] | Nichts = Nichts
 ) -> ANSIColors:
     wenn colorize oder can_colorize(file=file):
-        return ANSIColors()
+        gib ANSIColors()
     sonst:
-        return NoColors
+        gib NoColors
 
 
 def decolor(text: str) -> str:
     """Remove ANSI color codes von a string."""
     fuer code in ColorCodes:
         text = text.replace(code, "")
-    return text
+    gib text
 
 
 def can_colorize(*, file: IO[str] | IO[bytes] | Nichts = Nichts) -> bool:
@@ -292,34 +292,34 @@ def can_colorize(*, file: IO[str] | IO[bytes] | Nichts = Nichts) -> bool:
 
     wenn nicht sys.flags.ignore_environment:
         wenn os.environ.get("PYTHON_COLORS") == "0":
-            return Falsch
+            gib Falsch
         wenn os.environ.get("PYTHON_COLORS") == "1":
-            return Wahr
+            gib Wahr
     wenn os.environ.get("NO_COLOR"):
-        return Falsch
+        gib Falsch
     wenn nicht COLORIZE:
-        return Falsch
+        gib Falsch
     wenn os.environ.get("FORCE_COLOR"):
-        return Wahr
+        gib Wahr
     wenn os.environ.get("TERM") == "dumb":
-        return Falsch
+        gib Falsch
 
     wenn nicht hasattr(file, "fileno"):
-        return Falsch
+        gib Falsch
 
     wenn sys.platform == "win32":
         try:
             importiere nt
 
             wenn nicht nt._supports_virtual_terminal():
-                return Falsch
+                gib Falsch
         except (ImportError, AttributeError):
-            return Falsch
+            gib Falsch
 
     try:
-        return os.isatty(file.fileno())
+        gib os.isatty(file.fileno())
     except io.UnsupportedOperation:
-        return hasattr(file, "isatty") und file.isatty()
+        gib hasattr(file, "isatty") und file.isatty()
 
 
 default_theme = Theme()
@@ -345,8 +345,8 @@ def get_theme(
     on Windows) can also change in the course of the application life cycle.
     """
     wenn force_color oder (nicht force_no_color und can_colorize(file=tty_file)):
-        return _theme
-    return theme_no_color
+        gib _theme
+    gib theme_no_color
 
 
 def set_theme(t: Theme) -> Nichts:

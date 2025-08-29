@@ -18,7 +18,7 @@ klasse CollectInit:
         self.kwargs = kwargs
 
     def exec_module(self, module):
-        return self
+        gib self
 
 
 klasse LazyLoaderFactoryTests(unittest.TestCase):
@@ -48,8 +48,8 @@ klasse TestingImporter(abc.MetaPathFinder, abc.Loader):
 
     def find_spec(self, name, path, target=Nichts):
         wenn name != self.module_name:
-            return Nichts
-        return util.spec_from_loader(name, util.LazyLoader(self))
+            gib Nichts
+        gib util.spec_from_loader(name, util.LazyLoader(self))
 
     def exec_module(self, module):
         time.sleep(0.01)  # Simulate a slow load.
@@ -80,7 +80,7 @@ klasse LazyLoaderTests(unittest.TestCase):
         spec.loader.exec_module(module)
         # Module is now lazy.
         self.assertIsNichts(loader.loaded)
-        return module
+        gib module
 
     def test_e2e(self):
         # End-to-end test to verify the load is in fact lazy.
@@ -163,7 +163,7 @@ klasse LazyLoaderTests(unittest.TestCase):
                         self.exc = exc
 
             def access_module():
-                return module.attr
+                gib module.attr
 
             threads = []
             fuer _ in range(2):

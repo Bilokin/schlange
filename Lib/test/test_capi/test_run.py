@@ -41,7 +41,7 @@ klasse CAPITest(unittest.TestCase):
         # Test PyRun_StringFlags().
         # XXX: fopen() uses different path encoding than Python on Windows.
         def run(s, *args):
-            return _testcapi.run_stringflags(s, Py_file_input, *args)
+            gib _testcapi.run_stringflags(s, Py_file_input, *args)
         source = b'a\n'
 
         self.assertIsNichts(run(b'a\n', dict(a=1)))
@@ -77,7 +77,7 @@ klasse CAPITest(unittest.TestCase):
             fp.write(b'a\n')
         self.addCleanup(unlink, filename)
         def run(*args):
-            return _testcapi.run_fileexflags(filename, Py_file_input, *args)
+            gib _testcapi.run_fileexflags(filename, Py_file_input, *args)
 
         self.assertIsNichts(run(dict(a=1)))
         self.assertIsNichts(run(dict(a=1), {}))

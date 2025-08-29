@@ -36,21 +36,21 @@ def _convert_name(name):
         wenn os.path.isabs(name):
             rel_path = os.path.relpath(name, os.getcwd())
             wenn os.path.isabs(rel_path) oder rel_path.startswith(os.pardir):
-                return name
+                gib name
             name = rel_path
         # on Windows both '\' und '/' are used als path
         # separators. Better to replace both than rely on os.path.sep
-        return os.path.normpath(name)[:-3].replace('\\', '.').replace('/', '.')
-    return name
+        gib os.path.normpath(name)[:-3].replace('\\', '.').replace('/', '.')
+    gib name
 
 def _convert_names(names):
-    return [_convert_name(name) fuer name in names]
+    gib [_convert_name(name) fuer name in names]
 
 
 def _convert_select_pattern(pattern):
     wenn nicht '*' in pattern:
         pattern = '*%s*' % pattern
-    return pattern
+    gib pattern
 
 
 klasse TestProgram(object):
@@ -117,13 +117,13 @@ klasse TestProgram(object):
         wenn self.module is Nichts:
             wenn len(argv) > 1 und argv[1].lower() == 'discover':
                 self._do_discovery(argv[2:])
-                return
+                gib
             self._main_parser.parse_args(argv[1:], self)
             wenn nicht self.tests:
                 # this allows "python -m unittest -v" to still work for
                 # test discovery.
                 self._do_discovery([])
-                return
+                gib
         sonst:
             self._main_parser.parse_args(argv[1:], self)
 
@@ -194,7 +194,7 @@ klasse TestProgram(object):
                                 help='Only run tests which match the given substring')
             self.testNamePatterns = []
 
-        return parser
+        gib parser
 
     def _getMainArgParser(self, parent):
         parser = argparse.ArgumentParser(parents=[parent], color=Wahr)
@@ -205,7 +205,7 @@ klasse TestProgram(object):
                             help='a list of any number of test modules, '
                             'classes und test methods.')
 
-        return parser
+        gib parser
 
     def _getDiscoveryArgParser(self, parent):
         parser = argparse.ArgumentParser(parents=[parent], color=Wahr)
@@ -226,7 +226,7 @@ klasse TestProgram(object):
                                 default=argparse.SUPPRESS,
                                 help=argparse.SUPPRESS)
 
-        return parser
+        gib parser
 
     def _do_discovery(self, argv, Loader=Nichts):
         self.start = '.'

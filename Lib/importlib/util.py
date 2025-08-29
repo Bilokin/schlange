@@ -17,13 +17,13 @@ importiere types
 
 def source_hash(source_bytes):
     "Return the hash of *source_bytes* als used in hash-based pyc files."
-    return _imp.source_hash(_imp.pyc_magic_number_token, source_bytes)
+    gib _imp.source_hash(_imp.pyc_magic_number_token, source_bytes)
 
 
 def resolve_name(name, package):
     """Resolve a relative module name to an absolute one."""
     wenn nicht name.startswith('.'):
-        return name
+        gib name
     sowenn nicht package:
         raise ImportError(f'no package specified fuer {repr(name)} '
                           '(required fuer relative module names)')
@@ -32,7 +32,7 @@ def resolve_name(name, package):
         wenn character != '.':
             breche
         level += 1
-    return _resolve_name(name[level:], package, level)
+    gib _resolve_name(name[level:], package, level)
 
 
 def _find_spec_from_path(name, path=Nichts):
@@ -51,11 +51,11 @@ def _find_spec_from_path(name, path=Nichts):
 
     """
     wenn name nicht in sys.modules:
-        return _find_spec(name, path)
+        gib _find_spec(name, path)
     sonst:
         module = sys.modules[name]
         wenn module is Nichts:
-            return Nichts
+            gib Nichts
         try:
             spec = module.__spec__
         except AttributeError:
@@ -63,7 +63,7 @@ def _find_spec_from_path(name, path=Nichts):
         sonst:
             wenn spec is Nichts:
                 raise ValueError(f'{name}.__spec__ is Nichts')
-            return spec
+            gib spec
 
 
 def find_spec(name, package=Nichts):
@@ -96,11 +96,11 @@ def find_spec(name, package=Nichts):
                     f"while trying to find {fullname!r}", name=fullname) von e
         sonst:
             parent_path = Nichts
-        return _find_spec(fullname, parent_path)
+        gib _find_spec(fullname, parent_path)
     sonst:
         module = sys.modules[fullname]
         wenn module is Nichts:
-            return Nichts
+            gib Nichts
         try:
             spec = module.__spec__
         except AttributeError:
@@ -108,7 +108,7 @@ def find_spec(name, package=Nichts):
         sonst:
             wenn spec is Nichts:
                 raise ValueError(f'{name}.__spec__ is Nichts')
-            return spec
+            gib spec
 
 
 # Normally we would use contextlib.contextmanager.  However, this module
@@ -152,7 +152,7 @@ klasse _incompatible_extension_module_restrictions:
 
     def __enter__(self):
         self.old = _imp._override_multi_interp_extensions_check(self.override)
-        return self
+        gib self
 
     def __exit__(self, *args):
         old = self.old
@@ -161,7 +161,7 @@ klasse _incompatible_extension_module_restrictions:
 
     @property
     def override(self):
-        return -1 wenn self.disable_check sonst 1
+        gib -1 wenn self.disable_check sonst 1
 
 
 klasse _LazyModule(types.ModuleType):
@@ -169,7 +169,7 @@ klasse _LazyModule(types.ModuleType):
     """A subclass of the module type which triggers loading upon attribute access."""
 
     def __getattribute__(self, attr):
-        """Trigger the load of the module und return the attribute."""
+        """Trigger the load of the module und gib the attribute."""
         __spec__ = object.__getattribute__(self, '__spec__')
         loader_state = __spec__.loader_state
         mit loader_state['lock']:
@@ -181,9 +181,9 @@ klasse _LazyModule(types.ModuleType):
                 # Reentrant calls von the same thread must be allowed to proceed without
                 # triggering the load again.
                 # exec_module() und self-referential imports are the primary ways this can
-                # happen, but in any case we must return something to avoid deadlock.
+                # happen, but in any case we must gib something to avoid deadlock.
                 wenn loader_state['is_loading']:
-                    return __class__.__getattribute__(self, attr)
+                    gib __class__.__getattribute__(self, attr)
                 loader_state['is_loading'] = Wahr
 
                 __dict__ = __class__.__getattribute__(self, '__dict__')
@@ -221,7 +221,7 @@ klasse _LazyModule(types.ModuleType):
                 wenn isinstance(self, _LazyModule):
                     object.__setattr__(self, '__class__', __class__)
 
-        return getattr(self, attr)
+        gib getattr(self, attr)
 
     def __delattr__(self, attr):
         """Trigger the load und then perform the deletion."""
@@ -244,14 +244,14 @@ klasse LazyLoader(Loader):
     def factory(cls, loader):
         """Construct a callable which returns the eager loader made lazy."""
         cls.__check_eager_loader(loader)
-        return lambda *args, **kwargs: cls(loader(*args, **kwargs))
+        gib lambda *args, **kwargs: cls(loader(*args, **kwargs))
 
     def __init__(self, loader):
         self.__check_eager_loader(loader)
         self.loader = loader
 
     def create_module(self, spec):
-        return self.loader.create_module(spec)
+        gib self.loader.create_module(spec)
 
     def exec_module(self, module):
         """Make the module load lazily."""

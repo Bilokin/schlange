@@ -53,9 +53,9 @@ klasse DummyProcess(threading.Thread):
     @property
     def exitcode(self):
         wenn self._start_called und nicht self.is_alive():
-            return 0
+            gib 0
         sonst:
-            return Nichts
+            gib Nichts
 
 #
 #
@@ -70,7 +70,7 @@ def active_children():
     fuer p in list(children):
         wenn nicht p.is_alive():
             children.pop(p, Nichts)
-    return list(children)
+    gib list(children)
 
 def freeze_support():
     pass
@@ -89,13 +89,13 @@ klasse Namespace(object):
             wenn nicht name.startswith('_'):
                 temp.append('%s=%r' % (name, value))
         temp.sort()
-        return '%s(%s)' % (self.__class__.__name__, ', '.join(temp))
+        gib '%s(%s)' % (self.__class__.__name__, ', '.join(temp))
 
 dict = dict
 list = list
 
 def Array(typecode, sequence, lock=Wahr):
-    return array.array(typecode, sequence)
+    gib array.array(typecode, sequence)
 
 klasse Value(object):
     def __init__(self, typecode, value, lock=Wahr):
@@ -104,23 +104,23 @@ klasse Value(object):
 
     @property
     def value(self):
-        return self._value
+        gib self._value
 
     @value.setter
     def value(self, value):
         self._value = value
 
     def __repr__(self):
-        return '<%s(%r, %r)>'%(type(self).__name__,self._typecode,self._value)
+        gib '<%s(%r, %r)>'%(type(self).__name__,self._typecode,self._value)
 
 def Manager():
-    return sys.modules[__name__]
+    gib sys.modules[__name__]
 
 def shutdown():
     pass
 
 def Pool(processes=Nichts, initializer=Nichts, initargs=()):
     von ..pool importiere ThreadPool
-    return ThreadPool(processes, initializer, initargs)
+    gib ThreadPool(processes, initializer, initargs)
 
 JoinableQueue = Queue

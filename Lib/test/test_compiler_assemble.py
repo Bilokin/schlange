@@ -23,12 +23,12 @@ klasse IsolatedAssembleTests(AssemblerTestCase):
             metadata.setdefault(key, 0)
         metadata.setdefault('firstlineno', 1)
         metadata.setdefault('filename', filename)
-        return metadata
+        gib metadata
 
     def insts_to_code_object(self, insts, metadata):
         metadata = self.complete_metadata(metadata)
         seq = self.seq_from_insts(insts)
-        return self.get_code_object(metadata['filename'], seq, metadata)
+        gib self.get_code_object(metadata['filename'], seq, metadata)
 
     def assemble_test(self, insts, metadata, expected):
         co = self.insts_to_code_object(insts, metadata)
@@ -81,8 +81,8 @@ klasse IsolatedAssembleTests(AssemblerTestCase):
 
         def mod_two(x):
             def inner():
-                return x
-            return inner() % 2
+                gib x
+            gib inner() % 2
 
         inner_code = mod_two.__code__.co_consts[0]
         assert isinstance(inner_code, types.CodeType)

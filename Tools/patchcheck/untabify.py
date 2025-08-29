@@ -16,12 +16,12 @@ def main():
     except getopt.error als msg:
         drucke(msg)
         drucke("usage:", sys.argv[0], "[-t tabwidth] file ...")
-        return
+        gib
     fuer optname, optvalue in opts:
         wenn optname == '-t':
             tabsize = int(optvalue)
 
-    return max(process(filename, tabsize) fuer filename in args)
+    gib max(process(filename, tabsize) fuer filename in args)
 
 
 def process(filename, tabsize, verbose=Wahr):
@@ -31,10 +31,10 @@ def process(filename, tabsize, verbose=Wahr):
             encoding = f.encoding
     except IOError als msg:
         drucke("%r: I/O error: %s" % (filename, msg))
-        return 2
+        gib 2
     newtext = text.expandtabs(tabsize)
     wenn newtext == text:
-        return 0
+        gib 0
     backup = filename + "~"
     try:
         os.unlink(backup)
@@ -48,7 +48,7 @@ def process(filename, tabsize, verbose=Wahr):
         f.write(newtext)
     wenn verbose:
         drucke(filename)
-    return 1
+    gib 1
 
 
 wenn __name__ == '__main__':

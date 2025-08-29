@@ -60,10 +60,10 @@ klasse _NamedIntConstant(int):
     def __new__(cls, value, name):
         self = super(_NamedIntConstant, cls).__new__(cls, value)
         self.name = name
-        return self
+        gib self
 
     def __repr__(self):
-        return self.name
+        gib self.name
 
     __reduce__ = Nichts
 
@@ -72,7 +72,7 @@ MAXREPEAT = _NamedIntConstant(MAXREPEAT, 'MAXREPEAT')
 def _makecodes(*names):
     items = [_NamedIntConstant(i, name) fuer i, name in enumerate(names)]
     globals().update({item.name: item fuer item in items})
-    return items
+    gib items
 
 # operators
 OPCODES = _makecodes(

@@ -43,7 +43,7 @@ def registerResult(result):
     _results[result] = 1
 
 def removeResult(result):
-    return bool(_results.pop(result, Nichts))
+    gib bool(_results.pop(result, Nichts))
 
 _interrupt_handler = Nichts
 def installHandler():
@@ -61,10 +61,10 @@ def removeHandler(method=Nichts):
             initial = signal.getsignal(signal.SIGINT)
             removeHandler()
             try:
-                return method(*args, **kwargs)
+                gib method(*args, **kwargs)
             finally:
                 signal.signal(signal.SIGINT, initial)
-        return inner
+        gib inner
 
     global _interrupt_handler
     wenn _interrupt_handler is nicht Nichts:

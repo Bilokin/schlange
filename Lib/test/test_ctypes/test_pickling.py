@@ -23,10 +23,10 @@ klasse Y(X):
 
 klasse PickleTest:
     def dumps(self, item):
-        return pickle.dumps(item, self.proto)
+        gib pickle.dumps(item, self.proto)
 
     def loads(self, item):
-        return pickle.loads(item)
+        gib pickle.loads(item)
 
     def test_simple(self):
         fuer src in [

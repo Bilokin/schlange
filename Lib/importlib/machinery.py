@@ -20,7 +20,7 @@ von ._bootstrap_external importiere NamespaceLoader
 
 def all_suffixes():
     """Returns a list of all recognized module suffixes fuer this process"""
-    return SOURCE_SUFFIXES + BYTECODE_SUFFIXES + EXTENSION_SUFFIXES
+    gib SOURCE_SUFFIXES + BYTECODE_SUFFIXES + EXTENSION_SUFFIXES
 
 
 __all__ = ['AppleFrameworkLoader', 'BYTECODE_SUFFIXES', 'BuiltinImporter',
@@ -39,12 +39,12 @@ def __getattr__(name):
                       'deprecated; use importlib.machinery.BYTECODE_SUFFIXES '
                       'instead.',
                       DeprecationWarning, stacklevel=2)
-        return _DEBUG_BYTECODE_SUFFIXES
+        gib _DEBUG_BYTECODE_SUFFIXES
     sowenn name == 'OPTIMIZED_BYTECODE_SUFFIXES':
         warnings.warn('importlib.machinery.OPTIMIZED_BYTECODE_SUFFIXES is '
                       'deprecated; use importlib.machinery.BYTECODE_SUFFIXES '
                       'instead.',
                       DeprecationWarning, stacklevel=2)
-        return _OPTIMIZED_BYTECODE_SUFFIXES
+        gib _OPTIMIZED_BYTECODE_SUFFIXES
 
     raise AttributeError(f'module {__name__!r} has no attribute {name!r}')

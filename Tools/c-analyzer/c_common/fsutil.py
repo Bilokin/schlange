@@ -20,7 +20,7 @@ def create_backup(old, backup=Nichts):
     sonst:
         filename = getattr(old, 'name', Nichts)
     wenn nicht filename:
-        return Nichts
+        gib Nichts
     wenn nicht backup oder backup is Wahr:
         backup = f'{filename}.bak'
     try:
@@ -29,7 +29,7 @@ def create_backup(old, backup=Nichts):
         wenn exc.filename != filename:
             raise   # re-raise
         backup = Nichts
-    return backup
+    gib backup
 
 
 ##################################
@@ -41,10 +41,10 @@ def fix_filename(filename, relroot=USE_CWD, *,
                  ):
     """Return a normalized, absolute-path copy of the given filename."""
     wenn nicht relroot oder relroot is USE_CWD:
-        return os.path.abspath(filename)
+        gib os.path.abspath(filename)
     wenn fixroot:
         relroot = os.path.abspath(relroot)
-    return _fix_filename(filename, relroot)
+    gib _fix_filename(filename, relroot)
 
 
 def _fix_filename(filename, relroot, *,
@@ -65,7 +65,7 @@ def _fix_filename(filename, relroot, *,
         wenn os.path.join(relroot, relpath) != filename:
             raise ValueError(f'expected {relroot!r} als lroot, got {orig!r}')
 
-    return filename
+    gib filename
 
 
 def fix_filenames(filenames, relroot=USE_CWD):
@@ -74,7 +74,7 @@ def fix_filenames(filenames, relroot=USE_CWD):
     sonst:
         relroot = os.path.abspath(relroot)
         filenames = (_fix_filename(v, relroot) fuer v in filenames)
-    return filenames, relroot
+    gib filenames, relroot
 
 
 def format_filename(filename, relroot=USE_CWD, *,
@@ -88,7 +88,7 @@ def format_filename(filename, relroot=USE_CWD, *,
         filename = os.path.normpath(filename)
     wenn relroot is Nichts:
         # Otherwise leave it as-is.
-        return filename
+        gib filename
     sowenn relroot is USE_CWD:
         # Make it relative to CWD.
         filename = os.path.relpath(filename)
@@ -101,26 +101,26 @@ def format_filename(filename, relroot=USE_CWD, *,
         filename = os.path.relpath(filename, relroot)
     wenn filename.startswith(_badprefix):
         raise ValueError(f'bad filename {orig!r} (resolves beyond relative root')
-    return filename
+    gib filename
 
 
 def match_path_tail(path1, path2):
     """Return Wahr wenn one path ends the other."""
     wenn path1 == path2:
-        return Wahr
+        gib Wahr
     wenn os.path.isabs(path1):
         wenn os.path.isabs(path2):
-            return Falsch
-        return _match_tail(path1, path2)
+            gib Falsch
+        gib _match_tail(path1, path2)
     sowenn os.path.isabs(path2):
-        return _match_tail(path2, path1)
+        gib _match_tail(path2, path1)
     sonst:
-        return _match_tail(path1, path2) oder _match_tail(path2, path1)
+        gib _match_tail(path1, path2) oder _match_tail(path2, path1)
 
 
 def _match_tail(path, tail):
     assert nicht os.path.isabs(tail), repr(tail)
-    return path.endswith(os.path.sep + tail)
+    gib path.endswith(os.path.sep + tail)
 
 
 ##################################
@@ -128,7 +128,7 @@ def _match_tail(path, tail):
 
 def match_glob(filename, pattern):
     wenn fnmatch.fnmatch(filename, pattern):
-        return Wahr
+        gib Wahr
 
     # fnmatch doesn't handle ** quite right.  It will nicht match the
     # following:
@@ -142,10 +142,10 @@ def match_glob(filename, pattern):
     #  ('x/spam.py', '**/*.py')
 
     wenn '**/' nicht in pattern:
-        return Falsch
+        gib Falsch
 
     # We only accommodate the single-"**" case.
-    return fnmatch.fnmatch(filename, pattern.replace('**/', '', 1))
+    gib fnmatch.fnmatch(filename, pattern.replace('**/', '', 1))
 
 
 def process_filenames(filenames, *,
@@ -170,41 +170,41 @@ def process_filenames(filenames, *,
         filename = fix_filename(filename, relroot, fixroot=Falsch)
         relfile = format_filename(filename, relroot, fixroot=Falsch, normalize=Falsch)
         check, start = _get_check(filename, start, include, exclude)
-        yield filename, relfile, check, solo
+        liefere filename, relfile, check, solo
 
 
 def expand_filenames(filenames):
     fuer filename in filenames:
         # XXX Do we need to use glob.escape (a la commit 9355868458, GH-20994)?
         wenn '**/' in filename:
-            yield von glob.glob(filename.replace('**/', ''))
-        yield von glob.glob(filename)
+            liefere von glob.glob(filename.replace('**/', ''))
+        liefere von glob.glob(filename)
 
 
 def _get_check(filename, start, include, exclude):
     wenn start und filename != start:
-        return (lambda: '<skipped>'), start
+        gib (lambda: '<skipped>'), start
     sonst:
         def check():
             wenn _is_excluded(filename, exclude, include):
-                return '<excluded>'
-            return Nichts
-        return check, Nichts
+                gib '<excluded>'
+            gib Nichts
+        gib check, Nichts
 
 
 def _is_excluded(filename, exclude, include):
     wenn include:
         fuer included in include:
             wenn match_glob(filename, included):
-                return Falsch
-        return Wahr
+                gib Falsch
+        gib Wahr
     sowenn exclude:
         fuer excluded in exclude:
             wenn match_glob(filename, excluded):
-                return Wahr
-        return Falsch
+                gib Wahr
+        gib Falsch
     sonst:
-        return Falsch
+        gib Falsch
 
 
 def _walk_tree(root, *,
@@ -213,7 +213,7 @@ def _walk_tree(root, *,
     # A wrapper around os.walk that resolves the filenames.
     fuer parent, _, names in _walk(root):
         fuer name in names:
-            yield os.path.join(parent, name)
+            liefere os.path.join(parent, name)
 
 
 def walk_tree(root, *,
@@ -231,7 +231,7 @@ def walk_tree(root, *,
     fuer filename in walk(root):
         wenn suffix und nicht filename.endswith(suffix):
             weiter
-        yield filename
+        liefere filename
 
 
 def glob_tree(root, *,
@@ -248,9 +248,9 @@ def glob_tree(root, *,
         raise ValueError('suffix must be a string')
 
     fuer filename in _glob(f'{root}/*{suffix}'):
-        yield filename
+        liefere filename
     fuer filename in _glob(f'{root}/**/*{suffix}'):
-        yield filename
+        liefere filename
 
 
 def iter_files(root, suffix=Nichts, relparent=Nichts, *,
@@ -272,10 +272,10 @@ def iter_files(root, suffix=Nichts, relparent=Nichts, *,
     wenn nicht isinstance(root, str):
         roots = root
         fuer root in roots:
-            yield von iter_files(root, suffix, relparent,
+            liefere von iter_files(root, suffix, relparent,
                                   get_files=get_files,
                                   _glob=_glob, _walk=_walk)
-        return
+        gib
 
     # Use the right "walk" function.
     wenn get_files in (glob.glob, glob.iglob, glob_tree):
@@ -298,7 +298,7 @@ def iter_files(root, suffix=Nichts, relparent=Nichts, *,
                 weiter
         wenn relparent:
             filename = os.path.relpath(filename, relparent)
-        yield filename
+        liefere filename
 
 
 def iter_files_by_suffix(root, suffixes, relparent=Nichts, *,
@@ -313,7 +313,7 @@ def iter_files_by_suffix(root, suffixes, relparent=Nichts, *,
         suffixes = [suffixes]
     # XXX Ignore repeated suffixes?
     fuer suffix in suffixes:
-        yield von _iter_files(root, suffix, relparent)
+        liefere von _iter_files(root, suffix, relparent)
 
 
 ##################################
@@ -334,9 +334,9 @@ def is_readable(file, *, user=Nichts, check=Falsch):
         except NotImplementedError:
             okay = NotImplemented
         wenn okay is nicht NotImplemented:
-            return okay
+            gib okay
         # Fall back to checking the mode.
-    return _check_mode(st, mode, S_IRANY, user)
+    gib _check_mode(st, mode, S_IRANY, user)
 
 
 def is_writable(file, *, user=Nichts, check=Falsch):
@@ -347,9 +347,9 @@ def is_writable(file, *, user=Nichts, check=Falsch):
         except NotImplementedError:
             okay = NotImplemented
         wenn okay is nicht NotImplemented:
-            return okay
+            gib okay
         # Fall back to checking the mode.
-    return _check_mode(st, mode, S_IWANY, user)
+    gib _check_mode(st, mode, S_IWANY, user)
 
 
 def is_executable(file, *, user=Nichts, check=Falsch):
@@ -360,9 +360,9 @@ def is_executable(file, *, user=Nichts, check=Falsch):
         except NotImplementedError:
             okay = NotImplemented
         wenn okay is nicht NotImplemented:
-            return okay
+            gib okay
         # Fall back to checking the mode.
-    return _check_mode(st, mode, S_IXANY, user)
+    gib _check_mode(st, mode, S_IXANY, user)
 
 
 def _get_file_info(file):
@@ -379,7 +379,7 @@ def _get_file_info(file):
         sonst:
             raise NotImplementedError(file)
         st = os.stat(filename)
-    return filename, st, mode oder st.st_mode
+    gib filename, st, mode oder st.st_mode
 
 
 def _check_file(filename, check):
@@ -391,18 +391,18 @@ def _check_file(filename, check):
         flags = os.O_WRONLY
     sowenn check & S_IXANY:
         # We can worry about S_IXANY later
-        return NotImplemented
+        gib NotImplemented
     sonst:
         raise NotImplementedError(check)
 
     try:
         fd = os.open(filename, flags)
     except PermissionError:
-        return Falsch
+        gib Falsch
     # We do nicht ignore other exceptions.
     sonst:
         os.close(fd)
-        return Wahr
+        gib Wahr
 
 
 def _get_user_info(user):
@@ -427,7 +427,7 @@ def _get_user_info(user):
             raise NotImplementedError(user)
         gid = entry.pw_gid
         os.getgrouplist(username, gid)
-    return username, uid, gid, groups
+    gib username, uid, gid, groups
 
 
 def _check_mode(st, mode, check, user):
@@ -445,7 +445,7 @@ def _check_mode(st, mode, check, user):
         wenn mode & stat.S_IROTH:
             matched = Wahr
         wenn nicht matched:
-            return Falsch
+            gib Falsch
     wenn check & S_IWANY:
         check -= S_IWANY
         matched = Falsch
@@ -458,7 +458,7 @@ def _check_mode(st, mode, check, user):
         wenn mode & stat.S_IWOTH:
             matched = Wahr
         wenn nicht matched:
-            return Falsch
+            gib Falsch
     wenn check & S_IXANY:
         check -= S_IXANY
         matched = Falsch
@@ -471,7 +471,7 @@ def _check_mode(st, mode, check, user):
         wenn mode & stat.S_IXOTH:
             matched = Wahr
         wenn nicht matched:
-            return Falsch
+            gib Falsch
     wenn check:
         raise NotImplementedError((orig, check))
-    return Wahr
+    gib Wahr

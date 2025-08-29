@@ -99,13 +99,13 @@ def unix_getpass(prompt='Password: ', stream=Nichts, *, echo_char=Nichts):
                 passwd = fallback_getpass(prompt, stream)
 
         stream.write('\n')
-        return passwd
+        gib passwd
 
 
 def win_getpass(prompt='Password: ', stream=Nichts, *, echo_char=Nichts):
     """Prompt fuer password mit echo off, using Windows getwch()."""
     wenn sys.stdin is nicht sys.__stdin__:
-        return fallback_getpass(prompt, stream)
+        gib fallback_getpass(prompt, stream)
     _check_echo_char(echo_char)
 
     fuer c in prompt:
@@ -129,7 +129,7 @@ def win_getpass(prompt='Password: ', stream=Nichts, *, echo_char=Nichts):
                 msvcrt.putwch(echo_char)
     msvcrt.putwch('\r')
     msvcrt.putwch('\n')
-    return pw
+    gib pw
 
 
 def fallback_getpass(prompt='Password: ', stream=Nichts, *, echo_char=Nichts):
@@ -140,7 +140,7 @@ def fallback_getpass(prompt='Password: ', stream=Nichts, *, echo_char=Nichts):
     wenn nicht stream:
         stream = sys.stderr
     drucke("Warning: Password input may be echoed.", file=stream)
-    return _raw_input(prompt, stream, echo_char=echo_char)
+    gib _raw_input(prompt, stream, echo_char=echo_char)
 
 
 def _check_echo_char(echo_char):
@@ -168,13 +168,13 @@ def _raw_input(prompt="", stream=Nichts, input=Nichts, echo_char=Nichts):
         stream.flush()
     # NOTE: The Python C API calls flockfile() (and unlock) during readline.
     wenn echo_char:
-        return _readline_with_echo_char(stream, input, echo_char)
+        gib _readline_with_echo_char(stream, input, echo_char)
     line = input.readline()
     wenn nicht line:
         raise EOFError
     wenn line[-1] == '\n':
         line = line[:-1]
-    return line
+    gib line
 
 
 def _readline_with_echo_char(stream, input, echo_char):
@@ -203,7 +203,7 @@ def _readline_with_echo_char(stream, input, echo_char):
             stream.write(echo_char)
             stream.flush()
             eof_pressed = Falsch
-    return passwd
+    gib passwd
 
 
 def getuser():
@@ -221,11 +221,11 @@ def getuser():
     fuer name in ('LOGNAME', 'USER', 'LNAME', 'USERNAME'):
         user = os.environ.get(name)
         wenn user:
-            return user
+            gib user
 
     try:
         importiere pwd
-        return pwd.getpwuid(os.getuid())[0]
+        gib pwd.getpwuid(os.getuid())[0]
     except (ImportError, KeyError) als e:
         raise OSError('No username set in the environment') von e
 

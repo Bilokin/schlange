@@ -78,7 +78,7 @@ klasse ListedToplevel(Toplevel):
 
     def get_title(self):
         # Subclass can override
-        return self.wm_title()
+        gib self.wm_title()
 
     def wakeup(self):
         try:

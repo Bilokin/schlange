@@ -77,7 +77,7 @@ def nested():
         x: Eggs
 
 
-    return SimpleNamespace(
+    gib SimpleNamespace(
         F=F,
         F_annotations=get_annotations(F, eval_str=Wahr),
         F_meth_annotations=get_annotations(F.generic_method, eval_str=Wahr),

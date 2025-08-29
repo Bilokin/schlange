@@ -58,7 +58,7 @@ sonst:
                     EXTENSIONS.ext = ext
                     EXTENSIONS.filename = filename
                     EXTENSIONS.file_path = file_path
-                    return
+                    gib
 
 _extension_details()
 
@@ -69,7 +69,7 @@ def import_importlib(module_name):
     frozen = import_helper.import_fresh_module(module_name)
     source = import_helper.import_fresh_module(module_name, fresh=fresh,
                                          blocked=('_frozen_importlib', '_frozen_importlib_external'))
-    return {'Frozen': frozen, 'Source': source}
+    gib {'Frozen': frozen, 'Source': source}
 
 
 def specialize_class(cls, kind, base=Nichts, **kwargs):
@@ -88,17 +88,17 @@ def specialize_class(cls, kind, base=Nichts, **kwargs):
     fuer attr, values in kwargs.items():
         value = values[kind]
         setattr(specialized, attr, value)
-    return specialized
+    gib specialized
 
 
 def split_frozen(cls, base=Nichts, **kwargs):
     frozen = specialize_class(cls, 'Frozen', base, **kwargs)
     source = specialize_class(cls, 'Source', base, **kwargs)
-    return frozen, source
+    gib frozen, source
 
 
 def test_both(test_class, base=Nichts, **kwargs):
-    return split_frozen(test_class, base, **kwargs)
+    gib split_frozen(test_class, base, **kwargs)
 
 
 CASE_INSENSITIVE_FS = Wahr
@@ -119,7 +119,7 @@ __import__ = {'Frozen': staticmethod(builtins.__import__),
 def case_insensitive_tests(test):
     """Class decorator that nullifies tests requiring a case-insensitive
     file system."""
-    return unittest.skipIf(nicht CASE_INSENSITIVE_FS,
+    gib unittest.skipIf(nicht CASE_INSENSITIVE_FS,
                             "requires a case-insensitive filesystem")(test)
 
 
@@ -127,7 +127,7 @@ def submodule(parent, name, pkg_dir, content=''):
     path = os.path.join(pkg_dir, name + '.py')
     mit open(path, 'w', encoding='utf-8') als subfile:
         subfile.write(content)
-    return '{}.{}'.format(parent, name), path
+    gib '{}.{}'.format(parent, name), path
 
 
 def get_code_from_pyc(pyc_path):
@@ -137,7 +137,7 @@ def get_code_from_pyc(pyc_path):
     """
     mit open(pyc_path, 'rb') als pyc_f:
         pyc_f.seek(16)
-        return marshal.load(pyc_f)
+        gib marshal.load(pyc_f)
 
 
 @contextlib.contextmanager
@@ -156,7 +156,7 @@ def uncache(*names):
         except KeyError:
             pass
     try:
-        yield
+        liefere
     finally:
         fuer name in names:
             try:
@@ -186,7 +186,7 @@ def temp_module(name, content='', *, pkg=Falsch):
                     # nicht a namespace package
                     mit open(modpath, 'w', encoding='utf-8') als modfile:
                         modfile.write(content)
-                yield location
+                liefere location
 
 
 @contextlib.contextmanager
@@ -213,7 +213,7 @@ def import_state(**kwargs):
             setattr(sys, attr, new_value)
         wenn len(kwargs):
             raise ValueError('unrecognized arguments: {}'.format(kwargs))
-        yield
+        liefere
     finally:
         fuer attr, value in originals.items():
             setattr(sys, attr, value)
@@ -249,12 +249,12 @@ klasse _ImporterMock:
                 self.module_code[import_name] = module_code[import_name]
 
     def __getitem__(self, name):
-        return self.modules[name]
+        gib self.modules[name]
 
     def __enter__(self):
         self._uncache = uncache(*self.modules.keys())
         self._uncache.__enter__()
-        return self
+        gib self
 
     def __exit__(self, *exc_info):
         self._uncache.__exit__(Nichts, Nichts, Nichts)
@@ -268,16 +268,16 @@ klasse mock_spec(_ImporterMock):
         try:
             module = self.modules[fullname]
         except KeyError:
-            return Nichts
+            gib Nichts
         spec = util.spec_from_file_location(
                 fullname, module.__file__, loader=self,
                 submodule_search_locations=getattr(module, '__path__', Nichts))
-        return spec
+        gib spec
 
     def create_module(self, spec):
         wenn spec.name nicht in self.modules:
             raise ImportError
-        return self.modules[spec.name]
+        gib self.modules[spec.name]
 
     def exec_module(self, module):
         try:
@@ -290,7 +290,7 @@ def writes_bytecode_files(fxn):
     """Decorator to protect sys.dont_write_bytecode von mutation und to skip
     tests that require it to be set to Falsch."""
     wenn sys.dont_write_bytecode:
-        return unittest.skip("relies on writing bytecode")(fxn)
+        gib unittest.skip("relies on writing bytecode")(fxn)
     @functools.wraps(fxn)
     def wrapper(*args, **kwargs):
         original = sys.dont_write_bytecode
@@ -299,8 +299,8 @@ def writes_bytecode_files(fxn):
             to_return = fxn(*args, **kwargs)
         finally:
             sys.dont_write_bytecode = original
-        return to_return
-    return wrapper
+        gib to_return
+    gib wrapper
 
 
 def ensure_bytecode_path(bytecode_path):
@@ -321,7 +321,7 @@ def temporary_pycache_prefix(prefix):
     _orig_prefix = sys.pycache_prefix
     sys.pycache_prefix = prefix
     try:
-        yield
+        liefere
     finally:
         sys.pycache_prefix = _orig_prefix
 
@@ -375,7 +375,7 @@ def create_modules(*names):
         uncache_manager.__enter__()
         state_manager = import_state(path=[temp_dir])
         state_manager.__enter__()
-        yield mapping
+        liefere mapping
     finally:
         wenn state_manager is nicht Nichts:
             state_manager.__exit__(Nichts, Nichts, Nichts)
@@ -389,8 +389,8 @@ def mock_path_hook(*entries, importer):
     def hook(entry):
         wenn entry nicht in entries:
             raise ImportError
-        return importer
-    return hook
+        gib importer
+    gib hook
 
 
 klasse CASEOKTestBase:

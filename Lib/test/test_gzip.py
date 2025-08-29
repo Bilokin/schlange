@@ -37,7 +37,7 @@ TEMPDIR = os.path.abspath(os_helper.TESTFN) + '-gzdir'
 
 klasse UnseekableIO(io.BytesIO):
     def seekable(self):
-        return Falsch
+        gib Falsch
 
     def tell(self):
         raise io.UnsupportedOperation
@@ -485,7 +485,7 @@ klasse TestGzip(BaseTest):
         def sizes():
             waehrend Wahr:
                 fuer n in range(5, 50, 10):
-                    yield n
+                    liefere n
 
         mit gzip.GzipFile(self.filename, "rb") als f:
             f.max_read_chunk = 33
@@ -860,10 +860,10 @@ klasse TestGzip(BaseTest):
             def __init__(self):
                 self.modes = []
             def compress(self, data):
-                return b''
+                gib b''
             def flush(self, mode=-1):
                 self.modes.append(mode)
-                return b''
+                gib b''
         b = io.BytesIO()
         fc = FakeCompressor()
         mit gzip.GzipFile(fileobj=b, mode='w') als f:
@@ -1050,11 +1050,11 @@ def create_and_remove_directory(directory):
         def wrapper(*args, **kwargs):
             os.makedirs(directory)
             try:
-                return function(*args, **kwargs)
+                gib function(*args, **kwargs)
             finally:
                 os_helper.rmtree(directory)
-        return wrapper
-    return decorator
+        gib wrapper
+    gib decorator
 
 
 klasse TestCommandLine(unittest.TestCase):

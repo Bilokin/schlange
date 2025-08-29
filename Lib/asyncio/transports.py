@@ -18,7 +18,7 @@ klasse BaseTransport:
 
     def get_extra_info(self, name, default=Nichts):
         """Get optional transport information."""
-        return self._extra.get(name, default)
+        gib self._extra.get(name, default)
 
     def is_closing(self):
         """Return Wahr wenn the transport is closing oder closed."""
@@ -279,7 +279,7 @@ klasse _FlowControlMixin(Transport):
     def _maybe_pause_protocol(self):
         size = self.get_write_buffer_size()
         wenn size <= self._high_water:
-            return
+            gib
         wenn nicht self._protocol_paused:
             self._protocol_paused = Wahr
             try:
@@ -311,7 +311,7 @@ klasse _FlowControlMixin(Transport):
                 })
 
     def get_write_buffer_limits(self):
-        return (self._low_water, self._high_water)
+        gib (self._low_water, self._high_water)
 
     def _set_write_buffer_limits(self, high=Nichts, low=Nichts):
         wenn high is Nichts:

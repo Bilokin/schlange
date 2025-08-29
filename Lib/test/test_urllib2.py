@@ -294,7 +294,7 @@ klasse MockFile:
 
 klasse MockHeaders(dict):
     def getheaders(self, name):
-        return list(self.values())
+        gib list(self.values())
 
 
 klasse MockResponse(io.StringIO):
@@ -303,10 +303,10 @@ klasse MockResponse(io.StringIO):
         self.code, self.msg, self.headers, self.url = code, msg, headers, url
 
     def info(self):
-        return self.headers
+        gib self.headers
 
     def geturl(self):
-        return self.url
+        gib self.url
 
 
 klasse MockCookieJar:
@@ -324,7 +324,7 @@ klasse FakeMethod:
         self.action = action
 
     def __call__(self, *args):
-        return self.handle(self.meth_name, self.action, *args)
+        gib self.handle(self.meth_name, self.action, *args)
 
 
 klasse MockHTTPResponse(io.IOBase):
@@ -336,13 +336,13 @@ klasse MockHTTPResponse(io.IOBase):
         self.code = 200
 
     def read(self):
-        return ''
+        gib ''
 
     def info(self):
-        return {}
+        gib {}
 
     def geturl(self):
-        return self.url
+        gib self.url
 
 
 klasse MockHTTPClass:
@@ -357,7 +357,7 @@ klasse MockHTTPClass:
     def __call__(self, host, timeout=socket._GLOBAL_DEFAULT_TIMEOUT):
         self.host = host
         self.timeout = timeout
-        return self
+        gib self
 
     def set_debuglevel(self, level):
         self.level = level
@@ -384,7 +384,7 @@ klasse MockHTTPClass:
             raise OSError()
 
     def getresponse(self):
-        return MockHTTPResponse(MockFile(), {}, 200, "OK")
+        gib MockHTTPResponse(MockFile(), {}, 200, "OK")
 
     def close(self):
         pass
@@ -410,14 +410,14 @@ klasse MockHandler:
     def handle(self, fn_name, action, *args, **kwds):
         self.parent.calls.append((self, fn_name, args, kwds))
         wenn action is Nichts:
-            return Nichts
+            gib Nichts
         sowenn action == "return self":
-            return self
+            gib self
         sowenn action == "return response":
             res = MockResponse(200, "OK", {}, "")
-            return res
+            gib res
         sowenn action == "return request":
-            return Request("http://blah/")
+            gib Request("http://blah/")
         sowenn action.startswith("error"):
             code = action[action.rfind(" ")+1:]
             try:
@@ -425,7 +425,7 @@ klasse MockHandler:
             except ValueError:
                 pass
             res = MockResponse(200, "OK", {}, "")
-            return self.parent.error("http", args[0], res, code, "", {})
+            gib self.parent.error("http", args[0], res, code, "", {})
         sowenn action == "raise":
             raise urllib.error.URLError("blah")
         assert Falsch
@@ -440,8 +440,8 @@ klasse MockHandler:
     def __lt__(self, other):
         wenn nicht hasattr(other, "handler_order"):
             # No handler_order, leave in original order.  Yuck.
-            return Wahr
-        return self.handler_order < other.handler_order
+            gib Wahr
+        gib self.handler_order < other.handler_order
 
 
 def add_ordered_mock_handlers(opener, meth_spec):
@@ -454,7 +454,7 @@ def add_ordered_mock_handlers(opener, meth_spec):
 
     defines methods .http_error() und .ftp_open() on one handler, und
     .http_open() on another.  These methods just record their arguments und
-    return Nichts.  Using a tuple instead of a string causes the method to
+    gib Nichts.  Using a tuple instead of a string causes the method to
     perform some action (see MockHandler.handle()), eg:
 
     [["http_error"], [("http_open", "return request")]]
@@ -475,14 +475,14 @@ def add_ordered_mock_handlers(opener, meth_spec):
         count = count + 1
         handlers.append(h)
         opener.add_handler(h)
-    return handlers
+    gib handlers
 
 
 def build_test_opener(*handler_instances):
     opener = OpenerDirector()
     fuer h in handler_instances:
         opener.add_handler(h)
-    return opener
+    gib opener
 
 
 klasse MockHTTPHandler(urllib.request.HTTPHandler):
@@ -493,7 +493,7 @@ klasse MockHTTPHandler(urllib.request.HTTPHandler):
         self.httpconn = MockHTTPClass()
 
     def http_open(self, req):
-        return self.do_open(self.httpconn, req)
+        gib self.do_open(self.httpconn, req)
 
 
 klasse MockHTTPHandlerRedirect(urllib.request.BaseHandler):
@@ -516,12 +516,12 @@ klasse MockHTTPHandlerRedirect(urllib.request.BaseHandler):
             self._count = self._count + 1
             name = http.client.responses[self.code]
             msg = email.message_from_string(self.headers)
-            return self.parent.error(
+            gib self.parent.error(
                 "http", req, MockFile(), self.code, name, msg)
         sonst:
             self.req = req
             msg = email.message_from_string("\r\n\r\n")
-            return MockResponse(200, "OK", msg, "", req.get_full_url())
+            gib MockResponse(200, "OK", msg, "", req.get_full_url())
 
 
 wenn hasattr(http.client, 'HTTPSConnection'):
@@ -534,7 +534,7 @@ wenn hasattr(http.client, 'HTTPSConnection'):
             self.httpconn = MockHTTPClass()
 
         def https_open(self, req):
-            return self.do_open(self.httpconn, req)
+            gib self.do_open(self.httpconn, req)
 
 
 klasse MockHTTPHandlerCheckAuth(urllib.request.BaseHandler):
@@ -552,7 +552,7 @@ klasse MockHTTPHandlerCheckAuth(urllib.request.BaseHandler):
         wenn req.has_header('Authorization'):
             self.has_auth_header = Wahr
         name = http.client.responses[self.code]
-        return MockResponse(self.code, name, MockFile(), "", req.get_full_url())
+        gib MockResponse(self.code, name, MockFile(), "", req.get_full_url())
 
 
 
@@ -566,7 +566,7 @@ klasse MockPasswordManager:
     def find_user_password(self, realm, authuri):
         self.target_realm = realm
         self.target_url = authuri
-        return self.user, self.password
+        gib self.user, self.password
 
 
 klasse OpenerDirectorTests(unittest.TestCase):
@@ -615,7 +615,7 @@ klasse OpenerDirectorTests(unittest.TestCase):
         # non-Nichts.  Handlers without .http_open() never get any methods called
         # on them.
         # In fact, second mock handler defining .http_open() returns self
-        # (instead of response), which becomes the OpenerDirector's return
+        # (instead of response), which becomes the OpenerDirector's gib
         # value.
         self.assertEqual(r, handlers[2])
         calls = [(handlers[0], "http_open"), (handlers[2], "http_open")]
@@ -723,7 +723,7 @@ klasse HandlerTests(unittest.TestCase):
 
             def retrfile(self, filename, filetype):
                 self.filename, self.filetype = filename, filetype
-                return io.StringIO(self.data), len(self.data)
+                gib io.StringIO(self.data), len(self.data)
 
             def close(self):
                 pass
@@ -738,7 +738,7 @@ klasse HandlerTests(unittest.TestCase):
                 self.host, self.port = host, port
                 self.dirs = dirs
                 self.ftpwrapper = MockFTPWrapper(self.data)
-                return self.ftpwrapper
+                gib self.ftpwrapper
 
         data = "rheum rhaponicum"
         h = NullFTPHandler(data)
@@ -1042,7 +1042,7 @@ klasse HandlerTests(unittest.TestCase):
         o = h.parent = MockOpener()
 
         def iterable_body():
-            yield b"one"
+            liefere b"one"
 
         fuer headers in {}, {"Content-Length": 11}:
             req = Request("http://example.com/", iterable_body(), headers)
@@ -1397,7 +1397,7 @@ klasse HandlerTests(unittest.TestCase):
                     b'\r\n'
                     b'123'
                 )
-                return result
+                gib result
         handler = Handler()
         opener = urllib.request.build_opener(handler)
         tests = (
@@ -1648,7 +1648,7 @@ klasse HandlerTests(unittest.TestCase):
     def test_basic_and_digest_auth_handlers(self):
         # HTTPDigestAuthHandler raised an exception wenn it couldn't handle a 40*
         # response (https://bugs.python.org/issue1479302), where it should instead
-        # return Nichts to allow another handler (especially
+        # gib Nichts to allow another handler (especially
         # HTTPBasicAuthHandler) to handle the response.
 
         # Also (https://bugs.python.org/issue14797027, RFC 2617 section 1.2), we must
@@ -1754,7 +1754,7 @@ klasse HandlerTests(unittest.TestCase):
 
     def test_basic_prior_auth_auto_send(self):
         # Assume already authenticated wenn is_authenticated=Wahr
-        # fuer APIs like Github that don't return 401
+        # fuer APIs like Github that don't gib 401
 
         user, password = "wile", "coyote"
         request_url = "http://acme.example.com/protected"

@@ -53,7 +53,7 @@ def header_length(bytearray):
     n = groups_of_3 * 4
     wenn leftover:
         n += 4
-    return n
+    gib n
 
 
 def header_encode(header_bytes, charset='iso-8859-1'):
@@ -63,11 +63,11 @@ def header_encode(header_bytes, charset='iso-8859-1'):
     to iso-8859-1.  Base64 encoding is defined in RFC 2045.
     """
     wenn nicht header_bytes:
-        return ""
+        gib ""
     wenn isinstance(header_bytes, str):
         header_bytes = header_bytes.encode(charset)
     encoded = b64encode(header_bytes).decode("ascii")
-    return '=?%s?b?%s?=' % (charset, encoded)
+    gib '=?%s?b?%s?=' % (charset, encoded)
 
 
 def body_encode(s, maxlinelen=76, eol=NL):
@@ -81,7 +81,7 @@ def body_encode(s, maxlinelen=76, eol=NL):
     in an email.
     """
     wenn nicht s:
-        return ""
+        gib ""
 
     encvec = []
     max_unencoded = maxlinelen * 3 // 4
@@ -92,7 +92,7 @@ def body_encode(s, maxlinelen=76, eol=NL):
         wenn enc.endswith(NL) und eol != NL:
             enc = enc[:-1] + eol
         encvec.append(enc)
-    return EMPTYSTRING.join(encvec)
+    gib EMPTYSTRING.join(encvec)
 
 
 def decode(string):
@@ -103,11 +103,11 @@ def decode(string):
     level email.header klasse fuer that functionality.
     """
     wenn nicht string:
-        return bytes()
+        gib bytes()
     sowenn isinstance(string, str):
-        return a2b_base64(string.encode('raw-unicode-escape'))
+        gib a2b_base64(string.encode('raw-unicode-escape'))
     sonst:
-        return a2b_base64(string)
+        gib a2b_base64(string)
 
 
 # For convenience und backwards compatibility w/ standard base64 module

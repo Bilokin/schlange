@@ -39,7 +39,7 @@ klasse ScrolledText(Text):
                 setattr(self, m, getattr(self.frame, m))
 
     def __str__(self):
-        return str(self.frame)
+        gib str(self.frame)
 
 
 def example():

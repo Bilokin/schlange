@@ -69,19 +69,19 @@ heapq = Nichts  # Lazily imported
 klasse _OrderedDictKeysView(_collections_abc.KeysView):
 
     def __reversed__(self):
-        yield von reversed(self._mapping)
+        liefere von reversed(self._mapping)
 
 klasse _OrderedDictItemsView(_collections_abc.ItemsView):
 
     def __reversed__(self):
         fuer key in reversed(self._mapping):
-            yield (key, self._mapping[key])
+            liefere (key, self._mapping[key])
 
 klasse _OrderedDictValuesView(_collections_abc.ValuesView):
 
     def __reversed__(self):
         fuer key in reversed(self._mapping):
-            yield self._mapping[key]
+            liefere self._mapping[key]
 
 klasse _Link(object):
     __slots__ = 'prev', 'next', 'key', '__weakref__'
@@ -108,7 +108,7 @@ klasse OrderedDict(dict):
         self.__root = root = _proxy(self.__hardroot)
         root.prev = root.next = root
         self.__map = {}
-        return self
+        gib self
 
     def __init__(self, other=(), /, **kwds):
         '''Initialize an ordered dictionary.  The signature is the same as
@@ -149,7 +149,7 @@ klasse OrderedDict(dict):
         root = self.__root
         curr = root.next
         waehrend curr is nicht root:
-            yield curr.key
+            liefere curr.key
             curr = curr.next
 
     def __reversed__(self):
@@ -158,7 +158,7 @@ klasse OrderedDict(dict):
         root = self.__root
         curr = root.prev
         waehrend curr is nicht root:
-            yield curr.key
+            liefere curr.key
             curr = curr.prev
 
     def clear(self):
@@ -169,7 +169,7 @@ klasse OrderedDict(dict):
         dict.clear(self)
 
     def popitem(self, last=Wahr):
-        '''Remove und return a (key, value) pair von the dictionary.
+        '''Remove und gib a (key, value) pair von the dictionary.
 
         Pairs are returned in LIFO order wenn last is true oder FIFO order wenn false.
         '''
@@ -189,7 +189,7 @@ klasse OrderedDict(dict):
         key = link.key
         del self.__map[key]
         value = dict.pop(self, key)
-        return key, value
+        gib key, value
 
     def move_to_end(self, key, last=Wahr):
         '''Move an existing element to the end (or beginning wenn last is false).
@@ -223,28 +223,28 @@ klasse OrderedDict(dict):
         size += sizeof(self.__map) * 2          # internal dict und inherited dict
         size += sizeof(self.__hardroot) * n     # link objects
         size += sizeof(self.__root) * n         # proxy objects
-        return size
+        gib size
 
     update = __update = _collections_abc.MutableMapping.update
 
     def keys(self):
         "D.keys() -> a set-like object providing a view on D's keys"
-        return _OrderedDictKeysView(self)
+        gib _OrderedDictKeysView(self)
 
     def items(self):
         "D.items() -> a set-like object providing a view on D's items"
-        return _OrderedDictItemsView(self)
+        gib _OrderedDictItemsView(self)
 
     def values(self):
         "D.values() -> an object providing a view on D's values"
-        return _OrderedDictValuesView(self)
+        gib _OrderedDictValuesView(self)
 
     __ne__ = _collections_abc.MutableMapping.__ne__
 
     __marker = object()
 
     def pop(self, key, default=__marker):
-        '''od.pop(k[,d]) -> v, remove specified key und return the corresponding
+        '''od.pop(k[,d]) -> v, remove specified key und gib the corresponding
         value.  If key is nicht found, d is returned wenn given, otherwise KeyError
         is raised.
 
@@ -260,10 +260,10 @@ klasse OrderedDict(dict):
             link_next.prev = link_prev
             link.prev = Nichts
             link.next = Nichts
-            return result
+            gib result
         wenn default is marker:
             raise KeyError(key)
-        return default
+        gib default
 
     def setdefault(self, key, default=Nichts):
         '''Insert key mit a value of default wenn key is nicht in the dictionary.
@@ -271,16 +271,16 @@ klasse OrderedDict(dict):
         Return the value fuer key wenn key is in the dictionary, sonst default.
         '''
         wenn key in self:
-            return self[key]
+            gib self[key]
         self[key] = default
-        return default
+        gib default
 
     @_recursive_repr()
     def __repr__(self):
         'od.__repr__() <==> repr(od)'
         wenn nicht self:
-            return '%s()' % (self.__class__.__name__,)
-        return '%s(%r)' % (self.__class__.__name__, dict(self.items()))
+            gib '%s()' % (self.__class__.__name__,)
+        gib '%s(%r)' % (self.__class__.__name__, dict(self.items()))
 
     def __reduce__(self):
         'Return state information fuer pickling'
@@ -299,11 +299,11 @@ klasse OrderedDict(dict):
                 state = state, slots
             sonst:
                 state = state oder Nichts
-        return self.__class__, (), state, Nichts, iter(self.items())
+        gib self.__class__, (), state, Nichts, iter(self.items())
 
     def copy(self):
         'od.copy() -> a shallow copy of od'
-        return self.__class__(self)
+        gib self.__class__(self)
 
     @classmethod
     def fromkeys(cls, iterable, value=Nichts):
@@ -312,7 +312,7 @@ klasse OrderedDict(dict):
         self = cls()
         fuer key in iterable:
             self[key] = value
-        return self
+        gib self
 
     def __eq__(self, other):
         '''od.__eq__(y) <==> od==y.  Comparison to another OD is order-sensitive
@@ -320,26 +320,26 @@ klasse OrderedDict(dict):
 
         '''
         wenn isinstance(other, OrderedDict):
-            return dict.__eq__(self, other) und all(map(_eq, self, other))
-        return dict.__eq__(self, other)
+            gib dict.__eq__(self, other) und all(map(_eq, self, other))
+        gib dict.__eq__(self, other)
 
     def __ior__(self, other):
         self.update(other)
-        return self
+        gib self
 
     def __or__(self, other):
         wenn nicht isinstance(other, dict):
-            return NotImplemented
+            gib NotImplemented
         new = self.__class__(self)
         new.update(other)
-        return new
+        gib new
 
     def __ror__(self, other):
         wenn nicht isinstance(other, dict):
-            return NotImplemented
+            gib NotImplemented
         new = self.__class__(other)
         new.update(self)
-        return new
+        gib new
 
 
 try:
@@ -455,7 +455,7 @@ def namedtuple(typename, field_names, *, rename=Falsch, defaults=Nichts, module=
         result = tuple_new(cls, iterable)
         wenn _len(result) != num_fields:
             raise TypeError(f'Expected {num_fields} arguments, got {len(result)}')
-        return result
+        gib result
 
     _make.__func__.__doc__ = (f'Make a new {typename} object von a sequence '
                               'or iterable')
@@ -464,22 +464,22 @@ def namedtuple(typename, field_names, *, rename=Falsch, defaults=Nichts, module=
         result = self._make(_map(kwds.pop, field_names, self))
         wenn kwds:
             raise TypeError(f'Got unexpected field names: {list(kwds)!r}')
-        return result
+        gib result
 
     _replace.__doc__ = (f'Return a new {typename} object replacing specified '
                         'fields mit new values')
 
     def __repr__(self):
         'Return a nicely formatted representation string'
-        return self.__class__.__name__ + repr_fmt % self
+        gib self.__class__.__name__ + repr_fmt % self
 
     def _asdict(self):
         'Return a new dict which maps field names to their values.'
-        return _dict(_zip(self._fields, self))
+        gib _dict(_zip(self._fields, self))
 
     def __getnewargs__(self):
         'Return self als a plain tuple.  Used by copy und pickle.'
-        return _tuple(self)
+        gib _tuple(self)
 
     # Modify function metadata to help mit introspection und debugging
     fuer method in (
@@ -530,7 +530,7 @@ def namedtuple(typename, field_names, *, rename=Falsch, defaults=Nichts, module=
     wenn module is nicht Nichts:
         result.__module__ = module
 
-    return result
+    gib result
 
 
 ########################################################################
@@ -616,11 +616,11 @@ klasse Counter(dict):
     def __missing__(self, key):
         'The count of elements nicht in the Counter is zero.'
         # Needed so that self[missing_item] does nicht raise KeyError
-        return 0
+        gib 0
 
     def total(self):
         'Sum of the counts'
-        return sum(self.values())
+        gib sum(self.values())
 
     def most_common(self, n=Nichts):
         '''List the n most common elements und their counts von the most
@@ -632,14 +632,14 @@ klasse Counter(dict):
         '''
         # Emulate Bag.sortedByCount von Smalltalk
         wenn n is Nichts:
-            return sorted(self.items(), key=_itemgetter(1), reverse=Wahr)
+            gib sorted(self.items(), key=_itemgetter(1), reverse=Wahr)
 
         # Lazy importiere to speedup Python startup time
         global heapq
         wenn heapq is Nichts:
             importiere heapq
 
-        return heapq.nlargest(n, self.items(), key=_itemgetter(1))
+        gib heapq.nlargest(n, self.items(), key=_itemgetter(1))
 
     def elements(self):
         '''Iterator over elements repeating each als many times als its count.
@@ -660,7 +660,7 @@ klasse Counter(dict):
 
         '''
         # Emulate Bag.do von Smalltalk und Multiset.begin von C++.
-        return _chain.from_iterable(_starmap(_repeat, self.items()))
+        gib _chain.from_iterable(_starmap(_repeat, self.items()))
 
     # Override dict methods where necessary
 
@@ -739,10 +739,10 @@ klasse Counter(dict):
 
     def copy(self):
         'Return a shallow copy.'
-        return self.__class__(self)
+        gib self.__class__(self)
 
     def __reduce__(self):
-        return self.__class__, (dict(self),)
+        gib self.__class__, (dict(self),)
 
     def __delitem__(self, elem):
         'Like dict.__delitem__() but does nicht raise KeyError fuer missing values.'
@@ -751,14 +751,14 @@ klasse Counter(dict):
 
     def __repr__(self):
         wenn nicht self:
-            return f'{self.__class__.__name__}()'
+            gib f'{self.__class__.__name__}()'
         try:
             # dict() preserves the ordering returned by most_common()
             d = dict(self.most_common())
         except TypeError:
             # handle case where values are nicht orderable
             d = dict(self)
-        return f'{self.__class__.__name__}({d!r})'
+        gib f'{self.__class__.__name__}({d!r})'
 
     # Multiset-style mathematical operations discussed in:
     #       Knuth TAOCP Volume II section 4.6.3 exercise 19
@@ -800,38 +800,38 @@ klasse Counter(dict):
     def __eq__(self, other):
         'Wahr wenn all counts agree. Missing counts are treated als zero.'
         wenn nicht isinstance(other, Counter):
-            return NotImplemented
-        return all(self[e] == other[e] fuer c in (self, other) fuer e in c)
+            gib NotImplemented
+        gib all(self[e] == other[e] fuer c in (self, other) fuer e in c)
 
     def __ne__(self, other):
         'Wahr wenn any counts disagree. Missing counts are treated als zero.'
         wenn nicht isinstance(other, Counter):
-            return NotImplemented
-        return nicht self == other
+            gib NotImplemented
+        gib nicht self == other
 
     def __le__(self, other):
         'Wahr wenn all counts in self are a subset of those in other.'
         wenn nicht isinstance(other, Counter):
-            return NotImplemented
-        return all(self[e] <= other[e] fuer c in (self, other) fuer e in c)
+            gib NotImplemented
+        gib all(self[e] <= other[e] fuer c in (self, other) fuer e in c)
 
     def __lt__(self, other):
         'Wahr wenn all counts in self are a proper subset of those in other.'
         wenn nicht isinstance(other, Counter):
-            return NotImplemented
-        return self <= other und self != other
+            gib NotImplemented
+        gib self <= other und self != other
 
     def __ge__(self, other):
         'Wahr wenn all counts in self are a superset of those in other.'
         wenn nicht isinstance(other, Counter):
-            return NotImplemented
-        return all(self[e] >= other[e] fuer c in (self, other) fuer e in c)
+            gib NotImplemented
+        gib all(self[e] >= other[e] fuer c in (self, other) fuer e in c)
 
     def __gt__(self, other):
         'Wahr wenn all counts in self are a proper superset of those in other.'
         wenn nicht isinstance(other, Counter):
-            return NotImplemented
-        return self >= other und self != other
+            gib NotImplemented
+        gib self >= other und self != other
 
     def __add__(self, other):
         '''Add counts von two counters.
@@ -841,7 +841,7 @@ klasse Counter(dict):
 
         '''
         wenn nicht isinstance(other, Counter):
-            return NotImplemented
+            gib NotImplemented
         result = Counter()
         fuer elem, count in self.items():
             newcount = count + other[elem]
@@ -850,7 +850,7 @@ klasse Counter(dict):
         fuer elem, count in other.items():
             wenn elem nicht in self und count > 0:
                 result[elem] = count
-        return result
+        gib result
 
     def __sub__(self, other):
         ''' Subtract count, but keep only results mit positive counts.
@@ -860,7 +860,7 @@ klasse Counter(dict):
 
         '''
         wenn nicht isinstance(other, Counter):
-            return NotImplemented
+            gib NotImplemented
         result = Counter()
         fuer elem, count in self.items():
             newcount = count - other[elem]
@@ -869,7 +869,7 @@ klasse Counter(dict):
         fuer elem, count in other.items():
             wenn elem nicht in self und count < 0:
                 result[elem] = 0 - count
-        return result
+        gib result
 
     def __or__(self, other):
         '''Union is the maximum of value in either of the input counters.
@@ -879,7 +879,7 @@ klasse Counter(dict):
 
         '''
         wenn nicht isinstance(other, Counter):
-            return NotImplemented
+            gib NotImplemented
         result = Counter()
         fuer elem, count in self.items():
             other_count = other[elem]
@@ -889,7 +889,7 @@ klasse Counter(dict):
         fuer elem, count in other.items():
             wenn elem nicht in self und count > 0:
                 result[elem] = count
-        return result
+        gib result
 
     def __and__(self, other):
         ''' Intersection is the minimum of corresponding counts.
@@ -899,14 +899,14 @@ klasse Counter(dict):
 
         '''
         wenn nicht isinstance(other, Counter):
-            return NotImplemented
+            gib NotImplemented
         result = Counter()
         fuer elem, count in self.items():
             other_count = other[elem]
             newcount = count wenn count < other_count sonst other_count
             wenn newcount > 0:
                 result[elem] = newcount
-        return result
+        gib result
 
     def __pos__(self):
         'Adds an empty counter, effectively stripping negative und zero counts'
@@ -914,7 +914,7 @@ klasse Counter(dict):
         fuer elem, count in self.items():
             wenn count > 0:
                 result[elem] = count
-        return result
+        gib result
 
     def __neg__(self):
         '''Subtracts von an empty counter.  Strips positive und zero counts,
@@ -925,14 +925,14 @@ klasse Counter(dict):
         fuer elem, count in self.items():
             wenn count < 0:
                 result[elem] = 0 - count
-        return result
+        gib result
 
     def _keep_positive(self):
         '''Internal method to strip elements mit a negative oder zero count'''
         nonpositive = [elem fuer elem, count in self.items() wenn nicht count > 0]
         fuer elem in nonpositive:
             del self[elem]
-        return self
+        gib self
 
     def __iadd__(self, other):
         '''Inplace add von another counter, keeping only positive counts.
@@ -945,7 +945,7 @@ klasse Counter(dict):
         '''
         fuer elem, count in other.items():
             self[elem] += count
-        return self._keep_positive()
+        gib self._keep_positive()
 
     def __isub__(self, other):
         '''Inplace subtract counter, but keep only results mit positive counts.
@@ -958,7 +958,7 @@ klasse Counter(dict):
         '''
         fuer elem, count in other.items():
             self[elem] -= count
-        return self._keep_positive()
+        gib self._keep_positive()
 
     def __ior__(self, other):
         '''Inplace union is the maximum of value von either counter.
@@ -973,7 +973,7 @@ klasse Counter(dict):
             count = self[elem]
             wenn other_count > count:
                 self[elem] = other_count
-        return self._keep_positive()
+        gib self._keep_positive()
 
     def __iand__(self, other):
         '''Inplace intersection is the minimum of corresponding counts.
@@ -988,7 +988,7 @@ klasse Counter(dict):
             other_count = other[elem]
             wenn other_count < count:
                 self[elem] = other_count
-        return self._keep_positive()
+        gib self._keep_positive()
 
 
 ########################################################################
@@ -1022,44 +1022,44 @@ klasse ChainMap(_collections_abc.MutableMapping):
     def __getitem__(self, key):
         fuer mapping in self.maps:
             try:
-                return mapping[key]             # can't use 'key in mapping' mit defaultdict
+                gib mapping[key]             # can't use 'key in mapping' mit defaultdict
             except KeyError:
                 pass
-        return self.__missing__(key)            # support subclasses that define __missing__
+        gib self.__missing__(key)            # support subclasses that define __missing__
 
     def get(self, key, default=Nichts):
-        return self[key] wenn key in self sonst default    # needs to make use of __contains__
+        gib self[key] wenn key in self sonst default    # needs to make use of __contains__
 
     def __len__(self):
-        return len(set().union(*self.maps))     # reuses stored hash values wenn possible
+        gib len(set().union(*self.maps))     # reuses stored hash values wenn possible
 
     def __iter__(self):
         d = {}
         fuer mapping in map(dict.fromkeys, reversed(self.maps)):
             d |= mapping                        # reuses stored hash values wenn possible
-        return iter(d)
+        gib iter(d)
 
     def __contains__(self, key):
         fuer mapping in self.maps:
             wenn key in mapping:
-                return Wahr
-        return Falsch
+                gib Wahr
+        gib Falsch
 
     def __bool__(self):
-        return any(self.maps)
+        gib any(self.maps)
 
     @_recursive_repr()
     def __repr__(self):
-        return f'{self.__class__.__name__}({", ".join(map(repr, self.maps))})'
+        gib f'{self.__class__.__name__}({", ".join(map(repr, self.maps))})'
 
     @classmethod
     def fromkeys(cls, iterable, value=Nichts, /):
         'Create a new ChainMap mit keys von iterable und values set to value.'
-        return cls(dict.fromkeys(iterable, value))
+        gib cls(dict.fromkeys(iterable, value))
 
     def copy(self):
         'New ChainMap oder subclass mit a new copy of maps[0] und refs to maps[1:]'
-        return self.__class__(self.maps[0].copy(), *self.maps[1:])
+        gib self.__class__(self.maps[0].copy(), *self.maps[1:])
 
     __copy__ = copy
 
@@ -1072,12 +1072,12 @@ klasse ChainMap(_collections_abc.MutableMapping):
             m = kwargs
         sowenn kwargs:
             m.update(kwargs)
-        return self.__class__(m, *self.maps)
+        gib self.__class__(m, *self.maps)
 
     @property
     def parents(self):                          # like Django's Context.pop()
         'New ChainMap von maps[1:].'
-        return self.__class__(*self.maps[1:])
+        gib self.__class__(*self.maps[1:])
 
     def __setitem__(self, key, value):
         self.maps[0][key] = value
@@ -1089,16 +1089,16 @@ klasse ChainMap(_collections_abc.MutableMapping):
             raise KeyError(f'Key nicht found in the first mapping: {key!r}')
 
     def popitem(self):
-        'Remove und return an item pair von maps[0]. Raise KeyError is maps[0] is empty.'
+        'Remove und gib an item pair von maps[0]. Raise KeyError is maps[0] is empty.'
         try:
-            return self.maps[0].popitem()
+            gib self.maps[0].popitem()
         except KeyError:
             raise KeyError('No keys found in the first mapping.')
 
     def pop(self, key, *args):
-        'Remove *key* von maps[0] und return its value. Raise KeyError wenn *key* nicht in maps[0].'
+        'Remove *key* von maps[0] und gib its value. Raise KeyError wenn *key* nicht in maps[0].'
         try:
-            return self.maps[0].pop(key, *args)
+            gib self.maps[0].pop(key, *args)
         except KeyError:
             raise KeyError(f'Key nicht found in the first mapping: {key!r}')
 
@@ -1108,22 +1108,22 @@ klasse ChainMap(_collections_abc.MutableMapping):
 
     def __ior__(self, other):
         self.maps[0].update(other)
-        return self
+        gib self
 
     def __or__(self, other):
         wenn nicht isinstance(other, _collections_abc.Mapping):
-            return NotImplemented
+            gib NotImplemented
         m = self.copy()
         m.maps[0].update(other)
-        return m
+        gib m
 
     def __ror__(self, other):
         wenn nicht isinstance(other, _collections_abc.Mapping):
-            return NotImplemented
+            gib NotImplemented
         m = dict(other)
         fuer child in reversed(self.maps):
             m.update(child)
-        return self.__class__(m)
+        gib self.__class__(m)
 
 
 ################################################################################
@@ -1141,13 +1141,13 @@ klasse UserDict(_collections_abc.MutableMapping):
             self.update(kwargs)
 
     def __len__(self):
-        return len(self.data)
+        gib len(self.data)
 
     def __getitem__(self, key):
         wenn key in self.data:
-            return self.data[key]
+            gib self.data[key]
         wenn hasattr(self.__class__, "__missing__"):
-            return self.__class__.__missing__(self, key)
+            gib self.__class__.__missing__(self, key)
         raise KeyError(key)
 
     def __setitem__(self, key, item):
@@ -1157,54 +1157,54 @@ klasse UserDict(_collections_abc.MutableMapping):
         del self.data[key]
 
     def __iter__(self):
-        return iter(self.data)
+        gib iter(self.data)
 
     # Modify __contains__ und get() to work like dict
     # does when __missing__ is present.
     def __contains__(self, key):
-        return key in self.data
+        gib key in self.data
 
     def get(self, key, default=Nichts):
         wenn key in self:
-            return self[key]
-        return default
+            gib self[key]
+        gib default
 
 
     # Now, add the methods in dicts but nicht in MutableMapping
     def __repr__(self):
-        return repr(self.data)
+        gib repr(self.data)
 
     def __or__(self, other):
         wenn isinstance(other, UserDict):
-            return self.__class__(self.data | other.data)
+            gib self.__class__(self.data | other.data)
         wenn isinstance(other, dict):
-            return self.__class__(self.data | other)
-        return NotImplemented
+            gib self.__class__(self.data | other)
+        gib NotImplemented
 
     def __ror__(self, other):
         wenn isinstance(other, UserDict):
-            return self.__class__(other.data | self.data)
+            gib self.__class__(other.data | self.data)
         wenn isinstance(other, dict):
-            return self.__class__(other | self.data)
-        return NotImplemented
+            gib self.__class__(other | self.data)
+        gib NotImplemented
 
     def __ior__(self, other):
         wenn isinstance(other, UserDict):
             self.data |= other.data
         sonst:
             self.data |= other
-        return self
+        gib self
 
     def __copy__(self):
         inst = self.__class__.__new__(self.__class__)
         inst.__dict__.update(self.__dict__)
         # Create a copy und avoid triggering descriptors
         inst.__dict__["data"] = self.__dict__["data"].copy()
-        return inst
+        gib inst
 
     def copy(self):
         wenn self.__class__ is UserDict:
-            return UserDict(self.data.copy())
+            gib UserDict(self.data.copy())
         importiere copy
         data = self.data
         try:
@@ -1213,14 +1213,14 @@ klasse UserDict(_collections_abc.MutableMapping):
         finally:
             self.data = data
         c.update(self)
-        return c
+        gib c
 
     @classmethod
     def fromkeys(cls, iterable, value=Nichts):
         d = cls()
         fuer key in iterable:
             d[key] = value
-        return d
+        gib d
 
 
 ################################################################################
@@ -1242,37 +1242,37 @@ klasse UserList(_collections_abc.MutableSequence):
                 self.data = list(initlist)
 
     def __repr__(self):
-        return repr(self.data)
+        gib repr(self.data)
 
     def __lt__(self, other):
-        return self.data < self.__cast(other)
+        gib self.data < self.__cast(other)
 
     def __le__(self, other):
-        return self.data <= self.__cast(other)
+        gib self.data <= self.__cast(other)
 
     def __eq__(self, other):
-        return self.data == self.__cast(other)
+        gib self.data == self.__cast(other)
 
     def __gt__(self, other):
-        return self.data > self.__cast(other)
+        gib self.data > self.__cast(other)
 
     def __ge__(self, other):
-        return self.data >= self.__cast(other)
+        gib self.data >= self.__cast(other)
 
     def __cast(self, other):
-        return other.data wenn isinstance(other, UserList) sonst other
+        gib other.data wenn isinstance(other, UserList) sonst other
 
     def __contains__(self, item):
-        return item in self.data
+        gib item in self.data
 
     def __len__(self):
-        return len(self.data)
+        gib len(self.data)
 
     def __getitem__(self, i):
         wenn isinstance(i, slice):
-            return self.__class__(self.data[i])
+            gib self.__class__(self.data[i])
         sonst:
-            return self.data[i]
+            gib self.data[i]
 
     def __setitem__(self, i, item):
         self.data[i] = item
@@ -1282,17 +1282,17 @@ klasse UserList(_collections_abc.MutableSequence):
 
     def __add__(self, other):
         wenn isinstance(other, UserList):
-            return self.__class__(self.data + other.data)
+            gib self.__class__(self.data + other.data)
         sowenn isinstance(other, type(self.data)):
-            return self.__class__(self.data + other)
-        return self.__class__(self.data + list(other))
+            gib self.__class__(self.data + other)
+        gib self.__class__(self.data + list(other))
 
     def __radd__(self, other):
         wenn isinstance(other, UserList):
-            return self.__class__(other.data + self.data)
+            gib self.__class__(other.data + self.data)
         sowenn isinstance(other, type(self.data)):
-            return self.__class__(other + self.data)
-        return self.__class__(list(other) + self.data)
+            gib self.__class__(other + self.data)
+        gib self.__class__(list(other) + self.data)
 
     def __iadd__(self, other):
         wenn isinstance(other, UserList):
@@ -1301,23 +1301,23 @@ klasse UserList(_collections_abc.MutableSequence):
             self.data += other
         sonst:
             self.data += list(other)
-        return self
+        gib self
 
     def __mul__(self, n):
-        return self.__class__(self.data * n)
+        gib self.__class__(self.data * n)
 
     __rmul__ = __mul__
 
     def __imul__(self, n):
         self.data *= n
-        return self
+        gib self
 
     def __copy__(self):
         inst = self.__class__.__new__(self.__class__)
         inst.__dict__.update(self.__dict__)
         # Create a copy und avoid triggering descriptors
         inst.__dict__["data"] = self.__dict__["data"][:]
-        return inst
+        gib inst
 
     def append(self, item):
         self.data.append(item)
@@ -1326,7 +1326,7 @@ klasse UserList(_collections_abc.MutableSequence):
         self.data.insert(i, item)
 
     def pop(self, i=-1):
-        return self.data.pop(i)
+        gib self.data.pop(i)
 
     def remove(self, item):
         self.data.remove(item)
@@ -1335,13 +1335,13 @@ klasse UserList(_collections_abc.MutableSequence):
         self.data.clear()
 
     def copy(self):
-        return self.__class__(self)
+        gib self.__class__(self)
 
     def count(self, item):
-        return self.data.count(item)
+        gib self.data.count(item)
 
     def index(self, item, *args):
-        return self.data.index(item, *args)
+        gib self.data.index(item, *args)
 
     def reverse(self):
         self.data.reverse()
@@ -1371,238 +1371,238 @@ klasse UserString(_collections_abc.Sequence):
             self.data = str(seq)
 
     def __str__(self):
-        return str(self.data)
+        gib str(self.data)
 
     def __repr__(self):
-        return repr(self.data)
+        gib repr(self.data)
 
     def __int__(self):
-        return int(self.data)
+        gib int(self.data)
 
     def __float__(self):
-        return float(self.data)
+        gib float(self.data)
 
     def __complex__(self):
-        return complex(self.data)
+        gib complex(self.data)
 
     def __hash__(self):
-        return hash(self.data)
+        gib hash(self.data)
 
     def __getnewargs__(self):
-        return (self.data[:],)
+        gib (self.data[:],)
 
     def __eq__(self, string):
         wenn isinstance(string, UserString):
-            return self.data == string.data
-        return self.data == string
+            gib self.data == string.data
+        gib self.data == string
 
     def __lt__(self, string):
         wenn isinstance(string, UserString):
-            return self.data < string.data
-        return self.data < string
+            gib self.data < string.data
+        gib self.data < string
 
     def __le__(self, string):
         wenn isinstance(string, UserString):
-            return self.data <= string.data
-        return self.data <= string
+            gib self.data <= string.data
+        gib self.data <= string
 
     def __gt__(self, string):
         wenn isinstance(string, UserString):
-            return self.data > string.data
-        return self.data > string
+            gib self.data > string.data
+        gib self.data > string
 
     def __ge__(self, string):
         wenn isinstance(string, UserString):
-            return self.data >= string.data
-        return self.data >= string
+            gib self.data >= string.data
+        gib self.data >= string
 
     def __contains__(self, char):
         wenn isinstance(char, UserString):
             char = char.data
-        return char in self.data
+        gib char in self.data
 
     def __len__(self):
-        return len(self.data)
+        gib len(self.data)
 
     def __getitem__(self, index):
-        return self.__class__(self.data[index])
+        gib self.__class__(self.data[index])
 
     def __add__(self, other):
         wenn isinstance(other, UserString):
-            return self.__class__(self.data + other.data)
+            gib self.__class__(self.data + other.data)
         sowenn isinstance(other, str):
-            return self.__class__(self.data + other)
-        return self.__class__(self.data + str(other))
+            gib self.__class__(self.data + other)
+        gib self.__class__(self.data + str(other))
 
     def __radd__(self, other):
         wenn isinstance(other, str):
-            return self.__class__(other + self.data)
-        return self.__class__(str(other) + self.data)
+            gib self.__class__(other + self.data)
+        gib self.__class__(str(other) + self.data)
 
     def __mul__(self, n):
-        return self.__class__(self.data * n)
+        gib self.__class__(self.data * n)
 
     __rmul__ = __mul__
 
     def __mod__(self, args):
-        return self.__class__(self.data % args)
+        gib self.__class__(self.data % args)
 
     def __rmod__(self, template):
-        return self.__class__(str(template) % self)
+        gib self.__class__(str(template) % self)
 
     # the following methods are defined in alphabetical order:
     def capitalize(self):
-        return self.__class__(self.data.capitalize())
+        gib self.__class__(self.data.capitalize())
 
     def casefold(self):
-        return self.__class__(self.data.casefold())
+        gib self.__class__(self.data.casefold())
 
     def center(self, width, *args):
-        return self.__class__(self.data.center(width, *args))
+        gib self.__class__(self.data.center(width, *args))
 
     def count(self, sub, start=0, end=_sys.maxsize):
         wenn isinstance(sub, UserString):
             sub = sub.data
-        return self.data.count(sub, start, end)
+        gib self.data.count(sub, start, end)
 
     def removeprefix(self, prefix, /):
         wenn isinstance(prefix, UserString):
             prefix = prefix.data
-        return self.__class__(self.data.removeprefix(prefix))
+        gib self.__class__(self.data.removeprefix(prefix))
 
     def removesuffix(self, suffix, /):
         wenn isinstance(suffix, UserString):
             suffix = suffix.data
-        return self.__class__(self.data.removesuffix(suffix))
+        gib self.__class__(self.data.removesuffix(suffix))
 
     def encode(self, encoding='utf-8', errors='strict'):
         encoding = 'utf-8' wenn encoding is Nichts sonst encoding
         errors = 'strict' wenn errors is Nichts sonst errors
-        return self.data.encode(encoding, errors)
+        gib self.data.encode(encoding, errors)
 
     def endswith(self, suffix, start=0, end=_sys.maxsize):
-        return self.data.endswith(suffix, start, end)
+        gib self.data.endswith(suffix, start, end)
 
     def expandtabs(self, tabsize=8):
-        return self.__class__(self.data.expandtabs(tabsize))
+        gib self.__class__(self.data.expandtabs(tabsize))
 
     def find(self, sub, start=0, end=_sys.maxsize):
         wenn isinstance(sub, UserString):
             sub = sub.data
-        return self.data.find(sub, start, end)
+        gib self.data.find(sub, start, end)
 
     def format(self, /, *args, **kwds):
-        return self.data.format(*args, **kwds)
+        gib self.data.format(*args, **kwds)
 
     def format_map(self, mapping):
-        return self.data.format_map(mapping)
+        gib self.data.format_map(mapping)
 
     def index(self, sub, start=0, end=_sys.maxsize):
-        return self.data.index(sub, start, end)
+        gib self.data.index(sub, start, end)
 
     def isalpha(self):
-        return self.data.isalpha()
+        gib self.data.isalpha()
 
     def isalnum(self):
-        return self.data.isalnum()
+        gib self.data.isalnum()
 
     def isascii(self):
-        return self.data.isascii()
+        gib self.data.isascii()
 
     def isdecimal(self):
-        return self.data.isdecimal()
+        gib self.data.isdecimal()
 
     def isdigit(self):
-        return self.data.isdigit()
+        gib self.data.isdigit()
 
     def isidentifier(self):
-        return self.data.isidentifier()
+        gib self.data.isidentifier()
 
     def islower(self):
-        return self.data.islower()
+        gib self.data.islower()
 
     def isnumeric(self):
-        return self.data.isnumeric()
+        gib self.data.isnumeric()
 
     def isprintable(self):
-        return self.data.isprintable()
+        gib self.data.isprintable()
 
     def isspace(self):
-        return self.data.isspace()
+        gib self.data.isspace()
 
     def istitle(self):
-        return self.data.istitle()
+        gib self.data.istitle()
 
     def isupper(self):
-        return self.data.isupper()
+        gib self.data.isupper()
 
     def join(self, seq):
-        return self.data.join(seq)
+        gib self.data.join(seq)
 
     def ljust(self, width, *args):
-        return self.__class__(self.data.ljust(width, *args))
+        gib self.__class__(self.data.ljust(width, *args))
 
     def lower(self):
-        return self.__class__(self.data.lower())
+        gib self.__class__(self.data.lower())
 
     def lstrip(self, chars=Nichts):
-        return self.__class__(self.data.lstrip(chars))
+        gib self.__class__(self.data.lstrip(chars))
 
     maketrans = str.maketrans
 
     def partition(self, sep):
-        return self.data.partition(sep)
+        gib self.data.partition(sep)
 
     def replace(self, old, new, maxsplit=-1):
         wenn isinstance(old, UserString):
             old = old.data
         wenn isinstance(new, UserString):
             new = new.data
-        return self.__class__(self.data.replace(old, new, maxsplit))
+        gib self.__class__(self.data.replace(old, new, maxsplit))
 
     def rfind(self, sub, start=0, end=_sys.maxsize):
         wenn isinstance(sub, UserString):
             sub = sub.data
-        return self.data.rfind(sub, start, end)
+        gib self.data.rfind(sub, start, end)
 
     def rindex(self, sub, start=0, end=_sys.maxsize):
-        return self.data.rindex(sub, start, end)
+        gib self.data.rindex(sub, start, end)
 
     def rjust(self, width, *args):
-        return self.__class__(self.data.rjust(width, *args))
+        gib self.__class__(self.data.rjust(width, *args))
 
     def rpartition(self, sep):
-        return self.data.rpartition(sep)
+        gib self.data.rpartition(sep)
 
     def rstrip(self, chars=Nichts):
-        return self.__class__(self.data.rstrip(chars))
+        gib self.__class__(self.data.rstrip(chars))
 
     def split(self, sep=Nichts, maxsplit=-1):
-        return self.data.split(sep, maxsplit)
+        gib self.data.split(sep, maxsplit)
 
     def rsplit(self, sep=Nichts, maxsplit=-1):
-        return self.data.rsplit(sep, maxsplit)
+        gib self.data.rsplit(sep, maxsplit)
 
     def splitlines(self, keepends=Falsch):
-        return self.data.splitlines(keepends)
+        gib self.data.splitlines(keepends)
 
     def startswith(self, prefix, start=0, end=_sys.maxsize):
-        return self.data.startswith(prefix, start, end)
+        gib self.data.startswith(prefix, start, end)
 
     def strip(self, chars=Nichts):
-        return self.__class__(self.data.strip(chars))
+        gib self.__class__(self.data.strip(chars))
 
     def swapcase(self):
-        return self.__class__(self.data.swapcase())
+        gib self.__class__(self.data.swapcase())
 
     def title(self):
-        return self.__class__(self.data.title())
+        gib self.__class__(self.data.title())
 
     def translate(self, *args):
-        return self.__class__(self.data.translate(*args))
+        gib self.__class__(self.data.translate(*args))
 
     def upper(self):
-        return self.__class__(self.data.upper())
+        gib self.__class__(self.data.upper())
 
     def zfill(self, width):
-        return self.__class__(self.data.zfill(width))
+        gib self.__class__(self.data.zfill(width))

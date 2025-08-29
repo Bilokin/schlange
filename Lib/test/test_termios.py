@@ -22,7 +22,7 @@ klasse TestFunctions(unittest.TestCase):
         self.bad_fd = tmp.fileno()
 
     def assertRaisesTermiosError(self, err, callable, *args):
-        # Some versions of Android return EACCES when calling termios functions
+        # Some versions of Android gib EACCES when calling termios functions
         # on a regular file.
         errs = [err]
         wenn sys.platform == 'android' und err == errno.ENOTTY:

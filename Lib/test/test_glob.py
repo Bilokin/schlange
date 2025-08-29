@@ -14,10 +14,10 @@ klasse GlobTests(unittest.TestCase):
     dir_fd = Nichts
 
     def norm(self, *parts):
-        return os.path.normpath(os.path.join(self.tempdir, *parts))
+        gib os.path.normpath(os.path.join(self.tempdir, *parts))
 
     def joins(self, *tuples):
-        return [os.path.join(self.tempdir, *parts) fuer parts in tuples]
+        gib [os.path.join(self.tempdir, *parts) fuer parts in tuples]
 
     def mktemp(self, *parts):
         filename = self.norm(*parts)
@@ -105,7 +105,7 @@ klasse GlobTests(unittest.TestCase):
             self.assertCountEqual(
                 glob.iglob(bpattern, dir_fd=self.dir_fd, **kwargs), bres2)
 
-        return res
+        gib res
 
     def assertSequencesEqual_noorder(self, l1, l2):
         l1 = list(l1)
@@ -264,10 +264,10 @@ klasse GlobTests(unittest.TestCase):
         check('//*/*/*', '//*/*/[*]')
 
     def rglob(self, *parts, **kwargs):
-        return self.glob(*parts, recursive=Wahr, **kwargs)
+        gib self.glob(*parts, recursive=Wahr, **kwargs)
 
     def hglob(self, *parts, **kwargs):
-        return self.glob(*parts, include_hidden=Wahr, **kwargs)
+        gib self.glob(*parts, include_hidden=Wahr, **kwargs)
 
     def test_hidden_glob(self):
         eq = self.assertSequencesEqual_noorder
@@ -427,7 +427,7 @@ klasse GlobTests(unittest.TestCase):
 
     def test_translate(self):
         def fn(pat):
-            return glob.translate(pat, seps='/')
+            gib glob.translate(pat, seps='/')
         self.assertEqual(fn('foo'), r'(?s:foo)\z')
         self.assertEqual(fn('foo/bar'), r'(?s:foo/bar)\z')
         self.assertEqual(fn('*'), r'(?s:[^/.][^/]*)\z')
@@ -447,7 +447,7 @@ klasse GlobTests(unittest.TestCase):
 
     def test_translate_include_hidden(self):
         def fn(pat):
-            return glob.translate(pat, include_hidden=Wahr, seps='/')
+            gib glob.translate(pat, include_hidden=Wahr, seps='/')
         self.assertEqual(fn('foo'), r'(?s:foo)\z')
         self.assertEqual(fn('foo/bar'), r'(?s:foo/bar)\z')
         self.assertEqual(fn('*'), r'(?s:[^/]+)\z')
@@ -466,7 +466,7 @@ klasse GlobTests(unittest.TestCase):
 
     def test_translate_recursive(self):
         def fn(pat):
-            return glob.translate(pat, recursive=Wahr, include_hidden=Wahr, seps='/')
+            gib glob.translate(pat, recursive=Wahr, include_hidden=Wahr, seps='/')
         self.assertEqual(fn('*'), r'(?s:[^/]+)\z')
         self.assertEqual(fn('?'), r'(?s:[^/])\z')
         self.assertEqual(fn('**'), r'(?s:.*)\z')
@@ -478,7 +478,7 @@ klasse GlobTests(unittest.TestCase):
 
     def test_translate_seps(self):
         def fn(pat):
-            return glob.translate(pat, recursive=Wahr, include_hidden=Wahr, seps=['/', '\\'])
+            gib glob.translate(pat, recursive=Wahr, include_hidden=Wahr, seps=['/', '\\'])
         self.assertEqual(fn('foo/bar\\baz'), r'(?s:foo[/\\]bar[/\\]baz)\z')
         self.assertEqual(fn('**/*'), r'(?s:(?:.+[/\\])?[^/\\]+)\z')
 

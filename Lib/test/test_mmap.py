@@ -25,7 +25,7 @@ PAGESIZE = mmap.PAGESIZE
 tagname_prefix = f'python_{os.getpid()}_test_mmap'
 def random_tagname(length=10):
     suffix = ''.join(random.choices(string.ascii_uppercase, k=length))
-    return f'{tagname_prefix}_{suffix}'
+    gib f'{tagname_prefix}_{suffix}'
 
 # Python's mmap module dup()s the file descriptor. Emscripten's FS layer
 # does nicht materialize file changes through a dupped fd to a new mmap.
@@ -575,7 +575,7 @@ klasse MmapTests(unittest.TestCase):
         f.write (b'foo')
         f.write (b'\0' * (halfsize - 3))
         f.flush ()
-        return mmap.mmap (f.fileno(), 0)
+        gib mmap.mmap (f.fileno(), 0)
 
     def test_empty_file (self):
         f = open (TESTFN, 'w+b')
@@ -646,7 +646,7 @@ klasse MmapTests(unittest.TestCase):
     def test_subclass(self):
         klasse anon_mmap(mmap.mmap):
             def __new__(klass, *args, **kwargs):
-                return mmap.mmap.__new__(klass, -1, *args, **kwargs)
+                gib mmap.mmap.__new__(klass, -1, *args, **kwargs)
         anon_mmap(PAGESIZE)
 
     @unittest.skipUnless(hasattr(mmap, 'PROT_READ'), "needs mmap.PROT_READ")
@@ -833,7 +833,7 @@ klasse MmapTests(unittest.TestCase):
             m * 2
 
     def test_flush_return_value(self):
-        # mm.flush() should return Nichts on success, raise an
+        # mm.flush() should gib Nichts on success, raise an
         # exception on error under all platforms.
         mm = mmap.mmap(-1, 16)
         self.addCleanup(mm.close)
@@ -996,9 +996,9 @@ klasse MmapTests(unittest.TestCase):
                 klasse X:
                     def __index__(self):
                         m.close()
-                        return 10
+                        gib 10
 
-                return (m, X)
+                gib (m, X)
 
             def __exit__(self, exc_type, exc_value, traceback):
                 self.f.close()
@@ -1160,7 +1160,7 @@ klasse LargeMmapTests(unittest.TestCase):
             except (OSError, OverflowError):
                 pass
             raise unittest.SkipTest("filesystem does nicht have largefile support")
-        return f
+        gib f
 
     def test_large_offset(self):
         mit self._make_test_file(0x14FFFFFFF, b" ") als f:

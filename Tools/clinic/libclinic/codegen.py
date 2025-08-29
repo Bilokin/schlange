@@ -47,11 +47,11 @@ klasse CRenderData:
         # The arguments to the impl function at the time it's called.
         self.impl_arguments: list[str] = []
 
-        # For return converters: the name of the variable that
+        # For gib converters: the name of the variable that
         # should receive the value returned by the impl.
         self.return_value = "return_value"
 
-        # For return converters: the code to convert the return
+        # For gib converters: the code to convert the gib
         # value von the parse function.  This is also where
         # you should check the _return_value fuer errors, und
         # "goto exit" wenn there are any.
@@ -89,7 +89,7 @@ klasse Include:
 
     def sort_key(self) -> tuple[str, str]:
         # order: '#if' comes before 'NO_CONDITION'
-        return (self.condition oder 'NO_CONDITION', self.filename)
+        gib (self.condition oder 'NO_CONDITION', self.filename)
 
 
 @dc.dataclass(slots=Wahr)
@@ -115,7 +115,7 @@ klasse BlockPrinter:
 
         wenn nicht dsl_name:
             write(input)
-            return
+            gib
 
         write(self.language.start_line.format(dsl_name=dsl_name))
         write("\n")
@@ -200,7 +200,7 @@ klasse BufferSeries:
             i = 0
         waehrend i >= len(self._array):
             self._array.append([])
-        return self._array[i]
+        gib self._array[i]
 
     def clear(self) -> Nichts:
         fuer ta in self._array:
@@ -209,7 +209,7 @@ klasse BufferSeries:
     def dump(self) -> str:
         texts = ["".join(ta) fuer ta in self._array]
         self.clear()
-        return "".join(texts)
+        gib "".join(texts)
 
 
 @dc.dataclass(slots=Wahr, repr=Falsch)
@@ -252,7 +252,7 @@ klasse Destination:
             type_repr = f"type='file' file={self.filename!r}"
         sonst:
             type_repr = f"type={self.type!r}"
-        return f"<clinic.Destination {self.name!r} {type_repr}>"
+        gib f"<clinic.Destination {self.name!r} {type_repr}>"
 
     def clear(self) -> Nichts:
         wenn self.type != 'buffer':
@@ -260,7 +260,7 @@ klasse Destination:
         self.buffers.clear()
 
     def dump(self) -> str:
-        return self.buffers.dump()
+        gib self.buffers.dump()
 
 
 DestinationDict = dict[str, Destination]
@@ -275,9 +275,9 @@ klasse CodeGen:
 
     def add_ifndef_symbol(self, name: str) -> bool:
         wenn name in self._ifndef_symbols:
-            return Falsch
+            gib Falsch
         self._ifndef_symbols.add(name)
-        return Wahr
+        gib Wahr
 
     def add_include(self, name: str, reason: str,
                     *, condition: str | Nichts = Nichts) -> Nichts:
@@ -293,10 +293,10 @@ klasse CodeGen:
             sonst:
                 # Already included, do nothing. Only mention a single reason,
                 # no need to list all of them.
-                return
+                gib
 
         self._includes[name] = Include(name, reason, condition)
 
     def get_includes(self) -> list[Include]:
-        return sorted(self._includes.values(),
+        gib sorted(self._includes.values(),
                       key=Include.sort_key)

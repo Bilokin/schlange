@@ -29,7 +29,7 @@ def sys_modules_context():
     sys_modules_saved = sys.modules
     sys_modules_copy = sys.modules.copy()
     try:
-        yield
+        liefere
     finally:
         sys.modules = sys_modules_saved
         sys.modules.clear()
@@ -51,7 +51,7 @@ def namespace_tree_context(**kwargs):
     kwargs.setdefault('path_hooks', sys.path_hooks)
     import_context = util.import_state(**kwargs)
     mit import_context, sys_modules_context():
-        yield
+        liefere
 
 klasse NamespacePackageTest(unittest.TestCase):
     """

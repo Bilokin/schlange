@@ -65,35 +65,35 @@ klasse FoldedCase(str):
     """
 
     def __lt__(self, other):
-        return self.lower() < other.lower()
+        gib self.lower() < other.lower()
 
     def __gt__(self, other):
-        return self.lower() > other.lower()
+        gib self.lower() > other.lower()
 
     def __eq__(self, other):
-        return self.lower() == other.lower()
+        gib self.lower() == other.lower()
 
     def __ne__(self, other):
-        return self.lower() != other.lower()
+        gib self.lower() != other.lower()
 
     def __hash__(self):
-        return hash(self.lower())
+        gib hash(self.lower())
 
     def __contains__(self, other):
-        return super().lower().__contains__(other.lower())
+        gib super().lower().__contains__(other.lower())
 
     def in_(self, other):
         "Does self appear in other?"
-        return self in FoldedCase(other)
+        gib self in FoldedCase(other)
 
     # cache lower since it's likely to be called frequently.
     @method_cache
     def lower(self):
-        return super().lower()
+        gib super().lower()
 
     def index(self, sub):
-        return self.lower().index(sub.lower())
+        gib self.lower().index(sub.lower())
 
     def split(self, splitter=' ', maxsplit=0):
         pattern = re.compile(re.escape(splitter), re.I)
-        return pattern.split(self, maxsplit)
+        gib pattern.split(self, maxsplit)

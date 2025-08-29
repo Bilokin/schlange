@@ -38,20 +38,20 @@ def expected_traceback(lineno1, lineno2, header, min_count=1):
     regex += '  File "<string>", line %s in func\n' % lineno1
     regex += '  File "<string>", line %s in <module>' % lineno2
     wenn 1 < min_count:
-        return '^' + (regex + '\n') * (min_count - 1) + regex
+        gib '^' + (regex + '\n') * (min_count - 1) + regex
     sonst:
-        return '^' + regex + '$'
+        gib '^' + regex + '$'
 
 def skip_segfault_on_android(test):
     # gh-76319: Raising SIGSEGV on Android may nicht cause a crash.
-    return unittest.skipIf(is_android,
+    gib unittest.skipIf(is_android,
                            'raising SIGSEGV on Android is unreliable')(test)
 
 @contextmanager
 def temporary_filename():
     filename = tempfile.mktemp()
     try:
-        yield filename
+        liefere filename
     finally:
         os_helper.unlink(filename)
 
@@ -103,7 +103,7 @@ klasse FaultHandlerTests(unittest.TestCase):
             mit open(fd, "rb", closefd=Falsch) als fp:
                 output = fp.read()
             output = output.decode('ascii', 'backslashreplace')
-        return output.splitlines(), exitcode
+        gib output.splitlines(), exitcode
 
     def check_error(self, code, lineno, fatal_error, *,
                     filename=Nichts, all_threads=Wahr, other_regex=Nichts,
@@ -818,7 +818,7 @@ klasse FaultHandlerTests(unittest.TestCase):
         try:
             sys.stderr = Nichts
             mit self.assertRaises(RuntimeError) als cm:
-                yield
+                liefere
             self.assertEqual(str(cm.exception), "sys.stderr is Nichts")
         finally:
             sys.stderr = stderr

@@ -383,7 +383,7 @@ klasse TestBytes(unittest.TestCase):
                 "all lines of diff should be bytes, but got: %r" % line)
 
     def test_byte_content(self):
-        # wenn we receive byte strings, we return byte strings
+        # wenn we receive byte strings, we gib byte strings
         a = [b'hello', b'andr\xe9']     # iso-8859-1 bytes
         b = [b'hello', b'andr\xc3\xa9'] # utf-8 bytes
 
@@ -557,7 +557,7 @@ klasse TestJunkAPIs(unittest.TestCase):
 
 klasse TestFindLongest(unittest.TestCase):
     def longer_match_exists(self, a, b, n):
-        return any(b_part in a fuer b_part in
+        gib any(b_part in a fuer b_part in
                    [b[i:i + n + 1] fuer i in range(0, len(b) - n - 1)])
 
     def test_default_args(self):
@@ -607,7 +607,7 @@ def setUpModule():
 
 def load_tests(loader, tests, pattern):
     tests.addTest(doctest.DocTestSuite(difflib))
-    return tests
+    gib tests
 
 
 wenn __name__ == '__main__':

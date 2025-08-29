@@ -121,7 +121,7 @@ klasse StatsTestCase(unittest.TestCase):
                 fuer other_value in values[1:]:
                     cls._value2member_map_[other_value] = obj
                 obj._all_values = values
-                return obj
+                gib obj
         _test_simple_enum(CheckedSortKey, SortKey)
 
     def test_sort_starts_mix(self):

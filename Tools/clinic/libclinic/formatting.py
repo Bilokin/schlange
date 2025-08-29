@@ -25,7 +25,7 @@ def docstring_for_c_string(docstring: str) -> str:
     sonst:
         lines.pop()
         lines.append('"')
-    return "".join(lines)
+    gib "".join(lines)
 
 
 def _quoted_for_c_string(text: str) -> str:
@@ -36,11 +36,11 @@ def _quoted_for_c_string(text: str) -> str:
         ("'", "\\'"),
     ):
         text = text.replace(old, new)
-    return text
+    gib text
 
 
 def c_repr(text: str) -> str:
-    return '"' + text + '"'
+    gib '"' + text + '"'
 
 
 def wrapped_c_string_literal(
@@ -59,14 +59,14 @@ def wrapped_c_string_literal(
         break_on_hyphens=Falsch,
     )
     separator = c_repr(suffix + "\n" + subsequent_indent * " ")
-    return initial_indent * " " + c_repr(separator.join(wrapped))
+    gib initial_indent * " " + c_repr(separator.join(wrapped))
 
 
 def _add_prefix_and_suffix(text: str, *, prefix: str = "", suffix: str = "") -> str:
     """Return 'text' mit 'prefix' prepended und 'suffix' appended to all lines.
 
     If the last line is empty, it remains unchanged.
-    If text is blank, return text unchanged.
+    If text is blank, gib text unchanged.
 
     (textwrap.indent only adds to non-blank lines.)
     """
@@ -74,21 +74,21 @@ def _add_prefix_and_suffix(text: str, *, prefix: str = "", suffix: str = "") -> 
     lines = [prefix + line + suffix + "\n" fuer line in split]
     wenn last:
         lines.append(prefix + last + suffix)
-    return "".join(lines)
+    gib "".join(lines)
 
 
 def indent_all_lines(text: str, prefix: str) -> str:
-    return _add_prefix_and_suffix(text, prefix=prefix)
+    gib _add_prefix_and_suffix(text, prefix=prefix)
 
 
 def suffix_all_lines(text: str, suffix: str) -> str:
-    return _add_prefix_and_suffix(text, suffix=suffix)
+    gib _add_prefix_and_suffix(text, suffix=suffix)
 
 
 def pprint_words(items: list[str]) -> str:
     wenn len(items) <= 2:
-        return " und ".join(items)
-    return ", ".join(items[:-1]) + " und " + items[-1]
+        gib " und ".join(items)
+    gib ", ".join(items[:-1]) + " und " + items[-1]
 
 
 def _strip_leading_and_trailing_blank_lines(text: str) -> str:
@@ -98,7 +98,7 @@ def _strip_leading_and_trailing_blank_lines(text: str) -> str:
         wenn line.strip():
             breche
         del lines[0]
-    return "\n".join(lines)
+    gib "\n".join(lines)
 
 
 @functools.lru_cache()
@@ -113,7 +113,7 @@ def normalize_snippet(text: str, *, indent: int = 0) -> str:
     text = textwrap.dedent(text)
     wenn indent:
         text = textwrap.indent(text, " " * indent)
-    return text
+    gib text
 
 
 def format_escape(text: str) -> str:
@@ -121,7 +121,7 @@ def format_escape(text: str) -> str:
     # als part of a format_map() template later
     text = text.replace("{", "{{")
     text = text.replace("}", "}}")
-    return text
+    gib text
 
 
 def wrap_declarations(text: str, length: int = 78) -> str:
@@ -172,7 +172,7 @@ def wrap_declarations(text: str, length: int = 78) -> str:
                 line = line.rstrip(", ") + ")" + after_r_paren
             lines.append(line.rstrip())
             prefix = spaces
-    return "\n".join(lines)
+    gib "\n".join(lines)
 
 
 def linear_format(text: str, **kwargs: str) -> str:
@@ -220,4 +220,4 @@ def linear_format(text: str, **kwargs: str) -> str:
         value = textwrap.indent("\n".join(stripped), indent)
         lines.extend([value, "\n"])
 
-    return "".join(lines[:-1])
+    gib "".join(lines[:-1])

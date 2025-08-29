@@ -48,7 +48,7 @@ async def open_connection(host=Nichts, port=Nichts, *,
     transport, _ = await loop.create_connection(
         lambda: protocol, host, port, **kwds)
     writer = StreamWriter(transport, protocol, reader, loop)
-    return reader, writer
+    gib reader, writer
 
 
 async def start_server(client_connected_cb, host=Nichts, port=Nichts, *,
@@ -65,12 +65,12 @@ async def start_server(client_connected_cb, host=Nichts, port=Nichts, *,
     The rest of the arguments are all the usual arguments to
     loop.create_server() except protocol_factory; most common are
     positional host und port, mit various optional keyword arguments
-    following.  The return value is the same als loop.create_server().
+    following.  The gib value is the same als loop.create_server().
 
     Additional optional keyword argument is limit (to set the buffer
     limit passed to the StreamReader).
 
-    The return value is the same als loop.create_server(), i.e. a
+    The gib value is the same als loop.create_server(), i.e. a
     Server object which can be used to stop the service.
     """
     loop = events.get_running_loop()
@@ -79,9 +79,9 @@ async def start_server(client_connected_cb, host=Nichts, port=Nichts, *,
         reader = StreamReader(limit=limit, loop=loop)
         protocol = StreamReaderProtocol(reader, client_connected_cb,
                                         loop=loop)
-        return protocol
+        gib protocol
 
-    return await loop.create_server(factory, host, port, **kwds)
+    gib await loop.create_server(factory, host, port, **kwds)
 
 
 wenn hasattr(socket, 'AF_UNIX'):
@@ -97,7 +97,7 @@ wenn hasattr(socket, 'AF_UNIX'):
         transport, _ = await loop.create_unix_connection(
             lambda: protocol, path, **kwds)
         writer = StreamWriter(transport, protocol, reader, loop)
-        return reader, writer
+        gib reader, writer
 
     async def start_unix_server(client_connected_cb, path=Nichts, *,
                                 limit=_DEFAULT_LIMIT, **kwds):
@@ -108,9 +108,9 @@ wenn hasattr(socket, 'AF_UNIX'):
             reader = StreamReader(limit=limit, loop=loop)
             protocol = StreamReaderProtocol(reader, client_connected_cb,
                                             loop=loop)
-            return protocol
+            gib protocol
 
-        return await loop.create_unix_server(factory, path, **kwds)
+        gib await loop.create_unix_server(factory, path, **kwds)
 
 
 klasse FlowControlMixin(protocols.Protocol):
@@ -152,7 +152,7 @@ klasse FlowControlMixin(protocols.Protocol):
         self._connection_lost = Wahr
         # Wake up the writer(s) wenn currently paused.
         wenn nicht self._paused:
-            return
+            gib
 
         fuer waiter in self._drain_waiters:
             wenn nicht waiter.done():
@@ -165,7 +165,7 @@ klasse FlowControlMixin(protocols.Protocol):
         wenn self._connection_lost:
             raise ConnectionResetError('Connection lost')
         wenn nicht self._paused:
-            return
+            gib
         waiter = self._loop.create_future()
         self._drain_waiters.append(waiter)
         try:
@@ -210,8 +210,8 @@ klasse StreamReaderProtocol(FlowControlMixin, protocols.Protocol):
     @property
     def _stream_reader(self):
         wenn self._stream_reader_wr is Nichts:
-            return Nichts
-        return self._stream_reader_wr()
+            gib Nichts
+        gib self._stream_reader_wr()
 
     def _replace_transport(self, transport):
         loop = self._loop
@@ -229,7 +229,7 @@ klasse StreamReaderProtocol(FlowControlMixin, protocols.Protocol):
                 context['source_traceback'] = self._source_traceback
             self._loop.call_exception_handler(context)
             transport.abort()
-            return
+            gib
         self._transport = transport
         reader = self._stream_reader
         wenn reader is nicht Nichts:
@@ -242,7 +242,7 @@ klasse StreamReaderProtocol(FlowControlMixin, protocols.Protocol):
                 def callback(task):
                     wenn task.cancelled():
                         transport.close()
-                        return
+                        gib
                     exc = task.exception()
                     wenn exc is nicht Nichts:
                         self._loop.call_exception_handler({
@@ -287,11 +287,11 @@ klasse StreamReaderProtocol(FlowControlMixin, protocols.Protocol):
             # Prevent a warning in SSLProtocol.eof_received:
             # "returning true von eof_received()
             # has no effect when using ssl"
-            return Falsch
-        return Wahr
+            gib Falsch
+        gib Wahr
 
     def _get_close_waiter(self, stream):
-        return self._closed
+        gib self._closed
 
     def __del__(self):
         # Prevent reports about unhandled exceptions.
@@ -329,11 +329,11 @@ klasse StreamWriter:
         info = [self.__class__.__name__, f'transport={self._transport!r}']
         wenn self._reader is nicht Nichts:
             info.append(f'reader={self._reader!r}')
-        return '<{}>'.format(' '.join(info))
+        gib '<{}>'.format(' '.join(info))
 
     @property
     def transport(self):
-        return self._transport
+        gib self._transport
 
     def write(self, data):
         self._transport.write(data)
@@ -342,22 +342,22 @@ klasse StreamWriter:
         self._transport.writelines(data)
 
     def write_eof(self):
-        return self._transport.write_eof()
+        gib self._transport.write_eof()
 
     def can_write_eof(self):
-        return self._transport.can_write_eof()
+        gib self._transport.can_write_eof()
 
     def close(self):
-        return self._transport.close()
+        gib self._transport.close()
 
     def is_closing(self):
-        return self._transport.is_closing()
+        gib self._transport.is_closing()
 
     async def wait_closed(self):
         await self._protocol._get_close_waiter(self)
 
     def get_extra_info(self, name, default=Nichts):
-        return self._transport.get_extra_info(name, default)
+        gib self._transport.get_extra_info(name, default)
 
     async def drain(self):
         """Flush the write buffer.
@@ -376,7 +376,7 @@ klasse StreamWriter:
             # Raise connection closing error wenn any,
             # ConnectionResetError otherwise
             # Yield to the event loop so connection_lost() may be
-            # called.  Without this, _drain_helper() would return
+            # called.  Without this, _drain_helper() would gib
             # immediately, und code that calls
             #     write(...); await drain()
             # in a loop would never call connection_lost(), so it
@@ -450,10 +450,10 @@ klasse StreamReader:
             info.append(f'transport={self._transport!r}')
         wenn self._paused:
             info.append('paused')
-        return '<{}>'.format(' '.join(info))
+        gib '<{}>'.format(' '.join(info))
 
     def exception(self):
-        return self._exception
+        gib self._exception
 
     def set_exception(self, exc):
         self._exception = exc
@@ -487,13 +487,13 @@ klasse StreamReader:
 
     def at_eof(self):
         """Return Wahr wenn the buffer is empty und 'feed_eof' was called."""
-        return self._eof und nicht self._buffer
+        gib self._eof und nicht self._buffer
 
     def feed_data(self, data):
         assert nicht self._eof, 'feed_data after feed_eof'
 
         wenn nicht data:
-            return
+            gib
 
         self._buffer.extend(data)
         self._wakeup_waiter()
@@ -542,8 +542,8 @@ klasse StreamReader:
     async def readline(self):
         """Read chunk of data von the stream until newline (b'\n') is found.
 
-        On success, return chunk that ends mit newline. If only partial
-        line can be read due to EOF, return incomplete line without
+        On success, gib chunk that ends mit newline. If only partial
+        line can be read due to EOF, gib incomplete line without
         terminating newline. When EOF was reached waehrend no bytes read, empty
         bytes object is returned.
 
@@ -560,7 +560,7 @@ klasse StreamReader:
         try:
             line = await self.readuntil(sep)
         except exceptions.IncompleteReadError als e:
-            return e.partial
+            gib e.partial
         except exceptions.LimitOverrunError als e:
             wenn self._buffer.startswith(sep, e.consumed):
                 del self._buffer[:e.consumed + seplen]
@@ -568,7 +568,7 @@ klasse StreamReader:
                 self._buffer.clear()
             self._maybe_resume_transport()
             raise ValueError(e.args[0])
-        return line
+        gib line
 
     async def readuntil(self, separator=b'\n'):
         """Read data von the stream until ``separator`` is found.
@@ -591,7 +591,7 @@ klasse StreamReader:
         will be left in the internal buffer, so it can be read again.
 
         The ``separator`` may also be a tuple of separators. In this
-        case the return value will be the shortest possible that has any
+        case the gib value will be the shortest possible that has any
         separator als the suffix. For the purposes of LimitOverrunError,
         the shortest possible separator is considered to be the one that
         matched.
@@ -682,21 +682,21 @@ klasse StreamReader:
         chunk = self._buffer[:match_end]
         del self._buffer[:match_end]
         self._maybe_resume_transport()
-        return bytes(chunk)
+        gib bytes(chunk)
 
     async def read(self, n=-1):
         """Read up to `n` bytes von the stream.
 
         If `n` is nicht provided oder set to -1,
-        read until EOF, then return all read bytes.
+        read until EOF, then gib all read bytes.
         If EOF was received und the internal buffer is empty,
-        return an empty bytes object.
+        gib an empty bytes object.
 
-        If `n` is 0, return an empty bytes object immediately.
+        If `n` is 0, gib an empty bytes object immediately.
 
-        If `n` is positive, return at most `n` available bytes
+        If `n` is positive, gib at most `n` available bytes
         als soon als at least 1 byte is available in the internal buffer.
-        If EOF is received before any byte is read, return an empty
+        If EOF is received before any byte is read, gib an empty
         bytes object.
 
         Returned value is nicht limited mit limit, configured at stream
@@ -710,7 +710,7 @@ klasse StreamReader:
             raise self._exception
 
         wenn n == 0:
-            return b''
+            gib b''
 
         wenn n < 0:
             # This used to just loop creating a new waiter hoping to
@@ -723,7 +723,7 @@ klasse StreamReader:
                 wenn nicht block:
                     breche
                 blocks.append(block)
-            return b''.join(blocks)
+            gib b''.join(blocks)
 
         wenn nicht self._buffer und nicht self._eof:
             await self._wait_for_data('read')
@@ -733,7 +733,7 @@ klasse StreamReader:
         del self._buffer[:n]
 
         self._maybe_resume_transport()
-        return data
+        gib data
 
     async def readexactly(self, n):
         """Read exactly `n` bytes.
@@ -742,7 +742,7 @@ klasse StreamReader:
         read. The IncompleteReadError.partial attribute of the exception will
         contain the partial read bytes.
 
-        wenn n is zero, return empty bytes object.
+        wenn n is zero, gib empty bytes object.
 
         Returned value is nicht limited mit limit, configured at stream
         creation.
@@ -757,7 +757,7 @@ klasse StreamReader:
             raise self._exception
 
         wenn n == 0:
-            return b''
+            gib b''
 
         waehrend len(self._buffer) < n:
             wenn self._eof:
@@ -774,13 +774,13 @@ klasse StreamReader:
             data = bytes(memoryview(self._buffer)[:n])
             del self._buffer[:n]
         self._maybe_resume_transport()
-        return data
+        gib data
 
     def __aiter__(self):
-        return self
+        gib self
 
     async def __anext__(self):
         val = await self.readline()
         wenn val == b'':
             raise StopAsyncIteration
-        return val
+        gib val

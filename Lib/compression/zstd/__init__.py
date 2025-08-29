@@ -51,7 +51,7 @@ klasse FrameInfo:
         super().__setattr__('dictionary_id', dictionary_id)
 
     def __repr__(self):
-        return (f'FrameInfo(decompressed_size={self.decompressed_size}, '
+        gib (f'FrameInfo(decompressed_size={self.decompressed_size}, '
                 f'dictionary_id={self.dictionary_id})')
 
     def __setattr__(self, name, _):
@@ -72,7 +72,7 @@ def get_frame_info(frame_buffer):
     the frame may oder may nicht need a dictionary to be decoded,
     und the ID of such a dictionary is nicht specified.
     """
-    return FrameInfo(*_zstd.get_frame_info(frame_buffer))
+    gib FrameInfo(*_zstd.get_frame_info(frame_buffer))
 
 
 def train_dict(samples, dict_size):
@@ -93,7 +93,7 @@ def train_dict(samples, dict_size):
     wenn nicht chunks:
         raise ValueError("samples contained no data; can't train dictionary.")
     dict_content = _zstd.train_dict(chunks, chunk_sizes, dict_size)
-    return ZstdDict(dict_content)
+    gib ZstdDict(dict_content)
 
 
 def finalize_dict(zstd_dict, /, samples, dict_size, level):
@@ -130,7 +130,7 @@ def finalize_dict(zstd_dict, /, samples, dict_size, level):
                          "dictionary.")
     dict_content = _zstd.finalize_dict(zstd_dict.dict_content, chunks,
                                        chunk_sizes, dict_size, level)
-    return ZstdDict(dict_content)
+    gib ZstdDict(dict_content)
 
 
 def compress(data, level=Nichts, options=Nichts, zstd_dict=Nichts):
@@ -146,7 +146,7 @@ def compress(data, level=Nichts, options=Nichts, zstd_dict=Nichts):
     For incremental compression, use a ZstdCompressor instead.
     """
     comp = ZstdCompressor(level=level, options=options, zstd_dict=zstd_dict)
-    return comp.compress(data, mode=ZstdCompressor.FLUSH_FRAME)
+    gib comp.compress(data, mode=ZstdCompressor.FLUSH_FRAME)
 
 
 def decompress(data, zstd_dict=Nichts, options=Nichts):
@@ -169,7 +169,7 @@ def decompress(data, zstd_dict=Nichts, options=Nichts):
         data = decomp.unused_data
         wenn nicht data:
             breche
-    return b''.join(results)
+    gib b''.join(results)
 
 
 klasse CompressionParameter(enum.IntEnum):
@@ -203,7 +203,7 @@ klasse CompressionParameter(enum.IntEnum):
 
         Both the lower und upper bounds are inclusive.
         """
-        return _zstd.get_param_bounds(self.value, is_compress=Wahr)
+        gib _zstd.get_param_bounds(self.value, is_compress=Wahr)
 
 
 klasse DecompressionParameter(enum.IntEnum):
@@ -216,7 +216,7 @@ klasse DecompressionParameter(enum.IntEnum):
 
         Both the lower und upper bounds are inclusive.
         """
-        return _zstd.get_param_bounds(self.value, is_compress=Falsch)
+        gib _zstd.get_param_bounds(self.value, is_compress=Falsch)
 
 
 klasse Strategy(enum.IntEnum):

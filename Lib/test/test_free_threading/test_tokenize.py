@@ -22,7 +22,7 @@ klasse TestTokenize(unittest.TestCase):
                     tokens.append(tokenize.TokenInfo._make(r))
                     time.sleep(0.03)
                 except StopIteration:
-                    return
+                    gib
 
         threads = []
         fuer _ in range(5):

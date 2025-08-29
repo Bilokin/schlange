@@ -28,13 +28,13 @@ klasse WithIndex:
     def __init__(self, value):
         self.value = value
     def __index__(self):
-        return self.value
+        gib self.value
 
 klasse WithFloat:
     def __init__(self, value):
         self.value = value
     def __float__(self):
-        return self.value
+        gib self.value
 
 klasse ComplexSubclass(complex):
     pass
@@ -47,13 +47,13 @@ klasse MyInt:
         self.value = value
 
     def __int__(self):
-        return self.value
+        gib self.value
 
 klasse WithComplex:
     def __init__(self, value):
         self.value = value
     def __complex__(self):
-        return self.value
+        gib self.value
 
 klasse ComplexTest(ComplexesAreIdenticalMixin, unittest.TestCase):
 
@@ -78,9 +78,9 @@ klasse ComplexTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         wenn abs(x) > abs(y):
             x, y = y, x
         wenn y == 0:
-            return abs(x) < eps
+            gib abs(x) < eps
         wenn x == 0:
-            return abs(y) < eps
+            gib abs(y) < eps
         # check that relative difference < eps
         self.assertWahr(abs((x-y)/y) < eps)
 
@@ -601,7 +601,7 @@ klasse ComplexTest(ComplexesAreIdenticalMixin, unittest.TestCase):
 
         klasse MyInt:
             def __int__(self):
-                return 42
+                gib 42
 
         self.assertRaises(TypeError, complex, MyInt())
         self.assertRaises(TypeError, complex, MyInt(), 1.5)
@@ -610,20 +610,20 @@ klasse ComplexTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         klasse complex0(complex):
             """Test usage of __complex__() when inheriting von 'complex'"""
             def __complex__(self):
-                return 42j
+                gib 42j
 
         klasse complex1(complex):
             """Test usage of __complex__() mit a __new__() method"""
             def __new__(self, value=0j):
-                return complex.__new__(self, 2*value)
+                gib complex.__new__(self, 2*value)
             def __complex__(self):
-                return self
+                gib self
 
         klasse complex2(complex):
             """Make sure that __complex__() calls fail wenn anything other than a
             complex is returned"""
             def __complex__(self):
-                return Nichts
+                gib Nichts
 
         check(complex(complex0(1j)), 0.0, 42.0)
         mit self.assertWarns(DeprecationWarning):

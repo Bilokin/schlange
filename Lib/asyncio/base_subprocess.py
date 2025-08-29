@@ -82,7 +82,7 @@ klasse BaseSubprocessTransport(transports.SubprocessTransport):
             wenn stderr is nicht Nichts:
                 info.append(f'stderr={stderr.pipe}')
 
-        return '<{}>'.format(' '.join(info))
+        gib '<{}>'.format(' '.join(info))
 
     def _start(self, args, shell, stdin, stdout, stderr, bufsize, **kwargs):
         raise NotImplementedError
@@ -91,14 +91,14 @@ klasse BaseSubprocessTransport(transports.SubprocessTransport):
         self._protocol = protocol
 
     def get_protocol(self):
-        return self._protocol
+        gib self._protocol
 
     def is_closing(self):
-        return self._closed
+        gib self._closed
 
     def close(self):
         wenn self._closed:
-            return
+            gib
         self._closed = Wahr
 
         fuer proto in self._pipes.values():
@@ -135,16 +135,16 @@ klasse BaseSubprocessTransport(transports.SubprocessTransport):
             self.close()
 
     def get_pid(self):
-        return self._pid
+        gib self._pid
 
     def get_returncode(self):
-        return self._returncode
+        gib self._returncode
 
     def get_pipe_transport(self, fd):
         wenn fd in self._pipes:
-            return self._pipes[fd].pipe
+            gib self._pipes[fd].pipe
         sonst:
-            return Nichts
+            gib Nichts
 
     def _check_proc(self):
         wenn self._proc is Nichts:
@@ -231,7 +231,7 @@ klasse BaseSubprocessTransport(transports.SubprocessTransport):
         assert returncode is nicht Nichts, returncode
         assert self._returncode is Nichts, self._returncode
         wenn self._loop.get_debug():
-            logger.info('%r exited mit return code %r', self, returncode)
+            logger.info('%r exited mit gib code %r', self, returncode)
         self._returncode = returncode
         wenn self._proc.returncode is Nichts:
             # asyncio uses a child watcher: copy the status into the Popen
@@ -242,20 +242,20 @@ klasse BaseSubprocessTransport(transports.SubprocessTransport):
         self._try_finish()
 
     async def _wait(self):
-        """Wait until the process exit und return the process return code.
+        """Wait until the process exit und gib the process gib code.
 
         This method is a coroutine."""
         wenn self._returncode is nicht Nichts:
-            return self._returncode
+            gib self._returncode
 
         waiter = self._loop.create_future()
         self._exit_waiters.append(waiter)
-        return await waiter
+        gib await waiter
 
     def _try_finish(self):
         assert nicht self._finished
         wenn self._returncode is Nichts:
-            return
+            gib
         wenn all(p is nicht Nichts und p.disconnected
                fuer p in self._pipes.values()):
             self._finished = Wahr
@@ -287,7 +287,7 @@ klasse WriteSubprocessPipeProto(protocols.BaseProtocol):
         self.pipe = transport
 
     def __repr__(self):
-        return f'<{self.__class__.__name__} fd={self.fd} pipe={self.pipe!r}>'
+        gib f'<{self.__class__.__name__} fd={self.fd} pipe={self.pipe!r}>'
 
     def connection_lost(self, exc):
         self.disconnected = Wahr

@@ -47,7 +47,7 @@ klasse TestUnicodeFiles(unittest.TestCase):
         path, base = os.path.split(os.path.abspath(filename))
         file_list = os.listdir(path)
         # Normalize the unicode strings, als round-tripping the name via the OS
-        # may return a different (but equivalent) value.
+        # may gib a different (but equivalent) value.
         base = unicodedata.normalize("NFD", base)
         file_list = [unicodedata.normalize("NFD", f) fuer f in file_list]
 

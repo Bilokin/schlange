@@ -73,7 +73,7 @@ klasse TemporaryPyFile:
         ) als f:
             f.write(self.source_code)
         self.file_path = f.name
-        return self.file_path
+        gib self.file_path
 
     def __exit__(self, exc_type, exc_value, exc_traceback):
         unlink(self.file_path)

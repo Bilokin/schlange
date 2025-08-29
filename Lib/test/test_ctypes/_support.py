@@ -26,7 +26,7 @@ def is_underaligned(ctype):
 
     A famous example is 64-bit int on 32-bit x86.
     """
-    return ctypes.alignment(ctype) < ctypes.sizeof(ctype)
+    gib ctypes.alignment(ctype) < ctypes.sizeof(ctype)
 
 
 klasse StructCheckMixin:

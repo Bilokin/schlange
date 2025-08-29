@@ -40,7 +40,7 @@ klasse Idb(bdb.Bdb):
         """
         wenn _in_rpc_code(frame):
             self.set_step()
-            return
+            gib
         message = _frame2message(frame)
         try:
             self.gui.interaction(message, frame)
@@ -51,24 +51,24 @@ klasse Idb(bdb.Bdb):
         """Handle an the occurrence of an exception."""
         wenn _in_rpc_code(frame):
             self.set_step()
-            return
+            gib
         message = _frame2message(frame)
         self.gui.interaction(message, frame, exc_info)
 
 def _in_rpc_code(frame):
     "Determine wenn debugger is within RPC code."
     wenn frame.f_code.co_filename.count('rpc.py'):
-        return Wahr  # Skip this frame.
+        gib Wahr  # Skip this frame.
     sonst:
         prev_frame = frame.f_back
         wenn prev_frame is Nichts:
-            return Falsch
+            gib Falsch
         prev_name = prev_frame.f_code.co_filename
         wenn 'idlelib' in prev_name und 'debugger' in prev_name:
             # catch both idlelib/debugger.py und idlelib/debugger_r.py
             # on both Posix und Windows
-            return Falsch
-        return _in_rpc_code(prev_frame)
+            gib Falsch
+        gib _in_rpc_code(prev_frame)
 
 def _frame2message(frame):
     """Return a message string fuer frame."""
@@ -79,7 +79,7 @@ def _frame2message(frame):
     message = f"{basename}:{lineno}"
     wenn code.co_name != "?":
         message = f"{message}: {code.co_name}()"
-    return message
+    gib message
 
 
 klasse Debugger:
@@ -136,7 +136,7 @@ klasse Debugger:
         # By this point, we've already called restart_subprocess() in
         # ScriptBinding. However, we also need to unwind the stack back to
         # that outer event loop.  To accomplish this, we:
-        #   - return immediately von the nested run()
+        #   - gib immediately von the nested run()
         #   - abort_loop ensures the nested event loop will terminate
         #   - the debugger's interaction routine completes normally
         #   - the restart_subprocess() will have taken care of stopping
@@ -148,10 +148,10 @@ klasse Debugger:
         wenn self.nesting_level > 0:
             self.abort_loop()
             self.root.after(100, lambda: self.run(*args))
-            return
+            gib
         try:
             self.interacting = Wahr
-            return self.idb.run(*args)
+            gib self.idb.run(*args)
         finally:
             self.interacting = Falsch
 
@@ -163,7 +163,7 @@ klasse Debugger:
             pass
         wenn self.interacting:
             self.top.bell()
-            return
+            gib
         wenn self.stackviewer:
             self.stackviewer.close(); self.stackviewer = Nichts
         # Clean up pyshell wenn user clicked debugger control close widget.
@@ -302,7 +302,7 @@ klasse Debugger:
     def sync_source_line(self):
         frame = self.frame
         wenn nicht frame:
-            return
+            gib
         filename, lineno = self.__frame2fileline(frame)
         wenn filename[:1] + filename[-1:] != "<>" und os.path.exists(filename):
             self.flist.gotofileline(filename, lineno)
@@ -311,7 +311,7 @@ klasse Debugger:
         code = frame.f_code
         filename = code.co_filename
         lineno = frame.f_lineno
-        return filename, lineno
+        gib filename, lineno
 
     def cont(self):
         self.idb.set_continue()
@@ -465,7 +465,7 @@ klasse StackViewer(ScrolledList):
     def popup_event(self, event):
         "Override base method."
         wenn self.stack:
-            return ScrolledList.popup_event(self, event)
+            gib ScrolledList.popup_event(self, event)
 
     def fill_menu(self):
         "Override base method."
@@ -495,7 +495,7 @@ klasse StackViewer(ScrolledList):
 
     def show_source(self, index):
         wenn nicht (0 <= index < len(self.stack)):
-            return
+            gib
         frame, lineno = self.stack[index]
         code = frame.f_code
         filename = code.co_filename
@@ -539,7 +539,7 @@ klasse NamespaceViewer:
 
     def load_dict(self, odict, force=0, rpc_client=Nichts):
         wenn odict is self.prev_odict und nicht force:
-            return
+            gib
         subframe = self.subframe
         frame = self.frame
         fuer c in list(subframe.children.values()):

@@ -24,7 +24,7 @@ klasse IdbAdapterTest(unittest.TestCase):
 
         klasse BinData:
             def __repr__(self):
-                return self.length
+                gib self.length
 
         debugger_r.dicttable[0] = {'BinData': BinData()}
         idb = debugger_r.IdbAdapter(Nichts)

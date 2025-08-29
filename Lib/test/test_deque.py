@@ -13,7 +13,7 @@ BIG = 100000
 
 def fail():
     raise SyntaxError
-    yield 1
+    liefere 1
 
 klasse BadCmp:
     def __eq__(self, other):
@@ -25,7 +25,7 @@ klasse MutateCmp:
         self.result = result
     def __eq__(self, other):
         self.deque.clear()
-        return self.result
+        gib self.result
 
 klasse TestBasic(unittest.TestCase):
 
@@ -114,7 +114,7 @@ klasse TestBasic(unittest.TestCase):
         klasse MutatingCompare:
             def __eq__(self, other):
                 self.d.pop()
-                return Wahr
+                gib Wahr
         m = MutatingCompare()
         d = deque([1, 2, 3, m, 4, 5])
         m.d = d
@@ -170,7 +170,7 @@ klasse TestBasic(unittest.TestCase):
         klasse A:
             def __eq__(self, other):
                 d.clear()
-                return NotImplemented
+                gib NotImplemented
         d = deque([A(), A()])
         mit self.assertRaises(RuntimeError):
             _ = 3 in d
@@ -872,7 +872,7 @@ klasse TestSubclass(unittest.TestCase):
     def test_strange_subclass(self):
         klasse X(deque):
             def __iter__(self):
-                return iter([])
+                gib iter([])
         d1 = X([1,2,3])
         d2 = X([4,5,6])
         d1 == d2   # nicht clear wenn this is supposed to be Wahr oder Falsch,
@@ -886,7 +886,7 @@ klasse TestSubclass(unittest.TestCase):
             pass
         d = X()
         def bad___new__(cls, *args, **kwargs):
-            return [42]
+            gib [42]
         X.__new__ = bad___new__
         mit self.assertRaises(TypeError):
             d * 42  # shouldn't crash
@@ -938,9 +938,9 @@ I
 >>> d.appendleft('f')                # add a new entry to the left side
 >>> d                                # show the representation of the deque
 deque(['f', 'g', 'h', 'i', 'j'])
->>> d.pop()                          # return und remove the rightmost item
+>>> d.pop()                          # gib und remove the rightmost item
 'j'
->>> d.popleft()                      # return und remove the leftmost item
+>>> d.popleft()                      # gib und remove the leftmost item
 'f'
 >>> list(d)                          # list the contents of the deque
 ['g', 'h', 'i']
@@ -993,7 +993,7 @@ deque(['a', 'b', 'd', 'e', 'f'])
 ...     waehrend pending:
 ...         task = pending.popleft()
 ...         try:
-...             yield next(task)
+...             liefere next(task)
 ...         except StopIteration:
 ...             weiter
 ...         pending.append(task)
@@ -1017,7 +1017,7 @@ h
 ...     waehrend len(d) > 1:
 ...         pair = [d.popleft(), d.popleft()]
 ...         d.append(pair)
-...     return list(d)
+...     gib list(d)
 ...
 >>> drucke(maketree('abcdefgh'))
 [[[['a', 'b'], ['c', 'd']], [['e', 'f'], ['g', 'h']]]]
@@ -1031,7 +1031,7 @@ __test__ = {'libreftest' : libreftest}
 
 def load_tests(loader, tests, pattern):
     tests.addTest(doctest.DocTestSuite())
-    return tests
+    gib tests
 
 
 wenn __name__ == "__main__":

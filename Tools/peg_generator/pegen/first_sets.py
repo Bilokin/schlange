@@ -42,7 +42,7 @@ klasse FirstSetCalculator(GrammarVisitor):
     def calculate(self) -> Dict[str, Set[str]]:
         fuer name, rule in self.rules.items():
             self.visit(rule)
-        return self.first_sets
+        gib self.first_sets
 
     def visit_Alt(self, item: Alt) -> Set[str]:
         result: Set[str] = set()
@@ -69,59 +69,59 @@ klasse FirstSetCalculator(GrammarVisitor):
         # Do nicht allow the empty string to propagate.
         result.discard("")
 
-        return result
+        gib result
 
     def visit_Cut(self, item: Cut) -> Set[str]:
-        return set()
+        gib set()
 
     def visit_Group(self, item: Group) -> Set[str]:
-        return self.visit(item.rhs)
+        gib self.visit(item.rhs)
 
     def visit_PositiveLookahead(self, item: Lookahead) -> Set[str]:
-        return self.visit(item.node)
+        gib self.visit(item.node)
 
     def visit_NegativeLookahead(self, item: NegativeLookahead) -> Set[str]:
-        return self.visit(item.node)
+        gib self.visit(item.node)
 
     def visit_NamedItem(self, item: NamedItem) -> Set[str]:
-        return self.visit(item.item)
+        gib self.visit(item.item)
 
     def visit_Opt(self, item: Opt) -> Set[str]:
-        return self.visit(item.node)
+        gib self.visit(item.node)
 
     def visit_Gather(self, item: Gather) -> Set[str]:
-        return self.visit(item.node)
+        gib self.visit(item.node)
 
     def visit_Repeat0(self, item: Repeat0) -> Set[str]:
-        return self.visit(item.node)
+        gib self.visit(item.node)
 
     def visit_Repeat1(self, item: Repeat1) -> Set[str]:
-        return self.visit(item.node)
+        gib self.visit(item.node)
 
     def visit_NameLeaf(self, item: NameLeaf) -> Set[str]:
         wenn item.value nicht in self.rules:
-            return {item.value}
+            gib {item.value}
 
         wenn item.value nicht in self.first_sets:
             self.first_sets[item.value] = self.visit(self.rules[item.value])
-            return self.first_sets[item.value]
+            gib self.first_sets[item.value]
         sowenn item.value in self.in_process:
-            return set()
+            gib set()
 
-        return self.first_sets[item.value]
+        gib self.first_sets[item.value]
 
     def visit_StringLeaf(self, item: StringLeaf) -> Set[str]:
-        return {item.value}
+        gib {item.value}
 
     def visit_Rhs(self, item: Rhs) -> Set[str]:
         result: Set[str] = set()
         fuer alt in item.alts:
             result |= self.visit(alt)
-        return result
+        gib result
 
     def visit_Rule(self, item: Rule) -> Set[str]:
         wenn item.name in self.in_process:
-            return set()
+            gib set()
         sowenn item.name nicht in self.first_sets:
             self.in_process.add(item.name)
             terminals = self.visit(item.rhs)
@@ -129,7 +129,7 @@ klasse FirstSetCalculator(GrammarVisitor):
                 terminals.add("")
             self.first_sets[item.name] = terminals
             self.in_process.remove(item.name)
-        return self.first_sets[item.name]
+        gib self.first_sets[item.name]
 
 
 def main() -> Nichts:

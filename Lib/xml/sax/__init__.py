@@ -73,7 +73,7 @@ def make_parser(parser_list=()):
 
     fuer parser_name in list(parser_list) + default_parser_list:
         try:
-            return _create_parser(parser_name)
+            gib _create_parser(parser_name)
         except ImportError:
             importiere sys
             wenn parser_name in sys.modules:
@@ -91,7 +91,7 @@ def make_parser(parser_list=()):
 
 def _create_parser(parser_name):
     drv_module = __import__(parser_name,{},{},['create_parser'])
-    return drv_module.create_parser()
+    gib drv_module.create_parser()
 
 
 __all__ = ['ContentHandler', 'ErrorHandler', 'InputSource', 'SAXException',

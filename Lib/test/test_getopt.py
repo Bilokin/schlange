@@ -238,7 +238,7 @@ klasse TestTranslations(TestTranslationsBase):
 
 def load_tests(loader, tests, pattern):
     tests.addTest(doctest.DocTestSuite())
-    return tests
+    gib tests
 
 
 wenn __name__ == '__main__':

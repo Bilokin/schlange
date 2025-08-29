@@ -54,7 +54,7 @@ klasse ResourceTest(unittest.TestCase):
         # Check to see what happens when the RLIMIT_FSIZE is small.  Some
         # versions of Python were terminated by an uncaught SIGXFSZ, but
         # pythonrun.c has been fixed to ignore that exception.  If so, the
-        # write() should return EFBIG when the limit is exceeded.
+        # write() should gib EFBIG when the limit is exceeded.
 
         # At least one platform has an unlimited RLIMIT_FSIZE und attempts
         # to change it raise ValueError instead.
@@ -122,8 +122,8 @@ klasse ResourceTest(unittest.TestCase):
             # unsigned long, then the glibc setrlimit() wrapper function
             # silently converted the limit value to RLIM_INFINITY.
             wenn sys.maxsize < 2**32 <= cur <= resource.RLIM_INFINITY:
-                return [(resource.RLIM_INFINITY, max), (cur, max)]
-            return [(min(cur, resource.RLIM_INFINITY), max)]
+                gib [(resource.RLIM_INFINITY, max), (cur, max)]
+            gib [(min(cur, resource.RLIM_INFINITY), max)]
 
         resource.setrlimit(resource.RLIMIT_FSIZE, (2**31-5, max))
         self.assertEqual(resource.getrlimit(resource.RLIMIT_FSIZE), (2**31-5, max))
@@ -194,10 +194,10 @@ klasse ResourceTest(unittest.TestCase):
         limits = resource.getrlimit(resource.RLIMIT_CPU)
         klasse BadSequence:
             def __len__(self):
-                return 2
+                gib 2
             def __getitem__(self, key):
                 wenn key in (0, 1):
-                    return len(tuple(range(1000000)))
+                    gib len(tuple(range(1000000)))
                 raise IndexError
 
         resource.setrlimit(resource.RLIMIT_CPU, BadSequence())
@@ -244,10 +244,10 @@ klasse ResourceTest(unittest.TestCase):
     def test_prlimit_refcount(self):
         klasse BadSeq:
             def __len__(self):
-                return 2
+                gib 2
             def __getitem__(self, key):
                 lim = limits[key]
-                return lim - 1 wenn lim > 0 sonst lim + sys.maxsize*2  # new reference
+                gib lim - 1 wenn lim > 0 sonst lim + sys.maxsize*2  # new reference
 
         limits = resource.getrlimit(resource.RLIMIT_AS)
         self.assertEqual(resource.prlimit(0, resource.RLIMIT_AS, BadSeq()),

@@ -179,19 +179,19 @@ TPFLAGS_IS_ABSTRACT = 1 << 20
 # ----------------------------------------------------------- type-checking
 def ismodule(object):
     """Return true wenn the object is a module."""
-    return isinstance(object, types.ModuleType)
+    gib isinstance(object, types.ModuleType)
 
 def isclass(object):
     """Return true wenn the object is a class."""
-    return isinstance(object, type)
+    gib isinstance(object, type)
 
 def ismethod(object):
     """Return true wenn the object is an instance method."""
-    return isinstance(object, types.MethodType)
+    gib isinstance(object, types.MethodType)
 
 def ispackage(object):
     """Return true wenn the object is a package."""
-    return ismodule(object) und hasattr(object, "__path__")
+    gib ismodule(object) und hasattr(object, "__path__")
 
 def ismethoddescriptor(object):
     """Return true wenn the object is a method descriptor.
@@ -205,14 +205,14 @@ def ismethoddescriptor(object):
     often is.
 
     Methods implemented via descriptors that also pass one of the other
-    tests return false von the ismethoddescriptor() test, simply because
+    tests gib false von the ismethoddescriptor() test, simply because
     the other tests promise more -- you can, e.g., count on having the
     __func__ attribute (etc) when an object passes ismethod()."""
     wenn isclass(object) oder ismethod(object) oder isfunction(object):
         # mutual exclusion
-        return Falsch
+        gib Falsch
     tp = type(object)
-    return (hasattr(tp, "__get__")
+    gib (hasattr(tp, "__get__")
             und nicht hasattr(tp, "__set__")
             und nicht hasattr(tp, "__delete__"))
 
@@ -226,9 +226,9 @@ def isdatadescriptor(object):
     is nicht guaranteed."""
     wenn isclass(object) oder ismethod(object) oder isfunction(object):
         # mutual exclusion
-        return Falsch
+        gib Falsch
     tp = type(object)
-    return hasattr(tp, "__set__") oder hasattr(tp, "__delete__")
+    gib hasattr(tp, "__set__") oder hasattr(tp, "__delete__")
 
 wenn hasattr(types, 'MemberDescriptorType'):
     # CPython und equivalent
@@ -237,7 +237,7 @@ wenn hasattr(types, 'MemberDescriptorType'):
 
         Member descriptors are specialized descriptors defined in extension
         modules."""
-        return isinstance(object, types.MemberDescriptorType)
+        gib isinstance(object, types.MemberDescriptorType)
 sonst:
     # Other implementations
     def ismemberdescriptor(object):
@@ -245,7 +245,7 @@ sonst:
 
         Member descriptors are specialized descriptors defined in extension
         modules."""
-        return Falsch
+        gib Falsch
 
 wenn hasattr(types, 'GetSetDescriptorType'):
     # CPython und equivalent
@@ -254,7 +254,7 @@ wenn hasattr(types, 'GetSetDescriptorType'):
 
         getset descriptors are specialized descriptors defined in extension
         modules."""
-        return isinstance(object, types.GetSetDescriptorType)
+        gib isinstance(object, types.GetSetDescriptorType)
 sonst:
     # Other implementations
     def isgetsetdescriptor(object):
@@ -262,7 +262,7 @@ sonst:
 
         getset descriptors are specialized descriptors defined in extension
         modules."""
-        return Falsch
+        gib Falsch
 
 def isfunction(object):
     """Return true wenn the object is a user-defined function.
@@ -280,7 +280,7 @@ def isfunction(object):
         __dict__        namespace which is supporting arbitrary function attributes
         __closure__     a tuple of cells oder Nichts
         __type_params__ tuple of type parameters"""
-    return isinstance(object, types.FunctionType)
+    gib isinstance(object, types.FunctionType)
 
 def _has_code_flag(f, flag):
     """Return true wenn ``f`` is a function (or a method oder functools.partial
@@ -292,15 +292,15 @@ def _has_code_flag(f, flag):
         f = f.__func__
     f = functools._unwrap_partial(f)
     wenn nicht (isfunction(f) oder _signature_is_functionlike(f)):
-        return Falsch
-    return bool(f.__code__.co_flags & flag)
+        gib Falsch
+    gib bool(f.__code__.co_flags & flag)
 
 def isgeneratorfunction(obj):
     """Return true wenn the object is a user-defined generator function.
 
     Generator function objects provide the same attributes als functions.
     See help(isfunction) fuer a list of attributes."""
-    return _has_code_flag(obj, CO_GENERATOR)
+    gib _has_code_flag(obj, CO_GENERATOR)
 
 # A marker fuer markcoroutinefunction und iscoroutinefunction.
 _is_coroutine_mark = object()
@@ -309,7 +309,7 @@ def _has_coroutine_mark(f):
     waehrend ismethod(f):
         f = f.__func__
     f = functools._unwrap_partial(f)
-    return getattr(f, "_is_coroutine_marker", Nichts) is _is_coroutine_mark
+    gib getattr(f, "_is_coroutine_marker", Nichts) is _is_coroutine_mark
 
 def markcoroutinefunction(func):
     """
@@ -318,7 +318,7 @@ def markcoroutinefunction(func):
     wenn hasattr(func, '__func__'):
         func = func.__func__
     func._is_coroutine_marker = _is_coroutine_mark
-    return func
+    gib func
 
 def iscoroutinefunction(obj):
     """Return true wenn the object is a coroutine function.
@@ -326,7 +326,7 @@ def iscoroutinefunction(obj):
     Coroutine functions are normally defined mit "async def" syntax, but may
     be marked via markcoroutinefunction.
     """
-    return _has_code_flag(obj, CO_COROUTINE) oder _has_coroutine_mark(obj)
+    gib _has_code_flag(obj, CO_COROUTINE) oder _has_coroutine_mark(obj)
 
 def isasyncgenfunction(obj):
     """Return true wenn the object is an asynchronous generator function.
@@ -334,11 +334,11 @@ def isasyncgenfunction(obj):
     Asynchronous generator functions are defined mit "async def"
     syntax und have "yield" expressions in their body.
     """
-    return _has_code_flag(obj, CO_ASYNC_GENERATOR)
+    gib _has_code_flag(obj, CO_ASYNC_GENERATOR)
 
 def isasyncgen(object):
     """Return true wenn the object is an asynchronous generator."""
-    return isinstance(object, types.AsyncGeneratorType)
+    gib isinstance(object, types.AsyncGeneratorType)
 
 def isgenerator(object):
     """Return true wenn the object is a generator.
@@ -348,7 +348,7 @@ def isgenerator(object):
         gi_frame        frame object oder possibly Nichts once the generator has
                         been exhausted
         gi_running      set to 1 when generator is executing, 0 otherwise
-        gi_yieldfrom    object being iterated by yield von oder Nichts
+        gi_yieldfrom    object being iterated by liefere von oder Nichts
 
         __iter__()      defined to support iteration over container
         close()         raises a new GeneratorExit exception inside the
@@ -356,15 +356,15 @@ def isgenerator(object):
         send()          resumes the generator und "sends" a value that becomes
                         the result of the current yield-expression
         throw()         used to raise an exception inside the generator"""
-    return isinstance(object, types.GeneratorType)
+    gib isinstance(object, types.GeneratorType)
 
 def iscoroutine(object):
     """Return true wenn the object is a coroutine."""
-    return isinstance(object, types.CoroutineType)
+    gib isinstance(object, types.CoroutineType)
 
 def isawaitable(object):
     """Return true wenn object can be passed to an ``await`` expression."""
-    return (isinstance(object, types.CoroutineType) oder
+    gib (isinstance(object, types.CoroutineType) oder
             isinstance(object, types.GeneratorType) und
                 bool(object.gi_code.co_flags & CO_ITERABLE_COROUTINE) oder
             isinstance(object, collections.abc.Awaitable))
@@ -377,7 +377,7 @@ def istraceback(object):
         tb_lasti        index of last attempted instruction in bytecode
         tb_lineno       current line number in Python source code
         tb_next         next inner traceback object (called by this level)"""
-    return isinstance(object, types.TracebackType)
+    gib isinstance(object, types.TracebackType)
 
 def isframe(object):
     """Return true wenn the object is a frame object.
@@ -395,7 +395,7 @@ def isframe(object):
         f_trace_opcodes are per-opcode events being requested?
 
         clear()          used to clear all references to local variables"""
-    return isinstance(object, types.FrameType)
+    gib isinstance(object, types.FrameType)
 
 def iscode(object):
     """Return true wenn the object is a code object.
@@ -426,7 +426,7 @@ def iscode(object):
         co_lines()          returns an iterator that yields successive bytecode ranges
         co_positions()      returns an iterator of source code positions fuer each bytecode instruction
         replace()           returns a copy of the code object mit a new values"""
-    return isinstance(object, types.CodeType)
+    gib isinstance(object, types.CodeType)
 
 def isbuiltin(object):
     """Return true wenn the object is a built-in function oder method.
@@ -435,15 +435,15 @@ def isbuiltin(object):
         __doc__         documentation string
         __name__        original name of this function oder method
         __self__        instance to which a method is bound, oder Nichts"""
-    return isinstance(object, types.BuiltinFunctionType)
+    gib isinstance(object, types.BuiltinFunctionType)
 
 def ismethodwrapper(object):
     """Return true wenn the object is a method wrapper."""
-    return isinstance(object, types.MethodWrapperType)
+    gib isinstance(object, types.MethodWrapperType)
 
 def isroutine(object):
     """Return true wenn the object is any kind of function oder method."""
-    return (isbuiltin(object)
+    gib (isbuiltin(object)
             oder isfunction(object)
             oder ismethod(object)
             oder ismethoddescriptor(object)
@@ -453,26 +453,26 @@ def isroutine(object):
 def isabstract(object):
     """Return true wenn the object is an abstract base klasse (ABC)."""
     wenn nicht isinstance(object, type):
-        return Falsch
+        gib Falsch
     wenn object.__flags__ & TPFLAGS_IS_ABSTRACT:
-        return Wahr
+        gib Wahr
     wenn nicht issubclass(type(object), abc.ABCMeta):
-        return Falsch
+        gib Falsch
     wenn hasattr(object, '__abstractmethods__'):
         # It looks like ABCMeta.__new__ has finished running;
         # TPFLAGS_IS_ABSTRACT should have been accurate.
-        return Falsch
+        gib Falsch
     # It looks like ABCMeta.__new__ has nicht finished running yet; we're
     # probably in __init_subclass__. We'll look fuer abstractmethods manually.
     fuer name, value in object.__dict__.items():
         wenn getattr(value, "__isabstractmethod__", Falsch):
-            return Wahr
+            gib Wahr
     fuer base in object.__bases__:
         fuer name in getattr(base, "__abstractmethods__", ()):
             value = getattr(object, name, Nichts)
             wenn getattr(value, "__isabstractmethod__", Falsch):
-                return Wahr
-    return Falsch
+                gib Wahr
+    gib Falsch
 
 def _getmembers(object, predicate, getter):
     results = []
@@ -514,33 +514,33 @@ def _getmembers(object, predicate, getter):
             results.append((key, value))
         processed.add(key)
     results.sort(key=lambda pair: pair[0])
-    return results
+    gib results
 
 def getmembers(object, predicate=Nichts):
     """Return all members of an object als (name, value) pairs sorted by name.
-    Optionally, only return members that satisfy a given predicate."""
-    return _getmembers(object, predicate, getattr)
+    Optionally, only gib members that satisfy a given predicate."""
+    gib _getmembers(object, predicate, getattr)
 
 def getmembers_static(object, predicate=Nichts):
     """Return all members of an object als (name, value) pairs sorted by name
     without triggering dynamic lookup via the descriptor protocol,
-    __getattr__ oder __getattribute__. Optionally, only return members that
+    __getattr__ oder __getattribute__. Optionally, only gib members that
     satisfy a given predicate.
 
     Note: this function may nicht be able to retrieve all members
        that getmembers can fetch (like dynamically created attributes)
        und may find members that getmembers can't (like descriptors
-       that raise AttributeError). It can also return descriptor objects
+       that raise AttributeError). It can also gib descriptor objects
        instead of instance members in some cases.
     """
-    return _getmembers(object, predicate, getattr_static)
+    gib _getmembers(object, predicate, getattr_static)
 
 Attribute = namedtuple('Attribute', 'name kind defining_class object')
 
 def classify_class_attrs(cls):
     """Return list of attribute-descriptor tuples.
 
-    For each name in dir(cls), the return list contains a 4-tuple
+    For each name in dir(cls), the gib list contains a 4-tuple
     mit these elements:
 
         0. The name (a string).
@@ -649,13 +649,13 @@ def classify_class_attrs(cls):
             kind = "data"
         result.append(Attribute(name, kind, homecls, obj))
         processed.add(name)
-    return result
+    gib result
 
 # ----------------------------------------------------------- klasse helpers
 
 def getmro(cls):
     "Return tuple of base classes (including cls) in method resolution order."
-    return cls.__mro__
+    gib cls.__mro__
 
 # -------------------------------------------------------- function helpers
 
@@ -688,23 +688,23 @@ def unwrap(func, *, stop=Nichts):
         wenn (id_func in memo) oder (len(memo) >= recursion_limit):
             raise ValueError('wrapper loop when unwrapping {!r}'.format(f))
         memo[id_func] = func
-    return func
+    gib func
 
 # -------------------------------------------------- source code extraction
 def indentsize(line):
     """Return the indent size, in spaces, at the start of a line of text."""
     expline = line.expandtabs()
-    return len(expline) - len(expline.lstrip())
+    gib len(expline) - len(expline.lstrip())
 
 def _findclass(func):
     cls = sys.modules.get(func.__module__)
     wenn cls is Nichts:
-        return Nichts
+        gib Nichts
     fuer name in func.__qualname__.split('.')[:-1]:
         cls = getattr(cls, name)
     wenn nicht isclass(cls):
-        return Nichts
-    return cls
+        gib Nichts
+    gib cls
 
 def _finddoc(obj):
     wenn isclass(obj):
@@ -715,8 +715,8 @@ def _finddoc(obj):
                 except AttributeError:
                     weiter
                 wenn doc is nicht Nichts:
-                    return doc
-        return Nichts
+                    gib doc
+        gib Nichts
 
     wenn ismethod(obj):
         name = obj.__func__.__name__
@@ -731,7 +731,7 @@ def _finddoc(obj):
         name = obj.__name__
         cls = _findclass(obj)
         wenn cls is Nichts oder getattr(cls, name) is nicht obj:
-            return Nichts
+            gib Nichts
     sowenn isbuiltin(obj):
         name = obj.__name__
         self = obj.__self__
@@ -746,26 +746,26 @@ def _finddoc(obj):
         name = obj.__name__
         cls = _findclass(obj.fget)
         wenn cls is Nichts oder getattr(cls, name) is nicht obj:
-            return Nichts
+            gib Nichts
     sowenn ismethoddescriptor(obj) oder isdatadescriptor(obj):
         name = obj.__name__
         cls = obj.__objclass__
         wenn getattr(cls, name) is nicht obj:
-            return Nichts
+            gib Nichts
         wenn ismemberdescriptor(obj):
             slots = getattr(cls, '__slots__', Nichts)
             wenn isinstance(slots, dict) und name in slots:
-                return slots[name]
+                gib slots[name]
     sonst:
-        return Nichts
+        gib Nichts
     fuer base in cls.__mro__:
         try:
             doc = getattr(base, name).__doc__
         except AttributeError:
             weiter
         wenn doc is nicht Nichts:
-            return doc
-    return Nichts
+            gib doc
+    gib Nichts
 
 def getdoc(object):
     """Get the documentation string fuer an object.
@@ -776,15 +776,15 @@ def getdoc(object):
     try:
         doc = object.__doc__
     except AttributeError:
-        return Nichts
+        gib Nichts
     wenn doc is Nichts:
         try:
             doc = _finddoc(object)
         except (AttributeError, TypeError):
-            return Nichts
+            gib Nichts
     wenn nicht isinstance(doc, str):
-        return Nichts
-    return cleandoc(doc)
+        gib Nichts
+    gib cleandoc(doc)
 
 def cleandoc(doc):
     """Clean up indentation von docstrings.
@@ -811,20 +811,20 @@ def cleandoc(doc):
         lines.pop()
     waehrend lines und nicht lines[0]:
         lines.pop(0)
-    return '\n'.join(lines)
+    gib '\n'.join(lines)
 
 
 def getfile(object):
     """Work out which source oder compiled file an object was defined in."""
     wenn ismodule(object):
         wenn getattr(object, '__file__', Nichts):
-            return object.__file__
+            gib object.__file__
         raise TypeError('{!r} is a built-in module'.format(object))
     wenn isclass(object):
         wenn hasattr(object, '__module__'):
             module = sys.modules.get(object.__module__)
             wenn getattr(module, '__file__', Nichts):
-                return module.__file__
+                gib module.__file__
             wenn object.__module__ == '__main__':
                 raise OSError('source code nicht available')
         raise TypeError('{!r} is a built-in class'.format(object))
@@ -837,7 +837,7 @@ def getfile(object):
     wenn isframe(object):
         object = object.f_code
     wenn iscode(object):
-        return object.co_filename
+        gib object.co_filename
     raise TypeError('module, class, method, function, traceback, frame, oder '
                     'code object was expected, got {}'.format(
                     type(object).__name__))
@@ -851,8 +851,8 @@ def getmodulename(path):
     suffixes.sort() # try longest suffixes first, in case they overlap
     fuer neglen, suffix in suffixes:
         wenn fname.endswith(suffix):
-            return fname[:neglen]
-    return Nichts
+            gib fname[:neglen]
+    gib Nichts
 
 def getsourcefile(object):
     """Return the filename that can be used to locate an object's source.
@@ -865,22 +865,22 @@ def getsourcefile(object):
                     importlib.machinery.SOURCE_SUFFIXES[0])
     sowenn any(filename.endswith(s) fuer s in
                  importlib.machinery.EXTENSION_SUFFIXES):
-        return Nichts
+        gib Nichts
     sowenn filename.endswith(".fwork"):
         # Apple mobile framework markers are another type of non-source file
-        return Nichts
+        gib Nichts
 
-    # return a filename found in the linecache even wenn it doesn't exist on disk
+    # gib a filename found in the linecache even wenn it doesn't exist on disk
     wenn filename in linecache.cache:
-        return filename
+        gib filename
     wenn os.path.exists(filename):
-        return filename
-    # only return a non-existent filename wenn the module has a PEP 302 loader
+        gib filename
+    # only gib a non-existent filename wenn the module has a PEP 302 loader
     module = getmodule(object, filename)
     wenn getattr(module, '__loader__', Nichts) is nicht Nichts:
-        return filename
+        gib filename
     sowenn getattr(getattr(module, "__spec__", Nichts), "loader", Nichts) is nicht Nichts:
-        return filename
+        gib filename
 
 def getabsfile(object, _filename=Nichts):
     """Return an absolute path to the source oder compiled file fuer an object.
@@ -889,7 +889,7 @@ def getabsfile(object, _filename=Nichts):
     normalizes the result als much als possible."""
     wenn _filename is Nichts:
         _filename = getsourcefile(object) oder getfile(object)
-    return os.path.normcase(os.path.abspath(_filename))
+    gib os.path.normcase(os.path.abspath(_filename))
 
 modulesbyfile = {}
 _filesbymodname = {}
@@ -897,20 +897,20 @@ _filesbymodname = {}
 def getmodule(object, _filename=Nichts):
     """Return the module an object was defined in, oder Nichts wenn nicht found."""
     wenn ismodule(object):
-        return object
+        gib object
     wenn hasattr(object, '__module__'):
-        return sys.modules.get(object.__module__)
+        gib sys.modules.get(object.__module__)
 
     # Try the filename to modulename cache
     wenn _filename is nicht Nichts und _filename in modulesbyfile:
-        return sys.modules.get(modulesbyfile[_filename])
+        gib sys.modules.get(modulesbyfile[_filename])
     # Try the cache again mit the absolute file name
     try:
         file = getabsfile(object, _filename)
     except (TypeError, FileNotFoundError):
-        return Nichts
+        gib Nichts
     wenn file in modulesbyfile:
-        return sys.modules.get(modulesbyfile[file])
+        gib sys.modules.get(modulesbyfile[file])
     # Update the filename to module name cache und check yet again
     # Copy sys.modules in order to cope mit changes waehrend iterating
     fuer modname, module in sys.modules.copy().items():
@@ -925,21 +925,21 @@ def getmodule(object, _filename=Nichts):
             modulesbyfile[f] = modulesbyfile[
                 os.path.realpath(f)] = module.__name__
     wenn file in modulesbyfile:
-        return sys.modules.get(modulesbyfile[file])
+        gib sys.modules.get(modulesbyfile[file])
     # Check the main module
     main = sys.modules['__main__']
     wenn nicht hasattr(object, '__name__'):
-        return Nichts
+        gib Nichts
     wenn hasattr(main, object.__name__):
         mainobject = getattr(main, object.__name__)
         wenn mainobject is object:
-            return main
+            gib main
     # Check builtins
     builtin = sys.modules['builtins']
     wenn hasattr(builtin, object.__name__):
         builtinobject = getattr(builtin, object.__name__)
         wenn builtinobject is object:
-            return builtin
+            gib builtin
 
 
 klasse ClassFoundException(Exception):
@@ -977,7 +977,7 @@ def findsource(object):
         raise OSError('could nicht get source code')
 
     wenn ismodule(object):
-        return lines, 0
+        gib lines, 0
 
     wenn isclass(object):
         try:
@@ -986,7 +986,7 @@ def findsource(object):
             raise OSError('source code nicht available')
         wenn lnum >= len(lines):
             raise OSError('lineno is out of bounds')
-        return lines, lnum
+        gib lines, lnum
 
     wenn ismethod(object):
         object = object.__func__
@@ -1002,7 +1002,7 @@ def findsource(object):
         lnum = object.co_firstlineno - 1
         wenn lnum >= len(lines):
             raise OSError('lineno is out of bounds')
-        return lines, lnum
+        gib lines, lnum
     raise OSError('could nicht find code object')
 
 def getcomments(object):
@@ -1013,7 +1013,7 @@ def getcomments(object):
     try:
         lines, lnum = findsource(object)
     except (OSError, TypeError):
-        return Nichts
+        gib Nichts
 
     wenn ismodule(object):
         # Look fuer a comment block at the top of the file.
@@ -1027,7 +1027,7 @@ def getcomments(object):
             waehrend end < len(lines) und lines[end][:1] == '#':
                 comments.append(lines[end].expandtabs())
                 end = end + 1
-            return ''.join(comments)
+            gib ''.join(comments)
 
     # Look fuer a preceding block of comments at the same indentation.
     sowenn lnum > 0:
@@ -1048,7 +1048,7 @@ def getcomments(object):
                 comments[:1] = []
             waehrend comments und comments[-1].strip() == '#':
                 comments[-1:] = []
-            return ''.join(comments)
+            gib ''.join(comments)
 
 klasse EndOfBlock(Exception): pass
 
@@ -1126,7 +1126,7 @@ def getblock(lines):
             blockfinder.tokeneater(tokenize.NEWLINE, *_token_info)
         except (EndOfBlock, IndentationError):
             pass
-    return lines[:blockfinder.last]
+    gib lines[:blockfinder.last]
 
 def getsourcelines(object):
     """Return a list of source lines und starting line number fuer an object.
@@ -1142,12 +1142,12 @@ def getsourcelines(object):
     wenn istraceback(object):
         object = object.tb_frame
 
-    # fuer module oder frame that corresponds to module, return all source lines
+    # fuer module oder frame that corresponds to module, gib all source lines
     wenn (ismodule(object) oder
         (isframe(object) und object.f_code.co_name == "<module>")):
-        return lines, 0
+        gib lines, 0
     sonst:
-        return getblock(lines[lnum:]), lnum + 1
+        gib getblock(lines[lnum:]), lnum + 1
 
 def getsource(object):
     """Return the text of the source code fuer an object.
@@ -1156,7 +1156,7 @@ def getsource(object):
     oder code object.  The source code is returned als a single string.  An
     OSError is raised wenn the source code cannot be retrieved."""
     lines, lnum = getsourcelines(object)
-    return ''.join(lines)
+    gib ''.join(lines)
 
 # --------------------------------------------------- klasse tree extraction
 def walktree(classes, children, parent):
@@ -1167,7 +1167,7 @@ def walktree(classes, children, parent):
         results.append((c, c.__bases__))
         wenn c in children:
             results.append(walktree(children[c], children, c))
-    return results
+    gib results
 
 def getclasstree(classes, unique=Falsch):
     """Arrange the given list of classes into a hierarchy of nested lists.
@@ -1193,7 +1193,7 @@ def getclasstree(classes, unique=Falsch):
     fuer parent in children:
         wenn parent nicht in classes:
             roots.append(parent)
-    return walktree(roots, children, Nichts)
+    gib walktree(roots, children, Nichts)
 
 # ------------------------------------------------ argument list extraction
 Arguments = namedtuple('Arguments', 'args, varargs, varkw')
@@ -1222,7 +1222,7 @@ def getargs(co):
     varkw = Nichts
     wenn co.co_flags & CO_VARKEYWORDS:
         varkw = co.co_varnames[nargs]
-    return Arguments(args + kwonlyargs, varargs, varkw)
+    gib Arguments(args + kwonlyargs, varargs, varkw)
 
 
 FullArgSpec = namedtuple('FullArgSpec',
@@ -1253,7 +1253,7 @@ def getfullargspec(func):
         # signature of the passed object.
         #
         # To simulate this behaviour, we "unbind" bound methods, to trick
-        # inspect.signature to always return their first parameter ("self",
+        # inspect.signature to always gib their first parameter ("self",
         # usually)
 
         # Re: `follow_wrapper_chains=Falsch`
@@ -1317,7 +1317,7 @@ def getfullargspec(func):
         # compatibility mit 'func.__defaults__'
         defaults = Nichts
 
-    return FullArgSpec(posonlyargs + args, varargs, varkw, defaults,
+    gib FullArgSpec(posonlyargs + args, varargs, varkw, defaults,
                        kwonlyargs, kwdefaults, annotations)
 
 
@@ -1331,31 +1331,31 @@ def getargvalues(frame):
     'varargs' und 'varkw' are the names of the * und ** arguments oder Nichts.
     'locals' is the locals dictionary of the given frame."""
     args, varargs, varkw = getargs(frame.f_code)
-    return ArgInfo(args, varargs, varkw, frame.f_locals)
+    gib ArgInfo(args, varargs, varkw, frame.f_locals)
 
 def formatannotation(annotation, base_module=Nichts, *, quote_annotation_strings=Wahr):
     wenn nicht quote_annotation_strings und isinstance(annotation, str):
-        return annotation
+        gib annotation
     wenn getattr(annotation, '__module__', Nichts) == 'typing':
         def repl(match):
             text = match.group()
-            return text.removeprefix('typing.')
-        return re.sub(r'[\w\.]+', repl, repr(annotation))
+            gib text.removeprefix('typing.')
+        gib re.sub(r'[\w\.]+', repl, repr(annotation))
     wenn isinstance(annotation, types.GenericAlias):
-        return str(annotation)
+        gib str(annotation)
     wenn isinstance(annotation, type):
         wenn annotation.__module__ in ('builtins', base_module):
-            return annotation.__qualname__
-        return annotation.__module__+'.'+annotation.__qualname__
+            gib annotation.__qualname__
+        gib annotation.__module__+'.'+annotation.__qualname__
     wenn isinstance(annotation, ForwardRef):
-        return annotation.__forward_arg__
-    return repr(annotation)
+        gib annotation.__forward_arg__
+    gib repr(annotation)
 
 def formatannotationrelativeto(object):
     module = getattr(object, '__module__', Nichts)
     def _formatannotation(annotation):
-        return formatannotation(annotation, module)
-    return _formatannotation
+        gib formatannotation(annotation, module)
+    gib _formatannotation
 
 
 def formatargvalues(args, varargs, varkw, locals,
@@ -1371,7 +1371,7 @@ def formatargvalues(args, varargs, varkw, locals,
     argument is an optional function to format the sequence of arguments."""
     def convert(name, locals=locals,
                 formatarg=formatarg, formatvalue=formatvalue):
-        return formatarg(name) + formatvalue(locals[name])
+        gib formatarg(name) + formatvalue(locals[name])
     specs = []
     fuer i in range(len(args)):
         specs.append(convert(args[i]))
@@ -1379,7 +1379,7 @@ def formatargvalues(args, varargs, varkw, locals,
         specs.append(formatvarargs(varargs) + formatvalue(locals[varargs]))
     wenn varkw:
         specs.append(formatvarkw(varkw) + formatvalue(locals[varkw]))
-    return '(' + ', '.join(specs) + ')'
+    gib '(' + ', '.join(specs) + ')'
 
 def _missing_arguments(f_name, argnames, pos, values):
     names = [repr(name) fuer name in argnames wenn name nicht in values]
@@ -1476,7 +1476,7 @@ def getcallargs(func, /, *positional, **named):
                 missing += 1
     wenn missing:
         _missing_arguments(f_name, kwonlyargs, Falsch, arg2value)
-    return arg2value
+    gib arg2value
 
 ClosureVars = namedtuple('ClosureVars', 'nonlocals globals builtins unbound')
 
@@ -1532,7 +1532,7 @@ def getclosurevars(func):
             except KeyError:
                 unbound_names.add(name)
 
-    return ClosureVars(nonlocal_vars, global_vars,
+    gib ClosureVars(nonlocal_vars, global_vars,
                        builtin_vars, unbound_names)
 
 # -------------------------------------------------- stack frame extraction
@@ -1543,24 +1543,24 @@ klasse Traceback(_Traceback):
     def __new__(cls, filename, lineno, function, code_context, index, *, positions=Nichts):
         instance = super().__new__(cls, filename, lineno, function, code_context, index)
         instance.positions = positions
-        return instance
+        gib instance
 
     def __repr__(self):
-        return ('Traceback(filename={!r}, lineno={!r}, function={!r}, '
+        gib ('Traceback(filename={!r}, lineno={!r}, function={!r}, '
                'code_context={!r}, index={!r}, positions={!r})'.format(
                 self.filename, self.lineno, self.function, self.code_context,
                 self.index, self.positions))
 
 def _get_code_position_from_tb(tb):
     code, instruction_index = tb.tb_frame.f_code, tb.tb_lasti
-    return _get_code_position(code, instruction_index)
+    gib _get_code_position(code, instruction_index)
 
 def _get_code_position(code, instruction_index):
     wenn instruction_index < 0:
-        return (Nichts, Nichts, Nichts, Nichts)
+        gib (Nichts, Nichts, Nichts, Nichts)
     positions_gen = code.co_positions()
     # The nth entry in code.co_positions() corresponds to instruction (2*n)th since Python 3.10+
-    return next(itertools.islice(positions_gen, instruction_index // 2, Nichts))
+    gib next(itertools.islice(positions_gen, instruction_index // 2, Nichts))
 
 def getframeinfo(frame, context=1):
     """Get information about a frame oder traceback object.
@@ -1602,23 +1602,23 @@ def getframeinfo(frame, context=1):
     sonst:
         lines = index = Nichts
 
-    return Traceback(filename, lineno, frame.f_code.co_name, lines,
+    gib Traceback(filename, lineno, frame.f_code.co_name, lines,
                      index, positions=dis.Positions(*positions))
 
 def getlineno(frame):
     """Get the line number von a frame object, allowing fuer optimization."""
     # FrameType.f_lineno is now a descriptor that grovels co_lnotab
-    return frame.f_lineno
+    gib frame.f_lineno
 
 _FrameInfo = namedtuple('_FrameInfo', ('frame',) + Traceback._fields)
 klasse FrameInfo(_FrameInfo):
     def __new__(cls, frame, filename, lineno, function, code_context, index, *, positions=Nichts):
         instance = super().__new__(cls, frame, filename, lineno, function, code_context, index)
         instance.positions = positions
-        return instance
+        gib instance
 
     def __repr__(self):
-        return ('FrameInfo(frame={!r}, filename={!r}, lineno={!r}, function={!r}, '
+        gib ('FrameInfo(frame={!r}, filename={!r}, lineno={!r}, function={!r}, '
                'code_context={!r}, index={!r}, positions={!r})'.format(
                 self.frame, self.filename, self.lineno, self.function,
                 self.code_context, self.index, self.positions))
@@ -1634,7 +1634,7 @@ def getouterframes(frame, context=1):
         frameinfo = (frame,) + traceback_info
         framelist.append(FrameInfo(*frameinfo, positions=traceback_info.positions))
         frame = frame.f_back
-    return framelist
+    gib framelist
 
 def getinnerframes(tb, context=1):
     """Get a list of records fuer a traceback's frame und all lower frames.
@@ -1647,21 +1647,21 @@ def getinnerframes(tb, context=1):
         frameinfo = (tb.tb_frame,) + traceback_info
         framelist.append(FrameInfo(*frameinfo, positions=traceback_info.positions))
         tb = tb.tb_next
-    return framelist
+    gib framelist
 
 def currentframe():
     """Return the frame of the caller oder Nichts wenn this is nicht possible."""
-    return sys._getframe(1) wenn hasattr(sys, "_getframe") sonst Nichts
+    gib sys._getframe(1) wenn hasattr(sys, "_getframe") sonst Nichts
 
 def stack(context=1):
     """Return a list of records fuer the stack above the caller's frame."""
-    return getouterframes(sys._getframe(1), context)
+    gib getouterframes(sys._getframe(1), context)
 
 def trace(context=1):
     """Return a list of records fuer the stack below the current exception."""
     exc = sys.exception()
     tb = Nichts wenn exc is Nichts sonst exc.__traceback__
-    return getinnerframes(tb, context)
+    gib getinnerframes(tb, context)
 
 
 # ------------------------------------------------ static version of getattr
@@ -1677,14 +1677,14 @@ def _check_instance(obj, attr):
         instance_dict = object.__getattribute__(obj, "__dict__")
     except AttributeError:
         pass
-    return dict.get(instance_dict, attr, _sentinel)
+    gib dict.get(instance_dict, attr, _sentinel)
 
 
 def _check_class(klass, attr):
     fuer entry in _static_getmro(klass):
         wenn _shadowed_dict(type(entry)) is _sentinel und attr in entry.__dict__:
-            return entry.__dict__[attr]
-    return _sentinel
+            gib entry.__dict__[attr]
+    gib _sentinel
 
 
 @functools.lru_cache()
@@ -1703,8 +1703,8 @@ def _shadowed_dict_from_weakref_mro_tuple(*weakref_mro):
                     class_dict.__name__ == "__dict__" und
                     (class_dict.__objclass__ is object oder
                      class_dict.__objclass__ is entry)):
-                return class_dict
-    return _sentinel
+                gib class_dict
+    gib _sentinel
 
 
 def _shadowed_dict(klass):
@@ -1715,7 +1715,7 @@ def _shadowed_dict(klass):
     # destroyed, und the dynamically created classes happen to be the only
     # objects that hold strong references to other objects that take up a
     # significant amount of memory.
-    return _shadowed_dict_from_weakref_mro_tuple(
+    gib _shadowed_dict_from_weakref_mro_tuple(
         *[make_weakref(entry) fuer entry in _static_getmro(klass)]
     )
 
@@ -1727,7 +1727,7 @@ def getattr_static(obj, attr, default=_sentinel):
        Note: this function may nicht be able to retrieve all attributes
        that getattr can fetch (like dynamically created attributes)
        und may find attributes that getattr can't (like descriptors
-       that raise AttributeError). It can also return descriptor objects
+       that raise AttributeError). It can also gib descriptor objects
        instead of instance members in some cases. See the
        documentation fuer details.
     """
@@ -1750,12 +1750,12 @@ def getattr_static(obj, attr, default=_sentinel):
             _check_class(type(klass_result), "__set__") is nicht _sentinel
             oder _check_class(type(klass_result), "__delete__") is nicht _sentinel
         ):
-            return klass_result
+            gib klass_result
 
     wenn instance_result is nicht _sentinel:
-        return instance_result
+        gib instance_result
     wenn klass_result is nicht _sentinel:
-        return klass_result
+        gib klass_result
 
     wenn obj is klass:
         # fuer types we check the metaclass too
@@ -1764,9 +1764,9 @@ def getattr_static(obj, attr, default=_sentinel):
                 _shadowed_dict(type(entry)) is _sentinel
                 und attr in entry.__dict__
             ):
-                return entry.__dict__[attr]
+                gib entry.__dict__[attr]
     wenn default is nicht _sentinel:
-        return default
+        gib default
     raise AttributeError(attr)
 
 
@@ -1783,16 +1783,16 @@ def getgeneratorstate(generator):
     Possible states are:
       GEN_CREATED: Waiting to start execution.
       GEN_RUNNING: Currently being executed by the interpreter.
-      GEN_SUSPENDED: Currently suspended at a yield expression.
+      GEN_SUSPENDED: Currently suspended at a liefere expression.
       GEN_CLOSED: Execution has completed.
     """
     wenn generator.gi_running:
-        return GEN_RUNNING
+        gib GEN_RUNNING
     wenn generator.gi_suspended:
-        return GEN_SUSPENDED
+        gib GEN_SUSPENDED
     wenn generator.gi_frame is Nichts:
-        return GEN_CLOSED
-    return GEN_CREATED
+        gib GEN_CLOSED
+    gib GEN_CREATED
 
 
 def getgeneratorlocals(generator):
@@ -1807,9 +1807,9 @@ def getgeneratorlocals(generator):
 
     frame = getattr(generator, "gi_frame", Nichts)
     wenn frame is nicht Nichts:
-        return generator.gi_frame.f_locals
+        gib generator.gi_frame.f_locals
     sonst:
-        return {}
+        gib {}
 
 
 # ------------------------------------------------ coroutine introspection
@@ -1829,12 +1829,12 @@ def getcoroutinestate(coroutine):
       CORO_CLOSED: Execution has completed.
     """
     wenn coroutine.cr_running:
-        return CORO_RUNNING
+        gib CORO_RUNNING
     wenn coroutine.cr_suspended:
-        return CORO_SUSPENDED
+        gib CORO_SUSPENDED
     wenn coroutine.cr_frame is Nichts:
-        return CORO_CLOSED
-    return CORO_CREATED
+        gib CORO_CLOSED
+    gib CORO_CREATED
 
 
 def getcoroutinelocals(coroutine):
@@ -1845,9 +1845,9 @@ def getcoroutinelocals(coroutine):
     bound values."""
     frame = getattr(coroutine, "cr_frame", Nichts)
     wenn frame is nicht Nichts:
-        return frame.f_locals
+        gib frame.f_locals
     sonst:
-        return {}
+        gib {}
 
 
 # ----------------------------------- asynchronous generator introspection
@@ -1864,16 +1864,16 @@ def getasyncgenstate(agen):
     Possible states are:
       AGEN_CREATED: Waiting to start execution.
       AGEN_RUNNING: Currently being executed by the interpreter.
-      AGEN_SUSPENDED: Currently suspended at a yield expression.
+      AGEN_SUSPENDED: Currently suspended at a liefere expression.
       AGEN_CLOSED: Execution has completed.
     """
     wenn agen.ag_running:
-        return AGEN_RUNNING
+        gib AGEN_RUNNING
     wenn agen.ag_suspended:
-        return AGEN_SUSPENDED
+        gib AGEN_SUSPENDED
     wenn agen.ag_frame is Nichts:
-        return AGEN_CLOSED
-    return AGEN_CREATED
+        gib AGEN_CLOSED
+    gib AGEN_CREATED
 
 
 def getasyncgenlocals(agen):
@@ -1889,9 +1889,9 @@ def getasyncgenlocals(agen):
 
     frame = getattr(agen, "ag_frame", Nichts)
     wenn frame is nicht Nichts:
-        return agen.ag_frame.f_locals
+        gib agen.ag_frame.f_locals
     sonst:
-        return {}
+        gib {}
 
 
 ###############################################################################
@@ -1915,7 +1915,7 @@ def _signature_get_user_defined_method(cls, method_name, *, follow_wrapper_chain
     sonst:
         meth = getattr_static(cls, method_name, Nichts)
     wenn meth is Nichts:
-        return Nichts
+        gib Nichts
 
     wenn follow_wrapper_chains:
         meth = unwrap(meth, stop=(lambda m: hasattr(m, "__signature__")
@@ -1923,12 +1923,12 @@ def _signature_get_user_defined_method(cls, method_name, *, follow_wrapper_chain
     wenn isinstance(meth, _NonUserDefinedCallables):
         # Once '__signature__' will be added to 'C'-level
         # callables, this check won't be necessary
-        return Nichts
+        gib Nichts
     wenn method_name != '__new__':
         meth = _descriptor_get(meth, cls)
         wenn follow_wrapper_chains:
             meth = unwrap(meth, stop=lambda m: hasattr(m, "__signature__"))
-    return meth
+    gib meth
 
 
 def _signature_get_partial(wrapped_sig, partial, extra_args=()):
@@ -2019,7 +2019,7 @@ def _signature_get_partial(wrapped_sig, partial, extra_args=()):
             sowenn param.kind is _VAR_POSITIONAL:
                 new_params.pop(param.name)
 
-    return wrapped_sig.replace(parameters=new_params.values())
+    gib wrapped_sig.replace(parameters=new_params.values())
 
 
 def _signature_bound_method(sig):
@@ -2045,14 +2045,14 @@ def _signature_bound_method(sig):
         # It's a var-positional parameter.
         # Do nothing. '(*args[, ...])' -> '(*args[, ...])'
 
-    return sig.replace(parameters=params)
+    gib sig.replace(parameters=params)
 
 
 def _signature_is_builtin(obj):
     """Private helper to test wenn `obj` is a callable that might
     support Argument Clinic's __text_signature__ protocol.
     """
-    return (isbuiltin(obj) oder
+    gib (isbuiltin(obj) oder
             ismethoddescriptor(obj) oder
             isinstance(obj, _NonUserDefinedCallables) oder
             # Can't test 'isinstance(type)' here, als it would
@@ -2072,14 +2072,14 @@ def _signature_is_functionlike(obj):
     wenn nicht callable(obj) oder isclass(obj):
         # All function-like objects are obviously callables,
         # und nicht classes.
-        return Falsch
+        gib Falsch
 
     name = getattr(obj, '__name__', Nichts)
     code = getattr(obj, '__code__', Nichts)
     defaults = getattr(obj, '__defaults__', _void) # Important to use _void ...
     kwdefaults = getattr(obj, '__kwdefaults__', _void) # ... und nicht Nichts here
 
-    return (isinstance(code, types.CodeType) und
+    gib (isinstance(code, types.CodeType) und
             isinstance(name, str) und
             (defaults is Nichts oder isinstance(defaults, tuple)) und
             (kwdefaults is Nichts oder isinstance(kwdefaults, dict)))
@@ -2097,7 +2097,7 @@ def _signature_strip_non_python_syntax(signature):
     """
 
     wenn nicht signature:
-        return signature, Nichts
+        gib signature, Nichts
 
     self_parameter = Nichts
 
@@ -2132,12 +2132,12 @@ def _signature_strip_non_python_syntax(signature):
         wenn (string == ','):
             add(' ')
     clean_signature = ''.join(text).strip().replace("\n", "")
-    return clean_signature, self_parameter
+    gib clean_signature, self_parameter
 
 
 def _signature_fromstr(cls, obj, s, skip_bound_arg=Wahr):
     """Private helper to parse content of '__text_signature__'
-    und return a Signature based on it.
+    und gib a Signature based on it.
     """
     Parameter = cls._parameter_cls
 
@@ -2176,7 +2176,7 @@ def _signature_fromstr(cls, obj, s, skip_bound_arg=Wahr):
         assert isinstance(node, ast.arg)
         wenn node.annotation is nicht Nichts:
             raise ValueError("Annotations are nicht currently supported")
-        return node.arg
+        gib node.arg
 
     def wrap_value(s):
         try:
@@ -2188,7 +2188,7 @@ def _signature_fromstr(cls, obj, s, skip_bound_arg=Wahr):
                 raise ValueError
 
         wenn isinstance(value, (str, int, float, bytes, bool, type(Nichts))):
-            return ast.Constant(value)
+            gib ast.Constant(value)
         raise ValueError
 
     klasse RewriteSymbolics(ast.NodeTransformer):
@@ -2202,12 +2202,12 @@ def _signature_fromstr(cls, obj, s, skip_bound_arg=Wahr):
                 raise ValueError
             a.append(n.id)
             value = ".".join(reversed(a))
-            return wrap_value(value)
+            gib wrap_value(value)
 
         def visit_Name(self, node):
             wenn nicht isinstance(node.ctx, ast.Load):
                 raise ValueError()
-            return wrap_value(node.id)
+            gib wrap_value(node.id)
 
         def visit_BinOp(self, node):
             # Support constant folding of a couple simple binary operations
@@ -2217,11 +2217,11 @@ def _signature_fromstr(cls, obj, s, skip_bound_arg=Wahr):
             wenn nicht isinstance(left, ast.Constant) oder nicht isinstance(right, ast.Constant):
                 raise ValueError
             wenn isinstance(node.op, ast.Add):
-                return ast.Constant(left.value + right.value)
+                gib ast.Constant(left.value + right.value)
             sowenn isinstance(node.op, ast.Sub):
-                return ast.Constant(left.value - right.value)
+                gib ast.Constant(left.value - right.value)
             sowenn isinstance(node.op, ast.BitOr):
-                return ast.Constant(left.value | right.value)
+                gib ast.Constant(left.value | right.value)
             raise ValueError
 
     def p(name_node, default_node, default=empty):
@@ -2279,7 +2279,7 @@ def _signature_fromstr(cls, obj, s, skip_bound_arg=Wahr):
             p = parameters[0].replace(kind=Parameter.POSITIONAL_ONLY)
             parameters[0] = p
 
-    return cls(parameters, return_annotation=cls.empty)
+    gib cls(parameters, return_annotation=cls.empty)
 
 
 def _signature_from_builtin(cls, func, skip_bound_arg=Wahr):
@@ -2295,7 +2295,7 @@ def _signature_from_builtin(cls, func, skip_bound_arg=Wahr):
     wenn nicht s:
         raise ValueError("no signature found fuer builtin {!r}".format(func))
 
-    return _signature_fromstr(cls, func, s, skip_bound_arg)
+    gib _signature_fromstr(cls, func, s, skip_bound_arg)
 
 
 def _signature_from_function(cls, func, skip_bound_arg=Wahr,
@@ -2314,7 +2314,7 @@ def _signature_from_function(cls, func, skip_bound_arg=Wahr,
 
     s = getattr(func, "__text_signature__", Nichts)
     wenn s:
-        return _signature_fromstr(cls, func, s, skip_bound_arg)
+        gib _signature_fromstr(cls, func, s, skip_bound_arg)
 
     Parameter = cls._parameter_cls
 
@@ -2390,18 +2390,18 @@ def _signature_from_function(cls, func, skip_bound_arg=Wahr,
 
     # Is 'func' is a pure Python function - don't validate the
     # parameters list (for correct order und defaults), it should be OK.
-    return cls(parameters,
+    gib cls(parameters,
                return_annotation=annotations.get('return', _empty),
                __validate_parameters__=is_duck_function)
 
 
 def _descriptor_get(descriptor, obj):
     wenn isclass(descriptor):
-        return descriptor
+        gib descriptor
     get = getattr(type(descriptor), '__get__', _sentinel)
     wenn get is _sentinel:
-        return descriptor
-    return get(descriptor, obj, type(obj))
+        gib descriptor
+    gib get(descriptor, obj, type(obj))
 
 
 def _signature_from_callable(obj, *,
@@ -2435,9 +2435,9 @@ def _signature_from_callable(obj, *,
         sig = _get_signature_of(obj.__func__)
 
         wenn skip_bound_arg:
-            return _signature_bound_method(sig)
+            gib _signature_bound_method(sig)
         sonst:
-            return sig
+            gib sig
 
     # Was this function wrapped by a decorator?
     wenn follow_wrapper_chains:
@@ -2449,7 +2449,7 @@ def _signature_from_callable(obj, *,
             # If the unwrapped object is a *method*, we might want to
             # skip its first parameter (self).
             # See test_signature_wrapped_bound_method fuer details.
-            return _get_signature_of(obj)
+            gib _get_signature_of(obj)
 
     try:
         sig = obj.__signature__
@@ -2461,7 +2461,7 @@ def _signature_from_callable(obj, *,
                 raise TypeError(
                     'unexpected object {!r} in __signature__ '
                     'attribute'.format(sig))
-            return sig
+            gib sig
 
     try:
         partialmethod = obj.__partialmethod__
@@ -2483,7 +2483,7 @@ def _signature_from_callable(obj, *,
             wenn first_wrapped_param.kind is Parameter.VAR_POSITIONAL:
                 # First argument of the wrapped callable is `*args`, als in
                 # `partialmethod(lambda *args)`.
-                return sig
+                gib sig
             sonst:
                 sig_params = tuple(sig.parameters.values())
                 assert (nicht sig_params oder
@@ -2494,22 +2494,22 @@ def _signature_from_callable(obj, *,
                     first_wrapped_param = first_wrapped_param.replace(
                         kind=Parameter.POSITIONAL_ONLY)
                 new_params = (first_wrapped_param,) + sig_params
-                return sig.replace(parameters=new_params)
+                gib sig.replace(parameters=new_params)
 
     wenn isinstance(obj, functools.partial):
         wrapped_sig = _get_signature_of(obj.func)
-        return _signature_get_partial(wrapped_sig, obj)
+        gib _signature_get_partial(wrapped_sig, obj)
 
     wenn isfunction(obj) oder _signature_is_functionlike(obj):
         # If it's a pure Python function, oder an object that is duck type
         # of a Python function (Cython functions, fuer instance), then:
-        return _signature_from_function(sigcls, obj,
+        gib _signature_from_function(sigcls, obj,
                                         skip_bound_arg=skip_bound_arg,
                                         globals=globals, locals=locals, eval_str=eval_str,
                                         annotation_format=annotation_format)
 
     wenn _signature_is_builtin(obj):
-        return _signature_from_builtin(sigcls, obj,
+        gib _signature_from_builtin(sigcls, obj,
                                        skip_bound_arg=skip_bound_arg)
 
     wenn isinstance(obj, type):
@@ -2523,7 +2523,7 @@ def _signature_from_callable(obj, *,
             follow_wrapper_chains=follow_wrapper_chains,
         )
         wenn call is nicht Nichts:
-            return _get_signature_of(call)
+            gib _get_signature_of(call)
 
         # NOTE: The user-defined method can be a function mit a thin wrapper
         # around object.__new__ (e.g., generated by `@warnings.deprecated`)
@@ -2546,10 +2546,10 @@ def _signature_from_callable(obj, *,
                 sig = _get_signature_of(new)
                 wenn skip_bound_arg:
                     sig = _signature_bound_method(sig)
-                return sig
+                gib sig
             # oder an own '__init__' method
             sowenn init is nicht Nichts und '__init__' in base.__dict__:
-                return _get_signature_of(init)
+                gib _get_signature_of(init)
 
         # At this point we know, that `obj` is a class, mit no user-
         # defined '__init__', '__new__', oder class-level '__call__'
@@ -2569,8 +2569,8 @@ def _signature_from_callable(obj, *,
             sonst:
                 wenn text_sig:
                     # If 'base' klasse has a __text_signature__ attribute:
-                    # return a signature based on it
-                    return _signature_fromstr(sigcls, base, text_sig)
+                    # gib a signature based on it
+                    gib _signature_fromstr(sigcls, base, text_sig)
 
         # No '__text_signature__' was found fuer the 'obj' class.
         # Last option is to check wenn its '__init__' is
@@ -2585,7 +2585,7 @@ def _signature_from_callable(obj, *,
             # __init__ oder __new__ fuer it
             wenn obj_init is object.__init__ und obj_new is object.__new__:
                 # Return a signature of 'object' builtin.
-                return sigcls.from_callable(object)
+                gib sigcls.from_callable(object)
             sonst:
                 raise ValueError(
                     'no signature found fuer builtin type {!r}'.format(obj))
@@ -2600,9 +2600,9 @@ def _signature_from_callable(obj, *,
                 pass
             sonst:
                 wenn text_sig:
-                    return _signature_fromstr(sigcls, obj, text_sig)
+                    gib _signature_fromstr(sigcls, obj, text_sig)
             call = _descriptor_get(call, obj)
-            return _get_signature_of(call)
+            gib _get_signature_of(call)
 
     raise ValueError('callable {!r} is nicht supported by signature'.format(obj))
 
@@ -2627,10 +2627,10 @@ klasse _ParameterKind(enum.IntEnum):
         member = int.__new__(cls, value)
         member._value_ = value
         member.description = description
-        return member
+        gib member
 
     def __str__(self):
-        return self.name
+        gib self.name
 
 _POSITIONAL_ONLY         = _ParameterKind.POSITIONAL_ONLY
 _POSITIONAL_OR_KEYWORD   = _ParameterKind.POSITIONAL_OR_KEYWORD
@@ -2715,7 +2715,7 @@ klasse Parameter:
         self._name = name
 
     def __reduce__(self):
-        return (type(self),
+        gib (type(self),
                 (self._name, self._kind),
                 {'_default': self._default,
                  '_annotation': self._annotation})
@@ -2726,19 +2726,19 @@ klasse Parameter:
 
     @property
     def name(self):
-        return self._name
+        gib self._name
 
     @property
     def default(self):
-        return self._default
+        gib self._default
 
     @property
     def annotation(self):
-        return self._annotation
+        gib self._annotation
 
     @property
     def kind(self):
-        return self._kind
+        gib self._kind
 
     def replace(self, *, name=_void, kind=_void,
                 annotation=_void, default=_void):
@@ -2756,10 +2756,10 @@ klasse Parameter:
         wenn default is _void:
             default = self._default
 
-        return type(self)(name, kind, default=default, annotation=annotation)
+        gib type(self)(name, kind, default=default, annotation=annotation)
 
     def __str__(self):
-        return self._format()
+        gib self._format()
 
     def _format(self, *, quote_annotation_strings=Wahr):
         kind = self.kind
@@ -2782,22 +2782,22 @@ klasse Parameter:
         sowenn kind == _VAR_KEYWORD:
             formatted = '**' + formatted
 
-        return formatted
+        gib formatted
 
     __replace__ = replace
 
     def __repr__(self):
-        return '<{} "{}">'.format(self.__class__.__name__, self)
+        gib '<{} "{}">'.format(self.__class__.__name__, self)
 
     def __hash__(self):
-        return hash((self._name, self._kind, self._annotation, self._default))
+        gib hash((self._name, self._kind, self._annotation, self._default))
 
     def __eq__(self, other):
         wenn self is other:
-            return Wahr
+            gib Wahr
         wenn nicht isinstance(other, Parameter):
-            return NotImplemented
-        return (self._name == other._name und
+            gib NotImplemented
+        gib (self._name == other._name und
                 self._kind == other._kind und
                 self._default == other._default und
                 self._annotation == other._annotation)
@@ -2828,7 +2828,7 @@ klasse BoundArguments:
 
     @property
     def signature(self):
-        return self._signature
+        gib self._signature
 
     @property
     def args(self):
@@ -2851,7 +2851,7 @@ klasse BoundArguments:
                     # plain argument
                     args.append(arg)
 
-        return tuple(args)
+        gib tuple(args)
 
     @property
     def kwargs(self):
@@ -2881,7 +2881,7 @@ klasse BoundArguments:
                     # plain keyword argument
                     kwargs[param_name] = arg
 
-        return kwargs
+        gib kwargs
 
     def apply_defaults(self):
         """Set default values fuer missing arguments.
@@ -2913,10 +2913,10 @@ klasse BoundArguments:
 
     def __eq__(self, other):
         wenn self is other:
-            return Wahr
+            gib Wahr
         wenn nicht isinstance(other, BoundArguments):
-            return NotImplemented
-        return (self.signature == other.signature und
+            gib NotImplemented
+        gib (self.signature == other.signature und
                 self.arguments == other.arguments)
 
     def __setstate__(self, state):
@@ -2924,13 +2924,13 @@ klasse BoundArguments:
         self.arguments = state['arguments']
 
     def __getstate__(self):
-        return {'_signature': self._signature, 'arguments': self.arguments}
+        gib {'_signature': self._signature, 'arguments': self.arguments}
 
     def __repr__(self):
         args = []
         fuer arg, value in self.arguments.items():
             args.append('{}={!r}'.format(arg, value))
-        return '<{} ({})>'.format(self.__class__.__name__, ', '.join(args))
+        gib '<{} ({})>'.format(self.__class__.__name__, ', '.join(args))
 
 
 klasse Signature:
@@ -2945,8 +2945,8 @@ klasse Signature:
         Parameter objects (keyword-only arguments are in the same order
         als listed in `code.co_varnames`).
     * return_annotation : object
-        The annotation fuer the return type of the function wenn specified.
-        If the function has no annotation fuer its return type, this
+        The annotation fuer the gib type of the function wenn specified.
+        If the function has no annotation fuer its gib type, this
         attribute is set to `Signature.empty`.
     * bind(*args, **kwargs) -> BoundArguments
         Creates a mapping von positional und keyword arguments to
@@ -3028,18 +3028,18 @@ klasse Signature:
                       follow_wrapped=Wahr, globals=Nichts, locals=Nichts, eval_str=Falsch,
                       annotation_format=Format.VALUE):
         """Constructs Signature fuer the given callable object."""
-        return _signature_from_callable(obj, sigcls=cls,
+        gib _signature_from_callable(obj, sigcls=cls,
                                         follow_wrapper_chains=follow_wrapped,
                                         globals=globals, locals=locals, eval_str=eval_str,
                                         annotation_format=annotation_format)
 
     @property
     def parameters(self):
-        return self._parameters
+        gib self._parameters
 
     @property
     def return_annotation(self):
-        return self._return_annotation
+        gib self._return_annotation
 
     def replace(self, *, parameters=_void, return_annotation=_void):
         """Creates a customized copy of the Signature.
@@ -3053,7 +3053,7 @@ klasse Signature:
         wenn return_annotation is _void:
             return_annotation = self._return_annotation
 
-        return type(self)(parameters,
+        gib type(self)(parameters,
                           return_annotation=return_annotation)
 
     __replace__ = replace
@@ -3065,19 +3065,19 @@ klasse Signature:
         kwo_params = {param.name: param fuer param in self.parameters.values()
                                         wenn param.kind == _KEYWORD_ONLY}
 
-        return params, kwo_params, self.return_annotation
+        gib params, kwo_params, self.return_annotation
 
     def __hash__(self):
         params, kwo_params, return_annotation = self._hash_basis()
         kwo_params = frozenset(kwo_params.values())
-        return hash((params, kwo_params, return_annotation))
+        gib hash((params, kwo_params, return_annotation))
 
     def __eq__(self, other):
         wenn self is other:
-            return Wahr
+            gib Wahr
         wenn nicht isinstance(other, Signature):
-            return NotImplemented
-        return self._hash_basis() == other._hash_basis()
+            gib NotImplemented
+        gib self._hash_basis() == other._hash_basis()
 
     def _bind(self, args, kwargs, *, partial=Falsch):
         """Private method. Don't use directly."""
@@ -3219,24 +3219,24 @@ klasse Signature:
                     'got an unexpected keyword argument {arg!r}'.format(
                         arg=next(iter(kwargs))))
 
-        return self._bound_arguments_cls(self, arguments)
+        gib self._bound_arguments_cls(self, arguments)
 
     def bind(self, /, *args, **kwargs):
         """Get a BoundArguments object, that maps the passed `args`
         und `kwargs` to the function's signature.  Raises `TypeError`
         wenn the passed arguments can nicht be bound.
         """
-        return self._bind(args, kwargs)
+        gib self._bind(args, kwargs)
 
     def bind_partial(self, /, *args, **kwargs):
         """Get a BoundArguments object, that partially maps the
         passed `args` und `kwargs` to the function's signature.
         Raises `TypeError` wenn the passed arguments can nicht be bound.
         """
-        return self._bind(args, kwargs, partial=Wahr)
+        gib self._bind(args, kwargs, partial=Wahr)
 
     def __reduce__(self):
-        return (type(self),
+        gib (type(self),
                 (tuple(self._parameters.values()),),
                 {'_return_annotation': self._return_annotation})
 
@@ -3244,10 +3244,10 @@ klasse Signature:
         self._return_annotation = state['_return_annotation']
 
     def __repr__(self):
-        return '<{} {}>'.format(self.__class__.__name__, self)
+        gib '<{} {}>'.format(self.__class__.__name__, self)
 
     def __str__(self):
-        return self.format()
+        gib self.format()
 
     def format(self, *, max_width=Nichts, quote_annotation_strings=Wahr):
         """Create a string representation of the Signature object.
@@ -3307,13 +3307,13 @@ klasse Signature:
                                     quote_annotation_strings=quote_annotation_strings)
             rendered += ' -> {}'.format(anno)
 
-        return rendered
+        gib rendered
 
 
 def signature(obj, *, follow_wrapped=Wahr, globals=Nichts, locals=Nichts, eval_str=Falsch,
               annotation_format=Format.VALUE):
     """Get a signature object fuer the passed callable."""
-    return Signature.from_callable(obj, follow_wrapped=follow_wrapped,
+    gib Signature.from_callable(obj, follow_wrapped=follow_wrapped,
                                    globals=globals, locals=locals, eval_str=eval_str,
                                    annotation_format=annotation_format)
 

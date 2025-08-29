@@ -44,10 +44,10 @@ CLOCK_RES = 0.050
 def data_file(*filename):
     fullname = os.path.join(support.TEST_HOME_DIR, *filename)
     wenn os.path.isfile(fullname):
-        return fullname
+        gib fullname
     fullname = os.path.join(os.path.dirname(__file__), '..', *filename)
     wenn os.path.isfile(fullname):
-        return fullname
+        gib fullname
     raise FileNotFoundError(os.path.join(filename))
 
 
@@ -63,7 +63,7 @@ def simple_server_sslcontext():
     server_context.load_cert_chain(ONLYCERT, ONLYKEY)
     server_context.check_hostname = Falsch
     server_context.verify_mode = ssl.CERT_NONE
-    return server_context
+    gib server_context
 
 
 def simple_client_sslcontext(*, disable_verify=Wahr):
@@ -71,14 +71,14 @@ def simple_client_sslcontext(*, disable_verify=Wahr):
     client_context.check_hostname = Falsch
     wenn disable_verify:
         client_context.verify_mode = ssl.CERT_NONE
-    return client_context
+    gib client_context
 
 
 def dummy_ssl_context():
     wenn ssl is Nichts:
-        return Nichts
+        gib Nichts
     sonst:
-        return simple_client_sslcontext(disable_verify=Wahr)
+        gib simple_client_sslcontext(disable_verify=Wahr)
 
 
 def run_briefly(loop):
@@ -120,7 +120,7 @@ def run_once(loop):
 klasse SilentWSGIRequestHandler(WSGIRequestHandler):
 
     def get_stderr(self):
-        return io.StringIO()
+        gib io.StringIO()
 
     def log_message(self, format, *args):
         pass
@@ -133,7 +133,7 @@ klasse SilentWSGIServer(WSGIServer):
     def get_request(self):
         request, client_addr = super().get_request()
         request.settimeout(self.request_timeout)
-        return request, client_addr
+        gib request, client_addr
 
     def handle_error(self, request, client_address):
         pass
@@ -168,7 +168,7 @@ def _run_test_server(*, address, use_ssl=Falsch, server_cls, server_ssl_cls):
         size = int(environ['CONTENT_LENGTH'])
         waehrend size:
             data = environ['wsgi.input'].read(min(size, 0x10000))
-            yield data
+            liefere data
             size -= len(data)
 
     def app(environ, start_response):
@@ -176,9 +176,9 @@ def _run_test_server(*, address, use_ssl=Falsch, server_cls, server_ssl_cls):
         headers = [('Content-type', 'text/plain')]
         start_response(status, headers)
         wenn environ['PATH_INFO'] == '/loop':
-            return loop(environ)
+            gib loop(environ)
         sonst:
-            return [b'Test message']
+            gib [b'Test message']
 
     # Run the test WSGI server in a separate thread in order nicht to
     # interfere mit event handling in the main thread
@@ -190,7 +190,7 @@ def _run_test_server(*, address, use_ssl=Falsch, server_cls, server_ssl_cls):
         target=lambda: httpd.serve_forever(poll_interval=0.05))
     server_thread.start()
     try:
-        yield httpd
+        liefere httpd
     finally:
         httpd.shutdown()
         httpd.server_close()
@@ -219,12 +219,12 @@ wenn hasattr(socket, 'AF_UNIX'):
             request, client_addr = super().get_request()
             request.settimeout(self.request_timeout)
             # Code in the stdlib expects that get_request
-            # will return a socket und a tuple (host, port).
+            # will gib a socket und a tuple (host, port).
             # However, this isn't true fuer UNIX sockets,
-            # als the second return value will be a path;
-            # hence we return some fake data sufficient
+            # als the second gib value will be a path;
+            # hence we gib some fake data sufficient
             # to get the tests going
-            return request, ('127.0.0.1', '')
+            gib request, ('127.0.0.1', '')
 
 
     klasse SilentUnixWSGIServer(UnixWSGIServer):
@@ -238,14 +238,14 @@ wenn hasattr(socket, 'AF_UNIX'):
 
 
     def gen_unix_socket_path():
-        return socket_helper.create_unix_domain_name()
+        gib socket_helper.create_unix_domain_name()
 
 
     @contextlib.contextmanager
     def unix_socket_path():
         path = gen_unix_socket_path()
         try:
-            yield path
+            liefere path
         finally:
             try:
                 os.unlink(path)
@@ -256,14 +256,14 @@ wenn hasattr(socket, 'AF_UNIX'):
     @contextlib.contextmanager
     def run_test_unix_server(*, use_ssl=Falsch):
         mit unix_socket_path() als path:
-            yield von _run_test_server(address=path, use_ssl=use_ssl,
+            liefere von _run_test_server(address=path, use_ssl=use_ssl,
                                         server_cls=SilentUnixWSGIServer,
                                         server_ssl_cls=UnixSSLWSGIServer)
 
 
 @contextlib.contextmanager
 def run_test_server(*, host='127.0.0.1', port=0, use_ssl=Falsch):
-    yield von _run_test_server(address=(host, port), use_ssl=use_ssl,
+    liefere von _run_test_server(address=(host, port), use_ssl=use_ssl,
                                 server_cls=SilentWSGIServer,
                                 server_ssl_cls=SSLWSGIServer)
 
@@ -288,7 +288,7 @@ def run_udp_echo_server(*, host='127.0.0.1', port=0):
     thread = threading.Thread(target=lambda: echo_datagrams(sock))
     thread.start()
     try:
-        yield sockname
+        liefere sockname
     finally:
         # gh-122187: use a separate socket to send the stop message to avoid
         # TSan reported race on the same socket.
@@ -305,7 +305,7 @@ def make_test_protocol(base):
             # skip magic names
             weiter
         dct[name] = MockCallback(return_value=Nichts)
-    return type('TestProtocol', (base,) + base.__bases__, dct)()
+    gib type('TestProtocol', (base,) + base.__bases__, dct)()
 
 
 klasse TestSelector(selectors.BaseSelector):
@@ -316,16 +316,16 @@ klasse TestSelector(selectors.BaseSelector):
     def register(self, fileobj, events, data=Nichts):
         key = selectors.SelectorKey(fileobj, 0, events, data)
         self.keys[fileobj] = key
-        return key
+        gib key
 
     def unregister(self, fileobj):
-        return self.keys.pop(fileobj)
+        gib self.keys.pop(fileobj)
 
     def select(self, timeout):
-        return []
+        gib []
 
     def get_map(self):
-        return self.keys
+        gib self.keys
 
 
 klasse TestLoop(base_events.BaseEventLoop):
@@ -340,11 +340,11 @@ klasse TestLoop(base_events.BaseEventLoop):
 
         def gen():
             ...
-            when = yield ...
-            ... = yield time_advance
+            when = liefere ...
+            ... = liefere time_advance
 
-    Value returned by yield is absolute time of next scheduled handler.
-    Value passed to yield is time advance to move loop's time forward.
+    Value returned by liefere is absolute time of next scheduled handler.
+    Value passed to liefere is time advance to move loop's time forward.
     """
 
     def __init__(self, gen=Nichts):
@@ -352,7 +352,7 @@ klasse TestLoop(base_events.BaseEventLoop):
 
         wenn gen is Nichts:
             def gen():
-                yield
+                liefere
             self._check_on_close = Falsch
         sonst:
             self._check_on_close = Wahr
@@ -371,7 +371,7 @@ klasse TestLoop(base_events.BaseEventLoop):
         self._transports = weakref.WeakValueDictionary()
 
     def time(self):
-        return self._time
+        gib self._time
 
     def advance_time(self, advance):
         """Move test time forward."""
@@ -395,9 +395,9 @@ klasse TestLoop(base_events.BaseEventLoop):
         self.remove_reader_count[fd] += 1
         wenn fd in self.readers:
             del self.readers[fd]
-            return Wahr
+            gib Wahr
         sonst:
-            return Falsch
+            gib Falsch
 
     def assert_reader(self, fd, callback, *args):
         wenn fd nicht in self.readers:
@@ -421,9 +421,9 @@ klasse TestLoop(base_events.BaseEventLoop):
         self.remove_writer_count[fd] += 1
         wenn fd in self.writers:
             del self.writers[fd]
-            return Wahr
+            gib Wahr
         sonst:
-            return Falsch
+            gib Falsch
 
     def assert_writer(self, fd, callback, *args):
         wenn fd nicht in self.writers:
@@ -454,22 +454,22 @@ klasse TestLoop(base_events.BaseEventLoop):
     def add_reader(self, fd, callback, *args):
         """Add a reader callback."""
         self._ensure_fd_no_transport(fd)
-        return self._add_reader(fd, callback, *args)
+        gib self._add_reader(fd, callback, *args)
 
     def remove_reader(self, fd):
         """Remove a reader callback."""
         self._ensure_fd_no_transport(fd)
-        return self._remove_reader(fd)
+        gib self._remove_reader(fd)
 
     def add_writer(self, fd, callback, *args):
         """Add a writer callback.."""
         self._ensure_fd_no_transport(fd)
-        return self._add_writer(fd, callback, *args)
+        gib self._add_writer(fd, callback, *args)
 
     def remove_writer(self, fd):
         """Remove a writer callback."""
         self._ensure_fd_no_transport(fd)
-        return self._remove_writer(fd)
+        gib self._remove_writer(fd)
 
     def reset_counters(self):
         self.remove_reader_count = collections.defaultdict(int)
@@ -484,17 +484,17 @@ klasse TestLoop(base_events.BaseEventLoop):
 
     def call_at(self, when, callback, *args, context=Nichts):
         self._timers.append(when)
-        return super().call_at(when, callback, *args, context=context)
+        gib super().call_at(when, callback, *args, context=context)
 
     def _process_events(self, event_list):
-        return
+        gib
 
     def _write_to_self(self):
         pass
 
 
 def MockCallback(**kwargs):
-    return mock.Mock(spec=['__call__'], **kwargs)
+    gib mock.Mock(spec=['__call__'], **kwargs)
 
 
 klasse MockPattern(str):
@@ -507,7 +507,7 @@ klasse MockPattern(str):
        mock_call.assert_called_with(MockPattern('spam.*ham'))
     """
     def __eq__(self, other):
-        return bool(re.search(str(self), other, re.S))
+        gib bool(re.search(str(self), other, re.S))
 
 
 klasse MockInstanceOf:
@@ -515,14 +515,14 @@ klasse MockInstanceOf:
         self._type = type
 
     def __eq__(self, other):
-        return isinstance(other, self._type)
+        gib isinstance(other, self._type)
 
 
 def get_function_source(func):
     source = format_helpers._get_function_source(func)
     wenn source is Nichts:
         raise ValueError("unable to get the source of %r" % (func,))
-    return source
+    gib source
 
 
 klasse TestCase(unittest.TestCase):
@@ -546,7 +546,7 @@ klasse TestCase(unittest.TestCase):
     def new_test_loop(self, gen=Nichts):
         loop = TestLoop(gen)
         self.set_event_loop(loop)
-        return loop
+        gib loop
 
     def setUp(self):
         self._thread_cleanup = threading_helper.threading_setup()
@@ -572,7 +572,7 @@ def disable_logger():
     old_level = logger.level
     try:
         logger.setLevel(logging.CRITICAL+1)
-        yield
+        liefere
     finally:
         logger.setLevel(old_level)
 
@@ -585,7 +585,7 @@ def mock_nonblocking_socket(proto=socket.IPPROTO_TCP, type=socket.SOCK_STREAM,
     sock.type = type
     sock.family = family
     sock.gettimeout.return_value = 0.0
-    return sock
+    gib sock
 
 
 async def await_without_task(coro):

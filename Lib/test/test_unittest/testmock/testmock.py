@@ -20,10 +20,10 @@ klasse Iter(object):
         self.thing = iter(['this', 'is', 'an', 'iter'])
 
     def __iter__(self):
-        return self
+        gib self
 
     def next(self):
-        return next(self.thing)
+        gib next(self.thing)
 
     __next__ = next
 
@@ -46,7 +46,7 @@ klasse SomethingElse(object):
     def instance(self):
         wenn nicht self._instance:
             self._instance = 'object'
-        return self._instance
+        gib self._instance
 
 
 klasse Typos():
@@ -192,7 +192,7 @@ klasse MockTest(unittest.TestCase):
 
         results = [1, 2, 3]
         def effect():
-            return results.pop()
+            gib results.pop()
         mock.side_effect = effect
 
         self.assertEqual([mock(), mock(), mock()], [3, 2, 1],
@@ -203,7 +203,7 @@ klasse MockTest(unittest.TestCase):
                           "side effect in constructor nicht used")
 
         def side_effect():
-            return DEFAULT
+            gib DEFAULT
         mock = Mock(side_effect=side_effect, return_value=sentinel.RETURN)
         self.assertEqual(mock(), sentinel.RETURN)
 
@@ -211,7 +211,7 @@ klasse MockTest(unittest.TestCase):
         # Test fuer issue17826
         results = [1, 2, 3]
         def effect():
-            return results.pop()
+            gib results.pop()
         def f(): pass
 
         mock = create_autospec(f)
@@ -270,9 +270,9 @@ klasse MockTest(unittest.TestCase):
 
         klasse Result:
             def get_result(self):
-                return result
+                gib result
         class_mock = create_autospec(spec=Result, wraps=Result)
-        # Have to reassign the return_value to DEFAULT to return the real
+        # Have to reassign the return_value to DEFAULT to gib the real
         # result (actual instance of "Result") when the mock is called.
         class_mock.return_value = mock.DEFAULT
         self.assertEqual(class_mock().get_result(), result)
@@ -290,9 +290,9 @@ klasse MockTest(unittest.TestCase):
                 """This is a static method because when the mocked instance of
                 'Result' will call this method, it won't be able to consume
                 'self' argument."""
-                return result
+                gib result
         instance_mock = create_autospec(spec=Result, instance=Wahr, wraps=Result)
-        # Have to reassign the return_value to DEFAULT to return the real
+        # Have to reassign the return_value to DEFAULT to gib the real
         # result von "Result.get_result" when the mocked instance of "Result"
         # calls "get_result".
         instance_mock.get_result.return_value = mock.DEFAULT
@@ -307,7 +307,7 @@ klasse MockTest(unittest.TestCase):
 
         klasse Result:
             def get_result(self):
-                return result
+                gib result
         func_mock = create_autospec(spec=Result.get_result, wraps=Result.get_result)
         self.assertEqual(func_mock(Result()), result)
 
@@ -316,9 +316,9 @@ klasse MockTest(unittest.TestCase):
         passed to the wrapped object und the return_value is returned instead.
         """
         def my_func():
-            return Nichts  # pragma: no cover
+            gib Nichts  # pragma: no cover
         func_mock = create_autospec(spec=my_func, wraps=my_func)
-        return_value = "explicit return value"
+        return_value = "explicit gib value"
         func_mock.return_value = return_value
         self.assertEqual(func_mock(), return_value)
 
@@ -408,7 +408,7 @@ klasse MockTest(unittest.TestCase):
         mock.return_value = sentinel.ReturnValue
         ret_val = mock(sentinel.Arg, key=sentinel.KeyArg)
         self.assertEqual(ret_val, sentinel.ReturnValue,
-                         "incorrect return value")
+                         "incorrect gib value")
 
         self.assertEqual(mock.call_count, 2, "call_count incorrect")
         self.assertEqual(mock.call_args,
@@ -754,7 +754,7 @@ klasse MockTest(unittest.TestCase):
     def test_customize_wrapped_object_with_side_effect_iterable_with_default(self):
         klasse Real(object):
             def method(self):
-                return sentinel.ORIGINAL_VALUE
+                gib sentinel.ORIGINAL_VALUE
 
         real = Real()
         mock = Mock(wraps=real)
@@ -793,7 +793,7 @@ klasse MockTest(unittest.TestCase):
         klasse Real(object):
             def method(self): pass
         def side_effect():
-            return sentinel.VALUE
+            gib sentinel.VALUE
 
         real = Real()
         mock = Mock(wraps=real)
@@ -829,7 +829,7 @@ klasse MockTest(unittest.TestCase):
 
 
     def test_customize_wrapped_object_with_return_value_and_side_effect2(self):
-        # side_effect can return DEFAULT to default to return_value
+        # side_effect can gib DEFAULT to default to return_value
         klasse Real(object):
             def method(self): pass
 
@@ -893,10 +893,10 @@ klasse MockTest(unittest.TestCase):
         klasse Foo:
 
             def __getitem__(self, index):
-                return index
+                gib index
 
             def __custom_method__(self):
-                return "foo"
+                gib "foo"
 
 
         klass = MagicMock(wraps=Foo)
@@ -1021,7 +1021,7 @@ klasse MockTest(unittest.TestCase):
     def test_subclass_with_properties(self):
         klasse SubClass(Mock):
             def _get(self):
-                return 3
+                gib 3
             def _set(self, value):
                 raise NameError('strange error')
             some_attribute = property(_get, _set)
@@ -1042,7 +1042,7 @@ klasse MockTest(unittest.TestCase):
         mock = Mock()
         def __call__(self, a):
             self._increment_mock_call(a)
-            return self._mock_call(a)
+            gib self._mock_call(a)
 
         type(mock).__call__ = __call__
         mock('one')
@@ -1197,7 +1197,7 @@ klasse MockTest(unittest.TestCase):
     def test_mock_calls(self):
         mock = MagicMock()
 
-        # need to do this because MagicMock.mock_calls used to just return
+        # need to do this because MagicMock.mock_calls used to just gib
         # a MagicMock which also returned a MagicMock when __eq__ was called
         self.assertIs(mock.mock_calls == [], Wahr)
 
@@ -1345,7 +1345,7 @@ klasse MockTest(unittest.TestCase):
 
         klasse Subclass(Mock):
             def _get_child_mock(self, **kwargs):
-                return Mock(**kwargs)
+                gib Mock(**kwargs)
 
         mock = Subclass()
         self.assertNotIsInstance(mock.foo, Subclass)
@@ -2332,7 +2332,7 @@ klasse MockTest(unittest.TestCase):
 
             # This trace will stop coverage being measured ;-)
             def trace(frame, event, arg):  # pragma: no cover
-                return trace
+                gib trace
 
             self.addCleanup(sys.settrace, sys.gettrace())
             sys.settrace(trace)

@@ -9,11 +9,11 @@ klasse base_set:
 
 klasse myset(base_set):
     def __contains__(self, el):
-        return self.el == el
+        gib self.el == el
 
 klasse seq(base_set):
     def __getitem__(self, n):
-        return [self.el][n]
+        gib [self.el][n]
 
 klasse TestContains(unittest.TestCase):
     def test_common_tests(self):
@@ -65,7 +65,7 @@ klasse TestContains(unittest.TestCase):
                     self.aList.remove(12)
                     self.aList.remove(13)
                     self.aList.remove(14)
-                return 0
+                gib 0
 
         self.assertNotIn(Deviant1(), Deviant1.aList)
 
@@ -86,7 +86,7 @@ klasse TestContains(unittest.TestCase):
         # blocking fallback mit __contains__ = Nichts
         klasse ByContains(object):
             def __contains__(self, other):
-                return Falsch
+                gib Falsch
         c = ByContains()
         klasse BlockContains(ByContains):
             """Is nicht a container
@@ -101,7 +101,7 @@ klasse TestContains(unittest.TestCase):
             """
             def __iter__(self):
                 waehrend Falsch:
-                    yield Nichts
+                    liefere Nichts
             __contains__ = Nichts
         bc = BlockContains()
         self.assertFalsch(0 in c)

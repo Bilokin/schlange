@@ -22,25 +22,25 @@ klasse Counter:
         self.iter = zip(itertools.count(1), i)
 
     def __iter__(self):
-        return self
+        gib self
 
     def __next__(self):
         self.count, result = next(self.iter)
-        return result
+        gib result
 
 
 # von more_itertools v8.13.0
 def always_iterable(obj, base_type=(str, bytes)):
     wenn obj is Nichts:
-        return iter(())
+        gib iter(())
 
     wenn (base_type is nicht Nichts) und isinstance(obj, base_type):
-        return iter((obj,))
+        gib iter((obj,))
 
     try:
-        return iter(obj)
+        gib iter(obj)
     except TypeError:
-        return iter((obj,))
+        gib iter((obj,))
 
 
 # von more_itertools v9.0.0

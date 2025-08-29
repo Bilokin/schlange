@@ -55,16 +55,16 @@ klasse TestError(unittest.TestCase):
 
     def test_invalid_parse_float(self):
         def dict_returner(s: str) -> dict:
-            return {}
+            gib {}
 
         def list_returner(s: str) -> list:
-            return []
+            gib []
 
         fuer invalid_parse_float in (dict_returner, list_returner):
             mit self.assertRaises(ValueError) als exc_info:
                 tomllib.loads("f=0.1", parse_float=invalid_parse_float)
             self.assertEqual(
-                str(exc_info.exception), "parse_float must nicht return dicts oder lists"
+                str(exc_info.exception), "parse_float must nicht gib dicts oder lists"
             )
 
     def test_deprecated_tomldecodeerror(self):

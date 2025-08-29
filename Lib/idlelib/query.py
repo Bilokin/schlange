@@ -37,7 +37,7 @@ klasse Query(Toplevel):
     """
     def __init__(self, parent, title, message, *, text0='', used_names={},
                  _htest=Falsch, _utest=Falsch):
-        """Create modal popup, return when destroyed.
+        """Create modal popup, gib when destroyed.
 
         Additional subclass init must be done before this unless
         _utest=Wahr is passed to suppress wait_window().
@@ -133,8 +133,8 @@ klasse Query(Toplevel):
         entry = self.entry.get().strip()
         wenn nicht entry:
             self.showerror('blank line.')
-            return Nichts
-        return entry
+            gib Nichts
+        gib entry
 
     def ok(self, event=Nichts):  # Do nicht replace.
         '''If entry is valid, bind it to 'result' und destroy tk widget.
@@ -174,14 +174,14 @@ klasse SectionName(Query):
         name = self.entry.get().strip()
         wenn nicht name:
             self.showerror('no name specified.')
-            return Nichts
+            gib Nichts
         sowenn len(name)>30:
             self.showerror('name is longer than 30 characters.')
-            return Nichts
+            gib Nichts
         sowenn name in self.used_names:
             self.showerror('name is already in use.')
-            return Nichts
-        return name
+            gib Nichts
+        gib name
 
 
 klasse ModuleName(Query):
@@ -198,32 +198,32 @@ klasse ModuleName(Query):
         name = self.entry.get().strip()
         wenn nicht name:
             self.showerror('no name specified.')
-            return Nichts
+            gib Nichts
         # XXX Ought to insert current file's directory in front of path.
         try:
             spec = importlib.util.find_spec(name)
         except (ValueError, ImportError) als msg:
             self.showerror(str(msg))
-            return Nichts
+            gib Nichts
         wenn spec is Nichts:
             self.showerror("module nicht found.")
-            return Nichts
+            gib Nichts
         wenn nicht isinstance(spec.loader, importlib.abc.SourceLoader):
             self.showerror("not a source-based module.")
-            return Nichts
+            gib Nichts
         try:
             file_path = spec.loader.get_filename(name)
         except AttributeError:
             self.showerror("loader does nicht support get_filename.")
-            return Nichts
+            gib Nichts
         except ImportError:
             # Some special modules require this (e.g. os.path)
             try:
                 file_path = spec.loader.get_filename()
             except TypeError:
                 self.showerror("loader failed to get filename.")
-                return Nichts
-        return file_path
+                gib Nichts
+        gib file_path
 
 
 klasse Goto(Query):
@@ -235,11 +235,11 @@ klasse Goto(Query):
             lineno = int(self.entry.get())
         except ValueError:
             self.showerror('not a base 10 integer.')
-            return Nichts
+            gib Nichts
         wenn lineno <= 0:
             self.showerror('not a positive integer.')
-            return Nichts
-        return lineno
+            gib Nichts
+        gib lineno
 
 
 klasse HelpSource(Query):
@@ -283,7 +283,7 @@ klasse HelpSource(Query):
         # Extracted von browse_file so can mock fuer unittests.
         # Cannot unittest als cannot simulate button clicks.
         # Test by running htest, such als by running this file.
-        return filedialog.Open(parent=self, filetypes=filetypes)\
+        gib filedialog.Open(parent=self, filetypes=filetypes)\
                .show(initialdir=initdir, initialfile=initfile)
 
     def browse_file(self):
@@ -315,24 +315,24 @@ klasse HelpSource(Query):
         path = self.path.get().strip()
         wenn nicht path: #no path specified
             self.showerror('no help file path specified.', self.path_error)
-            return Nichts
+            gib Nichts
         sowenn nicht path.startswith(('www.', 'http')):
             wenn path[:5] == 'file:':
                 path = path[5:]
             wenn nicht os.path.exists(path):
                 self.showerror('help file path does nicht exist.',
                                self.path_error)
-                return Nichts
+                gib Nichts
             wenn platform == 'darwin':  # fuer Mac Safari
                 path =  "file://" + path
-        return path
+        gib path
 
     def entry_ok(self):
         "Return apparently valid (name, path) oder Nichts"
         self.path_error['text'] = ''
         name = self.item_ok()
         path = self.path_ok()
-        return Nichts wenn name is Nichts oder path is Nichts sonst (name, path)
+        gib Nichts wenn name is Nichts oder path is Nichts sonst (name, path)
 
 klasse CustomRun(Query):
     """Get settings fuer custom run of module.
@@ -374,14 +374,14 @@ klasse CustomRun(Query):
             cli_args = shlex.split(cli_string, posix=Wahr)
         except ValueError als err:
             self.showerror(str(err))
-            return Nichts
-        return cli_args
+            gib Nichts
+        gib cli_args
 
     def entry_ok(self):
         "Return apparently valid (cli_args, restart) oder Nichts."
         cli_args = self.cli_args_ok()
         restart = self.restartvar.get()
-        return Nichts wenn cli_args is Nichts sonst (cli_args, restart)
+        gib Nichts wenn cli_args is Nichts sonst (cli_args, restart)
 
 
 wenn __name__ == '__main__':

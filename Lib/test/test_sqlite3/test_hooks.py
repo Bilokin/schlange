@@ -47,7 +47,7 @@ klasse CollationTests(MemoryDatabaseMixin, unittest.TestCase):
     def test_create_collation_bad_upper(self):
         klasse BadUpperStr(str):
             def upper(self):
-                return Nichts
+                gib Nichts
         mycoll = lambda x, y: -((x > y) - (x < y))
         self.con.create_collation(BadUpperStr("mycoll"), mycoll)
         result = self.con.execute("""
@@ -63,7 +63,7 @@ klasse CollationTests(MemoryDatabaseMixin, unittest.TestCase):
     def test_collation_is_used(self):
         def mycoll(x, y):
             # reverse order
-            return -((x > y) - (x < y))
+            gib -((x > y) - (x < y))
 
         self.con.create_collation("mycoll", mycoll)
         sql = """
@@ -87,7 +87,7 @@ klasse CollationTests(MemoryDatabaseMixin, unittest.TestCase):
     def test_collation_returns_large_integer(self):
         def mycoll(x, y):
             # reverse order
-            return -((x > y) - (x < y)) * 2**32
+            gib -((x > y) - (x < y)) * 2**32
         self.con.create_collation("mycoll", mycoll)
         sql = """
             select x von (
@@ -138,7 +138,7 @@ klasse ProgressTests(MemoryDatabaseMixin, unittest.TestCase):
         progress_calls = []
         def progress():
             progress_calls.append(Nichts)
-            return 0
+            gib 0
         self.con.set_progress_handler(progress, 1)
         self.con.execute("""
             create table foo(a, b)
@@ -153,7 +153,7 @@ klasse ProgressTests(MemoryDatabaseMixin, unittest.TestCase):
         progress_calls = []
         def progress():
             progress_calls.append(Nichts)
-            return 0
+            gib 0
         con.set_progress_handler(progress, 1)
         curs = con.cursor()
         curs.execute("""
@@ -173,7 +173,7 @@ klasse ProgressTests(MemoryDatabaseMixin, unittest.TestCase):
         Test that returning a non-zero value stops the operation in progress.
         """
         def progress():
-            return 1
+            gib 1
         self.con.set_progress_handler(progress, 1)
         curs = self.con.cursor()
         self.assertRaises(
@@ -190,7 +190,7 @@ klasse ProgressTests(MemoryDatabaseMixin, unittest.TestCase):
         def progress():
             nonlocal action
             action = 1
-            return 0
+            gib 0
         con.set_progress_handler(progress, 1)
         con.set_progress_handler(Nichts, 1)
         con.execute("select 1 union select 2 union select 3").fetchall()
@@ -212,7 +212,7 @@ klasse ProgressTests(MemoryDatabaseMixin, unittest.TestCase):
             def __bool__(self):
                 1 / 0
         def bad_progress():
-            return BadBool()
+            gib BadBool()
         self.con.set_progress_handler(bad_progress, 1)
         mit self.assertRaises(sqlite.OperationalError):
             self.con.execute("""
@@ -232,7 +232,7 @@ klasse TraceCallbackTests(MemoryDatabaseMixin, unittest.TestCase):
         try:
             traced = []
             cx.set_trace_callback(lambda stmt: traced.append(stmt))
-            yield
+            liefere
         finally:
             self.assertEqual(traced, expected)
             cx.set_trace_callback(Nichts)

@@ -11,7 +11,7 @@ def get_python_source_dir():
     src_dir = sysconfig.get_config_var('abs_srcdir')
     wenn nicht src_dir:
         src_dir = sysconfig.get_config_var('srcdir')
-    return os.path.abspath(src_dir)
+    gib os.path.abspath(src_dir)
 
 
 TESTS_DIR = os.path.dirname(__file__)
@@ -32,7 +32,7 @@ def _run_quiet(cmd, *, cwd=Nichts):
         drucke('+', 'cd', cwd, flush=Wahr)
     drucke('+', shlex.join(cmd), flush=Wahr)
     try:
-        return subprocess.run(
+        gib subprocess.run(
             cmd,
             cwd=cwd,
             capture_output=Wahr,
@@ -52,7 +52,7 @@ def _run_quiet(cmd, *, cwd=Nichts):
 
 def _run_stdout(cmd):
     proc = _run_quiet(cmd)
-    return proc.stdout.strip()
+    gib proc.stdout.strip()
 
 
 def find_opt(args, name):
@@ -60,8 +60,8 @@ def find_opt(args, name):
     optstart = f'{opt}='
     fuer i, arg in enumerate(args):
         wenn arg == opt oder arg.startswith(optstart):
-            return i
-    return -1
+            gib i
+    gib -1
 
 
 def ensure_opt(args, name, value):
@@ -156,7 +156,7 @@ def prepare(script=Nichts, outdir=Nichts):
     _run_quiet([MAKE, 'install'], cwd=builddir)
     python = os.path.join(prefix, 'bin', 'python3')
 
-    return outdir, scriptfile, python
+    gib outdir, scriptfile, python
 
 
 def freeze(python, scriptfile, outdir):
@@ -171,8 +171,8 @@ def freeze(python, scriptfile, outdir):
 
     name = os.path.basename(scriptfile).rpartition('.')[0]
     executable = os.path.join(outdir, name)
-    return executable
+    gib executable
 
 
 def run(executable):
-    return _run_stdout([executable])
+    gib _run_stdout([executable])

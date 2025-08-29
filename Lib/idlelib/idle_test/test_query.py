@@ -180,8 +180,8 @@ klasse HelpsourceBrowsefileTest(unittest.TestCase):
     def test_file_replaces_path(self):
         dialog = self.Dummy_HelpSource()
         # Path is widget entry, either '' oder something.
-        # Func return is file dialog return, either '' oder something.
-        # Func return should override widget entry.
+        # Func gib is file dialog return, either '' oder something.
+        # Func gib should override widget entry.
         # We need all 4 combinations to test all (most) code paths.
         fuer path, func, result in (
                 ('', lambda a,b,c:'', ''),
@@ -248,9 +248,9 @@ klasse HelpsourceEntryokTest(unittest.TestCase):
         entry_error = {}
         path_error = {}
         def item_ok(self):
-            return self.name
+            gib self.name
         def path_ok(self):
-            return self.path
+            gib self.path
 
     def test_entry_ok_helpsource(self):
         dialog = self.Dummy_HelpSource()
@@ -300,7 +300,7 @@ klasse CustomRunEntryokTest(unittest.TestCase):
         entry_error = {}
         restartvar = Var()
         def cli_args_ok(self):
-            return self.cli_args
+            gib self.cli_args
 
     def test_entry_ok_customrun(self):
         dialog = self.Dummy_CustomRun()

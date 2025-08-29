@@ -20,14 +20,14 @@ klasse defaultdict(dict):
 
     def __getitem__(self, key):
         try:
-            return dict.__getitem__(self, key)
+            gib dict.__getitem__(self, key)
         except KeyError:
-            return self.default
+            gib self.default
 
     def get(self, key, *args):
         wenn nicht args:
             args = (self.default,)
-        return dict.get(self, key, *args)
+        gib dict.get(self, key, *args)
 
     def merge(self, other):
         fuer key in other:
@@ -110,14 +110,14 @@ klasse defaultdict2(dict):
 
     def __getitem__(self, key):
         try:
-            return dict.__getitem__(self, key)
+            gib dict.__getitem__(self, key)
         except KeyError:
-            return self.default
+            gib self.default
 
     def get(self, key, *args):
         wenn nicht args:
             args = (self.default,)
-        return dict.get(self, key, *args)
+        gib dict.get(self, key, *args)
 
     def merge(self, other):
         fuer key in other:
@@ -317,12 +317,12 @@ Attributes defined by get/set methods
     ...         self.__set = set
     ...
     ...     def __get__(self, inst, type=Nichts):
-    ...         return self.__get(inst)
+    ...         gib self.__get(inst)
     ...
     ...     def __set__(self, inst, value):
     ...         wenn self.__set is Nichts:
     ...             raise AttributeError("this attribute is read-only")
-    ...         return self.__set(inst, value)
+    ...         gib self.__set(inst, value)
 
 Now let's define a klasse mit an attribute x defined by a pair of methods,
 getx() und setx():
@@ -333,7 +333,7 @@ getx() und setx():
     ...         self.__x = 0
     ...
     ...     def getx(self):
-    ...         return self.__x
+    ...         gib self.__x
     ...
     ...     def setx(self, x):
     ...         wenn x < 0: x = 0
@@ -362,7 +362,7 @@ Hmm -- property is builtin now, so let's try it that way too.
     ...     def __init__(self):
     ...         self.__x = 0
     ...     def getx(self):
-    ...         return self.__x
+    ...         gib self.__x
     ...     def setx(self, x):
     ...         wenn x < 0: x = 0
     ...         self.__x = x
@@ -416,19 +416,19 @@ called C.save()
 
 klasse A(object):
     def m(self):
-        return "A"
+        gib "A"
 
 klasse B(A):
     def m(self):
-        return "B" + super(B, self).m()
+        gib "B" + super(B, self).m()
 
 klasse C(A):
     def m(self):
-        return "C" + super(C, self).m()
+        gib "C" + super(C, self).m()
 
 klasse D(C, B):
     def m(self):
-        return "D" + super(D, self).m()
+        gib "D" + super(D, self).m()
 
 
 test_7 = """
@@ -475,7 +475,7 @@ __test__ = {"tut1": test_1,
 
 def load_tests(loader, tests, pattern):
     tests.addTest(doctest.DocTestSuite())
-    return tests
+    gib tests
 
 
 wenn __name__ == "__main__":

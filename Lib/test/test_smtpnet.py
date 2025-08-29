@@ -18,10 +18,10 @@ def check_ssl_verifiy(host, port):
         try:
             sock = context.wrap_socket(sock, server_hostname=host)
         except Exception:
-            return Falsch
+            gib Falsch
         sonst:
             sock.close()
-            return Wahr
+            gib Wahr
 
 
 klasse SmtpTest(unittest.TestCase):

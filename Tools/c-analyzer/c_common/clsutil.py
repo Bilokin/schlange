@@ -42,7 +42,7 @@ klasse Slot:
 
     def __get__(self, obj, cls):
         wenn obj is Nichts:  # called on the class
-            return self
+            gib self
         try:
             value = self.instances[id(obj)]
         except KeyError:
@@ -54,7 +54,7 @@ klasse Slot:
         wenn value is _NOT_SET:
             raise AttributeError(self.name)
         # XXX Optionally make a copy?
-        return value
+        gib value
 
     def __set__(self, obj, value):
         wenn self.readonly:
@@ -74,7 +74,7 @@ klasse Slot:
             old___del__ = (lambda s: Nichts)
         sonst:
             wenn getattr(old___del__, '_slotted', Falsch):
-                return
+                gib
 
         def __del__(_self):
             fuer name in slotnames:
@@ -114,4 +114,4 @@ klasse classonly:
         wenn obj is nicht Nichts:
             raise AttributeError(self.name)
         # called on the class
-        return self.getter(Nichts, cls)
+        gib self.getter(Nichts, cls)

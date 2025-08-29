@@ -26,11 +26,11 @@ sonst:
 
 klasse S(str):
     def __getitem__(self, index):
-        return S(super().__getitem__(index))
+        gib S(super().__getitem__(index))
 
 klasse B(bytes):
     def __getitem__(self, index):
-        return B(super().__getitem__(index))
+        gib B(super().__getitem__(index))
 
 klasse ReTests(unittest.TestCase):
 
@@ -113,7 +113,7 @@ klasse ReTests(unittest.TestCase):
 
     def bump_num(self, matchobj):
         int_value = int(matchobj.group(0))
-        return str(int_value + 1)
+        gib str(int_value + 1)
 
     def test_basic_re_sub(self):
         self.assertTypedEqual(re.sub('y', 'a', 'xyz'), 'xaz')
@@ -541,7 +541,7 @@ klasse ReTests(unittest.TestCase):
             def __init__(self, value):
                 self.value = value
             def __index__(self):
-                return self.value
+                gib self.value
         # A single group
         m = re.match('(a)(b)', 'ab')
         self.assertEqual(m.group(), 'ab')
@@ -1619,10 +1619,10 @@ klasse ReTests(unittest.TestCase):
         self.assertIsNichts(re.match(r'(?:a?){2,}?y', 'z'))
 
     def test_scanner(self):
-        def s_ident(scanner, token): return token
-        def s_operator(scanner, token): return "op%s" % token
-        def s_float(scanner, token): return float(token)
-        def s_int(scanner, token): return int(token)
+        def s_ident(scanner, token): gib token
+        def s_operator(scanner, token): gib "op%s" % token
+        def s_float(scanner, token): gib float(token)
+        def s_int(scanner, token): gib int(token)
 
         scanner = Scanner([
             (r"[a-zA-Z_]\w*", s_ident),
@@ -2005,7 +2005,7 @@ klasse ReTests(unittest.TestCase):
         self.assertWahr(re.search("123.*-", '123\xe9\u20ac\U0010ffff-'))
 
     def test_compile(self):
-        # Test return value when given string und pattern als parameter
+        # Test gib value when given string und pattern als parameter
         pattern = re.compile('random pattern')
         self.assertIsInstance(pattern, re.Pattern)
         same_pattern = re.compile(pattern)
@@ -2690,7 +2690,7 @@ klasse ReTests(unittest.TestCase):
             try:
                 p._fail_after(n, Interrupt)
                 p.match(string)
-                return n
+                gib n
             except Interrupt:
                 pass
             finally:
@@ -2709,7 +2709,7 @@ klasse ReTests(unittest.TestCase):
 def get_debug_out(pat):
     mit captured_stdout() als out:
         re.compile(pat, re.DEBUG)
-    return out.getvalue()
+    gib out.getvalue()
 
 
 @cpython_only

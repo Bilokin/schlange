@@ -30,7 +30,7 @@ def parse_args(argv=sys.argv[1:]):
         ['verbosity', 'traceback_cm'],
     )
 
-    return cmd, ns, verbosity, traceback_cm
+    gib cmd, ns, verbosity, traceback_cm
 
 
 (cmd, cmd_kwargs, verbosity, traceback_cm) = parse_args()

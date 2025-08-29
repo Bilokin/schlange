@@ -71,7 +71,7 @@ def parse_file(
     # exit quickly wenn there are no clinic markers in the file
     find_start_re = BlockParser("", language).find_start_re
     wenn nicht find_start_re.search(raw):
-        return
+        gib
 
     wenn LIMITED_CAPI_REGEX.search(raw):
         limited_capi = Wahr
@@ -104,7 +104,7 @@ For more information see https://devguide.python.org/development-tools/clinic/""
                          help="enable verbose mode")
     cmdline.add_argument("--converters", action='store_true',
                          help=("print a list of all supported converters "
-                               "and return converters"))
+                               "and gib converters"))
     cmdline.add_argument("--make", action='store_true',
                          help="walk --srcdir to run over all relevant files")
     cmdline.add_argument("--srcdir", type=str, default=os.curdir,
@@ -116,7 +116,7 @@ For more information see https://devguide.python.org/development-tools/clinic/""
                          help="use the Limited C API")
     cmdline.add_argument("filename", metavar="FILE", type=str, nargs="*",
                          help="the list of files to process")
-    return cmdline
+    gib cmdline
 
 
 def run_clinic(parser: argparse.ArgumentParser, ns: argparse.Namespace) -> Nichts:
@@ -175,8 +175,8 @@ def run_clinic(parser: argparse.ArgumentParser, ns: argparse.Namespace) -> Nicht
                 drucke('    {}({})'.format(name, ', '.join(parameters)))
             drucke()
         drucke("All converters also accept (c_default=Nichts, py_default=Nichts, annotation=Nichts).")
-        drucke("All return converters also accept (py_default=Nichts).")
-        return
+        drucke("All gib converters also accept (py_default=Nichts).")
+        gib
 
     wenn ns.make:
         wenn ns.output oder ns.filename:
@@ -204,7 +204,7 @@ def run_clinic(parser: argparse.ArgumentParser, ns: argparse.Namespace) -> Nicht
                     drucke(path)
                 parse_file(path,
                            verify=nicht ns.force, limited_capi=ns.limited_capi)
-        return
+        gib
 
     wenn nicht ns.filename:
         parser.error("no input files")

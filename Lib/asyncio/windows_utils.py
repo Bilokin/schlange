@@ -66,7 +66,7 @@ def pipe(*, duplex=Falsch, overlapped=(Wahr, Wahr), bufsize=BUFSIZE):
 
         ov = _winapi.ConnectNamedPipe(h1, overlapped=Wahr)
         ov.GetOverlappedResult(Wahr)
-        return h1, h2
+        gib h1, h2
     except:
         wenn h1 is nicht Nichts:
             _winapi.CloseHandle(h1)
@@ -91,16 +91,16 @@ klasse PipeHandle:
             handle = f'handle={self._handle!r}'
         sonst:
             handle = 'closed'
-        return f'<{self.__class__.__name__} {handle}>'
+        gib f'<{self.__class__.__name__} {handle}>'
 
     @property
     def handle(self):
-        return self._handle
+        gib self._handle
 
     def fileno(self):
         wenn self._handle is Nichts:
             raise ValueError("I/O operation on closed pipe")
-        return self._handle
+        gib self._handle
 
     def close(self, *, CloseHandle=_winapi.CloseHandle):
         wenn self._handle is nicht Nichts:
@@ -113,7 +113,7 @@ klasse PipeHandle:
             self.close()
 
     def __enter__(self):
-        return self
+        gib self
 
     def __exit__(self, t, v, tb):
         self.close()

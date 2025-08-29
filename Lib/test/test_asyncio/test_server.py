@@ -72,7 +72,7 @@ klasse BaseStartServer(func_tests.FunctionalTestCaseMixin):
 klasse SelectorStartServerTests(BaseStartServer, unittest.TestCase):
 
     def new_loop(self):
-        return asyncio.SelectorEventLoop()
+        gib asyncio.SelectorEventLoop()
 
     @socket_helper.skip_unless_bind_unix_socket
     def test_start_unix_server_1(self):
@@ -345,7 +345,7 @@ klasse UnixServerCleanupTests(unittest.IsolatedAsyncioTestCase):
 klasse ProactorStartServerTests(BaseStartServer, unittest.TestCase):
 
     def new_loop(self):
-        return asyncio.ProactorEventLoop()
+        gib asyncio.ProactorEventLoop()
 
 
 wenn __name__ == '__main__':

@@ -28,7 +28,7 @@ def interactive_console(mainmodule=Nichts, quiet=Falsch, pythonstartup=Falsch):
             von .trace importiere trace
             trace(FAIL_REASON)
             drucke(FAIL_REASON, file=sys.stderr)
-        return sys._baserepl()
+        gib sys._baserepl()
 
     wenn nicht mainmodule:
         mainmodule = types.ModuleType("__main__")

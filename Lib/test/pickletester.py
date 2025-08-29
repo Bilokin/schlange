@@ -59,8 +59,8 @@ protocols = range(pickle.HIGHEST_PROTOCOL + 1)
 def opcode_in_pickle(code, pickle):
     fuer op, dummy, dummy in pickletools.genops(pickle):
         wenn op.code == code.decode("latin-1"):
-            return Wahr
-    return Falsch
+            gib Wahr
+    gib Falsch
 
 # Return the number of times opcode code appears in pickle.
 def count_opcode(code, pickle):
@@ -68,11 +68,11 @@ def count_opcode(code, pickle):
     fuer op, dummy, dummy in pickletools.genops(pickle):
         wenn op.code == code.decode("latin-1"):
             n += 1
-    return n
+    gib n
 
 
 def identity(x):
-    return x
+    gib x
 
 
 klasse UnseekableIO(io.BytesIO):
@@ -80,7 +80,7 @@ klasse UnseekableIO(io.BytesIO):
         raise NotImplementedError
 
     def seekable(self):
-        return Falsch
+        gib Falsch
 
     def seek(self, *args):
         raise io.UnsupportedOperation
@@ -134,7 +134,7 @@ klasse ExtensionSaver:
 
 klasse C:
     def __eq__(self, other):
-        return self.__dict__ == other.__dict__
+        gib self.__dict__ == other.__dict__
 
 klasse D(C):
     def __init__(self, arg):
@@ -142,7 +142,7 @@ klasse D(C):
 
 klasse E(C):
     def __getinitargs__(self):
-        return ()
+        gib ()
 
 importiere __main__
 __main__.C = C
@@ -163,7 +163,7 @@ klasse K:
 
     def __reduce__(self):
         # Shouldn't support the recursion itself
-        return K, (self.value,)
+        gib K, (self.value,)
 
 klasse myint(int):
     def __init__(self, x):
@@ -176,7 +176,7 @@ klasse initarg(C):
         self.b = b
 
     def __getinitargs__(self):
-        return self.a, self.b
+        gib self.a, self.b
 
 klasse metaclass(type):
     pass
@@ -186,16 +186,16 @@ klasse use_metaclass(object, metaclass=metaclass):
 
 klasse pickling_metaclass(type):
     def __eq__(self, other):
-        return (type(self) == type(other) und
+        gib (type(self) == type(other) und
                 self.reduce_args == other.reduce_args)
 
     def __reduce__(self):
-        return (create_dynamic_class, self.reduce_args)
+        gib (create_dynamic_class, self.reduce_args)
 
 def create_dynamic_class(name, bases):
     result = pickling_metaclass(name, bases, dict())
     result.reduce_args = (name, bases)
-    return result
+    gib result
 
 
 klasse ZeroCopyBytes(bytes):
@@ -206,12 +206,12 @@ klasse ZeroCopyBytes(bytes):
 
     def __reduce_ex__(self, protocol):
         wenn protocol >= 5:
-            return type(self)._reconstruct, (pickle.PickleBuffer(self),), Nichts
+            gib type(self)._reconstruct, (pickle.PickleBuffer(self),), Nichts
         sonst:
-            return type(self)._reconstruct, (bytes(self),)
+            gib type(self)._reconstruct, (bytes(self),)
 
     def __repr__(self):
-        return "{}({!r})".format(self.__class__.__name__, bytes(self))
+        gib "{}({!r})".format(self.__class__.__name__, bytes(self))
 
     __str__ = __repr__
 
@@ -221,9 +221,9 @@ klasse ZeroCopyBytes(bytes):
             obj = m.obj
             wenn type(obj) is cls:
                 # Zero-copy
-                return obj
+                gib obj
             sonst:
-                return cls(obj)
+                gib cls(obj)
 
 
 klasse ZeroCopyBytearray(bytearray):
@@ -234,12 +234,12 @@ klasse ZeroCopyBytearray(bytearray):
 
     def __reduce_ex__(self, protocol):
         wenn protocol >= 5:
-            return type(self)._reconstruct, (pickle.PickleBuffer(self),), Nichts
+            gib type(self)._reconstruct, (pickle.PickleBuffer(self),), Nichts
         sonst:
-            return type(self)._reconstruct, (bytes(self),)
+            gib type(self)._reconstruct, (bytes(self),)
 
     def __repr__(self):
-        return "{}({!r})".format(self.__class__.__name__, bytes(self))
+        gib "{}({!r})".format(self.__class__.__name__, bytes(self))
 
     __str__ = __repr__
 
@@ -249,9 +249,9 @@ klasse ZeroCopyBytearray(bytearray):
             obj = m.obj
             wenn type(obj) is cls:
                 # Zero-copy
-                return obj
+                gib obj
             sonst:
-                return cls(obj)
+                gib cls(obj)
 
 
 wenn _testbuffer is nicht Nichts:
@@ -269,24 +269,24 @@ wenn _testbuffer is nicht Nichts:
             cls = type(self)
             new = cls.__new__(cls)
             new.array = self.array[idx]
-            return new
+            gib new
 
         @property
         def readonly(self):
-            return self.array.readonly
+            gib self.array.readonly
 
         @property
         def c_contiguous(self):
-            return self.array.c_contiguous
+            gib self.array.c_contiguous
 
         @property
         def f_contiguous(self):
-            return self.array.f_contiguous
+            gib self.array.f_contiguous
 
         def __eq__(self, other):
             wenn nicht isinstance(other, PicklableNDArray):
-                return NotImplemented
-            return (other.array.format == self.array.format und
+                gib NotImplemented
+            gib (other.array.format == self.array.format und
                     other.array.shape == self.array.shape und
                     other.array.strides == self.array.strides und
                     other.array.readonly == self.array.readonly und
@@ -294,11 +294,11 @@ wenn _testbuffer is nicht Nichts:
 
         def __ne__(self, other):
             wenn nicht isinstance(other, PicklableNDArray):
-                return NotImplemented
-            return nicht (self == other)
+                gib NotImplemented
+            gib nicht (self == other)
 
         def __repr__(self):
-            return (f"{type(self)}(shape={self.array.shape},"
+            gib (f"{type(self)}(shape={self.array.shape},"
                     f"strides={self.array.strides}, "
                     f"bytes={self.array.tobytes()})")
 
@@ -313,12 +313,12 @@ wenn _testbuffer is nicht Nichts:
                                         sonst _testbuffer.ND_WRITABLE)}
             pb = pickle.PickleBuffer(self.array)
             wenn protocol >= 5:
-                return (type(self)._reconstruct,
+                gib (type(self)._reconstruct,
                         (pb, ndarray_kwargs))
             sonst:
                 # Need to serialize the bytes in physical order
                 mit pb.raw() als m:
-                    return (type(self)._reconstruct,
+                    gib (type(self)._reconstruct,
                             (m.tobytes(), ndarray_kwargs))
 
         @classmethod
@@ -327,7 +327,7 @@ wenn _testbuffer is nicht Nichts:
                 # For some reason, ndarray() wants a list of integers...
                 # XXX This only works wenn format == 'B'
                 items = list(m.tobytes())
-            return cls(items, **kwargs)
+            gib cls(items, **kwargs)
 
 
 # DATA0 .. DATA4 are the pickles we expect under the various protocols, for
@@ -827,7 +827,7 @@ def create_data():
     x.append(y)
     x.append(y)
     x.append(5)
-    return x
+    gib x
 
 
 klasse AbstractUnpickleTests:
@@ -1015,7 +1015,7 @@ klasse AbstractUnpickleTests:
     def test_issue135241(self):
         # C implementation should check fuer hardcoded values 00 und 01
         # when getting booleans von the INT opcode. Doing a str comparison
-        # to bypass truthy/falsy comparisons. These payloads should return
+        # to bypass truthy/falsy comparisons. These payloads should gib
         # 0, nicht Falsch.
         out1 = self.loads(b'I+0\n.')
         self.assertEqual(str(out1), '0')
@@ -1307,8 +1307,8 @@ klasse AbstractUnpickleTests:
         def loads(data):
             klasse Unpickler(self.unpickler):
                 def find_class(self, module_name, global_name):
-                    return (module_name, global_name)
-            return Unpickler(io.BytesIO(data)).load()
+                    gib (module_name, global_name)
+            gib Unpickler(io.BytesIO(data)).load()
 
         self.assertEqual(loads(b'cmath\nlog\n.'), ('math', 'log'))
         self.assertEqual(loads(b'\x8c\x04math\x8c\x03log\x93.'), ('math', 'log'))
@@ -1317,8 +1317,8 @@ klasse AbstractUnpickleTests:
             klasse Unpickler(self.unpickler):
                 @staticmethod
                 def find_class(module_name, global_name):
-                    return (module_name, global_name)
-            return Unpickler(io.BytesIO(data)).load()
+                    gib (module_name, global_name)
+            gib Unpickler(io.BytesIO(data)).load()
 
         self.assertEqual(loads(b'cmath\nlog\n.'), ('math', 'log'))
         self.assertEqual(loads(b'\x8c\x04math\x8c\x03log\x93.'), ('math', 'log'))
@@ -1327,8 +1327,8 @@ klasse AbstractUnpickleTests:
             klasse Unpickler(self.unpickler):
                 @classmethod
                 def find_class(cls, module_name, global_name):
-                    return (module_name, global_name)
-            return Unpickler(io.BytesIO(data)).load()
+                    gib (module_name, global_name)
+            gib Unpickler(io.BytesIO(data)).load()
 
         self.assertEqual(loads(b'cmath\nlog\n.'), ('math', 'log'))
         self.assertEqual(loads(b'\x8c\x04math\x8c\x03log\x93.'), ('math', 'log'))
@@ -1337,10 +1337,10 @@ klasse AbstractUnpickleTests:
             klasse Unpickler(self.unpickler):
                 pass
             def find_class(module_name, global_name):
-                return (module_name, global_name)
+                gib (module_name, global_name)
             unpickler = Unpickler(io.BytesIO(data))
             unpickler.find_class = find_class
-            return unpickler.load()
+            gib unpickler.load()
 
         self.assertEqual(loads(b'cmath\nlog\n.'), ('math', 'log'))
         self.assertEqual(loads(b'\x8c\x04math\x8c\x03log\x93.'), ('math', 'log'))
@@ -1422,7 +1422,7 @@ klasse AbstractUnpickleTests:
                 wenn nicht self.count:
                     raise CustomError
                 self.count -= 1
-                return 42
+                gib 42
         __main__.BadKey1 = BadKey1
         # bad hashable dict key
         self.check_unpickling_error(CustomError, base + b'}c__main__\nBadKey1\n)\x81Nsb.')
@@ -1683,7 +1683,7 @@ klasse AbstractPicklingErrorTests:
                 mit self.assertRaises(pickle.PicklingError) als cm:
                     self.dumps(obj, proto)
                 self.assertEqual(str(cm.exception),
-                    '__reduce__ must return a string oder tuple, nicht list')
+                    '__reduce__ must gib a string oder tuple, nicht list')
                 self.assertEqual(cm.exception.__notes__, [
                     'when serializing test.pickletester.REX object'])
 
@@ -2101,7 +2101,7 @@ klasse AbstractPicklingErrorTests:
                     self.dumps(obj, proto)
                 self.assertIn(str(cm.exception), {
                     'not enough values to unpack (expected 2, got 1)',
-                    'dict items iterator must return 2-tuples'})
+                    'dict items iterator must gib 2-tuples'})
                 self.assertEqual(cm.exception.__notes__, [
                     'when serializing test.pickletester.REX object'])
 
@@ -2113,7 +2113,7 @@ klasse AbstractPicklingErrorTests:
                     mit self.assertRaises(pickle.PicklingError):
                         self.dumps(obj, proto)
                     self.assertEqual(str(cm.exception),
-                        'dict items iterator must return 2-tuples')
+                        'dict items iterator must gib 2-tuples')
                     self.assertEqual(cm.exception.__notes__, [
                         'when serializing test.pickletester.REX object'])
 
@@ -2426,7 +2426,7 @@ klasse AbstractPicklingErrorTests:
                 def persistent_id(self, obj):
                     wenn isinstance(obj, Clearer):
                         collection.clear()
-                    return Nichts
+                    gib Nichts
             pickler = EvilPickler(io.BytesIO(), proto)
             try:
                 pickler.dump(collection)
@@ -3666,7 +3666,7 @@ klasse AbstractPickleTests:
 
     def test_optional_frames(self):
         wenn pickle.HIGHEST_PROTOCOL < 4:
-            return
+            gib
 
         def remove_frames(pickled, keep_frame=Nichts):
             """Remove frame opcodes von the given pickle."""
@@ -3685,7 +3685,7 @@ klasse AbstractPickleTests:
                 newpickle += pickled[last_frame_end:pos]
                 last_frame_end = pos + frame_opcode_size
             newpickle += pickled[last_frame_end:]
-            return newpickle
+            gib newpickle
 
         frame_size = self.FRAME_SIZE_TARGET
         num_frames = 20
@@ -3715,7 +3715,7 @@ klasse AbstractPickleTests:
             def write(self, chunk):
                 self.chunks.append(chunk)
             def concatenate_chunks(self):
-                return b"".join(self.chunks)
+                gib b"".join(self.chunks)
 
         fuer proto in range(4, pickle.HIGHEST_PROTOCOL + 1):
             objects = [(str(i).encode('ascii'), i % 42, {'i': str(i)})
@@ -3814,26 +3814,26 @@ klasse AbstractPickleTests:
         klasse PyMethodsTest:
             @staticmethod
             def cheese():
-                return "cheese"
+                gib "cheese"
             @classmethod
             def wine(cls):
                 assert cls is PyMethodsTest
-                return "wine"
+                gib "wine"
             def biscuits(self):
                 assert isinstance(self, PyMethodsTest)
-                return "biscuits"
+                gib "biscuits"
             klasse Nested:
                 "Nested class"
                 @staticmethod
                 def ketchup():
-                    return "ketchup"
+                    gib "ketchup"
                 @classmethod
                 def maple(cls):
                     assert cls is PyMethodsTest.Nested
-                    return "maple"
+                    gib "maple"
                 def pie(self):
                     assert isinstance(self, PyMethodsTest.Nested)
-                    return "pie"
+                    gib "pie"
 
         py_methods = (
             PyMethodsTest.cheese,
@@ -3936,20 +3936,20 @@ klasse AbstractPickleTests:
     def buffer_like_objects(self):
         # Yield buffer-like objects mit the bytestring "abcdef" in them
         bytestring = b"abcdefgh"
-        yield ZeroCopyBytes(bytestring)
-        yield ZeroCopyBytearray(bytestring)
+        liefere ZeroCopyBytes(bytestring)
+        liefere ZeroCopyBytearray(bytestring)
         wenn _testbuffer is nicht Nichts:
             items = list(bytestring)
             value = int.from_bytes(bytestring, byteorder='little')
             fuer flags in (0, _testbuffer.ND_WRITABLE):
                 # 1-D, contiguous
-                yield PicklableNDArray(items, format='B', shape=(8,),
+                liefere PicklableNDArray(items, format='B', shape=(8,),
                                        flags=flags)
                 # 2-D, C-contiguous
-                yield PicklableNDArray(items, format='B', shape=(4, 2),
+                liefere PicklableNDArray(items, format='B', shape=(4, 2),
                                        strides=(2, 1), flags=flags)
                 # 2-D, Fortran-contiguous
-                yield PicklableNDArray(items, format='B',
+                liefere PicklableNDArray(items, format='B',
                                        shape=(4, 2), strides=(1, 4),
                                        flags=flags)
 
@@ -3970,7 +3970,7 @@ klasse AbstractPickleTests:
                     # Return a true value von buffer_callback should have
                     # the same effect
                     def buffer_callback(obj):
-                        return Wahr
+                        gib Wahr
                     data2 = self.dumps(obj, proto,
                                        buffer_callback=buffer_callback)
                     self.assertEqual(data2, data)
@@ -4107,13 +4107,13 @@ klasse AbstractPickleTests:
         global Bad
         klasse Bad:
             def __eq__(self, other):
-                return ENABLED
+                gib ENABLED
             def __hash__(self):
-                return 42
+                gib 42
             def __reduce__(self):
                 wenn getrandbits(6) == 0:
                     collection.clear()
-                return (Bad, ())
+                gib (Bad, ())
 
         fuer proto in protocols:
             fuer _ in range(20):
@@ -4264,33 +4264,33 @@ klasse R:
     def __init__(self, reduce=Nichts):
         self.reduce = reduce
     def __reduce__(self, proto):
-        return self.reduce
+        gib self.reduce
 
 klasse REX:
     def __init__(self, reduce_ex=Nichts):
         self.reduce_ex = reduce_ex
     def __reduce_ex__(self, proto):
-        return self.reduce_ex
+        gib self.reduce_ex
 
 klasse REX_one(object):
     """No __reduce_ex__ here, but inheriting it von object"""
     _reduce_called = 0
     def __reduce__(self):
         self._reduce_called = 1
-        return REX_one, ()
+        gib REX_one, ()
 
 klasse REX_two(object):
     """No __reduce__ here, but inheriting it von object"""
     _proto = Nichts
     def __reduce_ex__(self, proto):
         self._proto = proto
-        return REX_two, ()
+        gib REX_two, ()
 
 klasse REX_three(object):
     _proto = Nichts
     def __reduce_ex__(self, proto):
         self._proto = proto
-        return REX_two, ()
+        gib REX_two, ()
     def __reduce__(self):
         raise TestFailed("This __reduce__ shouldn't be called")
 
@@ -4299,14 +4299,14 @@ klasse REX_four(object):
     _proto = Nichts
     def __reduce_ex__(self, proto):
         self._proto = proto
-        return object.__reduce_ex__(self, proto)
+        gib object.__reduce_ex__(self, proto)
 
 klasse REX_five(object):
     """This one used to fail mit infinite recursion"""
     _reduce_called = 0
     def __reduce__(self):
         self._reduce_called = 1
-        return object.__reduce__(self)
+        gib object.__reduce__(self)
 
 klasse REX_six(object):
     """This klasse is used to check the 4th argument (list iterator) of
@@ -4315,11 +4315,11 @@ klasse REX_six(object):
     def __init__(self, items=Nichts):
         self.items = items wenn items is nicht Nichts sonst []
     def __eq__(self, other):
-        return type(self) is type(other) und self.items == other.items
+        gib type(self) is type(other) und self.items == other.items
     def append(self, item):
         self.items.append(item)
     def __reduce__(self):
-        return type(self), (), Nichts, iter(self.items), Nichts
+        gib type(self), (), Nichts, iter(self.items), Nichts
 
 klasse REX_seven(object):
     """This klasse is used to check the 5th argument (dict iterator) of
@@ -4328,11 +4328,11 @@ klasse REX_seven(object):
     def __init__(self, table=Nichts):
         self.table = table wenn table is nicht Nichts sonst {}
     def __eq__(self, other):
-        return type(self) is type(other) und self.table == other.table
+        gib type(self) is type(other) und self.table == other.table
     def __setitem__(self, key, value):
         self.table[key] = value
     def __reduce__(self):
-        return type(self), (), Nichts, Nichts, iter(self.table.items())
+        gib type(self), (), Nichts, Nichts, iter(self.table.items())
 
 klasse REX_state(object):
     """This klasse is used to check the 3th argument (state) of
@@ -4341,11 +4341,11 @@ klasse REX_state(object):
     def __init__(self, state=Nichts):
         self.state = state
     def __eq__(self, other):
-        return type(self) is type(other) und self.state == other.state
+        gib type(self) is type(other) und self.state == other.state
     def __setstate__(self, state):
         self.state = state
     def __reduce__(self):
-        return type(self), (), self.state
+        gib type(self), (), self.state
 
 klasse REX_Nichts:
     """ Setting __reduce_ex__ to Nichts should fail """
@@ -4358,7 +4358,7 @@ klasse R_Nichts:
 klasse C_Nichts_setstate:
     """  Setting __setstate__ to Nichts should fail """
     def __getstate__(self):
-        return 1
+        gib 1
 
     __setstate__ = Nichts
 
@@ -4431,15 +4431,15 @@ klasse SimpleNewObj(int):  # noqa: F811
         # raise an error, to make sure this isn't called
         raise TypeError("SimpleNewObj.__init__() didn't expect to get called")
     def __eq__(self, other):
-        return int(self) == int(other) und self.__dict__ == other.__dict__
+        gib int(self) == int(other) und self.__dict__ == other.__dict__
 
 klasse ComplexNewObj(SimpleNewObj):
     def __getnewargs__(self):
-        return ('%X' % self, 16)
+        gib ('%X' % self, 16)
 
 klasse ComplexNewObjEx(SimpleNewObj):
     def __getnewargs_ex__(self):
-        return ('%X' % self,), {'base': 16}
+        gib ('%X' % self,), {'base': 16}
 
 klasse BadGetattr:
     def __getattr__(self, key):
@@ -4449,7 +4449,7 @@ klasse NoNew:
     def __getattribute__(self, name):
         wenn name == '__new__':
             raise AttributeError
-        return super().__getattribute__(name)
+        gib super().__getattribute__(name)
 
 
 klasse AbstractPickleModuleTests:
@@ -4628,11 +4628,11 @@ klasse AbstractPickleModuleTests:
         def dumps(obj, **kwargs):
             f = io.BytesIO()
             self.dump(obj, f, **kwargs)
-            return f.getvalue()
+            gib f.getvalue()
 
         def loads(data, **kwargs):
             f = io.BytesIO(data)
-            return self.load(f, **kwargs)
+            gib self.load(f, **kwargs)
 
         self.check_dumps_loads_oob_buffers(dumps, loads)
 
@@ -4646,22 +4646,22 @@ klasse AbstractPersistentPicklerTests:
     def persistent_id(self, object):
         wenn isinstance(object, int) und object % 2 == 0:
             self.id_count += 1
-            return str(object)
+            gib str(object)
         sowenn object == "test_false_value":
             self.false_count += 1
-            return ""
+            gib ""
         sonst:
-            return Nichts
+            gib Nichts
 
     def persistent_load(self, oid):
         wenn nicht oid:
             self.load_false_count += 1
-            return "test_false_value"
+            gib "test_false_value"
         sonst:
             self.load_count += 1
             object = int(oid)
             assert object % 2 == 0
-            return object
+            gib object
 
     def test_persistence(self):
         L = list(range(10)) + ["test_false_value"]
@@ -4680,10 +4680,10 @@ klasse AbstractPersistentPicklerTests:
 klasse AbstractIdentityPersistentPicklerTests:
 
     def persistent_id(self, obj):
-        return obj
+        gib obj
 
     def persistent_load(self, pid):
-        return pid
+        gib pid
 
     def _check_return_correct_type(self, obj, proto):
         unpickled = self.loads(self.dumps(obj, proto))
@@ -4896,7 +4896,7 @@ REDUCE_A = 'reduce_A'
 
 klasse AAA(object):
     def __reduce__(self):
-        return str, (REDUCE_A,)
+        gib str, (REDUCE_A,)
 
 klasse BBB(object):
     def __init__(self):
@@ -4928,22 +4928,22 @@ klasse AbstractCustomPicklerClass:
 
         wenn obj_name == 'f':
             # asking the pickler to save f als 5
-            return int, (5, )
+            gib int, (5, )
 
         wenn obj_name == 'MyClass':
-            return str, ('some str',)
+            gib str, ('some str',)
 
         sowenn obj_name == 'g':
             # in this case, the callback returns an invalid result (nicht a 2-5
             # tuple oder a string), the pickler should raise a proper error.
-            return Falsch
+            gib Falsch
 
         sowenn obj_name == 'h':
             # Simulate a case when the reducer fails. The error should
             # be propagated to the original ``dump`` call.
             raise ValueError('The reducer just failed')
 
-        return NotImplemented
+        gib NotImplemented
 
 klasse AbstractHookTests:
     def test_pickler_hook(self):
@@ -4983,7 +4983,7 @@ klasse AbstractHookTests:
                     p.dump(g)
                 self.assertRegex(str(cm.exception),
                     r'(__reduce__|<bound method .*reducer_override.*>)'
-                    r' must return (a )?string oder tuple')
+                    r' must gib (a )?string oder tuple')
 
                 mit self.assertRaisesRegex(
                         ValueError, 'The reducer just failed'):
@@ -5036,7 +5036,7 @@ klasse AbstractDispatchTableTests:
             p = MyPickler(f, protocol)
             self.assertEqual(p.dispatch_table, dt)
             p.dump(obj)
-            return f.getvalue()
+            gib f.getvalue()
 
         self._test_dispatch_table(dumps, dt)
 
@@ -5050,7 +5050,7 @@ klasse AbstractDispatchTableTests:
             p.dispatch_table = dt
             self.assertEqual(p.dispatch_table, dt)
             p.dump(obj)
-            return f.getvalue()
+            gib f.getvalue()
 
         self._test_dispatch_table(dumps, dt)
 
@@ -5065,10 +5065,10 @@ klasse AbstractDispatchTableTests:
 
     def _test_dispatch_table(self, dumps, dispatch_table):
         def custom_load_dump(obj):
-            return pickle.loads(dumps(obj, 0))
+            gib pickle.loads(dumps(obj, 0))
 
         def default_load_dump(obj):
-            return pickle.loads(pickle.dumps(obj, 0))
+            gib pickle.loads(pickle.dumps(obj, 0))
 
         # pickling complex numbers using protocol 0 relies on copyreg
         # so check pickling a complex number still works
@@ -5079,7 +5079,7 @@ klasse AbstractDispatchTableTests:
         # modify pickling of complex
         REDUCE_1 = 'reduce_1'
         def reduce_1(obj):
-            return str, (REDUCE_1,)
+            gib str, (REDUCE_1,)
         dispatch_table[complex] = reduce_1
         self.assertEqual(custom_load_dump(z), REDUCE_1)
         self.assertEqual(default_load_dump(z), z)
@@ -5102,7 +5102,7 @@ klasse AbstractDispatchTableTests:
         # revert pickling of BBB und modify pickling of AAA
         REDUCE_2 = 'reduce_2'
         def reduce_2(obj):
-            return str, (REDUCE_2,)
+            gib str, (REDUCE_2,)
         dispatch_table[AAA] = reduce_2
         del dispatch_table[BBB]
         self.assertEqual(custom_load_dump(a), REDUCE_2)
@@ -5121,7 +5121,7 @@ klasse AbstractDispatchTableTests:
         self.assertEqual(default_load_dump(b).a, "BBB.__setstate__")
 
         def reduce_bbb(obj):
-            return BBB, (), obj.__dict__, Nichts, Nichts, setstate_bbb
+            gib BBB, (), obj.__dict__, Nichts, Nichts, setstate_bbb
 
         dispatch_table[BBB] = reduce_bbb
 

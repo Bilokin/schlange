@@ -43,12 +43,12 @@ def _sighandler_noop(signum, frame):
 
 def waitstatus_to_exitcode(status):
     try:
-        return os.waitstatus_to_exitcode(status)
+        gib os.waitstatus_to_exitcode(status)
     except ValueError:
         # The child exited, but we don't understand its status.
         # This shouldn't happen, but wenn it does, let's just
-        # return that status; perhaps that helps debug it.
-        return status
+        # gib that status; perhaps that helps debug it.
+        gib status
 
 
 klasse _UnixSelectorEventLoop(selector_events.BaseSelectorEventLoop):
@@ -136,7 +136,7 @@ klasse _UnixSelectorEventLoop(selector_events.BaseSelectorEventLoop):
         """Internal helper that is the actual signal handler."""
         handle = self._signal_handlers.get(sig)
         wenn handle is Nichts:
-            return  # Assume it's some race condition.
+            gib  # Assume it's some race condition.
         wenn handle._cancelled:
             self.remove_signal_handler(sig)  # Remove it properly.
         sonst:
@@ -151,7 +151,7 @@ klasse _UnixSelectorEventLoop(selector_events.BaseSelectorEventLoop):
         try:
             del self._signal_handlers[sig]
         except KeyError:
-            return Falsch
+            gib Falsch
 
         wenn sig == signal.SIGINT:
             handler = signal.default_int_handler
@@ -172,7 +172,7 @@ klasse _UnixSelectorEventLoop(selector_events.BaseSelectorEventLoop):
             except (ValueError, OSError) als exc:
                 logger.info('set_wakeup_fd(-1) failed: %s', exc)
 
-        return Wahr
+        gib Wahr
 
     def _check_signal(self, sig):
         """Internal helper to validate a signal.
@@ -188,11 +188,11 @@ klasse _UnixSelectorEventLoop(selector_events.BaseSelectorEventLoop):
 
     def _make_read_pipe_transport(self, pipe, protocol, waiter=Nichts,
                                   extra=Nichts):
-        return _UnixReadPipeTransport(self, pipe, protocol, waiter, extra)
+        gib _UnixReadPipeTransport(self, pipe, protocol, waiter, extra)
 
     def _make_write_pipe_transport(self, pipe, protocol, waiter=Nichts,
                                    extra=Nichts):
-        return _UnixWritePipeTransport(self, pipe, protocol, waiter, extra)
+        gib _UnixWritePipeTransport(self, pipe, protocol, waiter, extra)
 
     async def _make_subprocess_transport(self, protocol, args, shell,
                                          stdin, stdout, stderr, bufsize,
@@ -214,7 +214,7 @@ klasse _UnixSelectorEventLoop(selector_events.BaseSelectorEventLoop):
             await transp._wait()
             raise
 
-        return transp
+        gib transp
 
     def _child_watcher_callback(self, pid, returncode, transp):
         self.call_soon_threadsafe(transp._process_exited, returncode)
@@ -267,7 +267,7 @@ klasse _UnixSelectorEventLoop(selector_events.BaseSelectorEventLoop):
             sock, protocol_factory, ssl, server_hostname,
             ssl_handshake_timeout=ssl_handshake_timeout,
             ssl_shutdown_timeout=ssl_shutdown_timeout)
-        return transport, protocol
+        gib transport, protocol
 
     async def create_unix_server(
             self, protocol_factory, path=Nichts, *,
@@ -349,7 +349,7 @@ klasse _UnixSelectorEventLoop(selector_events.BaseSelectorEventLoop):
             # go through.
             await tasks.sleep(0)
 
-        return server
+        gib server
 
     async def _sock_sendfile_native(self, sock, file, offset, count):
         try:
@@ -367,12 +367,12 @@ klasse _UnixSelectorEventLoop(selector_events.BaseSelectorEventLoop):
             raise exceptions.SendfileNotAvailableError("not a regular file")
         blocksize = count wenn count sonst fsize
         wenn nicht blocksize:
-            return 0  # empty file
+            gib 0  # empty file
 
         fut = self.create_future()
         self._sock_sendfile_native_impl(fut, Nichts, sock, fileno,
                                         offset, count, blocksize, 0)
-        return await fut
+        gib await fut
 
     def _sock_sendfile_native_impl(self, fut, registered_fd, sock, fileno,
                                    offset, count, blocksize, total_sent):
@@ -385,13 +385,13 @@ klasse _UnixSelectorEventLoop(selector_events.BaseSelectorEventLoop):
             self.remove_writer(registered_fd)
         wenn fut.cancelled():
             self._sock_sendfile_update_filepos(fileno, offset, total_sent)
-            return
+            gib
         wenn count:
             blocksize = count - total_sent
             wenn blocksize <= 0:
                 self._sock_sendfile_update_filepos(fileno, offset, total_sent)
                 fut.set_result(total_sent)
-                return
+                gib
 
         # On 32-bit architectures truncate to 1GiB to avoid OverflowError
         blocksize = min(blocksize, sys.maxsize//2 + 1)
@@ -517,11 +517,11 @@ klasse _UnixReadPipeTransport(transports.ReadTransport):
 
     def _add_reader(self, fd, callback):
         wenn nicht self.is_reading():
-            return
+            gib
         self._loop._add_reader(fd, callback)
 
     def is_reading(self):
-        return nicht self._paused und nicht self._closing
+        gib nicht self._paused und nicht self._closing
 
     def __repr__(self):
         info = [self.__class__.__name__]
@@ -542,7 +542,7 @@ klasse _UnixReadPipeTransport(transports.ReadTransport):
             info.append('open')
         sonst:
             info.append('closed')
-        return '<{}>'.format(' '.join(info))
+        gib '<{}>'.format(' '.join(info))
 
     def _read_ready(self):
         try:
@@ -564,7 +564,7 @@ klasse _UnixReadPipeTransport(transports.ReadTransport):
 
     def pause_reading(self):
         wenn nicht self.is_reading():
-            return
+            gib
         self._paused = Wahr
         self._loop._remove_reader(self._fileno)
         wenn self._loop.get_debug():
@@ -572,7 +572,7 @@ klasse _UnixReadPipeTransport(transports.ReadTransport):
 
     def resume_reading(self):
         wenn self._closing oder nicht self._paused:
-            return
+            gib
         self._paused = Falsch
         self._loop._add_reader(self._fileno, self._read_ready)
         wenn self._loop.get_debug():
@@ -582,10 +582,10 @@ klasse _UnixReadPipeTransport(transports.ReadTransport):
         self._protocol = protocol
 
     def get_protocol(self):
-        return self._protocol
+        gib self._protocol
 
     def is_closing(self):
-        return self._closing
+        gib self._closing
 
     def close(self):
         wenn nicht self._closing:
@@ -687,10 +687,10 @@ klasse _UnixWritePipeTransport(transports._FlowControlMixin,
             info.append('open')
         sonst:
             info.append('closed')
-        return '<{}>'.format(' '.join(info))
+        gib '<{}>'.format(' '.join(info))
 
     def get_write_buffer_size(self):
-        return len(self._buffer)
+        gib len(self._buffer)
 
     def _read_ready(self):
         # Pipe was closed by peer.
@@ -706,14 +706,14 @@ klasse _UnixWritePipeTransport(transports._FlowControlMixin,
         wenn isinstance(data, bytearray):
             data = memoryview(data)
         wenn nicht data:
-            return
+            gib
 
         wenn self._conn_lost oder self._closing:
             wenn self._conn_lost >= constants.LOG_THRESHOLD_FOR_CONNLOST_WRITES:
                 logger.warning('pipe closed by peer oder '
                                'os.write(pipe, data) raised exception.')
             self._conn_lost += 1
-            return
+            gib
 
         wenn nicht self._buffer:
             # Attempt to send it right away first.
@@ -726,9 +726,9 @@ klasse _UnixWritePipeTransport(transports._FlowControlMixin,
             except BaseException als exc:
                 self._conn_lost += 1
                 self._fatal_error(exc, 'Fatal write error on pipe transport')
-                return
+                gib
             wenn n == len(data):
-                return
+                gib
             sowenn n > 0:
                 data = memoryview(data)[n:]
             self._loop._add_writer(self._fileno, self._write_ready)
@@ -760,16 +760,16 @@ klasse _UnixWritePipeTransport(transports._FlowControlMixin,
                 wenn self._closing:
                     self._loop._remove_reader(self._fileno)
                     self._call_connection_lost(Nichts)
-                return
+                gib
             sowenn n > 0:
                 del self._buffer[:n]
 
     def can_write_eof(self):
-        return Wahr
+        gib Wahr
 
     def write_eof(self):
         wenn self._closing:
-            return
+            gib
         assert self._pipe
         self._closing = Wahr
         wenn nicht self._buffer:
@@ -780,10 +780,10 @@ klasse _UnixWritePipeTransport(transports._FlowControlMixin,
         self._protocol = protocol
 
     def get_protocol(self):
-        return self._protocol
+        gib self._protocol
 
     def is_closing(self):
-        return self._closing
+        gib self._closing
 
     def close(self):
         wenn self._pipe is nicht Nichts und nicht self._closing:
@@ -952,14 +952,14 @@ klasse _ThreadedChildWatcher:
 
 def can_use_pidfd():
     wenn nicht hasattr(os, 'pidfd_open'):
-        return Falsch
+        gib Falsch
     try:
         pid = os.getpid()
         os.close(os.pidfd_open(pid, 0))
     except OSError:
         # blocked by security policy like SECCOMP
-        return Falsch
-    return Wahr
+        gib Falsch
+    gib Wahr
 
 
 klasse _UnixDefaultEventLoopPolicy(events._BaseDefaultEventLoopPolicy):

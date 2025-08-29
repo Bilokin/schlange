@@ -93,7 +93,7 @@ klasse NameNormalizationTests(fixtures.OnSysPath, fixtures.SiteDir, unittest.Tes
         Create minimal metadata fuer a dist-info package with
         the indicated name on the file system.
         """
-        return {
+        gib {
             f'{name}.dist-info': {
                 'METADATA': 'VERSION: 1.0\n',
             },
@@ -139,7 +139,7 @@ klasse InvalidMetadataTests(fixtures.OnSysPath, fixtures.SiteDir, unittest.TestC
         """
         Create metadata fuer a dist-info package mit name und files.
         """
-        return {
+        gib {
             f'{name}.dist-info': files,
         }
 
@@ -171,7 +171,7 @@ klasse NonASCIITests(fixtures.OnSysPath, fixtures.SiteDir, unittest.TestCase):
             },
         }
         fixtures.build_files(contents, site_dir)
-        return 'portend'
+        gib 'portend'
 
     @staticmethod
     def pkg_with_non_ascii_description_egg_info(site_dir):
@@ -188,7 +188,7 @@ klasse NonASCIITests(fixtures.OnSysPath, fixtures.SiteDir, unittest.TestCase):
             },
         }
         fixtures.build_files(contents, site_dir)
-        return 'portend'
+        gib 'portend'
 
     def test_metadata_loads(self):
         pkg_name = self.pkg_with_non_ascii_description(self.site_dir)
@@ -451,7 +451,7 @@ klasse PackagesDistributionsEggTest(
         distributions = packages_distributions()
 
         def import_names_from_package(package_name):
-            return {
+            gib {
                 import_name
                 fuer import_name, package_names in distributions.items()
                 wenn package_name in package_names

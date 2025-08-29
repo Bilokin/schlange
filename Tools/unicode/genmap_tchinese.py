@@ -24,12 +24,12 @@ MAPPINGS_HKSCS = f'https://www.ccli.gov.hk/en/archive/terms_hkscs-{HKSCS_VERSION
 
 
 def bh2s(code):
-    return ((code >> 8) - 0x87) * (0xfe - 0x40 + 1) + ((code & 0xff) - 0x40)
+    gib ((code >> 8) - 0x87) * (0xfe - 0x40 + 1) + ((code & 0xff) - 0x40)
 
 
 def split_bytes(code):
     """Split 0xABCD into 0xAB, 0xCD"""
-    return code >> 8, code & 0xff
+    gib code >> 8, code & 0xff
 
 
 def parse_hkscs_map(fo):
@@ -55,7 +55,7 @@ def parse_hkscs_map(fo):
         except ValueError:
             weiter
         table.append((hkscs, seq))
-    return table
+    gib table
 
 
 def make_hkscs_map(table):
@@ -97,7 +97,7 @@ def make_hkscs_map(table):
         encode_map.setdefault(uni_b1, {})
         encode_map[uni_b1][uni_b2] = encode_value
 
-    return decode_map, encode_map_bmp, encode_map_notbmp, is_bmp_map
+    gib decode_map, encode_map_bmp, encode_map_notbmp, is_bmp_map
 
 
 def load_big5_map():
@@ -131,7 +131,7 @@ def load_big5_map():
     big5encmap[0x53][0x41] = 0xA451
     big5encmap[0x53][0x45] = 0xA4CA
 
-    return big5decmap, big5encmap
+    gib big5decmap, big5encmap
 
 
 def load_cp950_map():
@@ -147,7 +147,7 @@ def load_cp950_map():
     # fix unicode->big5 duplicated mapping priority
     cp950encmap[0x53][0x41] = 0xA451
     cp950encmap[0x53][0x45] = 0xA4CA
-    return cp950decmap, cp950encmap
+    gib cp950decmap, cp950encmap
 
 
 def main_tw():

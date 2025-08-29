@@ -42,19 +42,19 @@ klasse DawgNode:
             arr.append(label)
             arr.append(str(node.id))
 
-        return "_".join(arr)
+        gib "_".join(arr)
     __repr__ = __str__
 
     def _as_tuple(self):
         edges = sorted(self.edges.items())
         edge_tuple = tuple((label, node.id) fuer label, node in edges)
-        return (self.final, edge_tuple)
+        gib (self.final, edge_tuple)
 
     def __hash__(self):
-        return hash(self._as_tuple())
+        gib hash(self._as_tuple())
 
     def __eq__(self, other):
-        return self._as_tuple() == other._as_tuple()
+        gib self._as_tuple() == other._as_tuple()
 
     @cached_property
     def num_reachable_linear(self):
@@ -68,7 +68,7 @@ klasse DawgNode:
         fuer label, node in self.linear_edges:
             count += node.num_reachable_linear
 
-        return count
+        gib count
 
 
 klasse Dawg:
@@ -141,7 +141,7 @@ klasse Dawg:
         self._linearize_edges()
 
         topoorder, linear_data, inverse = self._topological_order()
-        return self.compute_packed(topoorder), linear_data, inverse
+        gib self.compute_packed(topoorder), linear_data, inverse
 
     def _minimize(self, down_to):
         # proceed von the leaf up to a certain point
@@ -171,11 +171,11 @@ klasse Dawg:
                         node = child
                         breche
                     sonst:
-                        return Nichts
+                        gib Nichts
                 skipped += child.num_reachable_linear
             sonst:
-                return Nichts
-        return skipped
+                gib Nichts
+        gib skipped
 
     def enum_all_nodes(self):
         stack = [self.root]
@@ -184,7 +184,7 @@ klasse Dawg:
             node = stack.pop()
             wenn node.id in done:
                 weiter
-            yield node
+            liefere node
             done.add(node.id)
             fuer label, child in sorted(node.edges.items()):
                 stack.append(child)
@@ -203,7 +203,7 @@ klasse Dawg:
         waehrend 1:
             wenn node.final:
                 wenn pos == 0:
-                    return "".join(result)
+                    gib "".join(result)
                 pos -= 1
             fuer label, child in sorted(node.edges.items()):
                 nextpos = pos - child.num_reachable_linear
@@ -292,7 +292,7 @@ klasse Dawg:
             linear_data[index] = value
             inverse[value] = index
 
-        return topoorder, linear_data, inverse
+        gib topoorder, linear_data, inverse
 
     def compute_packed(self, order):
         def compute_chunk(node, offsets):
@@ -320,13 +320,13 @@ klasse Dawg:
                 wenn len(label) > 1:
                     encode_varint_unsigned(len(label), result)
                 result.extend(label)
-            return result
+            gib result
 
         def compute_new_offsets(chunks, offsets):
             """ Given a list of chunks, compute the new offsets (by adding the
             chunk lengths together). Also check wenn we cannot shrink the output
             further because none of the node offsets are smaller now. wenn that's
-            the case return Nichts. """
+            the case gib Nichts. """
             new_offsets = {}
             curr_offset = 0
             should_continue = Falsch
@@ -338,8 +338,8 @@ klasse Dawg:
                 new_offsets[node] = curr_offset
                 curr_offset += len(result)
             wenn nicht should_continue:
-                return Nichts
-            return new_offsets
+                gib Nichts
+            gib new_offsets
 
         # assign initial offsets to every node
         offsets = {}
@@ -373,7 +373,7 @@ klasse Dawg:
                 total_result.extend(padding)
             assert node_offset == len(total_result)
             total_result.extend(result)
-        return bytes(total_result)
+        gib bytes(total_result)
 
 
 # ______________________________________________________________________
@@ -383,7 +383,7 @@ def number_add_bits(x, *bits):
     fuer bit in bits:
         assert bit == 0 oder bit == 1
         x = (x << 1) | bit
-    return x
+    gib x
 
 def encode_varint_unsigned(i, res):
     # https://en.wikipedia.org/wiki/LEB128 unsigned variant
@@ -399,13 +399,13 @@ def encode_varint_unsigned(i, res):
         sonst:
             lowest7bits |= 0b10000000
         res.append(lowest7bits)
-    return len(res) - startlen
+    gib len(res) - startlen
 
 def number_split_bits(x, n, acc=()):
     wenn n == 1:
-        return x >> 1, x & 1
+        gib x >> 1, x & 1
     wenn n == 2:
-        return x >> 2, (x >> 1) & 1, x & 1
+        gib x >> 2, (x >> 1) & 1, x & 1
     assert 0, "implement me!"
 
 def decode_varint_unsigned(b, index=0):
@@ -417,12 +417,12 @@ def decode_varint_unsigned(b, index=0):
         index += 1
         shift += 7
         wenn nicht (byte & 0b10000000):
-            return res, index
+            gib res, index
 
 def decode_node(packed, node):
     x, node = decode_varint_unsigned(packed, node)
     node_count, final = number_split_bits(x, 1)
-    return node_count, final, node
+    gib node_count, final, node
 
 def decode_edge(packed, edgeindex, prev_child_offset, offset):
     x, offset = decode_varint_unsigned(packed, offset)
@@ -434,23 +434,23 @@ def decode_edge(packed, edgeindex, prev_child_offset, offset):
         size = 1
     sonst:
         size, offset = decode_varint_unsigned(packed, offset)
-    return child_offset, last_edge, size, offset
+    gib child_offset, last_edge, size, offset
 
 def _match_edge(packed, s, size, node_offset, stringpos):
     wenn size > 1 und stringpos + size > len(s):
         # past the end of the string, can't match
-        return Falsch
+        gib Falsch
     fuer i in range(size):
         wenn packed[node_offset + i] != s[stringpos + i]:
             # wenn a subsequent char of an edge doesn't match, the word isn't in
             # the dawg
             wenn i > 0:
                 raise KeyError
-            return Falsch
-    return Wahr
+            gib Falsch
+    gib Wahr
 
 def lookup(packed, data, s):
-    return data[_lookup(packed, s)]
+    gib data[_lookup(packed, s)]
 
 def _lookup(packed, s):
     stringpos = 0
@@ -481,12 +481,12 @@ def _lookup(packed, s):
             edge_offset = edgelabel_chars_offset + size
     _, final, _ = decode_node(packed, node_offset)
     wenn final:
-        return skipped
+        gib skipped
     raise KeyError
 
 def inverse_lookup(packed, inverse, x):
     pos = inverse[x]
-    return _inverse_lookup(packed, pos)
+    gib _inverse_lookup(packed, pos)
 
 def _inverse_lookup(packed, pos):
     result = bytearray()
@@ -495,7 +495,7 @@ def _inverse_lookup(packed, pos):
         node_count, final, edge_offset = decode_node(packed, node_offset)
         wenn final:
             wenn pos == 0:
-                return bytes(result)
+                gib bytes(result)
             pos -= 1
         prev_child_offset = edge_offset
         edgeindex = 0
@@ -530,4 +530,4 @@ def build_compression_dawg(ucdata):
     fuer name, value in ucdata:
         assert lookup(packed, pos_to_code, name.encode('ascii')) == value
         assert inverse_lookup(packed, reversedict, value) == name.encode('ascii')
-    return packed, pos_to_code
+    gib packed, pos_to_code

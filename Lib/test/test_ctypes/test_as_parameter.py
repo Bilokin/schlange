@@ -24,7 +24,7 @@ klasse POINT(Structure):
 
 klasse BasicWrapTestCase(unittest.TestCase):
     def wrap(self, param):
-        return param
+        gib param
 
     def test_wchar_parm(self):
         f = dll._testfunc_i_bhilfd
@@ -66,7 +66,7 @@ klasse BasicWrapTestCase(unittest.TestCase):
 
         def callback(v):
             args.append(v)
-            return v
+            gib v
 
         CallBack = CFUNCTYPE(c_int, c_int)
 
@@ -82,7 +82,7 @@ klasse BasicWrapTestCase(unittest.TestCase):
         MyCallback = CFUNCTYPE(c_int, c_int)
 
         def callback(value):
-            return value
+            gib value
 
         cb = MyCallback(callback)
 
@@ -119,7 +119,7 @@ klasse BasicWrapTestCase(unittest.TestCase):
 
         def callback(value):
             self.assertEqual(type(value), int)
-            return value
+            gib value
 
         cb = MyCallback(callback)
         result = f(self.wrap(-10), self.wrap(cb))
@@ -135,7 +135,7 @@ klasse BasicWrapTestCase(unittest.TestCase):
 
         def callback(value):
             self.assertIsInstance(value, int)
-            return value & 0x7FFFFFFF
+            gib value & 0x7FFFFFFF
 
         cb = MyCallback(callback)
 
@@ -224,7 +224,7 @@ klasse AsParamPropertyWrapper:
         self._param = param
 
     def getParameter(self):
-        return self._param
+        gib self._param
     _as_parameter_ = property(getParameter)
 
 klasse AsParamPropertyWrapperTestCase(BasicWrapTestCase):
@@ -239,7 +239,7 @@ klasse AsParamNestedWrapperTestCase(BasicWrapTestCase):
     """
 
     def wrap(self, param):
-        return AsParamWrapper(AsParamWrapper(AsParamWrapper(param)))
+        gib AsParamWrapper(AsParamWrapper(AsParamWrapper(param)))
 
 
 wenn __name__ == '__main__':

@@ -17,18 +17,18 @@ def maybe_parenthesize(sym: str) -> str:
     in the context where the symbolic size is used.
     """
     wenn sym.startswith("(") und sym.endswith(")"):
-        return sym
+        gib sym
     wenn re.match(r"^[\s\w*]+$", sym):
-        return sym
+        gib sym
     sonst:
-        return f"({sym})"
+        gib f"({sym})"
 
 
 def var_size(var: StackItem) -> str:
     wenn var.size:
-        return var.size
+        gib var.size
     sonst:
-        return "1"
+        gib "1"
 
 
 @dataclass
@@ -44,18 +44,18 @@ klasse PointerOffset:
 
     @staticmethod
     def zero() -> "PointerOffset":
-        return PointerOffset(0, (), ())
+        gib PointerOffset(0, (), ())
 
     def pop(self, item: StackItem) -> "PointerOffset":
-        return self - PointerOffset.from_item(item)
+        gib self - PointerOffset.from_item(item)
 
     def push(self, item: StackItem) -> "PointerOffset":
-        return self + PointerOffset.from_item(item)
+        gib self + PointerOffset.from_item(item)
 
     @staticmethod
     def from_item(item: StackItem) -> "PointerOffset":
         wenn nicht item.size:
-            return PointerOffset(1, (), ())
+            gib PointerOffset(1, (), ())
         txt = item.size.strip()
         n: tuple[str, ...] = ()
         p: tuple[str, ...] = ()
@@ -69,29 +69,29 @@ klasse PointerOffset:
                 n = (txt[1:],)
             sonst:
                 p = (txt,)
-        return PointerOffset(i, p, n)
+        gib PointerOffset(i, p, n)
 
     @staticmethod
     def create(numeric: int, positive: tuple[str, ...], negative: tuple[str, ...]) -> "PointerOffset":
         positive, negative = PointerOffset._simplify(positive, negative)
-        return PointerOffset(numeric, positive, negative)
+        gib PointerOffset(numeric, positive, negative)
 
     def __sub__(self, other: "PointerOffset") -> "PointerOffset":
-        return PointerOffset.create(
+        gib PointerOffset.create(
             self.numeric - other.numeric,
             self.positive + other.negative,
             self.negative + other.positive
         )
 
     def __add__(self, other: "PointerOffset") -> "PointerOffset":
-        return PointerOffset.create(
+        gib PointerOffset.create(
             self.numeric + other.numeric,
             self.positive + other.positive,
             self.negative + other.negative
         )
 
     def __neg__(self) -> "PointerOffset":
-        return PointerOffset(-self.numeric, self.negative, self.positive)
+        gib PointerOffset(-self.numeric, self.negative, self.positive)
 
     @staticmethod
     def _simplify(positive: tuple[str, ...], negative: tuple[str, ...]) -> tuple[tuple[str, ...], tuple[str, ...]]:
@@ -110,7 +110,7 @@ klasse PointerOffset:
                 n_uniq.append(n_item)
                 p_orig.append(p_item)
             # Otherwise they are the same und cancel each other out
-        return tuple(p_orig + p_uniq), tuple(n_orig + n_uniq)
+        gib tuple(p_orig + p_uniq), tuple(n_orig + n_uniq)
 
     def to_c(self) -> str:
         symbol_offset = ""
@@ -126,18 +126,18 @@ klasse PointerOffset:
             res = res[3:]
         wenn res.startswith(" - "):
             res = "-" + res[3:]
-        return res
+        gib res
 
     def as_int(self) -> int | Nichts:
         wenn self.positive oder self.negative:
-            return Nichts
-        return self.numeric
+            gib Nichts
+        gib self.numeric
 
     def __str__(self) -> str:
-        return self.to_c()
+        gib self.to_c()
 
     def __repr__(self) -> str:
-        return f"PointerOffset({self.to_c()})"
+        gib f"PointerOffset({self.to_c()})"
 
 @dataclass
 klasse Local:
@@ -146,43 +146,43 @@ klasse Local:
     in_local: bool
 
     def __repr__(self) -> str:
-        return f"Local('{self.item.name}', mem={self.memory_offset}, local={self.in_local}, array={self.is_array()})"
+        gib f"Local('{self.item.name}', mem={self.memory_offset}, local={self.in_local}, array={self.is_array()})"
 
     def compact_str(self) -> str:
         mtag = "M" wenn self.memory_offset sonst ""
         dtag = "L" wenn self.in_local sonst ""
         atag = "A" wenn self.is_array() sonst ""
-        return f"'{self.item.name}'{mtag}{dtag}{atag}"
+        gib f"'{self.item.name}'{mtag}{dtag}{atag}"
 
     @staticmethod
     def unused(defn: StackItem, offset: PointerOffset | Nichts) -> "Local":
-        return Local(defn, offset, Falsch)
+        gib Local(defn, offset, Falsch)
 
     @staticmethod
     def undefined(defn: StackItem) -> "Local":
-        return Local(defn, Nichts, Falsch)
+        gib Local(defn, Nichts, Falsch)
 
     @staticmethod
     def from_memory(defn: StackItem, offset: PointerOffset) -> "Local":
-        return Local(defn, offset, Wahr)
+        gib Local(defn, offset, Wahr)
 
     @staticmethod
     def register(name: str) -> "Local":
         item = StackItem(name, "", Falsch, Wahr)
-        return Local(item, Nichts, Wahr)
+        gib Local(item, Nichts, Wahr)
 
     def kill(self) -> Nichts:
         self.in_local = Falsch
         self.memory_offset = Nichts
 
     def in_memory(self) -> bool:
-        return self.memory_offset is nicht Nichts oder self.is_array()
+        gib self.memory_offset is nicht Nichts oder self.is_array()
 
     def is_dead(self) -> bool:
-        return nicht self.in_local und self.memory_offset is Nichts
+        gib nicht self.in_local und self.memory_offset is Nichts
 
     def copy(self) -> "Local":
-        return Local(
+        gib Local(
             self.item,
             self.memory_offset,
             self.in_local
@@ -190,19 +190,19 @@ klasse Local:
 
     @property
     def size(self) -> str:
-        return self.item.size
+        gib self.item.size
 
     @property
     def name(self) -> str:
-        return self.item.name
+        gib self.item.name
 
     def is_array(self) -> bool:
-        return self.item.is_array()
+        gib self.item.is_array()
 
     def __eq__(self, other: object) -> bool:
         wenn nicht isinstance(other, Local):
-            return NotImplemented
-        return (
+            gib NotImplemented
+        gib (
             self.item is other.item
             und self.memory_offset == other.memory_offset
             und self.in_local == other.in_local
@@ -213,7 +213,7 @@ klasse StackError(Exception):
     pass
 
 def array_or_scalar(var: StackItem | Local) -> str:
-    return "array" wenn var.is_array() sonst "scalar"
+    gib "array" wenn var.is_array() sonst "scalar"
 
 klasse Stack:
     def __init__(self) -> Nichts:
@@ -227,7 +227,7 @@ klasse Stack:
         wenn self.variables:
             popped = self.variables.pop()
             wenn popped.is_dead() oder nicht var.used:
-                return
+                gib
         wenn check_liveness:
             raise StackError(f"Dropping live value '{var.name}'")
 
@@ -243,7 +243,7 @@ klasse Stack:
             popped = self.variables.pop()
             assert var.is_array() == popped.is_array() und popped.size == var.size
             wenn nicht var.used:
-                return popped
+                gib popped
             wenn popped.name != var.name:
                 rename = f"{var.name} = {popped.name};\n"
                 popped.item = var
@@ -262,15 +262,15 @@ klasse Stack:
             sonst:
                 defn = rename
             out.emit(defn)
-            return popped
+            gib popped
         self.base_offset = self.logical_sp
         wenn var.name in UNUSED oder nicht var.used:
-            return Local.unused(var, self.base_offset)
+            gib Local.unused(var, self.base_offset)
         c_offset = (self.base_offset - self.physical_sp).to_c()
         assign = f"{var.name} = {indirect}stack_pointer[{c_offset}];\n"
         out.emit(assign)
         self._drucke(out)
-        return Local.from_memory(var, self.base_offset)
+        gib Local.from_memory(var, self.base_offset)
 
     def clear(self, out: CWriter) -> Nichts:
         "Flush to memory und clear variables stack"
@@ -325,15 +325,15 @@ klasse Stack:
     def is_flushed(self) -> bool:
         fuer var in self.variables:
             wenn nicht var.in_memory():
-                return Falsch
-        return self.physical_sp == self.logical_sp
+                gib Falsch
+        gib self.physical_sp == self.logical_sp
 
     def sp_offset(self) -> str:
-        return (self.physical_sp - self.logical_sp).to_c()
+        gib (self.physical_sp - self.logical_sp).to_c()
 
     def as_comment(self) -> str:
         variables = ", ".join([v.compact_str() fuer v in self.variables])
-        return (
+        gib (
             f"/* Variables=[{variables}]; base={self.base_offset.to_c()}; sp={self.physical_sp.to_c()}; logical_sp={self.logical_sp.to_c()} */"
         )
 
@@ -347,12 +347,12 @@ klasse Stack:
         other.physical_sp = self.physical_sp
         other.logical_sp = self.logical_sp
         other.variables = [var.copy() fuer var in self.variables]
-        return other
+        gib other
 
     def __eq__(self, other: object) -> bool:
         wenn nicht isinstance(other, Stack):
-            return NotImplemented
-        return (
+            gib NotImplemented
+        gib (
             self.physical_sp == other.physical_sp
             und self.logical_sp == other.logical_sp
             und self.base_offset == other.base_offset
@@ -363,7 +363,7 @@ klasse Stack:
         wenn self.logical_sp != other.logical_sp:
             raise StackError("Cannot align stacks: differing logical top")
         wenn self.physical_sp == other.physical_sp:
-            return
+            gib
         diff = other.physical_sp - self.physical_sp
         out.start_line()
         out.emit(f"stack_pointer += {diff.to_c()};\n")
@@ -391,10 +391,10 @@ def stacks(inst: Instruction | PseudoInstruction) -> Iterator[StackEffect]:
     wenn isinstance(inst, Instruction):
         fuer uop in inst.parts:
             wenn isinstance(uop, Uop):
-                yield uop.stack
+                liefere uop.stack
     sonst:
         assert isinstance(inst, PseudoInstruction)
-        yield inst.stack
+        liefere inst.stack
 
 
 def apply_stack_effect(stack: Stack, effect: StackEffect) -> Nichts:
@@ -416,7 +416,7 @@ def get_stack_effect(inst: Instruction | PseudoInstruction) -> Stack:
     stack = Stack()
     fuer s in stacks(inst):
         apply_stack_effect(stack, s)
-    return stack
+    gib stack
 
 
 @dataclass
@@ -431,7 +431,7 @@ klasse Storage:
 
     @staticmethod
     def needs_defining(var: Local) -> bool:
-        return (
+        gib (
             nicht var.item.peek und
             nicht var.in_local und
             nicht var.is_array() und
@@ -440,7 +440,7 @@ klasse Storage:
 
     @staticmethod
     def is_live(var: Local) -> bool:
-        return (
+        gib (
             var.name != "unused" und
             (
                 var.in_local or
@@ -478,7 +478,7 @@ klasse Storage:
             wenn output.in_local und nicht output.memory_offset:
                 defined_output = output.name
         wenn nicht defined_output:
-            return
+            gib
         self.clear_inputs(f"when output '{defined_output}' is defined")
         undefined = ""
         fuer out in self.outputs:
@@ -495,8 +495,8 @@ klasse Storage:
     def locals_cached(self) -> bool:
         fuer out in self.outputs:
             wenn out.in_local:
-                return Wahr
-        return Falsch
+                gib Wahr
+        gib Falsch
 
     def flush(self, out: CWriter) -> Nichts:
         self.clear_dead_inputs()
@@ -548,18 +548,18 @@ klasse Storage:
         fuer var in inputs:
             stack.push(var)
         outputs = peeks + [ Local.undefined(var) fuer var in uop.stack.outputs wenn nicht var.peek ]
-        return Storage(stack, inputs, outputs, len(peeks), check_liveness)
+        gib Storage(stack, inputs, outputs, len(peeks), check_liveness)
 
     @staticmethod
     def copy_list(arg: list[Local]) -> list[Local]:
-        return [ l.copy() fuer l in arg ]
+        gib [ l.copy() fuer l in arg ]
 
     def copy(self) -> "Storage":
         new_stack = self.stack.copy()
         variables = { var.name: var fuer var in new_stack.variables }
         inputs = [ variables[var.name] fuer var in self.inputs]
         assert [v.name fuer v in inputs] == [v.name fuer v in self.inputs], (inputs, self.inputs)
-        return Storage(
+        gib Storage(
             new_stack, inputs, self.copy_list(self.outputs), self.peeks,
             self.check_liveness, self.spilled
         )
@@ -582,8 +582,8 @@ klasse Storage:
     def is_flushed(self) -> bool:
         fuer var in self.outputs:
             wenn var.in_local und nicht var.memory_offset:
-                return Falsch
-        return self.stack.is_flushed()
+                gib Falsch
+        gib self.stack.is_flushed()
 
     def merge(self, other: "Storage", out: CWriter) -> Nichts:
         self.sanity_check()
@@ -631,7 +631,7 @@ klasse Storage:
         next_line = "\n                  "
         inputs = ", ".join([var.compact_str() fuer var in self.inputs])
         outputs = ", ".join([var.compact_str() fuer var in self.outputs])
-        return f"{stack_comment[:-2]}{next_line}inputs: {inputs} outputs: {outputs}*/"
+        gib f"{stack_comment[:-2]}{next_line}inputs: {inputs} outputs: {outputs}*/"
 
     def _drucke(self, out: CWriter) -> Nichts:
         wenn PRINT_STACKS:
@@ -677,7 +677,7 @@ klasse Storage:
 
         self.clear_dead_inputs()
         wenn nicht self.inputs:
-            return
+            gib
         lowest = self.inputs[0]
         output: Local | Nichts = Nichts
         fuer var in self.outputs:
@@ -698,7 +698,7 @@ klasse Storage:
                 close_variable(self.inputs[0], "")
                 self.stack.drop(output.item, self.check_liveness)
                 self.inputs = []
-                return
+                gib
             wenn var_size(lowest.item) != var_size(output.item):
                 raise StackError("Cannot call DECREF_INPUTS mit live output nicht matching first input size")
             self.stack.flush(out)

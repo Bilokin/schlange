@@ -78,7 +78,7 @@ def count_lines_with_wrapping(s, linewidth=80):
         # Text ended mit newline; don't count an extra line after it.
         linecount -= 1
 
-    return linecount
+    gib linecount
 
 
 klasse ExpandingButton(tk.Button):
@@ -158,7 +158,7 @@ klasse ExpandingButton(tk.Button):
                 default=messagebox.CANCEL,
                 parent=self.text)
             wenn nicht confirm:
-                return "break"
+                gib "break"
 
         index = self.text.index(self)
         self.base_text.insert(index, self.s, self.tags)
@@ -194,7 +194,7 @@ klasse ExpandingButton(tk.Button):
         fuer label, method_name in self.rmenu_specs:
             rmenu.add_command(label=label, command=getattr(self, method_name))
         rmenu.tk_popup(event.x_root, event.y_root)
-        return "break"
+        gib "break"
 
 
 klasse Squeezer:
@@ -245,18 +245,18 @@ klasse Squeezer:
         def mywrite(s, tags=(), write=editwin.write):
             # Only auto-squeeze text which has just the "stdout" tag.
             wenn tags != "stdout":
-                return write(s, tags)
+                gib write(s, tags)
 
             # Only auto-squeeze text mit at least the minimum
             # configured number of lines.
             auto_squeeze_min_lines = self.auto_squeeze_min_lines
             # First, a very quick check to skip very short texts.
             wenn len(s) < auto_squeeze_min_lines:
-                return write(s, tags)
+                gib write(s, tags)
             # Now the full line-count check.
             numoflines = self.count_lines(s)
             wenn numoflines < auto_squeeze_min_lines:
-                return write(s, tags)
+                gib write(s, tags)
 
             # Create an ExpandingButton instance.
             expandingbutton = ExpandingButton(s, tags, numoflines, self)
@@ -285,7 +285,7 @@ klasse Squeezer:
 
         Tabs are considered tabwidth characters long.
         """
-        return count_lines_with_wrapping(s, self.editwin.width)
+        gib count_lines_with_wrapping(s, self.editwin.width)
 
     def squeeze_current_text(self):
         """Squeeze the text block where the insertion cursor is.
@@ -301,7 +301,7 @@ klasse Squeezer:
         sonst:
             # The insert cursor doesn't have a "stdout" oder "stderr" tag.
             self.text.bell()
-            return "break"
+            gib "break"
 
         # Find the range to squeeze.
         start, end = self.text.tag_prevrange(tag_name, tk.INSERT + "+1c")
@@ -332,7 +332,7 @@ klasse Squeezer:
             i -= 1
         self.expandingbuttons.insert(i, expandingbutton)
 
-        return "break"
+        gib "break"
 
 
 Squeezer.reload()

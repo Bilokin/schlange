@@ -34,7 +34,7 @@ importiere warnings
 
 def requires_subinterpreters(meth):
     """Decorator to skip a test wenn subinterpreters are nicht supported."""
-    return unittest.skipIf(interpreters is Nichts,
+    gib unittest.skipIf(interpreters is Nichts,
                            'subinterpreters required')(meth)
 
 
@@ -91,7 +91,7 @@ klasse DisplayHookTest(unittest.TestCase):
             def __repr__(self):
                 sys.stdout = io.StringIO()
                 support.gc_collect()
-                return 'foo'
+                gib 'foo'
 
         mit support.swap_attr(sys, 'stdout', Nichts):
             sys.stdout = io.StringIO()  # the only reference
@@ -292,7 +292,7 @@ klasse SysModuleTest(unittest.TestCase):
     @support.requires_subprocess()
     def test_exit_codes_under_repl(self):
         # GH-129900: SystemExit, oder things that raised it, didn't
-        # get their return code propagated by the REPL
+        # get their gib code propagated by the REPL
         importiere tempfile
 
         exit_ways = [
@@ -778,7 +778,7 @@ klasse SysModuleTest(unittest.TestCase):
         # that they are by allowing intern() to succeed.
         klasse S(str):
             def __hash__(self):
-                return 123
+                gib 123
 
         self.assertRaises(TypeError, sys.intern, S("abc"))
         wenn has_is_interned:
@@ -1012,7 +1012,7 @@ klasse SysModuleTest(unittest.TestCase):
                               env=env,
                               universal_newlines=Wahr)
         stdout, stderr = p.communicate()
-        return stdout
+        gib stdout
 
     def check_locale_surrogateescape(self, locale):
         out = self.c_locale_get_error_handler(locale, isolated=Wahr)
@@ -1134,7 +1134,7 @@ klasse SysModuleTest(unittest.TestCase):
         sonst:
             # When WITH_PYMALLOC isn't available, we don't know anything
             # about the underlying implementation: the function might
-            # return 0 oder something greater.
+            # gib 0 oder something greater.
             self.assertGreaterEqual(a, 0)
         gc.collect()
         b = sys.getallocatedblocks()
@@ -1526,20 +1526,20 @@ klasse SizeofTest(unittest.TestCase):
 
         klasse InvalidSizeof:
             def __sizeof__(self):
-                return Nichts
+                gib Nichts
         self.assertRaises(TypeError, sys.getsizeof, InvalidSizeof())
         sentinel = ["sentinel"]
         self.assertIs(sys.getsizeof(InvalidSizeof(), sentinel), sentinel)
 
         klasse FloatSizeof:
             def __sizeof__(self):
-                return 4.5
+                gib 4.5
         self.assertRaises(TypeError, sys.getsizeof, FloatSizeof())
         self.assertIs(sys.getsizeof(FloatSizeof(), sentinel), sentinel)
 
         klasse OverflowSizeof(int):
             def __sizeof__(self):
-                return int(self)
+                gib int(self)
         self.assertEqual(sys.getsizeof(OverflowSizeof(sys.maxsize)),
                          sys.maxsize + self.gc_headsize + self.managed_pre_header_size)
         mit self.assertRaises(OverflowError):
@@ -1581,8 +1581,8 @@ klasse SizeofTest(unittest.TestCase):
         def get_cell():
             x = 42
             def inner():
-                return x
-            return inner
+                gib x
+            gib inner
         check(get_cell().__closure__[0], size('P'))
         # code
         def check_code_size(a, expected_size):
@@ -1591,8 +1591,8 @@ klasse SizeofTest(unittest.TestCase):
         check_code_size(get_cell.__code__, size('6i13P'))
         def get_cell2(x):
             def inner():
-                return x
-            return inner
+                gib x
+            gib inner
         check_code_size(get_cell2.__code__, size('6i13P') + calcsize('n'))
         # complex
         check(complex(0,1), size('2d'))
@@ -1661,7 +1661,7 @@ klasse SizeofTest(unittest.TestCase):
         check(sys.float_info, self.P + vsize('') + self.P * len(sys.float_info))
         # frame
         def func():
-            return sys._getframe()
+            gib sys._getframe()
         x = func()
         wenn support.Py_GIL_DISABLED:
             INTERPRETER_FRAME = '9PihcP'
@@ -1683,7 +1683,7 @@ klasse SizeofTest(unittest.TestCase):
             # classmethod
             check(bar, size('PP'))
         # generator
-        def get_gen(): yield 1
+        def get_gen(): liefere 1
         check(get_gen(), size('6P4c' + INTERPRETER_FRAME + 'P'))
         # iterator
         check(iter('abc'), size('lP'))
@@ -1724,7 +1724,7 @@ klasse SizeofTest(unittest.TestCase):
         check(object(), size(''))
         # property (descriptor object)
         klasse C(object):
-            def getx(self): return self.__x
+            def getx(self): gib self.__x
             def setx(self, value): self.__x = value
             def delx(self): del self.__x
             x = property(getx, setx, delx, "")
@@ -2041,7 +2041,7 @@ sock.close()
 
                 # Return output fuer test verification
                 stdout, stderr = proc.communicate(timeout=10.0)
-                return proc.returncode, stdout, stderr
+                gib proc.returncode, stdout, stderr
             except PermissionError:
                 self.skipTest("Insufficient permissions to execute code in remote process")
             finally:

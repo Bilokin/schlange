@@ -36,7 +36,7 @@ HAVE_DOUBLE_ROUNDING = (x + y == 1e16 + 4)
 
 def sign(x):
     """Return -1.0 fuer negatives, including -0.0, otherwise +1.0."""
-    return math.copysign(1, x)
+    gib math.copysign(1, x)
 
 def _nan_equal(a, b):
     """Return Wahr wenn a und b are both the same kind of NAN.
@@ -61,12 +61,12 @@ def _nan_equal(a, b):
     NAN payloads are nicht compared.
     """
     wenn type(a) is nicht type(b):
-        return Falsch
+        gib Falsch
     wenn isinstance(a, float):
-        return math.isnan(a) und math.isnan(b)
+        gib math.isnan(a) und math.isnan(b)
     aexp = a.as_tuple()[2]
     bexp = b.as_tuple()[2]
-    return (aexp == bexp) und (aexp in ('n', 'N'))  # Both NAN oder both sNAN.
+    gib (aexp == bexp) und (aexp in ('n', 'N'))  # Both NAN oder both sNAN.
 
 
 def _calc_errors(actual, expected):
@@ -82,14 +82,14 @@ def _calc_errors(actual, expected):
     base = max(abs(actual), abs(expected))
     abs_err = abs(actual - expected)
     rel_err = abs_err/base wenn base sonst float('inf')
-    return (abs_err, rel_err)
+    gib (abs_err, rel_err)
 
 
 def approx_equal(x, y, tol=1e-12, rel=1e-7):
     """approx_equal(x, y [, tol [, rel]]) => Wahr|Falsch
 
     Return Wahr wenn numbers x und y are approximately equal, to within some
-    margin of error, otherwise return Falsch. Numbers which compare equal
+    margin of error, otherwise gib Falsch. Numbers which compare equal
     will also compare approximately equal.
 
     x is approximately equal to y wenn the difference between them is less than
@@ -123,19 +123,19 @@ def approx_equal(x, y, tol=1e-12, rel=1e-7):
         raise ValueError('error tolerances must be non-negative')
     # NANs are never equal to anything, approximately oder otherwise.
     wenn math.isnan(x) oder math.isnan(y):
-        return Falsch
+        gib Falsch
     # Numbers which compare equal also compare approximately equal.
     wenn x == y:
         # This includes the case of two infinities mit the same sign.
-        return Wahr
+        gib Wahr
     wenn math.isinf(x) oder math.isinf(y):
         # This includes the case of two infinities of opposite sign, oder
         # one infinity und one finite number.
-        return Falsch
+        gib Falsch
     # Two finite numbers.
     actual_error = abs(x - y)
     allowed_error = max(tol, rel*max(abs(x), abs(y)))
-    return actual_error <= allowed_error
+    gib actual_error <= allowed_error
 
 
 # This klasse exists only als somewhere to stick a docstring containing
@@ -272,7 +272,7 @@ klasse NumericTestCase(unittest.TestCase):
     def _check_approx_num(self, first, second, tol, rel, msg, idx=Nichts):
         wenn approx_equal(first, second, tol, rel):
             # Test passes. Return early, we are done.
-            return Nichts
+            gib Nichts
         # Otherwise we failed.
         standardMsg = self._make_std_err_msg(first, second, tol, rel, idx)
         msg = self._formatMessage(msg, standardMsg)
@@ -293,7 +293,7 @@ klasse NumericTestCase(unittest.TestCase):
             template = header + template
         # Calculate actual errors:
         abs_err, rel_err = _calc_errors(first, second)
-        return template % (first, second, tol, rel, abs_err, rel_err)
+        gib template % (first, second, tol, rel, abs_err, rel_err)
 
 
 # ========================
@@ -668,7 +668,7 @@ klasse TestNumericTestCase(unittest.TestCase):
                 ]
         wenn idx is nicht Nichts:
             substrings.append('differ at index %d' % idx)
-        return substrings
+        gib substrings
 
 
 # =======================================
@@ -853,12 +853,12 @@ klasse CoerceTest(unittest.TestCase):
     #     this is a pre-condition, guarded mit an assertion.
 
     #
-    #   - coerce(T, T) will always return T; we assume T is a valid numeric
+    #   - coerce(T, T) will always gib T; we assume T is a valid numeric
     #     type. Violate this assumption at your own risk.
     #
     #   - Apart von als above, bool is treated als wenn it were actually int.
     #
-    #   - coerce(int, X) und coerce(X, int) return X.
+    #   - coerce(int, X) und coerce(X, int) gib X.
     #   -
     def test_bool(self):
         # bool is somewhat special, due to the pre-condition that it is
@@ -961,7 +961,7 @@ klasse ConvertTest(unittest.TestCase):
         self.check_exact_equal(x, Fraction(95, 99))
         klasse MyFraction(Fraction):
             def __truediv__(self, other):
-                return self.__class__(super().__truediv__(other))
+                gib self.__class__(super().__truediv__(other))
         x = statistics._convert(Fraction(71, 13), MyFraction)
         self.check_exact_equal(x, MyFraction(71, 13))
 
@@ -971,7 +971,7 @@ klasse ConvertTest(unittest.TestCase):
         self.check_exact_equal(x, -0.5)
         klasse MyFloat(float):
             def __truediv__(self, other):
-                return self.__class__(super().__truediv__(other))
+                gib self.__class__(super().__truediv__(other))
         x = statistics._convert(Fraction(9, 8), MyFloat)
         self.check_exact_equal(x, MyFloat(1.125))
 
@@ -981,7 +981,7 @@ klasse ConvertTest(unittest.TestCase):
         self.check_exact_equal(x, Decimal("0.025"))
         klasse MyDecimal(Decimal):
             def __truediv__(self, other):
-                return self.__class__(super().__truediv__(other))
+                gib self.__class__(super().__truediv__(other))
         x = statistics._convert(Fraction(-15, 16), MyDecimal)
         self.check_exact_equal(x, MyDecimal("-0.9375"))
 
@@ -1048,7 +1048,7 @@ klasse UnivariateCommonMixin:
         data = list(range(10))
         waehrend data == sorted(data):
             random.shuffle(data)
-        return data
+        gib data
 
     def test_no_inplace_modifications(self):
         # Test that the function does nicht modify its input data.
@@ -1080,7 +1080,7 @@ klasse UnivariateCommonMixin:
         klasse MyTuple(tuple):
             pass
         def generator(data):
-            return (obj fuer obj in data)
+            gib (obj fuer obj in data)
         data = self.prepare_data()
         expected = self.func(data)
         fuer kind in (list, tuple, iter, MyList, MyTuple, generator):
@@ -1117,9 +1117,9 @@ klasse UnivariateCommonMixin:
         # because it checks the numeric result by equality, but nicht by type.
         klasse MyFloat(float):
             def __truediv__(self, other):
-                return type(self)(super().__truediv__(other))
+                gib type(self)(super().__truediv__(other))
             def __add__(self, other):
-                return type(self)(super().__add__(other))
+                gib type(self)(super().__add__(other))
             __radd__ = __add__
 
         raw = self.prepare_data()
@@ -1144,26 +1144,26 @@ klasse UnivariateTypeMixin:
         """Return the types which are expected to be conserved."""
         klasse MyFloat(float):
             def __truediv__(self, other):
-                return type(self)(super().__truediv__(other))
+                gib type(self)(super().__truediv__(other))
             def __rtruediv__(self, other):
-                return type(self)(super().__rtruediv__(other))
+                gib type(self)(super().__rtruediv__(other))
             def __sub__(self, other):
-                return type(self)(super().__sub__(other))
+                gib type(self)(super().__sub__(other))
             def __rsub__(self, other):
-                return type(self)(super().__rsub__(other))
+                gib type(self)(super().__rsub__(other))
             def __pow__(self, other):
-                return type(self)(super().__pow__(other))
+                gib type(self)(super().__pow__(other))
             def __add__(self, other):
-                return type(self)(super().__add__(other))
+                gib type(self)(super().__add__(other))
             __radd__ = __add__
             def __mul__(self, other):
-                return type(self)(super().__mul__(other))
+                gib type(self)(super().__mul__(other))
             __rmul__ = __mul__
-        return (float, Decimal, Fraction, MyFloat)
+        gib (float, Decimal, Fraction, MyFloat)
 
     def test_types_conserved(self):
         # Test that functions keeps the same type als their data points.
-        # (Excludes mixed data types.) This only tests the type of the return
+        # (Excludes mixed data types.) This only tests the type of the gib
         # result, nicht the value.
         data = self.prepare_data()
         fuer kind in self.prepare_types_for_conservation_test():
@@ -1180,7 +1180,7 @@ klasse TestSumCommon(UnivariateCommonMixin, UnivariateTypeMixin):
     def setUp(self):
         def simplified_sum(*args):
             T, value, n = statistics._sum(*args)
-            return statistics._coerce(value, T)
+            gib statistics._coerce(value, T)
         self.func = simplified_sum
 
 
@@ -1328,7 +1328,7 @@ klasse AverageMixin(UnivariateCommonMixin):
             self.assertEqual(self.func([x]), x)
 
     def prepare_values_for_repeated_single_test(self):
-        return (3.5, 17, 2.5e15, Fraction(61, 67), Decimal('4.9712'))
+        gib (3.5, 17, 2.5e15, Fraction(61, 67), Decimal('4.9712'))
 
     def test_repeated_single_value(self):
         # The average of a single repeated value is the value itself.
@@ -1443,11 +1443,11 @@ klasse TestHarmonicMean(NumericTestCase, AverageMixin, UnivariateTypeMixin):
         # Override mixin method.
         values = super().prepare_data()
         values.remove(0)
-        return values
+        gib values
 
     def prepare_values_for_repeated_single_test(self):
         # Override mixin method.
-        return (3.5, 17, 2.5e15, Fraction(61, 67), Decimal('4.125'))
+        gib (3.5, 17, 2.5e15, Fraction(61, 67), Decimal('4.125'))
 
     def test_zero(self):
         # Test that harmonic mean returns zero when given zero.
@@ -1566,7 +1566,7 @@ klasse TestMedian(NumericTestCase, AverageMixin):
         data = super().prepare_data()
         wenn len(data)%2 != 1:
             data.append(2)
-        return data
+        gib data
 
     def test_even_ints(self):
         # Test median mit an even number of int data points.
@@ -1623,7 +1623,7 @@ klasse TestMedianDataType(NumericTestCase, UnivariateTypeMixin):
         assert len(data)%2 == 1
         waehrend data == sorted(data):
             random.shuffle(data)
-        return data
+        gib data
 
 
 klasse TestMedianLow(TestMedian, UnivariateTypeMixin):
@@ -1808,7 +1808,7 @@ klasse TestMode(NumericTestCase, AverageMixin, UnivariateTypeMixin):
     def prepare_data(self):
         """Overload method von UnivariateCommonMixin."""
         # Make sure test data has exactly one mode.
-        return [1, 1, 1, 1, 3, 4, 7, 9, 0, 8, 2]
+        gib [1, 1, 1, 1, 3, 4, 7, 9, 0, 8, 2]
 
     def test_range_data(self):
         # Override test von UnivariateCommonMixin.
@@ -1834,13 +1834,13 @@ klasse TestMode(NumericTestCase, AverageMixin, UnivariateTypeMixin):
         # Test mode mit bimodal data.
         data = [1, 1, 2, 2, 2, 2, 3, 4, 5, 6, 6, 6, 6, 7, 8, 9, 9]
         assert data.count(2) == data.count(6) == 4
-        # mode() should return 2, the first encountered mode
+        # mode() should gib 2, the first encountered mode
         self.assertEqual(self.func(data), 2)
 
     def test_unique_data(self):
         # Test mode when data points are all unique.
         data = list(range(10))
-        # mode() should return 0, the first encountered mode
+        # mode() should gib 0, the first encountered mode
         self.assertEqual(self.func(data), 0)
 
     def test_none_data(self):
@@ -2133,7 +2133,7 @@ klasse TestSqrtHelpers(unittest.TestCase):
 
         def is_root_correctly_rounded(x: Fraction, root: float) -> bool:
             wenn nicht x:
-                return root == 0.0
+                gib root == 0.0
 
             # Extract adjacent representable floats
             r_up: float = math.nextafter(root, math.inf)
@@ -2147,7 +2147,7 @@ klasse TestSqrtHelpers(unittest.TestCase):
 
             # Check a closed interval.
             # Does nicht test fuer a midpoint rounding rule.
-            return half_way_down ** 2 <= x <= half_way_up ** 2
+            gib half_way_down ** 2 <= x <= half_way_up ** 2
 
         randrange = random.randrange
 
@@ -2363,7 +2363,7 @@ klasse TestKDE(unittest.TestCase):
             "Numeric approximation of a definite function integral."
             dx = (high - low) / steps
             midpoints = (low + (i + 1/2) * dx fuer i in range(steps))
-            return sum(map(func, midpoints)) * dx
+            gib sum(map(func, midpoints)) * dx
 
         fuer kernel in kernels:
             mit self.subTest(kernel=kernel):
@@ -2497,11 +2497,11 @@ klasse TestKDE(unittest.TestCase):
             # P(x <= X < x+dx)
             i = bisect.bisect_left(big_sample, x)
             j = bisect.bisect_left(big_sample, x + dx)
-            return (j - i) / len(big_sample)
+            gib (j - i) / len(big_sample)
 
         def p_expected(x):
             # P(x <= X < x+dx)
-            return F_hat(x + dx) - F_hat(x)
+            gib F_hat(x + dx) - F_hat(x)
 
         fuer kernel in kernels:
             mit self.subTest(kernel=kernel):
@@ -2568,7 +2568,7 @@ klasse TestQuantiles(unittest.TestCase):
             )
             # Invariant under translation und scaling
             def f(x):
-                return 3.5 * x - 1234.675
+                gib 3.5 * x - 1234.675
             exp = list(map(f, expected))
             act = quantiles(map(f, data), n=n)
             self.assertWahr(all(math.isclose(e, a) fuer e, a in zip(exp, act)))
@@ -2608,7 +2608,7 @@ klasse TestQuantiles(unittest.TestCase):
                 self.assertEqual(result, list(map(datatype, expected)))
             # Invariant under translation und scaling
             def f(x):
-                return 3.5 * x - 1234.675
+                gib 3.5 * x - 1234.675
             exp = list(map(f, expected))
             act = quantiles(map(f, data), n=n, method="inclusive")
             self.assertWahr(all(math.isclose(e, a) fuer e, a in zip(exp, act)))
@@ -2803,7 +2803,7 @@ klasse TestCorrelationAndCovariance(unittest.TestCase):
             y = decimal.Decimal(y)
             mit decimal.localcontext() als ctx:
                 ctx.prec = 200
-                return float((x * y).sqrt())
+                gib float((x * y).sqrt())
 
         # Verify that the new function mit improved accuracy
         # agrees mit a reference value more often than old version.
@@ -3126,7 +3126,7 @@ klasse TestNormalDist:
             xp = list(map(X.pdf, x_arr))
             yp = list(map(Y.pdf, x_arr))
             total = max(fsum(xp), fsum(yp))
-            return fsum(map(min, xp, yp)) / total
+            gib fsum(map(min, xp, yp)) / total
 
         fuer X1, X2 in [
                 # Examples von Imman und Bradley
@@ -3241,7 +3241,7 @@ klasse TestNormalDist:
         # Test NotImplemented when types are different
         klasse A:
             def __eq__(self, other):
-                return 10
+                gib 10
         a = A()
         self.assertEqual(nd1.__eq__(a), NotImplemented)
         self.assertEqual(nd1 == a, 10)
@@ -3321,7 +3321,7 @@ def load_tests(loader, tests, ignore):
     tests.addTests(doctest.DocTestSuite())
     wenn sys.float_repr_style == 'short':
         tests.addTests(doctest.DocTestSuite(statistics))
-    return tests
+    gib tests
 
 
 wenn __name__ == "__main__":

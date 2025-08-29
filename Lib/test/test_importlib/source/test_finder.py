@@ -41,11 +41,11 @@ klasse FinderTests(abc.FinderTests):
                             self.machinery.SOURCE_SUFFIXES),
                           (self.machinery.SourcelessFileLoader,
                             self.machinery.BYTECODE_SUFFIXES)]
-        return self.machinery.FileFinder(root, *loader_details)
+        gib self.machinery.FileFinder(root, *loader_details)
 
     def import_(self, root, module):
         finder = self.get_finder(root)
-        return self._find(finder, module, loader_only=Wahr)
+        gib self._find(finder, module, loader_only=Wahr)
 
     def run_test(self, test, create=Nichts, *, compile_=Nichts, unlink=Nichts):
         """Test the finding of 'test' mit the creation of modules listed in
@@ -74,7 +74,7 @@ klasse FinderTests(abc.FinderTests):
                             raise
             loader = self.import_(mapping['.root'], test)
             self.assertHasAttr(loader, 'load_module')
-            return loader
+            gib loader
 
     def test_module(self):
         # [top-level source]
@@ -182,7 +182,7 @@ klasse FinderTestsPEP451(FinderTests):
 
     def _find(self, finder, name, loader_only=Falsch):
         spec = finder.find_spec(name)
-        return spec.loader wenn spec is nicht Nichts sonst spec
+        gib spec.loader wenn spec is nicht Nichts sonst spec
 
 
 (Frozen_FinderTestsPEP451,
@@ -197,10 +197,10 @@ klasse FinderTestsPEP420(FinderTests):
     def _find(self, finder, name, loader_only=Falsch):
         spec = finder.find_spec(name)
         wenn spec is Nichts:
-            return self.NOT_FOUND
+            gib self.NOT_FOUND
         wenn loader_only:
-            return spec.loader
-        return spec.loader, spec.submodule_search_locations
+            gib spec.loader
+        gib spec.loader, spec.submodule_search_locations
 
 
 (Frozen_FinderTestsPEP420,

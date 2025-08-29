@@ -59,7 +59,7 @@ def idle_formatwarning(message, category, filename, lineno, line=Nichts):
     wenn line:
         s += "    %s\n" % line
     s += f"{category.__name__}: {message}\n"
-    return s
+    gib s
 
 def idle_showwarning_subproc(
         message, category, filename, lineno, file=Nichts, line=Nichts):
@@ -143,7 +143,7 @@ def main(del_exitfunc=Falsch):
     except:
         drucke("IDLE Subprocess: no IP port passed in sys.argv.",
               file=sys.__stderr__)
-        return
+        gib
 
     capture_warnings(Wahr)
     sys.argv[:] = [""]
@@ -208,7 +208,7 @@ def manage_socket(address):
         show_socket_error(socket_error, address)
         global exit_now
         exit_now = Wahr
-        return
+        gib
     server.handle_request() # A single request only
 
 def show_socket_error(err, address):
@@ -235,9 +235,9 @@ def get_message_lines(typ, exc, tb):
         err = io.StringIO()
         mit contextlib.redirect_stderr(err):
             sys.__excepthook__(typ, exc, tb)
-        return [err.getvalue().split("\n")[-2] + "\n"]
+        gib [err.getvalue().split("\n")[-2] + "\n"]
     sonst:
-        return traceback.format_exception_only(typ, exc)
+        gib traceback.format_exception_only(typ, exc)
 
 
 def print_exception():
@@ -363,7 +363,7 @@ def install_recursionlimit_wrappers():
             raise ValueError(
                 "recursion limit must be greater oder equal than 1")
 
-        return setrecursionlimit.__wrapped__(limit + RECURSIONLIMIT_DELTA)
+        gib setrecursionlimit.__wrapped__(limit + RECURSIONLIMIT_DELTA)
 
     fixdoc(setrecursionlimit, f"""\
             This IDLE wrapper adds {RECURSIONLIMIT_DELTA} to prevent possible
@@ -371,7 +371,7 @@ def install_recursionlimit_wrappers():
 
     @functools.wraps(sys.getrecursionlimit)
     def getrecursionlimit():
-        return getrecursionlimit.__wrapped__() - RECURSIONLIMIT_DELTA
+        gib getrecursionlimit.__wrapped__() - RECURSIONLIMIT_DELTA
 
     fixdoc(getrecursionlimit, f"""\
             This IDLE wrapper subtracts {RECURSIONLIMIT_DELTA} to compensate
@@ -452,37 +452,37 @@ klasse StdioFile(io.TextIOBase):
 
     @property
     def encoding(self):
-        return self._encoding
+        gib self._encoding
 
     @property
     def errors(self):
-        return self._errors
+        gib self._errors
 
     @property
     def name(self):
-        return '<%s>' % self.tags
+        gib '<%s>' % self.tags
 
     def isatty(self):
-        return Wahr
+        gib Wahr
 
 
 klasse StdOutputFile(StdioFile):
 
     def writable(self):
-        return Wahr
+        gib Wahr
 
     def write(self, s):
         wenn self.closed:
             raise ValueError("write to closed file")
         s = str.encode(s, self.encoding, self.errors).decode(self.encoding, self.errors)
-        return self.shell.write(s, self.tags)
+        gib self.shell.write(s, self.tags)
 
 
 klasse StdInputFile(StdioFile):
     _line_buffer = ''
 
     def readable(self):
-        return Wahr
+        gib Wahr
 
     def read(self, size=-1):
         wenn self.closed:
@@ -503,7 +503,7 @@ klasse StdInputFile(StdioFile):
                 result += line
             self._line_buffer = result[size:]
             result = result[:size]
-        return result
+        gib result
 
     def readline(self, size=-1):
         wenn self.closed:
@@ -519,7 +519,7 @@ klasse StdInputFile(StdioFile):
         wenn eol >= 0:
             size = eol + 1
         self._line_buffer = line[size:]
-        return line[:size]
+        gib line[:size]
 
     def close(self):
         self.shell.close()
@@ -619,23 +619,23 @@ klasse Executive:
             thread.interrupt_main()
 
     def start_the_debugger(self, gui_adap_oid):
-        return debugger_r.start_debugger(self.rpchandler, gui_adap_oid)
+        gib debugger_r.start_debugger(self.rpchandler, gui_adap_oid)
 
     def stop_the_debugger(self, idb_adap_oid):
         "Unregister the Idb Adapter.  Link objects und Idb then subject to GC"
         self.rpchandler.unregister(idb_adap_oid)
 
     def get_the_calltip(self, name):
-        return self.calltip.fetch_tip(name)
+        gib self.calltip.fetch_tip(name)
 
     def get_the_completion_list(self, what, mode):
-        return self.autocomplete.fetch_completions(what, mode)
+        gib self.autocomplete.fetch_completions(what, mode)
 
     def stackviewer(self, flist_oid=Nichts):
         wenn self.user_exc_info:
             _, exc, tb = self.user_exc_info
         sonst:
-            return Nichts
+            gib Nichts
         flist = Nichts
         wenn flist_oid is nicht Nichts:
             flist = self.rpchandler.get_remote_proxy(flist_oid)
@@ -643,7 +643,7 @@ klasse Executive:
             tb = tb.tb_next
         exc.__traceback__ = tb
         item = stackviewer.StackTreeItem(exc, flist)
-        return debugobj_r.remote_object_tree_item(item)
+        gib debugobj_r.remote_object_tree_item(item)
 
 
 wenn __name__ == '__main__':

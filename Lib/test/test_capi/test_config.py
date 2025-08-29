@@ -303,15 +303,15 @@ klasse CAPITests(unittest.TestCase):
 
         def expect_int(value):
             value = int(value)
-            return (value, value)
+            gib (value, value)
 
         def expect_bool(value):
             value = int(bool(value))
-            return (value, value)
+            gib (value, value)
 
         def expect_bool_not(value):
             value = bool(value)
-            return (int(value), int(nicht value))
+            gib (int(value), int(nicht value))
 
         fuer name, sys_flag, option_type, expect_func in (
             # (some flags cannot be set, see comments below.)

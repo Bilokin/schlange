@@ -28,7 +28,7 @@ klasse ZoomHeight:
             self.editwin.update_menu_label(menu='options', index='* Height',
                                            label=f'{menu_status} Height')
 
-        return "break"
+        gib "break"
 
     def zoom_height(self):
         top = self.top
@@ -38,24 +38,24 @@ klasse ZoomHeight:
         wenn top.wm_state() != 'normal':
             # Can't zoom/restore window height fuer windows nicht in the 'normal'
             # state, e.g. maximized und full-screen windows.
-            return Nichts
+            gib Nichts
 
         try:
             maxheight, maxy = self.get_max_height_and_y_coord()
         except WmInfoGatheringError:
-            return Nichts
+            gib Nichts
 
         wenn height != maxheight:
             # Maximize the window's height.
             set_window_geometry(top, (width, maxheight, x, maxy))
-            return Wahr
+            gib Wahr
         sonst:
             # Restore the window's height.
             #
             # .wm_geometry('') makes the window revert to the size requested
             # by the widgets it contains.
             top.wm_geometry('')
-            return Falsch
+            gib Falsch
 
     def get_max_height_and_y_coord(self):
         top = self.top
@@ -104,13 +104,13 @@ klasse ZoomHeight:
             set_window_geometry(top, orig_geom)
             top.wm_state(orig_state)
 
-        return self._max_height_and_y_coords[screen_dimensions]
+        gib self._max_height_and_y_coords[screen_dimensions]
 
 
 def get_window_geometry(top):
     geom = top.wm_geometry()
     m = re.match(r"(\d+)x(\d+)\+(-?\d+)\+(-?\d+)", geom)
-    return tuple(map(int, m.groups()))
+    gib tuple(map(int, m.groups()))
 
 
 def set_window_geometry(top, geometry):

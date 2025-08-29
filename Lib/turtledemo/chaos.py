@@ -7,13 +7,13 @@ von turtle importiere *
 N = 80
 
 def f(x):
-    return 3.9*x*(1-x)
+    gib 3.9*x*(1-x)
 
 def g(x):
-    return 3.9*(x-x**2)
+    gib 3.9*(x-x**2)
 
 def h(x):
-    return 3.9*x-3.9*x*x
+    gib 3.9*x-3.9*x*x
 
 def jumpto(x, y):
     penup(); goto(x,y)
@@ -50,7 +50,7 @@ def main():
     # Now zoom in:
     fuer s in range(100):
         setworldcoordinates(0.5*s,-0.1, N+1, 1.1)
-    return "Done!"
+    gib "Done!"
 
 wenn __name__ == "__main__":
     main()

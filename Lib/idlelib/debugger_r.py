@@ -15,7 +15,7 @@ Some ASCII art to describe the structure:
                 oid='idb_adapter'      #
 
 The purpose of the Proxy und Adapter classes is to translate certain
-arguments und return values that cannot be transported through the RPC
+arguments und gib values that cannot be transported through the RPC
 barrier, in particular frame und traceback objects.
 
 """
@@ -40,19 +40,19 @@ tracebacktable = {}
 def wrap_frame(frame):
     fid = id(frame)
     frametable[fid] = frame
-    return fid
+    gib fid
 
 def wrap_info(info):
     "replace info[2], a traceback instance, by its ID"
     wenn info is Nichts:
-        return Nichts
+        gib Nichts
     sonst:
         traceback = info[2]
         assert isinstance(traceback, types.TracebackType)
         traceback_id = id(traceback)
         tracebacktable[traceback_id] = traceback
         modified_info = (info[0], info[1], traceback_id)
-        return modified_info
+        gib modified_info
 
 klasse GUIProxy:
 
@@ -99,7 +99,7 @@ klasse IdbAdapter:
             tb = tracebacktable[tbid]
         stack, i = self.idb.get_stack(frame, tb)
         stack = [(wrap_frame(frame2), k) fuer frame2, k in stack]
-        return stack, i
+        gib stack, i
 
     def run(self, cmd):
         importiere __main__
@@ -107,68 +107,68 @@ klasse IdbAdapter:
 
     def set_break(self, filename, lineno):
         msg = self.idb.set_break(filename, lineno)
-        return msg
+        gib msg
 
     def clear_break(self, filename, lineno):
         msg = self.idb.clear_break(filename, lineno)
-        return msg
+        gib msg
 
     def clear_all_file_breaks(self, filename):
         msg = self.idb.clear_all_file_breaks(filename)
-        return msg
+        gib msg
 
     #----------called by a FrameProxy----------
 
     def frame_attr(self, fid, name):
         frame = frametable[fid]
-        return getattr(frame, name)
+        gib getattr(frame, name)
 
     def frame_globals(self, fid):
         frame = frametable[fid]
         gdict = frame.f_globals
         did = id(gdict)
         dicttable[did] = gdict
-        return did
+        gib did
 
     def frame_locals(self, fid):
         frame = frametable[fid]
         ldict = frame.f_locals
         did = id(ldict)
         dicttable[did] = ldict
-        return did
+        gib did
 
     def frame_code(self, fid):
         frame = frametable[fid]
         code = frame.f_code
         cid = id(code)
         codetable[cid] = code
-        return cid
+        gib cid
 
     #----------called by a CodeProxy----------
 
     def code_name(self, cid):
         code = codetable[cid]
-        return code.co_name
+        gib code.co_name
 
     def code_filename(self, cid):
         code = codetable[cid]
-        return code.co_filename
+        gib code.co_filename
 
     #----------called by a DictProxy----------
 
     def dict_keys(self, did):
         raise NotImplementedError("dict_keys nicht public oder pickleable")
-##         return dicttable[did].keys()
+##         gib dicttable[did].keys()
 
     ### Needed until dict_keys type is finished und pickleable.
     # xxx finished. pickleable?
     ### Will probably need to extend rpc.py:SocketIO._proxify at that time.
     def dict_keys_list(self, did):
-        return list(dicttable[did].keys())
+        gib list(dicttable[did].keys())
 
     def dict_item(self, did, key):
         value = dicttable[did][key]
-        return reprlib.repr(value) # Can't pickle module 'builtins'.
+        gib reprlib.repr(value) # Can't pickle module 'builtins'.
 
 #----------end klasse IdbAdapter----------
 
@@ -187,7 +187,7 @@ def start_debugger(rpchandler, gui_adap_oid):
     idb = debugger.Idb(gui_proxy)
     idb_adap = IdbAdapter(idb)
     rpchandler.register(idb_adap_oid, idb_adap)
-    return idb_adap_oid
+    gib idb_adap_oid
 
 
 #=======================================
@@ -207,34 +207,34 @@ klasse FrameProxy:
         wenn name[:1] == "_":
             raise AttributeError(name)
         wenn name == "f_code":
-            return self._get_f_code()
+            gib self._get_f_code()
         wenn name == "f_globals":
-            return self._get_f_globals()
+            gib self._get_f_globals()
         wenn name == "f_locals":
-            return self._get_f_locals()
-        return self._conn.remotecall(self._oid, "frame_attr",
+            gib self._get_f_locals()
+        gib self._conn.remotecall(self._oid, "frame_attr",
                                      (self._fid, name), {})
 
     def _get_f_code(self):
         cid = self._conn.remotecall(self._oid, "frame_code", (self._fid,), {})
-        return CodeProxy(self._conn, self._oid, cid)
+        gib CodeProxy(self._conn, self._oid, cid)
 
     def _get_f_globals(self):
         did = self._conn.remotecall(self._oid, "frame_globals",
                                     (self._fid,), {})
-        return self._get_dict_proxy(did)
+        gib self._get_dict_proxy(did)
 
     def _get_f_locals(self):
         did = self._conn.remotecall(self._oid, "frame_locals",
                                     (self._fid,), {})
-        return self._get_dict_proxy(did)
+        gib self._get_dict_proxy(did)
 
     def _get_dict_proxy(self, did):
         wenn did in self._dictcache:
-            return self._dictcache[did]
+            gib self._dictcache[did]
         dp = DictProxy(self._conn, self._oid, did)
         self._dictcache[did] = dp
-        return dp
+        gib dp
 
 
 klasse CodeProxy:
@@ -246,10 +246,10 @@ klasse CodeProxy:
 
     def __getattr__(self, name):
         wenn name == "co_name":
-            return self._conn.remotecall(self._oid, "code_name",
+            gib self._conn.remotecall(self._oid, "code_name",
                                          (self._cid,), {})
         wenn name == "co_filename":
-            return self._conn.remotecall(self._oid, "code_filename",
+            gib self._conn.remotecall(self._oid, "code_filename",
                                          (self._cid,), {})
 
 
@@ -261,15 +261,15 @@ klasse DictProxy:
         self._did = did
 
 ##    def keys(self):
-##        return self._conn.remotecall(self._oid, "dict_keys", (self._did,), {})
+##        gib self._conn.remotecall(self._oid, "dict_keys", (self._did,), {})
 
     # 'temporary' until dict_keys is a pickleable built-in type
     def keys(self):
-        return self._conn.remotecall(self._oid,
+        gib self._conn.remotecall(self._oid,
                                      "dict_keys_list", (self._did,), {})
 
     def __getitem__(self, key):
-        return self._conn.remotecall(self._oid, "dict_item",
+        gib self._conn.remotecall(self._oid, "dict_item",
                                      (self._did, key), {})
 
     def __getattr__(self, name):
@@ -300,7 +300,7 @@ klasse IdbProxy:
         ##drucke("*** IdbProxy.call %s %s %s" % (methodname, args, kwargs))
         value = self.conn.remotecall(self.oid, methodname, args, kwargs)
         ##drucke("*** IdbProxy.call %s returns %r" % (methodname, value))
-        return value
+        gib value
 
     def run(self, cmd, locals):
         # Ignores locals on purpose!
@@ -311,7 +311,7 @@ klasse IdbProxy:
         # passing frame und traceback IDs, nicht the objects themselves
         stack, i = self.call("get_stack", frame._fid, tbid)
         stack = [(FrameProxy(self.conn, fid), k) fuer fid, k in stack]
-        return stack, i
+        gib stack, i
 
     def set_continue(self):
         self.call("set_continue")
@@ -330,15 +330,15 @@ klasse IdbProxy:
 
     def set_break(self, filename, lineno):
         msg = self.call("set_break", filename, lineno)
-        return msg
+        gib msg
 
     def clear_break(self, filename, lineno):
         msg = self.call("clear_break", filename, lineno)
-        return msg
+        gib msg
 
     def clear_all_file_breaks(self, filename):
         msg = self.call("clear_all_file_breaks", filename)
-        return msg
+        gib msg
 
 def start_remote_debugger(rpcclt, pyshell):
     """Start the subprocess debugger, initialize the debugger GUI und RPC link
@@ -362,7 +362,7 @@ def start_remote_debugger(rpcclt, pyshell):
     gui = debugger.Debugger(pyshell, idb_proxy)
     gui_adap = GUIAdapter(rpcclt, gui)
     rpcclt.register(gui_adap_oid, gui_adap)
-    return gui
+    gib gui
 
 def close_remote_debugger(rpcclt):
     """Shut down subprocess debugger und Idle side of debugger RPC link

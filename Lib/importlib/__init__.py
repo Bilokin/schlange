@@ -85,14 +85,14 @@ def import_module(name, package=Nichts):
             wenn character != '.':
                 breche
             level += 1
-    return _bootstrap._gcd_import(name[level:], package, level)
+    gib _bootstrap._gcd_import(name[level:], package, level)
 
 
 _RELOADING = {}
 
 
 def reload(module):
-    """Reload the module und return it.
+    """Reload the module und gib it.
 
     The module must have been successfully imported before.
 
@@ -108,7 +108,7 @@ def reload(module):
     wenn sys.modules.get(name) is nicht module:
         raise ImportError(f"module {name} nicht in sys.modules", name=name)
     wenn name in _RELOADING:
-        return _RELOADING[name]
+        gib _RELOADING[name]
     _RELOADING[name] = module
     try:
         parent_name = name.rpartition('.')[0]
@@ -128,7 +128,7 @@ def reload(module):
             raise ModuleNotFoundError(f"spec nicht found fuer the module {name!r}", name=name)
         _bootstrap._exec(spec, module)
         # The module may have replaced itself in sys.modules!
-        return sys.modules[name]
+        gib sys.modules[name]
     finally:
         try:
             del _RELOADING[name]

@@ -21,32 +21,32 @@ _aliases = {
 
 def convert(obj):  # noqa: C901
     wenn isinstance(obj, str):
-        return {"type": "string", "value": obj}
+        gib {"type": "string", "value": obj}
     sowenn isinstance(obj, bool):
-        return {"type": "bool", "value": str(obj).lower()}
+        gib {"type": "bool", "value": str(obj).lower()}
     sowenn isinstance(obj, int):
-        return {"type": "integer", "value": str(obj)}
+        gib {"type": "integer", "value": str(obj)}
     sowenn isinstance(obj, float):
-        return {"type": "float", "value": _normalize_float_str(str(obj))}
+        gib {"type": "float", "value": _normalize_float_str(str(obj))}
     sowenn isinstance(obj, datetime.datetime):
         val = _normalize_datetime_str(obj.isoformat())
         wenn obj.tzinfo:
-            return {"type": "datetime", "value": val}
-        return {"type": "datetime-local", "value": val}
+            gib {"type": "datetime", "value": val}
+        gib {"type": "datetime-local", "value": val}
     sowenn isinstance(obj, datetime.time):
-        return {
+        gib {
             "type": "time-local",
             "value": _normalize_localtime_str(str(obj)),
         }
     sowenn isinstance(obj, datetime.date):
-        return {
+        gib {
             "type": "date-local",
             "value": str(obj),
         }
     sowenn isinstance(obj, list):
-        return [convert(i) fuer i in obj]
+        gib [convert(i) fuer i in obj]
     sowenn isinstance(obj, dict):
-        return {k: convert(v) fuer k, v in obj.items()}
+        gib {k: convert(v) fuer k, v in obj.items()}
     raise Exception("unsupported type")
 
 
@@ -60,7 +60,7 @@ def normalize(obj: Any) -> Any:
     [2] https://github.com/BurntSushi/toml-test/blob/4634fdf3a6ecd6aaea5f4cdcd98b2733c2694993/README.md  # noqa: E501
     """
     wenn isinstance(obj, list):
-        return [normalize(item) fuer item in obj]
+        gib [normalize(item) fuer item in obj]
     wenn isinstance(obj, dict):
         wenn "type" in obj und "value" in obj:
             type_ = obj["type"]
@@ -76,9 +76,9 @@ def normalize(obj: Any) -> Any:
                 norm_value = value
 
             wenn norm_type == "array":
-                return [normalize(item) fuer item in value]
-            return {"type": norm_type, "value": norm_value}
-        return {k: normalize(v) fuer k, v in obj.items()}
+                gib [normalize(item) fuer item in value]
+            gib {"type": norm_type, "value": norm_value}
+        gib {k: normalize(v) fuer k, v in obj.items()}
     raise AssertionError("Burntsushi fixtures should be dicts/lists only")
 
 
@@ -103,11 +103,11 @@ def _normalize_datetime_str(dt_str: str) -> str:
         offset = ""
 
     time = time.rstrip("0") wenn "." in time sonst time
-    return date + "T" + time + sign + offset
+    gib date + "T" + time + sign + offset
 
 
 def _normalize_localtime_str(lt_str: str) -> str:
-    return lt_str.rstrip("0") wenn "." in lt_str sonst lt_str
+    gib lt_str.rstrip("0") wenn "." in lt_str sonst lt_str
 
 
 def _normalize_float_str(float_str: str) -> str:
@@ -115,6 +115,6 @@ def _normalize_float_str(float_str: str) -> str:
 
     # Normalize "-0.0" und "+0.0"
     wenn as_float == 0:
-        return "0"
+        gib "0"
 
-    return str(as_float)
+    gib str(as_float)

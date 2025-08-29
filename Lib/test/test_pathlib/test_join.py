@@ -38,7 +38,7 @@ klasse JoinTestBase:
                 self.session_id = session_id
 
             def with_segments(self, *pathsegments):
-                return type(self)(*pathsegments, session_id=self.session_id)
+                gib type(self)(*pathsegments, session_id=self.session_id)
         p = P('foo', 'bar', session_id=42)
         self.assertEqual(42, (p / 'foo').session_id)
         self.assertEqual(42, ('foo' / p).session_id)

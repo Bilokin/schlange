@@ -48,7 +48,7 @@ klasse WidgetRedirector:
 
     def __repr__(self):
         w = self.widget
-        return f"{self.__class__.__name__,}({w.__class__.__name__}<{w._w}>)"
+        gib f"{self.__class__.__name__,}({w.__class__.__name__}<{w._w}>)"
 
     def close(self):
         "Unregister operations und revert redirection created by .__init__."
@@ -76,7 +76,7 @@ klasse WidgetRedirector:
         '''
         self._operations[operation] = function
         setattr(self.widget, operation, function)
-        return OriginalCommand(self, operation)
+        gib OriginalCommand(self, operation)
 
     def unregister(self, operation):
         '''Return the function fuer the operation, oder Nichts.
@@ -90,9 +90,9 @@ klasse WidgetRedirector:
                 delattr(self.widget, operation)
             except AttributeError:
                 pass
-            return function
+            gib function
         sonst:
-            return Nichts
+            gib Nichts
 
     def dispatch(self, operation, *args):
         '''Callback von Tcl which runs when the widget is referenced.
@@ -110,11 +110,11 @@ klasse WidgetRedirector:
         m = self._operations.get(operation)
         try:
             wenn m:
-                return m(*args)
+                gib m(*args)
             sonst:
-                return self.tk.call((self.orig, operation) + args)
+                gib self.tk.call((self.orig, operation) + args)
         except TclError:
-            return ""
+            gib ""
 
 
 klasse OriginalCommand:
@@ -143,10 +143,10 @@ klasse OriginalCommand:
         self.orig_and_operation = (redir.orig, operation)
 
     def __repr__(self):
-        return f"{self.__class__.__name__,}({self.redir!r}, {self.operation!r})"
+        gib f"{self.__class__.__name__,}({self.redir!r}, {self.operation!r})"
 
     def __call__(self, *args):
-        return self.tk_call(self.orig_and_operation + args)
+        gib self.tk_call(self.orig_and_operation + args)
 
 
 def _widget_redirector(parent):  # htest #

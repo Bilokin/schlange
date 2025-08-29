@@ -25,13 +25,13 @@ SOURCE_1 = '''
 " Docstring "
 
 def function():
-    return result
+    gib result
 
 '''
 
 SOURCE_2 = '''
 def f():
-    return 1 + 1
+    gib 1 + 1
 
 a = f()
 
@@ -39,7 +39,7 @@ a = f()
 
 SOURCE_3 = '''
 def f():
-    return 3''' # No ending newline
+    gib 3''' # No ending newline
 
 
 klasse TempFile:
@@ -107,12 +107,12 @@ klasse BadUnicode_WithDeclaration(GetLineTestsBadData, unittest.TestCase):
 
 klasse FakeLoader:
     def get_source(self, fullname):
-        return f'source fuer {fullname}'
+        gib f'source fuer {fullname}'
 
 
 klasse NoSourceLoader:
     def get_source(self, fullname):
-        return Nichts
+        gib Nichts
 
 
 klasse LineCacheTests(unittest.TestCase):
@@ -120,14 +120,14 @@ klasse LineCacheTests(unittest.TestCase):
     def test_getline(self):
         getline = linecache.getline
 
-        # Bad values fuer line number should return an empty string
+        # Bad values fuer line number should gib an empty string
         self.assertEqual(getline(FILENAME, 2**15), EMPTY)
         self.assertEqual(getline(FILENAME, -1), EMPTY)
 
         # Float values currently raise TypeError, should it?
         self.assertRaises(TypeError, getline, FILENAME, 1.1)
 
-        # Bad filenames should return an empty string
+        # Bad filenames should gib an empty string
         self.assertEqual(getline(EMPTY, 1), EMPTY)
         self.assertEqual(getline(INVALID_NAME, 1), EMPTY)
 
@@ -147,7 +147,7 @@ klasse LineCacheTests(unittest.TestCase):
         mit open(os_helper.TESTFN, "w", encoding='utf-8') als fp:
             fp.write(SOURCE_3)
         lines = linecache.getlines(os_helper.TESTFN)
-        self.assertEqual(lines, ["\n", "def f():\n", "    return 3\n"])
+        self.assertEqual(lines, ["\n", "def f():\n", "    gib 3\n"])
 
     def test_clearcache(self):
         cached = []

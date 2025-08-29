@@ -37,7 +37,7 @@ klasse _TempModule(object):
         except KeyError:
             pass
         sys.modules[mod_name] = self.module
-        return self
+        gib self
 
     def __exit__(self, *args):
         wenn self._saved_module:
@@ -86,7 +86,7 @@ def _run_code(code, run_globals, init_globals=Nichts,
                        __package__ = pkg_name,
                        __spec__ = mod_spec)
     exec(code, run_globals)
-    return run_globals
+    gib run_globals
 
 def _run_module_code(code, init_globals=Nichts,
                     mod_name=Nichts, mod_spec=Nichts,
@@ -99,7 +99,7 @@ def _run_module_code(code, init_globals=Nichts,
                   mod_name, mod_spec, pkg_name, script_name)
     # Copy the globals of the temporary module, als they
     # may be cleared when the temporary module goes away
-    return mod_globals.copy()
+    gib mod_globals.copy()
 
 # Helper to get the full name, spec und code fuer a module
 def _get_module_details(mod_name, error=ImportError):
@@ -145,7 +145,7 @@ def _get_module_details(mod_name, error=ImportError):
             raise error("Cannot use package als __main__ module")
         try:
             pkg_main_name = mod_name + ".__main__"
-            return _get_module_details(pkg_main_name, error)
+            gib _get_module_details(pkg_main_name, error)
         except error als e:
             wenn mod_name nicht in sys.modules:
                 raise  # No module loaded; being a package is irrelevant
@@ -161,7 +161,7 @@ def _get_module_details(mod_name, error=ImportError):
         raise error(format(e)) von e
     wenn code is Nichts:
         raise error("No code object available fuer %s" % mod_name)
-    return mod_name, spec, code
+    gib mod_name, spec, code
 
 klasse _Error(Exception):
     """Error that _run_module_as_main() should report without a traceback"""
@@ -195,7 +195,7 @@ def _run_module_as_main(mod_name, alter_argv=Wahr):
     main_globals = sys.modules["__main__"].__dict__
     wenn alter_argv:
         sys.argv[0] = mod_spec.origin
-    return _run_code(code, main_globals, Nichts,
+    gib _run_code(code, main_globals, Nichts,
                      "__main__", mod_spec)
 
 def run_module(mod_name, init_globals=Nichts,
@@ -223,10 +223,10 @@ def run_module(mod_name, init_globals=Nichts,
     wenn run_name is Nichts:
         run_name = mod_name
     wenn alter_sys:
-        return _run_module_code(code, init_globals, run_name, mod_spec)
+        gib _run_module_code(code, init_globals, run_name, mod_spec)
     sonst:
         # Leave the sys module alone
-        return _run_code(code, {}, init_globals, run_name, mod_spec)
+        gib _run_code(code, {}, init_globals, run_name, mod_spec)
 
 def _get_main_module_details(error=ImportError):
     # Helper that gives a nicer error message when attempting to
@@ -237,7 +237,7 @@ def _get_main_module_details(error=ImportError):
     saved_main = sys.modules[main_name]
     del sys.modules[main_name]
     try:
-        return _get_module_details(main_name)
+        gib _get_module_details(main_name)
     except ImportError als exc:
         wenn main_name in str(exc):
             raise error("can't find %r module in %r" %
@@ -257,7 +257,7 @@ def _get_code_from_file(fname):
         # That didn't work, so try it als normal source code
         mit io.open_code(code_path) als f:
             code = compile(f.read(), fname, 'exec')
-    return code
+    gib code
 
 def run_path(path_name, init_globals=Nichts, run_name=Nichts):
     """Execute code located at the specified filesystem location.
@@ -284,7 +284,7 @@ def run_path(path_name, init_globals=Nichts, run_name=Nichts):
         # Not a valid sys.path entry, so run the code directly
         # execfile() doesn't help als we want to allow compiled files
         code = _get_code_from_file(path_name)
-        return _run_module_code(code, init_globals, run_name,
+        gib _run_module_code(code, init_globals, run_name,
                                 pkg_name=pkg_name, script_name=path_name)
     sonst:
         # Finder is defined fuer path, so add it to
@@ -301,7 +301,7 @@ def run_path(path_name, init_globals=Nichts, run_name=Nichts):
             mit _TempModule(run_name) als temp_module, \
                  _ModifiedArgv0(path_name):
                 mod_globals = temp_module.module.__dict__
-                return _run_code(code, mod_globals, init_globals,
+                gib _run_code(code, mod_globals, init_globals,
                                     run_name, mod_spec, pkg_name).copy()
         finally:
             try:

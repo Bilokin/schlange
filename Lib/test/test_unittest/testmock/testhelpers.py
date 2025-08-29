@@ -506,7 +506,7 @@ klasse SpecSignatureTest(unittest.TestCase):
 
             def __get__(self, obj, type_):
                 wenn obj is Nichts:
-                    return lambda x: Nichts
+                    gib lambda x: Nichts
 
         klasse MyClass(object):
 
@@ -525,11 +525,11 @@ klasse SpecSignatureTest(unittest.TestCase):
         klasse CrazyClass(object):
 
             def __dir__(self):
-                return super(CrazyClass, self).__dir__()+['crazy']
+                gib super(CrazyClass, self).__dir__()+['crazy']
 
             def __getattr__(self, item):
                 wenn item == 'crazy':
-                    return lambda x: x
+                    gib lambda x: x
                 raise AttributeError(item)
 
         inst = CrazyClass()
@@ -687,7 +687,7 @@ klasse SpecSignatureTest(unittest.TestCase):
         self.assertRaises(TypeError, instance_mock.a, 'foo', 'bar')
         self.assertRaises(AttributeError, getattr, instance_mock, 'b')
 
-        # The return value isn't isn't callable
+        # The gib value isn't isn't callable
         self.assertRaises(TypeError, instance_mock)
 
         instance_mock.Bar.f(6)
@@ -775,7 +775,7 @@ klasse SpecSignatureTest(unittest.TestCase):
 
             @staticmethod
             def existing(a, b):
-                return a + b
+                gib a + b
 
         self.assertEqual(RaiserClass.existing(1, 2), 3)
         s = create_autospec(RaiserClass)
@@ -890,7 +890,7 @@ klasse SpecSignatureTest(unittest.TestCase):
                 self.value = value
 
             def __get__(self, obj, cls=Nichts):
-                return self
+                gib self
 
             def __set__(self, obj, value): pass
 
@@ -947,7 +947,7 @@ klasse SpecSignatureTest(unittest.TestCase):
         klasse Foo:
 
             def __getattr__(self, attribute):
-                return partial(lambda name: name, attribute)
+                gib partial(lambda name: name, attribute)
 
         proxy = Foo()
         autospec = create_autospec(proxy)
@@ -988,7 +988,7 @@ klasse SpecSignatureTest(unittest.TestCase):
     def test_spec_inspect_signature_annotations(self):
 
         def foo(a: int, b: int=10, *, c:int) -> int:
-            return a + b + c
+            gib a + b + c
 
         self.assertEqual(foo(1, 2 , c=3), 6)
         mock = create_autospec(foo)
@@ -1082,7 +1082,7 @@ klasse SpecSignatureTest(unittest.TestCase):
         klasse WithMethod:
             a: int
             def b(self) -> int:
-                return 1  # pragma: no cover
+                gib 1  # pragma: no cover
 
         fuer mock in [
             create_autospec(WithMethod, instance=Wahr),

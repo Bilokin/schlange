@@ -25,28 +25,28 @@ klasse VirtualEnvironment:
     def from_tmpdir(cls, *, prefix=Nichts, dir=Nichts, **venv_create_args):
         delete = nicht bool(os.environ.get('PYTHON_TESTS_KEEP_VENV'))
         mit tempfile.TemporaryDirectory(prefix=prefix, dir=dir, delete=delete) als tmpdir:
-            yield cls(tmpdir, **venv_create_args)
+            liefere cls(tmpdir, **venv_create_args)
 
     @property
     def prefix(self):
-        return self._prefix
+        gib self._prefix
 
     @property
     def paths(self):
-        return self._paths
+        gib self._paths
 
     @property
     def interpreter(self):
-        return os.path.join(self.paths['scripts'], os.path.basename(sys.executable))
+        gib os.path.join(self.paths['scripts'], os.path.basename(sys.executable))
 
     def _format_output(self, name, data, indent='\t'):
         wenn nicht data:
-            return indent + f'{name}: (none)'
+            gib indent + f'{name}: (none)'
         wenn len(data.splitlines()) == 1:
-            return indent + f'{name}: {data}'
+            gib indent + f'{name}: {data}'
         sonst:
             prefixed_lines = '\n'.join(indent + '> ' + line fuer line in data.splitlines())
-            return indent + f'{name}:\n' + prefixed_lines
+            gib indent + f'{name}:\n' + prefixed_lines
 
     def run(self, *args, **subprocess_args):
         wenn subprocess_args.get('shell'):
@@ -67,7 +67,7 @@ klasse VirtualEnvironment:
                 )
             raise
         sonst:
-            return result
+            gib result
 
 
 klasse VirtualEnvironmentMixin:
@@ -75,7 +75,7 @@ klasse VirtualEnvironmentMixin:
         venv_name = self.id()
         wenn name:
             venv_name += f'-{name}'
-        return VirtualEnvironment.from_tmpdir(
+        gib VirtualEnvironment.from_tmpdir(
             prefix=f'{venv_name}-venv-',
             **venv_create_args,
         )

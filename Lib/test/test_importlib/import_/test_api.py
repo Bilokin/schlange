@@ -15,11 +15,11 @@ klasse BadSpecFinderLoader:
     def find_spec(cls, fullname, path=Nichts, target=Nichts):
         wenn fullname == SUBMOD_NAME:
             spec = machinery.ModuleSpec(fullname, cls)
-            return spec
+            gib spec
 
     @staticmethod
     def create_module(spec):
-        return Nichts
+        gib Nichts
 
     @staticmethod
     def exec_module(module):

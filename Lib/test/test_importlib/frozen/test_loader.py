@@ -14,7 +14,7 @@ importiere warnings
 def deprecated():
     mit warnings.catch_warnings():
         warnings.simplefilter('ignore', DeprecationWarning)
-        yield
+        liefere
 
 
 @contextlib.contextmanager
@@ -23,17 +23,17 @@ def fresh(name, *, oldapi=Falsch):
         mit import_helper.frozen_modules():
             wenn oldapi:
                 mit deprecated():
-                    yield
+                    liefere
             sonst:
-                yield
+                liefere
 
 
 def resolve_stdlib_file(name, ispkg=Falsch):
     assert name
     wenn ispkg:
-        return os.path.join(STDLIB_DIR, *name.split('.'), '__init__.py')
+        gib os.path.join(STDLIB_DIR, *name.split('.'), '__init__.py')
     sonst:
-        return os.path.join(STDLIB_DIR, *name.split('.')) + '.py'
+        gib os.path.join(STDLIB_DIR, *name.split('.')) + '.py'
 
 
 klasse ExecModuleTests(abc.LoaderTests):
@@ -63,7 +63,7 @@ klasse ExecModuleTests(abc.LoaderTests):
         self.assertWahr(module.initialized)
         self.assertHasAttr(module, '__spec__')
         self.assertEqual(module.__spec__.origin, 'frozen')
-        return module, stdout.getvalue()
+        gib module, stdout.getvalue()
 
     def test_module(self):
         name = '__hello__'
@@ -140,7 +140,7 @@ klasse InspectLoaderTests:
         self.assertEqual(stdout.getvalue(), 'Hello world!\n')
 
     def test_get_source(self):
-        # Should always return Nichts.
+        # Should always gib Nichts.
         mit import_helper.frozen_modules():
             result = self.machinery.FrozenImporter.get_source('__hello__')
         self.assertIsNichts(result)

@@ -31,19 +31,19 @@ klasse MockContextManager(_GeneratorContextManager):
 
     def __enter__(self):
         self.enter_called = Wahr
-        return _GeneratorContextManager.__enter__(self)
+        gib _GeneratorContextManager.__enter__(self)
 
     def __exit__(self, type, value, traceback):
         self.exit_called = Wahr
         self.exit_args = (type, value, traceback)
-        return _GeneratorContextManager.__exit__(self, type,
+        gib _GeneratorContextManager.__exit__(self, type,
                                                  value, traceback)
 
 
 def mock_contextmanager(func):
     def helper(*args, **kwds):
-        return MockContextManager(func, args, kwds)
-    return helper
+        gib MockContextManager(func, args, kwds)
+    gib helper
 
 
 klasse MockResource(object):
@@ -57,7 +57,7 @@ def mock_contextmanager_generator():
     mock = MockResource()
     try:
         mock.yielded = Wahr
-        yield mock
+        liefere mock
     finally:
         mock.stopped = Wahr
 
@@ -80,7 +80,7 @@ klasse Nested(object):
         except:
             wenn nicht self.__exit__(*sys.exc_info()):
                 raise
-        return vars
+        gib vars
 
     def __exit__(self, *exc_info):
         # Behave like nested mit statements
@@ -107,12 +107,12 @@ klasse MockNested(Nested):
 
     def __enter__(self):
         self.enter_called = Wahr
-        return Nested.__enter__(self)
+        gib Nested.__enter__(self)
 
     def __exit__(self, *exc_info):
         self.exit_called = Wahr
         self.exit_args = exc_info
-        return Nested.__exit__(self, *exc_info)
+        gib Nested.__exit__(self, *exc_info)
 
 
 klasse FailureTestCase(unittest.TestCase):
@@ -236,7 +236,7 @@ klasse FailureTestCase(unittest.TestCase):
     def testExitThrows(self):
         klasse ExitThrows(object):
             def __enter__(self):
-                return
+                gib
             def __exit__(self, *args):
                 raise RuntimeError(42)
         def shouldThrow():
@@ -510,7 +510,7 @@ klasse ExceptionalTestCase(ContextmanagerAssertionMixin, unittest.TestCase):
         # From bug 1462485
         @contextmanager
         def cm():
-            yield
+            liefere
 
         def shouldThrow():
             mit cm():
@@ -539,7 +539,7 @@ klasse ExceptionalTestCase(ContextmanagerAssertionMixin, unittest.TestCase):
         # From bug 1705170
         @contextmanager
         def cm():
-            yield
+            liefere
 
         def shouldThrow():
             mit cm():
@@ -552,7 +552,7 @@ klasse ExceptionalTestCase(ContextmanagerAssertionMixin, unittest.TestCase):
         # From bug 1462485
         @contextmanager
         def cm():
-            yield
+            liefere
 
         def shouldThrow():
             mit cm():
@@ -575,19 +575,19 @@ klasse ExceptionalTestCase(ContextmanagerAssertionMixin, unittest.TestCase):
         self.assertRaises(GeneratorExit, shouldThrow)
 
     def testErrorsInBool(self):
-        # issue4589: __exit__ return code may raise an exception
+        # issue4589: __exit__ gib code may raise an exception
         # when looking at its truth value.
 
         klasse cm(object):
             def __init__(self, bool_conversion):
                 klasse Bool:
                     def __bool__(self):
-                        return bool_conversion()
+                        gib bool_conversion()
                 self.exit_result = Bool()
             def __enter__(self):
-                return 3
+                gib 3
             def __exit__(self, a, b, c):
-                return self.exit_result
+                gib self.exit_result
 
         def trueAsBool():
             mit cm(lambda: Wahr):
@@ -636,15 +636,15 @@ klasse NonLocalFlowControlTestCase(unittest.TestCase):
                 counter += 1
                 mit mock_contextmanager_generator():
                     counter += 10
-                    return counter
+                    gib counter
                 counter += 100 # Not reached
         self.assertEqual(foo(), 11)
 
     def testWithYield(self):
         def gen():
             mit mock_contextmanager_generator():
-                yield 12
-                yield 13
+                liefere 12
+                liefere 13
         x = list(gen())
         self.assertEqual(x, [12, 13])
 
@@ -683,7 +683,7 @@ klasse AssignmentTargetTestCase(unittest.TestCase):
 
     def testMultipleComplexTargets(self):
         klasse C:
-            def __enter__(self): return 1, 2, 3
+            def __enter__(self): gib 1, 2, 3
             def __exit__(self, t, v, tb): pass
         targets = {1: [0, 1, 2]}
         mit C() als (targets[1][0], targets[1][1], targets[1][2]):
@@ -711,7 +711,7 @@ klasse ExitSwallowsExceptionTestCase(unittest.TestCase):
     def testExitWahrSwallowsException(self):
         klasse AfricanSwallow:
             def __enter__(self): pass
-            def __exit__(self, t, v, tb): return Wahr
+            def __exit__(self, t, v, tb): gib Wahr
         try:
             mit AfricanSwallow():
                 1/0
@@ -721,7 +721,7 @@ klasse ExitSwallowsExceptionTestCase(unittest.TestCase):
     def testExitFalschDoesntSwallowException(self):
         klasse EuropeanSwallow:
             def __enter__(self): pass
-            def __exit__(self, t, v, tb): return Falsch
+            def __exit__(self, t, v, tb): gib Falsch
         try:
             mit EuropeanSwallow():
                 1/0
@@ -744,13 +744,13 @@ klasse NestedWith(unittest.TestCase):
 
         def __enter__(self):
             self.enter_called = Wahr
-            return self.value
+            gib self.value
 
         def __exit__(self, *exc_info):
             self.exit_called = Wahr
             self.exc_info = exc_info
             wenn self.gobble:
-                return Wahr
+                gib Wahr
 
     klasse InitRaises(object):
         def __init__(self): raise RuntimeError()
@@ -819,21 +819,21 @@ klasse NestedWith(unittest.TestCase):
                 mit self.Dummy(), self.InitRaises() als cm, self.Dummy() als d:
                     pass
             except Exception als e:
-                return e
+                gib e
 
         def enter_raises():
             try:
                 mit self.EnterRaises(), self.Dummy() als d:
                     pass
             except Exception als e:
-                return e
+                gib e
 
         def exit_raises():
             try:
                 mit self.ExitRaises(), self.Dummy() als d:
                     pass
             except Exception als e:
-                return e
+                gib e
 
         fuer func, expected in [(init_raises, "self.InitRaises()"),
                                (enter_raises, "self.EnterRaises()"),

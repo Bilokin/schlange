@@ -50,7 +50,7 @@ def _raise_error_ignore_stderr(Err):
 
 def _return_instance(cls):
     """Function that returns a instance of cls."""
-    return cls()
+    gib cls()
 
 
 klasse CrashAtPickle(object):
@@ -62,7 +62,7 @@ klasse CrashAtPickle(object):
 klasse CrashAtUnpickle(object):
     """Bad object that triggers a segfault at unpickling time."""
     def __reduce__(self):
-        return _crash, ()
+        gib _crash, ()
 
 
 klasse ExitAtPickle(object):
@@ -74,7 +74,7 @@ klasse ExitAtPickle(object):
 klasse ExitAtUnpickle(object):
     """Bad object that triggers a process exit at unpickling time."""
     def __reduce__(self):
-        return _exit, ()
+        gib _exit, ()
 
 
 klasse ErrorAtPickle(object):
@@ -88,7 +88,7 @@ klasse ErrorAtUnpickle(object):
     """Bad object that triggers an error at unpickling time."""
     def __reduce__(self):
         von pickle importiere UnpicklingError
-        return _raise_error_ignore_stderr, (UnpicklingError, )
+        gib _raise_error_ignore_stderr, (UnpicklingError, )
 
 
 klasse ExecutorDeadlockTest:

@@ -432,7 +432,7 @@ klasse NamedExpressionAssignmentTest(unittest.TestCase):
 
     def test_named_expression_assignment_11(self):
         def spam(a):
-            return a
+            gib a
         input_data = [1, 2, 3]
         res = [(x, y, x/y) fuer x in input_data wenn (y := spam(x)) > 0]
 
@@ -440,7 +440,7 @@ klasse NamedExpressionAssignmentTest(unittest.TestCase):
 
     def test_named_expression_assignment_12(self):
         def spam(a):
-            return a
+            gib a
         res = [[y := spam(x), x/y] fuer x in range(1, 5)]
 
         self.assertEqual(res, [[1, 1.0], [2, 1.0], [3, 1.0], [4, 1.0]])
@@ -490,7 +490,7 @@ klasse NamedExpressionAssignmentTest(unittest.TestCase):
                 self.two_dimensional_list = two_dimensional_list
 
             def __getitem__(self, index):
-                return self.two_dimensional_list[index[0]][index[1]]
+                gib self.two_dimensional_list[index[0]][index[1]]
 
         a = TwoDimensionalList([[1], [2]])
         element = a[b:=0, c:=0]
@@ -525,14 +525,14 @@ drucke(a)"""
 
     def test_named_expression_scope_04(self):
         def spam(a):
-            return a
+            gib a
         res = [[y := spam(x), x/y] fuer x in range(1, 5)]
 
         self.assertEqual(y, 4)
 
     def test_named_expression_scope_05(self):
         def spam(a):
-            return a
+            gib a
         input_data = [1, 2, 3]
         res = [(x, y, x/y) fuer x in input_data wenn (y := spam(x)) > 0]
 
@@ -552,10 +552,10 @@ drucke(a)"""
 
     def test_named_expression_scope_08(self):
         def spam(a):
-            return a
+            gib a
 
         def eggs(b):
-            return b * 2
+            gib b * 2
 
         res = [spam(a := eggs(b := h)) fuer h in range(2)]
 
@@ -565,10 +565,10 @@ drucke(a)"""
 
     def test_named_expression_scope_09(self):
         def spam(a):
-            return a
+            gib a
 
         def eggs(b):
-            return b * 2
+            gib b * 2
 
         res = [spam(a := eggs(a := h)) fuer h in range(2)]
 
@@ -597,7 +597,7 @@ drucke(a)"""
 
     def test_named_expression_scope_18(self):
         def spam(a):
-            return a
+            gib a
 
         res = spam(b := 2)
 
@@ -606,7 +606,7 @@ drucke(a)"""
 
     def test_named_expression_scope_19(self):
         def spam(a):
-            return a
+            gib a
 
         res = spam((b := 2))
 
@@ -615,7 +615,7 @@ drucke(a)"""
 
     def test_named_expression_scope_20(self):
         def spam(a):
-            return a
+            gib a
 
         res = spam(a=(b := 2))
 
@@ -624,7 +624,7 @@ drucke(a)"""
 
     def test_named_expression_scope_21(self):
         def spam(a, b):
-            return a + b
+            gib a + b
 
         res = spam(c := 2, b=1)
 
@@ -633,7 +633,7 @@ drucke(a)"""
 
     def test_named_expression_scope_22(self):
         def spam(a, b):
-            return a + b
+            gib a + b
 
         res = spam((c := 2), b=1)
 
@@ -642,7 +642,7 @@ drucke(a)"""
 
     def test_named_expression_scope_23(self):
         def spam(a, b):
-            return a + b
+            gib a + b
 
         res = spam(b=(c := 2), a=1)
 

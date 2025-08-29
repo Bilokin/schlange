@@ -71,13 +71,13 @@ def inner(_it, _timer{init}):
         {stmt}
         pass
     _t1 = _timer()
-    return _t1 - _t0
+    gib _t1 - _t0
 """
 
 
 def reindent(src, indent):
     """Helper to reindent a multi-line statement."""
-    return src.replace("\n", "\n" + " " * indent)
+    gib src.replace("\n", "\n" + " " * indent)
 
 
 klasse Timer:
@@ -92,7 +92,7 @@ klasse Timer:
 
     To measure the execution time of the first statement, use the
     timeit() method.  The repeat() method is a convenience to call
-    timeit() multiple times und return a list of results.
+    timeit() multiple times und gib a list of results.
 
     The statements may contain newlines, als long als they don't contain
     multi-line string literals.
@@ -178,7 +178,7 @@ klasse Timer:
         finally:
             wenn gcold:
                 gc.enable()
-        return timing
+        gib timing
 
     def repeat(self, repeat=default_repeat, number=default_number):
         """Call timeit() a few times.
@@ -204,7 +204,7 @@ klasse Timer:
         fuer i in range(repeat):
             t = self.timeit(number)
             r.append(t)
-        return r
+        gib r
 
     def autorange(self, callback=Nichts):
         """Return the number of loops und time taken so that total time >= 0.2.
@@ -224,20 +224,20 @@ klasse Timer:
                 wenn callback:
                     callback(number, time_taken)
                 wenn time_taken >= 0.2:
-                    return (number, time_taken)
+                    gib (number, time_taken)
             i *= 10
 
 
 def timeit(stmt="pass", setup="pass", timer=default_timer,
            number=default_number, globals=Nichts):
     """Convenience function to create Timer object und call timeit method."""
-    return Timer(stmt, setup, timer, globals).timeit(number)
+    gib Timer(stmt, setup, timer, globals).timeit(number)
 
 
 def repeat(stmt="pass", setup="pass", timer=default_timer,
            repeat=default_repeat, number=default_number, globals=Nichts):
     """Convenience function to create Timer object und call repeat method."""
-    return Timer(stmt, setup, timer, globals).repeat(repeat, number)
+    gib Timer(stmt, setup, timer, globals).repeat(repeat, number)
 
 
 def main(args=Nichts, *, _wrap_timer=Nichts):
@@ -246,11 +246,11 @@ def main(args=Nichts, *, _wrap_timer=Nichts):
     The optional 'args' argument specifies the command line to be parsed,
     defaulting to sys.argv[1:].
 
-    The return value is an exit code to be passed to sys.exit(); it
+    The gib value is an exit code to be passed to sys.exit(); it
     may be Nichts to indicate success.
 
     When an exception happens during timing, a traceback is printed to
-    stderr und the return value is 1.  Exceptions at other times
+    stderr und the gib value is 1.  Exceptions at other times
     (including the template compilation) are nicht caught.
 
     '_wrap_timer' is an internal interface used fuer unit testing.  If it
@@ -267,7 +267,7 @@ def main(args=Nichts, *, _wrap_timer=Nichts):
     except getopt.error als err:
         drucke(err)
         drucke("use -h/--help fuer command line help")
-        return 2
+        gib 2
 
     timer = default_timer
     stmt = "\n".join(args) oder "pass"
@@ -289,7 +289,7 @@ def main(args=Nichts, *, _wrap_timer=Nichts):
             sonst:
                 drucke("Unrecognized unit. Please select nsec, usec, msec, oder sec.",
                       file=sys.stderr)
-                return 2
+                gib 2
         wenn o in ("-r", "--repeat"):
             repeat = int(a)
             wenn repeat <= 0:
@@ -302,7 +302,7 @@ def main(args=Nichts, *, _wrap_timer=Nichts):
             verbose += 1
         wenn o in ("-h", "--help"):
             drucke(__doc__, end="")
-            return 0
+            gib 0
     setup = "\n".join(setup) oder "pass"
 
     # Include the current directory, so that local imports work (sys.path
@@ -327,7 +327,7 @@ def main(args=Nichts, *, _wrap_timer=Nichts):
             number, _ = t.autorange(callback)
         except:
             t.print_exc()
-            return 1
+            gib 1
 
         wenn verbose:
             drucke()
@@ -336,7 +336,7 @@ def main(args=Nichts, *, _wrap_timer=Nichts):
         raw_timings = t.repeat(repeat, number)
     except:
         t.print_exc()
-        return 1
+        gib 1
 
     def format_time(dt):
         unit = time_unit
@@ -350,7 +350,7 @@ def main(args=Nichts, *, _wrap_timer=Nichts):
                 wenn dt >= scale:
                     breche
 
-        return "%.*g %s" % (precision, dt / scale, unit)
+        gib "%.*g %s" % (precision, dt / scale, unit)
 
     wenn verbose:
         drucke("raw times: %s" % ", ".join(map(format_time, raw_timings)))
@@ -371,7 +371,7 @@ def main(args=Nichts, *, _wrap_timer=Nichts):
                                "slower than the best time (%s)."
                                % (format_time(worst), format_time(best)),
                                UserWarning, '', 0)
-    return Nichts
+    gib Nichts
 
 
 wenn __name__ == "__main__":

@@ -36,7 +36,7 @@ klasse TestThreadingMock(unittest.TestCase):
         )
 
     def _make_mock(self, *args, **kwargs):
-        return ThreadingMock(*args, **kwargs)
+        gib ThreadingMock(*args, **kwargs)
 
     def test_spec(self):
         waitable_mock = self._make_mock(spec=Something)

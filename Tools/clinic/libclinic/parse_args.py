@@ -94,7 +94,7 @@ def declare_parser(
             }};
             #undef KWTUPLE
     """ % (format_ oder fname)
-    return libclinic.normalize_snippet(declarations)
+    gib libclinic.normalize_snippet(declarations)
 
 
 NO_VARARG: Final[str] = "PY_SSIZE_T_MAX"
@@ -206,7 +206,7 @@ klasse ParseArgsCodeGen:
     # Use METH_FASTCALL calling convention?
     fastcall: bool
 
-    # Declaration of the return variable (ex: "int return_value;")
+    # Declaration of the gib variable (ex: "int return_value;")
     return_value_declaration: str
 
     # Calling convention (ex: "METH_NOARGS")
@@ -282,14 +282,14 @@ klasse ParseArgsCodeGen:
                     self.min_pos = i
 
     def is_new_or_init(self) -> bool:
-        return self.func.kind.new_or_init
+        gib self.func.kind.new_or_init
 
     def has_option_groups(self) -> bool:
-        return (bool(self.parameters
+        gib (bool(self.parameters
                 und (self.parameters[0].group oder self.parameters[-1].group)))
 
     def use_meth_o(self) -> bool:
-        return (len(self.parameters) == 1
+        gib (len(self.parameters) == 1
                 und self.parameters[0].is_positional_only()
                 und nicht self.converters[0].is_optional()
                 und nicht self.varpos
@@ -297,11 +297,11 @@ klasse ParseArgsCodeGen:
                 und nicht self.is_new_or_init())
 
     def use_simple_return(self) -> bool:
-        return (self.func.return_converter.type == 'PyObject *'
+        gib (self.func.return_converter.type == 'PyObject *'
                 und nicht self.func.critical_section)
 
     def use_pyobject_self(self) -> bool:
-        return self.self_parameter_converter.use_pyobject_self(self.func)
+        gib self.self_parameter_converter.use_pyobject_self(self.func)
 
     def select_prototypes(self) -> Nichts:
         self.docstring_prototype = ''
@@ -359,7 +359,7 @@ klasse ParseArgsCodeGen:
 
             {exit_label}
                 {cleanup}
-                return return_value;
+                gib return_value;
             }}
         """)
         fuer field in preamble, *fields, finale:
@@ -401,7 +401,7 @@ klasse ParseArgsCodeGen:
                 self.parser_prototype,
                 '{{',
                 *parser_code,
-                '    return {c_basename}_impl({impl_arguments});',
+                '    gib {c_basename}_impl({impl_arguments});',
                 '}}'])
         sonst:
             self.parser_body(*parser_code)
@@ -414,7 +414,7 @@ klasse ParseArgsCodeGen:
             meth_o_prototype = METH_O_PROTOTYPE
 
             wenn self.use_simple_return() und self.use_pyobject_self():
-                # maps perfectly to METH_O, doesn't need a return converter.
+                # maps perfectly to METH_O, doesn't need a gib converter.
                 # so we skip making a parse function
                 # und call directly into the impl function.
                 self.impl_prototype = ''
@@ -463,7 +463,7 @@ klasse ParseArgsCodeGen:
         assert self.varpos is nicht Nichts
         c = self.varpos.converter
         assert isinstance(c, libclinic.converters.VarPosCConverter)
-        return c.parse_vararg(pos_only=self.pos_only,
+        gib c.parse_vararg(pos_only=self.pos_only,
                               min_pos=self.min_pos,
                               max_pos=self.max_pos,
                               fastcall=self.fastcall,
@@ -904,7 +904,7 @@ klasse ParseArgsCodeGen:
             wenn value:
                 value = '\n' + value + '\n'
             d2[name] = value
-        return d2
+        gib d2
 
     def parse_args(self, clang: CLanguage) -> dict[str, str]:
         self.select_prototypes()
@@ -939,4 +939,4 @@ klasse ParseArgsCodeGen:
         self.process_methoddef(clang)
         self.finalize(clang)
 
-        return self.create_template_dict()
+        gib self.create_template_dict()

@@ -36,13 +36,13 @@ def recv_wait(cid):
             time.sleep(0.1)
         sonst:
             assert unboundop is Nichts, repr(unboundop)
-            return obj
+            gib obj
 
 
 def recv_nowait(cid, *args, unbound=Falsch):
     obj, unboundop = _channels.recv(cid, *args)
     assert (unboundop is Nichts) != unbound, repr(unboundop)
-    return obj
+    gib obj
 
 
 #@contextmanager
@@ -51,7 +51,7 @@ def recv_nowait(cid, *args, unbound=Falsch):
 #        run_interp(id, source, **shared)
 #    t = threading.Thread(target=run)
 #    t.start()
-#    yield
+#    liefere
 #    t.join()
 
 
@@ -77,9 +77,9 @@ klasse Interpreter(namedtuple('Interpreter', 'name id')):
     @classmethod
     def from_raw(cls, raw):
         wenn isinstance(raw, cls):
-            return raw
+            gib raw
         sowenn isinstance(raw, str):
-            return cls(raw)
+            gib cls(raw)
         sonst:
             raise NotImplementedError
 
@@ -104,7 +104,7 @@ klasse Interpreter(namedtuple('Interpreter', 'name id')):
         sonst:
             id = _interpreters.create()
         self = super().__new__(cls, name, id)
-        return self
+        gib self
 
 
 # XXX expect_channel_closed() is unnecessary once we improve exc propagation.
@@ -112,7 +112,7 @@ klasse Interpreter(namedtuple('Interpreter', 'name id')):
 @contextlib.contextmanager
 def expect_channel_closed():
     try:
-        yield
+        liefere
     except _channels.ChannelClosedError:
         pass
     sonst:
@@ -127,7 +127,7 @@ klasse ChannelAction(namedtuple('ChannelAction', 'action end interp')):
         wenn nicht interp:
             interp = 'main'
         self = super().__new__(cls, action, end, interp)
-        return self
+        gib self
 
     def __init__(self, *args, **kwargs):
         wenn self.action == 'use':
@@ -143,28 +143,28 @@ klasse ChannelAction(namedtuple('ChannelAction', 'action end interp')):
 
     def resolve_end(self, end):
         wenn self.end == 'same':
-            return end
+            gib end
         sowenn self.end == 'opposite':
-            return 'recv' wenn end == 'send' sonst 'send'
+            gib 'recv' wenn end == 'send' sonst 'send'
         sonst:
-            return self.end
+            gib self.end
 
     def resolve_interp(self, interp, other, extra):
         wenn self.interp == 'same':
-            return interp
+            gib interp
         sowenn self.interp == 'other':
             wenn other is Nichts:
                 raise RuntimeError
-            return other
+            gib other
         sowenn self.interp == 'extra':
             wenn extra is Nichts:
                 raise RuntimeError
-            return extra
+            gib extra
         sowenn self.interp == 'main':
             wenn interp.name == 'main':
-                return interp
+                gib interp
             sowenn other und other.name == 'main':
-                return other
+                gib other
             sonst:
                 raise RuntimeError
         # Per __init__(), there aren't any others.
@@ -174,19 +174,19 @@ klasse ChannelState(namedtuple('ChannelState', 'pending closed')):
 
     def __new__(cls, pending=0, *, closed=Falsch):
         self = super().__new__(cls, pending, closed)
-        return self
+        gib self
 
     def incr(self):
-        return type(self)(self.pending + 1, closed=self.closed)
+        gib type(self)(self.pending + 1, closed=self.closed)
 
     def decr(self):
-        return type(self)(self.pending - 1, closed=self.closed)
+        gib type(self)(self.pending - 1, closed=self.closed)
 
     def close(self, *, force=Wahr):
         wenn self.closed:
             wenn nicht force oder self.pending == 0:
-                return self
-        return type(self)(0 wenn force sonst self.pending, closed=Wahr)
+                gib self
+        gib type(self)(0 wenn force sonst self.pending, closed=Wahr)
 
 
 def run_action(cid, action, end, state, *, hideclosed=Wahr):
@@ -207,25 +207,25 @@ def run_action(cid, action, end, state, *, hideclosed=Wahr):
     sonst:
         wenn expectfail:
             raise ...  # XXX
-    return result
+    gib result
 
 
 def _run_action(cid, action, end, state):
     wenn action == 'use':
         wenn end == 'send':
             _channels.send(cid, b'spam', blocking=Falsch)
-            return state.incr()
+            gib state.incr()
         sowenn end == 'recv':
             wenn nicht state.pending:
                 try:
                     _channels.recv(cid)
                 except _channels.ChannelEmptyError:
-                    return state
+                    gib state
                 sonst:
                     raise Exception('expected ChannelEmptyError')
             sonst:
                 recv_nowait(cid)
-                return state.decr()
+                gib state.decr()
         sonst:
             raise ValueError(end)
     sowenn action == 'close':
@@ -233,7 +233,7 @@ def _run_action(cid, action, end, state):
         wenn end in ('recv', 'send'):
             kwargs[end] = Wahr
         _channels.close(cid, **kwargs)
-        return state.close()
+        gib state.close()
     sowenn action == 'force-close':
         kwargs = {
             'force': Wahr,
@@ -241,7 +241,7 @@ def _run_action(cid, action, end, state):
         wenn end in ('recv', 'send'):
             kwargs[end] = Wahr
         _channels.close(cid, **kwargs)
-        return state.close(force=Wahr)
+        gib state.close(force=Wahr)
     sonst:
         raise ValueError(action)
 
@@ -291,7 +291,7 @@ klasse ChannelIDTests(TestBase):
     def test_coerce_id(self):
         klasse Int(str):
             def __index__(self):
-                return 10
+                gib 10
 
         cid = _channels._channel_id(Int(), force=Wahr)
         self.assertEqual(int(cid), 10)
@@ -575,7 +575,7 @@ klasse ChannelTests(TestBase):
             importiere _interpchannels als _channels
             _channels.close({cid}, force=Wahr)
             """))
-        return
+        gib
         # Both ends should raise an error.
         mit self.assertRaises(_channels.ChannelClosedError):
             _channels.list_interpreters(cid, send=Wahr)
@@ -821,7 +821,7 @@ klasse ChannelTests(TestBase):
 
         def wait():
             time.sleep(delay)
-        return wait
+        gib wait
 
     def test_send_blocking_waiting(self):
         received = Nichts
@@ -1401,32 +1401,32 @@ klasse ChannelCloseFixture(namedtuple('ChannelCloseFixture',
         self._prepped = set()
         self._state = ChannelState()
         self._known = known
-        return self
+        gib self
 
     @property
     def state(self):
-        return self._state
+        gib self._state
 
     @property
     def cid(self):
         try:
-            return self._cid
+            gib self._cid
         except AttributeError:
             creator = self._get_interpreter(self.creator)
             self._cid = self._new_channel(creator)
-            return self._cid
+            gib self._cid
 
     def get_interpreter(self, interp):
         interp = self._get_interpreter(interp)
         self._prep_interpreter(interp)
-        return interp
+        gib interp
 
     def expect_closed_error(self, end=Nichts):
         wenn end is Nichts:
             end = self.end
         wenn end == 'recv' und self.state.closed == 'send':
-            return Falsch
-        return bool(self.state.closed)
+            gib Falsch
+        gib bool(self.state.closed)
 
     def prep_interpreter(self, interp):
         self._prep_interpreter(interp)
@@ -1442,7 +1442,7 @@ klasse ChannelCloseFixture(namedtuple('ChannelCloseFixture',
 
     def _new_channel(self, creator):
         wenn creator.name == 'main':
-            return _channels.create(REPLACE)
+            gib _channels.create(REPLACE)
         sonst:
             ch = _channels.create(REPLACE)
             run_interp(creator.id, f"""
@@ -1454,29 +1454,29 @@ klasse ChannelCloseFixture(namedtuple('ChannelCloseFixture',
                 del _interpreters
                 """)
             self._cid = recv_nowait(ch)
-        return self._cid
+        gib self._cid
 
     def _get_interpreter(self, interp):
         wenn interp in ('same', 'interp'):
-            return self.interp
+            gib self.interp
         sowenn interp == 'other':
-            return self.other
+            gib self.other
         sowenn interp == 'extra':
-            return self.extra
+            gib self.extra
         sonst:
             name = interp
             try:
                 interp = self._known[name]
             except KeyError:
                 interp = self._known[name] = Interpreter(name)
-            return interp
+            gib interp
 
     def _prep_interpreter(self, interp):
         wenn interp.id in self._prepped:
-            return
+            gib
         self._prepped.add(interp.id)
         wenn interp.name == 'main':
-            return
+            gib
         run_interp(interp.id, f"""
             importiere _interpchannels als channels
             importiere test.test__interpchannels als helpers
@@ -1538,67 +1538,67 @@ klasse ExhaustiveChannelTests(TestBase):
         # - released / nicht released
 
         # never used
-        yield []
+        liefere []
 
         # only pre-closed (and possible used after)
         fuer closeactions in self._iter_close_action_sets('same', 'other'):
-            yield closeactions
+            liefere closeactions
             fuer postactions in self._iter_post_close_action_sets():
-                yield closeactions + postactions
+                liefere closeactions + postactions
         fuer closeactions in self._iter_close_action_sets('other', 'extra'):
-            yield closeactions
+            liefere closeactions
             fuer postactions in self._iter_post_close_action_sets():
-                yield closeactions + postactions
+                liefere closeactions + postactions
 
         # used
         fuer useactions in self._iter_use_action_sets('same', 'other'):
-            yield useactions
+            liefere useactions
             fuer closeactions in self._iter_close_action_sets('same', 'other'):
                 actions = useactions + closeactions
-                yield actions
+                liefere actions
                 fuer postactions in self._iter_post_close_action_sets():
-                    yield actions + postactions
+                    liefere actions + postactions
             fuer closeactions in self._iter_close_action_sets('other', 'extra'):
                 actions = useactions + closeactions
-                yield actions
+                liefere actions
                 fuer postactions in self._iter_post_close_action_sets():
-                    yield actions + postactions
+                    liefere actions + postactions
         fuer useactions in self._iter_use_action_sets('other', 'extra'):
-            yield useactions
+            liefere useactions
             fuer closeactions in self._iter_close_action_sets('same', 'other'):
                 actions = useactions + closeactions
-                yield actions
+                liefere actions
                 fuer postactions in self._iter_post_close_action_sets():
-                    yield actions + postactions
+                    liefere actions + postactions
             fuer closeactions in self._iter_close_action_sets('other', 'extra'):
                 actions = useactions + closeactions
-                yield actions
+                liefere actions
                 fuer postactions in self._iter_post_close_action_sets():
-                    yield actions + postactions
+                    liefere actions + postactions
 
     def _iter_use_action_sets(self, interp1, interp2):
         interps = (interp1, interp2)
 
         # only recv end used
-        yield [
+        liefere [
             ChannelAction('use', 'recv', interp1),
             ]
-        yield [
+        liefere [
             ChannelAction('use', 'recv', interp2),
             ]
-        yield [
+        liefere [
             ChannelAction('use', 'recv', interp1),
             ChannelAction('use', 'recv', interp2),
             ]
 
         # never emptied
-        yield [
+        liefere [
             ChannelAction('use', 'send', interp1),
             ]
-        yield [
+        liefere [
             ChannelAction('use', 'send', interp2),
             ]
-        yield [
+        liefere [
             ChannelAction('use', 'send', interp1),
             ChannelAction('use', 'send', interp2),
             ]
@@ -1607,7 +1607,7 @@ klasse ExhaustiveChannelTests(TestBase):
         fuer interp1 in interps:
             fuer interp2 in interps:
                 fuer interp3 in interps:
-                    yield [
+                    liefere [
                         ChannelAction('use', 'send', interp1),
                         ChannelAction('use', 'send', interp2),
                         ChannelAction('use', 'recv', interp3),
@@ -1618,7 +1618,7 @@ klasse ExhaustiveChannelTests(TestBase):
             fuer interp2 in interps:
                 fuer interp3 in interps:
                     fuer interp4 in interps:
-                        yield [
+                        liefere [
                             ChannelAction('use', 'send', interp1),
                             ChannelAction('use', 'send', interp2),
                             ChannelAction('use', 'recv', interp3),
@@ -1632,24 +1632,24 @@ klasse ExhaustiveChannelTests(TestBase):
             op = 'force-close' wenn force sonst 'close'
             fuer interp in interps:
                 fuer end in ends:
-                    yield [
+                    liefere [
                         ChannelAction(op, end, interp),
                         ]
         fuer recvop in ('close', 'force-close'):
             fuer sendop in ('close', 'force-close'):
                 fuer recv in interps:
                     fuer send in interps:
-                        yield [
+                        liefere [
                             ChannelAction(recvop, 'recv', recv),
                             ChannelAction(sendop, 'send', send),
                             ]
 
     def _iter_post_close_action_sets(self):
         fuer interp in ('same', 'extra', 'other'):
-            yield [
+            liefere [
                 ChannelAction('use', 'recv', interp),
                 ]
-            yield [
+            liefere [
                 ChannelAction('use', 'send', interp),
                 ]
 
@@ -1700,7 +1700,7 @@ klasse ExhaustiveChannelTests(TestBase):
         fuer interp, other, extra in interpreters:
             fuer creator in ('same', 'other', 'creator'):
                 fuer end in ('send', 'recv'):
-                    yield ChannelCloseFixture(end, interp, other, extra, creator)
+                    liefere ChannelCloseFixture(end, interp, other, extra, creator)
 
     def _close(self, fix, *, force):
         op = 'force-close' wenn force sonst 'close'
@@ -1762,7 +1762,7 @@ klasse ExhaustiveChannelTests(TestBase):
             fuer fix in self.iter_fixtures():
                 i += 1
                 wenn i > 1000:
-                    return
+                    gib
                 wenn verbose:
                     wenn (i - 1) % 6 == 0:
                         drucke()
@@ -1771,7 +1771,7 @@ klasse ExhaustiveChannelTests(TestBase):
                     wenn (i - 1) % 6 == 0:
                         drucke(' ', end='')
                     drucke('.', end=''); sys.stdout.flush()
-                yield i, fix, actions
+                liefere i, fix, actions
             wenn verbose:
                 drucke('---')
         drucke()

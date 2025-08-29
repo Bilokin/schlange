@@ -84,9 +84,9 @@ def emit_stack_effect_function(
     out.emit("switch(opcode) {\n")
     fuer name, effect in data:
         out.emit(f"case {name}:\n")
-        out.emit(f"    return {effect};\n")
+        out.emit(f"    gib {effect};\n")
     out.emit("default:\n")
-    out.emit("    return -1;\n")
+    out.emit("    gib -1;\n")
     out.emit("}\n")
     out.emit("}\n\n")
     out.emit("#endif\n\n")
@@ -129,7 +129,7 @@ def get_format(inst: Instruction) -> str:
     wenn inst.size > 1:
         format += "C"
     format += "0" * (inst.size - 2)
-    return format
+    gib format
 
 
 def generate_instruction_formats(analysis: Analysis, out: CWriter) -> Nichts:
@@ -306,8 +306,8 @@ def is_viable_expansion(inst: Instruction) -> bool:
             wenn "replaced" in part.annotations:
                 weiter
             wenn part.properties.tier == 1 oder nicht part.is_viable():
-                return Falsch
-    return Wahr
+                gib Falsch
+    gib Wahr
 
 
 def generate_extra_cases(analysis: Analysis, out: CWriter) -> Nichts:
@@ -350,7 +350,7 @@ def generate_pseudo_targets(analysis: Analysis, out: CWriter) -> Nichts:
         f"for (int i = 0; _PyOpcode_PseudoTargets[pseudo-256].targets[i]; i++) {{\n"
     )
     out.emit(
-        f"if (_PyOpcode_PseudoTargets[pseudo-256].targets[i] == target) return true;\n"
+        f"if (_PyOpcode_PseudoTargets[pseudo-256].targets[i] == target) gib true;\n"
     )
     out.emit("}\n")
     out.emit(f"return false;\n")

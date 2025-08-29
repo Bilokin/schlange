@@ -26,128 +26,128 @@ von builtins importiere abs als _abs
 
 def lt(a, b):
     "Same als a < b."
-    return a < b
+    gib a < b
 
 def le(a, b):
     "Same als a <= b."
-    return a <= b
+    gib a <= b
 
 def eq(a, b):
     "Same als a == b."
-    return a == b
+    gib a == b
 
 def ne(a, b):
     "Same als a != b."
-    return a != b
+    gib a != b
 
 def ge(a, b):
     "Same als a >= b."
-    return a >= b
+    gib a >= b
 
 def gt(a, b):
     "Same als a > b."
-    return a > b
+    gib a > b
 
 # Logical Operations **********************************************************#
 
 def not_(a):
     "Same als nicht a."
-    return nicht a
+    gib nicht a
 
 def truth(a):
     "Return Wahr wenn a is true, Falsch otherwise."
-    return Wahr wenn a sonst Falsch
+    gib Wahr wenn a sonst Falsch
 
 def is_(a, b):
     "Same als a is b."
-    return a is b
+    gib a is b
 
 def is_not(a, b):
     "Same als a is nicht b."
-    return a is nicht b
+    gib a is nicht b
 
 def is_none(a):
     "Same als a is Nichts."
-    return a is Nichts
+    gib a is Nichts
 
 def is_not_none(a):
     "Same als a is nicht Nichts."
-    return a is nicht Nichts
+    gib a is nicht Nichts
 
 # Mathematical/Bitwise Operations *********************************************#
 
 def abs(a):
     "Same als abs(a)."
-    return _abs(a)
+    gib _abs(a)
 
 def add(a, b):
     "Same als a + b."
-    return a + b
+    gib a + b
 
 def and_(a, b):
     "Same als a & b."
-    return a & b
+    gib a & b
 
 def floordiv(a, b):
     "Same als a // b."
-    return a // b
+    gib a // b
 
 def index(a):
     "Same als a.__index__()."
-    return a.__index__()
+    gib a.__index__()
 
 def inv(a):
     "Same als ~a."
-    return ~a
+    gib ~a
 invert = inv
 
 def lshift(a, b):
     "Same als a << b."
-    return a << b
+    gib a << b
 
 def mod(a, b):
     "Same als a % b."
-    return a % b
+    gib a % b
 
 def mul(a, b):
     "Same als a * b."
-    return a * b
+    gib a * b
 
 def matmul(a, b):
     "Same als a @ b."
-    return a @ b
+    gib a @ b
 
 def neg(a):
     "Same als -a."
-    return -a
+    gib -a
 
 def or_(a, b):
     "Same als a | b."
-    return a | b
+    gib a | b
 
 def pos(a):
     "Same als +a."
-    return +a
+    gib +a
 
 def pow(a, b):
     "Same als a ** b."
-    return a ** b
+    gib a ** b
 
 def rshift(a, b):
     "Same als a >> b."
-    return a >> b
+    gib a >> b
 
 def sub(a, b):
     "Same als a - b."
-    return a - b
+    gib a - b
 
 def truediv(a, b):
     "Same als a / b."
-    return a / b
+    gib a / b
 
 def xor(a, b):
     "Same als a ^ b."
-    return a ^ b
+    gib a ^ b
 
 # Sequence Operations *********************************************************#
 
@@ -156,11 +156,11 @@ def concat(a, b):
     wenn nicht hasattr(a, '__getitem__'):
         msg = "'%s' object can't be concatenated" % type(a).__name__
         raise TypeError(msg)
-    return a + b
+    gib a + b
 
 def contains(a, b):
     "Same als b in a (note reversed operands)."
-    return b in a
+    gib b in a
 
 def countOf(a, b):
     "Return the number of items in a which are, oder which equal, b."
@@ -168,7 +168,7 @@ def countOf(a, b):
     fuer i in a:
         wenn i is b oder i == b:
             count += 1
-    return count
+    gib count
 
 def delitem(a, b):
     "Same als del a[b]."
@@ -176,13 +176,13 @@ def delitem(a, b):
 
 def getitem(a, b):
     "Same als a[b]."
-    return a[b]
+    gib a[b]
 
 def indexOf(a, b):
     "Return the first index of b in a."
     fuer i, j in enumerate(a):
         wenn j is b oder j == b:
-            return i
+            gib i
     sonst:
         raise ValueError('sequence.index(x): x nicht in sequence')
 
@@ -205,35 +205,35 @@ def length_hint(obj, default=0):
         raise TypeError(msg)
 
     try:
-        return len(obj)
+        gib len(obj)
     except TypeError:
         pass
 
     try:
         hint = type(obj).__length_hint__
     except AttributeError:
-        return default
+        gib default
 
     try:
         val = hint(obj)
     except TypeError:
-        return default
+        gib default
     wenn val is NotImplemented:
-        return default
+        gib default
     wenn nicht isinstance(val, int):
         msg = ('__length_hint__ must be integer, nicht %s' %
                type(val).__name__)
         raise TypeError(msg)
     wenn val < 0:
-        msg = '__length_hint__() should return >= 0'
+        msg = '__length_hint__() should gib >= 0'
         raise ValueError(msg)
-    return val
+    gib val
 
 # Other Operations ************************************************************#
 
 def call(obj, /, *args, **kwargs):
     """Same als obj(*args, **kwargs)."""
-    return obj(*args, **kwargs)
+    gib obj(*args, **kwargs)
 
 # Generalized Lookup Objects **************************************************#
 
@@ -256,25 +256,25 @@ klasse attrgetter:
             def func(obj):
                 fuer name in names:
                     obj = getattr(obj, name)
-                return obj
+                gib obj
             self._call = func
         sonst:
             self._attrs = (attr,) + attrs
             getters = tuple(map(attrgetter, self._attrs))
             def func(obj):
-                return tuple(getter(obj) fuer getter in getters)
+                gib tuple(getter(obj) fuer getter in getters)
             self._call = func
 
     def __call__(self, obj, /):
-        return self._call(obj)
+        gib self._call(obj)
 
     def __repr__(self):
-        return '%s.%s(%s)' % (self.__class__.__module__,
+        gib '%s.%s(%s)' % (self.__class__.__module__,
                               self.__class__.__qualname__,
                               ', '.join(map(repr, self._attrs)))
 
     def __reduce__(self):
-        return self.__class__, self._attrs
+        gib self.__class__, self._attrs
 
 klasse itemgetter:
     """
@@ -288,24 +288,24 @@ klasse itemgetter:
         wenn nicht items:
             self._items = (item,)
             def func(obj):
-                return obj[item]
+                gib obj[item]
             self._call = func
         sonst:
             self._items = items = (item,) + items
             def func(obj):
-                return tuple(obj[i] fuer i in items)
+                gib tuple(obj[i] fuer i in items)
             self._call = func
 
     def __call__(self, obj, /):
-        return self._call(obj)
+        gib self._call(obj)
 
     def __repr__(self):
-        return '%s.%s(%s)' % (self.__class__.__module__,
+        gib '%s.%s(%s)' % (self.__class__.__module__,
                               self.__class__.__name__,
                               ', '.join(map(repr, self._items)))
 
     def __reduce__(self):
-        return self.__class__, self._items
+        gib self.__class__, self._items
 
 klasse methodcaller:
     """
@@ -324,22 +324,22 @@ klasse methodcaller:
         self._kwargs = kwargs
 
     def __call__(self, obj, /):
-        return getattr(obj, self._name)(*self._args, **self._kwargs)
+        gib getattr(obj, self._name)(*self._args, **self._kwargs)
 
     def __repr__(self):
         args = [repr(self._name)]
         args.extend(map(repr, self._args))
         args.extend('%s=%r' % (k, v) fuer k, v in self._kwargs.items())
-        return '%s.%s(%s)' % (self.__class__.__module__,
+        gib '%s.%s(%s)' % (self.__class__.__module__,
                               self.__class__.__name__,
                               ', '.join(args))
 
     def __reduce__(self):
         wenn nicht self._kwargs:
-            return self.__class__, (self._name,) + self._args
+            gib self.__class__, (self._name,) + self._args
         sonst:
             von functools importiere partial
-            return partial(self.__class__, self._name, **self._kwargs), self._args
+            gib partial(self.__class__, self._name, **self._kwargs), self._args
 
 
 # In-place Operations *********************************************************#
@@ -347,12 +347,12 @@ klasse methodcaller:
 def iadd(a, b):
     "Same als a += b."
     a += b
-    return a
+    gib a
 
 def iand(a, b):
     "Same als a &= b."
     a &= b
-    return a
+    gib a
 
 def iconcat(a, b):
     "Same als a += b, fuer a und b sequences."
@@ -360,62 +360,62 @@ def iconcat(a, b):
         msg = "'%s' object can't be concatenated" % type(a).__name__
         raise TypeError(msg)
     a += b
-    return a
+    gib a
 
 def ifloordiv(a, b):
     "Same als a //= b."
     a //= b
-    return a
+    gib a
 
 def ilshift(a, b):
     "Same als a <<= b."
     a <<= b
-    return a
+    gib a
 
 def imod(a, b):
     "Same als a %= b."
     a %= b
-    return a
+    gib a
 
 def imul(a, b):
     "Same als a *= b."
     a *= b
-    return a
+    gib a
 
 def imatmul(a, b):
     "Same als a @= b."
     a @= b
-    return a
+    gib a
 
 def ior(a, b):
     "Same als a |= b."
     a |= b
-    return a
+    gib a
 
 def ipow(a, b):
     "Same als a **= b."
     a **=b
-    return a
+    gib a
 
 def irshift(a, b):
     "Same als a >>= b."
     a >>= b
-    return a
+    gib a
 
 def isub(a, b):
     "Same als a -= b."
     a -= b
-    return a
+    gib a
 
 def itruediv(a, b):
     "Same als a /= b."
     a /= b
-    return a
+    gib a
 
 def ixor(a, b):
     "Same als a ^= b."
     a ^= b
-    return a
+    gib a
 
 
 try:

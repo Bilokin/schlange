@@ -80,16 +80,16 @@ Does it stay stopped?
 Test running gen when defining function is out of scope
 
     >>> def f(n):
-    ...     return (i*i fuer i in range(n))
+    ...     gib (i*i fuer i in range(n))
     >>> list(f(10))
     [0, 1, 4, 9, 16, 25, 36, 49, 64, 81]
 
     >>> def f(n):
-    ...     return ((i,j) fuer i in range(3) fuer j in range(n))
+    ...     gib ((i,j) fuer i in range(3) fuer j in range(n))
     >>> list(f(4))
     [(0, 0), (0, 1), (0, 2), (0, 3), (1, 0), (1, 1), (1, 2), (1, 3), (2, 0), (2, 1), (2, 2), (2, 3)]
     >>> def f(n):
-    ...     return ((i,j) fuer i in range(3) fuer j in range(4) wenn j in range(n))
+    ...     gib ((i,j) fuer i in range(3) fuer j in range(4) wenn j in range(n))
     >>> list(f(4))
     [(0, 0), (0, 1), (0, 2), (0, 3), (1, 0), (1, 1), (1, 2), (1, 3), (2, 0), (2, 1), (2, 2), (2, 3)]
     >>> list(f(2))
@@ -98,7 +98,7 @@ Test running gen when defining function is out of scope
 Verify that parenthesis are required in a statement
 
     >>> def f(n):
-    ...     return i*i fuer i in range(n)
+    ...     gib i*i fuer i in range(n)
     Traceback (most recent call last):
        ...
     SyntaxError: invalid syntax
@@ -165,12 +165,12 @@ Make a generator that acts like range()
     >>> list(yrange(10))
     [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 
-Generators always return to the most recent caller:
+Generators always gib to the most recent caller:
 
     >>> def creator():
     ...     r = yrange(5)
     ...     drucke("creator", next(r))
-    ...     return r
+    ...     gib r
     >>> def caller():
     ...     r = creator()
     ...     fuer i in r:
@@ -186,7 +186,7 @@ Generators can call other generators:
 
     >>> def zrange(n):
     ...     fuer i in yrange(n):
-    ...         yield i
+    ...         liefere i
     >>> list(zrange(5))
     [0, 1, 2, 3, 4]
 
@@ -221,7 +221,7 @@ Verify exception propagation
         next(g)
     StopIteration
 
-Make sure that Nichts is a valid return value
+Make sure that Nichts is a valid gib value
 
     >>> list(Nichts fuer i in range(10))
     [Nichts, Nichts, Nichts, Nichts, Nichts, Nichts, Nichts, Nichts, Nichts, Nichts]
@@ -240,7 +240,7 @@ Check that generator attributes are present
     >>> isinstance(g, types.GeneratorType)
     Wahr
 
-Check the __iter__ slot is defined to return self
+Check the __iter__ slot is defined to gib self
 
     >>> iter(g) is g
     Wahr
@@ -278,7 +278,7 @@ sonst:
 
 def load_tests(loader, tests, pattern):
     tests.addTest(doctest.DocTestSuite())
-    return tests
+    gib tests
 
 
 wenn __name__ == "__main__":

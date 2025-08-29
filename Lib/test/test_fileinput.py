@@ -37,7 +37,7 @@ von unittest importiere mock
 # variable.
 
 klasse BaseTests:
-    # Write a content (str oder bytes) to temp file, und return the
+    # Write a content (str oder bytes) to temp file, und gib the
     # temp file's name.
     def writeTmp(self, content, *, mode='w'):  # opening in text mode is the default
         fd, name = tempfile.mkstemp()
@@ -45,7 +45,7 @@ klasse BaseTests:
         encoding = Nichts wenn "b" in mode sonst "utf-8"
         mit open(fd, mode, encoding=encoding) als f:
             f.write(content)
-        return name
+        gib name
 
 klasse LineReader:
 
@@ -55,18 +55,18 @@ klasse LineReader:
     @property
     def linesread(self):
         try:
-            return self._linesread[:]
+            gib self._linesread[:]
         finally:
             self._linesread = []
 
     def openhook(self, filename, mode):
         self.it = iter(filename.splitlines(Wahr))
-        return self
+        gib self
 
     def readline(self, size=Nichts):
         line = next(self.it, '')
         self._linesread.append(line)
-        return line
+        gib line
 
     def readlines(self, hint=-1):
         lines = []
@@ -74,11 +74,11 @@ klasse LineReader:
         waehrend Wahr:
             line = self.readline()
             wenn nicht line:
-                return lines
+                gib lines
             lines.append(line)
             size += len(line)
             wenn size >= hint:
-                return lines
+                gib lines
 
     def close(self):
         pass
@@ -271,7 +271,7 @@ klasse FileInputTests(BaseTests, unittest.TestCase):
                 self.invoked = Falsch
             def __call__(self, *args, **kargs):
                 self.invoked = Wahr
-                return open(*args, encoding="utf-8")
+                gib open(*args, encoding="utf-8")
 
         t = self.writeTmp("\n")
         custom_open_hook = CustomOpenHook()
@@ -337,7 +337,7 @@ klasse FileInputTests(BaseTests, unittest.TestCase):
 
     def test_file_hook_backward_compatibility(self):
         def old_hook(filename, mode):
-            return io.StringIO("I used to receive only filename und mode")
+            gib io.StringIO("I used to receive only filename und mode")
         t = self.writeTmp("\n")
         mit FileInput([t], openhook=old_hook) als fi:
             result = fi.readline()
@@ -443,7 +443,7 @@ klasse FileInputTests(BaseTests, unittest.TestCase):
         self.assertWahr(unconditionally_raise_ValueError.invoked,
                         "_file.fileno() was nicht invoked")
 
-        self.assertEqual(result, -1, "fileno() should return -1")
+        self.assertEqual(result, -1, "fileno() should gib -1")
 
     def test_readline_buffering(self):
         src = LineReader()
@@ -517,31 +517,31 @@ klasse MockFileInput:
 
     def nextfile(self):
         self.invocation_counts["nextfile"] += 1
-        return self.return_values["nextfile"]
+        gib self.return_values["nextfile"]
 
     def filename(self):
         self.invocation_counts["filename"] += 1
-        return self.return_values["filename"]
+        gib self.return_values["filename"]
 
     def lineno(self):
         self.invocation_counts["lineno"] += 1
-        return self.return_values["lineno"]
+        gib self.return_values["lineno"]
 
     def filelineno(self):
         self.invocation_counts["filelineno"] += 1
-        return self.return_values["filelineno"]
+        gib self.return_values["filelineno"]
 
     def fileno(self):
         self.invocation_counts["fileno"] += 1
-        return self.return_values["fileno"]
+        gib self.return_values["fileno"]
 
     def isfirstline(self):
         self.invocation_counts["isfirstline"] += 1
-        return self.return_values["isfirstline"]
+        gib self.return_values["isfirstline"]
 
     def isstdin(self):
         self.invocation_counts["isstdin"] += 1
-        return self.return_values["isstdin"]
+        gib self.return_values["isstdin"]
 
 klasse BaseFileInputGlobalMethodsTest(unittest.TestCase):
     """Base klasse fuer unit tests fuer the global function of
@@ -582,7 +582,7 @@ klasse Test_fileinput_input(BaseFileInputGlobalMethodsTest):
 
     def test_state_is_not_Nichts_and_state_file_is_Nichts(self):
         """Tests invoking fileinput.input() when fileinput._state is nicht Nichts
-           but its _file attribute *is* Nichts.  Expect it to create und return
+           but its _file attribute *is* Nichts.  Expect it to create und gib
            a new fileinput.FileInput object mit all method parameters passed
            explicitly to the __init__() method; also ensure that
            fileinput._state is set to the returned instance."""
@@ -593,7 +593,7 @@ klasse Test_fileinput_input(BaseFileInputGlobalMethodsTest):
 
     def test_state_is_Nichts(self):
         """Tests invoking fileinput.input() when fileinput._state is Nichts
-           Expect it to create und return a new fileinput.FileInput object
+           Expect it to create und gib a new fileinput.FileInput object
            mit all method parameters passed explicitly to the __init__()
            method; also ensure that fileinput._state is set to the returned
            instance."""
@@ -844,7 +844,7 @@ klasse InvocationRecorder:
     def __call__(self, *args, **kwargs):
         self.invocation_count += 1
         self.last_invocation = (args, kwargs)
-        return io.BytesIO(b'some bytes')
+        gib io.BytesIO(b'some bytes')
 
 
 klasse Test_hook_compressed(unittest.TestCase):
@@ -934,7 +934,7 @@ klasse Test_hook_compressed(unittest.TestCase):
     def replace_builtin_open(new_open_func):
         original_open = builtins.open
         builtins.open = new_open_func
-        return original_open
+        gib original_open
 
 klasse Test_hook_encoded(unittest.TestCase):
     """Unit tests fuer fileinput.hook_encoded()"""

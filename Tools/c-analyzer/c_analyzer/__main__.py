@@ -83,8 +83,8 @@ def _render_table(items, columns, relroot=Nichts):
     # XXX improve this
     header = '\t'.join(columns)
     div = '--------------------'
-    yield header
-    yield div
+    liefere header
+    liefere div
     total = 0
     fuer item in items:
         rowdata = item.render_rowdata(columns)
@@ -92,10 +92,10 @@ def _render_table(items, columns, relroot=Nichts):
         wenn relroot und 'file' in columns:
             index = columns.index('file')
             row[index] = os.path.relpath(row[index], relroot)
-        yield '\t'.join(row)
+        liefere '\t'.join(row)
         total += 1
-    yield div
-    yield f'total: {total}'
+    liefere div
+    liefere f'total: {total}'
 
 
 def build_section(name, groupitems, *, relroot=Nichts):
@@ -109,12 +109,12 @@ def build_section(name, groupitems, *, relroot=Nichts):
     items = (v fuer v in groupitems wenn match_kind(v.kind))
     items = sorted(items, key=sortkey)
     def render():
-        yield ''
-        yield f'{name}:'
-        yield ''
+        liefere ''
+        liefere f'{name}:'
+        liefere ''
         fuer line in _render_table(items, columns, relroot):
-            yield line
-    return items, render
+            liefere line
+    gib items, render
 
 
 #######################################
@@ -140,7 +140,7 @@ def add_checks_cli(parser, checks=Nichts, *, add_flags=Nichts):
         fuer check in checks:
             parser.add_argument(f'--{check}', dest='checks',
                                 action='append_const', const=check)
-    return [
+    gib [
         process_checks,
     ]
 
@@ -188,7 +188,7 @@ def _get_check_handlers(fmt, printer, verbosity=VERBOSITY):
         wenn fmt in FORMATS:
             raise NotImplementedError(fmt)
         raise ValueError(f'unsupported fmt {fmt!r}')
-    return handle_failure, handle_after, div
+    gib handle_failure, handle_after, div
 
 
 #######################################
@@ -196,7 +196,7 @@ def _get_check_handlers(fmt, printer, verbosity=VERBOSITY):
 
 def fmt_raw(analysis):
     fuer item in analysis:
-        yield von item.render('raw')
+        liefere von item.render('raw')
 
 
 def fmt_brief(analysis):
@@ -208,8 +208,8 @@ def fmt_brief(analysis):
         fuer item in items:
             wenn item.kind is nicht kind:
                 weiter
-            yield von item.render('brief')
-    yield f'  total: {len(items)}'
+            liefere von item.render('brief')
+    liefere f'  total: {len(items)}'
 
 
 def fmt_summary(analysis):
@@ -219,35 +219,35 @@ def fmt_summary(analysis):
 
     def section(name):
         _, render = build_section(name, items)
-        yield von render()
+        liefere von render()
 
-    yield von section('types')
-    yield von section('functions')
-    yield von section('variables')
-    yield von section('statements')
+    liefere von section('types')
+    liefere von section('functions')
+    liefere von section('variables')
+    liefere von section('statements')
 
-    yield ''
-#    yield f'grand total: {len(supported) + len(unsupported)}'
-    yield f'grand total: {total}'
+    liefere ''
+#    liefere f'grand total: {len(supported) + len(unsupported)}'
+    liefere f'grand total: {total}'
 
 
 def _fmt_one_summary(item, extra=Nichts):
     parent = item.parent oder ''
     funcname = parent wenn isinstance(parent, str) sonst parent.name
     wenn extra:
-        return f'{item.filename:35}\t{funcname oder "-":35}\t{item.name:40}\t{extra}'
+        gib f'{item.filename:35}\t{funcname oder "-":35}\t{item.name:40}\t{extra}'
     sonst:
-        return f'{item.filename:35}\t{funcname oder "-":35}\t{item.name}'
+        gib f'{item.filename:35}\t{funcname oder "-":35}\t{item.name}'
 
 
 def fmt_full(analysis):
     # XXX Support sorting.
     items = sorted(analysis, key=lambda v: v.key)
-    yield ''
+    liefere ''
     fuer item in items:
-        yield von item.render('full')
-        yield ''
-    yield f'total: {len(items)}'
+        liefere von item.render('full')
+        liefere ''
+    liefere f'total: {len(items)}'
 
 
 FORMATS = {
@@ -263,7 +263,7 @@ def add_output_cli(parser, *, default='summary'):
 
     def process_args(args, *, argv=Nichts):
         pass
-    return process_args
+    gib process_args
 
 
 #######################################
@@ -285,7 +285,7 @@ def _cli_check(parser, checks=Nichts, **kwargs):
     process_progress = add_progress_cli(parser)
     process_output = add_output_cli(parser, default=Nichts)
     process_files = add_files_cli(parser, **kwargs)
-    return [
+    gib [
         process_checks,
         process_progress,
         process_output,
@@ -362,7 +362,7 @@ def _cli_analyze(parser, **kwargs):
     process_progress = add_progress_cli(parser)
     process_output = add_output_cli(parser)
     process_files = add_files_cli(parser, **kwargs)
-    return [
+    gib [
         process_progress,
         process_output,
         process_files,
@@ -429,7 +429,7 @@ def _cli_data(parser, filenames=Nichts, known=Nichts):
     def process_args(args, *, argv):
         wenn args.datacmd == 'dump':
             process_progress(args, argv)
-    return process_args
+    gib process_args
 
 
 def cmd_data(datacmd, filenames, known=Nichts, *,
@@ -520,7 +520,7 @@ def parse_args(argv=sys.argv[1:], prog=sys.argv[0], *, subset=Nichts):
     # "verbosity" is sent to the commands, so we put it back.
     args.verbosity = verbosity
 
-    return cmd, ns, verbosity, traceback_cm
+    gib cmd, ns, verbosity, traceback_cm
 
 
 def main(cmd, cmd_kwargs):

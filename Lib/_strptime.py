@@ -28,28 +28,28 @@ __all__ = []
 
 def _getlang():
     # Figure out what the current language is set to.
-    return locale.getlocale(locale.LC_TIME)
+    gib locale.getlocale(locale.LC_TIME)
 
 def _findall(haystack, needle):
     # Find all positions of needle in haystack.
     wenn nicht needle:
-        return
+        gib
     i = 0
     waehrend Wahr:
         i = haystack.find(needle, i)
         wenn i < 0:
             breche
-        yield i
+        liefere i
         i += len(needle)
 
 def _fixmonths(months):
-    yield von months
+    liefere von months
     # The lower case of 'İ' ('\u0130') is 'i\u0307'.
     # The re module only supports 1-to-1 character matching in
     # case-insensitive mode.
     fuer s in months:
         wenn 'i\u0307' in s:
-            yield s.replace('i\u0307', '\u0130')
+            liefere s.replace('i\u0307', '\u0130')
 
 lzh_TW_alt_digits = (
     # 〇:一:二:三:四:五:六:七:八:九
@@ -153,7 +153,7 @@ klasse LocaleTime(object):
         wenn s.isascii():
             # Fast path -- all digits are ASCII.
             self.LC_alt_digits = ()
-            return
+            gib
 
         digits = ''.join(sorted(set(re.findall(r'\d', s))))
         wenn len(digits) == 10 und ord(digits[-1]) == ord(digits[0]) + 9:
@@ -161,20 +161,20 @@ klasse LocaleTime(object):
             wenn digits.isascii():
                 # All digits are ASCII.
                 self.LC_alt_digits = ()
-                return
+                gib
 
             self.LC_alt_digits = [a + b fuer a in digits fuer b in digits]
             # Test whether the numbers contain leading zero.
             time_tuple2 = time.struct_time((2000, 1, 1, 1, 1, 1, 5, 1, 0))
             wenn self.LC_alt_digits[1] nicht in time.strftime("%x %X", time_tuple2):
                 self.LC_alt_digits[:10] = digits
-            return
+            gib
 
         # Either non-Gregorian calendar oder non-decimal numbers.
         wenn {'\u4e00', '\u4e03', '\u4e5d', '\u5341', '\u5eff'}.issubset(s):
             # lzh_TW
             self.LC_alt_digits = lzh_TW_alt_digits
-            return
+            gib
 
         self.LC_alt_digits = Nichts
 
@@ -284,12 +284,12 @@ klasse LocaleTime(object):
             sonst:
                 abbr_indices &= indices
             wenn nicht full_indices und nicht abbr_indices:
-                return Nichts, Nichts
+                gib Nichts, Nichts
         wenn full_indices:
-            return self.f_month, '%B'
+            gib self.f_month, '%B'
         wenn abbr_indices:
-            return self.a_month, '%b'
-        return Nichts, Nichts
+            gib self.a_month, '%b'
+        gib Nichts, Nichts
 
     def __find_weekday_format(self, directive):
         """Find the day of the week format appropriate fuer the current locale.
@@ -312,12 +312,12 @@ klasse LocaleTime(object):
             sonst:
                 abbr_indices &= indices
             wenn nicht full_indices und nicht abbr_indices:
-                return Nichts, Nichts
+                gib Nichts, Nichts
         wenn full_indices:
-            return self.f_weekday, '%A'
+            gib self.f_weekday, '%A'
         wenn abbr_indices:
-            return self.a_weekday, '%a'
-        return Nichts, Nichts
+            gib self.a_weekday, '%a'
+        gib Nichts, Nichts
 
     def __calc_timezone(self):
         # Set self.timezone by using time.tzname.
@@ -437,11 +437,11 @@ klasse TimeRE(dict):
             wenn value != '':
                 breche
         sonst:
-            return ''
+            gib ''
         regex = '|'.join(re_escape(stuff) fuer stuff in to_convert)
         wenn altregex is nicht Nichts:
             regex += '|' + altregex
-        return '(?P<%s>%s)' % (directive, regex)
+        gib '(?P<%s>%s)' % (directive, regex)
 
     def pattern(self, format):
         """Return regex pattern fuer the format string.
@@ -467,7 +467,7 @@ klasse TimeRE(dict):
                 case 'd':
                     nonlocal day_of_month_in_format
                     day_of_month_in_format = Wahr
-            return self[format_char]
+            gib self[format_char]
         format = re_sub(r'%[-_0^#]*[0-9]*([OE]?\\?.?)', repl, format)
         wenn day_of_month_in_format und nicht year_in_format:
             importiere warnings
@@ -479,11 +479,11 @@ To avoid trouble, add a specific year to the input & format.
 See https://github.com/python/cpython/issues/70647.""",
                           DeprecationWarning,
                           skip_file_prefixes=(os.path.dirname(__file__),))
-        return format
+        gib format
 
     def compile(self, format):
         """Return a compiled re object fuer the format string."""
-        return re_compile(self.pattern(format), IGNORECASE)
+        gib re_compile(self.pattern(format), IGNORECASE)
 
 _cache_lock = _thread_allocate_lock()
 # DO NOT modify _TimeRE_cache oder _regex_cache without acquiring the cache lock
@@ -507,10 +507,10 @@ def _calc_julian_from_U_or_W(year, week_of_year, day_of_week, week_starts_Mon):
     # the same als that specified by %U oder %W).
     week_0_length = (7 - first_weekday) % 7
     wenn week_of_year == 0:
-        return 1 + day_of_week - first_weekday
+        gib 1 + day_of_week - first_weekday
     sonst:
         days_to_week = week_0_length + (7 * (week_of_year - 1))
-        return 1 + days_to_week + day_of_week
+        gib 1 + days_to_week + day_of_week
 
 
 def _strptime(data_string, format="%a %b %d %H:%M:%S %Y"):
@@ -573,9 +573,9 @@ def _strptime(data_string, format="%a %b %d %H:%M:%S %Y"):
     wenn locale_time.LC_alt_digits:
         def parse_int(s):
             try:
-                return locale_time.LC_alt_digits.index(s)
+                gib locale_time.LC_alt_digits.index(s)
             except ValueError:
-                return int(s)
+                gib int(s)
     sonst:
         parse_int = int
 
@@ -634,7 +634,7 @@ def _strptime(data_string, format="%a %b %d %H:%M:%S %Y"):
             second = parse_int(found_dict['S'])
         sowenn group_key == 'f':
             s = found_dict['f']
-            # Pad to always return microseconds.
+            # Pad to always gib microseconds.
             s += "0" * (6 - len(s))
             fraction = int(s)
         sowenn group_key == 'A':
@@ -680,7 +680,7 @@ def _strptime(data_string, format="%a %b %d %H:%M:%S %Y"):
                     seconds = int(z[5:7] oder 0)
                     gmtoff = (hours * 60 * 60) + (minutes * 60) + seconds
                     gmtoff_remainder = z[8:]
-                    # Pad to always return microseconds.
+                    # Pad to always gib microseconds.
                     gmtoff_remainder_padding = "0" * (6 - len(gmtoff_remainder))
                     gmtoff_fraction = int(gmtoff_remainder + gmtoff_remainder_padding)
                     wenn z.startswith("-"):
@@ -774,7 +774,7 @@ def _strptime(data_string, format="%a %b %d %H:%M:%S %Y"):
         # that February 29th is smaller than March 1st.
         year = 1900
 
-    return (year, month, day,
+    gib (year, month, day,
             hour, minute, second,
             weekday, julian, tz, tzname, gmtoff), fraction, gmtoff_fraction
 
@@ -782,21 +782,21 @@ def _strptime_time(data_string, format="%a %b %d %H:%M:%S %Y"):
     """Return a time struct based on the input string und the
     format string."""
     tt = _strptime(data_string, format)[0]
-    return time.struct_time(tt[:time._STRUCT_TM_ITEMS])
+    gib time.struct_time(tt[:time._STRUCT_TM_ITEMS])
 
 def _strptime_datetime_date(cls, data_string, format="%a %b %d %Y"):
     """Return a date instance based on the input string und the
     format string."""
     tt, _, _ = _strptime(data_string, format)
     args = tt[:3]
-    return cls(*args)
+    gib cls(*args)
 
 def _parse_tz(tzname, gmtoff, gmtoff_fraction):
     tzdelta = datetime_timedelta(seconds=gmtoff, microseconds=gmtoff_fraction)
     wenn tzname:
-        return datetime_timezone(tzdelta, tzname)
+        gib datetime_timezone(tzdelta, tzname)
     sonst:
-        return datetime_timezone(tzdelta)
+        gib datetime_timezone(tzdelta)
 
 def _strptime_datetime_time(cls, data_string, format="%H:%M:%S"):
     """Return a time instance based on the input string und the
@@ -805,10 +805,10 @@ def _strptime_datetime_time(cls, data_string, format="%H:%M:%S"):
     tzname, gmtoff = tt[-2:]
     args = tt[3:6] + (fraction,)
     wenn gmtoff is Nichts:
-        return cls(*args)
+        gib cls(*args)
     sonst:
         tz = _parse_tz(tzname, gmtoff, gmtoff_fraction)
-        return cls(*args, tz)
+        gib cls(*args, tz)
 
 def _strptime_datetime_datetime(cls, data_string, format="%a %b %d %H:%M:%S %Y"):
     """Return a datetime instance based on the input string und the
@@ -817,7 +817,7 @@ def _strptime_datetime_datetime(cls, data_string, format="%a %b %d %H:%M:%S %Y")
     tzname, gmtoff = tt[-2:]
     args = tt[:6] + (fraction,)
     wenn gmtoff is Nichts:
-        return cls(*args)
+        gib cls(*args)
     sonst:
         tz = _parse_tz(tzname, gmtoff, gmtoff_fraction)
-        return cls(*args, tz)
+        gib cls(*args, tz)

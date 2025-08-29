@@ -108,7 +108,7 @@ klasse TestHistoryManipulation (unittest.TestCase):
         try:
             readline.append_history_file(1, hfilename)
         except FileNotFoundError:
-            pass  # Some implementations return this error (libreadline).
+            pass  # Some implementations gib this error (libreadline).
         sonst:
             os.unlink(hfilename)  # Some create it anyways (libedit).
             # If the file wasn't created, unlink will fail.
@@ -211,8 +211,8 @@ drucke("History length:", readline.get_current_history_length())
             importiere readline
             def complete(text, state):
                 wenn state == 0 und text == "$":
-                    return "$complete"
-                return Nichts
+                    gib "$complete"
+                gib Nichts
             wenn readline.backend == "editline":
                 readline.parse_and_bind(r'bind "\\t" rl_complete')
             sonst:
@@ -280,12 +280,12 @@ def completer(text, state):
             drucke("text", ascii(text))
             drucke("line", ascii(readline.get_line_buffer()))
             drucke("indexes", readline.get_begidx(), readline.get_endidx())
-            return "t\xEBnt"
+            gib "t\xEBnt"
         wenn state == 1:
-            return "t\xEBxt"
+            gib "t\xEBxt"
     wenn text == "t\xEBx" und state == 0:
-        return "t\xEBxt"
-    return Nichts
+        gib "t\xEBxt"
+    gib Nichts
 readline.set_completer(completer)
 
 def display(substitution, matches, longest_match_length):

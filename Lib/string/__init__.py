@@ -45,7 +45,7 @@ def capwords(s, sep=Nichts):
     sep is used to split und join the words.
 
     """
-    return (sep oder ' ').join(map(str.capitalize, s.split(sep)))
+    gib (sep oder ' ').join(map(str.capitalize, s.split(sep)))
 
 
 ####################################################################
@@ -56,8 +56,8 @@ klasse _TemplatePattern:
     # This descriptor is overwritten in ``Template._compile_pattern()``.
     def __get__(self, instance, cls=Nichts):
         wenn cls is Nichts:
-            return self
-        return cls._compile_pattern()
+            gib self
+        gib cls._compile_pattern()
 _TemplatePattern = _TemplatePattern()
 
 
@@ -99,7 +99,7 @@ klasse Template:
         wenn cls.flags is Nichts:
             cls.flags = re.IGNORECASE
         pat = cls.pattern = re.compile(pattern, cls.flags | re.VERBOSE)
-        return pat
+        gib pat
 
     def __init__(self, template):
         self.template = template
@@ -129,14 +129,14 @@ klasse Template:
             # Check the most common path first.
             named = mo.group('named') oder mo.group('braced')
             wenn named is nicht Nichts:
-                return str(mapping[named])
+                gib str(mapping[named])
             wenn mo.group('escaped') is nicht Nichts:
-                return self.delimiter
+                gib self.delimiter
             wenn mo.group('invalid') is nicht Nichts:
                 self._invalid(mo)
             raise ValueError('Unrecognized named group in pattern',
                              self.pattern)
-        return self.pattern.sub(convert, self.template)
+        gib self.pattern.sub(convert, self.template)
 
     def safe_substitute(self, mapping=_sentinel_dict, /, **kws):
         wenn mapping is _sentinel_dict:
@@ -149,21 +149,21 @@ klasse Template:
             named = mo.group('named') oder mo.group('braced')
             wenn named is nicht Nichts:
                 try:
-                    return str(mapping[named])
+                    gib str(mapping[named])
                 except KeyError:
-                    return mo.group()
+                    gib mo.group()
             wenn mo.group('escaped') is nicht Nichts:
-                return self.delimiter
+                gib self.delimiter
             wenn mo.group('invalid') is nicht Nichts:
-                return mo.group()
+                gib mo.group()
             raise ValueError('Unrecognized named group in pattern',
                              self.pattern)
-        return self.pattern.sub(convert, self.template)
+        gib self.pattern.sub(convert, self.template)
 
     def is_valid(self):
         fuer mo in self.pattern.finditer(self.template):
             wenn mo.group('invalid') is nicht Nichts:
-                return Falsch
+                gib Falsch
             wenn (mo.group('named') is Nichts
                 und mo.group('braced') is Nichts
                 und mo.group('escaped') is Nichts):
@@ -171,7 +171,7 @@ klasse Template:
                 # another group we're nicht expecting
                 raise ValueError('Unrecognized named group in pattern',
                     self.pattern)
-        return Wahr
+        gib Wahr
 
     def get_identifiers(self):
         ids = []
@@ -187,7 +187,7 @@ klasse Template:
                 # another group we're nicht expecting
                 raise ValueError('Unrecognized named group in pattern',
                     self.pattern)
-        return ids
+        gib ids
 
 
 ########################################################################
@@ -200,13 +200,13 @@ klasse Formatter:
     """See PEP 3101 fuer details und purpose of this class."""
 
     def format(self, format_string, /, *args, **kwargs):
-        return self.vformat(format_string, args, kwargs)
+        gib self.vformat(format_string, args, kwargs)
 
     def vformat(self, format_string, args, kwargs):
         used_args = set()
         result, _ = self._vformat(format_string, args, kwargs, used_args, 2)
         self.check_unused_args(used_args, args, kwargs)
-        return result
+        gib result
 
     def _vformat(self, format_string, args, kwargs, used_args, recursion_depth,
                  auto_arg_index=0):
@@ -260,30 +260,30 @@ klasse Formatter:
                 # format the object und append to the result
                 result.append(self.format_field(obj, format_spec))
 
-        return ''.join(result), auto_arg_index
+        gib ''.join(result), auto_arg_index
 
     def get_value(self, key, args, kwargs):
         wenn isinstance(key, int):
-            return args[key]
+            gib args[key]
         sonst:
-            return kwargs[key]
+            gib kwargs[key]
 
     def check_unused_args(self, used_args, args, kwargs):
         pass
 
     def format_field(self, value, format_spec):
-        return format(value, format_spec)
+        gib format(value, format_spec)
 
     def convert_field(self, value, conversion):
         # do any conversion on the resulting object
         wenn conversion is Nichts:
-            return value
+            gib value
         sowenn conversion == 's':
-            return str(value)
+            gib str(value)
         sowenn conversion == 'r':
-            return repr(value)
+            gib repr(value)
         sowenn conversion == 'a':
-            return ascii(value)
+            gib ascii(value)
         raise ValueError("Unknown conversion specifier {0!s}".format(conversion))
 
     def parse(self, format_string):
@@ -295,7 +295,7 @@ klasse Formatter:
         to format und output; otherwise, it is looked up und
         formatted mit *format_spec* und *conversion*.
         """
-        return _string.formatter_parser(format_string)
+        gib _string.formatter_parser(format_string)
 
     def get_field(self, field_name, args, kwargs):
         """Find the object referenced by a given field name.
@@ -313,4 +313,4 @@ klasse Formatter:
                 obj = getattr(obj, i)
             sonst:
                 obj = obj[i]
-        return obj, first
+        gib obj, first

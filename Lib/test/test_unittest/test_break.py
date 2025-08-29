@@ -224,7 +224,7 @@ klasse TestBreak(unittest.TestCase):
                 self.initArgs.append((args, kwargs))
             def run(self, test):
                 self.runArgs.append(test)
-                return result
+                gib result
 
         klasse Program(unittest.TestProgram):
             def __init__(self, catchbreak):

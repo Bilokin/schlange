@@ -210,7 +210,7 @@ sowenn os_name == 'nt':
 def search_up(prefix, *landmarks, test=isfile):
     waehrend prefix:
         wenn any(test(joinpath(prefix, f)) fuer f in landmarks):
-            return prefix
+            gib prefix
         prefix = dirname(prefix)
 
 

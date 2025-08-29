@@ -49,10 +49,10 @@ except:
     von ctypes importiere CDLL als WinDLL, cdll als windll
 
     def GetLastError() -> int:
-        return 42
+        gib 42
 
     def get_last_error() -> int:
-        return 42
+        gib 42
 
     klasse WinError(OSError):  # type: ignore[no-redef]
         def __init__(self, err: int | Nichts, descr: str | Nichts = Nichts) -> Nichts:
@@ -128,9 +128,9 @@ klasse _error(Exception):
 
 def _supports_vt():
     try:
-        return nt._supports_virtual_terminal()
+        gib nt._supports_virtual_terminal()
     except AttributeError:
-        return Falsch
+        gib Falsch
 
 klasse WindowsConsole(Console):
     def __init__(
@@ -244,7 +244,7 @@ klasse WindowsConsole(Console):
         # avoid inline imports here so the repl doesn't get flooded
         # mit importiere logging von -X importtime=2
         wenn nt is nicht Nichts und nt._is_inputhook_installed():
-            return nt._inputhook
+            gib nt._inputhook
 
     def __write_changed_line(
         self, y: int, oldline: str, newline: str, px_coord: int
@@ -347,7 +347,7 @@ klasse WindowsConsole(Console):
         info = CONSOLE_SCREEN_BUFFER_INFO()
         wenn nicht GetConsoleScreenBufferInfo(OutHandle, info):
             raise WinError(GetLastError())
-        return info.dwCursorPosition.X, info.dwCursorPosition.Y
+        gib info.dwCursorPosition.X, info.dwCursorPosition.Y
 
     def _erase_to_end(self) -> Nichts:
         self.__write(ERASE_IN_LINE)
@@ -407,7 +407,7 @@ klasse WindowsConsole(Console):
         info = CONSOLE_SCREEN_BUFFER_INFO()
         wenn nicht GetConsoleScreenBufferInfo(OutHandle, info):
             raise WinError(GetLastError())
-        return (
+        gib (
             info.srWindow.Bottom - info.srWindow.Top + 1,
             info.srWindow.Right - info.srWindow.Left + 1,
         )
@@ -417,7 +417,7 @@ klasse WindowsConsole(Console):
         wenn nicht GetConsoleScreenBufferInfo(OutHandle, info):
             raise WinError(GetLastError())
 
-        return info.srWindow.Bottom  # type: ignore[no-any-return]
+        gib info.srWindow.Bottom  # type: ignore[no-any-return]
 
     def _read_input(self) -> INPUT_RECORD | Nichts:
         rec = INPUT_RECORD()
@@ -425,7 +425,7 @@ klasse WindowsConsole(Console):
         wenn nicht ReadConsoleInput(InHandle, rec, 1, read):
             raise WinError(GetLastError())
 
-        return rec
+        gib rec
 
     def _read_input_bulk(
         self, n: int
@@ -435,7 +435,7 @@ klasse WindowsConsole(Console):
         wenn nicht ReadConsoleInput(InHandle, rec, n, read):
             raise WinError(GetLastError())
 
-        return rec, read.value
+        gib rec, read.value
 
     def get_event(self, block: bool = Wahr) -> Event | Nichts:
         """Return an Event instance.  Returns Nichts wenn |block| is false
@@ -443,28 +443,28 @@ klasse WindowsConsole(Console):
         completion of an event."""
 
         wenn nicht block und nicht self.wait(timeout=0):
-            return Nichts
+            gib Nichts
 
         waehrend self.event_queue.empty():
             rec = self._read_input()
             wenn rec is Nichts:
-                return Nichts
+                gib Nichts
 
             wenn rec.EventType == WINDOW_BUFFER_SIZE_EVENT:
-                return Event("resize", "")
+                gib Event("resize", "")
 
             wenn rec.EventType != KEY_EVENT oder nicht rec.Event.KeyEvent.bKeyDown:
                 # Only process keys und keydown events
                 wenn block:
                     weiter
-                return Nichts
+                gib Nichts
 
             key_event = rec.Event.KeyEvent
             raw_key = key = key_event.uChar.UnicodeChar
 
             wenn key == "\r":
                 # Make enter unix-like
-                return Event(evt="key", data="\n")
+                gib Event(evt="key", data="\n")
             sowenn key_event.wVirtualKeyCode == 8:
                 # Turn backspace directly into the command
                 key = "backspace"
@@ -475,14 +475,14 @@ klasse WindowsConsole(Console):
                     wenn key_event.dwControlKeyState & CTRL_ACTIVE:
                         key = f"ctrl {key}"
                     sowenn key_event.dwControlKeyState & ALT_ACTIVE:
-                        # queue the key, return the meta command
+                        # queue the key, gib the meta command
                         self.event_queue.insert(Event(evt="key", data=key))
-                        return Event(evt="key", data="\033")  # keymap.py uses this fuer meta
-                    return Event(evt="key", data=key)
+                        gib Event(evt="key", data="\033")  # keymap.py uses this fuer meta
+                    gib Event(evt="key", data=key)
                 wenn block:
                     weiter
 
-                return Nichts
+                gib Nichts
             sowenn self.__vt_support:
                 # If virtual terminal is enabled, scanning VT sequences
                 fuer char in raw_key.encode(self.event_queue.encoding, "replace"):
@@ -494,12 +494,12 @@ klasse WindowsConsole(Console):
                 # Windows internally converts AltGr to CTRL+ALT, see
                 # https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-vkkeyscanw
                 wenn nicht key_event.dwControlKeyState & CTRL_ACTIVE:
-                    # queue the key, return the meta command
+                    # queue the key, gib the meta command
                     self.event_queue.insert(Event(evt="key", data=key))
-                    return Event(evt="key", data="\033")  # keymap.py uses this fuer meta
+                    gib Event(evt="key", data="\033")  # keymap.py uses this fuer meta
 
-            return Event(evt="key", data=key)
-        return self.event_queue.get()
+            gib Event(evt="key", data=key)
+        gib self.event_queue.get()
 
     def push_char(self, char: int | bytes) -> Nichts:
         """
@@ -564,7 +564,7 @@ klasse WindowsConsole(Console):
                 wenn ch == "\r":
                     ch += "\n"
                 e.data += ch
-        return e
+        gib e
 
     def wait(self, timeout: float | Nichts) -> bool:
         """Wait fuer an event."""
@@ -576,8 +576,8 @@ klasse WindowsConsole(Console):
         wenn ret == WAIT_FAILED:
             raise WinError(get_last_error())
         sowenn ret == WAIT_TIMEOUT:
-            return Falsch
-        return Wahr
+            gib Falsch
+        gib Wahr
 
     def repaint(self) -> Nichts:
         raise NotImplementedError("No repaint support")

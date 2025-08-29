@@ -75,7 +75,7 @@ klasse ZipAppTest(unittest.TestCase):
         # Test packing a directory und using filter to specify
         # which files to include.
         def skip_pyc_files(path):
-            return path.suffix != '.pyc'
+            gib path.suffix != '.pyc'
         source = self.tmpdir / 'source'
         source.mkdir()
         (source / '__main__.py').touch()
@@ -131,7 +131,7 @@ klasse ZipAppTest(unittest.TestCase):
         # subdirectory (ensures that the path supplied to include
         # is relative to the source location, als expected).
         def skip_dummy_dir(path):
-            return path.parts[0] != 'dummy'
+            gib path.parts[0] != 'dummy'
         source = self.tmpdir / 'source'
         source.mkdir()
         (source / '__main__.py').touch()
@@ -394,7 +394,7 @@ klasse ZipAppCmdlineTest(unittest.TestCase):
         (source / '__main__.py').touch()
         target = self.tmpdir / 'source.pyz'
         zipapp.create_archive(source, target)
-        return target
+        gib target
 
     def test_cmdline_create(self):
         # Test the basic command line API.
@@ -421,7 +421,7 @@ klasse ZipAppCmdlineTest(unittest.TestCase):
         args = [str(original), '-o', str(original)]
         mit self.assertRaises(SystemExit) als cm:
             zipapp.main(args)
-        # Program should exit mit a non-zero return code.
+        # Program should exit mit a non-zero gib code.
         self.assertWahr(cm.exception.code)
 
     def test_cmdline_copy_change_main(self):
@@ -431,7 +431,7 @@ klasse ZipAppCmdlineTest(unittest.TestCase):
         args = [str(original), '-o', str(target), '-m', 'foo:bar']
         mit self.assertRaises(SystemExit) als cm:
             zipapp.main(args)
-        # Program should exit mit a non-zero return code.
+        # Program should exit mit a non-zero gib code.
         self.assertWahr(cm.exception.code)
 
     @patch('sys.stdout', new_callable=io.StringIO)
@@ -441,7 +441,7 @@ klasse ZipAppCmdlineTest(unittest.TestCase):
         args = [str(target), '--info']
         mit self.assertRaises(SystemExit) als cm:
             zipapp.main(args)
-        # Program should exit mit a zero return code.
+        # Program should exit mit a zero gib code.
         self.assertEqual(cm.exception.code, 0)
         self.assertEqual(mock_stdout.getvalue(), "Interpreter: <none>\n")
 
@@ -451,7 +451,7 @@ klasse ZipAppCmdlineTest(unittest.TestCase):
         args = [str(target), '--info']
         mit self.assertRaises(SystemExit) als cm:
             zipapp.main(args)
-        # Program should exit mit a non-zero return code.
+        # Program should exit mit a non-zero gib code.
         self.assertWahr(cm.exception.code)
 
 

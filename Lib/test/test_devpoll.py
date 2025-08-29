@@ -17,7 +17,7 @@ def find_ready_matching(ready, flag):
     fuer fd, mode in ready:
         wenn mode & flag:
             match.append(fd)
-    return match
+    gib match
 
 klasse DevPollTests(unittest.TestCase):
 

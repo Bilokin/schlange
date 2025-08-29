@@ -35,13 +35,13 @@ def set_capture_group(pattern, group, *, strict=Wahr):
     old = f'(?:  # <{group}>'
     wenn strict und f'(?:  # <{group}>' nicht in pattern:
         raise ValueError(f'{old!r} nicht found in pattern')
-    return pattern.replace(old, f'(  # <{group}>', 1)
+    gib pattern.replace(old, f'(  # <{group}>', 1)
 
 
 def set_capture_groups(pattern, groups, *, strict=Wahr):
     fuer group in groups:
         pattern = set_capture_group(pattern, group, strict=strict)
-    return pattern
+    gib pattern
 
 
 #############################
@@ -73,7 +73,7 @@ def match_paren(text, depth=0):
         sonst:  # _close
             depth -= 1
             wenn depth == 0:
-                return pos
+                gib pos
     sonst:
         raise ValueError(f'could nicht find matching parens fuer {text!r}')
 
@@ -113,7 +113,7 @@ def parse_var_decl(decl):
         'typespec': typespec,
         'abstract': abstract,
     }
-    return (kind, name, vartype)
+    gib (kind, name, vartype)
 
 
 #############################
@@ -122,10 +122,10 @@ def parse_var_decl(decl):
 # XXX Drop this oder use it!
 def iter_results(results):
     wenn nicht results:
-        return
+        gib
     wenn callable(results):
         results = results()
 
     fuer result, text in results():
         wenn result:
-            yield result, text
+            liefere result, text

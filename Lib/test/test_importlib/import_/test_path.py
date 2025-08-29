@@ -121,7 +121,7 @@ klasse FinderTests:
         klasse TestFinder:
             spec = Nichts
             def find_spec(self, fullname, target=Nichts):
-                return self.spec
+                gib self.spec
         path = 'testing path'
         mit util.import_state(path_importer_cache={path: TestFinder()}):
             self.assertIsNichts(
@@ -216,7 +216,7 @@ klasse FinderTests:
 klasse FindModuleTests(FinderTests):
     def find(self, *args, **kwargs):
         spec = self.machinery.PathFinder.find_spec(*args, **kwargs)
-        return Nichts wenn spec is Nichts sonst spec.loader
+        gib Nichts wenn spec is Nichts sonst spec.loader
 
     def check_found(self, found, importer):
         self.assertIs(found, importer)
@@ -229,7 +229,7 @@ klasse FindModuleTests(FinderTests):
 
 klasse FindSpecTests(FinderTests):
     def find(self, *args, **kwargs):
-        return self.machinery.PathFinder.find_spec(*args, **kwargs)
+        gib self.machinery.PathFinder.find_spec(*args, **kwargs)
     def check_found(self, found, importer):
         self.assertIs(found.loader, importer)
 
@@ -250,7 +250,7 @@ klasse PathEntryFinderTests:
 
             @staticmethod
             def find_spec(fullname, target=Nichts):
-                return Nichts
+                gib Nichts
 
 
         mit util.import_state(path=[Finder.path_location]+sys.path[:],

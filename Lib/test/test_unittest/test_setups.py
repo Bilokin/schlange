@@ -5,13 +5,13 @@ importiere unittest
 
 
 def resultFactory(*_):
-    return unittest.TestResult()
+    gib unittest.TestResult()
 
 
 klasse TestSetups(unittest.TestCase):
 
     def getRunner(self):
-        return unittest.TextTestRunner(resultclass=resultFactory,
+        gib unittest.TextTestRunner(resultclass=resultFactory,
                                           stream=io.StringIO())
     def runTests(self, *cases):
         suite = unittest.TestSuite()
@@ -27,7 +27,7 @@ klasse TestSetups(unittest.TestCase):
         # adding empty suites to the end exposes potential bugs
         suite.addTest(unittest.TestSuite())
         realSuite.addTest(unittest.TestSuite())
-        return runner.run(realSuite)
+        gib runner.run(realSuite)
 
     def test_setup_class(self):
         klasse Test(unittest.TestCase):

@@ -29,7 +29,7 @@ def listcodecs(dir):
                 drucke('* problem importing codec %r: %s' % \
                       (name, reason))
         names.append(name)
-    return names
+    gib names
 
 
 wenn __name__ == '__main__':

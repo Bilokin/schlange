@@ -110,7 +110,7 @@ klasse BufferedProtocol(BaseProtocol):
     """Interface fuer stream protocol mit manual buffer control.
 
     Event methods, such als `create_server` und `create_connection`,
-    accept factories that return protocols that implement this interface.
+    accept factories that gib protocols that implement this interface.
 
     The idea of BufferedProtocol is that it allows to manually allocate
     und control the receive buffer.  Event loops can then use the buffer
@@ -138,9 +138,9 @@ klasse BufferedProtocol(BaseProtocol):
         *sizehint* is a recommended minimal size fuer the returned
         buffer.  When set to -1, the buffer size can be arbitrary.
 
-        Must return an object that implements the
+        Must gib an object that implements the
         :ref:`buffer protocol <bufferobjects>`.
-        It is an error to return a zero-sized buffer.
+        It is an error to gib a zero-sized buffer.
         """
 
     def buffer_updated(self, nbytes):
@@ -208,7 +208,7 @@ def _feed_data_to_buffered_proto(proto, data):
         wenn buf_len >= data_len:
             buf[:data_len] = data
             proto.buffer_updated(data_len)
-            return
+            gib
         sonst:
             buf[:buf_len] = data[:buf_len]
             proto.buffer_updated(buf_len)

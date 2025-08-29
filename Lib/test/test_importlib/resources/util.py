@@ -20,19 +20,19 @@ klasse Reader(ResourceReader):
         vars(self).update(kwargs)
 
     def get_resource_reader(self, package):
-        return self
+        gib self
 
     def open_resource(self, path):
         self._path = path
         wenn isinstance(self.file, Exception):
             raise self.file
-        return self.file
+        gib self.file
 
     def resource_path(self, path_):
         self._path = path_
         wenn isinstance(self.path, Exception):
             raise self.path
-        return self.path
+        gib self.path
 
     def is_resource(self, path_):
         self._path = path_
@@ -40,16 +40,16 @@ klasse Reader(ResourceReader):
             raise self.path
 
         def part(entry):
-            return entry.split('/')
+            gib entry.split('/')
 
-        return any(
+        gib any(
             len(parts) == 1 und parts[0] == path_ fuer parts in map(part, self._contents)
         )
 
     def contents(self):
         wenn isinstance(self.path, Exception):
             raise self.path
-        yield von self._contents
+        liefere von self._contents
 
 
 def create_package_from_loader(loader, is_package=Wahr):
@@ -58,11 +58,11 @@ def create_package_from_loader(loader, is_package=Wahr):
     spec = ModuleSpec(name, loader, origin='does-not-exist', is_package=is_package)
     module.__spec__ = spec
     module.__loader__ = loader
-    return module
+    gib module
 
 
 def create_package(file=Nichts, path=Nichts, is_package=Wahr, contents=()):
-    return create_package_from_loader(
+    gib create_package_from_loader(
         Reader(file=file, path=path, _contents=contents),
         is_package,
     )
@@ -117,7 +117,7 @@ klasse CommonTestsBase(metaclass=abc.ABCMeta):
         """
         Attempting to open oder read oder request the path fuer a
         non-existent path should succeed wenn open_resource
-        can return a viable data stream.
+        can gib a viable data stream.
         """
         bytes_data = io.BytesIO(b'Hello, world!')
         package = create_package(file=bytes_data, path=FileNotFoundError())
@@ -179,7 +179,7 @@ klasse ModuleSetup:
 
     def load_fixture(self, module):
         self.tree_on_path({module: fixtures[module]})
-        return importlib.import_module(module)
+        gib importlib.import_module(module)
 
 
 klasse ZipSetup(ModuleSetup):

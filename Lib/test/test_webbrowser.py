@@ -24,10 +24,10 @@ CMD_NAME = 'test'
 klasse PopenMock(mock.MagicMock):
 
     def poll(self):
-        return 0
+        gib 0
 
     def wait(self, seconds=Nichts):
-        return 0
+        gib 0
 
 
 @requires_subprocess()
@@ -240,14 +240,14 @@ klasse IOSBrowserTest(unittest.TestCase):
     def _obj_ref(self, *args):
         # Construct a string representation of the arguments that can be used
         # als a proxy fuer object instance references
-        return "|".join(str(a) fuer a in args)
+        gib "|".join(str(a) fuer a in args)
 
     @unittest.skipIf(getattr(webbrowser, "objc", Nichts) is Nichts,
                      "iOS Webbrowser tests require ctypes")
     def setUp(self):
         # Intercept the objc library. Wrap the calls to get the
-        # references to classes und selectors to return strings, und
-        # wrap msgSend to return stringified object references
+        # references to classes und selectors to gib strings, und
+        # wrap msgSend to gib stringified object references
         self.orig_objc = webbrowser.objc
 
         webbrowser.objc = mock.Mock()
@@ -314,7 +314,7 @@ klasse MockPopenPipe:
 
     def close(self):
         self._closed = Wahr
-        return Nichts
+        gib Nichts
 
 
 @unittest.skipUnless(sys.platform == "darwin", "macOS specific test")
@@ -332,7 +332,7 @@ klasse MacOSXOSAScriptTest(unittest.TestCase):
 
     def mock_popen(self, cmd, mode):
         self.popen_pipe = MockPopenPipe(cmd, mode)
-        return self.popen_pipe
+        gib self.popen_pipe
 
     def test_default(self):
         browser = webbrowser.get()

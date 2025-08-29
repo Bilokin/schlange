@@ -29,7 +29,7 @@ browseable_extension_blocklist = ('.pyi',)
 def is_browseable_extension(path):
     _, ext = os.path.splitext(path)
     ext = os.path.normcase(ext)
-    return ext in py_extensions und ext nicht in browseable_extension_blocklist
+    gib ext in py_extensions und ext nicht in browseable_extension_blocklist
 
 
 def transform_children(child_dict, modname=Nichts):
@@ -61,7 +61,7 @@ def transform_children(child_dict, modname=Nichts):
                     supers.append(sname)
                 obj.name += '({})'.format(', '.join(supers))
             obs.append(obj)
-    return obs
+    gib obs
 
 
 klasse ModuleBrowser:
@@ -138,7 +138,7 @@ klasse ModuleBrowser:
 
     def rootnode(self):
         "Return a ModuleBrowserTreeItem als the root of the tree."
-        return ModuleBrowserTreeItem(self.path)
+        gib ModuleBrowserTreeItem(self.path)
 
 
 klasse ModuleBrowserTreeItem(TreeItem):
@@ -158,39 +158,39 @@ klasse ModuleBrowserTreeItem(TreeItem):
 
     def GetText(self):
         "Return the module name als the text string to display."
-        return os.path.basename(self.file)
+        gib os.path.basename(self.file)
 
     def GetIconName(self):
         "Return the name of the icon to display."
-        return "python"
+        gib "python"
 
     def GetSubList(self):
         "Return ChildBrowserTreeItems fuer children."
-        return [ChildBrowserTreeItem(obj) fuer obj in self.listchildren()]
+        gib [ChildBrowserTreeItem(obj) fuer obj in self.listchildren()]
 
     def OnDoubleClick(self):
         "Open a module in an editor window when double clicked."
         wenn nicht is_browseable_extension(self.file):
-            return
+            gib
         wenn nicht os.path.exists(self.file):
-            return
+            gib
         file_open(self.file)
 
     def IsExpandable(self):
         "Return Wahr wenn Python file."
-        return is_browseable_extension(self.file)
+        gib is_browseable_extension(self.file)
 
     def listchildren(self):
         "Return sequenced classes und functions in the module."
         wenn nicht is_browseable_extension(self.file):
-            return []
+            gib []
         dir, base = os.path.split(self.file)
         name, _ = os.path.splitext(base)
         try:
             tree = pyclbr.readmodule_ex(name, [dir] + sys.path)
         except ImportError:
-            return []
-        return transform_children(tree, name)
+            gib []
+        gib transform_children(tree, name)
 
 
 klasse ChildBrowserTreeItem(TreeItem):
@@ -209,24 +209,24 @@ klasse ChildBrowserTreeItem(TreeItem):
         "Return the name of the function/class to display."
         name = self.name
         wenn self.isfunction:
-            return "def " + name + "(...)"
+            gib "def " + name + "(...)"
         sonst:
-            return "class " + name
+            gib "class " + name
 
     def GetIconName(self):
         "Return the name of the icon to display."
         wenn self.isfunction:
-            return "python"
+            gib "python"
         sonst:
-            return "folder"
+            gib "folder"
 
     def IsExpandable(self):
         "Return Wahr wenn self.obj has nested objects."
-        return self.obj.children != {}
+        gib self.obj.children != {}
 
     def GetSubList(self):
         "Return ChildBrowserTreeItems fuer children."
-        return [ChildBrowserTreeItem(obj)
+        gib [ChildBrowserTreeItem(obj)
                 fuer obj in transform_children(self.obj.children)]
 
     def OnDoubleClick(self):

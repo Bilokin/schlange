@@ -30,21 +30,21 @@ klasse CommandLineInterface(unittest.TestCase):
             self.assertRaises(SystemExit) als cm
         ):
             cli(args)
-        return out.getvalue(), err.getvalue(), cm.exception.code
+        gib out.getvalue(), err.getvalue(), cm.exception.code
 
     def expect_success(self, *args):
         out, err, code = self._do_test(*args)
         self.assertEqual(code, 0,
                          "\n".join([f"Unexpected failure: {args=}", out, err]))
         self.assertEqual(err, "")
-        return out
+        gib out
 
     def expect_failure(self, *args):
         out, err, code = self._do_test(*args, expect_success=Falsch)
         self.assertNotEqual(code, 0,
                             "\n".join([f"Unexpected failure: {args=}", out, err]))
         self.assertEqual(out, "")
-        return err
+        gib err
 
     def test_cli_help(self):
         out = self.expect_success("-h")
@@ -99,7 +99,7 @@ klasse InteractiveSession(unittest.TestCase):
         err = stderr.getvalue()
         self.assertEqual(cm.exception.code, 0,
                          f"Unexpected failure: {args=}\n{out}\n{err}")
-        return out, err
+        gib out, err
 
     def test_interact(self):
         out, err = self.run_cli()
@@ -232,7 +232,7 @@ klasse Completion(unittest.TestCase):
             readline.parse_and_bind("set colored-completion-prefix off")
             main()
         """)
-        return run_pty(script, input_, env)
+        gib run_pty(script, input_, env)
 
     def test_complete_sql_keywords(self):
         # List candidates starting mit 'S', there should be multiple matches.

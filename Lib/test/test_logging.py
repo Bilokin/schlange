@@ -187,7 +187,7 @@ klasse BaseTest(unittest.TestCase):
         """Generate a message consisting solely of an auto-incrementing
         integer."""
         self.message_num += 1
-        return "%d" % self.message_num
+        gib "%d" % self.message_num
 
 
 klasse BuiltinLevelsTest(BaseTest):
@@ -376,7 +376,7 @@ klasse BasicFilterTest(BaseTest):
         def filterfunc(record):
             parts = record.name.split('.')
             prefix = '.'.join(parts[:2])
-            return prefix == 'spam.eggs'
+            gib prefix == 'spam.eggs'
 
         handler = self.root_logger.handlers[0]
         try:
@@ -446,14 +446,14 @@ klasse GarrulousFilter(logging.Filter):
     """A filter which blocks garrulous messages."""
 
     def filter(self, record):
-        return record.levelno != GARRULOUS
+        gib record.levelno != GARRULOUS
 
 klasse VerySpecificFilter(logging.Filter):
 
     """A filter which blocks sociable und taciturn messages."""
 
     def filter(self, record):
-        return record.levelno nicht in [SOCIABLE, TACITURN]
+        gib record.levelno nicht in [SOCIABLE, TACITURN]
 
 
 klasse CustomLevelsAndFiltersTest(BaseTest):
@@ -476,7 +476,7 @@ klasse CustomLevelsAndFiltersTest(BaseTest):
         def replace_message(record: logging.LogRecord):
             record = copy.copy(record)
             record.msg = "new message!"
-            return record
+            gib record
 
         # Set up a logging hierarchy such that "child" und it's handler
         # (and thus `replace_message()`) always get called before
@@ -506,7 +506,7 @@ klasse CustomLevelsAndFiltersTest(BaseTest):
         klasse RecordingFilter(logging.Filter):
             def filter(self, record: logging.LogRecord):
                 records.add(id(record))
-                return copy.copy(record)
+                gib copy.copy(record)
 
         logger = logging.getLogger("logger")
         logger.setLevel(logging.INFO)
@@ -593,7 +593,7 @@ klasse CustomLevelsAndFiltersTest(BaseTest):
 def make_temp_file(*args, **kwargs):
     fd, fn = tempfile.mkstemp(*args, **kwargs)
     os.close(fd)
-    return fn
+    gib fn
 
 
 klasse HandlerTest(BaseTest):
@@ -996,7 +996,7 @@ klasse TestHTTPServer(ControlMixin, HTTPServer):
         klasse DelegatingHTTPRequestHandler(BaseHTTPRequestHandler):
             def __getattr__(self, name, default=Nichts):
                 wenn name.startswith('do_'):
-                    return self.process_request
+                    gib self.process_request
                 raise AttributeError(name)
 
             def process_request(self):
@@ -1019,7 +1019,7 @@ klasse TestHTTPServer(ControlMixin, HTTPServer):
             # socket errors are silenced by the caller, print them here
             sys.stderr.write("Got an error:\n%s\n" % e)
             raise
-        return sock, addr
+        gib sock, addr
 
 klasse TestTCPServer(ControlMixin, ThreadingTCPServer):
     """
@@ -1280,7 +1280,7 @@ klasse MemoryHandlerTest(BaseTest):
 klasse ExceptionFormatter(logging.Formatter):
     """A special exception formatter."""
     def formatException(self, ei):
-        return "Got a [%s]" % ei[0].__name__
+        gib "Got a [%s]" % ei[0].__name__
 
 def closeFileHandler(h, fn):
     h.close()
@@ -1857,7 +1857,7 @@ klasse SocketHandlerTest(BaseTest):
             # raise OSError('dummy error raised')
         except OSError als e:
             self.server_exception = e
-            return
+            gib
         server.ready.wait()
         hcls = logging.handlers.SocketHandler
         wenn isinstance(server.server_address, tuple):
@@ -1963,7 +1963,7 @@ klasse DatagramHandlerTest(BaseTest):
             # raise OSError('dummy error raised')
         except OSError als e:
             self.server_exception = e
-            return
+            gib
         server.ready.wait()
         hcls = logging.handlers.DatagramHandler
         wenn isinstance(server.server_address, tuple):
@@ -2043,7 +2043,7 @@ klasse SysLogHandlerTest(BaseTest):
             # raise OSError('dummy error raised')
         except OSError als e:
             self.server_exception = e
-            return
+            gib
         server.ready.wait()
         hcls = logging.handlers.SysLogHandler
         wenn isinstance(server.server_address, tuple):
@@ -2361,14 +2361,14 @@ klasse WarningsTest(BaseTest):
 
 
 def formatFunc(format, datefmt=Nichts):
-    return logging.Formatter(format, datefmt)
+    gib logging.Formatter(format, datefmt)
 
 klasse myCustomFormatter:
     def __init__(self, fmt, datefmt=Nichts):
         pass
 
 def handlerFunc():
-    return logging.StreamHandler()
+    gib logging.StreamHandler()
 
 klasse CustomHandler(logging.StreamHandler):
     pass
@@ -2385,7 +2385,7 @@ klasse CustomQueueProtocol:
 
     def __getattr__(self, attribute):
         queue = object.__getattribute__(self, 'queue')
-        return getattr(queue, attribute)
+        gib getattr(queue, attribute)
 
 klasse CustomQueueFakeProtocol(CustomQueueProtocol):
     # An object implementing the minimial Queue API for
@@ -2406,13 +2406,13 @@ klasse MinimalQueueProtocol:
     def get(self): pass
 
 def queueMaker():
-    return queue.Queue()
+    gib queue.Queue()
 
 def listenerMaker(arg1, arg2, respect_handler_level=Falsch):
     def func(queue, *handlers, **kwargs):
         kwargs.setdefault('respect_handler_level', respect_handler_level)
-        return CustomListener(queue, *handlers, **kwargs)
-    return func
+        gib CustomListener(queue, *handlers, **kwargs)
+    gib func
 
 klasse ConfigDictTest(BaseTest):
 
@@ -3045,7 +3045,7 @@ klasse ConfigDictTest(BaseTest):
         custom_property = "."
 
         def format(self, record):
-            return super().format(record)
+            gib super().format(record)
 
     config17 = {
         'version': 1,
@@ -3697,10 +3697,10 @@ klasse ConfigDictTest(BaseTest):
     def test_listen_verify(self):
 
         def verify_fail(stuff):
-            return Nichts
+            gib Nichts
 
         def verify_reverse(stuff):
-            return stuff[::-1]
+            gib stuff[::-1]
 
         logger = logging.getLogger("compiler.parser")
         to_send = textwrap.dedent(ConfigFileTest.config1)
@@ -3878,7 +3878,7 @@ klasse ConfigDictTest(BaseTest):
 
             def emit(self, record):
                 record.msg += f' {self.resource.type}'
-                return super().emit(record)
+                gib super().emit(record)
 
         Resource = namedtuple('Resource', ['type', 'labels'])
         resource = Resource(type='my_type', labels=['a'])
@@ -3900,7 +3900,7 @@ klasse ConfigDictTest(BaseTest):
 
     def test_config_callable_filter_works(self):
         def filter_(_):
-            return 1
+            gib 1
         self.apply_config({
             "version": 1, "root": {"level": "DEBUG", "filters": [filter_]}
         })
@@ -3918,7 +3918,7 @@ klasse ConfigDictTest(BaseTest):
     def test_config_filter_method_works(self):
         klasse FakeFilter:
             def filter(self, _):
-                return 1
+                gib 1
         filter_ = FakeFilter()
         self.apply_config({
             "version": 1, "root": {"level": "DEBUG", "filters": [filter_]}
@@ -4289,7 +4289,7 @@ klasse LogRecordFactoryTest(BaseTest):
                     msg = 'Unexpected LogRecord type %s, expected %s' % (t,
                             self.cls)
                     raise TypeError(msg)
-                return Wahr
+                gib Wahr
 
         BaseTest.setUp(self)
         self.filter = CheckingFilter(DerivedLogRecord)
@@ -4499,9 +4499,9 @@ wenn hasattr(logging.handlers, 'QueueListener'):
         def get_all_from_queue(log_queue):
             try:
                 waehrend Wahr:
-                    yield log_queue.get_nowait()
+                    liefere log_queue.get_nowait()
             except queue.Empty:
-                return []
+                gib []
 
         def test_no_messages_in_queue_after_stop(self):
             """
@@ -4542,12 +4542,12 @@ ZERO = datetime.timedelta(0)
 
 klasse UTC(datetime.tzinfo):
     def utcoffset(self, dt):
-        return ZERO
+        gib ZERO
 
     dst = utcoffset
 
     def tzname(self, dt):
-        return 'UTC'
+        gib 'UTC'
 
 utc = UTC()
 
@@ -4581,7 +4581,7 @@ klasse FormatterTest(unittest.TestCase, AssertErrorMessage):
         result = dict(self.common)
         wenn name is nicht Nichts:
             result.update(self.variants[name])
-        return logging.makeLogRecord(result)
+        gib logging.makeLogRecord(result)
 
     def test_percent(self):
         # Test %-formatting
@@ -4916,10 +4916,10 @@ klasse FormatterTest(unittest.TestCase, AssertErrorMessage):
 
 klasse TestBufferingFormatter(logging.BufferingFormatter):
     def formatHeader(self, records):
-        return '[(%d)' % len(records)
+        gib '[(%d)' % len(records)
 
     def formatFooter(self, records):
-        return '(%d)]' % len(records)
+        gib '(%d)]' % len(records)
 
 klasse BufferingFormatterTest(unittest.TestCase):
     def setUp(self):
@@ -5010,7 +5010,7 @@ klasse FakeHandler:
     def record_call(self, identifier, method_name, called):
         def inner():
             called.append('{} - {}'.format(identifier, method_name))
-        return inner
+        gib inner
 
 
 klasse RecordingHandler(logging.NullHandler):
@@ -5038,7 +5038,7 @@ klasse ShutdownTest(BaseTest):
     def raise_error(self, error):
         def inner():
             raise error()
-        return inner
+        gib inner
 
     def test_no_failure(self):
         # create some fake handlers
@@ -5339,7 +5339,7 @@ klasse LogRecordTest(BaseTest):
         wenn conn:
             conn.send(results)
         sonst:
-            return results
+            gib results
 
     @warnings_helper.ignore_fork_in_thread_deprecation_warnings()
     @skip_if_tsan_fork
@@ -6013,7 +6013,7 @@ klasse PrefixAdapter(logging.LoggerAdapter):
     prefix = 'Adapter'
 
     def process(self, msg, kwargs):
-        return f"{self.prefix} {msg}", kwargs
+        gib f"{self.prefix} {msg}", kwargs
 
 
 klasse Message:
@@ -6022,7 +6022,7 @@ klasse Message:
         self.args = args
 
     def __str__(self):
-        return self.fmt.format(*self.args)
+        gib self.fmt.format(*self.args)
 
 
 klasse StyleAdapter(logging.LoggerAdapter):
@@ -6282,7 +6282,7 @@ klasse BaseFileTest(BaseTest):
         self.rmfiles.append(filename)
 
     def next_rec(self):
-        return logging.LogRecord('n', logging.DEBUG, 'p', 1,
+        gib logging.LogRecord('n', logging.DEBUG, 'p', 1,
                                  self.next_message(), Nichts, Nichts, Nichts)
 
 klasse FileHandlerTest(BaseFileTest):
@@ -6382,7 +6382,7 @@ klasse RotatingFileHandlerTest(BaseFileTest):
 
     def test_rollover_filenames(self):
         def namer(name):
-            return name + ".test"
+            gib name + ".test"
         rh = logging.handlers.RotatingFileHandler(
             self.fn, encoding="utf-8", backupCount=2, maxBytes=1)
         rh.namer = namer
@@ -6402,7 +6402,7 @@ klasse RotatingFileHandlerTest(BaseFileTest):
     def test_namer_rotator_inheritance(self):
         klasse HandlerWithNamerAndRotator(logging.handlers.RotatingFileHandler):
             def namer(self, name):
-                return name + ".test"
+                gib name + ".test"
 
             def rotator(self, source, dest):
                 wenn os.path.exists(source):
@@ -6421,7 +6421,7 @@ klasse RotatingFileHandlerTest(BaseFileTest):
     @support.requires_zlib()
     def test_rotator(self):
         def namer(name):
-            return name + ".gz"
+            gib name + ".gz"
 
         def rotator(source, dest):
             mit open(source, "rb") als sf:
@@ -6693,7 +6693,7 @@ klasse TimedRotatingFileHandlerTest(BaseFileTest):
                 def namer(filename):
                     dirname, basename = os.path.split(filename)
                     basename = basename.replace('.log', '') + '.log'
-                    return os.path.join(dirname, basename)
+                    gib os.path.join(dirname, basename)
                 rotator.namer = namer
                 fuer t in times:
                     files.append('%s.%s.log' % (prefix, t))
@@ -6701,7 +6701,7 @@ klasse TimedRotatingFileHandlerTest(BaseFileTest):
                 def namer(filename):
                     dirname, basename = os.path.split(filename)
                     basename = 'g' + basename[6:] + '.oldlog'
-                    return os.path.join(dirname, basename)
+                    gib os.path.join(dirname, basename)
                 rotator.namer = namer
                 fuer t in times:
                     files.append('g%s.oldlog' % t)
@@ -7135,7 +7135,7 @@ klasse TimedRotatingFileHandlerTest(BaseFileTest):
 
 
 def secs(**kw):
-    return datetime.timedelta(**kw) // datetime.timedelta(seconds=1)
+    gib datetime.timedelta(**kw) // datetime.timedelta(seconds=1)
 
 fuer when, exp in (('S', 1),
                   ('M', 60),

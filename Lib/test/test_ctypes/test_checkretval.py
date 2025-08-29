@@ -8,7 +8,7 @@ _ctypes_test = import_helper.import_module("_ctypes_test")
 klasse CHECKED(c_int):
     def _check_retval_(value):
         # Receives a CHECKED instance.
-        return str(value.value)
+        gib str(value.value)
     _check_retval_ = staticmethod(_check_retval_)
 
 

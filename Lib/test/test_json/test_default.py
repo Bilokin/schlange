@@ -13,10 +13,10 @@ klasse TestDefault:
             wenn obj is NotImplemented:
                 raise ValueError
             wenn obj is ...:
-                return NotImplemented
+                gib NotImplemented
             wenn obj is type:
-                return collections
-            return [...]
+                gib collections
+            gib [...]
 
         mit self.assertRaises(ValueError) als cm:
             self.dumps(type, default=default)

@@ -51,7 +51,7 @@ def main():
     up()
 
     goto(0,300) # vanish wenn hideturtle() is nicht available ;-)
-    return "Done!"
+    gib "Done!"
 
 wenn __name__ == "__main__":
     main()

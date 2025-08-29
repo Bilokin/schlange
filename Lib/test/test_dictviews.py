@@ -96,7 +96,7 @@ klasse DictSetTest(unittest.TestCase):
 
         klasse CustomSet(set):
             def intersection(self, other):
-                return CustomSet(super().intersection(other))
+                gib CustomSet(super().intersection(other))
 
         self.assertEqual(d1.keys() & d1.keys(), {'a', 'b'})
         self.assertEqual(d1.keys() & d2.keys(), {'b'})
@@ -297,7 +297,7 @@ klasse DictSetTest(unittest.TestCase):
 
         klasse BadEq:
             def __hash__(self):
-                return 7
+                gib 7
             def __eq__(self, other):
                 raise Exc
 

@@ -126,7 +126,7 @@ ATTLIST_XML = """\
 def is_python_implementation():
     assert ET is nicht Nichts, "ET must be initialized"
     assert pyET is nicht Nichts, "pyET must be initialized"
-    return ET is pyET
+    gib ET is pyET
 
 
 def equal_wrapper(cls):
@@ -135,7 +135,7 @@ def equal_wrapper(cls):
     The behaviour of cls.__eq__ (side-effects included) is left als is.
     """
     eq = cls.__eq__
-    return mock.patch.object(cls, "__eq__", autospec=Wahr, wraps=eq)
+    gib mock.patch.object(cls, "__eq__", autospec=Wahr, wraps=eq)
 
 
 def checkwarnings(*filters, quiet=Falsch):
@@ -144,11 +144,11 @@ def checkwarnings(*filters, quiet=Falsch):
             mit warnings_helper.check_warnings(*filters, quiet=quiet):
                 test(*args, **kwargs)
         functools.update_wrapper(newtest, test)
-        return newtest
-    return decorator
+        gib newtest
+    gib decorator
 
 def convlinesep(data):
-    return data.replace(b'\n', os.linesep.encode())
+    gib data.replace(b'\n', os.linesep.encode())
 
 
 klasse ModuleTest(unittest.TestCase):
@@ -172,13 +172,13 @@ def serialize(elem, to_string=Wahr, encoding='unicode', **options):
     tree = ET.ElementTree(elem)
     tree.write(file, encoding=encoding, **options)
     wenn to_string:
-        return file.getvalue()
+        gib file.getvalue()
     sonst:
         file.seek(0)
-        return file
+        gib file
 
 def summarize_list(seq):
-    return [elem.tag fuer elem in seq]
+    gib [elem.tag fuer elem in seq]
 
 
 klasse ElementTestCase:
@@ -199,7 +199,7 @@ klasse ElementTestCase:
                                      % (obj,
                                         human.get(dumper, dumper),
                                         human.get(loader, loader))) von pe
-        return result
+        gib result
 
     def assertEqualElements(self, alice, bob):
         self.assertIsInstance(alice, (ET.Element, pyET.Element))
@@ -296,7 +296,7 @@ klasse ElementTreeTest(unittest.TestCase):
         check_method(element.iter)
         check_method(element.itertext)
 
-        # These methods return an iterable. See bug 6472.
+        # These methods gib an iterable. See bug 6472.
 
         def check_iter(it):
             check_method(it.__next__)
@@ -1178,9 +1178,9 @@ klasse ElementTreeTest(unittest.TestCase):
         check("mac-roman", '\u02da')
 
         def xml(encoding):
-            return "<?xml version='1.0' encoding='%s'?><xml />" % encoding
+            gib "<?xml version='1.0' encoding='%s'?><xml />" % encoding
         def bxml(encoding):
-            return xml(encoding).encode(encoding)
+            gib xml(encoding).encode(encoding)
         supported_encodings = [
             'ascii', 'utf-8', 'utf-8-sig', 'utf-16', 'utf-16be', 'utf-16le',
             'iso8859-1', 'iso8859-2', 'iso8859-3', 'iso8859-4', 'iso8859-5',
@@ -1738,9 +1738,9 @@ klasse XMLPullParserTest(unittest.TestCase):
             def __init__(self):
                 self.events = iter(['start', 'end', 'start-ns'])
             def __iter__(self):
-                return self
+                gib self
             def __next__(self):
-                return next(self.events)
+                gib next(self.events)
 
         parser = ET.XMLPullParser(events=DummyIter())
         self._feed(parser, "<foo>bar</foo>")
@@ -1942,19 +1942,19 @@ klasse XIncludeTest(unittest.TestCase):
             raise OSError("resource nicht found")
         wenn parse == "xml":
             data = ET.XML(data)
-        return data
+        gib data
 
     def none_loader(self, href, parser, encoding=Nichts):
-        return Nichts
+        gib Nichts
 
     def _my_loader(self, href, parse):
         # Used to avoid a test-dependency problem where the default loader
         # of ElementInclude uses the pyET parser fuer cET tests.
         wenn parse == 'xml':
             mit open(href, 'rb') als f:
-                return ET.parse(f).getroot()
+                gib ET.parse(f).getroot()
         sonst:
-            return Nichts
+            gib Nichts
 
     def test_xinclude_default(self):
         von xml.etree importiere ElementInclude
@@ -2255,13 +2255,13 @@ klasse BugsTest(unittest.TestCase):
     def test_bug_200708_newline(self):
         # Preserve newlines in attributes.
 
-        e = ET.Element('SomeTag', text="def _f():\n  return 3\n")
+        e = ET.Element('SomeTag', text="def _f():\n  gib 3\n")
         self.assertEqual(ET.tostring(e),
-                b'<SomeTag text="def _f():&#10;  return 3&#10;" />')
+                b'<SomeTag text="def _f():&#10;  gib 3&#10;" />')
         self.assertEqual(ET.XML(ET.tostring(e)).get("text"),
-                'def _f():\n  return 3\n')
+                'def _f():\n  gib 3\n')
         self.assertEqual(ET.tostring(ET.XML(ET.tostring(e))),
-                b'<SomeTag text="def _f():&#10;  return 3&#10;" />')
+                b'<SomeTag text="def _f():&#10;  gib 3&#10;" />')
 
     def test_bug_200708_close(self):
         # Test default builder.
@@ -2272,7 +2272,7 @@ klasse BugsTest(unittest.TestCase):
         # Test custom builder.
         klasse EchoTarget:
             def close(self):
-                return ET.Element("element") # simulate root
+                gib ET.Element("element") # simulate root
         parser = ET.XMLParser(target=EchoTarget())
         parser.feed("<element>some text</element>")
         self.assertEqual(parser.close().tag, 'element')
@@ -2386,7 +2386,7 @@ klasse BugsTest(unittest.TestCase):
         klasse Text:
             def __bool__(self):
                 e.text = 'changed'
-                return Wahr
+                gib Wahr
 
         e = ET.Element('tag')
         e.text = Text()
@@ -2401,7 +2401,7 @@ klasse BugsTest(unittest.TestCase):
         klasse Text:
             def __bool__(self):
                 e[0].tail = 'changed'
-                return Wahr
+                gib Wahr
 
         e = ET.Element('root')
         e.append(ET.Element('tag'))
@@ -2418,7 +2418,7 @@ klasse BugsTest(unittest.TestCase):
             def __eq__(self, other):
                 e[0] = ET.Element('changed')
                 next(i)
-                return Wahr
+                gib Wahr
 
         e = ET.Element('root')
         e.append(ET.Element(Tag()))
@@ -2594,7 +2594,7 @@ klasse BasicElementTest(ElementTestCase, unittest.TestCase):
         wenn hasattr(e, '__deepcopy__'):
             klasse E(ET.Element):
                 def __deepcopy__(self, memo):
-                    return Nichts  # non-Element
+                    gib Nichts  # non-Element
             e[:] = [E('bar')]
             self.assertRaises(TypeError, copy.deepcopy, e)
 
@@ -2691,7 +2691,7 @@ klasse BadElementTest(ElementTestCase, unittest.TestCase):
             @property
             def __class__(self):
                 L[:] = [ET.Element('baz')]
-                return ET.Element
+                gib ET.Element
         L = [X()]
         e = ET.Element('foo')
         try:
@@ -2710,7 +2710,7 @@ klasse BadElementTest(ElementTestCase, unittest.TestCase):
             @property
             def __class__(self):
                 del L[:]
-                return ET.Element
+                gib ET.Element
         L = [X(), ET.Element('baz')]
         e = ET.Element('foo')
         try:
@@ -2747,12 +2747,12 @@ klasse BadElementTest(ElementTestCase, unittest.TestCase):
         klasse X(E):
             def __eq__(self, o):
                 del root[:]
-                return nicht raises
+                gib nicht raises
 
         klasse Y(E):
             def __eq__(self, o):
                 root.clear()
-                return nicht raises
+                gib nicht raises
 
         wenn raises:
             get_checker_context = lambda: self.assertRaises(ValueError)
@@ -2837,7 +2837,7 @@ klasse BadElementTest(ElementTestCase, unittest.TestCase):
         klasse Z(E):
             def __eq__(self, o):
                 del root[0]
-                return nicht raises
+                gib nicht raises
 
         wenn raises:
             get_checker_context = lambda: self.assertRaises(ValueError)
@@ -2868,12 +2868,12 @@ klasse BadElementTest(ElementTestCase, unittest.TestCase):
         fuer U, V in [(E, Z), (Z, E), (Z, Z)]:
             description = (f"remove missing {E.__name__}() von "
                            f"[{U.__name__}(), {V.__name__}()]")
-            yield E, U, V, description
+            liefere E, U, V, description
 
         fuer U, V in [(E, E), (E, Z), (Z, E), (Z, Z)]:
             description = (f"remove missing {Z.__name__}() von "
                            f"[{U.__name__}(), {V.__name__}()]")
-            yield Z, U, V, description
+            liefere Z, U, V, description
 
     def cases_for_remove_existing_with_mutations(self, E, Z):
         # Cases fuer removing root[1] (of type R) von [U(), R()].
@@ -2885,7 +2885,7 @@ klasse BadElementTest(ElementTestCase, unittest.TestCase):
         ]:
             description = (f"remove root[1] (of type {R.__name__}) "
                            f"from [{U.__name__}(), {R.__name__}()]")
-            yield R, U, description
+            liefere R, U, description
 
     @support.infinite_recursion(25)
     def test_recursive_repr(self):
@@ -2940,7 +2940,7 @@ klasse BadElementTest(ElementTestCase, unittest.TestCase):
         klasse X:
             def __index__(self):
                 del e[:]
-                return 1
+                gib 1
 
         e = ET.Element('elem')
         e.append(ET.Element('child'))
@@ -2954,7 +2954,7 @@ klasse BadElementTest(ElementTestCase, unittest.TestCase):
         klasse X:
             def __index__(self):
                 e[:] = []
-                return 1
+                gib 1
 
         e = ET.Element('elem')
         fuer _ in range(10):
@@ -2965,7 +2965,7 @@ klasse BadElementTest(ElementTestCase, unittest.TestCase):
     def test_treebuilder_start(self):
         # Issue #27863
         def element_factory(x, y):
-            return []
+            gib []
         b = ET.TreeBuilder(element_factory=element_factory)
 
         b.start('tag', {})
@@ -2977,7 +2977,7 @@ klasse BadElementTest(ElementTestCase, unittest.TestCase):
     def test_treebuilder_end(self):
         # Issue #27863
         def element_factory(x, y):
-            return []
+            gib []
         b = ET.TreeBuilder(element_factory=element_factory)
 
         b.start('tag', {})
@@ -2992,7 +2992,7 @@ klasse BadElementTest(ElementTestCase, unittest.TestCase):
         klasse X(ET.Element):
             def __deepcopy__(self, memo):
                 root.clear()
-                return self
+                gib self
 
         root = ET.Element('a')
         evil = X('x')
@@ -3016,7 +3016,7 @@ klasse BadElementTest(ElementTestCase, unittest.TestCase):
             def __deepcopy__(self, memo):
                 root.append(a)
                 root.append(b)
-                return self
+                gib self
 
         root = ET.Element('top')
         evil1, evil2 = X('1'), X('2')
@@ -3035,11 +3035,11 @@ klasse MutationDeleteElementPath(str):
     def __new__(cls, elem, *args):
         self = str.__new__(cls, *args)
         self.elem = elem
-        return self
+        gib self
 
     def __eq__(self, o):
         del self.elem[:]
-        return Wahr
+        gib Wahr
 
     __hash__ = str.__hash__
 
@@ -3048,11 +3048,11 @@ klasse MutationClearElementPath(str):
     def __new__(cls, elem, *args):
         self = str.__new__(cls, *args)
         self.elem = elem
-        return self
+        gib self
 
     def __eq__(self, o):
         self.elem.clear()
-        return Wahr
+        gib Wahr
 
     __hash__ = str.__hash__
 
@@ -3171,7 +3171,7 @@ klasse ElementTreeTypeTest(unittest.TestCase):
     def test_Element_subclass_new_method(self):
         klasse MyElement(ET.Element):
             def newmethod(self):
-                return self.tag
+                gib self.tag
 
         mye = MyElement('joe')
         self.assertEqual(mye.newmethod(), 'joe')
@@ -3443,7 +3443,7 @@ klasse ElementFindTest(unittest.TestCase):
 
 klasse ElementIterTest(unittest.TestCase):
     def _ilist(self, elem, tag=Nichts):
-        return summarize_list(elem.iter(tag))
+        gib summarize_list(elem.iter(tag))
 
     def test_basic(self):
         doc = ET.XML("<html><body>this is a <i>paragraph</i>.</body>..</html>")
@@ -3455,7 +3455,7 @@ klasse ElementIterTest(unittest.TestCase):
             'this is a paragraph.')
         self.assertEqual(next(doc.itertext()), 'this is a ')
 
-        # iterparse should return an iterator
+        # iterparse should gib an iterator
         sourcefile = serialize(doc, to_string=Falsch)
         self.assertEqual(next(ET.iterparse(sourcefile))[0], 'end')
 
@@ -3515,7 +3515,7 @@ klasse ElementIterTest(unittest.TestCase):
             summarize_list(doc.iter(tag='room')),
             ['room'] * 3)
 
-        # make sure both tag=Nichts und tag='*' return all tags
+        # make sure both tag=Nichts und tag='*' gib all tags
         all_tags = ['document', 'house', 'room', 'room',
                     'shed', 'house', 'room']
         self.assertEqual(summarize_list(doc.iter()), all_tags)
@@ -3560,7 +3560,7 @@ klasse TreeBuilderTest(unittest.TestCase):
     def test_dummy_builder(self):
         klasse BaseDummyBuilder:
             def close(self):
-                return 42
+                gib 42
 
         klasse DummyBuilder(BaseDummyBuilder):
             data = start = end = lambda *a: Nichts
@@ -3673,7 +3673,7 @@ klasse TreeBuilderTest(unittest.TestCase):
     def test_subclass(self):
         klasse MyTreeBuilder(ET.TreeBuilder):
             def foobar(self, x):
-                return x * 2
+                gib x * 2
 
         tb = MyTreeBuilder()
         self.assertEqual(tb.foobar(10), 20)
@@ -3687,7 +3687,7 @@ klasse TreeBuilderTest(unittest.TestCase):
     def test_subclass_comment_pi(self):
         klasse MyTreeBuilder(ET.TreeBuilder):
             def foobar(self, x):
-                return x * 2
+                gib x * 2
 
         tb = MyTreeBuilder(comment_factory=ET.Comment, pi_factory=ET.PI)
         self.assertEqual(tb.foobar(10), 20)
@@ -3704,7 +3704,7 @@ klasse TreeBuilderTest(unittest.TestCase):
         def myfactory(tag, attrib):
             nonlocal lst
             lst.append(tag)
-            return ET.Element(tag, attrib)
+            gib ET.Element(tag, attrib)
 
         tb = ET.TreeBuilder(element_factory=myfactory)
         parser = ET.XMLParser(target=tb)
@@ -3748,7 +3748,7 @@ klasse TreeBuilderTest(unittest.TestCase):
                 self._doctype = (name, pubid, system)
 
             def close(self):
-                return self._doctype
+                gib self._doctype
 
         parser = ET.XMLParser(target=DoctypeParser())
         parser.feed(self.sample1)
@@ -3768,7 +3768,7 @@ klasse TreeBuilderTest(unittest.TestCase):
                     raise self.what(self.raise_in)
                 def handle(*args):
                     pass
-                return handle
+                gib handle
 
         ET.XMLParser(target=RaisingBuilder())
         # cET also checks fuer 'close' und 'doctype', PyET does it only at need
@@ -3879,10 +3879,10 @@ klasse NamespaceParseTest(unittest.TestCase):
 
 klasse ElementSlicingTest(unittest.TestCase):
     def _elem_tags(self, elemlist):
-        return [e.tag fuer e in elemlist]
+        gib [e.tag fuer e in elemlist]
 
     def _subelem_tags(self, elem):
-        return self._elem_tags(list(elem))
+        gib self._elem_tags(list(elem))
 
     def _make_elem_with_children(self, numchildren):
         """Create an Element mit a tag 'a', mit the given amount of children
@@ -3892,7 +3892,7 @@ klasse ElementSlicingTest(unittest.TestCase):
         e = ET.Element('a')
         fuer i in range(numchildren):
             ET.SubElement(e, 'a%s' % i)
-        return e
+        gib e
 
     def test_getslice_single_index(self):
         e = self._make_elem_with_children(10)
@@ -4313,7 +4313,7 @@ klasse ParseErrorTest(unittest.TestCase):
         try:
             ET.fromstring(s)
         except ET.ParseError als e:
-            return e
+            gib e
 
     def test_error_position(self):
         self.assertEqual(self._get_error('foo').position, (1, 0))
@@ -4382,7 +4382,7 @@ klasse BoolTest(unittest.TestCase):
     def test_warning(self):
         e = ET.fromstring('<a style="new"></a>')
         msg = (
-            r"Testing an element's truth value will always return Wahr in "
+            r"Testing an element's truth value will always gib Wahr in "
             r"future versions.  "
             r"Use specific 'len\(elem\)' oder 'elem is nicht Nichts' test instead.")
         mit self.assertWarnsRegex(DeprecationWarning, msg):
@@ -4399,7 +4399,7 @@ klasse BoolTest(unittest.TestCase):
 # --------------------------------------------------------------------
 
 def c14n_roundtrip(xml, **options):
-    return pyET.canonicalize(xml, **options)
+    gib pyET.canonicalize(xml, **options)
 
 
 klasse C14NTest(unittest.TestCase):
@@ -4564,7 +4564,7 @@ klasse C14NTest(unittest.TestCase):
             fuer output_file in output_files]))
 
         def get_option(config, option_name, default=Nichts):
-            return config.get(option_name, (default, ()))[0]
+            gib config.get(option_name, (default, ()))[0]
 
         fuer input_file, output_files in tests.items():
             fuer output_file, config in output_files:

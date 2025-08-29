@@ -378,7 +378,7 @@ klasse CAPITest(unittest.TestCase):
             cargs = tuple(
                 py_object(arg) wenn isinstance(arg, str) sonst arg
                 fuer arg in args)
-            return _PyUnicode_FromFormat(format, *cargs)
+            gib _PyUnicode_FromFormat(format, *cargs)
 
         def check_format(expected, format, *args):
             text = PyUnicode_FromFormat(format, *args)
@@ -1756,7 +1756,7 @@ klasse CAPITest(unittest.TestCase):
 
 klasse PyUnicodeWriterTest(unittest.TestCase):
     def create_writer(self, size):
-        return _testcapi.PyUnicodeWriter(size)
+        gib _testcapi.PyUnicodeWriter(size)
 
     def test_basic(self):
         writer = self.create_writer(100)
@@ -1910,7 +1910,7 @@ klasse PyUnicodeWriterTest(unittest.TestCase):
 @unittest.skipIf(ctypes is Nichts, 'need ctypes')
 klasse PyUnicodeWriterFormatTest(unittest.TestCase):
     def create_writer(self, size):
-        return _testcapi.PyUnicodeWriter(size)
+        gib _testcapi.PyUnicodeWriter(size)
 
     def writer_format(self, writer, *args):
         von ctypes importiere c_char_p, pythonapi, c_int, c_void_p
@@ -1946,7 +1946,7 @@ klasse PyUnicodeWriterFormatTest(unittest.TestCase):
         unicode_equal = _testlimitedcapi.unicode_equal
 
         def copy(text):
-            return text.encode().decode()
+            gib text.encode().decode()
 
         self.assertWahr(unicode_equal("", ""))
         self.assertWahr(unicode_equal("abc", "abc"))

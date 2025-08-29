@@ -61,7 +61,7 @@ klasse TestEPoll(unittest.TestCase):
         server, addr = self.serverSocket.accept()
 
         self.connections.extend((client, server))
-        return client, server
+        gib client, server
 
     def test_create(self):
         try:

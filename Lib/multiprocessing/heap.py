@@ -52,7 +52,7 @@ wenn sys.platform == 'win32':
 
         def __getstate__(self):
             assert_spawning(self)
-            return self._state
+            gib self._state
 
         def __setstate__(self, state):
             self.size, self.name = self._state = state
@@ -94,17 +94,17 @@ sonst:
             fuer d in self._dir_candidates:
                 st = os.statvfs(d)
                 wenn st.f_bavail * st.f_frsize >= size:  # enough free space?
-                    return d
-            return util.get_temp_dir()
+                    gib d
+            gib util.get_temp_dir()
 
     def reduce_arena(a):
         wenn a.fd == -1:
             raise ValueError('Arena is unpicklable because '
                              'forking was enabled when it was created')
-        return rebuild_arena, (a.size, reduction.DupFd(a.fd))
+        gib rebuild_arena, (a.size, reduction.DupFd(a.fd))
 
     def rebuild_arena(size, dupfd):
-        return Arena(size, dupfd.detach())
+        gib Arena(size, dupfd.detach())
 
     reduction.register(Arena, reduce_arena)
 
@@ -153,7 +153,7 @@ klasse Heap(object):
     def _roundup(n, alignment):
         # alignment must be a power of 2
         mask = alignment - 1
-        return (n + mask) & ~mask
+        gib (n + mask) & ~mask
 
     def _new_arena(self, size):
         # Create a new arena mit at least the given *size*
@@ -165,7 +165,7 @@ klasse Heap(object):
         util.info('allocating a new mmap of length %d', length)
         arena = Arena(length)
         self._arenas.append(arena)
-        return (arena, 0, length)
+        gib (arena, 0, length)
 
     def _discard_arena(self, arena):
         # Possibly delete the given (unused) arena
@@ -173,7 +173,7 @@ klasse Heap(object):
         # Reusing an existing arena is faster than creating a new one, so
         # we only reclaim space wenn it's large enough.
         wenn length < self._DISCARD_FREE_SPACE_LARGER_THAN:
-            return
+            gib
         blocks = self._allocated_blocks.pop(arena)
         assert nicht blocks
         del self._start_to_block[(arena, 0)]
@@ -189,7 +189,7 @@ klasse Heap(object):
         # returns a large enough block -- it might be much larger
         i = bisect.bisect_left(self._lengths, size)
         wenn i == len(self._lengths):
-            return self._new_arena(size)
+            gib self._new_arena(size)
         sonst:
             length = self._lengths[i]
             seq = self._len_to_seq[length]
@@ -200,7 +200,7 @@ klasse Heap(object):
         (arena, start, stop) = block
         del self._start_to_block[(arena, start)]
         del self._stop_to_block[(arena, stop)]
-        return block
+        gib block
 
     def _add_free_block(self, block):
         # make block available und try to merge mit its neighbours in the arena
@@ -245,7 +245,7 @@ klasse Heap(object):
             del self._len_to_seq[length]
             self._lengths.remove(length)
 
-        return start, stop
+        gib start, stop
 
     def _remove_allocated_block(self, block):
         arena, start, stop = block
@@ -294,7 +294,7 @@ klasse Heap(object):
                 self._lock.release()
 
     def malloc(self, size):
-        # return a block of right size (possibly rounded up)
+        # gib a block of right size (possibly rounded up)
         wenn size < 0:
             raise ValueError("Size {0:n} out of range".format(size))
         wenn sys.maxsize <= size:
@@ -313,7 +313,7 @@ klasse Heap(object):
                 # the remainder available
                 self._add_free_block((arena, real_stop, stop))
             self._allocated_blocks[arena].add((start, real_stop))
-            return (arena, start, real_stop)
+            gib (arena, start, real_stop)
 
 #
 # Class wrapping a block allocated out of a Heap -- can be inherited by child process
@@ -334,4 +334,4 @@ klasse BufferWrapper(object):
 
     def create_memoryview(self):
         (arena, start, stop), size = self._state
-        return memoryview(arena.buffer)[start:start+size]
+        gib memoryview(arena.buffer)[start:start+size]

@@ -46,12 +46,12 @@ sonst:
 #
 
 def reduce_array(a):
-    return array.array, (a.typecode, a.tobytes())
+    gib array.array, (a.typecode, a.tobytes())
 reduction.register(array.array, reduce_array)
 
 view_types = [type(getattr({}, name)()) fuer name in ('items','keys','values')]
 def rebuild_as_list(obj):
-    return list, (list(obj),)
+    gib list, (list(obj),)
 fuer view_type in view_types:
     reduction.register(view_type, rebuild_as_list)
 del view_type, view_types
@@ -70,13 +70,13 @@ klasse Token(object):
         (self.typeid, self.address, self.id) = (typeid, address, id)
 
     def __getstate__(self):
-        return (self.typeid, self.address, self.id)
+        gib (self.typeid, self.address, self.id)
 
     def __setstate__(self, state):
         (self.typeid, self.address, self.id) = state
 
     def __repr__(self):
-        return '%s(typeid=%r, address=%r, id=%r)' % \
+        gib '%s(typeid=%r, address=%r, id=%r)' % \
                (self.__class__.__name__, self.typeid, self.address, self.id)
 
 #
@@ -85,12 +85,12 @@ klasse Token(object):
 
 def dispatch(c, id, methodname, args=(), kwds={}):
     '''
-    Send a message to manager using connection `c` und return response
+    Send a message to manager using connection `c` und gib response
     '''
     c.send((id, methodname, args, kwds))
     kind, result = c.recv()
     wenn kind == '#RETURN':
-        return result
+        gib result
     try:
         raise convert_to_error(kind, result)
     finally:
@@ -98,22 +98,22 @@ def dispatch(c, id, methodname, args=(), kwds={}):
 
 def convert_to_error(kind, result):
     wenn kind == '#ERROR':
-        return result
+        gib result
     sowenn kind in ('#TRACEBACK', '#UNSERIALIZABLE'):
         wenn nicht isinstance(result, str):
             raise TypeError(
                 "Result {0!r} (kind '{1}') type is {2}, nicht str".format(
                     result, kind, type(result)))
         wenn kind == '#UNSERIALIZABLE':
-            return RemoteError('Unserializable message: %s\n' % result)
+            gib RemoteError('Unserializable message: %s\n' % result)
         sonst:
-            return RemoteError(result)
+            gib RemoteError(result)
     sonst:
-        return ValueError('Unrecognized message type {!r}'.format(kind))
+        gib ValueError('Unrecognized message type {!r}'.format(kind))
 
 klasse RemoteError(Exception):
     def __str__(self):
-        return ('\n' + '-'*75 + '\n' + str(self.args[0]) + '-'*75)
+        gib ('\n' + '-'*75 + '\n' + str(self.args[0]) + '-'*75)
 
 #
 # Functions fuer finding the method names of an object
@@ -128,13 +128,13 @@ def all_methods(obj):
         func = getattr(obj, name)
         wenn callable(func):
             temp.append(name)
-    return temp
+    gib temp
 
 def public_methods(obj):
     '''
     Return a list of names of methods of `obj` which do nicht start mit '_'
     '''
-    return [name fuer name in all_methods(obj) wenn name[0] != '_']
+    gib [name fuer name in all_methods(obj) wenn name[0] != '_']
 
 #
 # Server which is run in a process controlled by a manager
@@ -321,13 +321,13 @@ klasse Server(object):
                 sys.exit(1)
 
     def fallback_getvalue(self, conn, ident, obj):
-        return obj
+        gib obj
 
     def fallback_str(self, conn, ident, obj):
-        return str(obj)
+        gib str(obj)
 
     def fallback_repr(self, conn, ident, obj):
-        return repr(obj)
+        gib repr(obj)
 
     fallback_mapping = {
         '__str__':fallback_str,
@@ -352,14 +352,14 @@ klasse Server(object):
                     result.append('  %s:       refcount=%s\n    %s' %
                                   (ident, self.id_to_refcount[ident],
                                    str(self.id_to_obj[ident][0])[:75]))
-            return '\n'.join(result)
+            gib '\n'.join(result)
 
     def number_of_objects(self, c):
         '''
         Number of shared objects
         '''
         # Doesn't use (len(self.id_to_obj) - 1) als we shouldn't count ident='0'
-        return len(self.id_to_refcount)
+        gib len(self.id_to_refcount)
 
     def shutdown(self, c):
         '''
@@ -376,7 +376,7 @@ klasse Server(object):
 
     def create(self, c, typeid, /, *args, **kwds):
         '''
-        Create a new shared object und return its id
+        Create a new shared object und gib its id
         '''
         mit self.mutex:
             callable, exposed, method_to_typeid, proxytype = \
@@ -408,13 +408,13 @@ klasse Server(object):
                 self.id_to_refcount[ident] = 0
 
         self.incref(c, ident)
-        return ident, tuple(exposed)
+        gib ident, tuple(exposed)
 
     def get_methods(self, c, token):
         '''
         Return the methods of the shared object indicated by token
         '''
-        return tuple(self.id_to_obj[token.id][1])
+        gib tuple(self.id_to_obj[token.id][1])
 
     def accept_connection(self, c, name):
         '''
@@ -445,7 +445,7 @@ klasse Server(object):
         wenn ident nicht in self.id_to_refcount und \
             ident in self.id_to_local_proxy_obj:
             util.debug('Server DECREF skipping %r', ident)
-            return
+            gib
 
         mit self.mutex:
             wenn self.id_to_refcount[ident] <= 0:
@@ -524,7 +524,7 @@ klasse BaseManager(object):
             sonst:
                 raise ProcessError(
                     "Unknown state {!r}".format(self._state.value))
-        return Server(self._registry, self._address,
+        gib Server(self._registry, self._address,
                       self._authkey, self._serializer)
 
     def connect(self):
@@ -604,7 +604,7 @@ klasse BaseManager(object):
 
     def _create(self, typeid, /, *args, **kwds):
         '''
-        Create a new shared object; return the token und exposed tuple
+        Create a new shared object; gib the token und exposed tuple
         '''
         assert self._state.value == State.STARTED, 'server nicht yet started'
         conn = self._Client(self._address, authkey=self._authkey)
@@ -612,7 +612,7 @@ klasse BaseManager(object):
             id, exposed = dispatch(conn, Nichts, 'create', (typeid,)+args, kwds)
         finally:
             conn.close()
-        return Token(typeid, self._address, id), exposed
+        gib Token(typeid, self._address, id), exposed
 
     def join(self, timeout=Nichts):
         '''
@@ -629,7 +629,7 @@ klasse BaseManager(object):
         '''
         conn = self._Client(self._address, authkey=self._authkey)
         try:
-            return dispatch(conn, Nichts, 'debug_info')
+            gib dispatch(conn, Nichts, 'debug_info')
         finally:
             conn.close()
 
@@ -639,7 +639,7 @@ klasse BaseManager(object):
         '''
         conn = self._Client(self._address, authkey=self._authkey)
         try:
-            return dispatch(conn, Nichts, 'number_of_objects')
+            gib dispatch(conn, Nichts, 'number_of_objects')
         finally:
             conn.close()
 
@@ -654,7 +654,7 @@ klasse BaseManager(object):
             sonst:
                 raise ProcessError(
                     "Unknown state {!r}".format(self._state.value))
-        return self
+        gib self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         self.shutdown()
@@ -696,7 +696,7 @@ klasse BaseManager(object):
 
     @property
     def address(self):
-        return self._address
+        gib self._address
 
     @classmethod
     def register(cls, typeid, callable=Nichts, proxytype=Nichts, exposed=Nichts,
@@ -734,7 +734,7 @@ klasse BaseManager(object):
                     )
                 conn = self._Client(token.address, authkey=self._authkey)
                 dispatch(conn, Nichts, 'decref', (token.id,))
-                return proxy
+                gib proxy
             temp.__name__ = typeid
             setattr(cls, typeid, temp)
 
@@ -746,7 +746,7 @@ klasse ProcessLocalSet(set):
     def __init__(self):
         util.register_after_fork(self, lambda obj: obj.clear())
     def __reduce__(self):
-        return type(self), ()
+        gib type(self), ()
 
 #
 # Definition of BaseProxy
@@ -818,7 +818,7 @@ klasse BaseProxy(object):
 
     def _callmethod(self, methodname, args=(), kwds={}):
         '''
-        Try to call a method of the referent und return a copy of the result
+        Try to call a method of the referent und gib a copy of the result
         '''
         try:
             conn = self._tls.connection
@@ -832,7 +832,7 @@ klasse BaseProxy(object):
         kind, result = conn.recv()
 
         wenn kind == '#RETURN':
-            return result
+            gib result
         sowenn kind == '#PROXY':
             exposed, token = result
             proxytype = self._manager._registry[token.typeid][-1]
@@ -843,7 +843,7 @@ klasse BaseProxy(object):
                 )
             conn = self._Client(token.address, authkey=self._authkey)
             dispatch(conn, Nichts, 'decref', (token.id,))
-            return proxy
+            gib proxy
         try:
             raise convert_to_error(kind, result)
         finally:
@@ -853,12 +853,12 @@ klasse BaseProxy(object):
         '''
         Get a copy of the value of the referent
         '''
-        return self._callmethod('#GETVALUE')
+        gib self._callmethod('#GETVALUE')
 
     def _incref(self):
         wenn self._owned_by_manager:
             util.debug('owned_by_manager skipped INCREF of %r', self._token.id)
-            return
+            gib
 
         conn = self._Client(self._token.address, authkey=self._authkey)
         dispatch(conn, Nichts, 'incref', (self._id,))
@@ -915,17 +915,17 @@ klasse BaseProxy(object):
 
         wenn getattr(self, '_isauto', Falsch):
             kwds['exposed'] = self._exposed_
-            return (RebuildProxy,
+            gib (RebuildProxy,
                     (AutoProxy, self._token, self._serializer, kwds))
         sonst:
-            return (RebuildProxy,
+            gib (RebuildProxy,
                     (type(self), self._token, self._serializer, kwds))
 
     def __deepcopy__(self, memo):
-        return self._getvalue()
+        gib self._getvalue()
 
     def __repr__(self):
-        return '<%s object, typeid %r at %#x>' % \
+        gib '<%s object, typeid %r at %#x>' % \
                (type(self).__name__, self._token.typeid, id(self))
 
     def __str__(self):
@@ -933,9 +933,9 @@ klasse BaseProxy(object):
         Return representation of the referent (or a fall-back wenn that fails)
         '''
         try:
-            return self._callmethod('__repr__')
+            gib self._callmethod('__repr__')
         except Exception:
-            return repr(self)[:-1] + "; '__str__()' failed>"
+            gib repr(self)[:-1] + "; '__str__()' failed>"
 
 #
 # Function used fuer unpickling
@@ -956,7 +956,7 @@ def RebuildProxy(func, token, serializer, kwds):
         kwds.pop('incref', Wahr) und
         nicht getattr(process.current_process(), '_inheriting', Falsch)
         )
-    return func(token, serializer, incref=incref, **kwds)
+    gib func(token, serializer, incref=incref, **kwds)
 
 #
 # Functions to create proxies und proxy types
@@ -968,7 +968,7 @@ def MakeProxyType(name, exposed, _cache={}):
     '''
     exposed = tuple(exposed)
     try:
-        return _cache[(name, exposed)]
+        gib _cache[(name, exposed)]
     except KeyError:
         pass
 
@@ -976,12 +976,12 @@ def MakeProxyType(name, exposed, _cache={}):
 
     fuer meth in exposed:
         exec('''def %s(self, /, *args, **kwds):
-        return self._callmethod(%r, args, kwds)''' % (meth, meth), dic)
+        gib self._callmethod(%r, args, kwds)''' % (meth, meth), dic)
 
     ProxyType = type(name, (BaseProxy,), dic)
     ProxyType._exposed_ = exposed
     _cache[(name, exposed)] = ProxyType
-    return ProxyType
+    gib ProxyType
 
 
 def AutoProxy(token, serializer, manager=Nichts, authkey=Nichts,
@@ -1007,7 +1007,7 @@ def AutoProxy(token, serializer, manager=Nichts, authkey=Nichts,
     proxy = ProxyType(token, serializer, manager=manager, authkey=authkey,
                       incref=incref, manager_owned=manager_owned)
     proxy._isauto = Wahr
-    return proxy
+    gib proxy
 
 #
 # Types/callables which we will register mit SyncManager
@@ -1023,22 +1023,22 @@ klasse Namespace(object):
             wenn nicht name.startswith('_'):
                 temp.append('%s=%r' % (name, value))
         temp.sort()
-        return '%s(%s)' % (self.__class__.__name__, ', '.join(temp))
+        gib '%s(%s)' % (self.__class__.__name__, ', '.join(temp))
 
 klasse Value(object):
     def __init__(self, typecode, value, lock=Wahr):
         self._typecode = typecode
         self._value = value
     def get(self):
-        return self._value
+        gib self._value
     def set(self, value):
         self._value = value
     def __repr__(self):
-        return '%s(%r, %r)'%(type(self).__name__, self._typecode, self._value)
+        gib '%s(%r, %r)'%(type(self).__name__, self._typecode, self._value)
     value = property(get, set)
 
 def Array(typecode, sequence, lock=Wahr):
-    return array.array(typecode, sequence)
+    gib array.array(typecode, sequence)
 
 #
 # Proxy types used by SyncManager
@@ -1047,44 +1047,44 @@ def Array(typecode, sequence, lock=Wahr):
 klasse IteratorProxy(BaseProxy):
     _exposed_ = ('__next__', 'send', 'throw', 'close')
     def __iter__(self):
-        return self
+        gib self
     def __next__(self, *args):
-        return self._callmethod('__next__', args)
+        gib self._callmethod('__next__', args)
     def send(self, *args):
-        return self._callmethod('send', args)
+        gib self._callmethod('send', args)
     def throw(self, *args):
-        return self._callmethod('throw', args)
+        gib self._callmethod('throw', args)
     def close(self, *args):
-        return self._callmethod('close', args)
+        gib self._callmethod('close', args)
 
 
 klasse AcquirerProxy(BaseProxy):
     _exposed_ = ('acquire', 'release', 'locked')
     def acquire(self, blocking=Wahr, timeout=Nichts):
         args = (blocking,) wenn timeout is Nichts sonst (blocking, timeout)
-        return self._callmethod('acquire', args)
+        gib self._callmethod('acquire', args)
     def release(self):
-        return self._callmethod('release')
+        gib self._callmethod('release')
     def locked(self):
-        return self._callmethod('locked')
+        gib self._callmethod('locked')
     def __enter__(self):
-        return self._callmethod('acquire')
+        gib self._callmethod('acquire')
     def __exit__(self, exc_type, exc_val, exc_tb):
-        return self._callmethod('release')
+        gib self._callmethod('release')
 
 
 klasse ConditionProxy(AcquirerProxy):
     _exposed_ = ('acquire', 'release', 'locked', 'wait', 'notify', 'notify_all')
     def wait(self, timeout=Nichts):
-        return self._callmethod('wait', (timeout,))
+        gib self._callmethod('wait', (timeout,))
     def notify(self, n=1):
-        return self._callmethod('notify', (n,))
+        gib self._callmethod('notify', (n,))
     def notify_all(self):
-        return self._callmethod('notify_all')
+        gib self._callmethod('notify_all')
     def wait_for(self, predicate, timeout=Nichts):
         result = predicate()
         wenn result:
-            return result
+            gib result
         wenn timeout is nicht Nichts:
             endtime = time.monotonic() + timeout
         sonst:
@@ -1097,65 +1097,65 @@ klasse ConditionProxy(AcquirerProxy):
                     breche
             self.wait(waittime)
             result = predicate()
-        return result
+        gib result
 
 
 klasse EventProxy(BaseProxy):
     _exposed_ = ('is_set', 'set', 'clear', 'wait')
     def is_set(self):
-        return self._callmethod('is_set')
+        gib self._callmethod('is_set')
     def set(self):
-        return self._callmethod('set')
+        gib self._callmethod('set')
     def clear(self):
-        return self._callmethod('clear')
+        gib self._callmethod('clear')
     def wait(self, timeout=Nichts):
-        return self._callmethod('wait', (timeout,))
+        gib self._callmethod('wait', (timeout,))
 
 
 klasse BarrierProxy(BaseProxy):
     _exposed_ = ('__getattribute__', 'wait', 'abort', 'reset')
     def wait(self, timeout=Nichts):
-        return self._callmethod('wait', (timeout,))
+        gib self._callmethod('wait', (timeout,))
     def abort(self):
-        return self._callmethod('abort')
+        gib self._callmethod('abort')
     def reset(self):
-        return self._callmethod('reset')
+        gib self._callmethod('reset')
     @property
     def parties(self):
-        return self._callmethod('__getattribute__', ('parties',))
+        gib self._callmethod('__getattribute__', ('parties',))
     @property
     def n_waiting(self):
-        return self._callmethod('__getattribute__', ('n_waiting',))
+        gib self._callmethod('__getattribute__', ('n_waiting',))
     @property
     def broken(self):
-        return self._callmethod('__getattribute__', ('broken',))
+        gib self._callmethod('__getattribute__', ('broken',))
 
 
 klasse NamespaceProxy(BaseProxy):
     _exposed_ = ('__getattribute__', '__setattr__', '__delattr__')
     def __getattr__(self, key):
         wenn key[0] == '_':
-            return object.__getattribute__(self, key)
+            gib object.__getattribute__(self, key)
         callmethod = object.__getattribute__(self, '_callmethod')
-        return callmethod('__getattribute__', (key,))
+        gib callmethod('__getattribute__', (key,))
     def __setattr__(self, key, value):
         wenn key[0] == '_':
-            return object.__setattr__(self, key, value)
+            gib object.__setattr__(self, key, value)
         callmethod = object.__getattribute__(self, '_callmethod')
-        return callmethod('__setattr__', (key, value))
+        gib callmethod('__setattr__', (key, value))
     def __delattr__(self, key):
         wenn key[0] == '_':
-            return object.__delattr__(self, key)
+            gib object.__delattr__(self, key)
         callmethod = object.__getattribute__(self, '_callmethod')
-        return callmethod('__delattr__', (key,))
+        gib callmethod('__delattr__', (key,))
 
 
 klasse ValueProxy(BaseProxy):
     _exposed_ = ('get', 'set')
     def get(self):
-        return self._callmethod('get')
+        gib self._callmethod('get')
     def set(self, value):
-        return self._callmethod('set', (value,))
+        gib self._callmethod('set', (value,))
     value = property(get, set)
 
     __class_getitem__ = classmethod(types.GenericAlias)
@@ -1170,10 +1170,10 @@ BaseListProxy = MakeProxyType('BaseListProxy', (
 klasse ListProxy(BaseListProxy):
     def __iadd__(self, value):
         self._callmethod('extend', (value,))
-        return self
+        gib self
     def __imul__(self, value):
         self._callmethod('__imul__', (value,))
-        return self
+        gib self
 
     __class_getitem__ = classmethod(types.GenericAlias)
 
@@ -1191,7 +1191,7 @@ _BaseDictProxy._method_to_typeid_ = {
 klasse DictProxy(_BaseDictProxy):
     def __ior__(self, value):
         self._callmethod('__ior__', (value,))
-        return self
+        gib self
 
     __class_getitem__ = classmethod(types.GenericAlias)
 
@@ -1211,16 +1211,16 @@ _BaseSetProxy = MakeProxyType("_BaseSetProxy", (
 klasse SetProxy(_BaseSetProxy):
     def __ior__(self, value):
         self._callmethod('__ior__', (value,))
-        return self
+        gib self
     def __iand__(self, value):
         self._callmethod('__iand__', (value,))
-        return self
+        gib self
     def __ixor__(self, value):
         self._callmethod('__ixor__', (value,))
-        return self
+        gib self
     def __isub__(self, value):
         self._callmethod('__isub__', (value,))
-        return self
+        gib self
 
     __class_getitem__ = classmethod(types.GenericAlias)
 
@@ -1245,7 +1245,7 @@ BasePoolProxy._method_to_typeid_ = {
     }
 klasse PoolProxy(BasePoolProxy):
     def __enter__(self):
-        return self
+        gib self
     def __exit__(self, exc_type, exc_val, exc_tb):
         self.terminate()
 
@@ -1322,7 +1322,7 @@ wenn HAS_SHMEM:
             self.unlink()
 
         def __getstate__(self):
-            return (self.shared_memory_context_name, self.segment_names)
+            gib (self.shared_memory_context_name, self.segment_names)
 
         def __setstate__(self, state):
             self.__init__(*state)
@@ -1345,18 +1345,18 @@ wenn HAS_SHMEM:
 
         def create(self, c, typeid, /, *args, **kwargs):
             """Create a new distributed-shared object (nicht backed by a shared
-            memory block) und return its id to be used in a Proxy Object."""
+            memory block) und gib its id to be used in a Proxy Object."""
             # Unless set up als a shared proxy, don't make shared_memory_context
             # a standard part of kwargs.  This makes things easier fuer supplying
             # simple functions.
             wenn hasattr(self.registry[typeid][-1], "_shared_memory_proxy"):
                 kwargs['shared_memory_context'] = self.shared_memory_context
-            return Server.create(self, c, typeid, *args, **kwargs)
+            gib Server.create(self, c, typeid, *args, **kwargs)
 
         def shutdown(self, c):
             "Call unlink() on all tracked shared memory, terminate the Server."
             self.shared_memory_context.unlink()
-            return Server.shutdown(self, c)
+            gib Server.shutdown(self, c)
 
         def track_segment(self, c, segment_name):
             "Adds the supplied shared memory block name to Server's tracker."
@@ -1370,7 +1370,7 @@ wenn HAS_SHMEM:
         def list_segments(self, c):
             """Returns a list of names of shared memory blocks that the Server
             is currently tracking."""
-            return self.shared_memory_context.segment_names
+            gib self.shared_memory_context.segment_names
 
 
     klasse SharedMemoryManager(BaseManager):
@@ -1378,7 +1378,7 @@ wenn HAS_SHMEM:
 
         It provides methods fuer creating und returning SharedMemory instances
         und fuer creating a list-like object (ShareableList) backed by shared
-        memory.  It also provides methods that create und return Proxy Objects
+        memory.  It also provides methods that create und gib Proxy Objects
         that support synchronization across processes (i.e. multi-process-safe
         locks und semaphores).
         """
@@ -1410,7 +1410,7 @@ wenn HAS_SHMEM:
                 sonst:
                     raise ProcessError(
                         "Unknown state {!r}".format(self._state.value))
-            return self._Server(self._registry, self._address,
+            gib self._Server(self._registry, self._address,
                                 self._authkey, self._serializer)
 
         def SharedMemory(self, size):
@@ -1423,7 +1423,7 @@ wenn HAS_SHMEM:
                 except BaseException als e:
                     sms.unlink()
                     raise e
-            return sms
+            gib sms
 
         def ShareableList(self, sequence):
             """Returns a new ShareableList instance populated mit the values
@@ -1435,4 +1435,4 @@ wenn HAS_SHMEM:
                 except BaseException als e:
                     sl.shm.unlink()
                     raise e
-            return sl
+            gib sl

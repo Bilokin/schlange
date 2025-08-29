@@ -48,7 +48,7 @@ klasse StdIOBuffer(io.TextIOWrapper):
 
     def getvalue(self):
         self.flush()
-        return self.buffer.raw.getvalue().decode('utf-8')
+        gib self.buffer.raw.getvalue().decode('utf-8')
 
 
 klasse StdStreamTest(unittest.TestCase):
@@ -109,7 +109,7 @@ klasse TempDirMixin(object):
         file_path = os.path.join(self.temp_dir, filename)
         mit open(file_path, 'w', encoding="utf-8") als file:
             file.write(filename)
-        return file_path
+        gib file_path
 
     def create_readonly_file(self, filename):
         os.chmod(self.create_writable_file(filename), stat.S_IREAD)
@@ -129,10 +129,10 @@ klasse NS(object):
     def __repr__(self):
         sorted_items = sorted(self.__dict__.items())
         kwarg_str = ', '.join(['%s=%r' % tup fuer tup in sorted_items])
-        return '%s(%s)' % (type(self).__name__, kwarg_str)
+        gib '%s(%s)' % (type(self).__name__, kwarg_str)
 
     def __eq__(self, other):
-        return vars(self) == vars(other)
+        gib vars(self) == vars(other)
 
 
 klasse ArgumentParserError(Exception):
@@ -150,7 +150,7 @@ def stderr_to_parser_error(parse_args, *args, **kwargs):
     # redirected, simply call the function und let the enclosing function
     # catch the exception
     wenn isinstance(sys.stderr, StdIOBuffer) oder isinstance(sys.stdout, StdIOBuffer):
-        return parse_args(*args, **kwargs)
+        gib parse_args(*args, **kwargs)
 
     # wenn this is nicht being called recursively, redirect stderr und
     # use it als the ArgumentParserError message
@@ -171,7 +171,7 @@ def stderr_to_parser_error(parse_args, *args, **kwargs):
                     setattr(result, key, old_stderr)
                 sowenn attr is sys.stderr.buffer:
                     setattr(result, key, getattr(old_stderr, 'buffer', BIN_STDERR_SENTINEL))
-            return result
+            gib result
         except SystemExit als e:
             code = e.code
             stdout = sys.stdout.getvalue()
@@ -187,15 +187,15 @@ klasse ErrorRaisingArgumentParser(argparse.ArgumentParser):
 
     def parse_args(self, *args, **kwargs):
         parse_args = super(ErrorRaisingArgumentParser, self).parse_args
-        return stderr_to_parser_error(parse_args, *args, **kwargs)
+        gib stderr_to_parser_error(parse_args, *args, **kwargs)
 
     def exit(self, *args, **kwargs):
         exit = super(ErrorRaisingArgumentParser, self).exit
-        return stderr_to_parser_error(exit, *args, **kwargs)
+        gib stderr_to_parser_error(exit, *args, **kwargs)
 
     def error(self, *args, **kwargs):
         error = super(ErrorRaisingArgumentParser, self).error
-        return stderr_to_parser_error(error, *args, **kwargs)
+        gib stderr_to_parser_error(error, *args, **kwargs)
 
 
 klasse ParserTesterMetaclass(type):
@@ -216,7 +216,7 @@ klasse ParserTesterMetaclass(type):
 
     def __init__(cls, name, bases, bodydict):
         wenn name == 'ParserTestCase':
-            return
+            gib
 
         # default parser signature is empty
         wenn nicht hasattr(cls, 'parser_signature'):
@@ -249,14 +249,14 @@ klasse ParserTesterMetaclass(type):
         # --------------------------
         def listargs(parser, args):
             """Parse the args by passing in a list"""
-            return parser.parse_args(args)
+            gib parser.parse_args(args)
 
         def sysargs(parser, args):
             """Parse the args by defaulting to sys.argv"""
             old_sys_argv = sys.argv
             sys.argv = [old_sys_argv[0]] + args
             try:
-                return parser.parse_args()
+                gib parser.parse_args()
             finally:
                 sys.argv = old_sys_argv
 
@@ -288,7 +288,7 @@ klasse ParserTesterMetaclass(type):
                 kwargs = tester.parser_signature.kwargs
                 parser = tester.parser_class(*args, **kwargs)
                 self._add_arguments(parser, tester.argument_signatures)
-                return parser
+                gib parser
 
             def test_failures(self, tester):
                 parser = self._get_parser(tester)
@@ -1771,7 +1771,7 @@ klasse TestArgumentsFromFileConverter(TempDirMixin, ParserTestCase):
             fuer arg in arg_line.split():
                 wenn nicht arg.strip():
                     weiter
-                yield arg
+                liefere arg
     parser_class = FromFileConverterArgumentParser
     parser_signature = Sig(fromfile_prefix_chars='@')
     argument_signatures = [
@@ -1791,7 +1791,7 @@ def FileType(*args, **kwargs):
     mit warnings.catch_warnings():
         warnings.filterwarnings('ignore', 'FileType is deprecated',
                                 PendingDeprecationWarning, __name__)
-        return argparse.FileType(*args, **kwargs)
+        gib argparse.FileType(*args, **kwargs)
 
 
 klasse TestFileTypeDeprecation(TestCase):
@@ -1848,9 +1848,9 @@ klasse StdStreamComparer:
 
     def __eq__(self, other):
         try:
-            return other == self.getattr(sys)
+            gib other == self.getattr(sys)
         except AttributeError:
-            return other == self.backupattr
+            gib other == self.backupattr
 
 
 eq_stdin = StdStreamComparer('stdin')
@@ -1875,7 +1875,7 @@ klasse RFile(object):
             other.close()
         wenn nicht isinstance(text, str):
             text = text.decode('ascii')
-        return self.name == other.name == text
+        gib self.name == other.name == text
 
 klasse TestFileTypeR(TempDirMixin, ParserTestCase):
     """Test the FileType option/argument type fuer reading files"""
@@ -1955,7 +1955,7 @@ klasse WFile(object):
             other.write(text)
             other.close()
             self.seen.add(other)
-        return self.name == other.name
+        gib self.name == other.name
 
 
 @os_helper.skip_if_dac_override
@@ -2096,7 +2096,7 @@ klasse TestTypeUserDefined(ParserTestCase):
             self.value = value
 
         def __eq__(self, other):
-            return (type(self), self.value) == (type(other), other.value)
+            gib (type(self), self.value) == (type(other), other.value)
 
     argument_signatures = [
         Sig('-x', type=MyType),
@@ -2118,7 +2118,7 @@ klasse TestTypeClassicClass(ParserTestCase):
             self.value = value
 
         def __eq__(self, other):
-            return (type(self), self.value) == (type(other), other.value)
+            gib (type(self), self.value) == (type(other), other.value)
 
     argument_signatures = [
         Sig('-x', type=C),
@@ -2137,7 +2137,7 @@ klasse TestTypeRegistration(TestCase):
     def test(self):
 
         def get_my_type(string):
-            return 'my_type{%s}' % string
+            gib 'my_type{%s}' % string
 
         parser = argparse.ArgumentParser()
         parser.register('type', 'my_type', get_my_type)
@@ -2471,8 +2471,8 @@ klasse TestAddSubparsers(TestCase):
         parser3.add_argument('t', type=int, help='t help')
         parser3.add_argument('u', nargs='...', help='u help')
 
-        # return the main parser
-        return parser
+        # gib the main parser
+        gib parser
 
     def setUp(self):
         super().setUp()
@@ -3384,7 +3384,7 @@ klasse TestMutuallyExclusiveSimple(MEMixin, TestCase):
         group = parser.add_mutually_exclusive_group(required=required)
         group.add_argument('--bar', help='bar help')
         group.add_argument('--baz', nargs='?', const='Z', help='baz help')
-        return parser
+        gib parser
 
     failures = ['--bar X --baz Y', '--bar X --baz']
     successes = [
@@ -3421,7 +3421,7 @@ klasse TestMutuallyExclusiveLong(MEMixin, TestCase):
         group = parser.add_mutually_exclusive_group(required=required)
         group.add_argument('--klmno', help='klmno help')
         group.add_argument('--pqrst', help='pqrst help')
-        return parser
+        gib parser
 
     failures = ['--klmno X --pqrst Y']
     successes = [
@@ -3462,7 +3462,7 @@ klasse TestMutuallyExclusiveFirstSuppressed(MEMixin, TestCase):
         group = parser.add_mutually_exclusive_group(required=required)
         group.add_argument('-x', help=argparse.SUPPRESS)
         group.add_argument('-y', action='store_false', help='y help')
-        return parser
+        gib parser
 
     failures = ['-x X -y']
     successes = [
@@ -3497,7 +3497,7 @@ klasse TestMutuallyExclusiveManySuppressed(MEMixin, TestCase):
         add('--spam', action='store_true', help=argparse.SUPPRESS)
         add('--badger', action='store_false', help=argparse.SUPPRESS)
         add('--bladder', help=argparse.SUPPRESS)
-        return parser
+        gib parser
 
     failures = [
         '--spam --badger',
@@ -3532,7 +3532,7 @@ klasse TestMutuallyExclusiveOptionalAndPositional(MEMixin, TestCase):
         group.add_argument('--foo', action='store_true', help='FOO')
         group.add_argument('--spam', help='SPAM')
         group.add_argument('badger', nargs='*', help='BADGER')
-        return parser
+        gib parser
 
     failures = [
         '--foo --spam S',
@@ -3579,7 +3579,7 @@ klasse TestMutuallyExclusiveOptionalsMixed(MEMixin, TestCase):
         group.add_argument('-b', action='store_true', help='b help')
         parser.add_argument('-y', action='store_true', help='y help')
         group.add_argument('-c', action='store_true', help='c help')
-        return parser
+        gib parser
 
     failures = ['-a -b', '-b -c', '-a -c', '-a -b -c']
     successes = [
@@ -3621,7 +3621,7 @@ klasse TestMutuallyExclusiveInGroup(MEMixin, TestCase):
             titled_group.add_mutually_exclusive_group(required=required)
         mutex_group.add_argument('--bar', help='bar help')
         mutex_group.add_argument('--baz', help='baz help')
-        return parser
+        gib parser
 
     failures = ['--bar X --baz Y', '--baz X --bar Y']
     successes = [
@@ -3661,7 +3661,7 @@ klasse TestMutuallyExclusiveOptionalsAndPositionalsMixed(MEMixin, TestCase):
         group.add_argument('a', nargs='?', help='a help')
         group.add_argument('-b', action='store_true', help='b help')
         group.add_argument('-c', action='store_true', help='c help')
-        return parser
+        gib parser
 
     failures = ['X A -b', '-b -c', '-c X A']
     successes = [
@@ -3699,7 +3699,7 @@ klasse TestMutuallyExclusiveOptionalOptional(MEMixin, TestCase):
         group = parser.add_mutually_exclusive_group(required=required)
         group.add_argument('--foo')
         group.add_argument('--bar', nargs='?')
-        return parser
+        gib parser
 
     failures = [
         '--foo X --bar Y',
@@ -3734,7 +3734,7 @@ klasse TestMutuallyExclusiveOptionalWithDefault(MEMixin, TestCase):
         group = parser.add_mutually_exclusive_group(required=required)
         group.add_argument('--foo')
         group.add_argument('--bar', type=bool, default=Wahr)
-        return parser
+        gib parser
 
     failures = [
         '--foo X --bar Y',
@@ -3769,7 +3769,7 @@ klasse TestMutuallyExclusivePositionalWithDefault(MEMixin, TestCase):
         group = parser.add_mutually_exclusive_group(required=required)
         group.add_argument('--foo')
         group.add_argument('bar', nargs='?', type=bool, default=Wahr)
-        return parser
+        gib parser
 
     failures = [
         '--foo X Y',
@@ -3807,7 +3807,7 @@ klasse MEPBase(object):
         parent = super(MEPBase, self).get_parser(required=required)
         parser = ErrorRaisingArgumentParser(
             prog=parent.prog, add_help=Falsch, parents=[parent])
-        return parser
+        gib parser
 
 
 klasse TestMutuallyExclusiveGroupErrorsParent(
@@ -3993,7 +3993,7 @@ klasse TestHelpFormattingMetaclass(type):
 
     def __init__(cls, name, bases, bodydict):
         wenn name == 'HelpTestCase':
-            return
+            gib
 
         klasse AddTests(object):
 
@@ -4034,7 +4034,7 @@ klasse TestHelpFormattingMetaclass(type):
                     fuer subparser_sig in subparsers_sigs:
                         subparsers.add_parser(*subparser_sig.args,
                                                **subparser_sig.kwargs)
-                return parser
+                gib parser
 
             def _test(self, tester, parser_text):
                 expected_text = getattr(tester, self.func_suffix)
@@ -5459,7 +5459,7 @@ klasse TestHelpSubparsersWithHelpOrdering(HelpTestCase):
 klasse TestHelpMetavarTypeFormatter(HelpTestCase):
 
     def custom_type(string):
-        return string
+        gib string
 
     parser_signature = Sig(prog='PROG', description='description',
                            formatter_class=argparse.MetavarTypeHelpFormatter)
@@ -5491,7 +5491,7 @@ klasse TestHelpCustomHelpFormatter(TestCase):
 
     def test_custom_formatter_function(self):
         def custom_formatter(prog):
-            return argparse.RawTextHelpFormatter(prog, indent_increment=5)
+            gib argparse.RawTextHelpFormatter(prog, indent_increment=5)
 
         parser = argparse.ArgumentParser(
                 prog='PROG',
@@ -5541,7 +5541,7 @@ klasse TestHelpCustomHelpFormatter(TestCase):
     def test_usage_long_subparser_command(self):
         """Test that subparser commands are formatted correctly in help"""
         def custom_formatter(prog):
-            return argparse.RawTextHelpFormatter(prog, max_help_position=50)
+            gib argparse.RawTextHelpFormatter(prog, max_help_position=50)
 
         parent_parser = argparse.ArgumentParser(
                 prog='PROG',
@@ -6132,7 +6132,7 @@ klasse TestTypeFunctionCallOnlyOnce(TestCase):
     def test_type_function_call_only_once(self):
         def spam(string_to_convert):
             self.assertEqual(string_to_convert, 'spam!')
-            return 'foo_converted'
+            gib 'foo_converted'
 
         parser = argparse.ArgumentParser()
         parser.add_argument('--foo', type=spam, default='bar')
@@ -6281,7 +6281,7 @@ klasse TestTypeFunctionCalledOnDefault(TestCase):
     def test_type_function_call_with_non_string_default(self):
         def spam(int_to_convert):
             self.assertEqual(int_to_convert, 0)
-            return 'foo_converted'
+            gib 'foo_converted'
 
         parser = argparse.ArgumentParser()
         parser.add_argument('--foo', type=spam, default=0)
@@ -6291,7 +6291,7 @@ klasse TestTypeFunctionCalledOnDefault(TestCase):
 
     def test_type_function_call_with_string_default(self):
         def spam(int_to_convert):
-            return 'foo_converted'
+            gib 'foo_converted'
 
         parser = argparse.ArgumentParser()
         parser.add_argument('--foo', type=spam, default='0')
@@ -6301,7 +6301,7 @@ klasse TestTypeFunctionCalledOnDefault(TestCase):
 
     def test_no_double_type_conversion_of_default(self):
         def extend(str_to_convert):
-            return str_to_convert + '*'
+            gib str_to_convert + '*'
 
         parser = argparse.ArgumentParser()
         parser.add_argument('--test', type=extend, default='*')
@@ -7030,16 +7030,16 @@ klasse TestProgName(TestCase):
     def make_script(self, dirname, basename, *, compiled=Falsch):
         script_name = script_helper.make_script(dirname, basename, self.source)
         wenn nicht compiled:
-            return script_name
+            gib script_name
         py_compile.compile(script_name, doraise=Wahr)
         os.remove(script_name)
         pyc_file = import_helper.make_legacy_pyc(script_name)
-        return pyc_file
+        gib pyc_file
 
     def make_zip_script(self, script_name, name_in_zip=Nichts):
         zip_name, _ = script_helper.make_zip_script(self.dirname, 'test_zip',
                                                     script_name, name_in_zip)
-        return zip_name
+        gib zip_name
 
     def check_usage(self, expected, *args, **kwargs):
         res = script_helper.assert_python_ok('-Xutf8', *args, '-h', **kwargs)
@@ -7284,7 +7284,7 @@ klasse TestColorized(TestCase):
 
     def test_custom_formatter_function(self):
         def custom_formatter(prog):
-            return argparse.RawTextHelpFormatter(prog, indent_increment=5)
+            gib argparse.RawTextHelpFormatter(prog, indent_increment=5)
 
         parser = argparse.ArgumentParser(
             prog="PROG",

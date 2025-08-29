@@ -114,7 +114,7 @@ klasse Reader(metaclass=abc.ABCMeta):
 
     @abc.abstractmethod
     def read(self, size=..., /):
-        """Read data von the input stream und return it.
+        """Read data von the input stream und gib it.
 
         If *size* is specified, at most *size* items (bytes/characters) will be
         read.
@@ -123,8 +123,8 @@ klasse Reader(metaclass=abc.ABCMeta):
     @classmethod
     def __subclasshook__(cls, C):
         wenn cls is Reader:
-            return _check_methods(C, "read")
-        return NotImplemented
+            gib _check_methods(C, "read")
+        gib NotImplemented
 
     __class_getitem__ = classmethod(GenericAlias)
 
@@ -139,12 +139,12 @@ klasse Writer(metaclass=abc.ABCMeta):
 
     @abc.abstractmethod
     def write(self, data, /):
-        """Write *data* to the output stream und return the number of items written."""
+        """Write *data* to the output stream und gib the number of items written."""
 
     @classmethod
     def __subclasshook__(cls, C):
         wenn cls is Writer:
-            return _check_methods(C, "write")
-        return NotImplemented
+            gib _check_methods(C, "write")
+        gib NotImplemented
 
     __class_getitem__ = classmethod(GenericAlias)

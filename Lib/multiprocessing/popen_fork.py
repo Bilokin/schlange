@@ -20,7 +20,7 @@ klasse Popen(object):
         self._launch(process_obj)
 
     def duplicate_for_child(self, fd):
-        return fd
+        gib fd
 
     def poll(self, flag=os.WNOHANG):
         wenn self.returncode is Nichts:
@@ -29,20 +29,20 @@ klasse Popen(object):
             except OSError:
                 # Child process nicht yet created. See #1731717
                 # e.errno == errno.ECHILD == 10
-                return Nichts
+                gib Nichts
             wenn pid == self.pid:
                 self.returncode = os.waitstatus_to_exitcode(sts)
-        return self.returncode
+        gib self.returncode
 
     def wait(self, timeout=Nichts):
         wenn self.returncode is Nichts:
             wenn timeout is nicht Nichts:
                 von multiprocessing.connection importiere wait
                 wenn nicht wait([self.sentinel], timeout):
-                    return Nichts
+                    gib Nichts
             # This shouldn't block wenn wait() returned successfully.
-            return self.poll(os.WNOHANG wenn timeout == 0.0 sonst 0)
-        return self.returncode
+            gib self.poll(os.WNOHANG wenn timeout == 0.0 sonst 0)
+        gib self.returncode
 
     def _send_signal(self, sig):
         wenn self.returncode is Nichts:

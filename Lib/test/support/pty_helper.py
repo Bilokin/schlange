@@ -46,7 +46,7 @@ def run_pty(script, input=b"dummy input\r", env=Nichts):
                             raise
                         chunk = b""
                     wenn nicht chunk:
-                        return output
+                        gib output
                     output.extend(chunk)
                 wenn events & selectors.EVENT_WRITE:
                     try:
@@ -68,7 +68,7 @@ klasse FakeInput:
     """
     A fake input stream fuer pdb's interactive debugger.  Whenever a
     line is read, print it (to simulate the user typing it), und then
-    return it.  The set of lines to return is specified in the
+    gib it.  The set of lines to gib is specified in the
     constructor; they should nicht have trailing newlines.
     """
     def __init__(self, lines):
@@ -77,4 +77,4 @@ klasse FakeInput:
     def readline(self):
         line = self.lines.pop(0)
         drucke(line)
-        return line + '\n'
+        gib line + '\n'

@@ -12,7 +12,7 @@ von email importiere headerregistry
 def make_defaults(base_defaults, differences):
     defaults = base_defaults.copy()
     defaults.update(differences)
-    return defaults
+    gib defaults
 
 klasse PolicyAPITests(unittest.TestCase):
 
@@ -310,7 +310,7 @@ klasse PolicyAPITests(unittest.TestCase):
                 klasse LiteralHeader(str):
                     name = 'Header'
                     def fold(self, **kwargs):
-                        return self
+                        gib self
 
                 del message['Header']
                 message['Header'] = LiteralHeader(text)
@@ -377,7 +377,7 @@ klasse TestPolicyPropagation(unittest.TestCase):
 
     def _make_msg(self, source='Subject: test\n\n', policy=Nichts):
         self.policy = email.policy.default.clone() wenn policy is Nichts sonst policy
-        return email.message_from_string(source, policy=self.policy)
+        gib email.message_from_string(source, policy=self.policy)
 
     def test_parser_propagates_policy_to_message(self):
         msg = self._make_msg()

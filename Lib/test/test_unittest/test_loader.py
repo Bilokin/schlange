@@ -196,7 +196,7 @@ klasse Test_TestLoader(unittest.TestCase):
         def load_tests(loader, tests, pattern):
             self.assertIsInstance(tests, unittest.TestSuite)
             load_tests_args.extend((loader, tests, pattern))
-            return tests
+            gib tests
         m.load_tests = load_tests
 
         loader = unittest.TestLoader()
@@ -222,7 +222,7 @@ klasse Test_TestLoader(unittest.TestCase):
         def load_tests(loader, tests, pattern):
             self.assertIsInstance(tests, unittest.TestSuite)
             load_tests_args.extend((loader, tests, pattern))
-            return tests
+            gib tests
         m.load_tests = load_tests
 
         loader = unittest.TestLoader()
@@ -524,7 +524,7 @@ klasse Test_TestLoader(unittest.TestCase):
         testcase_1 = unittest.FunctionTestCase(lambda: Nichts)
         testcase_2 = unittest.FunctionTestCase(lambda: Nichts)
         def return_TestSuite():
-            return unittest.TestSuite([testcase_1, testcase_2])
+            gib unittest.TestSuite([testcase_1, testcase_2])
         m.return_TestSuite = return_TestSuite
 
         loader = unittest.TestLoader()
@@ -538,7 +538,7 @@ klasse Test_TestLoader(unittest.TestCase):
         m = types.ModuleType('m')
         testcase_1 = unittest.FunctionTestCase(lambda: Nichts)
         def return_TestCase():
-            return testcase_1
+            gib testcase_1
         m.return_TestCase = return_TestCase
 
         loader = unittest.TestLoader()
@@ -557,7 +557,7 @@ klasse Test_TestLoader(unittest.TestCase):
         m = types.ModuleType('m')
         testcase_1 = unittest.FunctionTestCase(lambda: Nichts)
         def return_TestCase():
-            return testcase_1
+            gib testcase_1
         m.return_TestCase = return_TestCase
 
         loader = unittest.TestLoader()
@@ -594,7 +594,7 @@ klasse Test_TestLoader(unittest.TestCase):
     def test_loadTestsFromName__callable__wrong_type(self):
         m = types.ModuleType('m')
         def return_wrong():
-            return 6
+            gib 6
         m.return_wrong = return_wrong
 
         loader = unittest.TestLoader()
@@ -648,7 +648,7 @@ klasse Test_TestLoader(unittest.TestCase):
         self.assertEqual(1, len(loader.errors))
         error = loader.errors[0]
         test = list(suite)[0]
-        return error, test
+        gib error, test
 
     # "Similar to loadTestsFromName(), but takes a sequence of names rather
     # than a single name."
@@ -668,7 +668,7 @@ klasse Test_TestLoader(unittest.TestCase):
     #
     # What happens wenn that sequence of names is empty?
     #
-    # XXX Should this raise a ValueError oder just return an empty TestSuite?
+    # XXX Should this raise a ValueError oder just gib an empty TestSuite?
     def test_loadTestsFromNames__relative_empty_name_list(self):
         loader = unittest.TestLoader()
 
@@ -962,7 +962,7 @@ klasse Test_TestLoader(unittest.TestCase):
         testcase_1 = unittest.FunctionTestCase(lambda: Nichts)
         testcase_2 = unittest.FunctionTestCase(lambda: Nichts)
         def return_TestSuite():
-            return unittest.TestSuite([testcase_1, testcase_2])
+            gib unittest.TestSuite([testcase_1, testcase_2])
         m.return_TestSuite = return_TestSuite
 
         loader = unittest.TestLoader()
@@ -978,7 +978,7 @@ klasse Test_TestLoader(unittest.TestCase):
         m = types.ModuleType('m')
         testcase_1 = unittest.FunctionTestCase(lambda: Nichts)
         def return_TestCase():
-            return testcase_1
+            gib testcase_1
         m.return_TestCase = return_TestCase
 
         loader = unittest.TestLoader()
@@ -1002,7 +1002,7 @@ klasse Test_TestLoader(unittest.TestCase):
         klasse Foo(unittest.TestCase):
             @staticmethod
             def foo():
-                return testcase_1
+                gib testcase_1
         m.Foo = Foo
 
         loader = unittest.TestLoader()
@@ -1019,7 +1019,7 @@ klasse Test_TestLoader(unittest.TestCase):
     def test_loadTestsFromNames__callable__wrong_type(self):
         m = types.ModuleType('m')
         def return_wrong():
-            return 6
+            gib 6
         m.return_wrong = return_wrong
 
         loader = unittest.TestLoader()
@@ -1087,7 +1087,7 @@ klasse Test_TestLoader(unittest.TestCase):
     #
     # Are not-TestCases handled gracefully?
     #
-    # XXX This should raise a TypeError, nicht return a list
+    # XXX This should raise a TypeError, nicht gib a list
     #
     # XXX It's too late in the 2.5 release cycle to fix this, but it should
     # probably be revisited fuer 2.6
@@ -1284,7 +1284,7 @@ klasse Test_TestLoader(unittest.TestCase):
     # getTestCaseNames() und all the loadTestsFromX() methods"
     def test_sortTestMethodsUsing__loadTestsFromTestCase(self):
         def reversed_cmp(x, y):
-            return -((x > y) - (x < y))
+            gib -((x > y) - (x < y))
 
         klasse Foo(unittest.TestCase):
             def test_1(self): pass
@@ -1300,7 +1300,7 @@ klasse Test_TestLoader(unittest.TestCase):
     # getTestCaseNames() und all the loadTestsFromX() methods"
     def test_sortTestMethodsUsing__loadTestsFromModule(self):
         def reversed_cmp(x, y):
-            return -((x > y) - (x < y))
+            gib -((x > y) - (x < y))
 
         m = types.ModuleType('m')
         klasse Foo(unittest.TestCase):
@@ -1318,7 +1318,7 @@ klasse Test_TestLoader(unittest.TestCase):
     # getTestCaseNames() und all the loadTestsFromX() methods"
     def test_sortTestMethodsUsing__loadTestsFromName(self):
         def reversed_cmp(x, y):
-            return -((x > y) - (x < y))
+            gib -((x > y) - (x < y))
 
         m = types.ModuleType('m')
         klasse Foo(unittest.TestCase):
@@ -1336,7 +1336,7 @@ klasse Test_TestLoader(unittest.TestCase):
     # getTestCaseNames() und all the loadTestsFromX() methods"
     def test_sortTestMethodsUsing__loadTestsFromNames(self):
         def reversed_cmp(x, y):
-            return -((x > y) - (x < y))
+            gib -((x > y) - (x < y))
 
         m = types.ModuleType('m')
         klasse Foo(unittest.TestCase):
@@ -1356,7 +1356,7 @@ klasse Test_TestLoader(unittest.TestCase):
     # Does it actually affect getTestCaseNames()?
     def test_sortTestMethodsUsing__getTestCaseNames(self):
         def reversed_cmp(x, y):
-            return -((x > y) - (x < y))
+            gib -((x > y) - (x < y))
 
         klasse Foo(unittest.TestCase):
             def test_1(self): pass
@@ -1497,7 +1497,7 @@ klasse TestObsoleteFunctions(unittest.TestCase):
 
     @staticmethod
     def reverse_three_way_cmp(a, b):
-        return unittest.util.three_way_cmp(b, a)
+        gib unittest.util.three_way_cmp(b, a)
 
 
 wenn __name__ == "__main__":

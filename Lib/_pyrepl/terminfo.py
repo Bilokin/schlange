@@ -112,7 +112,7 @@ def _get_terminfo_dirs() -> list[Path]:
         ]
     )
 
-    return [Path(d) fuer d in dirs wenn Path(d).is_dir()]
+    gib [Path(d) fuer d in dirs wenn Path(d).is_dir()]
 
 
 def _validate_terminal_name_or_raise(terminal_name: str) -> Nichts:
@@ -143,13 +143,13 @@ def _read_terminfo_file(terminal_name: str) -> bytes:
     fuer directory in _get_terminfo_dirs():
         path = directory / first_char / filename
         wenn path.is_file():
-            return path.read_bytes()
+            gib path.read_bytes()
 
         # Try mit hex encoding of first char (for special chars)
         hex_dir = "%02x" % ord(first_char)
         path = directory / hex_dir / filename
         wenn path.is_file():
-            return path.read_bytes()
+            gib path.read_bytes()
 
     raise FileNotFoundError(errno.ENOENT, os.strerror(errno.ENOENT), filename)
 
@@ -435,7 +435,7 @@ klasse TermInfo:
         wenn nicht isinstance(cap, str):
             raise TypeError(f"`cap` must be a string, nicht {type(cap)}")
 
-        return self._capabilities.get(cap)
+        gib self._capabilities.get(cap)
 
 
 def tparm(cap_bytes: bytes, *params: int) -> bytes:
@@ -485,4 +485,4 @@ def tparm(cap_bytes: bytes, *params: int) -> bytes:
             + result[match.end() :]
         )
 
-    return result
+    gib result

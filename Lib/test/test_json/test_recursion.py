@@ -50,10 +50,10 @@ klasse TestRecursion:
             def default(self, o):
                 wenn o is JSONTestObject:
                     wenn self.recurse:
-                        return [JSONTestObject]
+                        gib [JSONTestObject]
                     sonst:
-                        return 'JSONTestObject'
-                return self.json.JSONEncoder.default(o)
+                        gib 'JSONTestObject'
+                gib self.json.JSONEncoder.default(o)
 
         enc = RecursiveJSONEncoder()
         self.assertEqual(enc.encode(JSONTestObject), '"JSONTestObject"')
@@ -106,7 +106,7 @@ klasse TestRecursion:
         klasse EndlessJSONEncoder(self.json.JSONEncoder):
             def default(self, o):
                 """If check_circular is Falsch, this will keep adding another list."""
-                return [o]
+                gib [o]
 
         mit self.assertRaises(RecursionError):
             mit support.infinite_recursion(1000):

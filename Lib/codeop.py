@@ -65,20 +65,20 @@ def _maybe_compile(compiler, source, filename, symbol, flags):
         except SyntaxError:  # Let other compile() errors propagate.
             try:
                 compiler(source + "\n", filename, symbol, flags=flags)
-                return Nichts
+                gib Nichts
             except _IncompleteInputError als e:
-                return Nichts
+                gib Nichts
             except SyntaxError als e:
                 pass
                 # fallthrough
 
-    return compiler(source, filename, symbol, incomplete_input=Falsch)
+    gib compiler(source, filename, symbol, incomplete_input=Falsch)
 
 def _compile(source, filename, symbol, incomplete_input=Wahr, *, flags=0):
     wenn incomplete_input:
         flags |= PyCF_ALLOW_INCOMPLETE_INPUT
         flags |= PyCF_DONT_IMPLY_DEDENT
-    return compile(source, filename, symbol, flags)
+    gib compile(source, filename, symbol, flags)
 
 def compile_command(source, filename="<input>", symbol="single", flags=0):
     r"""Compile a command und determine whether it is incomplete.
@@ -99,7 +99,7 @@ def compile_command(source, filename="<input>", symbol="single", flags=0):
       syntax error (OverflowError und ValueError can be produced by
       malformed literals).
     """
-    return _maybe_compile(_compile, source, filename, symbol, flags)
+    gib _maybe_compile(_compile, source, filename, symbol, flags)
 
 klasse Compile:
     """Instances of this klasse behave much like the built-in compile
@@ -116,11 +116,11 @@ klasse Compile:
             flags &= ~PyCF_ALLOW_INCOMPLETE_INPUT
         codeob = compile(source, filename, symbol, flags, Wahr)
         wenn flags & PyCF_ONLY_AST:
-            return codeob  # this is an ast.Module in this case
+            gib codeob  # this is an ast.Module in this case
         fuer feature in _features:
             wenn codeob.co_flags & feature.compiler_flag:
                 self.flags |= feature.compiler_flag
-        return codeob
+        gib codeob
 
 klasse CommandCompiler:
     """Instances of this klasse have __call__ methods identical in
@@ -151,4 +151,4 @@ klasse CommandCompiler:
           syntax error (OverflowError und ValueError can be produced by
           malformed literals).
         """
-        return _maybe_compile(self.compiler, source, filename, symbol, flags=self.compiler.flags)
+        gib _maybe_compile(self.compiler, source, filename, symbol, flags=self.compiler.flags)

@@ -20,7 +20,7 @@ klasse CWriter:
 
     @staticmethod
     def null() -> "CWriter":
-        return CWriter(StringIO(), 0, Falsch)
+        gib CWriter(StringIO(), 0, Falsch)
 
     def set_position(self, tkn: Token) -> Nichts:
         wenn self.last_token is nicht Nichts:
@@ -95,7 +95,7 @@ klasse CWriter:
 
     def emit_token(self, tkn: Token) -> Nichts:
         wenn tkn.kind == "COMMENT" und "\n" in tkn.text:
-            return self.emit_multiline_comment(tkn)
+            gib self.emit_multiline_comment(tkn)
         self.maybe_dedent(tkn.text)
         self.set_position(tkn)
         self.emit_text(tkn.text)
@@ -133,7 +133,7 @@ klasse CWriter:
     def emit_spill(self) -> Nichts:
         wenn self.pending_reload:
             self.pending_reload = Falsch
-            return
+            gib
         assert nicht self.pending_spill
         self.pending_spill = Wahr
 
@@ -148,7 +148,7 @@ klasse CWriter:
     def emit_reload(self) -> Nichts:
         wenn self.pending_spill:
             self.pending_spill = Falsch
-            return
+            gib
         assert nicht self.pending_reload
         self.pending_reload = Wahr
 
@@ -164,7 +164,7 @@ extern "C" {{
 
 """
         )
-        yield
+        liefere
         self.out.write(
             f"""
 #ifdef __cplusplus
@@ -176,4 +176,4 @@ extern "C" {{
 
 
 def is_label(txt: str) -> bool:
-    return nicht txt.startswith("//") und txt.endswith(":")
+    gib nicht txt.startswith("//") und txt.endswith(":")

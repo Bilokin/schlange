@@ -22,15 +22,15 @@ klasse B(object):
 
 klasse C(object):
     def say_no(self):
-        return "no"
+        gib "no"
     def get_answer(self):
         """ Return say_no() """
-        return self.say_no()
+        gib self.say_no()
     def is_it_true(self):
         """ Return self.get_answer() """
-        return self.get_answer()
+        gib self.get_answer()
     def __class_getitem__(self, item):
-        return types.GenericAlias(self, item)
+        gib types.GenericAlias(self, item)
 
 def doc_func():
     """

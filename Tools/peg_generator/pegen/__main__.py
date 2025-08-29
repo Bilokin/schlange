@@ -39,7 +39,7 @@ def generate_c_code(
             keep_asserts_in_extension=Falsch wenn args.optimized sonst Wahr,
             skip_actions=args.skip_actions,
         )
-        return grammar, parser, tokenizer, gen
+        gib grammar, parser, tokenizer, gen
     except Exception als err:
         wenn args.verbose:
             raise  # Show traceback
@@ -64,7 +64,7 @@ def generate_python_code(
             verbose_parser,
             skip_actions=args.skip_actions,
         )
-        return grammar, parser, tokenizer, gen
+        gib grammar, parser, tokenizer, gen
     except Exception als err:
         wenn args.verbose:
             raise  # Show traceback

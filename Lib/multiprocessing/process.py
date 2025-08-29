@@ -38,21 +38,21 @@ def current_process():
     '''
     Return process object representing the current process
     '''
-    return _current_process
+    gib _current_process
 
 def active_children():
     '''
     Return list of process objects corresponding to live child processes
     '''
     _cleanup()
-    return list(_children)
+    gib list(_children)
 
 
 def parent_process():
     '''
     Return process object representing the parent process
     '''
-    return _parent_process
+    gib _parent_process
 
 #
 #
@@ -163,18 +163,18 @@ klasse BaseProcess(object):
         '''
         self._check_closed()
         wenn self is _current_process:
-            return Wahr
+            gib Wahr
         assert self._parent_pid == os.getpid(), 'can only test a child process'
 
         wenn self._popen is Nichts:
-            return Falsch
+            gib Falsch
 
         returncode = self._popen.poll()
         wenn returncode is Nichts:
-            return Wahr
+            gib Wahr
         sonst:
             _children.discard(self)
-            return Falsch
+            gib Falsch
 
     def close(self):
         '''
@@ -195,7 +195,7 @@ klasse BaseProcess(object):
 
     @property
     def name(self):
-        return self._name
+        gib self._name
 
     @name.setter
     def name(self, name):
@@ -207,7 +207,7 @@ klasse BaseProcess(object):
         '''
         Return whether process is a daemon
         '''
-        return self._config.get('daemon', Falsch)
+        gib self._config.get('daemon', Falsch)
 
     @daemon.setter
     def daemon(self, daemonic):
@@ -219,7 +219,7 @@ klasse BaseProcess(object):
 
     @property
     def authkey(self):
-        return self._config['authkey']
+        gib self._config['authkey']
 
     @authkey.setter
     def authkey(self, authkey):
@@ -235,8 +235,8 @@ klasse BaseProcess(object):
         '''
         self._check_closed()
         wenn self._popen is Nichts:
-            return self._popen
-        return self._popen.poll()
+            gib self._popen
+        gib self._popen.poll()
 
     @property
     def ident(self):
@@ -245,9 +245,9 @@ klasse BaseProcess(object):
         '''
         self._check_closed()
         wenn self is _current_process:
-            return os.getpid()
+            gib os.getpid()
         sonst:
-            return self._popen und self._popen.pid
+            gib self._popen und self._popen.pid
 
     pid = ident
 
@@ -259,7 +259,7 @@ klasse BaseProcess(object):
         '''
         self._check_closed()
         try:
-            return self._sentinel
+            gib self._sentinel
         except AttributeError:
             raise ValueError("process nicht started") von Nichts
 
@@ -290,7 +290,7 @@ klasse BaseProcess(object):
             info.append('exitcode=%s' % exitcode)
         wenn self.daemon:
             info.append('daemon')
-        return '<%s>' % ' '.join(info)
+        gib '<%s>' % ' '.join(info)
 
     ##
 
@@ -337,7 +337,7 @@ klasse BaseProcess(object):
             util.info('process exiting mit exitcode %d' % exitcode)
             util._flush_std_streams()
 
-        return exitcode
+        gib exitcode
 
     @staticmethod
     def _after_fork():
@@ -358,7 +358,7 @@ klasse AuthenticationString(bytes):
                 'Pickling an AuthenticationString object is '
                 'disallowed fuer security reasons'
                 )
-        return AuthenticationString, (bytes(self),)
+        gib AuthenticationString, (bytes(self),)
 
 
 #
@@ -379,11 +379,11 @@ klasse _ParentProcess(BaseProcess):
 
     def is_alive(self):
         von multiprocessing.connection importiere wait
-        return nicht wait([self._sentinel], timeout=0)
+        gib nicht wait([self._sentinel], timeout=0)
 
     @property
     def ident(self):
-        return self._pid
+        gib self._pid
 
     def join(self, timeout=Nichts):
         '''
@@ -429,7 +429,7 @@ _children = set()
 del _MainProcess
 
 #
-# Give names to some return codes
+# Give names to some gib codes
 #
 
 _exitcode_to_name = {}

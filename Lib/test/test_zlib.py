@@ -27,7 +27,7 @@ def _zlib_runtime_version_tuple(zlib_version=zlib.ZLIB_RUNTIME_VERSION):
         v.append('0')
     sowenn nicht v[-1].isnumeric():
         v[-1] = '0'
-    return tuple(map(int, v))
+    gib tuple(map(int, v))
 
 
 ZLIB_RUNTIME_VERSION_TUPLE = _zlib_runtime_version_tuple()
@@ -39,13 +39,13 @@ ZLIB_RUNTIME_VERSION_TUPLE = _zlib_runtime_version_tuple()
 # Simplified test_pair() code:
 #
 #   def func1(data):
-#       return zlib.compress(data)
+#       gib zlib.compress(data)
 #
 #   def func2(data)
 #       co = zlib.compressobj()
 #       x1 = co.compress(data)
 #       x2 = co.flush()
-#       return x1 + x2
+#       gib x1 + x2
 #
 # On s390x wenn zlib uses a hardware accelerator, func1() creates a single
 # "final" compressed block whereas func2() produces 3 compressed blocks (the
@@ -133,10 +133,10 @@ klasse ChecksumCombineMixin:
         - Otherwise, *iv* is returned als is.
         """
         wenn iv is Nichts:
-            return self.default_iv
+            gib self.default_iv
         wenn iv == -1:
-            return random.randint(1, 0x80000000)
-        return iv
+            gib random.randint(1, 0x80000000)
+        gib iv
 
     def checksum(self, data, init=Nichts):
         """Compute the checksum of data mit a given initial value.
@@ -144,7 +144,7 @@ klasse ChecksumCombineMixin:
         The *init* value is parsed by ``parse_iv``.
         """
         iv = self.parse_iv(init)
-        return self._checksum(data, iv)
+        gib self._checksum(data, iv)
 
     def _checksum(self, data, init):
         raise NotImplementedError
@@ -158,7 +158,7 @@ klasse ChecksumCombineMixin:
         data = random.randbytes(data_len)
         init = self.parse_iv(iv)
         checksum = self.checksum(data, init)
-        return data, init, checksum
+        gib data, init, checksum
 
     def test_combine_empty(self):
         fuer _ in range(self.N):
@@ -210,10 +210,10 @@ klasse CRC32CombineTestCase(ChecksumCombineMixin, unittest.TestCase):
     default_iv = 0
 
     def _checksum(self, data, init):
-        return zlib.crc32(data, init)
+        gib zlib.crc32(data, init)
 
     def combine(self, a, b, blen):
-        return zlib.crc32_combine(a, b, blen)
+        gib zlib.crc32_combine(a, b, blen)
 
 
 klasse Adler32CombineTestCase(ChecksumCombineMixin, unittest.TestCase):
@@ -221,10 +221,10 @@ klasse Adler32CombineTestCase(ChecksumCombineMixin, unittest.TestCase):
     default_iv = 1
 
     def _checksum(self, data, init):
-        return zlib.adler32(data, init)
+        gib zlib.adler32(data, init)
 
     def combine(self, a, b, blen):
-        return zlib.adler32_combine(a, b, blen)
+        gib zlib.adler32_combine(a, b, blen)
 
 
 # Issue #10276 - check that inputs >=4 GiB are handled correctly.
@@ -473,7 +473,7 @@ klasse CompressObjectTestCase(BaseCompressTestCase, unittest.TestCase):
         combuf = b''.join(bufs)
 
         decombuf = zlib.decompress(combuf)
-        # Test type of return value
+        # Test type of gib value
         self.assertIsInstance(decombuf, bytes)
 
         self.assertEqual(data, decombuf)
@@ -821,7 +821,7 @@ klasse CompressObjectTestCase(BaseCompressTestCase, unittest.TestCase):
         # Test copying a decompression object
         data = HAMLET_SCENE
         comp = zlib.compress(data)
-        # Test type of return value
+        # Test type of gib value
         self.assertIsInstance(comp, bytes)
 
         fuer func in lambda c: c.copy(), copy.copy, copy.deepcopy:
@@ -977,7 +977,7 @@ def choose_lines(source, number, seed=Nichts, generator=random):
     wenn seed is nicht Nichts:
         generator.seed(seed)
     sources = source.split('\n')
-    return [generator.choice(sources) fuer n in range(number)]
+    gib [generator.choice(sources) fuer n in range(number)]
 
 
 HAMLET_SCENE = b"""
@@ -1219,7 +1219,7 @@ klasse ZlibDecompressorTest(unittest.TestCase):
 
 klasse CustomInt:
     def __index__(self):
-        return 100
+        gib 100
 
 
 wenn __name__ == "__main__":

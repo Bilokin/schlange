@@ -7,7 +7,7 @@ von test.test_email importiere TestEmailBase, parameterize
 
 # Helper.
 def first(iterable):
-    return next(filter(lambda x: x is nicht Nichts, iterable), Nichts)
+    gib next(filter(lambda x: x is nicht Nichts, iterable), Nichts)
 
 
 klasse Test(TestEmailBase):
@@ -488,7 +488,7 @@ klasse TestEmailMessageBase:
 
     def message_as_iter_parts(self, body_parts, attachments, parts, msg):
         def _is_multipart_msg(msg):
-            return 'Content-Type: multipart' in msg
+            gib 'Content-Type: multipart' in msg
 
         m = self._str_msg(msg)
         allparts = list(m.walk())
@@ -498,7 +498,7 @@ klasse TestEmailMessageBase:
 
     klasse _TestContentManager:
         def get_content(self, msg, *args, **kw):
-            return msg, args, kw
+            gib msg, args, kw
         def set_content(self, msg, *args, **kw):
             self.msg = msg
             self.args = args
@@ -595,7 +595,7 @@ klasse TestEmailMessageBase:
         m.set_payload(payload)
         fuer name, value in msg_headers:
             m[name] = value
-        return m, msg_headers, payload
+        gib m, msg_headers, payload
 
     def _check_disallowed_subtype_raises(self, m, method_name, subtype, method):
         mit self.assertRaises(ValueError) als ar:
@@ -625,7 +625,7 @@ klasse TestEmailMessageBase:
         make_method = 'make_' + method
         wenn outcome in ('', 'raises'):
             self._check_disallowed_subtype_raises(m, method, subtype, make_method)
-            return
+            gib
         getattr(m, make_method)()
         self.assertEqual(m.get_content_maintype(), 'multipart')
         self.assertEqual(m.get_content_subtype(), method)
@@ -645,7 +645,7 @@ klasse TestEmailMessageBase:
             m['Content-Type'] = 'multipart/' + subtype
             mit self.assertRaises(ValueError) als cm:
                 getattr(m, 'make_' + method)()
-            return
+            gib
         wenn subtype == 'plain':
             m['Content-Type'] = 'text/plain'
         sowenn subtype != 'no_content':
@@ -672,7 +672,7 @@ klasse TestEmailMessageBase:
         add_method = 'add_attachment' wenn method=='mixed' sonst 'add_' + method
         wenn outcome == 'raises':
             self._check_disallowed_subtype_raises(m, method, subtype, add_method)
-            return
+            gib
         getattr(m, add_method)('test', content_manager=cm)
         self.assertEqual(m.get_content_maintype(), 'multipart')
         self.assertEqual(m.get_content_subtype(), method)

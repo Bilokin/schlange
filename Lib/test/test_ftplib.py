@@ -89,7 +89,7 @@ klasse DummyDTPHandler(asynchat.async_chat):
             what = self.baseclass.next_data
             self.baseclass.next_data = Nichts
         wenn nicht what:
-            return self.close_when_done()
+            gib self.close_when_done()
         super(DummyDTPHandler, self).push(what.encode(self.encoding))
 
     def handle_error(self):
@@ -271,7 +271,7 @@ klasse DummyFTPHandler(asynchat.async_chat):
         self.dtp.close_when_done()
 
     def cmd_setlongretr(self, arg):
-        # For testing. Next RETR will return long line.
+        # For testing. Next RETR will gib long line.
         self.next_retr_data = 'x' * int(arg)
         self.push('125 setlongretr ok')
 
@@ -321,7 +321,7 @@ klasse DummyFTPServer(asyncore.dispatcher, threading.Thread):
     handle_read = handle_connect
 
     def writable(self):
-        return 0
+        gib 0
 
     def handle_error(self):
         default_error_handler()
@@ -355,16 +355,16 @@ wenn ssl is nicht Nichts:
             except ssl.SSLError als err:
                 wenn err.args[0] in (ssl.SSL_ERROR_WANT_READ,
                                    ssl.SSL_ERROR_WANT_WRITE):
-                    return
+                    gib
                 sowenn err.args[0] == ssl.SSL_ERROR_EOF:
-                    return self.handle_close()
+                    gib self.handle_close()
                 # TODO: SSLError does nicht expose alert information
                 sowenn "SSLV3_ALERT_BAD_CERTIFICATE" in err.args[1]:
-                    return self.handle_close()
+                    gib self.handle_close()
                 raise
             except OSError als err:
                 wenn err.args[0] == errno.ECONNABORTED:
-                    return self.handle_close()
+                    gib self.handle_close()
             sonst:
                 self._ssl_accepting = Falsch
 
@@ -375,9 +375,9 @@ wenn ssl is nicht Nichts:
             except ssl.SSLError als err:
                 wenn err.args[0] in (ssl.SSL_ERROR_WANT_READ,
                                    ssl.SSL_ERROR_WANT_WRITE):
-                    return
+                    gib
             except OSError:
-                # Any "socket error" corresponds to a SSL_ERROR_SYSCALL return
+                # Any "socket error" corresponds to a SSL_ERROR_SYSCALL gib
                 # von OpenSSL's SSL_shutdown(), corresponding to a
                 # closed socket condition. See also:
                 # http://www.mail-archive.com/openssl-users@openssl.org/msg60710.html
@@ -406,24 +406,24 @@ wenn ssl is nicht Nichts:
 
         def send(self, data):
             try:
-                return super(SSLConnection, self).send(data)
+                gib super(SSLConnection, self).send(data)
             except ssl.SSLError als err:
                 wenn err.args[0] in (ssl.SSL_ERROR_EOF, ssl.SSL_ERROR_ZERO_RETURN,
                                    ssl.SSL_ERROR_WANT_READ,
                                    ssl.SSL_ERROR_WANT_WRITE):
-                    return 0
+                    gib 0
                 raise
 
         def recv(self, buffer_size):
             try:
-                return super(SSLConnection, self).recv(buffer_size)
+                gib super(SSLConnection, self).recv(buffer_size)
             except ssl.SSLError als err:
                 wenn err.args[0] in (ssl.SSL_ERROR_WANT_READ,
                                    ssl.SSL_ERROR_WANT_WRITE):
-                    return b''
+                    gib b''
                 wenn err.args[0] in (ssl.SSL_ERROR_EOF, ssl.SSL_ERROR_ZERO_RETURN):
                     self.handle_close()
-                    return b''
+                    gib b''
                 raise
 
         def handle_error(self):
@@ -752,12 +752,12 @@ klasse TestFTPClass(TestCase):
 
         def is_client_connected():
             wenn self.client.sock is Nichts:
-                return Falsch
+                gib Falsch
             try:
                 self.client.sendcmd('noop')
             except (OSError, EOFError):
-                return Falsch
-            return Wahr
+                gib Falsch
+            gib Wahr
 
         # base test
         mit ftplib.FTP(timeout=TIMEOUT) als self.client:

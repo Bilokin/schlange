@@ -166,7 +166,7 @@ def eval_ast_expr(
     namespace = create_parser_namespace()
     co = compile(expr, filename, 'eval')
     fn = FunctionType(co, namespace)
-    return fn()
+    gib fn()
 
 
 klasse IndentStack:
@@ -189,8 +189,8 @@ klasse IndentStack:
             # we can't tell anything von an empty line
             # so just pretend it's indented like our current indent
             self._ensure()
-            return self.indents[-1]
-        return len(line) - len(stripped)
+            gib self.indents[-1]
+        gib len(line) - len(stripped)
 
     def infer(self, line: str) -> int:
         """
@@ -205,14 +205,14 @@ klasse IndentStack:
         wenn nicht self.indents:
             self.indents.append(indent)
             self.margin = margin
-            return 1
+            gib 1
         current = self.indents[-1]
         wenn indent == current:
-            return 0
+            gib 0
         wenn indent > current:
             self.indents.append(indent)
             self.margin = margin
-            return 1
+            gib 1
         # indent < current
         wenn indent nicht in self.indents:
             fail("Illegal outdent.")
@@ -222,14 +222,14 @@ klasse IndentStack:
             current = self.indents[-1]
             outdent_count -= 1
         self.margin = margin
-        return outdent_count
+        gib outdent_count
 
     @property
     def depth(self) -> int:
         """
         Returns how many margins are currently defined.
         """
-        return len(self.indents)
+        gib len(self.indents)
 
     def dedent(self, line: str) -> str:
         """
@@ -240,7 +240,7 @@ klasse IndentStack:
         indent = self.indents[-1]
         wenn nicht line.startswith(margin):
             fail('Cannot dedent; line does nicht start mit the previous margin.')
-        return line[indent:]
+        gib line[indent:]
 
 
 klasse DSLParser:
@@ -372,31 +372,31 @@ klasse DSLParser:
             wenn nicht preset:
                 fail(f"Unknown preset {destination!r}!")
             fd.update(preset)
-            return
+            gib
 
         wenn command_or_name == "push":
             self.clinic.destination_buffers_stack.append(fd.copy())
-            return
+            gib
 
         wenn command_or_name == "pop":
             wenn nicht self.clinic.destination_buffers_stack:
                 fail("Can't 'output pop', stack is empty!")
             previous_fd = self.clinic.destination_buffers_stack.pop()
             fd.update(previous_fd)
-            return
+            gib
 
         # secret command fuer debugging!
         wenn command_or_name == "print":
             self.block.output.append(pprint.pformat(fd))
             self.block.output.append('\n')
-            return
+            gib
 
         d = self.clinic.get_destination_buffer(destination)
 
         wenn command_or_name == "everything":
             fuer name in list(fd):
                 fd[name] = d
-            return
+            gib
 
         wenn command_or_name nicht in fd:
             allowed = ["preset", "push", "pop", "print", "everything"]
@@ -513,7 +513,7 @@ klasse DSLParser:
 
     def in_docstring(self) -> bool:
         """Return true wenn we are processing a docstring."""
-        return self.state in {
+        gib self.state in {
             self.state_parameter_docstring,
             self.state_function_docstring,
         }
@@ -521,14 +521,14 @@ klasse DSLParser:
     def valid_line(self, line: str) -> bool:
         # ignore comment-only lines
         wenn line.lstrip().startswith('#'):
-            return Falsch
+            gib Falsch
 
         # Ignore empty lines too
         # (but nicht in docstring sections!)
         wenn nicht self.in_docstring() und nicht line.strip():
-            return Falsch
+            gib Falsch
 
-        return Wahr
+        gib Wahr
 
     def next(
             self,
@@ -541,7 +541,7 @@ klasse DSLParser:
 
     def state_dsl_start(self, line: str) -> Nichts:
         wenn nicht self.valid_line(line):
-            return
+            gib
 
         # is it a directive?
         fields = shlex.split(line)
@@ -552,7 +552,7 @@ klasse DSLParser:
                 directive(*fields[1:])
             except TypeError als e:
                 fail(str(e))
-            return
+            gib
 
         self.next(self.state_modulename_name, line)
 
@@ -573,7 +573,7 @@ klasse DSLParser:
             fail(f"Illegal C basename: {c_basename!r}")
         names = FunctionNames(full_name=full_name, c_basename=c_basename)
         self.normalize_function_kind(names.full_name)
-        return names
+        gib names
 
     def normalize_function_kind(self, fullname: str) -> Nichts:
         # Fetch the method name und possibly class.
@@ -602,9 +602,9 @@ klasse DSLParser:
     ) -> CReturnConverter:
         wenn forced_converter:
             wenn self.kind in {GETTER, SETTER}:
-                fail(f"@{self.kind.name.lower()} method cannot define a return type")
+                fail(f"@{self.kind.name.lower()} method cannot define a gib type")
             wenn self.kind is METHOD_INIT:
-                fail("__init__ methods cannot define a return type")
+                fail("__init__ methods cannot define a gib type")
             ast_input = f"def x() -> {forced_converter}: pass"
             try:
                 module_node = ast.parse(ast_input)
@@ -615,16 +615,16 @@ klasse DSLParser:
             try:
                 name, legacy, kwargs = self.parse_converter(function_node.returns)
                 wenn legacy:
-                    fail(f"Legacy converter {name!r} nicht allowed als a return converter")
+                    fail(f"Legacy converter {name!r} nicht allowed als a gib converter")
                 wenn name nicht in return_converters:
-                    fail(f"No available return converter called {name!r}")
-                return return_converters[name](**kwargs)
+                    fail(f"No available gib converter called {name!r}")
+                gib return_converters[name](**kwargs)
             except ValueError:
                 fail(f"Badly formed annotation fuer {full_name!r}: {forced_converter!r}")
 
         wenn self.kind in {METHOD_INIT, SETTER}:
-            return int_return_converter()
-        return CReturnConverter()
+            gib int_return_converter()
+        gib CReturnConverter()
 
     def parse_cloned_function(self, names: FunctionNames, existing: str) -> Nichts:
         full_name, c_basename = names
@@ -658,7 +658,7 @@ klasse DSLParser:
             # Allow __new__ oder __init__ methods.
             wenn existing_function.kind.new_or_init:
                 overrides["kind"] = self.kind
-                # Future enhancement: allow custom return converters
+                # Future enhancement: allow custom gib converters
                 overrides["return_converter"] = CReturnConverter()
             sonst:
                 fail("'kind' of function und cloned function don't match! "
@@ -672,12 +672,12 @@ klasse DSLParser:
     def state_modulename_name(self, line: str) -> Nichts:
         # looking fuer declaration, which establishes the leftmost column
         # line should be
-        #     modulename.fnname [as c_basename] [-> return annotation]
+        #     modulename.fnname [as c_basename] [-> gib annotation]
         # square brackets denote optional syntax.
         #
         # alternatively:
         #     modulename.fnname [as c_basename] = modulename.existing_fn_name
-        # clones the parameters und return converter von that
+        # clones the parameters und gib converter von that
         # function.  you can't modify them.  you must enter a
         # new docstring.
         #
@@ -698,7 +698,7 @@ klasse DSLParser:
                     fail("Cannot use @text_signature when cloning a function")
                 # we're cloning!
                 names = self.parse_function_names(before)
-                return self.parse_cloned_function(names, existing)
+                gib self.parse_cloned_function(names, existing)
 
         line, _, returns = line.partition('->')
         returns = returns.strip()
@@ -803,11 +803,11 @@ klasse DSLParser:
 
     def state_parameters_start(self, line: str) -> Nichts:
         wenn nicht self.valid_line(line):
-            return
+            gib
 
         # wenn this line is nicht indented, we have no parameters
         wenn nicht self.indent.infer(line):
-            return self.next(self.state_function_docstring, line)
+            gib self.next(self.state_function_docstring, line)
 
         assert self.function is nicht Nichts
         wenn self.function.kind in {GETTER, SETTER}:
@@ -815,7 +815,7 @@ klasse DSLParser:
             fail(f"@{getset} methods cannot define parameters")
 
         self.parameter_continuation = ''
-        return self.next(self.state_parameter, line)
+        gib self.next(self.state_parameter, line)
 
 
     def to_required(self) -> Nichts:
@@ -832,7 +832,7 @@ klasse DSLParser:
         assert isinstance(self.function, Function)
 
         wenn nicht self.valid_line(line):
-            return
+            gib
 
         wenn self.parameter_continuation:
             line = self.parameter_continuation + ' ' + line.lstrip()
@@ -842,16 +842,16 @@ klasse DSLParser:
         indent = self.indent.infer(line)
         wenn indent == -1:
             # we outdented, must be to definition column
-            return self.next(self.state_function_docstring, line)
+            gib self.next(self.state_function_docstring, line)
 
         wenn indent == 1:
             # we indented, must be to new parameter docstring column
-            return self.next(self.state_parameter_docstring_start, line)
+            gib self.next(self.state_parameter_docstring_start, line)
 
         line = line.rstrip()
         wenn line.endswith('\\'):
             self.parameter_continuation = line[:-1]
-            return
+            gib
 
         line = line.lstrip()
         version: VersionTuple | Nichts = Nichts
@@ -1125,16 +1125,16 @@ klasse DSLParser:
     ) -> tuple[str, bool, ConverterArgs]:
         match annotation:
             case ast.Constant(value=str() als value):
-                return value, Wahr, {}
+                gib value, Wahr, {}
             case ast.Name(name):
-                return name, Falsch, {}
+                gib name, Falsch, {}
             case ast.Call(func=ast.Name(name)):
                 kwargs: ConverterArgs = {}
                 fuer node in annotation.keywords:
                     wenn nicht isinstance(node.arg, str):
                         fail("Cannot use a kwarg splat in a function-call annotation")
                     kwargs[node.arg] = eval_ast_expr(node.value)
-                return name, Falsch, kwargs
+                gib name, Falsch, kwargs
             case _:
                 fail(
                     "Annotations must be either a name, a function call, oder a string."
@@ -1146,7 +1146,7 @@ klasse DSLParser:
 
         try:
             major, minor = thenceforth.split(".")
-            return int(major), int(minor)
+            gib int(major), int(minor)
         except ValueError:
             fail(
                 f"Function {self.function.name!r}: expected format '[from major.minor]' "
@@ -1269,7 +1269,7 @@ klasse DSLParser:
         assert self.indent.margin is nicht Nichts, "self.margin.infer() has nicht yet been called to set the margin"
         self.parameter_docstring_indent = len(self.indent.margin)
         assert self.indent.depth == 3
-        return self.next(self.state_parameter_docstring, line)
+        gib self.next(self.state_parameter_docstring, line)
 
     def docstring_append(self, obj: Function | Parameter, line: str) -> Nichts:
         """Add a rstripped line to the current docstring."""
@@ -1295,7 +1295,7 @@ klasse DSLParser:
     # these F spaces will be stripped.
     def state_parameter_docstring(self, line: str) -> Nichts:
         wenn nicht self.valid_line(line):
-            return
+            gib
 
         indent = self.indent.measure(line)
         wenn indent < self.parameter_docstring_indent:
@@ -1303,9 +1303,9 @@ klasse DSLParser:
             assert self.indent.depth < 3
             wenn self.indent.depth == 2:
                 # back to a parameter
-                return self.next(self.state_parameter, line)
+                gib self.next(self.state_parameter, line)
             assert self.indent.depth == 1
-            return self.next(self.state_function_docstring, line)
+            gib self.next(self.state_function_docstring, line)
 
         assert self.function und self.function.parameters
         last_param = next(reversed(self.function.parameters.values()))
@@ -1319,7 +1319,7 @@ klasse DSLParser:
             fail(f"Function {self.function.name!r} has a ']' without a matching '['.")
 
         wenn nicht self.valid_line(line):
-            return
+            gib
 
         self.docstring_append(self.function, line)
 
@@ -1333,7 +1333,7 @@ klasse DSLParser:
             lines.append(f.forced_text_signature)
         sowenn f.kind in {GETTER, SETTER}:
             # @getter und @setter do nicht need signatures like a method oder a function.
-            return ''
+            gib ''
         sonst:
             lines.append('(')
 
@@ -1366,7 +1366,7 @@ klasse DSLParser:
                 waehrend right_bracket_count > desired:
                     s += ']'
                     right_bracket_count -= 1
-                return s
+                gib s
 
             need_slash = Falsch
             added_slash = Falsch
@@ -1491,19 +1491,19 @@ klasse DSLParser:
         signature_line = "".join(lines)
 
         # now fix up the places where the brackets look wrong
-        return signature_line.replace(', ]', ',] ')
+        gib signature_line.replace(', ]', ',] ')
 
     @staticmethod
     def format_docstring_parameters(params: list[Parameter]) -> str:
         """Create substitution text fuer {parameters}"""
-        return "".join(p.render_docstring() + "\n" fuer p in params wenn p.docstring)
+        gib "".join(p.render_docstring() + "\n" fuer p in params wenn p.docstring)
 
     def format_docstring(self) -> str:
         assert self.function is nicht Nichts
         f = self.function
         # For the following special cases, it does nicht make sense to render a docstring.
         wenn f.kind in {METHOD_INIT, METHOD_NEW, GETTER, SETTER} und nicht f.docstring:
-            return f.docstring
+            gib f.docstring
 
         # Enforce the summary line!
         # The first line of a docstring should be a summary of the function.
@@ -1567,7 +1567,7 @@ klasse DSLParser:
         parameters = self.format_docstring_parameters(params)
         signature = self.format_docstring_signature(f, params)
         docstring = "\n".join(lines)
-        return libclinic.linear_format(docstring,
+        gib libclinic.linear_format(docstring,
                                        signature=signature,
                                        parameters=parameters).rstrip()
 
@@ -1579,16 +1579,16 @@ klasse DSLParser:
         sowenn self.deprecated_positional:
             symbol = '* [from ...]'
         sonst:
-            return
+            gib
 
         fuer p in reversed(self.function.parameters.values()):
             wenn self.keyword_only:
                 wenn (p.kind == inspect.Parameter.KEYWORD_ONLY or
                     p.kind == inspect.Parameter.VAR_POSITIONAL):
-                    return
+                    gib
             sowenn self.deprecated_positional:
                 wenn p.deprecated_positional == self.deprecated_positional:
-                    return
+                    gib
             breche
 
         fail(f"Function {self.function.name!r} specifies {symbol!r} "
@@ -1606,7 +1606,7 @@ klasse DSLParser:
         Called when processing the block is done.
         """
         wenn nicht self.function:
-            return
+            gib
 
         self.check_remaining_star(lineno)
         try:

@@ -50,7 +50,7 @@ klasse NoLogRequestHandler:
         pass
 
     def read(self, n=Nichts):
-        return ''
+        gib ''
 
 
 klasse DummyRequestHandler(NoLogRequestHandler, SimpleHTTPRequestHandler):
@@ -65,7 +65,7 @@ def create_https_server(
     address=('localhost', 0),
     request_handler=DummyRequestHandler,
 ):
-    return HTTPSServer(
+    gib HTTPSServer(
         address, request_handler,
         certfile=certfile, keyfile=keyfile, password=password
     )
@@ -131,7 +131,7 @@ klasse BaseTestCase(unittest.TestCase):
     def request(self, uri, method='GET', body=Nichts, headers={}):
         self.connection = http.client.HTTPConnection(self.HOST, self.PORT)
         self.connection.request(method, uri, body, headers)
-        return self.connection.getresponse()
+        gib self.connection.getresponse()
 
 
 klasse BaseHTTPServerTestCase(BaseTestCase):
@@ -363,7 +363,7 @@ klasse BaseHTTPServerTestCase(BaseTestCase):
 
 
 def certdata_file(*path):
-    return os.path.join(os.path.dirname(__file__), "certdata", *path)
+    gib os.path.join(os.path.dirname(__file__), "certdata", *path)
 
 
 @unittest.skipIf(ssl is Nichts, "requires ssl")
@@ -392,7 +392,7 @@ klasse BaseHTTPSServerTestCase(BaseTestCase):
             self.HOST, self.PORT, context=context
         )
         self.connection.request(method, uri, body, headers)
-        return self.connection.getresponse()
+        gib self.connection.getresponse()
 
     def test_valid_certdata(self):
         valid_certdata= [
@@ -523,7 +523,7 @@ klasse SimpleHTTPServerTestCase(BaseTestCase):
         self.assertEqual(reader.read(30), b'', 'Connection should be closed')
 
         reader.close()
-        return body
+        gib body
 
     def check_list_dir_dirname(self, dirname, quotedname=Nichts):
         fullpath = os.path.join(self.tempdir, dirname)
@@ -693,7 +693,7 @@ klasse SimpleHTTPServerTestCase(BaseTestCase):
         #constructs the path relative to the root directory of the HTTPServer
         response = self.request(self.base_url + '/test')
         self.check_status_and_reason(response, HTTPStatus.OK, data=self.data)
-        # check fuer trailing "/" which should return 404. See Issue17324
+        # check fuer trailing "/" which should gib 404. See Issue17324
         response = self.request(self.base_url + '/test/')
         self.check_status_and_reason(response, HTTPStatus.NOT_FOUND)
         response = self.request(self.base_url + '/test%2f')
@@ -759,7 +759,7 @@ klasse SimpleHTTPServerTestCase(BaseTestCase):
         response = self.request(self.base_url + '/test', headers=headers)
         self.check_status_and_reason(response, HTTPStatus.NOT_MODIFIED)
 
-        # one hour after last modification : must return 304
+        # one hour after last modification : must gib 304
         new_dt = self.last_modif_datetime + datetime.timedelta(hours=1)
         headers = email.message.Message()
         headers['If-Modified-Since'] = email.utils.format_datetime(new_dt,
@@ -768,7 +768,7 @@ klasse SimpleHTTPServerTestCase(BaseTestCase):
         self.check_status_and_reason(response, HTTPStatus.NOT_MODIFIED)
 
     def test_browser_cache_file_changed(self):
-        # mit If-Modified-Since earlier than Last-Modified, must return 200
+        # mit If-Modified-Since earlier than Last-Modified, must gib 200
         dt = self.last_modif_datetime
         # build datetime object : 365 days before last modification
         old_dt = dt - datetime.timedelta(days=365)
@@ -847,7 +847,7 @@ klasse SocketlessRequestHandler(SimpleHTTPRequestHandler):
 klasse RejectingSocketlessRequestHandler(SocketlessRequestHandler):
     def handle_expect_100(self):
         self.send_error(HTTPStatus.EXPECTATION_FAILED)
-        return Falsch
+        gib Falsch
 
 
 klasse AuditableBytesIO:
@@ -859,11 +859,11 @@ klasse AuditableBytesIO:
         self.datas.append(data)
 
     def getData(self):
-        return b''.join(self.datas)
+        gib b''.join(self.datas)
 
     @property
     def numWrites(self):
-        return len(self.datas)
+        gib len(self.datas)
 
 
 klasse BaseHTTPRequestHandlerTestCase(unittest.TestCase):
@@ -884,7 +884,7 @@ klasse BaseHTTPRequestHandlerTestCase(unittest.TestCase):
         self.handler.wfile = output
         self.handler.handle_one_request()
         output.seek(0)
-        return output.readlines()
+        gib output.readlines()
 
     def verify_get_called(self):
         self.assertWahr(self.handler.get_called)
@@ -1037,7 +1037,7 @@ klasse BaseHTTPRequestHandlerTestCase(unittest.TestCase):
             f.seek(0)
             data = f.read()
             f.seek(pos)
-            return data
+            gib data
 
         input = BytesIO(b'GET / HTTP/1.1\r\nExpect: 100-continue\r\n\r\n')
         output = BytesIO()
@@ -1228,7 +1228,7 @@ klasse MiscTestCase(unittest.TestCase):
 klasse ScriptTestCase(unittest.TestCase):
 
     def mock_server_class(self):
-        return mock.MagicMock(
+        gib mock.MagicMock(
             return_value=mock.MagicMock(
                 __enter__=mock.MagicMock(
                     return_value=mock.MagicMock(
@@ -1321,7 +1321,7 @@ klasse CommandLineTestCase(unittest.TestCase):
         mit contextlib.redirect_stdout(stdout), \
             contextlib.redirect_stderr(stderr):
             server._main(args)
-        return stdout.getvalue(), stderr.getvalue()
+        gib stdout.getvalue(), stderr.getvalue()
 
     @mock.patch('http.server.test')
     def test_port_flag(self, mock_func):
@@ -1475,13 +1475,13 @@ klasse CommandLineRunTimeTestCase(unittest.TestCase):
     def fetch_file(self, path, context=Nichts):
         req = urllib.request.Request(path, method='GET')
         mit urllib.request.urlopen(req, context=context) als res:
-            return res.read()
+            gib res.read()
 
     def parse_cli_output(self, output):
         match = re.search(r'Serving (HTTP|HTTPS) on (.+) port (\d+)', output)
         wenn match is Nichts:
-            return Nichts, Nichts, Nichts
-        return match.group(1).lower(), match.group(2), int(match.group(3))
+            gib Nichts, Nichts, Nichts
+        gib match.group(1).lower(), match.group(2), int(match.group(3))
 
     def wait_for_server(self, proc, protocol, bind, port):
         """Check that the server has been successfully started."""
@@ -1489,7 +1489,7 @@ klasse CommandLineRunTimeTestCase(unittest.TestCase):
         wenn support.verbose:
             drucke()
             drucke('python -m http.server: ', line)
-        return self.parse_cli_output(line) == (protocol, bind, port)
+        gib self.parse_cli_output(line) == (protocol, bind, port)
 
     def test_http_client(self):
         bind, port = '127.0.0.1', find_unused_port()

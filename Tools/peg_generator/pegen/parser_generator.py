@@ -69,7 +69,7 @@ klasse KeywordCollectorVisitor(GrammarVisitor):
             wenn node.value.endswith("'") und node.value nicht in self.keywords:
                 self.keywords[val] = self.generator.keyword_type()
             sonst:
-                return self.soft_keywords.add(node.value.replace('"', ""))
+                gib self.soft_keywords.add(node.value.replace('"', ""))
 
 
 klasse RuleCheckingVisitor(GrammarVisitor):
@@ -128,12 +128,12 @@ klasse ParserGenerator:
     @contextlib.contextmanager
     def local_variable_context(self) -> Iterator[Nichts]:
         self._local_variable_stack.append([])
-        yield
+        liefere
         self._local_variable_stack.pop()
 
     @property
     def local_variable_names(self) -> List[str]:
-        return self._local_variable_stack[-1]
+        gib self._local_variable_stack[-1]
 
     @abstractmethod
     def generate(self, filename: str) -> Nichts:
@@ -143,7 +143,7 @@ klasse ParserGenerator:
     def indent(self) -> Iterator[Nichts]:
         self.level += 1
         try:
-            yield
+            liefere
         finally:
             self.level -= 1
 
@@ -176,13 +176,13 @@ klasse ParserGenerator:
 
     def keyword_type(self) -> int:
         self.keyword_counter += 1
-        return self.keyword_counter
+        gib self.keyword_counter
 
     def artificial_rule_from_rhs(self, rhs: Rhs) -> str:
         self.counter += 1
         name = f"_tmp_{self.counter}"  # TODO: Pick a nicer name.
         self.all_rules[name] = Rule(name, Nichts, rhs)
-        return name
+        gib name
 
     def artificial_rule_from_repeat(self, node: Plain, is_repeat1: bool) -> str:
         self.counter += 1
@@ -192,7 +192,7 @@ klasse ParserGenerator:
             prefix = "_loop0_"
         name = f"{prefix}{self.counter}"
         self.all_rules[name] = Rule(name, Nichts, Rhs([Alt([NamedItem(Nichts, node)])]))
-        return name
+        gib name
 
     def artificial_rule_from_gather(self, node: Gather) -> str:
         self.counter += 1
@@ -216,7 +216,7 @@ klasse ParserGenerator:
             Nichts,
             Rhs([alt]),
         )
-        return name
+        gib name
 
     def dedupe(self, name: str) -> str:
         origname = name
@@ -225,7 +225,7 @@ klasse ParserGenerator:
             counter += 1
             name = f"{origname}_{counter}"
         self.local_variable_names.append(name)
-        return name
+        gib name
 
 
 klasse NullableVisitor(GrammarVisitor):
@@ -236,62 +236,62 @@ klasse NullableVisitor(GrammarVisitor):
 
     def visit_Rule(self, rule: Rule) -> bool:
         wenn rule in self.visited:
-            return Falsch
+            gib Falsch
         self.visited.add(rule)
         wenn self.visit(rule.rhs):
             self.nullables.add(rule)
-        return rule in self.nullables
+        gib rule in self.nullables
 
     def visit_Rhs(self, rhs: Rhs) -> bool:
         fuer alt in rhs.alts:
             wenn self.visit(alt):
-                return Wahr
-        return Falsch
+                gib Wahr
+        gib Falsch
 
     def visit_Alt(self, alt: Alt) -> bool:
         fuer item in alt.items:
             wenn nicht self.visit(item):
-                return Falsch
-        return Wahr
+                gib Falsch
+        gib Wahr
 
     def visit_Forced(self, force: Forced) -> bool:
-        return Wahr
+        gib Wahr
 
     def visit_LookAhead(self, lookahead: Lookahead) -> bool:
-        return Wahr
+        gib Wahr
 
     def visit_Opt(self, opt: Opt) -> bool:
-        return Wahr
+        gib Wahr
 
     def visit_Repeat0(self, repeat: Repeat0) -> bool:
-        return Wahr
+        gib Wahr
 
     def visit_Repeat1(self, repeat: Repeat1) -> bool:
-        return Falsch
+        gib Falsch
 
     def visit_Gather(self, gather: Gather) -> bool:
-        return Falsch
+        gib Falsch
 
     def visit_Cut(self, cut: Cut) -> bool:
-        return Falsch
+        gib Falsch
 
     def visit_Group(self, group: Group) -> bool:
-        return self.visit(group.rhs)
+        gib self.visit(group.rhs)
 
     def visit_NamedItem(self, item: NamedItem) -> bool:
         wenn self.visit(item.item):
             self.nullables.add(item)
-        return item in self.nullables
+        gib item in self.nullables
 
     def visit_NameLeaf(self, node: NameLeaf) -> bool:
         wenn node.value in self.rules:
-            return self.visit(self.rules[node.value])
+            gib self.visit(self.rules[node.value])
         # Token oder unknown; never empty.
-        return Falsch
+        gib Falsch
 
     def visit_StringLeaf(self, node: StringLeaf) -> bool:
         # The string token '' is considered empty.
-        return nicht node.value
+        gib nicht node.value
 
 
 def compute_nullables(rules: Dict[str, Rule]) -> Set[Any]:
@@ -302,7 +302,7 @@ def compute_nullables(rules: Dict[str, Rule]) -> Set[Any]:
     nullable_visitor = NullableVisitor(rules)
     fuer rule in rules.values():
         nullable_visitor.visit(rule)
-    return nullable_visitor.nullables
+    gib nullable_visitor.nullables
 
 
 klasse InitialNamesVisitor(GrammarVisitor):
@@ -318,7 +318,7 @@ klasse InitialNamesVisitor(GrammarVisitor):
                     names |= self.visit(item, *args, **kwargs)
             sonst:
                 names |= self.visit(value, *args, **kwargs)
-        return names
+        gib names
 
     def visit_Alt(self, alt: Alt) -> Set[Any]:
         names: Set[str] = set()
@@ -326,22 +326,22 @@ klasse InitialNamesVisitor(GrammarVisitor):
             names |= self.visit(item)
             wenn item nicht in self.nullables:
                 breche
-        return names
+        gib names
 
     def visit_Forced(self, force: Forced) -> Set[Any]:
-        return set()
+        gib set()
 
     def visit_LookAhead(self, lookahead: Lookahead) -> Set[Any]:
-        return set()
+        gib set()
 
     def visit_Cut(self, cut: Cut) -> Set[Any]:
-        return set()
+        gib set()
 
     def visit_NameLeaf(self, node: NameLeaf) -> Set[Any]:
-        return {node.value}
+        gib {node.value}
 
     def visit_StringLeaf(self, node: StringLeaf) -> Set[Any]:
-        return set()
+        gib set()
 
 
 def compute_left_recursives(
@@ -371,7 +371,7 @@ def compute_left_recursives(
             wenn name in graph[name]:
                 rules[name].left_recursive = Wahr
                 rules[name].leader = Wahr
-    return graph, sccs
+    gib graph, sccs
 
 
 def make_first_graph(rules: Dict[str, Rule]) -> Dict[str, AbstractSet[str]]:
@@ -390,4 +390,4 @@ def make_first_graph(rules: Dict[str, Rule]) -> Dict[str, AbstractSet[str]]:
         vertices |= names
     fuer vertex in vertices:
         graph.setdefault(vertex, set())
-    return graph
+    gib graph

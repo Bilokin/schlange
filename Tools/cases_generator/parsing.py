@@ -21,12 +21,12 @@ def contextual(func: Callable[[P], N | Nichts]) -> Callable[[P], N | Nichts]:
         res = func(self)
         wenn res is Nichts:
             self.setpos(begin)
-            return Nichts
+            gib Nichts
         end = self.getpos()
         res.context = Context(begin, end, self)
-        return res
+        gib res
 
-    return contextual_wrapper
+    gib contextual_wrapper
 
 
 klasse Context(NamedTuple):
@@ -35,7 +35,7 @@ klasse Context(NamedTuple):
     owner: PLexer
 
     def __repr__(self) -> str:
-        return f"<{self.owner.filename}: {self.begin}-{self.end}>"
+        gib f"<{self.owner.filename}: {self.begin}-{self.end}>"
 
 
 @dataclass
@@ -44,29 +44,29 @@ klasse Node:
 
     @property
     def text(self) -> str:
-        return self.to_text()
+        gib self.to_text()
 
     def to_text(self, dedent: int = 0) -> str:
         context = self.context
         wenn nicht context:
-            return ""
-        return lx.to_text(self.tokens, dedent)
+            gib ""
+        gib lx.to_text(self.tokens, dedent)
 
     @property
     def tokens(self) -> list[lx.Token]:
         context = self.context
         wenn nicht context:
-            return []
+            gib []
         tokens = context.owner.tokens
         begin = context.begin
         end = context.end
-        return tokens[begin:end]
+        gib tokens[begin:end]
 
     @property
     def first_token(self) -> lx.Token:
         context = self.context
         assert context is nicht Nichts
-        return context.owner.tokens[context.begin]
+        gib context.owner.tokens[context.begin]
 
 # Statements
 
@@ -78,7 +78,7 @@ klasse Stmt:
         io = StringIO()
         out = CWriter(io, 0, Falsch)
         self.drucke(out)
-        return io.getvalue()
+        gib io.getvalue()
 
     def drucke(self, out:CWriter) -> Nichts:
         raise NotImplementedError
@@ -116,13 +116,13 @@ klasse IfStmt(Stmt):
             self.else_body.accept(visitor)
 
     def tokens(self) -> Iterator[lx.Token]:
-        yield self.if_
-        yield von self.condition
-        yield von self.body.tokens()
+        liefere self.if_
+        liefere von self.condition
+        liefere von self.body.tokens()
         wenn self.else_ is nicht Nichts:
-            yield self.else_
+            liefere self.else_
         wenn self.else_body is nicht Nichts:
-            yield von self.else_body.tokens()
+            liefere von self.else_body.tokens()
 
 
 @dataclass
@@ -142,9 +142,9 @@ klasse ForStmt(Stmt):
         self.body.accept(visitor)
 
     def tokens(self) -> Iterator[lx.Token]:
-        yield self.for_
-        yield von self.header
-        yield von self.body.tokens()
+        liefere self.for_
+        liefere von self.header
+        liefere von self.body.tokens()
 
 
 @dataclass
@@ -164,9 +164,9 @@ klasse WhileStmt(Stmt):
         self.body.accept(visitor)
 
     def tokens(self) -> Iterator[lx.Token]:
-        yield self.while_
-        yield von self.condition
-        yield von self.body.tokens()
+        liefere self.while_
+        liefere von self.condition
+        liefere von self.body.tokens()
 
 
 @dataclass
@@ -195,12 +195,12 @@ klasse MacroIfStmt(Stmt):
                 stmt.accept(visitor)
 
     def tokens(self) -> Iterator[lx.Token]:
-        yield self.condition
+        liefere self.condition
         fuer stmt in self.body:
-            yield von stmt.tokens()
+            liefere von stmt.tokens()
         wenn self.else_body is nicht Nichts:
             fuer stmt in self.else_body:
-                yield von stmt.tokens()
+                liefere von stmt.tokens()
 
 
 @dataclass
@@ -222,10 +222,10 @@ klasse BlockStmt(Stmt):
             stmt.accept(visitor)
 
     def tokens(self) -> Iterator[lx.Token]:
-        yield self.open
+        liefere self.open
         fuer stmt in self.body:
-            yield von stmt.tokens()
-        yield self.close
+            liefere von stmt.tokens()
+        liefere self.close
 
 
 @dataclass
@@ -237,7 +237,7 @@ klasse SimpleStmt(Stmt):
             out.emit(tkn)
 
     def tokens(self) -> Iterator[lx.Token]:
-        yield von self.contents
+        liefere von self.contents
 
     def accept(self, visitor: Visitor) -> Nichts:
         visitor(self)
@@ -254,7 +254,7 @@ klasse StackEffect(Node):
         items = [self.name, self.size]
         waehrend items und items[-1] == "":
             del items[-1]
-        return f"StackEffect({', '.join(repr(item) fuer item in items)})"
+        gib f"StackEffect({', '.join(repr(item) fuer item in items)})"
 
 
 @dataclass
@@ -333,16 +333,16 @@ klasse Parser(PLexer):
     @contextual
     def definition(self) -> AstNode | Nichts:
         wenn macro := self.macro_def():
-            return macro
+            gib macro
         wenn family := self.family_def():
-            return family
+            gib family
         wenn pseudo := self.pseudo_def():
-            return pseudo
+            gib pseudo
         wenn inst := self.inst_def():
-            return inst
+            gib inst
         wenn label := self.label_def():
-            return label
-        return Nichts
+            gib label
+        gib Nichts
 
     @contextual
     def label_def(self) -> LabelDef | Nichts:
@@ -354,14 +354,14 @@ klasse Parser(PLexer):
                 wenn tkn := self.expect(lx.IDENTIFIER):
                     wenn self.expect(lx.RPAREN):
                         block = self.block()
-                        return LabelDef(tkn.text, spilled, block)
-        return Nichts
+                        gib LabelDef(tkn.text, spilled, block)
+        gib Nichts
 
     @contextual
     def inst_def(self) -> InstDef | Nichts:
         wenn hdr := self.inst_header():
             block = self.block()
-            return InstDef(
+            gib InstDef(
                 hdr.annotations,
                 hdr.kind,
                 hdr.name,
@@ -369,7 +369,7 @@ klasse Parser(PLexer):
                 hdr.outputs,
                 block,
             )
-        return Nichts
+        gib Nichts
 
     @contextual
     def inst_header(self) -> InstHeader | Nichts:
@@ -399,8 +399,8 @@ klasse Parser(PLexer):
                     inp, outp = self.io_effect()
                     wenn self.expect(lx.RPAREN):
                         wenn (tkn := self.peek()) und tkn.kind == lx.LBRACE:
-                            return InstHeader(annotations, kind, name, inp, outp)
-        return Nichts
+                            gib InstHeader(annotations, kind, name, inp, outp)
+        gib Nichts
 
     def io_effect(self) -> tuple[list[InputEffect], list[OutputEffect]]:
         # '(' [inputs] '--' [outputs] ')'
@@ -409,7 +409,7 @@ klasse Parser(PLexer):
             wenn self.expect(lx.MINUSMINUS):
                 outputs = self.outputs() oder []
                 wenn self.expect(lx.RPAREN):
-                    return inputs, outputs
+                    gib inputs, outputs
         raise self.make_syntax_error("Expected stack effect")
 
     def inputs(self) -> list[InputEffect] | Nichts:
@@ -420,15 +420,15 @@ klasse Parser(PLexer):
             near = self.getpos()
             wenn self.expect(lx.COMMA):
                 wenn rest := self.inputs():
-                    return [inp] + rest
+                    gib [inp] + rest
             self.setpos(near)
-            return [inp]
+            gib [inp]
         self.setpos(here)
-        return Nichts
+        gib Nichts
 
     @contextual
     def input(self) -> InputEffect | Nichts:
-        return self.cache_effect() oder self.stack_effect()
+        gib self.cache_effect() oder self.stack_effect()
 
     def outputs(self) -> list[OutputEffect] | Nichts:
         # output (, output)*
@@ -437,15 +437,15 @@ klasse Parser(PLexer):
             near = self.getpos()
             wenn self.expect(lx.COMMA):
                 wenn rest := self.outputs():
-                    return [outp] + rest
+                    gib [outp] + rest
             self.setpos(near)
-            return [outp]
+            gib [outp]
         self.setpos(here)
-        return Nichts
+        gib Nichts
 
     @contextual
     def output(self) -> OutputEffect | Nichts:
-        return self.stack_effect()
+        gib self.stack_effect()
 
     @contextual
     def cache_effect(self) -> CacheEffect | Nichts:
@@ -458,8 +458,8 @@ klasse Parser(PLexer):
                 except ValueError:
                     raise self.make_syntax_error(f"Expected integer, got {num!r}")
                 sonst:
-                    return CacheEffect(tkn.text, size)
-        return Nichts
+                    gib CacheEffect(tkn.text, size)
+        gib Nichts
 
     @contextual
     def stack_effect(self) -> StackEffect | Nichts:
@@ -472,8 +472,8 @@ klasse Parser(PLexer):
                     raise self.make_syntax_error("Expected expression")
                 self.require(lx.RBRACKET)
                 size_text = size.text.strip()
-            return StackEffect(tkn.text, size_text)
-        return Nichts
+            gib StackEffect(tkn.text, size_text)
+        gib Nichts
 
     @contextual
     def expression(self) -> Expression | Nichts:
@@ -489,8 +489,8 @@ klasse Parser(PLexer):
             tokens.append(tkn)
             self.next()
         wenn nicht tokens:
-            return Nichts
-        return Expression(lx.to_text(tokens).strip())
+            gib Nichts
+        gib Expression(lx.to_text(tokens).strip())
 
     # def ops(self) -> list[OpName] | Nichts:
     #     wenn op := self.op():
@@ -498,13 +498,13 @@ klasse Parser(PLexer):
     #         waehrend self.expect(lx.PLUS):
     #             wenn op := self.op():
     #                 ops.append(op)
-    #         return ops
+    #         gib ops
 
     @contextual
     def op(self) -> OpName | Nichts:
         wenn tkn := self.expect(lx.IDENTIFIER):
-            return OpName(tkn.text)
-        return Nichts
+            gib OpName(tkn.text)
+        gib Nichts
 
     @contextual
     def macro_def(self) -> Macro | Nichts:
@@ -516,8 +516,8 @@ klasse Parser(PLexer):
                             wenn uops := self.uops():
                                 self.require(lx.SEMI)
                                 res = Macro(tkn.text, uops)
-                                return res
-        return Nichts
+                                gib res
+        gib Nichts
 
     def uops(self) -> list[UOp] | Nichts:
         wenn uop := self.uop():
@@ -529,8 +529,8 @@ klasse Parser(PLexer):
                     uops.append(uop)
                 sonst:
                     raise self.make_syntax_error("Expected op name oder cache effect")
-            return uops
-        return Nichts
+            gib uops
+        gib Nichts
 
     @contextual
     def uop(self) -> UOp | Nichts:
@@ -547,11 +547,11 @@ klasse Parser(PLexer):
                             f"Expected integer, got {num.text!r}"
                         )
                     sonst:
-                        return CacheEffect(tkn.text, size)
+                        gib CacheEffect(tkn.text, size)
                 raise self.make_syntax_error("Expected integer")
             sonst:
-                return OpName(tkn.text)
-        return Nichts
+                gib OpName(tkn.text)
+        gib Nichts
 
     @contextual
     def family_def(self) -> Family | Nichts:
@@ -571,10 +571,10 @@ klasse Parser(PLexer):
                                 raise self.make_syntax_error("Expected {")
                             wenn members := self.members():
                                 wenn self.expect(lx.RBRACE) und self.expect(lx.SEMI):
-                                    return Family(
+                                    gib Family(
                                         tkn.text, size.text wenn size sonst "", members
                                     )
-        return Nichts
+        gib Nichts
 
     def flags(self) -> list[str]:
         here = self.getpos()
@@ -588,9 +588,9 @@ klasse Parser(PLexer):
                         breche
                 wenn nicht self.expect(lx.RPAREN):
                     raise self.make_syntax_error("Expected comma oder right paren")
-                return flags
+                gib flags
         self.setpos(here)
-        return []
+        gib []
 
     @contextual
     def pseudo_def(self) -> Pseudo | Nichts:
@@ -616,10 +616,10 @@ klasse Parser(PLexer):
                                     raise self.make_syntax_error("Expected { oder [")
                                 wenn members := self.members(allow_sequence=Wahr):
                                     wenn self.expect(closing) und self.expect(lx.SEMI):
-                                        return Pseudo(
+                                        gib Pseudo(
                                             tkn.text, inp, outp, flags, members, as_sequence
                                         )
-        return Nichts
+        gib Nichts
 
     def members(self, allow_sequence : bool=Falsch) -> list[str] | Nichts:
         here = self.getpos()
@@ -635,29 +635,29 @@ klasse Parser(PLexer):
             wenn nicht peek oder peek.kind nicht in kinds:
                 raise self.make_syntax_error(
                     f"Expected comma oder right paren{'/bracket' wenn allow_sequence sonst ''}")
-            return members
+            gib members
         self.setpos(here)
-        return Nichts
+        gib Nichts
 
     def block(self) -> BlockStmt:
         open = self.require(lx.LBRACE)
         stmts: list[Stmt] = []
         waehrend nicht (close := self.expect(lx.RBRACE)):
             stmts.append(self.stmt())
-        return BlockStmt(open, stmts, close)
+        gib BlockStmt(open, stmts, close)
 
     def stmt(self) -> Stmt:
         wenn tkn := self.expect(lx.IF):
-            return self.if_stmt(tkn)
+            gib self.if_stmt(tkn)
         sowenn self.expect(lx.LBRACE):
             self.backup()
-            return self.block()
+            gib self.block()
         sowenn tkn := self.expect(lx.FOR):
-            return self.for_stmt(tkn)
+            gib self.for_stmt(tkn)
         sowenn tkn := self.expect(lx.WHILE):
-            return self.while_stmt(tkn)
+            gib self.while_stmt(tkn)
         sowenn tkn := self.expect(lx.CMACRO_IF):
-            return self.macro_if(tkn)
+            gib self.macro_if(tkn)
         sowenn tkn := self.expect(lx.CMACRO_ELSE):
             msg = "Unexpected #else"
             raise self.make_syntax_error(msg)
@@ -665,12 +665,12 @@ klasse Parser(PLexer):
             msg = "Unexpected #endif"
             raise self.make_syntax_error(msg)
         sowenn tkn := self.expect(lx.CMACRO_OTHER):
-            return SimpleStmt([tkn])
+            gib SimpleStmt([tkn])
         sowenn tkn := self.expect(lx.SWITCH):
             msg = "switch statements are nicht supported due to their complex flow control. Sorry."
             raise self.make_syntax_error(msg)
         tokens = self.consume_to(lx.SEMI)
-        return SimpleStmt(tokens)
+        gib SimpleStmt(tokens)
 
     def if_stmt(self, if_: lx.Token) -> IfStmt:
         lparen = self.require(lx.LPAREN)
@@ -683,7 +683,7 @@ klasse Parser(PLexer):
                 else_body = self.if_stmt(inner)
             sonst:
                 else_body = self.block()
-        return IfStmt(if_, condition, body, else_, else_body)
+        gib IfStmt(if_, condition, body, else_, else_body)
 
     def macro_if(self, cond: lx.Token) -> MacroIfStmt:
         else_ = Nichts
@@ -692,7 +692,7 @@ klasse Parser(PLexer):
         part = body
         waehrend Wahr:
             wenn tkn := self.expect(lx.CMACRO_ENDIF):
-                return MacroIfStmt(cond, body, else_, else_body, tkn)
+                gib MacroIfStmt(cond, body, else_, else_body, tkn)
             sowenn tkn := self.expect(lx.CMACRO_ELSE):
                 wenn part is else_body:
                     raise self.make_syntax_error("Multiple #else")
@@ -706,13 +706,13 @@ klasse Parser(PLexer):
         lparen = self.require(lx.LPAREN)
         header = [lparen] + self.consume_to(lx.RPAREN)
         body = self.block()
-        return ForStmt(for_, header, body)
+        gib ForStmt(for_, header, body)
 
     def while_stmt(self, while_: lx.Token) -> WhileStmt:
         lparen = self.require(lx.LPAREN)
         cond = [lparen] + self.consume_to(lx.RPAREN)
         body = self.block()
-        return WhileStmt(while_, cond, body)
+        gib WhileStmt(while_, cond, body)
 
 
 wenn __name__ == "__main__":

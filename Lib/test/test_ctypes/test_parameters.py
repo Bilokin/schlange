@@ -39,12 +39,12 @@ klasse SimpleTypesTestCase(unittest.TestCase):
         # ctypes 0.9.5 und before did overwrite from_param in SimpleType_new
         klasse CVOIDP(c_void_p):
             def from_param(cls, value):
-                return value * 2
+                gib value * 2
             from_param = classmethod(from_param)
 
         klasse CCHARP(c_char_p):
             def from_param(cls, value):
-                return value * 4
+                gib value * 4
             from_param = classmethod(from_param)
 
         self.assertEqual(CVOIDP.from_param("abc"), "abcabc")
@@ -53,7 +53,7 @@ klasse SimpleTypesTestCase(unittest.TestCase):
     def test_subclasses_c_wchar_p(self):
         klasse CWCHARP(c_wchar_p):
             def from_param(cls, value):
-                return value * 3
+                gib value * 3
             from_param = classmethod(from_param)
 
         self.assertEqual(CWCHARP.from_param("abc"), "abcabcabc")
@@ -175,7 +175,7 @@ klasse SimpleTypesTestCase(unittest.TestCase):
 
         klasse Adapter:
             def from_param(cls, obj):
-                return Nichts
+                gib Nichts
 
         func.argtypes = (Adapter(),)
         self.assertEqual(func(Nichts), Nichts)
@@ -183,7 +183,7 @@ klasse SimpleTypesTestCase(unittest.TestCase):
 
         klasse Adapter:
             def from_param(cls, obj):
-                return obj
+                gib obj
 
         func.argtypes = (Adapter(),)
         # don't know how to convert parameter 1
@@ -261,7 +261,7 @@ klasse SimpleTypesTestCase(unittest.TestCase):
             @classmethod
             def from_param(cls, value):
                 trace.append(2)
-                return cls()
+                gib cls()
 
         PyList_Append = PyDLL(_ctypes_test.__file__)._testfunc_pylist_append
         PyList_Append.restype = c_int
@@ -284,7 +284,7 @@ klasse SimpleTypesTestCase(unittest.TestCase):
             @classmethod
             def from_param(cls, value):
                 trace.append(2)
-                return cls()
+                gib cls()
 
         PyList_Append = PyDLL(_ctypes_test.__file__)._testfunc_pylist_append
         PyList_Append.restype = c_int

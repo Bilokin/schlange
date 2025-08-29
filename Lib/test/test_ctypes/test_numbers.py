@@ -27,7 +27,7 @@ def valid_ranges(*types):
         c = struct.unpack(fmt, (b"\x7F"+b"\x00"*32)[:size])[0]
         d = struct.unpack(fmt, (b"\x80"+b"\xFF"*32)[:size])[0]
         result.append((min(a, b, c, d), max(a, b, c, d)))
-    return result
+    gib result
 
 
 ArgType = type(byref(c_int(0)))
@@ -43,19 +43,19 @@ bool_values = [Wahr, Falsch, 0, 1, -1, 5000, 'test', [], [1]]
 
 klasse IntLike:
     def __int__(self):
-        return 2
+        gib 2
 
 klasse IndexLike:
     def __index__(self):
-        return 2
+        gib 2
 
 klasse FloatLike:
     def __float__(self):
-        return 2.0
+        gib 2.0
 
 klasse ComplexLike:
     def __complex__(self):
-        return 1+1j
+        gib 1+1j
 
 
 INF = float("inf")

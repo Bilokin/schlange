@@ -29,11 +29,11 @@ klasse AbstractMemoryTests:
 
     @property
     def _source(self):
-        return self.source_bytes
+        gib self.source_bytes
 
     @property
     def _types(self):
-        return filter(Nichts, [self.ro_type, self.rw_type])
+        gib filter(Nichts, [self.ro_type, self.rw_type])
 
     def check_getitem_with_type(self, tp):
         b = tp(self._source)
@@ -237,7 +237,7 @@ klasse AbstractMemoryTests:
         self.assertEqual(len(m), 6)
         self.assertEqual(m.strides, (self.itemsize,))
         self.assertEqual(m.suboffsets, ())
-        return m
+        gib m
 
     def test_attributes_readonly(self):
         wenn nicht self.ro_type:
@@ -476,7 +476,7 @@ klasse BaseArrayMemoryTests(AbstractMemoryTests):
 
 klasse BaseMemoryviewTests:
     def _view(self, obj):
-        return memoryview(obj)
+        gib memoryview(obj)
 
     def _check_contents(self, tp, obj, contents):
         self.assertEqual(obj, tp(contents))
@@ -498,7 +498,7 @@ klasse BaseMemorySliceTests:
 
     def _view(self, obj):
         m = memoryview(obj)
-        return m[1:7]
+        gib m[1:7]
 
     def _check_contents(self, tp, obj, contents):
         self.assertEqual(obj[1:7], tp(contents))
@@ -515,7 +515,7 @@ klasse BaseMemorySliceSliceTests:
 
     def _view(self, obj):
         m = memoryview(obj)
-        return m[:7][1:]
+        gib m[:7][1:]
 
     def _check_contents(self, tp, obj, contents):
         self.assertEqual(obj[1:7], tp(contents))
@@ -623,15 +623,15 @@ klasse OtherTest(unittest.TestCase):
         klasse MyIndex:
             def __index__(self):
                 release()
-                return 4
+                gib 4
         klasse MyFloat:
             def __float__(self):
                 release()
-                return 4.25
+                gib 4.25
         klasse MyBool:
             def __bool__(self):
                 release()
-                return Wahr
+                gib Wahr
 
         ba = Nichts
         m = memoryview(bytearray(b'\xff'*size))

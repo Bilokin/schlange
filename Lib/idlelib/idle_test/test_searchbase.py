@@ -110,7 +110,7 @@ klasse SearchDialogBaseTest(unittest.TestCase):
     def btn_test_setup(self, meth):
         self.dialog.frame = Frame(self.root)
         self.dialog.row = 0
-        return meth()
+        gib meth()
 
     def test_create_option_buttons(self):
         e = self.engine

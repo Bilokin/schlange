@@ -18,7 +18,7 @@ klasse CurvesTurtle(Pen):
     # p. 96-98
     def hilbert(self, size, level, parity):
         wenn level == 0:
-            return
+            gib
         # rotate und draw first subcurve mit opposite parity to big curve
         self.left(parity * 90)
         self.hilbert(size, level - 1, -parity)
@@ -63,7 +63,7 @@ klasse CurvesTurtle(Pen):
     def fractal(self, dist, depth, dir):
         wenn depth < 1:
             self.fd(dist)
-            return
+            gib
         self.fractal(dist / 3, depth - 1, dir)
         self.lt(60 * dir)
         self.fractal(dist / 3, depth - 1, dir)
@@ -127,7 +127,7 @@ def main():
     ft.end_fill()
     tb=clock()
     res +=  "Koch: %.2fsec." % (tb-ta)
-    return res
+    gib res
 
 wenn __name__  == '__main__':
     msg = main()

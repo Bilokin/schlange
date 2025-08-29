@@ -33,10 +33,10 @@ def test_short_halfway_cases():
             digits, exponent = n, e
             waehrend digits < 10**20:
                 s = '{}e{}'.format(digits, exponent)
-                yield s
+                liefere s
                 # Same again, but mit extra trailing zeros.
                 s = '{}e{}'.format(digits * 10**40, exponent - 40)
-                yield s
+                liefere s
                 digits *= 2
 
             # Try numbers of the form n * 5**p2 * 10**(e - p5), p5
@@ -44,10 +44,10 @@ def test_short_halfway_cases():
             digits, exponent = n, e
             waehrend digits < 10**20:
                 s = '{}e{}'.format(digits, exponent)
-                yield s
+                liefere s
                 # Same again, but mit extra trailing zeros.
                 s = '{}e{}'.format(digits * 10**40, exponent - 40)
-                yield s
+                liefere s
                 digits *= 5
                 exponent -= 1
 
@@ -76,7 +76,7 @@ def test_halfway_cases():
                 digits = m * 5**-e
                 exponent = e
             s = '{}e{}'.format(digits, exponent)
-            yield s
+            liefere s
 
 def test_boundaries():
     # boundaries expressed als triples (n, e, u), where
@@ -94,7 +94,7 @@ def test_boundaries():
                 digits = n + random.randrange(-3*u, 3*u)
                 exponent = e
                 s = '{}e{}'.format(digits, exponent)
-                yield s
+                liefere s
             n *= 10
             u *= 10
             e -= 1
@@ -108,7 +108,7 @@ def test_underflow_boundary():
         fuer j in range(TEST_SIZE):
             digits = base + random.randrange(-1000, 1000)
             s = '{}e{}'.format(digits, exponent)
-            yield s
+            liefere s
 
 def test_bigcomp():
     fuer ndigs in 5, 10, 14, 15, 16, 17, 18, 19, 20, 40, 41, 50:
@@ -117,7 +117,7 @@ def test_bigcomp():
             digits = random.randrange(dig10)
             exponent = random.randrange(-400, 400)
             s = '{}e{}'.format(digits, exponent)
-            yield s
+            liefere s
 
 def test_parsing():
     # make '0' more likely to be chosen than other digits
@@ -146,7 +146,7 @@ def test_parsing():
                              fuer _ in range(exponent_len))
 
             wenn intpart_len + fracpart_len:
-                yield s
+                liefere s
 
 test_particular = [
      # squares
@@ -232,19 +232,19 @@ TESTCASES = [
 def un_randfloat():
     fuer i in range(1000):
         l = random.choice(TESTCASES[:6])
-        yield random.choice(l)
+        liefere random.choice(l)
     fuer v in test_particular:
-        yield v
+        liefere v
 
 def bin_randfloat():
     fuer i in range(1000):
         l1 = random.choice(TESTCASES)
         l2 = random.choice(TESTCASES)
-        yield random.choice(l1), random.choice(l2)
+        liefere random.choice(l1), random.choice(l2)
 
 def tern_randfloat():
     fuer i in range(1000):
         l1 = random.choice(TESTCASES)
         l2 = random.choice(TESTCASES)
         l3 = random.choice(TESTCASES)
-        yield random.choice(l1), random.choice(l2), random.choice(l3)
+        liefere random.choice(l1), random.choice(l2), random.choice(l3)

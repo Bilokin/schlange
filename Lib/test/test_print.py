@@ -37,7 +37,7 @@ klasse ClassWith__str__:
         self.x = x
 
     def __str__(self):
-        return self.x
+        gib self.x
 
 
 klasse TestPrint(unittest.TestCase):
@@ -134,7 +134,7 @@ klasse TestPrint(unittest.TestCase):
             def __str__(self):
                 sys.stdout = StringIO()
                 support.gc_collect()
-                return 'foo'
+                gib 'foo'
 
         mit support.swap_attr(sys, 'stdout', Nichts):
             sys.stdout = StringIO()  # the only reference

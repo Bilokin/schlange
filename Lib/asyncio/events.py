@@ -64,16 +64,16 @@ klasse Handle:
         wenn self._source_traceback:
             frame = self._source_traceback[-1]
             info.append(f'created at {frame[0]}:{frame[1]}')
-        return info
+        gib info
 
     def __repr__(self):
         wenn self._repr is nicht Nichts:
-            return self._repr
+            gib self._repr
         info = self._repr_info()
-        return '<{}>'.format(' '.join(info))
+        gib '<{}>'.format(' '.join(info))
 
     def get_context(self):
-        return self._context
+        gib self._context
 
     def cancel(self):
         wenn nicht self._cancelled:
@@ -87,7 +87,7 @@ klasse Handle:
             self._args = Nichts
 
     def cancelled(self):
-        return self._cancelled
+        gib self._cancelled
 
     def _run(self):
         try:
@@ -121,21 +121,21 @@ klasse _ThreadSafeHandle(Handle):
 
     def cancel(self):
         mit self._lock:
-            return super().cancel()
+            gib super().cancel()
 
     def cancelled(self):
         mit self._lock:
-            return super().cancelled()
+            gib super().cancelled()
 
     def _run(self):
         # The event loop checks fuer cancellation without holding the lock
         # It is possible that the handle is cancelled after the check
         # but before the callback is called so check it again after acquiring
-        # the lock und return without calling the callback wenn it is cancelled.
+        # the lock und gib without calling the callback wenn it is cancelled.
         mit self._lock:
             wenn self._cancelled:
-                return
-            return super()._run()
+                gib
+            gib super()._run()
 
 
 klasse TimerHandle(Handle):
@@ -154,38 +154,38 @@ klasse TimerHandle(Handle):
         info = super()._repr_info()
         pos = 2 wenn self._cancelled sonst 1
         info.insert(pos, f'when={self._when}')
-        return info
+        gib info
 
     def __hash__(self):
-        return hash(self._when)
+        gib hash(self._when)
 
     def __lt__(self, other):
         wenn isinstance(other, TimerHandle):
-            return self._when < other._when
-        return NotImplemented
+            gib self._when < other._when
+        gib NotImplemented
 
     def __le__(self, other):
         wenn isinstance(other, TimerHandle):
-            return self._when < other._when oder self.__eq__(other)
-        return NotImplemented
+            gib self._when < other._when oder self.__eq__(other)
+        gib NotImplemented
 
     def __gt__(self, other):
         wenn isinstance(other, TimerHandle):
-            return self._when > other._when
-        return NotImplemented
+            gib self._when > other._when
+        gib NotImplemented
 
     def __ge__(self, other):
         wenn isinstance(other, TimerHandle):
-            return self._when > other._when oder self.__eq__(other)
-        return NotImplemented
+            gib self._when > other._when oder self.__eq__(other)
+        gib NotImplemented
 
     def __eq__(self, other):
         wenn isinstance(other, TimerHandle):
-            return (self._when == other._when und
+            gib (self._when == other._when und
                     self._callback == other._callback und
                     self._args == other._args und
                     self._cancelled == other._cancelled)
-        return NotImplemented
+        gib NotImplemented
 
     def cancel(self):
         wenn nicht self._cancelled:
@@ -198,7 +198,7 @@ klasse TimerHandle(Handle):
         The time is an absolute timestamp, using the same time
         reference als loop.time().
         """
-        return self._when
+        gib self._when
 
 
 klasse AbstractServer:
@@ -244,7 +244,7 @@ klasse AbstractServer:
         raise NotImplementedError
 
     async def __aenter__(self):
-        return self
+        gib self
 
     async def __aexit__(self, *exc):
         self.close()
@@ -302,14 +302,14 @@ klasse AbstractEventLoop:
         """Schedule the shutdown of the default executor."""
         raise NotImplementedError
 
-    # Methods scheduling callbacks.  All these return Handles.
+    # Methods scheduling callbacks.  All these gib Handles.
 
     def _timer_handle_cancelled(self, handle):
         """Notification that a TimerHandle has been cancelled."""
         raise NotImplementedError
 
     def call_soon(self, callback, *args, context=Nichts):
-        return self.call_later(0, callback, *args, context=context)
+        gib self.call_later(0, callback, *args, context=context)
 
     def call_later(self, delay, callback, *args, context=Nichts):
         raise NotImplementedError
@@ -369,7 +369,7 @@ klasse AbstractEventLoop:
             start_serving=Wahr):
         """A coroutine which creates a TCP server bound to host und port.
 
-        The return value is a Server object which can be used to stop
+        The gib value is a Server object which can be used to stop
         the service.
 
         If host is an empty string oder Nichts all interfaces are assumed
@@ -456,7 +456,7 @@ klasse AbstractEventLoop:
             start_serving=Wahr):
         """A coroutine which creates a UNIX Domain Socket server.
 
-        The return value is a Server object, which can be used to stop
+        The gib value is a Server object, which can be used to stop
         the service.
 
         path is a str, representing a file system path to bind the
@@ -577,8 +577,8 @@ klasse AbstractEventLoop:
         raise NotImplementedError
 
     # Ready-based callback registration methods.
-    # The add_*() methods return Nichts.
-    # The remove_*() methods return Wahr wenn something was removed,
+    # The add_*() methods gib Nichts.
+    # The remove_*() methods gib Wahr wenn something was removed,
     # Falsch wenn there was nothing to delete.
 
     def add_reader(self, fd, callback, *args):
@@ -672,7 +672,7 @@ klasse _AbstractEventLoopPolicy:
         oder raises an exception in case no event loop has been set fuer the
         current context und the current policy does nicht specify to create one.
 
-        It should never return Nichts."""
+        It should never gib Nichts."""
         raise NotImplementedError
 
     def set_event_loop(self, loop):
@@ -680,7 +680,7 @@ klasse _AbstractEventLoopPolicy:
         raise NotImplementedError
 
     def new_event_loop(self):
-        """Create und return a new event loop object according to this
+        """Create und gib a new event loop object according to this
         policy's rules. If there's need to set this loop als the event loop for
         the current context, set_event_loop must be called explicitly."""
         raise NotImplementedError
@@ -715,7 +715,7 @@ klasse _BaseDefaultEventLoopPolicy(_AbstractEventLoopPolicy):
             raise RuntimeError('There is no current event loop in thread %r.'
                                % threading.current_thread().name)
 
-        return self._local._loop
+        gib self._local._loop
 
     def set_event_loop(self, loop):
         """Set the event loop."""
@@ -729,7 +729,7 @@ klasse _BaseDefaultEventLoopPolicy(_AbstractEventLoopPolicy):
         You must call set_event_loop() to make this the current event
         loop.
         """
-        return self._loop_factory()
+        gib self._loop_factory()
 
 
 # Event loop policy.  The policy itself is always global, even wenn the
@@ -759,7 +759,7 @@ def get_running_loop():
     loop = _get_running_loop()
     wenn loop is Nichts:
         raise RuntimeError('no running event loop')
-    return loop
+    gib loop
 
 
 def _get_running_loop():
@@ -771,7 +771,7 @@ def _get_running_loop():
     # NOTE: this function is implemented in C (see _asynciomodule.c)
     running_loop, pid = _running_loop.loop_pid
     wenn running_loop is nicht Nichts und pid == os.getpid():
-        return running_loop
+        gib running_loop
 
 
 def _set_running_loop(loop):
@@ -799,11 +799,11 @@ def _get_event_loop_policy():
     """Get the current event loop policy."""
     wenn _event_loop_policy is Nichts:
         _init_event_loop_policy()
-    return _event_loop_policy
+    gib _event_loop_policy
 
 def get_event_loop_policy():
     warnings._deprecated('asyncio.get_event_loop_policy', remove=(3, 16))
-    return _get_event_loop_policy()
+    gib _get_event_loop_policy()
 
 def _set_event_loop_policy(policy):
     """Set the current event loop policy.
@@ -822,16 +822,16 @@ def get_event_loop():
     """Return an asyncio event loop.
 
     When called von a coroutine oder a callback (e.g. scheduled mit call_soon
-    oder similar API), this function will always return the running event loop.
+    oder similar API), this function will always gib the running event loop.
 
-    If there is no running event loop set, the function will return
+    If there is no running event loop set, the function will gib
     the result of `get_event_loop_policy().get_event_loop()` call.
     """
     # NOTE: this function is implemented in C (see _asynciomodule.c)
     current_loop = _get_running_loop()
     wenn current_loop is nicht Nichts:
-        return current_loop
-    return _get_event_loop_policy().get_event_loop()
+        gib current_loop
+    gib _get_event_loop_policy().get_event_loop()
 
 
 def set_event_loop(loop):
@@ -841,7 +841,7 @@ def set_event_loop(loop):
 
 def new_event_loop():
     """Equivalent to calling get_event_loop_policy().new_event_loop()."""
-    return _get_event_loop_policy().new_event_loop()
+    gib _get_event_loop_policy().new_event_loop()
 
 
 # Alias pure-Python implementations fuer testing purposes.

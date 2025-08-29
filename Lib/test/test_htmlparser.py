@@ -31,7 +31,7 @@ klasse EventCollector(html.parser.HTMLParser):
                 L.append(event)
             prevtype = type
         self.events = L
-        return L
+        gib L
 
     # structure markup
 
@@ -89,16 +89,16 @@ klasse EventCollectorCharrefs(EventCollector):
 
 
 # The normal event collector normalizes the events in get_events,
-# so we override it to return the original list of events.
+# so we override it to gib the original list of events.
 klasse EventCollectorNoNormalize(EventCollector):
     def get_events(self):
-        return self.events
+        gib self.events
 
 
 klasse TestCaseBase(unittest.TestCase):
 
     def get_collector(self):
-        return EventCollector(convert_charrefs=Falsch)
+        gib EventCollector(convert_charrefs=Falsch)
 
     def _run_check(self, source, expected_events, collector=Nichts):
         wenn collector is Nichts:

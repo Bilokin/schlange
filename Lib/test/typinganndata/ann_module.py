@@ -38,7 +38,7 @@ klasse Y(F):
 
 klasse Meta(type):
     def __new__(meta, name, bases, namespace):
-        return super().__new__(meta, name, bases, namespace)
+        gib super().__new__(meta, name, bases, namespace)
 
 klasse S(metaclass = Meta):
     x: str = 'something'
@@ -52,7 +52,7 @@ def foo(x: int = 10):
 def dec(func):
     @wraps(func)
     def wrapper(*args, **kwargs):
-        return func(*args, **kwargs)
-    return wrapper
+        gib func(*args, **kwargs)
+    gib wrapper
 
 u: int | float

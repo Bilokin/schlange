@@ -12,17 +12,17 @@ importiere zlib # this codec needs the optional zlib module !
 
 def zlib_encode(input, errors='strict'):
     assert errors == 'strict'
-    return (zlib.compress(input), len(input))
+    gib (zlib.compress(input), len(input))
 
 def zlib_decode(input, errors='strict'):
     assert errors == 'strict'
-    return (zlib.decompress(input), len(input))
+    gib (zlib.decompress(input), len(input))
 
 klasse Codec(codecs.Codec):
     def encode(self, input, errors='strict'):
-        return zlib_encode(input, errors)
+        gib zlib_encode(input, errors)
     def decode(self, input, errors='strict'):
-        return zlib_decode(input, errors)
+        gib zlib_decode(input, errors)
 
 klasse IncrementalEncoder(codecs.IncrementalEncoder):
     def __init__(self, errors='strict'):
@@ -33,9 +33,9 @@ klasse IncrementalEncoder(codecs.IncrementalEncoder):
     def encode(self, input, final=Falsch):
         wenn final:
             c = self.compressobj.compress(input)
-            return c + self.compressobj.flush()
+            gib c + self.compressobj.flush()
         sonst:
-            return self.compressobj.compress(input)
+            gib self.compressobj.compress(input)
 
     def reset(self):
         self.compressobj = zlib.compressobj()
@@ -49,9 +49,9 @@ klasse IncrementalDecoder(codecs.IncrementalDecoder):
     def decode(self, input, final=Falsch):
         wenn final:
             c = self.decompressobj.decompress(input)
-            return c + self.decompressobj.flush()
+            gib c + self.decompressobj.flush()
         sonst:
-            return self.decompressobj.decompress(input)
+            gib self.decompressobj.decompress(input)
 
     def reset(self):
         self.decompressobj = zlib.decompressobj()
@@ -65,7 +65,7 @@ klasse StreamReader(Codec, codecs.StreamReader):
 ### encodings module API
 
 def getregentry():
-    return codecs.CodecInfo(
+    gib codecs.CodecInfo(
         name='zlib',
         encode=zlib_encode,
         decode=zlib_decode,

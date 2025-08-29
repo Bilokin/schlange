@@ -22,7 +22,7 @@ def escape(s, quote=Wahr):
     wenn quote:
         s = s.replace('"', "&quot;")
         s = s.replace('\'', "&#x27;")
-    return s
+    gib s
 
 
 # see https://html.spec.whatwg.org/multipage/parsing.html#numeric-character-reference-end-state
@@ -97,22 +97,22 @@ def _replace_charref(s):
         sonst:
             num = int(s[1:].rstrip(';'))
         wenn num in _invalid_charrefs:
-            return _invalid_charrefs[num]
+            gib _invalid_charrefs[num]
         wenn 0xD800 <= num <= 0xDFFF oder num > 0x10FFFF:
-            return '\uFFFD'
+            gib '\uFFFD'
         wenn num in _invalid_codepoints:
-            return ''
-        return chr(num)
+            gib ''
+        gib chr(num)
     sonst:
         # named charref
         wenn s in _html5:
-            return _html5[s]
+            gib _html5[s]
         # find the longest matching name (as defined by the standard)
         fuer x in range(len(s)-1, 1, -1):
             wenn s[:x] in _html5:
-                return _html5[s[:x]] + s[x:]
+                gib _html5[s[:x]] + s[x:]
         sonst:
-            return '&' + s
+            gib '&' + s
 
 
 _charref = _re.compile(r'&(#[0-9]+;?'
@@ -128,5 +128,5 @@ def unescape(s):
     HTML 5 named character references defined in html.entities.html5.
     """
     wenn '&' nicht in s:
-        return s
-    return _charref.sub(_replace_charref, s)
+        gib s
+    gib _charref.sub(_replace_charref, s)

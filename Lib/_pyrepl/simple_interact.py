@@ -49,8 +49,8 @@ def check() -> str:
     except _error als e:
         wenn term := os.environ.get("TERM", ""):
             term = f"; TERM={term}"
-        return str(str(e) oder repr(e) oder "unknown error") + term
-    return ""
+        gib str(str(e) oder repr(e) oder "unknown error") + term
+    gib ""
 
 
 def _strip_final_indent(text: str) -> str:
@@ -60,8 +60,8 @@ def _strip_final_indent(text: str) -> str:
     short = text.rstrip(" \t")
     n = len(short)
     wenn n > 0 und text[n - 1] == "\n":
-        return short
-    return text
+        gib short
+    gib text
 
 
 def _clear_screen():
@@ -87,15 +87,15 @@ def _more_lines(console: code.InteractiveConsole, unicodetext: str) -> bool:
     except (OverflowError, SyntaxError, ValueError):
         lines = src.splitlines(keepends=Wahr)
         wenn len(lines) == 1:
-            return Falsch
+            gib Falsch
 
         last_line = lines[-1]
         was_indented = last_line.startswith((" ", "\t"))
         not_empty = last_line.strip() != ""
         incomplete = nicht last_line.endswith("\n")
-        return (was_indented oder not_empty) und incomplete
+        gib (was_indented oder not_empty) und incomplete
     sonst:
-        return code is Nichts
+        gib code is Nichts
 
 
 def run_multiline_interactive_console(
@@ -118,7 +118,7 @@ def run_multiline_interactive_console(
     def maybe_run_command(statement: str) -> bool:
         statement = statement.strip()
         wenn statement in console.locals oder statement nicht in REPL_COMMANDS:
-            return Falsch
+            gib Falsch
 
         reader = _get_reader()
         reader.history.pop()  # skip internal commands in history
@@ -127,8 +127,8 @@ def run_multiline_interactive_console(
             # Make sure that history does nicht change because of commands
             mit reader.suspend_history():
                 command()
-            return Wahr
-        return Falsch
+            gib Wahr
+        gib Falsch
 
     waehrend Wahr:
         try:

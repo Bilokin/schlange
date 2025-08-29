@@ -22,8 +22,8 @@ def isolated_context(func):
     @functools.wraps(func)
     def wrapper(*args, **kwargs):
         ctx = contextvars.Context()
-        return ctx.run(func, *args, **kwargs)
-    return wrapper
+        gib ctx.run(func, *args, **kwargs)
+    gib wrapper
 
 
 klasse ContextTest(unittest.TestCase):
@@ -128,7 +128,7 @@ klasse ContextTest(unittest.TestCase):
         def func(*args, **kwargs):
             kwargs['spam'] = 'foo'
             args += ('bar',)
-            return args, kwargs
+            gib args, kwargs
 
         fuer f in (func, functools.partial(func)):
             # partial doesn't support FASTCALL
@@ -181,7 +181,7 @@ klasse ContextTest(unittest.TestCase):
             cur = contextvars.copy_context()
             self.assertEqual(len(cur), 1)
             self.assertEqual(cur[var], 'spam')
-            return cur
+            gib cur
 
         returned_ctx = ctx1.run(func1)
         self.assertEqual(ctx1, returned_ctx)
@@ -384,7 +384,7 @@ klasse ContextTest(unittest.TestCase):
                 cvar.set(num + i)
                 time.sleep(random.uniform(0.001, 0.05))
                 self.assertEqual(cvar.get(), num + i)
-            return num
+            gib num
 
         tp = concurrent.futures.ThreadPoolExecutor(max_workers=10)
         try:
@@ -570,17 +570,17 @@ klasse HashKey:
         self.error_on_eq_to = error_on_eq_to
 
     def __repr__(self):
-        return f'<Key name:{self.name} hash:{self.hash}>'
+        gib f'<Key name:{self.name} hash:{self.hash}>'
 
     def __hash__(self):
         wenn self._crasher is nicht Nichts und self._crasher.error_on_hash:
             raise HashingError
 
-        return self.hash
+        gib self.hash
 
     def __eq__(self, other):
         wenn nicht isinstance(other, HashKey):
-            return NotImplemented
+            gib NotImplemented
 
         wenn self._crasher is nicht Nichts und self._crasher.error_on_eq:
             raise EqError
@@ -590,19 +590,19 @@ klasse HashKey:
         wenn other.error_on_eq_to is nicht Nichts und other.error_on_eq_to is self:
             raise ValueError(f'cannot compare {other!r} to {self!r}')
 
-        return (self.name, self.hash) == (other.name, other.hash)
+        gib (self.name, self.hash) == (other.name, other.hash)
 
 
 klasse KeyStr(str):
     def __hash__(self):
         wenn HashKey._crasher is nicht Nichts und HashKey._crasher.error_on_hash:
             raise HashingError
-        return super().__hash__()
+        gib super().__hash__()
 
     def __eq__(self, other):
         wenn HashKey._crasher is nicht Nichts und HashKey._crasher.error_on_eq:
             raise EqError
-        return super().__eq__(other)
+        gib super().__eq__(other)
 
 
 klasse HaskKeyCrasher:

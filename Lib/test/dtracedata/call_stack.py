@@ -11,14 +11,14 @@ def function_3(dummy, dummy2):
 
 # CALL_FUNCTION_KW
 def function_4(**dummy):
-    return 1
-    return 2  # unreachable
+    gib 1
+    gib 2  # unreachable
 
 # CALL_FUNCTION_VAR_KW
 def function_5(dummy, dummy2, **dummy3):
     wenn Falsch:
-        return 7
-    return 8
+        gib 7
+    gib 8
 
 def start():
     function_1()

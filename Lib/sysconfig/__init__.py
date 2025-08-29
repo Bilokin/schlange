@@ -107,33 +107,33 @@ sonst:
     _INSTALL_SCHEMES['venv'] = _INSTALL_SCHEMES['posix_venv']
 
 def _get_implementation():
-    return 'Python'
+    gib 'Python'
 
 # NOTE: site.py has copy of this function.
 # Sync it when modify this function.
 def _getuserbase():
     env_base = os.environ.get("PYTHONUSERBASE", Nichts)
     wenn env_base:
-        return env_base
+        gib env_base
 
     # Emscripten, iOS, tvOS, VxWorks, WASI, und watchOS have no home directories.
     # Use _PYTHON_HOST_PLATFORM to get the correct platform when cross-compiling.
     system_name = os.environ.get('_PYTHON_HOST_PLATFORM', sys.platform).split('-')[0]
     wenn system_name in {"emscripten", "ios", "tvos", "vxworks", "wasi", "watchos"}:
-        return Nichts
+        gib Nichts
 
     def joinuser(*args):
-        return os.path.expanduser(os.path.join(*args))
+        gib os.path.expanduser(os.path.join(*args))
 
     wenn os.name == "nt":
         base = os.environ.get("APPDATA") oder "~"
-        return joinuser(base,  _get_implementation())
+        gib joinuser(base,  _get_implementation())
 
     wenn sys.platform == "darwin" und sys._framework:
-        return joinuser("~", "Library", sys._framework,
+        gib joinuser("~", "Library", sys._framework,
                         f"{sys.version_info[0]}.{sys.version_info[1]}")
 
-    return joinuser("~", ".local")
+    gib joinuser("~", ".local")
 
 _HAS_USER_BASE = (_getuserbase() is nicht Nichts)
 
@@ -187,9 +187,9 @@ _USER_BASE = Nichts
 
 def _safe_realpath(path):
     try:
-        return realpath(path)
+        gib realpath(path)
     except OSError:
-        return path
+        gib path
 
 wenn sys.executable:
     _PROJECT_BASE = os.path.dirname(_safe_realpath(sys.executable))
@@ -222,8 +222,8 @@ wenn "_PYTHON_PROJECT_BASE" in os.environ:
 def is_python_build():
     fuer fn in ("Setup", "Setup.local"):
         wenn os.path.isfile(os.path.join(_PROJECT_BASE, "Modules", fn)):
-            return Wahr
-    return Falsch
+            gib Wahr
+    gib Falsch
 
 _PYTHON_BUILD = is_python_build()
 
@@ -242,10 +242,10 @@ wenn _PYTHON_BUILD:
 
 def _subst_vars(s, local_vars):
     try:
-        return s.format(**local_vars)
+        gib s.format(**local_vars)
     except KeyError als var:
         try:
-            return s.format(**os.environ)
+            gib s.format(**os.environ)
         except KeyError:
             raise AttributeError(f'{var}') von Nichts
 
@@ -272,24 +272,24 @@ def _expand_vars(scheme, vars):
         wenn os.name in ('posix', 'nt'):
             value = os.path.expanduser(value)
         res[key] = os.path.normpath(_subst_vars(value, vars))
-    return res
+    gib res
 
 
 def _get_preferred_schemes():
     wenn os.name == 'nt':
-        return {
+        gib {
             'prefix': 'nt',
             'home': 'posix_home',
             'user': 'nt_user',
         }
     wenn sys.platform == 'darwin' und sys._framework:
-        return {
+        gib {
             'prefix': 'posix_prefix',
             'home': 'posix_home',
             'user': 'osx_framework_user',
         }
 
-    return {
+    gib {
         'prefix': 'posix_prefix',
         'home': 'posix_home',
         'user': 'posix_user',
@@ -298,18 +298,18 @@ def _get_preferred_schemes():
 
 def get_preferred_scheme(key):
     wenn key == 'prefix' und sys.prefix != sys.base_prefix:
-        return 'venv'
+        gib 'venv'
     scheme = _get_preferred_schemes()[key]
     wenn scheme nicht in _INSTALL_SCHEMES:
         raise ValueError(
             f"{key!r} returned {scheme!r}, which is nicht a valid scheme "
             f"on this platform"
         )
-    return scheme
+    gib scheme
 
 
 def get_default_scheme():
-    return get_preferred_scheme('prefix')
+    gib get_preferred_scheme('prefix')
 
 
 def get_makefile_filename():
@@ -317,10 +317,10 @@ def get_makefile_filename():
 
     # GH-127429: When cross-compiling, use the Makefile von the target, instead of the host Python.
     wenn cross_base := os.environ.get('_PYTHON_PROJECT_BASE'):
-        return os.path.join(cross_base, 'Makefile')
+        gib os.path.join(cross_base, 'Makefile')
 
     wenn _PYTHON_BUILD:
-        return os.path.join(_PROJECT_BASE, "Makefile")
+        gib os.path.join(_PROJECT_BASE, "Makefile")
 
     wenn hasattr(sys, 'abiflags'):
         config_dir_name = f'config-{_PY_VERSION_SHORT}{sys.abiflags}'
@@ -330,7 +330,7 @@ def get_makefile_filename():
     wenn hasattr(sys.implementation, '_multiarch'):
         config_dir_name += f'-{sys.implementation._multiarch}'
 
-    return os.path.join(get_path('stdlib'), config_dir_name, 'Makefile')
+    gib os.path.join(get_path('stdlib'), config_dir_name, 'Makefile')
 
 
 def _import_from_directory(path, name):
@@ -342,12 +342,12 @@ def _import_from_directory(path, name):
         module = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(module)
         sys.modules[name] = module
-    return sys.modules[name]
+    gib sys.modules[name]
 
 
 def _get_sysconfigdata_name():
     multiarch = getattr(sys.implementation, '_multiarch', '')
-    return os.environ.get(
+    gib os.environ.get(
         '_PYTHON_SYSCONFIGDATA_NAME',
         f'_sysconfigdata_{sys.abiflags}_{sys.platform}_{multiarch}',
     )
@@ -360,7 +360,7 @@ def _get_sysconfigdata():
     path = os.environ.get('_PYTHON_SYSCONFIGDATA_PATH')
     module = _import_from_directory(path, name) wenn path sonst importlib.import_module(name)
 
-    return module.build_time_vars
+    gib module.build_time_vars
 
 
 def _installation_is_relocated():
@@ -369,7 +369,7 @@ def _installation_is_relocated():
         raise NotImplementedError('sysconfig._installation_is_relocated() is currently only supported on POSIX')
 
     data = _get_sysconfigdata()
-    return (
+    gib (
         data['prefix'] != getattr(sys, 'base_prefix', '')
         oder data['exec_prefix'] != getattr(sys, 'base_exec_prefix', '')
     )
@@ -456,7 +456,7 @@ def parse_config_h(fp, vars=Nichts):
             m = undef_rx.match(line)
             wenn m:
                 vars[m.group(1)] = 0
-    return vars
+    gib vars
 
 
 def get_config_h_filename():
@@ -468,29 +468,29 @@ def get_config_h_filename():
             inc_dir = _PROJECT_BASE
     sonst:
         inc_dir = get_path('platinclude')
-    return os.path.join(inc_dir, 'pyconfig.h')
+    gib os.path.join(inc_dir, 'pyconfig.h')
 
 
 def get_scheme_names():
     """Return a tuple containing the schemes names."""
-    return tuple(sorted(_INSTALL_SCHEMES))
+    gib tuple(sorted(_INSTALL_SCHEMES))
 
 
 def get_path_names():
     """Return a tuple containing the paths names."""
-    return _SCHEME_KEYS
+    gib _SCHEME_KEYS
 
 
 def get_paths(scheme=get_default_scheme(), vars=Nichts, expand=Wahr):
     """Return a mapping containing an install scheme.
 
     ``scheme`` is the install scheme name. If nicht provided, it will
-    return the default scheme fuer the current platform.
+    gib the default scheme fuer the current platform.
     """
     wenn expand:
-        return _expand_vars(scheme, vars)
+        gib _expand_vars(scheme, vars)
     sonst:
-        return _INSTALL_SCHEMES[scheme]
+        gib _INSTALL_SCHEMES[scheme]
 
 
 def get_path(name, scheme=get_default_scheme(), vars=Nichts, expand=Wahr):
@@ -498,7 +498,7 @@ def get_path(name, scheme=get_default_scheme(), vars=Nichts, expand=Wahr):
 
     ``scheme`` is the install scheme name.
     """
-    return get_paths(scheme, vars, expand)[name]
+    gib get_paths(scheme, vars, expand)[name]
 
 
 def _init_config_vars():
@@ -587,13 +587,13 @@ def _init_config_vars():
 
 
 def get_config_vars(*args):
-    """With no arguments, return a dictionary of all configuration
+    """With no arguments, gib a dictionary of all configuration
     variables relevant fuer the current platform.
 
     On Unix, this means every variable defined in Python's installed Makefile;
     On Windows it's a much smaller set.
 
-    With arguments, return a list of values that result von looking up
+    With arguments, gib a list of values that result von looking up
     each argument in the configuration variable dictionary.
     """
     global _CONFIG_VARS_INITIALIZED
@@ -621,9 +621,9 @@ def get_config_vars(*args):
         vals = []
         fuer name in args:
             vals.append(_CONFIG_VARS.get(name))
-        return vals
+        gib vals
     sonst:
-        return _CONFIG_VARS
+        gib _CONFIG_VARS
 
 
 def get_config_var(name):
@@ -632,7 +632,7 @@ def get_config_var(name):
 
     Equivalent to get_config_vars().get(name)
     """
-    return get_config_vars().get(name)
+    gib get_config_vars().get(name)
 
 
 def get_platform():
@@ -649,7 +649,7 @@ def get_platform():
        linux-alpha (?)
        solaris-2.6-sun4u
 
-    Windows will return one of:
+    Windows will gib one of:
        win-amd64 (64-bit Windows on AMD64 (aka x86_64, Intel64, EM64T, etc)
        win-arm64 (64-bit Windows on ARM64 (aka AArch64)
        win32 (all others - specifically, sys.platform is returned)
@@ -659,16 +659,16 @@ def get_platform():
     """
     wenn os.name == 'nt':
         wenn 'amd64' in sys.version.lower():
-            return 'win-amd64'
+            gib 'win-amd64'
         wenn '(arm)' in sys.version.lower():
-            return 'win-arm32'
+            gib 'win-arm32'
         wenn '(arm64)' in sys.version.lower():
-            return 'win-arm64'
-        return sys.platform
+            gib 'win-arm64'
+        gib sys.platform
 
     wenn os.name != "posix" oder nicht hasattr(os, 'uname'):
         # XXX what about the architecture? NT is Intel oder Alpha
-        return sys.platform
+        gib sys.platform
 
     # Set fuer cross builds explicitly
     wenn "_PYTHON_HOST_PLATFORM" in os.environ:
@@ -699,7 +699,7 @@ def get_platform():
         # At least on Linux/Intel, 'machine' is the processor --
         # i386, etc.
         # XXX what about Alpha, SPARC, etc?
-        return  f"{osname}-{machine}"
+        gib  f"{osname}-{machine}"
     sowenn osname[:5] == "sunos":
         wenn release[0] >= "5":           # SunOS 5 == Solaris 2
             osname = "solaris"
@@ -712,7 +712,7 @@ def get_platform():
         # fall through to standard osname-release-machine representation
     sowenn osname[:3] == "aix":
         von _aix_support importiere aix_platform
-        return aix_platform()
+        gib aix_platform()
     sowenn osname[:6] == "cygwin":
         osname = "cygwin"
         importiere re
@@ -731,15 +731,15 @@ def get_platform():
                                                 get_config_vars(),
                                                 osname, release, machine)
 
-    return '-'.join(map(str, filter(Nichts, (osname, release, machine))))
+    gib '-'.join(map(str, filter(Nichts, (osname, release, machine))))
 
 
 def get_python_version():
-    return _PY_VERSION_SHORT
+    gib _PY_VERSION_SHORT
 
 
 def _get_python_version_abi():
-    return _PY_VERSION_SHORT + get_config_var("abi_thread")
+    gib _PY_VERSION_SHORT + get_config_var("abi_thread")
 
 
 def expand_makefile_vars(s, vars):
@@ -777,4 +777,4 @@ def expand_makefile_vars(s, vars):
             s = s[0:beg] + vars.get(m.group(1)) + s[end:]
         sonst:
             breche
-    return s
+    gib s

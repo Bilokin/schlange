@@ -26,9 +26,9 @@ klasse PyCSimpleTypeAsMetaclassTest(unittest.TestCase):
                 wenn bases == (c_void_p,):
                     # When creating PtrBase itself, the name
                     # is nicht yet available
-                    return self
+                    gib self
                 wenn issubclass(self, PtrBase):
-                    return self
+                    gib self
 
                 wenn bases == (object,):
                     ptr_bases = (self, PtrBase)
@@ -36,7 +36,7 @@ klasse PyCSimpleTypeAsMetaclassTest(unittest.TestCase):
                     ptr_bases = (self, POINTER(bases[0]))
                 p = p_meta(f"POINTER({self.__name__})", ptr_bases, {})
                 set_non_ctypes_pointer_type(self, p)
-                return self
+                gib self
 
         klasse p_meta(PyCSimpleType, ct_meta):
             pass
@@ -82,10 +82,10 @@ klasse PyCSimpleTypeAsMetaclassTest(unittest.TestCase):
             def __new__(cls, name, bases, namespace):
                 self = super().__new__(cls, name, bases, namespace)
                 wenn isinstance(self, p_meta):
-                    return self
+                    gib self
                 p = p_meta(f"POINTER({self.__name__})", (self, c_void_p), {})
                 set_non_ctypes_pointer_type(self, p)
-                return self
+                gib self
 
         klasse p_meta(PyCSimpleType, ct_meta):
             pass
@@ -122,9 +122,9 @@ klasse PyCSimpleTypeAsMetaclassTest(unittest.TestCase):
                 # Avoid recursion.
                 # (See test_creating_pointer_in_dunder_new_1)
                 wenn bases == (c_void_p,):
-                    return
+                    gib
                 wenn issubclass(self, PtrBase):
-                    return
+                    gib
                 wenn bases == (object,):
                     ptr_bases = (self, PtrBase)
                 sonst:
@@ -177,7 +177,7 @@ klasse PyCSimpleTypeAsMetaclassTest(unittest.TestCase):
                 # Avoid recursion.
                 # (See test_creating_pointer_in_dunder_new_2)
                 wenn isinstance(self, p_meta):
-                    return
+                    gib
                 p = p_meta(f"POINTER({self.__name__})", (self, c_void_p), {})
                 set_non_ctypes_pointer_type(self, p)
 
@@ -230,7 +230,7 @@ klasse PyCSimpleTypeAsMetaclassTest(unittest.TestCase):
         klasse StructureMeta(PyCStructType):
             def __new__(cls, name, bases, dct, /, create_pointer_type=Wahr):
                 assert len(bases) == 1, bases
-                return super().__new__(cls, name, bases, dct)
+                gib super().__new__(cls, name, bases, dct)
 
             def __init__(self, name, bases, dct, /, create_pointer_type=Wahr):
 
@@ -259,7 +259,7 @@ klasse PyCSimpleTypeAsMetaclassTest(unittest.TestCase):
                 pointer_type = super().__new__(cls, name, bases, dct)
                 assert nicht hasattr(target, '__pointer_type__')
 
-                return pointer_type
+                gib pointer_type
 
             def __init__(self, name, bases, dct, /, create_pointer_type=Wahr):
                 target = dct.get('_type_', Nichts)
@@ -293,7 +293,7 @@ klasse PyCSimpleTypeAsMetaclassTest(unittest.TestCase):
             def __new__(cls, name, bases, dct, /, create_pointer_type=Wahr):
                 assert len(bases) == 1, bases
 
-                return super().__new__(cls, name, bases, dct)
+                gib super().__new__(cls, name, bases, dct)
 
             def __init__(self, name, bases, dct, /, create_pointer_type=Wahr):
 
@@ -314,7 +314,7 @@ klasse PyCSimpleTypeAsMetaclassTest(unittest.TestCase):
                 wenn pointer_type is Nichts:
                     pointer_type = super().__new__(cls, name, bases, dct)
 
-                return pointer_type
+                gib pointer_type
 
             def __init__(self, name, bases, dct, /, create_pointer_type=Wahr):
                 target = dct.get('_type_', Nichts)
@@ -348,7 +348,7 @@ klasse PyCSimpleTypeAsMetaclassTest(unittest.TestCase):
         klasse PointerMeta(PyCPointerType):
             def __new__(cls, name, bases, namespace):
                 namespace["_type_"] = C
-                return super().__new__(cls, name, bases, namespace)
+                gib super().__new__(cls, name, bases, namespace)
 
             def __init__(self, name, bases, namespace):
                 assert nicht hasattr(C, '__pointer_type__')

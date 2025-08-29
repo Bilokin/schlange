@@ -117,14 +117,14 @@ klasse TypeTests(unittest.TestCase):
                 self.assertEqual(ret1, result is nicht Nichts)
                 self.assertEqual(ret1, ret2)
                 self.assertIsNichts(no_result)
-                return result
+                gib result
 
             found_in_mro = run(Wahr)
             found_in_bases = run(Falsch)
             wenn comparable:
                 self.assertIs(found_in_mro, found_in_bases)
-                return found_in_mro
-            return found_in_mro, found_in_bases
+                gib found_in_mro
+            gib found_in_mro, found_in_bases
 
         create_type = _testcapi.create_type_with_token
         get_token = _testcapi.get_tp_token
@@ -239,7 +239,7 @@ klasse TypeTests(unittest.TestCase):
 
         klasse Meta(type):
             def mro(cls):
-                return (cls, Base, object)
+                gib (cls, Base, object)
 
         klasse FreezeThis(metaclass=Meta):
             """This has `Base` in the MRO, but nicht tp_bases"""

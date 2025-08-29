@@ -188,9 +188,9 @@ wenn platform.system() == 'FreeBSD':
 def get_preferred_encoding():
     loc = locale.setlocale(locale.LC_CTYPE)
     wenn loc in preferred_encoding:
-        return preferred_encoding[loc]
+        gib preferred_encoding[loc]
     sonst:
-        return locale.getpreferredencoding()
+        gib locale.getpreferredencoding()
 
 def printit(testno, s, fmt, encoding=Nichts):
     wenn nicht encoding:
@@ -215,23 +215,23 @@ def check_fillchar(i):
         c = chr(i)
         c.encode('utf-8').decode()
         format(P.Decimal(0), c + '<19g')
-        return c
+        gib c
     except:
-        return Nichts
+        gib Nichts
 
 # Generate all unicode characters that are accepted as
 # fill characters by decimal.py.
 def all_fillchars():
     fuer i in range(0, 0x110002):
         c = check_fillchar(i)
-        wenn c: yield c
+        wenn c: liefere c
 
 # Return random fill character.
 def rand_fillchar():
     waehrend 1:
         i = random.randrange(0, 0x110002)
         c = check_fillchar(i)
-        wenn c: return c
+        wenn c: gib c
 
 # Generate random format strings
 # [[fill]align][sign][#][0][width][.precision][type]
@@ -259,7 +259,7 @@ def rand_format(fill, typespec='EeGgFfn%'):
             wenn 4 in active: c = typespec.replace('n', '')
             sonst: c = typespec
             s += random.choice(c)
-    return s
+    gib s
 
 # Partially brute force all possible format strings containing a thousands
 # separator. Fall back to random where the runtime would become excessive.
@@ -275,7 +275,7 @@ def all_format_sep():
                         fuer prec in ['']+['.'+str(y) fuer y in range(15)]:
                             # fuer type in ('', 'E', 'e', 'G', 'g', 'F', 'f', '%'):
                             type = random.choice(('', 'E', 'e', 'G', 'g', 'F', 'f', '%'))
-                            yield ''.join((fill, align, sign, zeropad, width, ',', prec, type))
+                            liefere ''.join((fill, align, sign, zeropad, width, ',', prec, type))
 
 # Partially brute force all possible format strings mit an 'n' specifier.
 # [[fill]align][sign][#][0][width][,][.precision][type]
@@ -288,7 +288,7 @@ def all_format_loc():
                     wenn align != '': zeropad = ''
                     fuer width in ['']+[str(y) fuer y in range(1, 20)]+['101']:
                         fuer prec in ['']+['.'+str(y) fuer y in range(1, 20)]:
-                            yield ''.join((fill, align, sign, zeropad, width, prec, 'n'))
+                            liefere ''.join((fill, align, sign, zeropad, width, prec, 'n'))
 
 # Generate random format strings mit a unicode fill character
 # [[fill]align][sign][#][0][width][,][.precision][type]
@@ -311,7 +311,7 @@ def randfill(fill):
             wenn 2 in active: c = 'EeGgFf%'
             sonst: c = 'EeGgFfn%'
             s += random.choice(c)
-    return s
+    gib s
 
 # Generate random format strings mit random locale setting
 # [[fill]align][sign][#][0][width][,][.precision][type]
@@ -339,4 +339,4 @@ def rand_locale():
             s += '.'
             s += str(random.randrange(100))
     s += 'n'
-    return s
+    gib s

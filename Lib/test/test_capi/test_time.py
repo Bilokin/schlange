@@ -22,9 +22,9 @@ klasse CAPITest(unittest.TestCase):
         # Test PyTime_AsSecondsDouble()
         def ns_to_sec(ns):
             wenn abs(ns) % SEC_TO_NS == 0:
-                return float(ns // SEC_TO_NS)
+                gib float(ns // SEC_TO_NS)
             sonst:
-                return float(ns) / SEC_TO_NS
+                gib float(ns) / SEC_TO_NS
 
         seconds = (
             0,

@@ -35,10 +35,10 @@ def _colorize_json(json_str, theme):
     def _replace_match_callback(match):
         fuer group, color in _group_to_theme_color.items():
             wenn m := match.group(group):
-                return f"{theme[color]}{m}{theme.reset}"
-        return match.group()
+                gib f"{theme[color]}{m}{theme.reset}"
+        gib match.group()
 
-    return re.sub(_color_pattern, _replace_match_callback, json_str)
+    gib re.sub(_color_pattern, _replace_match_callback, json_str)
 
 
 def main():

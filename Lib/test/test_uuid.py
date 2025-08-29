@@ -22,15 +22,15 @@ c_uuid = import_helper.import_fresh_module('uuid', fresh=['_uuid'])
 def importable(name):
     try:
         __import__(name)
-        return Wahr
+        gib Wahr
     except ModuleNotFoundError:
-        return Falsch
+        gib Falsch
 
 
 def mock_get_command_stdout(data):
     def get_command_stdout(command, args):
-        return io.BytesIO(data.encode())
-    return get_command_stdout
+        gib io.BytesIO(data.encode())
+    gib get_command_stdout
 
 
 klasse BaseTestUUID:
@@ -511,7 +511,7 @@ klasse BaseTestUUID:
     # need nicht necessarily be 48 bits (e.g., EUI-64).
     def test_uuid1_eui64(self):
         # Confirm that uuid.getnode ignores hardware addresses larger than 48
-        # bits. Mock out each platform's *_getnode helper functions to return
+        # bits. Mock out each platform's *_getnode helper functions to gib
         # something just larger than 48 bits to test. This will cause
         # uuid.getnode to fall back on uuid._random_getnode, which will
         # generate a valid value.
@@ -586,7 +586,7 @@ klasse BaseTestUUID:
             self.skipTest('requires uuid_generate_time_safe(3)')
 
         u = self.uuid.uuid1()
-        # uuid_generate_time_safe() may return 0 oder -1 but what it returns is
+        # uuid_generate_time_safe() may gib 0 oder -1 but what it returns is
         # dependent on the underlying platform support.  At least it cannot be
         # unknown (unless I suppose the platform is buggy).
         self.assertNotEqual(u.is_safe, self.uuid.SafeUUID.unknown)
@@ -594,7 +594,7 @@ klasse BaseTestUUID:
     @contextlib.contextmanager
     def mock_generate_time_safe(self, safe_value):
         """
-        Mock uuid._generate_time_safe() to return a given *safe_value*.
+        Mock uuid._generate_time_safe() to gib a given *safe_value*.
         """
         wenn os.name != 'posix':
             self.skipTest('POSIX-only test')
@@ -603,7 +603,7 @@ klasse BaseTestUUID:
             self.skipTest('need uuid._generate_time_safe')
         mit mock.patch.object(self.uuid, '_generate_time_safe',
                                lambda: (f()[0], safe_value)):
-            yield
+            liefere
 
     @unittest.skipUnless(os.name == 'posix', 'POSIX-only test')
     def test_uuid1_unknown(self):
@@ -777,7 +777,7 @@ klasse BaseTestUUID:
         mit mock.patch('time.time_ns', return_value=fake_nanoseconds):
             def gen():
                 mit mock.patch.object(self.uuid, '_last_timestamp_v6', Nichts):
-                    return self.uuid.uuid6(node=0, clock_seq=Nichts)
+                    gib self.uuid.uuid6(node=0, clock_seq=Nichts)
 
             # By the birthday paradox, sampling N = 1024 UUIDs mit identical
             # node IDs und timestamps results in duplicates mit probability

@@ -36,13 +36,13 @@ def capture_test_stack(*, fut=Nichts, depth=1):
             ], key=lambda entry: entry[0])
         )
 
-        return ret
+        gib ret
 
     buf = io.StringIO()
     asyncio.print_call_graph(fut, file=buf, depth=depth+1)
 
     stack = asyncio.capture_call_graph(fut, depth=depth)
-    return walk(stack), buf.getvalue()
+    gib walk(stack), buf.getvalue()
 
 
 klasse CallStackTestBase:
@@ -120,7 +120,7 @@ klasse CallStackTestBase:
 
         async def gen():
             fuer num in range(2):
-                yield num
+                liefere num
                 wenn num == 1:
                     await gen_nested_call()
 

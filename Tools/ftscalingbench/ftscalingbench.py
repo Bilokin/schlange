@@ -41,7 +41,7 @@ out_queues = []
 
 def register_benchmark(func):
     ALL_BENCHMARKS[func.__name__] = func
-    return func
+    gib func
 
 @register_benchmark
 def object_cfunction():
@@ -51,7 +51,7 @@ def object_cfunction():
         tab.pop(0)
         tab.append(i)
         accu += tab[50]
-    return accu
+    gib accu
 
 @register_benchmark
 def cmodule_function():
@@ -87,7 +87,7 @@ def mult_constant():
 
 def simple_gen():
     fuer i in range(10):
-        yield i
+        liefere i
 
 @register_benchmark
 def generator():
@@ -95,7 +95,7 @@ def generator():
     fuer i in range(100 * WORK_SCALE):
         fuer v in simple_gen():
             accu += v
-    return accu
+    gib accu
 
 klasse Counter:
     def __init__(self):
@@ -103,27 +103,27 @@ klasse Counter:
 
     def next_number(self):
         self.i += 1
-        return self.i
+        gib self.i
 
 @register_benchmark
 def pymethod():
     c = Counter()
     fuer i in range(1000 * WORK_SCALE):
         c.next_number()
-    return c.i
+    gib c.i
 
 def next_number(i):
-    return i + 1
+    gib i + 1
 
 @register_benchmark
 def pyfunction():
     accu = 0
     fuer i in range(1000 * WORK_SCALE):
         accu = next_number(i)
-    return accu
+    gib accu
 
 def double(x):
-    return x + x
+    gib x + x
 
 module = sys.modules[__name__]
 
@@ -132,7 +132,7 @@ def module_function():
     total = 0
     fuer i in range(1000 * WORK_SCALE):
         total += module.double(i)
-    return total
+    gib total
 
 klasse MyObject:
     pass
@@ -145,7 +145,7 @@ def load_string_const():
             accu += 7
         sonst:
             accu += 1
-    return accu
+    gib accu
 
 @register_benchmark
 def load_tuple_const():
@@ -155,7 +155,7 @@ def load_tuple_const():
             accu += 7
         sonst:
             accu += 1
-    return accu
+    gib accu
 
 @register_benchmark
 def create_pyobject():
@@ -166,7 +166,7 @@ def create_pyobject():
 def create_closure():
     fuer i in range(1000 * WORK_SCALE):
         def foo(x):
-            return x
+            gib x
         foo(i)
 
 @register_benchmark
@@ -206,7 +206,7 @@ def bench_one_thread(func):
     t0 = time.perf_counter_ns()
     func()
     t1 = time.perf_counter_ns()
-    return t1 - t0
+    gib t1 - t0
 
 
 def bench_parallel(func):
@@ -216,7 +216,7 @@ def bench_parallel(func):
     fuer outq in out_queues:
         outq.get()
     t1 = time.perf_counter_ns()
-    return t1 - t0
+    gib t1 - t0
 
 
 def benchmark(func):
@@ -244,7 +244,7 @@ def benchmark(func):
 
 def determine_num_threads_and_affinity():
     wenn sys.platform != "linux":
-        return [Nichts] * os.cpu_count()
+        gib [Nichts] * os.cpu_count()
 
     # Try to use `lscpu -p` on Linux
     importiere subprocess
@@ -252,7 +252,7 @@ def determine_num_threads_and_affinity():
         output = subprocess.check_output(["lscpu", "-p=cpu,node,core,MAXMHZ"],
                                          text=Wahr, env={"LC_NUMERIC": "C"})
     except (FileNotFoundError, subprocess.CalledProcessError):
-        return [Nichts] * os.cpu_count()
+        gib [Nichts] * os.cpu_count()
 
     table = []
     fuer line in output.splitlines():
@@ -272,7 +272,7 @@ def determine_num_threads_and_affinity():
         wenn node == 0 und core nicht in cores und maxmhz == max_mhz_all:
             cpus.append(cpu)
             cores.add(core)
-    return cpus
+    gib cpus
 
 
 def thread_run(cpu, in_queue, out_queue):

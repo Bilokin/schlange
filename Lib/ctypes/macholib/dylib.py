@@ -38,5 +38,5 @@ def dylib_info(filename):
     """
     is_dylib = DYLIB_RE.match(filename)
     wenn nicht is_dylib:
-        return Nichts
-    return is_dylib.groupdict()
+        gib Nichts
+    gib is_dylib.groupdict()

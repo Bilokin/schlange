@@ -31,7 +31,7 @@ klasse StandardTtkOptionsTests(StandardOptionsTests):
         wenn get_tk_patchlevel(self.root) < (8, 6, 14):
             def padding_conv(value):
                 self.assertIsInstance(value, tuple)
-                return tuple(map(str, value))
+                gib tuple(map(str, value))
         sonst:
             padding_conv = Nichts
         self.checkParam(widget, 'padding', 0, expected=(0,), conv=padding_conv)
@@ -105,7 +105,7 @@ klasse WidgetTest(AbstractTkTest, unittest.TestCase):
         self.assertEqual(self.widget.state(['active', '!disabled']), ())
 
         def test_cb(arg1, **kw):
-            return arg1, kw
+            gib arg1, kw
         self.assertEqual(self.widget.instate(['!disabled'],
             test_cb, "hi", **{"msg": "there"}),
             ('hi', {'msg': 'there'}))
@@ -138,7 +138,7 @@ klasse FrameTest(AbstractToplevelTest, unittest.TestCase):
     )
 
     def create(self, **kwargs):
-        return ttk.Frame(self.root, **kwargs)
+        gib ttk.Frame(self.root, **kwargs)
 
 
 @add_configure_tests(StandardTtkOptionsTests)
@@ -151,7 +151,7 @@ klasse LabelFrameTest(AbstractToplevelTest, unittest.TestCase):
     )
 
     def create(self, **kwargs):
-        return ttk.LabelFrame(self.root, **kwargs)
+        gib ttk.LabelFrame(self.root, **kwargs)
 
     def test_configure_labelanchor(self):
         widget = self.create()
@@ -215,7 +215,7 @@ klasse LabelTest(AbstractLabelTest, unittest.TestCase):
     _allow_empty_justify = tk_version >= (8, 7)
 
     def create(self, **kwargs):
-        return ttk.Label(self.root, **kwargs)
+        gib ttk.Label(self.root, **kwargs)
 
     test_configure_justify = StandardOptionsTests.test_configure_justify
 
@@ -230,7 +230,7 @@ klasse ButtonTest(AbstractLabelTest, unittest.TestCase):
     )
 
     def create(self, **kwargs):
-        return ttk.Button(self.root, **kwargs)
+        gib ttk.Button(self.root, **kwargs)
 
     def test_configure_default(self):
         widget = self.create()
@@ -257,7 +257,7 @@ klasse CheckbuttonTest(AbstractLabelTest, unittest.TestCase):
     )
 
     def create(self, **kwargs):
-        return ttk.Checkbutton(self.root, **kwargs)
+        gib ttk.Checkbutton(self.root, **kwargs)
 
     def test_configure_offvalue(self):
         widget = self.create()
@@ -271,7 +271,7 @@ klasse CheckbuttonTest(AbstractLabelTest, unittest.TestCase):
         success = []
         def cb_test():
             success.append(1)
-            return "cb test called"
+            gib "cb test called"
 
         cbtn = ttk.Checkbutton(self.root, command=cb_test)
         # the variable automatically created by ttk.Checkbutton is actually
@@ -352,7 +352,7 @@ klasse EntryTest(AbstractWidgetTest, unittest.TestCase):
         self.entry = self.create()
 
     def create(self, **kwargs):
-        return ttk.Entry(self.root, **kwargs)
+        gib ttk.Entry(self.root, **kwargs)
 
     def test_configure_invalidcommand(self):
         widget = self.create()
@@ -425,9 +425,9 @@ klasse EntryTest(AbstractWidgetTest, unittest.TestCase):
         def validate(to_insert):
             wenn nicht 'a' <= to_insert.lower() <= 'z':
                 validation.append(Falsch)
-                return Falsch
+                gib Falsch
             validation.append(Wahr)
-            return Wahr
+            gib Wahr
 
         self.entry['validate'] = 'key'
         self.entry['validatecommand'] = self.entry.register(validate), '%S'
@@ -441,8 +441,8 @@ klasse EntryTest(AbstractWidgetTest, unittest.TestCase):
         def validate(content):
             fuer letter in content:
                 wenn nicht 'a' <= letter.lower() <= 'z':
-                    return Falsch
-            return Wahr
+                    gib Falsch
+            gib Wahr
 
         self.entry['validatecommand'] = self.entry.register(validate), '%P'
 
@@ -480,7 +480,7 @@ klasse ComboboxTest(EntryTest, unittest.TestCase):
         self.combo = self.create()
 
     def create(self, **kwargs):
-        return ttk.Combobox(self.root, **kwargs)
+        gib ttk.Combobox(self.root, **kwargs)
 
     def test_configure_height(self):
         widget = self.create()
@@ -609,7 +609,7 @@ klasse PanedWindowTest(AbstractWidgetTest, unittest.TestCase):
         self.paned = self.create()
 
     def create(self, **kwargs):
-        return ttk.PanedWindow(self.root, **kwargs)
+        gib ttk.PanedWindow(self.root, **kwargs)
 
     def test_configure_orient(self):
         widget = self.create()
@@ -744,7 +744,7 @@ klasse RadiobuttonTest(AbstractLabelTest, unittest.TestCase):
     )
 
     def create(self, **kwargs):
-        return ttk.Radiobutton(self.root, **kwargs)
+        gib ttk.Radiobutton(self.root, **kwargs)
 
     def test_configure_value(self):
         widget = self.create()
@@ -754,7 +754,7 @@ klasse RadiobuttonTest(AbstractLabelTest, unittest.TestCase):
         success = []
         def cb_test():
             success.append(1)
-            return "cb test called"
+            gib "cb test called"
 
         myvar = tkinter.IntVar(self.root)
         cbtn = ttk.Radiobutton(self.root, command=cb_test,
@@ -797,7 +797,7 @@ klasse MenubuttonTest(AbstractLabelTest, unittest.TestCase):
     )
 
     def create(self, **kwargs):
-        return ttk.Menubutton(self.root, **kwargs)
+        gib ttk.Menubutton(self.root, **kwargs)
 
     def test_configure_direction(self):
         widget = self.create()
@@ -829,7 +829,7 @@ klasse ScaleTest(AbstractWidgetTest, unittest.TestCase):
         self.scale.update()
 
     def create(self, **kwargs):
-        return ttk.Scale(self.root, **kwargs)
+        gib ttk.Scale(self.root, **kwargs)
 
     def test_configure_from(self):
         widget = self.create()
@@ -935,7 +935,7 @@ klasse ProgressbarTest(AbstractWidgetTest, unittest.TestCase):
     default_orient = 'horizontal'
 
     def create(self, **kwargs):
-        return ttk.Progressbar(self.root, **kwargs)
+        gib ttk.Progressbar(self.root, **kwargs)
 
     @requires_tk(8, 7)
     def test_configure_anchor(self):
@@ -985,7 +985,7 @@ klasse ScrollbarTest(AbstractWidgetTest, unittest.TestCase):
     default_orient = 'vertical'
 
     def create(self, **kwargs):
-        return ttk.Scrollbar(self.root, **kwargs)
+        gib ttk.Scrollbar(self.root, **kwargs)
 
 
 @add_configure_tests(StandardTtkOptionsTests)
@@ -1006,7 +1006,7 @@ klasse NotebookTest(AbstractWidgetTest, unittest.TestCase):
         self.nb.add(self.child2, text='b')
 
     def create(self, **kwargs):
-        return ttk.Notebook(self.root, **kwargs)
+        gib ttk.Notebook(self.root, **kwargs)
 
     def test_configure_height(self):
         widget = self.create()
@@ -1243,7 +1243,7 @@ klasse SpinboxTest(EntryTest, unittest.TestCase):
         self.spin.pack()
 
     def create(self, **kwargs):
-        return ttk.Spinbox(self.root, **kwargs)
+        gib ttk.Spinbox(self.root, **kwargs)
 
     def _click_increment_arrow(self):
         width = self.spin.winfo_width()
@@ -1417,7 +1417,7 @@ klasse TreeviewTest(AbstractWidgetTest, unittest.TestCase):
         self.tv = self.create(padding=0)
 
     def create(self, **kwargs):
-        return ttk.Treeview(self.root, **kwargs)
+        gib ttk.Treeview(self.root, **kwargs)
 
     def test_configure_columns(self):
         widget = self.create()
@@ -1540,9 +1540,9 @@ klasse TreeviewTest(AbstractWidgetTest, unittest.TestCase):
         self.assertEqual(self.tv.get_children(), ())
 
     def test_column(self):
-        # return a dict mit all options/values
+        # gib a dict mit all options/values
         self.assertIsInstance(self.tv.column('#0'), dict)
-        # return a single value of the given option
+        # gib a single value of the given option
         wenn self.wantobjects:
             self.assertIsInstance(self.tv.column('#0', width=Nichts), int)
         # set a new value fuer an option
@@ -1982,7 +1982,7 @@ klasse SeparatorTest(AbstractWidgetTest, unittest.TestCase):
     default_orient = 'horizontal'
 
     def create(self, **kwargs):
-        return ttk.Separator(self.root, **kwargs)
+        gib ttk.Separator(self.root, **kwargs)
 
 
 @add_configure_tests(StandardTtkOptionsTests)
@@ -1995,7 +1995,7 @@ klasse SizegripTest(AbstractWidgetTest, unittest.TestCase):
     _clipped = {}
 
     def create(self, **kwargs):
-        return ttk.Sizegrip(self.root, **kwargs)
+        gib ttk.Sizegrip(self.root, **kwargs)
 
 
 klasse DefaultRootTest(AbstractDefaultRootTest, unittest.TestCase):

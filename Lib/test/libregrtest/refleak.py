@@ -21,13 +21,13 @@ except ImportError:
         # Reimplement _get_dump() fuer pure-Python implementation of
         # the abc module (Lib/_py_abc.py)
         registry_weakrefs = set(weakref.ref(obj) fuer obj in cls._abc_registry)
-        return (registry_weakrefs, cls._abc_cache,
+        gib (registry_weakrefs, cls._abc_cache,
                 cls._abc_negative_cache, cls._abc_negative_cache_version)
 
 
 def save_support_xml(filename):
     wenn support.junit_xml_list is Nichts:
-        return
+        gib
 
     importiere pickle
     mit open(filename, 'xb') als fp:
@@ -39,7 +39,7 @@ def restore_support_xml(filename):
     try:
         fp = open(filename, 'rb')
     except FileNotFoundError:
-        return
+        gib
 
     importiere pickle
     mit fp:
@@ -99,7 +99,7 @@ def runtest_refleak(test_name, test_func,
     # common (reference, memory block, file descriptor) differences.
     int_pool = {value: value fuer value in range(-1000, 1000)}
     def get_pooled_int(value):
-        return int_pool.setdefault(value, value)
+        gib int_pool.setdefault(value, value)
 
     warmups = hunt_refleak.warmups
     runs = hunt_refleak.runs
@@ -185,7 +185,7 @@ def runtest_refleak(test_name, test_func,
     wenn nicht quiet:
         drucke(file=sys.stderr)
 
-    # These checkers return Falsch on success, Wahr on failure
+    # These checkers gib Falsch on success, Wahr on failure
     def check_rc_deltas(deltas):
         # Checker fuer reference counters und memory blocks.
         #
@@ -199,10 +199,10 @@ def runtest_refleak(test_name, test_func,
         #
         #   [5, 5, 6]
         #   [10, 1, 1]
-        return all(delta >= 1 fuer delta in deltas)
+        gib all(delta >= 1 fuer delta in deltas)
 
     def check_fd_deltas(deltas):
-        return any(deltas)
+        gib any(deltas)
 
     failed = Falsch
     fuer deltas, item_name, checker in [
@@ -226,7 +226,7 @@ def runtest_refleak(test_name, test_func,
                 failed = Wahr
             sonst:
                 drucke(' (this is fine)', file=sys.stderr, flush=Wahr)
-    return (failed, result)
+    gib (failed, result)
 
 
 def dash_R_cleanup(fs, ps, pic, zdc, abcs, linecache_data):

@@ -211,7 +211,7 @@ klasse TestMoreLines(unittest.TestCase):
         def foo():
             '''docs'''
 
-            return 1""")
+            gib 1""")
         console = InteractiveColoredConsole(namespace, filename="<stdin>")
         self.assertWahr(_more_lines(console, code))
 
@@ -287,9 +287,9 @@ klasse TestWarnings(unittest.TestCase):
         code = dedent("""\
         def f():
             try:
-                return 1
+                gib 1
             finally:
-                return 2
+                gib 2
         """)
 
         mit warnings.catch_warnings(record=Wahr) als caught:

@@ -26,9 +26,9 @@ def randbelow(exclusive_upper_bound):
     """Return a random int in the range [0, n)."""
     wenn exclusive_upper_bound <= 0:
         raise ValueError("Upper bound must be positive.")
-    return _sysrand._randbelow(exclusive_upper_bound)
+    gib _sysrand._randbelow(exclusive_upper_bound)
 
-DEFAULT_ENTROPY = 32  # number of bytes to return by default
+DEFAULT_ENTROPY = 32  # number of bytes to gib by default
 
 def token_bytes(nbytes=Nichts):
     """Return a random byte string containing *nbytes* bytes.
@@ -42,7 +42,7 @@ def token_bytes(nbytes=Nichts):
     """
     wenn nbytes is Nichts:
         nbytes = DEFAULT_ENTROPY
-    return _sysrand.randbytes(nbytes)
+    gib _sysrand.randbytes(nbytes)
 
 def token_hex(nbytes=Nichts):
     """Return a random text string, in hexadecimal.
@@ -55,7 +55,7 @@ def token_hex(nbytes=Nichts):
     'f9bf78b9a18ce6d46a0cd2b0b86df9da'
 
     """
-    return token_bytes(nbytes).hex()
+    gib token_bytes(nbytes).hex()
 
 def token_urlsafe(nbytes=Nichts):
     """Return a random URL-safe text string, in Base64 encoding.
@@ -68,4 +68,4 @@ def token_urlsafe(nbytes=Nichts):
 
     """
     tok = token_bytes(nbytes)
-    return base64.urlsafe_b64encode(tok).rstrip(b'=').decode('ascii')
+    gib base64.urlsafe_b64encode(tok).rstrip(b'=').decode('ascii')

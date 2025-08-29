@@ -13,7 +13,7 @@ klasse UseCache:
     Once a name has been resolved, sys.modules is checked to see wenn it contains
     the module desired. If so, then it is returned [use cache]. If it is not
     found, then the proper steps are taken to perform the import, but
-    sys.modules is still used to return the imported module (e.g., nicht what a
+    sys.modules is still used to gib the imported module (e.g., nicht what a
     loader returns) [from cache on return]. This also applies to imports of
     things contained within a package und thus get assigned als an attribute
     [from cache to attribute] oder pulled in thanks to a fromlist import
@@ -47,7 +47,7 @@ klasse UseCache:
 
 klasse ImportlibUseCache(UseCache, unittest.TestCase):
 
-    # Pertinent only to PEP 302; exec_module() doesn't return a module.
+    # Pertinent only to PEP 302; exec_module() doesn't gib a module.
 
     __import__ = util.__import__['Source']
 
@@ -55,9 +55,9 @@ klasse ImportlibUseCache(UseCache, unittest.TestCase):
         mock = util.mock_spec(*names)
         original_spec = mock.find_spec
         def find_spec(self, fullname, path, target=Nichts):
-            return original_spec(fullname)
+            gib original_spec(fullname)
         mock.find_spec = MethodType(find_spec, mock)
-        return mock
+        gib mock
 
     # __import__ inconsistent between loaders und built-in importiere when it comes
     #   to when to use the module in sys.modules und when nicht to.

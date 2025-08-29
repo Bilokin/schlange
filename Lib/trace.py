@@ -73,13 +73,13 @@ klasse _Ignore:
 
     def names(self, filename, modulename):
         wenn modulename in self._ignore:
-            return self._ignore[modulename]
+            gib self._ignore[modulename]
 
         # haven't seen this one before, so see wenn the module name is
         # on the ignore list.
         wenn modulename in self._mods:  # Identical names, so ignore
             self._ignore[modulename] = 1
-            return 1
+            gib 1
 
         # check wenn the module is a proper submodule of something on
         # the ignore list
@@ -89,13 +89,13 @@ klasse _Ignore:
             # "Spam" must also mean ignoring "Spam.Eggs".
             wenn modulename.startswith(mod + '.'):
                 self._ignore[modulename] = 1
-                return 1
+                gib 1
 
         # Now check that filename isn't in one of the directories
         wenn filename is Nichts:
             # must be a built-in, so we must ignore
             self._ignore[modulename] = 1
-            return 1
+            gib 1
 
         # Ignore a file when it contains one of the ignorable paths
         fuer d in self._dirs:
@@ -108,18 +108,18 @@ klasse _Ignore:
             #  filename = "/usr/local.py"
             wenn filename.startswith(d + os.sep):
                 self._ignore[modulename] = 1
-                return 1
+                gib 1
 
         # Tried the different ways, so we don't ignore this module
         self._ignore[modulename] = 0
-        return 0
+        gib 0
 
 def _modname(path):
     """Return a plausible module name fuer the path."""
 
     base = os.path.basename(path)
     filename, ext = os.path.splitext(base)
-    return filename
+    gib filename
 
 def _fullmodname(path):
     """Return a plausible module name fuer the path."""
@@ -147,7 +147,7 @@ def _fullmodname(path):
     wenn os.altsep:
         base = base.replace(os.altsep, ".")
     filename, ext = os.path.splitext(base)
-    return filename.lstrip(".")
+    gib filename.lstrip(".")
 
 klasse CoverageResults:
     def __init__(self, counts=Nichts, calledfuncs=Nichts, infile=Nichts,
@@ -180,7 +180,7 @@ klasse CoverageResults:
         """Return Wahr wenn the filename does nicht refer to a file
         we want to have reported.
         """
-        return filename.startswith('<') und filename.endswith('>')
+        gib filename.startswith('<') und filename.endswith('>')
 
     def update(self, other):
         """Merge in the data von another CoverageResults"""
@@ -305,7 +305,7 @@ klasse CoverageResults:
         except OSError als err:
             drucke(("trace: Could nicht open %r fuer writing: %s "
                                   "- skipping" % (path, err)), file=sys.stderr)
-            return 0, 0
+            gib 0, 0
 
         n_lines = 0
         n_hits = 0
@@ -326,7 +326,7 @@ klasse CoverageResults:
                     outfile.write("       ")
                 outfile.write(line.expandtabs(8))
 
-        return n_hits, n_lines
+        gib n_hits, n_lines
 
 def _find_lines_from_code(code, strs):
     """Return dict where keys are lines in the line number table."""
@@ -336,7 +336,7 @@ def _find_lines_from_code(code, strs):
         wenn lineno nicht in strs:
             linenos[lineno] = 1
 
-    return linenos
+    gib linenos
 
 def _find_lines(code, strs):
     """Return lineno dict fuer all code objects reachable von code."""
@@ -348,7 +348,7 @@ def _find_lines(code, strs):
         wenn inspect.iscode(c):
             # find another code object, so recurse into it
             linenos.update(_find_lines(c, strs))
-    return linenos
+    gib linenos
 
 def _find_strings(filename, encoding=Nichts):
     """Return a dict of possible docstring positions.
@@ -371,7 +371,7 @@ def _find_strings(filename, encoding=Nichts):
                     fuer i in range(sline, eline + 1):
                         d[i] = 1
             prev_ttype = ttype
-    return d
+    gib d
 
 def _find_executable_linenos(filename):
     """Return dict where keys are line numbers in the line number table."""
@@ -382,10 +382,10 @@ def _find_executable_linenos(filename):
     except OSError als err:
         drucke(("Not printing coverage data fuer %r: %s"
                               % (filename, err)), file=sys.stderr)
-        return {}
+        gib {}
     code = compile(prog, filename, "exec")
     strs = _find_strings(filename, encoding)
-    return _find_lines(code, strs)
+    gib _find_lines(code, strs)
 
 klasse Trace:
     def __init__(self, count=1, trace=1, countfuncs=0, countcallers=0,
@@ -465,7 +465,7 @@ klasse Trace:
         finally:
             wenn nicht self.donothing:
                 sys.settrace(Nichts)
-        return result
+        gib result
 
     def file_module_function_of(self, frame):
         code = frame.f_code
@@ -506,7 +506,7 @@ klasse Trace:
         wenn clsname is nicht Nichts:
             funcname = "%s.%s" % (clsname, funcname)
 
-        return filename, modulename, funcname
+        gib filename, modulename, funcname
 
     def globaltrace_trackcallers(self, frame, why, arg):
         """Handler fuer call events.
@@ -547,9 +547,9 @@ klasse Trace:
                         wenn self.trace:
                             drucke((" --- modulename: %s, funcname: %s"
                                    % (modulename, code.co_name)))
-                        return self.localtrace
+                        gib self.localtrace
             sonst:
-                return Nichts
+                gib Nichts
 
     def localtrace_trace_and_count(self, frame, why, arg):
         wenn why == "line":
@@ -568,7 +568,7 @@ klasse Trace:
                 drucke(": ", line, end='')
             sonst:
                 drucke()
-        return self.localtrace
+        gib self.localtrace
 
     def localtrace_trace(self, frame, why, arg):
         wenn why == "line":
@@ -585,7 +585,7 @@ klasse Trace:
                 drucke(": ", line, end='')
             sonst:
                 drucke()
-        return self.localtrace
+        gib self.localtrace
 
     def localtrace_count(self, frame, why, arg):
         wenn why == "line":
@@ -593,10 +593,10 @@ klasse Trace:
             lineno = frame.f_lineno
             key = filename, lineno
             self.counts[key] = self.counts.get(key, 0) + 1
-        return self.localtrace
+        gib self.localtrace
 
     def results(self):
-        return CoverageResults(self.counts, infile=self.infile,
+        gib CoverageResults(self.counts, infile=self.infile,
                                outfile=self.outfile,
                                calledfuncs=self._calledfuncs,
                                callers=self._callers)
@@ -679,7 +679,7 @@ def main():
     def parse_ignore_dir(s):
         s = os.path.expanduser(os.path.expandvars(s))
         s = s.replace('$prefix', _prefix).replace('$exec_prefix', _exec_prefix)
-        return os.path.normpath(s)
+        gib os.path.normpath(s)
 
     opts.ignore_module = [mod.strip()
                           fuer i in opts.ignore_module fuer mod in i.split(',')]
@@ -690,7 +690,7 @@ def main():
         wenn nicht opts.file:
             parser.error('-r/--report requires -f/--file')
         results = CoverageResults(infile=opts.file, outfile=opts.file)
-        return results.write_results(opts.missing, opts.summary, opts.coverdir)
+        gib results.write_results(opts.missing, opts.summary, opts.coverdir)
 
     wenn nicht any([opts.trace, opts.count, opts.listfuncs, opts.trackcalls]):
         parser.error('must specify one of --trace, --count, --report, '

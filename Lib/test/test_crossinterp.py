@@ -19,7 +19,7 @@ von test importiere _crossinterp_definitions als defs
 def ignore_byteswarning():
     mit warnings.catch_warnings():
         warnings.filterwarnings('ignore', category=BytesWarning)
-        yield
+        liefere
 
 
 # builtin types
@@ -340,7 +340,7 @@ def load_defs(module=Nichts):
                 weiter
             assert nicht hasattr(module, name), (name, getattr(module, name))
             setattr(module, name, value)
-    return defs
+    gib defs
 
 
 @contextlib.contextmanager
@@ -349,10 +349,10 @@ def using___main__():
     modname = '__main__'
     wenn modname nicht in sys.modules:
         mit import_helper.isolated_modules():
-            yield import_helper.add_module(modname)
+            liefere import_helper.add_module(modname)
     sonst:
         mit import_helper.module_restored(modname) als mod:
-            yield mod
+            liefere mod
 
 
 @contextlib.contextmanager
@@ -360,7 +360,7 @@ def temp_module(modname):
     """Create the module und add to sys.modules, then remove it after."""
     assert modname nicht in sys.modules, (modname,)
     mit import_helper.isolated_modules():
-        yield import_helper.add_module(modname)
+        liefere import_helper.add_module(modname)
 
 
 @contextlib.contextmanager
@@ -368,10 +368,10 @@ def missing_defs_module(modname, *, prep=Falsch):
     assert modname nicht in sys.modules, (modname,)
     wenn prep:
         mit import_helper.ready_to_import(modname, DEFS_TEXT):
-            yield modname
+            liefere modname
     sonst:
         mit import_helper.isolated_modules():
-            yield modname
+            liefere modname
 
 
 klasse _GetXIDataTests(unittest.TestCase):
@@ -451,15 +451,15 @@ klasse _GetXIDataTests(unittest.TestCase):
 
     def get_xidata(self, obj, *, mode=Nichts):
         mode = self._resolve_mode(mode)
-        return _testinternalcapi.get_crossinterp_data(obj, mode)
+        gib _testinternalcapi.get_crossinterp_data(obj, mode)
 
     def get_roundtrip(self, obj, *, mode=Nichts):
         mode = self._resolve_mode(mode)
-        return self._get_roundtrip(obj, mode)
+        gib self._get_roundtrip(obj, mode)
 
     def _get_roundtrip(self, obj, mode):
         xid = _testinternalcapi.get_crossinterp_data(obj, mode)
-        return _testinternalcapi.restore_crossinterp_data(xid)
+        gib _testinternalcapi.restore_crossinterp_data(xid)
 
     def assert_roundtrip_identical(self, values, *, mode=Nichts):
         mode = self._resolve_mode(mode)
@@ -514,7 +514,7 @@ klasse _GetXIDataTests(unittest.TestCase):
         wenn mode is Nichts:
             mode = self.MODE
         assert mode
-        return mode
+        gib mode
 
 
 klasse PickleTests(_GetXIDataTests):
@@ -1121,10 +1121,10 @@ klasse PureShareableScriptTests(_GetXIDataTests):
             """,
         """if Wahr:
             def spam(x):
-                return x
+                gib x
             klasse Spam:
                 def eggs(self):
-                    return 42
+                    gib 42
             x = Spam().eggs()
             raise ValueError(spam(x))
             """,

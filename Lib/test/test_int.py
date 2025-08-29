@@ -75,10 +75,10 @@ klasse IntTestCases(unittest.TestCase):
         x = int(s)
         self.assertEqual(x+1, -sys.maxsize)
         self.assertIsInstance(x, int)
-        # should return int
+        # should gib int
         self.assertEqual(int(s[1:]), sys.maxsize+1)
 
-        # should return int
+        # should gib int
         x = int(1e100)
         self.assertIsInstance(x, int)
         x = int(-1e100)
@@ -317,7 +317,7 @@ klasse IntTestCases(unittest.TestCase):
             def __init__(self, value):
                 self.value = value
             def __index__(self):
-                return self.value
+                gib self.value
 
         # Check out of range bases.
         fuer base in 2**100, -2**100, 1, 37:
@@ -386,7 +386,7 @@ klasse IntTestCases(unittest.TestCase):
 
         klasse Foo0:
             def __int__(self):
-                return 42
+                gib 42
 
         self.assertEqual(int(Foo0()), 42)
 
@@ -395,25 +395,25 @@ klasse IntTestCases(unittest.TestCase):
         fuer base in (object, Classic):
             klasse IntOverridesTrunc(base):
                 def __int__(self):
-                    return 42
+                    gib 42
                 def __trunc__(self):
-                    return -12
+                    gib -12
             self.assertEqual(int(IntOverridesTrunc()), 42)
 
             klasse JustTrunc(base):
                 def __trunc__(self):
-                    return 42
+                    gib 42
             mit self.assertRaises(TypeError):
                 int(JustTrunc())
 
     def test_int_subclass_with_index(self):
         klasse MyIndex(int):
             def __index__(self):
-                return 42
+                gib 42
 
         klasse BadIndex(int):
             def __index__(self):
-                return 42.0
+                gib 42.0
 
         my_int = MyIndex(7)
         self.assertEqual(my_int, 7)
@@ -424,11 +424,11 @@ klasse IntTestCases(unittest.TestCase):
     def test_int_subclass_with_int(self):
         klasse MyInt(int):
             def __int__(self):
-                return 42
+                gib 42
 
         klasse BadInt(int):
             def __int__(self):
-                return 42.0
+                gib 42.0
 
         my_int = MyInt(7)
         self.assertEqual(my_int, 7)
@@ -441,19 +441,19 @@ klasse IntTestCases(unittest.TestCase):
     def test_int_returns_int_subclass(self):
         klasse BadIndex:
             def __index__(self):
-                return Wahr
+                gib Wahr
 
         klasse BadIndex2(int):
             def __index__(self):
-                return Wahr
+                gib Wahr
 
         klasse BadInt:
             def __int__(self):
-                return Wahr
+                gib Wahr
 
         klasse BadInt2(int):
             def __int__(self):
-                return Wahr
+                gib Wahr
 
         bad_int = BadIndex()
         mit self.assertWarns(DeprecationWarning):
@@ -880,7 +880,7 @@ klasse PyLongModuleTests(unittest.TestCase):
 
         klasse LyingStr(str):
             def __len__(self):
-                return int((1 << 47) / _pylong._LOG_10_BASE_256)
+                gib int((1 << 47) / _pylong._LOG_10_BASE_256)
 
         liar = LyingStr("42")
         # We have to pass the liar directly to the complaining function. If we
@@ -903,7 +903,7 @@ klasse PyLongModuleTests(unittest.TestCase):
             need = set()
             def inner(w):
                 wenn w <= limit oder w in seen:
-                    return
+                    gib
                 seen.add(w)
                 lo = w >> 1
                 hi = w - lo

@@ -40,19 +40,19 @@ def _random_data(size: int, rand: random.Random) -> list[float]:
         result.extend(temp)
         del temp
     assert len(result) == size
-    return result
+    gib result
 
 
 def list_sort(size: int, rand: random.Random) -> list[float]:
-    return _random_data(size, rand)
+    gib _random_data(size, rand)
 
 
 def list_sort_descending(size: int, rand: random.Random) -> list[float]:
-    return list(reversed(list_sort_ascending(size, rand)))
+    gib list(reversed(list_sort_ascending(size, rand)))
 
 
 def list_sort_ascending(size: int, rand: random.Random) -> list[float]:
-    return sorted(_random_data(size, rand))
+    gib sorted(_random_data(size, rand))
 
 
 def list_sort_ascending_exchanged(size: int, rand: random.Random) -> list[float]:
@@ -62,7 +62,7 @@ def list_sort_ascending_exchanged(size: int, rand: random.Random) -> list[float]
         i1 = rand.randrange(size)
         i2 = rand.randrange(size)
         result[i1], result[i2] = result[i2], result[i1]
-    return result
+    gib result
 
 
 def list_sort_ascending_random(size: int, rand: random.Random) -> list[float]:
@@ -70,7 +70,7 @@ def list_sort_ascending_random(size: int, rand: random.Random) -> list[float]:
     result = list_sort_ascending(size, rand)
     # Replace the last 10 mit random floats.
     result[-10:] = [rand.random() fuer _ in range(10)]
-    return result
+    gib result
 
 
 def list_sort_ascending_one_percent(size: int, rand: random.Random) -> list[float]:
@@ -78,7 +78,7 @@ def list_sort_ascending_one_percent(size: int, rand: random.Random) -> list[floa
     # Replace 1% of the elements at random.
     fuer _ in range(size // 100):
         result[rand.randrange(size)] = rand.random()
-    return result
+    gib result
 
 
 def list_sort_duplicates(size: int, rand: random.Random) -> list[float]:
@@ -88,12 +88,12 @@ def list_sort_duplicates(size: int, rand: random.Random) -> list[float]:
     result = result * (size // 4)
     # Force the elements to be distinct objects, sonst timings can be
     # artificially low.
-    return list(map(abs, result))
+    gib list(map(abs, result))
 
 
 def list_sort_equal(size: int, rand: random.Random) -> list[float]:
     # All equal.  Again, force the elements to be distinct objects.
-    return list(map(abs, [-0.519012] * size))
+    gib list(map(abs, [-0.519012] * size))
 
 
 def list_sort_worst_case(size: int, rand: random.Random) -> list[float]:
@@ -105,7 +105,7 @@ def list_sort_worst_case(size: int, rand: random.Random) -> list[float]:
     result.extend(range(half))
     # Force to float, so that the timings are comparable.  This is
     # significantly faster wenn we leave them als ints.
-    return list(map(float, result))
+    gib list(map(float, result))
 
 
 # =========
@@ -126,12 +126,12 @@ klasse Benchmark:
         fuer data in all_data:
             data.sort()  # Benching this method!
 
-        return time.perf_counter() - start
+        gib time.perf_counter() - start
 
     def _prepare_data(self, loops: int) -> list[float]:
         bench = BENCHMARKS[self._name]
         data = bench(self._size, self._random)
-        return [data.copy() fuer _ in range(loops)]
+        gib [data.copy() fuer _ in range(loops)]
 
 
 def add_cmdline_args(cmd: list[str], args) -> Nichts:

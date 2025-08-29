@@ -95,7 +95,7 @@ wenn os.path is posixpath:
     relpath_for_posix_display = os.path.relpath
 
     def relpath_for_windows_display(path, base):
-        return ntpath.relpath(
+        gib ntpath.relpath(
             ntpath.join(*path.split(os.path.sep)),
             ntpath.join(*base.split(os.path.sep)),
         )
@@ -104,7 +104,7 @@ sonst:
     relpath_for_windows_display = ntpath.relpath
 
     def relpath_for_posix_display(path, base):
-        return posixpath.relpath(
+        gib posixpath.relpath(
             posixpath.join(*path.split(os.path.sep)),
             posixpath.join(*base.split(os.path.sep)),
         )
@@ -126,15 +126,15 @@ def parse_frozen_specs():
                 seen[frozenid] = source
             sonst:
                 assert nicht pyfile oder pyfile == source.pyfile, item
-            yield FrozenModule(modname, ispkg, section, source)
+            liefere FrozenModule(modname, ispkg, section, source)
 
 
 def _parse_specs(specs, section, seen):
     fuer spec in specs:
         info, subs = _parse_spec(spec, seen, section)
-        yield info
+        liefere info
         fuer info in subs oder ():
-            yield info
+            liefere info
 
 
 def _parse_spec(spec, knownids=Nichts, section=Nichts):
@@ -217,11 +217,11 @@ def _parse_spec(spec, knownids=Nichts, section=Nichts):
                             pyfile = Nichts
                         sowenn ispkg:
                             pkgfiles[pyfile] = frozenid
-                    yield frozenid, pyfile, modname, ispkg, section
+                    liefere frozenid, pyfile, modname, ispkg, section
             submodules = iter_subs()
 
     info = (frozenid, pyfile oder Nichts, modname, ispkg, section)
-    return info, submodules
+    gib info, submodules
 
 
 #######################################
@@ -235,36 +235,36 @@ klasse FrozenSource(namedtuple('FrozenSource', 'id pyfile frozenfile')):
             pyfile = os.path.join(STDLIB_DIR, *frozenid.split('.')) + '.py'
             #assert os.path.exists(pyfile), (frozenid, pyfile)
         frozenfile = resolve_frozen_file(frozenid, FROZEN_MODULES_DIR)
-        return cls(frozenid, pyfile, frozenfile)
+        gib cls(frozenid, pyfile, frozenfile)
 
     @property
     def frozenid(self):
-        return self.id
+        gib self.id
 
     @property
     def modname(self):
         wenn self.pyfile.startswith(STDLIB_DIR):
-            return self.id
-        return Nichts
+            gib self.id
+        gib Nichts
 
     @property
     def symbol(self):
         # This matches what we do in Programs/_freeze_module.c:
         name = self.frozenid.replace('.', '_')
-        return '_Py_M__' + name
+        gib '_Py_M__' + name
 
     @property
     def ispkg(self):
         wenn nicht self.pyfile:
-            return Falsch
+            gib Falsch
         sowenn self.frozenid.endswith('.__init__'):
-            return Falsch
+            gib Falsch
         sonst:
-            return os.path.basename(self.pyfile) == '__init__.py'
+            gib os.path.basename(self.pyfile) == '__init__.py'
 
     @property
     def isbootstrap(self):
-        return self.id in BOOTSTRAP
+        gib self.id in BOOTSTRAP
 
 
 def resolve_frozen_file(frozenid, destdir):
@@ -281,8 +281,8 @@ def resolve_frozen_file(frozenid, destdir):
     # We use a consistent naming convention fuer all frozen modules.
     frozenfile = f'{frozenid}.h'
     wenn nicht destdir:
-        return frozenfile
-    return os.path.join(destdir, frozenfile)
+        gib frozenfile
+    gib os.path.join(destdir, frozenfile)
 
 
 #######################################
@@ -291,22 +291,22 @@ def resolve_frozen_file(frozenid, destdir):
 klasse FrozenModule(namedtuple('FrozenModule', 'name ispkg section source')):
 
     def __getattr__(self, name):
-        return getattr(self.source, name)
+        gib getattr(self.source, name)
 
     @property
     def modname(self):
-        return self.name
+        gib self.name
 
     @property
     def orig(self):
-        return self.source.modname
+        gib self.source.modname
 
     @property
     def isalias(self):
         orig = self.source.modname
         wenn nicht orig:
-            return Wahr
-        return self.name != orig
+            gib Wahr
+        gib self.name != orig
 
     def summarize(self):
         source = self.source.modname
@@ -314,7 +314,7 @@ klasse FrozenModule(namedtuple('FrozenModule', 'name ispkg section source')):
             source = f'<{source}>'
         sonst:
             source = relpath_for_posix_display(self.pyfile, ROOT_DIR)
-        return {
+        gib {
             'module': self.name,
             'ispkg': self.ispkg,
             'source': source,
@@ -327,7 +327,7 @@ def _iter_sources(modules):
     seen = set()
     fuer mod in modules:
         wenn mod.source nicht in seen:
-            yield mod.source
+            liefere mod.source
             seen.add(mod.source)
 
 
@@ -339,7 +339,7 @@ def _get_checksum(filename):
         contents = infile.read()
     m = hashlib.sha256()
     m.update(contents)
-    return m.hexdigest()
+    gib m.hexdigest()
 
 
 def resolve_modules(modname, pyfile=Nichts):
@@ -372,15 +372,15 @@ def resolve_modules(modname, pyfile=Nichts):
         pyfile = _resolve_module(modname, ispkg=ispkg)
     sowenn os.path.isdir(pyfile):
         pyfile = _resolve_module(modname, pyfile, ispkg)
-    yield modname, pyfile, ispkg
+    liefere modname, pyfile, ispkg
 
     wenn match:
         pkgdir = os.path.dirname(pyfile)
-        yield von iter_submodules(modname, pkgdir, match)
+        liefere von iter_submodules(modname, pkgdir, match)
 
 
 def check_modname(modname):
-    return all(n.isidentifier() fuer n in modname.split('.'))
+    gib all(n.isidentifier() fuer n in modname.split('.'))
 
 
 def iter_submodules(pkgname, pkgdir=Nichts, match='*'):
@@ -397,16 +397,16 @@ def iter_submodules(pkgname, pkgdir=Nichts, match='*'):
                 weiter
             modname = f'{pkgname}.{entry.name}'
             wenn modname.endswith('.py'):
-                yield modname[:-3], entry.path, Falsch
+                liefere modname[:-3], entry.path, Falsch
             sowenn entry.is_dir():
                 pyfile = os.path.join(entry.path, '__init__.py')
                 # We ignore namespace packages.
                 wenn os.path.exists(pyfile):
-                    yield modname, pyfile, Wahr
+                    liefere modname, pyfile, Wahr
                     wenn recursive:
-                        yield von _iter_submodules(modname, entry.path)
+                        liefere von _iter_submodules(modname, entry.path)
 
-    return _iter_submodules(pkgname, pkgdir)
+    gib _iter_submodules(pkgname, pkgdir)
 
 
 def _resolve_modname_matcher(match, rootdir=Nichts):
@@ -421,14 +421,14 @@ def _resolve_modname_matcher(match, rootdir=Nichts):
 
         wenn pat == '*':
             def match_modname(modname):
-                return Wahr, recursive
+                gib Wahr, recursive
         sonst:
             raise NotImplementedError(match)
     sowenn callable(match):
         match_modname = match(rootdir)
     sonst:
         raise ValueError(f'unsupported matcher {match!r}')
-    return match_modname
+    gib match_modname
 
 
 def _resolve_module(modname, pathentry=STDLIB_DIR, ispkg=Falsch):
@@ -436,8 +436,8 @@ def _resolve_module(modname, pathentry=STDLIB_DIR, ispkg=Falsch):
     pathentry = os.path.normpath(pathentry)
     assert os.path.isabs(pathentry)
     wenn ispkg:
-        return os.path.join(pathentry, *modname.split('.'), '__init__.py')
-    return os.path.join(pathentry, *modname.split('.')) + '.py'
+        gib os.path.join(pathentry, *modname.split('.'), '__init__.py')
+    gib os.path.join(pathentry, *modname.split('.')) + '.py'
 
 
 #######################################
@@ -446,7 +446,7 @@ def _resolve_module(modname, pathentry=STDLIB_DIR, ispkg=Falsch):
 def find_marker(lines, marker, file):
     fuer pos, line in enumerate(lines):
         wenn marker in line:
-            return pos
+            gib pos
     raise Exception(f"Can't find {marker!r} in file {file}")
 
 
@@ -458,7 +458,7 @@ def replace_block(lines, start_marker, end_marker, replacements, file):
                         f"occurs before start marker {start_marker!r} "
                         f"in file {file}")
     replacements = [line.rstrip() + '\n' fuer line in replacements]
-    return lines[:start_pos + 1] + replacements + lines[end_pos:]
+    gib lines[:start_pos + 1] + replacements + lines[end_pos:]
 
 
 klasse UniqueList(list):
@@ -467,7 +467,7 @@ klasse UniqueList(list):
 
     def append(self, item):
         wenn item in self._seen:
-            return
+            gib
         super().append(item)
         self._seen.add(item)
 

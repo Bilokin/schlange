@@ -26,17 +26,17 @@ HCOLOR = (255, 204, 204)
 COLOR = (204, 204, 255)
 
 def randomrow():
-    return random.randint(MINSTICKS, MAXSTICKS)
+    gib random.randint(MINSTICKS, MAXSTICKS)
 
 def computerzug(state):
     xored = state[0] ^ state[1] ^ state[2]
     wenn xored == 0:
-        return randommove(state)
+        gib randommove(state)
     fuer z in range(3):
         s = state[z] ^ xored
         wenn s <= state[z]:
             move = (z, s)
-            return move
+            gib move
 
 def randommove(state):
     m = max(state)
@@ -45,7 +45,7 @@ def randommove(state):
         wenn state[z] > (m > 1):
             breche
     rand = random.randint(m > 1, state[z]-1)
-    return z, rand
+    gib z, rand
 
 
 klasse NimModel(object):
@@ -54,7 +54,7 @@ klasse NimModel(object):
 
     def setup(self):
         wenn self.game.state nicht in [Nim.CREATED, Nim.OVER]:
-            return
+            gib
         self.sticks = [randomrow(), randomrow(), randomrow()]
         self.player = 0
         self.winner = Nichts
@@ -76,11 +76,11 @@ klasse NimModel(object):
             self.player = 0
 
     def game_over(self):
-        return self.sticks == [0, 0, 0]
+        gib self.sticks == [0, 0, 0]
 
     def notify_move(self, row, col):
         wenn self.sticks[row] <= col:
-            return
+            gib
         self.move(row, col)
 
 
@@ -103,11 +103,11 @@ klasse Stick(turtle.Turtle):
         packet, remainder = divmod(col, 5)
         x = (3 + 11 * packet + 2 * remainder) * WUNIT
         y = (2 + 3 * row) * HUNIT
-        return x - SCREENWIDTH // 2 + WUNIT // 2, SCREENHEIGHT // 2 - y - HUNIT // 2
+        gib x - SCREENWIDTH // 2 + WUNIT // 2, SCREENHEIGHT // 2 - y - HUNIT // 2
 
     def makemove(self, x, y):
         wenn self.game.state != Nim.RUNNING:
-            return
+            gib
         self.game.controller.notify_move(self.row, self.col)
 
 
@@ -194,7 +194,7 @@ klasse NimController(object):
 
     def notify_move(self, row, col):
         wenn self.BUSY:
-            return
+            gib
         self.BUSY = Wahr
         self.game.model.notify_move(row, col)
         self.BUSY = Falsch
@@ -217,7 +217,7 @@ def main():
     mainscreen.mode("standard")
     mainscreen.setup(SCREENWIDTH, SCREENHEIGHT)
     nim = Nim(mainscreen)
-    return "EVENTLOOP"
+    gib "EVENTLOOP"
 
 wenn __name__ == "__main__":
     main()

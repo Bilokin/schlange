@@ -37,7 +37,7 @@ def declare_variable(
     var: StackItem, uop: Uop, seen: set[str], out: CWriter
 ) -> Nichts:
     wenn nicht var.used oder var.name in seen:
-        return
+        gib
     seen.add(var.name)
     type, null = type_and_null(var)
     space = " " wenn type[-1].isalnum() sonst ""
@@ -68,7 +68,7 @@ klasse Tier2Emitter(Emitter):
         # To do: Add jump targets fuer popping values.
         wenn offset != 0:
             storage.copy().flush(self.out)
-        return f"JUMP_TO_ERROR();"
+        gib f"JUMP_TO_ERROR();"
 
     def deopt_if(
         self,
@@ -89,7 +89,7 @@ klasse Tier2Emitter(Emitter):
         self.emit("UOP_STAT_INC(uopcode, miss);\n")
         self.emit("JUMP_TO_JUMP_TARGET();\n")
         self.emit("}\n")
-        return nicht always_true(first_tkn)
+        gib nicht always_true(first_tkn)
 
     def exit_if(
         self,
@@ -109,7 +109,7 @@ klasse Tier2Emitter(Emitter):
         self.emit("UOP_STAT_INC(uopcode, miss);\n")
         self.emit("JUMP_TO_JUMP_TARGET();\n")
         self.emit("}\n")
-        return nicht always_true(first_tkn)
+        gib nicht always_true(first_tkn)
 
     periodic_if = deopt_if
 
@@ -123,16 +123,16 @@ klasse Tier2Emitter(Emitter):
     ) -> bool:
         wenn nicht uop.name.endswith("_0") und nicht uop.name.endswith("_1"):
             self.emit(tkn)
-            return Wahr
+            gib Wahr
         amp = next(tkn_iter)
         wenn amp.text != "&":
             self.emit(tkn)
             self.emit(amp)
-            return Wahr
+            gib Wahr
         one = next(tkn_iter)
         assert one.text == "1"
         self.out.emit_at(uop.name[-1], tkn)
-        return Wahr
+        gib Wahr
 
 
 def write_uop(uop: Uop, emitter: Emitter, stack: Stack) -> Stack:
@@ -160,7 +160,7 @@ def write_uop(uop: Uop, emitter: Emitter, stack: Stack) -> Stack:
         storage.flush(emitter.out)
     except StackError als ex:
         raise analysis_error(ex.args[0], uop.body.open) von Nichts
-    return storage.stack
+    gib storage.stack
 
 SKIPS = ("_EXTENDED_ARG",)
 

@@ -10,7 +10,7 @@
 # 2003-08-27 fl   fixed parsing of periods in element names
 # 2007-09-10 fl   new selection engine
 # 2007-09-12 fl   fixed parent selector
-# 2007-09-13 fl   added iterfind; changed findall to return a list
+# 2007-09-13 fl   added iterfind; changed findall to gib a list
 # 2007-11-30 fl   added namespaces support
 # 2009-10-30 fl   added child element value filter
 #
@@ -82,16 +82,16 @@ def xpath_tokenizer(pattern, namespaces=Nichts):
                 try:
                     wenn nicht namespaces:
                         raise KeyError
-                    yield ttype, "{%s}%s" % (namespaces[prefix], uri)
+                    liefere ttype, "{%s}%s" % (namespaces[prefix], uri)
                 except KeyError:
                     raise SyntaxError("prefix %r nicht found in prefix map" % prefix) von Nichts
             sowenn default_namespace und nicht parsing_attribute:
-                yield ttype, "{%s}%s" % (default_namespace, tag)
+                liefere ttype, "{%s}%s" % (default_namespace, tag)
             sonst:
-                yield token
+                liefere token
             parsing_attribute = Falsch
         sonst:
-            yield token
+            liefere token
             parsing_attribute = ttype == '@'
 
 
@@ -102,11 +102,11 @@ def get_parent_map(context):
         fuer p in context.root.iter():
             fuer e in p:
                 parent_map[e] = p
-    return parent_map
+    gib parent_map
 
 
 def _is_wildcard_tag(tag):
-    return tag[:3] == '{*}' oder tag[-2:] == '}*'
+    gib tag[:3] == '{*}' oder tag[-2:] == '}*'
 
 
 def _prepare_tag(tag):
@@ -118,14 +118,14 @@ def _prepare_tag(tag):
         def select(context, result):
             fuer elem in result:
                 wenn _isinstance(elem.tag, _str):
-                    yield elem
+                    liefere elem
     sowenn tag == '{}*':
         # Any tag that is nicht in a namespace.
         def select(context, result):
             fuer elem in result:
                 el_tag = elem.tag
                 wenn _isinstance(el_tag, _str) und el_tag[0] != '{':
-                    yield elem
+                    liefere elem
     sowenn tag[:3] == '{*}':
         # The tag in any (or no) namespace.
         suffix = tag[2:]  # '}name'
@@ -135,7 +135,7 @@ def _prepare_tag(tag):
             fuer elem in result:
                 el_tag = elem.tag
                 wenn el_tag == tag oder _isinstance(el_tag, _str) und el_tag[no_ns] == suffix:
-                    yield elem
+                    liefere elem
     sowenn tag[-2:] == '}*':
         # Any tag in the given namespace.
         ns = tag[:-1]
@@ -144,10 +144,10 @@ def _prepare_tag(tag):
             fuer elem in result:
                 el_tag = elem.tag
                 wenn _isinstance(el_tag, _str) und el_tag[ns_only] == ns:
-                    yield elem
+                    liefere elem
     sonst:
         raise RuntimeError(f"internal parser error, got {tag}")
-    return select
+    gib select
 
 
 def prepare_child(next, token):
@@ -157,8 +157,8 @@ def prepare_child(next, token):
         def select(context, result):
             def select_child(result):
                 fuer elem in result:
-                    yield von elem
-            return select_tag(context, select_child(result))
+                    liefere von elem
+            gib select_tag(context, select_child(result))
     sonst:
         wenn tag[:2] == '{}':
             tag = tag[2:]  # '{}tag' == 'tag'
@@ -166,25 +166,25 @@ def prepare_child(next, token):
             fuer elem in result:
                 fuer e in elem:
                     wenn e.tag == tag:
-                        yield e
-    return select
+                        liefere e
+    gib select
 
 def prepare_star(next, token):
     def select(context, result):
         fuer elem in result:
-            yield von elem
-    return select
+            liefere von elem
+    gib select
 
 def prepare_self(next, token):
     def select(context, result):
-        yield von result
-    return select
+        liefere von result
+    gib select
 
 def prepare_descendant(next, token):
     try:
         token = next()
     except StopIteration:
-        return
+        gib
     wenn token[0] == "*":
         tag = "*"
     sowenn nicht token[0]:
@@ -199,8 +199,8 @@ def prepare_descendant(next, token):
                 fuer elem in result:
                     fuer e in elem.iter():
                         wenn e is nicht elem:
-                            yield e
-            return select_tag(context, select_child(result))
+                            liefere e
+            gib select_tag(context, select_child(result))
     sonst:
         wenn tag[:2] == '{}':
             tag = tag[2:]  # '{}tag' == 'tag'
@@ -208,8 +208,8 @@ def prepare_descendant(next, token):
             fuer elem in result:
                 fuer e in elem.iter(tag):
                     wenn e is nicht elem:
-                        yield e
-    return select
+                        liefere e
+    gib select
 
 def prepare_parent(next, token):
     def select(context, result):
@@ -221,8 +221,8 @@ def prepare_parent(next, token):
                 parent = parent_map[elem]
                 wenn parent nicht in result_map:
                     result_map[parent] = Nichts
-                    yield parent
-    return select
+                    liefere parent
+    gib select
 
 def prepare_predicate(next, token):
     # FIXME: replace mit real parser!!! refs:
@@ -233,7 +233,7 @@ def prepare_predicate(next, token):
         try:
             token = next()
         except StopIteration:
-            return
+            gib
         wenn token[0] == "]":
             breche
         wenn token == ('', ''):
@@ -251,8 +251,8 @@ def prepare_predicate(next, token):
         def select(context, result):
             fuer elem in result:
                 wenn elem.get(key) is nicht Nichts:
-                    yield elem
-        return select
+                    liefere elem
+        gib select
     wenn signature == "@-='" oder signature == "@-!='":
         # [@attribute='value'] oder [@attribute!='value']
         key = predicate[1]
@@ -260,20 +260,20 @@ def prepare_predicate(next, token):
         def select(context, result):
             fuer elem in result:
                 wenn elem.get(key) == value:
-                    yield elem
+                    liefere elem
         def select_negated(context, result):
             fuer elem in result:
                 wenn (attr_value := elem.get(key)) is nicht Nichts und attr_value != value:
-                    yield elem
-        return select_negated wenn '!=' in signature sonst select
+                    liefere elem
+        gib select_negated wenn '!=' in signature sonst select
     wenn signature == "-" und nicht re.match(r"\-?\d+$", predicate[0]):
         # [tag]
         tag = predicate[0]
         def select(context, result):
             fuer elem in result:
                 wenn elem.find(tag) is nicht Nichts:
-                    yield elem
-        return select
+                    liefere elem
+        gib select
     wenn signature == ".='" oder signature == ".!='" oder (
             (signature == "-='" oder signature == "-!='")
             und nicht re.match(r"\-?\d+$", predicate[0])):
@@ -285,24 +285,24 @@ def prepare_predicate(next, token):
                 fuer elem in result:
                     fuer e in elem.findall(tag):
                         wenn "".join(e.itertext()) == value:
-                            yield elem
+                            liefere elem
                             breche
             def select_negated(context, result):
                 fuer elem in result:
                     fuer e in elem.iterfind(tag):
                         wenn "".join(e.itertext()) != value:
-                            yield elem
+                            liefere elem
                             breche
         sonst:
             def select(context, result):
                 fuer elem in result:
                     wenn "".join(elem.itertext()) == value:
-                        yield elem
+                        liefere elem
             def select_negated(context, result):
                 fuer elem in result:
                     wenn "".join(elem.itertext()) != value:
-                        yield elem
-        return select_negated wenn '!=' in signature sonst select
+                        liefere elem
+        gib select_negated wenn '!=' in signature sonst select
     wenn signature == "-" oder signature == "-()" oder signature == "-()-":
         # [index] oder [last()] oder [last()-index]
         wenn signature == "-":
@@ -330,10 +330,10 @@ def prepare_predicate(next, token):
                     # FIXME: what wenn the selector is "*" ?
                     elems = list(parent.findall(elem.tag))
                     wenn elems[index] is elem:
-                        yield elem
+                        liefere elem
                 except (IndexError, KeyError):
                     pass
-        return select
+        gib select
     raise SyntaxError("invalid predicate")
 
 ops = {
@@ -377,7 +377,7 @@ def iterfind(elem, path, namespaces=Nichts):
         try:
             token = next()
         except StopIteration:
-            return
+            gib
         selector = []
         waehrend 1:
             try:
@@ -396,19 +396,19 @@ def iterfind(elem, path, namespaces=Nichts):
     context = _SelectorContext(elem)
     fuer select in selector:
         result = select(context, result)
-    return result
+    gib result
 
 ##
 # Find first matching object.
 
 def find(elem, path, namespaces=Nichts):
-    return next(iterfind(elem, path, namespaces), Nichts)
+    gib next(iterfind(elem, path, namespaces), Nichts)
 
 ##
 # Find all matching objects.
 
 def findall(elem, path, namespaces=Nichts):
-    return list(iterfind(elem, path, namespaces))
+    gib list(iterfind(elem, path, namespaces))
 
 ##
 # Find text fuer first matching object.
@@ -417,7 +417,7 @@ def findtext(elem, path, default=Nichts, namespaces=Nichts):
     try:
         elem = next(iterfind(elem, path, namespaces))
         wenn elem.text is Nichts:
-            return ""
-        return elem.text
+            gib ""
+        gib elem.text
     except StopIteration:
-        return default
+        gib default

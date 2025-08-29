@@ -168,7 +168,7 @@ def main():
     fuer o, a in opts:
         wenn o == '-h':
             drucke(__doc__)
-            return
+            gib
         wenn o == '-d':
             debug = debug + 1
         wenn o == '-e':
@@ -447,7 +447,7 @@ def main():
                                          locals(),
                                          frozen_extensions,
                                          os.path.basename(target))
-        return
+        gib
 
     # generate config.c und Makefile
     builtins.sort()

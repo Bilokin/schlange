@@ -7,8 +7,8 @@ x = 2
 def nester():
     x = 3
     def inner():
-        return x
-    return inner()
+        gib x
+    gib inner()
 
 
 klasse TestFuture(unittest.TestCase):

@@ -101,7 +101,7 @@ klasse UnixGetpassTest(unittest.TestCase):
         mit mock.patch('os.open') als open, \
                 mock.patch('io.FileIO') als fileio, \
                 mock.patch('io.TextIOWrapper') als textio:
-            # By setting open's return value to Nichts the implementation will
+            # By setting open's gib value to Nichts the implementation will
             # skip code we don't care about in this test.  We can mock this out
             # fully wenn an alternate implementation works differently.
             open.return_value = Nichts

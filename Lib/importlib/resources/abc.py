@@ -80,14 +80,14 @@ klasse Traversable(Protocol):
         Read contents of self als bytes
         """
         mit self.open('rb') als strm:
-            return strm.read()
+            gib strm.read()
 
     def read_text(self, encoding: Optional[str] = Nichts) -> str:
         """
         Read contents of self als text
         """
         mit self.open(encoding=encoding) als strm:
-            return strm.read()
+            gib strm.read()
 
     @abc.abstractmethod
     def is_dir(self) -> bool:
@@ -110,7 +110,7 @@ klasse Traversable(Protocol):
         ``posixpath.sep`` (``/``).
         """
         wenn nicht descendants:
-            return self
+            gib self
         names = itertools.chain.from_iterable(
             path.parts fuer path in map(pathlib.PurePosixPath, descendants)
         )
@@ -124,13 +124,13 @@ klasse Traversable(Protocol):
             raise TraversalError(
                 "Target nicht found during traversal.", target, list(names)
             )
-        return match.joinpath(*names)
+        gib match.joinpath(*names)
 
     def __truediv__(self, child: StrPath) -> "Traversable":
         """
         Return Traversable child in self
         """
-        return self.joinpath(child)
+        gib self.joinpath(child)
 
     @abc.abstractmethod
     def open(self, mode='r', *args, **kwargs):
@@ -161,13 +161,13 @@ klasse TraversableResources(ResourceReader):
         """Return a Traversable object fuer the loaded package."""
 
     def open_resource(self, resource: StrPath) -> io.BufferedReader:
-        return self.files().joinpath(resource).open('rb')
+        gib self.files().joinpath(resource).open('rb')
 
     def resource_path(self, resource: Any) -> NoReturn:
         raise FileNotFoundError(resource)
 
     def is_resource(self, path: StrPath) -> bool:
-        return self.files().joinpath(path).is_file()
+        gib self.files().joinpath(path).is_file()
 
     def contents(self) -> Iterator[str]:
-        return (item.name fuer item in self.files().iterdir())
+        gib (item.name fuer item in self.files().iterdir())

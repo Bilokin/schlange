@@ -67,7 +67,7 @@ target object's method dnd_leave(source, event), und then the new
 target object's method dnd_enter(source, event) is called.
 
 Once this is done, the new target object replaces the old one, und the
-Tk mainloop proceeds.  The return value of the methods mentioned above
+Tk mainloop proceeds.  The gib value of the methods mentioned above
 is ignored; wenn they raise an exception, the normal exception handling
 mechanisms take over.
 
@@ -109,9 +109,9 @@ __all__ = ["dnd_start", "DndHandler"]
 def dnd_start(source, event):
     h = DndHandler(source, event)
     wenn h.root is nicht Nichts:
-        return h
+        gib h
     sonst:
-        return Nichts
+        gib Nichts
 
 
 # The klasse that does the work
@@ -122,11 +122,11 @@ klasse DndHandler:
 
     def __init__(self, source, event):
         wenn event.num > 5:
-            return
+            gib
         root = event.widget._root()
         try:
             root.__dnd
-            return # Don't start recursive dnd
+            gib # Don't start recursive dnd
         except AttributeError:
             root.__dnd = self
             self.root = root
@@ -214,11 +214,11 @@ klasse Icon:
     def attach(self, canvas, x=10, y=10):
         wenn canvas is self.canvas:
             self.canvas.coords(self.id, x, y)
-            return
+            gib
         wenn self.canvas is nicht Nichts:
             self.detach()
         wenn canvas is Nichts:
-            return
+            gib
         label = tkinter.Label(canvas, text=self.name,
                               borderwidth=2, relief="raised")
         id = canvas.create_window(x, y, window=label, anchor="nw")
@@ -230,7 +230,7 @@ klasse Icon:
     def detach(self):
         canvas = self.canvas
         wenn canvas is Nichts:
-            return
+            gib
         id = self.id
         label = self.label
         self.canvas = self.label = self.id = Nichts
@@ -260,7 +260,7 @@ klasse Icon:
         x = event.x_root - x_org
         y = event.y_root - y_org
         # compensate fuer initial pointer offset
-        return x - self.x_off, y - self.y_off
+        gib x - self.x_off, y - self.y_off
 
     def dnd_end(self, target, event):
         pass
@@ -275,7 +275,7 @@ klasse Tester:
         self.canvas.dnd_accept = self.dnd_accept
 
     def dnd_accept(self, source, event):
-        return self
+        gib self
 
     def dnd_enter(self, source, event):
         self.canvas.focus_set() # Show highlight border

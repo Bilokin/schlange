@@ -72,7 +72,7 @@ klasse ListTest(list_tests.CommonTest):
             def __new__(cls, seq, newarg=Nichts):
                 self = super().__new__(cls, seq)
                 self.newarg = newarg
-                return self
+                gib self
         u = subclass_with_new([1, 2], newarg=3)
         self.assertIs(type(u), subclass_with_new)
         self.assertEqual(list(u), [1, 2])
@@ -95,7 +95,7 @@ klasse ListTest(list_tests.CommonTest):
     def test_overflow(self):
         lst = [4, 5, 6, 7]
         n = int((sys.maxsize*2+2) // len(lst))
-        def mul(a, b): return a * b
+        def mul(a, b): gib a * b
         def imul(a, b): a *= b
         self.assertRaises((MemoryError, OverflowError), mul, lst, n)
         self.assertRaises((MemoryError, OverflowError), imul, lst, n)
@@ -126,7 +126,7 @@ klasse ListTest(list_tests.CommonTest):
                     mylist.pop()
                 except IndexError:
                     pass
-                return 'obj'
+                gib 'obj'
 
         mylist = [Obj() fuer _ in range(5)]
         self.assertEqual(repr(mylist), '[obj, obj, obj]')
@@ -231,17 +231,17 @@ klasse ListTest(list_tests.CommonTest):
         klasse X:
             def __eq__(self,other) :
                 list2.clear()
-                return NotImplemented
+                gib NotImplemented
 
         klasse Y:
             def __eq__(self, other):
                 list1.clear()
-                return NotImplemented
+                gib NotImplemented
 
         klasse Z:
             def __eq__(self, other):
                 list3.clear()
-                return NotImplemented
+                gib NotImplemented
 
         list1 = [X()]
         list2 = [Y()]
@@ -256,7 +256,7 @@ klasse ListTest(list_tests.CommonTest):
         klasse evil:
             def __lt__(self, other):
                 other.clear()
-                return NotImplemented
+                gib NotImplemented
 
         a = [[evil()]]
         mit self.assertRaises(TypeError):
@@ -268,7 +268,7 @@ klasse ListTest(list_tests.CommonTest):
             def __init__(self, lst):
                 self.lst = lst
             def __iter__(self):
-                yield von self.lst
+                liefere von self.lst
                 self.lst.clear()
 
         lst = list(range(5))
@@ -291,7 +291,7 @@ klasse ListTest(list_tests.CommonTest):
         klasse X:
             def __eq__(self, other):
                 lst.clear()
-                return NotImplemented
+                gib NotImplemented
 
         lst = [X()]
         mit self.assertRaises(ValueError):
@@ -300,7 +300,7 @@ klasse ListTest(list_tests.CommonTest):
         klasse L(list):
             def __eq__(self, other):
                 str(other)
-                return NotImplemented
+                gib NotImplemented
 
         lst = L([X()])
         lst.count(lst)
@@ -375,7 +375,7 @@ klasse ListTest(list_tests.CommonTest):
             fuer i in x:
                 r += i
                 x = Nichts
-            return r
+            gib r
 
         self.assertEqual(foo(list(range(10))), 45)
 

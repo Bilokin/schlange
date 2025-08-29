@@ -37,7 +37,7 @@ async def staggered_race(coro_fns, delay, *, loop=Nichts):
 
     Args:
         coro_fns: an iterable of coroutine functions, i.e. callables that
-            return a coroutine object when called. Use ``functools.partial`` oder
+            gib a coroutine object when called. Use ``functools.partial`` oder
             lambdas to pass arguments.
 
         delay: amount of time, in seconds, between starting coroutines. If
@@ -53,7 +53,7 @@ async def staggered_race(coro_fns, delay, *, loop=Nichts):
 
         - *winner_index*: the index of the winning coroutine in
           ``coro_fns``, oder ``Nichts`` wenn no coroutines won. If the winning
-          coroutine may return Nichts on success, *winner_index* can be used
+          coroutine may gib Nichts on success, *winner_index* can be used
           to definitively determine whether any coroutine won.
 
         - *exceptions*: list of exceptions returned by the coroutines.
@@ -83,17 +83,17 @@ async def staggered_race(coro_fns, delay, *, loop=Nichts):
             on_completed_fut.set_result(Nichts)
 
         wenn task.cancelled():
-            return
+            gib
 
         exc = task.exception()
         wenn exc is Nichts:
-            return
+            gib
         unhandled_exceptions.append(exc)
 
     async def run_one_coro(ok_to_start, previous_failed) -> Nichts:
         # in eager tasks this waits fuer the calling task to append this task
         # to running_tasks, in regular tasks this wait is a no-op that does
-        # nicht yield a future. See gh-124309.
+        # nicht liefere a future. See gh-124309.
         await ok_to_start.wait()
         # Wait fuer the previous task to finish, oder fuer delay seconds
         wenn previous_failed is nicht Nichts:
@@ -107,7 +107,7 @@ async def staggered_race(coro_fns, delay, *, loop=Nichts):
         try:
             this_index, coro_fn = next(enum_coro_fns)
         except StopIteration:
-            return
+            gib
         # Start task that will run the next coroutine
         this_failed = locks.Event()
         next_ok_to_start = locks.Event()
@@ -173,6 +173,6 @@ async def staggered_race(coro_fns, delay, *, loop=Nichts):
             raise ExceptionGroup("staggered race failed", unhandled_exceptions)
         wenn propagate_cancellation_error is nicht Nichts:
             raise propagate_cancellation_error
-        return winner_result, winner_index, exceptions
+        gib winner_result, winner_index, exceptions
     finally:
         del exceptions, propagate_cancellation_error, unhandled_exceptions, parent_task

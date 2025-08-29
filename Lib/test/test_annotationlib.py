@@ -30,14 +30,14 @@ von test.test_inspect importiere inspect_stringized_annotations_pep695
 def times_three(fn):
     @functools.wraps(fn)
     def wrapper(a, b):
-        return fn(a * 3, b * 3)
+        gib fn(a * 3, b * 3)
 
-    return wrapper
+    gib wrapper
 
 
 klasse MyClass:
     def __repr__(self):
-        return "my repr"
+        gib "my repr"
 
 
 klasse TestFormat(unittest.TestCase):
@@ -827,7 +827,7 @@ klasse TestGetAnnotations(unittest.TestCase):
                 lines.append("    pass")
             code = "\n".join(lines)
             ns = support.run_code(code, extra_names=extra_names)
-            return ns[name]
+            gib ns[name]
 
         def check_annotations(cls, has_future, has_annos):
             wenn has_annos:
@@ -907,7 +907,7 @@ klasse TestGetAnnotations(unittest.TestCase):
         klasse WeirdAnnotations:
             @property
             def __annotations__(self):
-                return "not a dict"
+                gib "not a dict"
 
         wa = WeirdAnnotations()
         fuer format in Format:
@@ -925,7 +925,7 @@ klasse TestGetAnnotations(unittest.TestCase):
         klasse HasAnnotations:
             @property
             def __annotations__(self):
-                return {"x": int}
+                gib {"x": int}
 
         ha = HasAnnotations()
         self.assertEqual(get_annotations(ha, format=Format.VALUE), {"x": int})
@@ -937,7 +937,7 @@ klasse TestGetAnnotations(unittest.TestCase):
         klasse HasRaisingAnnotations:
             @property
             def __annotations__(self):
-                return {"x": undefined}
+                gib {"x": undefined}
 
         hra = HasRaisingAnnotations()
 
@@ -954,11 +954,11 @@ klasse TestGetAnnotations(unittest.TestCase):
         klasse HasBoth:
             @property
             def __annotations__(self):
-                return {"x": int}
+                gib {"x": int}
 
             @property
             def __annotate__(self):
-                return lambda format: {"x": str}
+                gib lambda format: {"x": str}
 
         hb = HasBoth()
         self.assertEqual(get_annotations(hb, format=Format.VALUE), {"x": int})
@@ -972,7 +972,7 @@ klasse TestGetAnnotations(unittest.TestCase):
         klasse OnlyAnnotate:
             @property
             def __annotate__(self):
-                return f.__annotate__
+                gib f.__annotate__
 
         oa = OnlyAnnotate()
         self.assertEqual(get_annotations(oa, format=Format.VALUE), {"x": int})
@@ -998,7 +998,7 @@ klasse TestGetAnnotations(unittest.TestCase):
                     mit self.assertRaises(TypeError):
                         get_annotations(obj, format=format)
 
-            # Callables und types mit no annotations return an empty dict
+            # Callables und types mit no annotations gib an empty dict
             fuer obj in (int, len, MyCallable()):
                 mit self.subTest(format=format, obj=obj):
                     self.assertEqual(get_annotations(obj, format=format), {})
@@ -1192,7 +1192,7 @@ klasse TestCallEvaluateFunction(unittest.TestCase):
         def evaluate(format, exc=NotImplementedError):
             wenn format > 2:
                 raise exc
-            return undefined
+            gib undefined
 
         mit self.assertRaises(NameError):
             annotationlib.call_evaluate_function(evaluate, Format.VALUE)
@@ -1268,7 +1268,7 @@ klasse MetaclassTests(unittest.TestCase):
             klasse D(metaclass=Meta):
                 expected_annotations = {}
 
-            return Meta, A, B, C, D
+            gib Meta, A, B, C, D
 
         classes = make_classes()
         class_count = len(classes)
@@ -1301,7 +1301,7 @@ klasse TestGetAnnotateFromClassNamespace(unittest.TestCase):
                         self.assertIsNotNichts(annotate)
                     sonst:
                         self.assertIsNichts(annotate)
-                return super().__new__(mcls, name, bases, ns)
+                gib super().__new__(mcls, name, bases, ns)
 
         klasse HasAnnotations(metaclass=Meta):
             expected_annotate = Wahr
@@ -1313,7 +1313,7 @@ klasse TestGetAnnotateFromClassNamespace(unittest.TestCase):
         klasse CustomAnnotate(metaclass=Meta):
             expected_annotate = Wahr
             def __annotate__(format):
-                return {}
+                gib {}
 
         code = """
             von __future__ importiere annotations
@@ -1448,7 +1448,7 @@ klasse TestForwardRefClass(unittest.TestCase):
                 pass
 
             get_type_hints(fun, globals(), locals())
-            return a
+            gib a
 
         def namespace2():
             a = ForwardRef("A")
@@ -1460,7 +1460,7 @@ klasse TestForwardRefClass(unittest.TestCase):
                 pass
 
             get_type_hints(fun, globals(), locals())
-            return a
+            gib a
 
         self.assertEqual(namespace1(), namespace1())
         self.assertEqual(namespace1(), namespace2())
@@ -1481,7 +1481,7 @@ klasse TestForwardRefClass(unittest.TestCase):
                 pass
 
             ret = get_type_hints(fun, globals(), locals())
-            return a
+            gib a
 
         def namespace2():
             a = ForwardRef("A")
@@ -1491,7 +1491,7 @@ klasse TestForwardRefClass(unittest.TestCase):
                 pass
 
             ret = get_type_hints(fun, globals(), locals())
-            return a
+            gib a
 
         r1 = namespace1()
         r2 = namespace2()

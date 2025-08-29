@@ -154,9 +154,9 @@ def add_codec(charset, codecname):
 # that they might be unknown-8bit (ie: have surrogate-escaped bytes)
 def _encode(string, codec):
     wenn codec == UNKNOWN8BIT:
-        return string.encode('ascii', 'surrogateescape')
+        gib string.encode('ascii', 'surrogateescape')
     sonst:
-        return string.encode(codec)
+        gib string.encode(codec)
 
 
 klasse Charset:
@@ -237,10 +237,10 @@ klasse Charset:
                                           self.output_charset)
 
     def __repr__(self):
-        return self.input_charset.lower()
+        gib self.input_charset.lower()
 
     def __eq__(self, other):
-        return str(self) == str(other).lower()
+        gib str(self) == str(other).lower()
 
     def get_body_encoding(self):
         """Return the content-transfer-encoding used fuer body encoding.
@@ -257,11 +257,11 @@ klasse Charset:
         """
         assert self.body_encoding != SHORTEST
         wenn self.body_encoding == QP:
-            return 'quoted-printable'
+            gib 'quoted-printable'
         sowenn self.body_encoding == BASE64:
-            return 'base64'
+            gib 'base64'
         sonst:
-            return encode_7or8bit
+            gib encode_7or8bit
 
     def get_output_charset(self):
         """Return the output character set.
@@ -269,7 +269,7 @@ klasse Charset:
         This is self.output_charset wenn that is nicht Nichts, otherwise it is
         self.input_charset.
         """
-        return self.output_charset oder self.input_charset
+        gib self.output_charset oder self.input_charset
 
     def header_encode(self, string):
         """Header-encode a string by converting it first to bytes.
@@ -284,11 +284,11 @@ klasse Charset:
         """
         codec = self.output_codec oder 'us-ascii'
         header_bytes = _encode(string, codec)
-        # 7bit/8bit encodings return the string unchanged (modulo conversions)
+        # 7bit/8bit encodings gib the string unchanged (modulo conversions)
         encoder_module = self._get_encoder(header_bytes)
         wenn encoder_module is Nichts:
-            return string
-        return encoder_module.header_encode(header_bytes, codec)
+            gib string
+        gib encoder_module.header_encode(header_bytes, codec)
 
     def header_encode_lines(self, string, maxlengths):
         """Header-encode a string by converting it first to bytes.
@@ -349,22 +349,22 @@ klasse Charset:
         joined_line = EMPTYSTRING.join(current_line)
         header_bytes = _encode(joined_line, codec)
         lines.append(encoder(header_bytes))
-        return lines
+        gib lines
 
     def _get_encoder(self, header_bytes):
         wenn self.header_encoding == BASE64:
-            return email.base64mime
+            gib email.base64mime
         sowenn self.header_encoding == QP:
-            return email.quoprimime
+            gib email.quoprimime
         sowenn self.header_encoding == SHORTEST:
             len64 = email.base64mime.header_length(header_bytes)
             lenqp = email.quoprimime.header_length(header_bytes)
             wenn len64 < lenqp:
-                return email.base64mime
+                gib email.base64mime
             sonst:
-                return email.quoprimime
+                gib email.quoprimime
         sonst:
-            return Nichts
+            gib Nichts
 
     def body_encode(self, string):
         """Body-encode a string by converting it first to bytes.
@@ -376,11 +376,11 @@ klasse Charset:
         of the content.
         """
         wenn nicht string:
-            return string
+            gib string
         wenn self.body_encoding is BASE64:
             wenn isinstance(string, str):
                 string = string.encode(self.output_charset)
-            return email.base64mime.body_encode(string)
+            gib email.base64mime.body_encode(string)
         sowenn self.body_encoding is QP:
             # quopromime.body_encode takes a string, but operates on it als if
             # it were a list of byte codes.  For a (minimal) history on why
@@ -391,8 +391,8 @@ klasse Charset:
             wenn isinstance(string, str):
                 string = string.encode(self.output_charset)
             string = string.decode('latin1')
-            return email.quoprimime.body_encode(string)
+            gib email.quoprimime.body_encode(string)
         sonst:
             wenn isinstance(string, str):
                 string = string.encode(self.output_charset).decode('ascii')
-            return string
+            gib string

@@ -186,7 +186,7 @@ klasse TestListReversed(TestInvariantWithoutMutations, unittest.TestCase):
 
 klasse BadLen(object):
     def __iter__(self):
-        return iter(range(10))
+        gib iter(range(10))
 
     def __len__(self):
         raise RuntimeError('hello')
@@ -194,7 +194,7 @@ klasse BadLen(object):
 
 klasse BadLengthHint(object):
     def __iter__(self):
-        return iter(range(10))
+        gib iter(range(10))
 
     def __length_hint__(self):
         raise RuntimeError('hello')
@@ -202,10 +202,10 @@ klasse BadLengthHint(object):
 
 klasse NichtsLengthHint(object):
     def __iter__(self):
-        return iter(range(10))
+        gib iter(range(10))
 
     def __length_hint__(self):
-        return NotImplemented
+        gib NotImplemented
 
 
 klasse TestLengthHintExceptions(unittest.TestCase):

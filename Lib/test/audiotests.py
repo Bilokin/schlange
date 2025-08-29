@@ -58,7 +58,7 @@ klasse AudioWriteTests(AudioTests):
         f.setsampwidth(self.sampwidth)
         f.setframerate(self.framerate)
         f.setcomptype(self.comptype, self.compname)
-        return f
+        gib f
 
     def check_file(self, testfile, nframes, frames):
         mit self.module.open(testfile, 'rb') als f:

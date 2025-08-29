@@ -29,7 +29,7 @@ MODNAME = '%s.PTModule' % __name__
 def _get_proxy(obj, get_only=Wahr):
     klasse Proxy(object):
         def __getattr__(self, name):
-            return getattr(obj, name)
+            gib getattr(obj, name)
     wenn nicht get_only:
         def __setattr__(self, name, value):
             setattr(obj, name, value)
@@ -37,7 +37,7 @@ def _get_proxy(obj, get_only=Wahr):
             delattr(obj, name)
         Proxy.__setattr__ = __setattr__
         Proxy.__delattr__ = __delattr__
-    return Proxy()
+    gib Proxy()
 
 
 # fuer use in the test
@@ -71,7 +71,7 @@ klasse Container(object):
         self.values = {}
 
     def __getitem__(self, name):
-        return self.values[name]
+        gib self.values[name]
 
     def __setitem__(self, name, value):
         self.values[name] = value
@@ -80,7 +80,7 @@ klasse Container(object):
         del self.values[name]
 
     def __iter__(self):
-        return iter(self.values)
+        gib iter(self.values)
 
 
 
@@ -249,7 +249,7 @@ klasse PatchTest(unittest.TestCase):
             # A hack to test that new mocks are passed the second time
             self.assertNotEqual(outerMock1, mock1, "unexpected value fuer mock1")
             self.assertNotEqual(outerMock2, mock2, "unexpected value fuer mock1")
-            return mock1, mock2
+            gib mock1, mock2
 
         outerMock1 = outerMock2 = Nichts
         outerMock1, outerMock2 = test(sentinel.this1, sentinel.this2)
@@ -390,7 +390,7 @@ klasse PatchTest(unittest.TestCase):
         @patch(__name__+'.ord')
         def test_ord(mock_ord):
             mock_ord.return_value = 101
-            return ord('c')
+            gib ord('c')
 
         @patch(__name__+'.open')
         def test_open(mock_open):
@@ -400,7 +400,7 @@ klasse PatchTest(unittest.TestCase):
             fobj = open('doesnotexists.txt')
             data = fobj.read()
             fobj.close()
-            return data
+            gib data
 
         self.assertEqual(test_ord(), 101)
         self.assertEqual(test_open(), 'abcd')
@@ -410,7 +410,7 @@ klasse PatchTest(unittest.TestCase):
         klasse Foo(object):
             @staticmethod
             def woot():
-                return sentinel.Static
+                gib sentinel.Static
 
         @patch.object(Foo, 'woot', staticmethod(lambda: sentinel.Patched))
         def anonymous():
@@ -731,13 +731,13 @@ klasse PatchTest(unittest.TestCase):
 
 
     def test_stop_without_start(self):
-        # bpo-36366: calling stop without start will return Nichts.
+        # bpo-36366: calling stop without start will gib Nichts.
         patcher = patch(foo_name, 'bar', 3)
         self.assertIsNichts(patcher.stop())
 
 
     def test_stop_idempotent(self):
-        # bpo-36366: calling stop on an already stopped patch will return Nichts.
+        # bpo-36366: calling stop on an already stopped patch will gib Nichts.
         patcher = patch(foo_name, 'bar', 3)
 
         patcher.start()
@@ -985,7 +985,7 @@ klasse PatchTest(unittest.TestCase):
             _test2(mock)
             _test2(mock(1))
             self.assertIs(mock, Foo)
-            return mock
+            gib mock
 
         test = patch(foo_name, autospec=Wahr)(function)
 
@@ -1028,7 +1028,7 @@ klasse PatchTest(unittest.TestCase):
                return_value=3)
         def test(mock_function):
             #self.assertEqual(function.abc, 'foo')
-            return function(1, 2)
+            gib function(1, 2)
 
         result = test()
         self.assertEqual(result, 3)
@@ -1639,13 +1639,13 @@ klasse PatchTest(unittest.TestCase):
             thing = 'original'
 
             def foo_one(self):
-                return self.thing
+                gib self.thing
             def foo_two(self):
-                return self.thing
+                gib self.thing
             def test_one(self):
-                return self.thing
+                gib self.thing
             def test_two(self):
-                return self.thing
+                gib self.thing
 
         Foo = patch.object(Foo, 'thing', 'changed')(Foo)
 
@@ -1660,13 +1660,13 @@ klasse PatchTest(unittest.TestCase):
     def test_patch_dict_test_prefix(self):
         klasse Foo(object):
             def bar_one(self):
-                return dict(the_dict)
+                gib dict(the_dict)
             def bar_two(self):
-                return dict(the_dict)
+                gib dict(the_dict)
             def test_one(self):
-                return dict(the_dict)
+                gib dict(the_dict)
             def test_two(self):
-                return dict(the_dict)
+                gib dict(the_dict)
 
         the_dict = {'key': 'original'}
         Foo = patch.dict(the_dict, key='changed')(Foo)
@@ -1756,7 +1756,7 @@ klasse PatchTest(unittest.TestCase):
 
         def with_custom_patch(target):
             getter, attribute = _get_target(target)
-            return custom_patch(
+            gib custom_patch(
                 getter, attribute, DEFAULT, Nichts, Falsch, Nichts,
                 Nichts, Nichts, {}
             )
@@ -1953,8 +1953,8 @@ klasse PatchTest(unittest.TestCase):
             klasse mypatch(_patch):
                 def stop(self):
                     stopped.append(attribute)
-                    return super(mypatch, self).stop()
-            return mypatch(lambda: thing, attribute, Nichts, Nichts,
+                    gib super(mypatch, self).stop()
+            gib mypatch(lambda: thing, attribute, Nichts, Nichts,
                            Falsch, Nichts, Nichts, Nichts, {})
         [get_patch(val).start() fuer val in ("one", "two", "three")]
         patch.stopall()
@@ -2015,7 +2015,7 @@ klasse PatchTest(unittest.TestCase):
     def test_special_attrs(self):
         def foo(x=0):
             """TEST"""
-            return x
+            gib x
         mit patch.object(foo, '__defaults__', (1, )):
             self.assertEqual(foo(), 1)
         self.assertEqual(foo(), 0)
@@ -2034,7 +2034,7 @@ klasse PatchTest(unittest.TestCase):
         self.assertEqual(foo.__annotations__, dict())
 
         def foo(*a, x=0):
-            return x
+            gib x
         mit patch.object(foo, '__kwdefaults__', dict([('x', 1, )])):
             self.assertEqual(foo(), 1)
         self.assertEqual(foo(), 0)

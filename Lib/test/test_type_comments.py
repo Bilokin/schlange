@@ -15,10 +15,10 @@ def bar():  # type: () -> Nichts
 asyncdef = """\
 async def foo():
     # type: () -> int
-    return await bar()
+    gib await bar()
 
 async def bar():  # type: () -> int
-    return await bar()
+    gib await bar()
 """
 
 asyncvar = """\
@@ -47,7 +47,7 @@ a = 42_42_42
 redundantdef = """\
 def foo():  # type: () -> int
     # type: () -> str
-    return ''
+    gib ''
 """
 
 nonasciidef = """\
@@ -232,7 +232,7 @@ klasse TypeCommentTests(unittest.TestCase):
     highest = sys.version_info[1]  # Highest minor version
 
     def parse(self, source, feature_version=highest):
-        return ast.parse(source, type_comments=Wahr,
+        gib ast.parse(source, type_comments=Wahr,
                          feature_version=feature_version)
 
     def parse_all(self, source, minver=lowest, maxver=highest, expected_regex=""):
@@ -240,7 +240,7 @@ klasse TypeCommentTests(unittest.TestCase):
             feature_version = (3, version)
             wenn minver <= version <= maxver:
                 try:
-                    yield self.parse(source, feature_version)
+                    liefere self.parse(source, feature_version)
                 except SyntaxError als err:
                     raise SyntaxError(str(err) + f" feature_version={feature_version}")
             sonst:
@@ -249,7 +249,7 @@ klasse TypeCommentTests(unittest.TestCase):
                     self.parse(source, feature_version)
 
     def classic_parse(self, source):
-        return ast.parse(source)
+        gib ast.parse(source)
 
     def test_funcdef(self):
         fuer tree in self.parse_all(funcdef):
@@ -394,7 +394,7 @@ klasse TypeCommentTests(unittest.TestCase):
     def test_func_type_input(self):
 
         def parse_func_type_input(source):
-            return ast.parse(source, "<unknown>", "func_type")
+            gib ast.parse(source, "<unknown>", "func_type")
 
         # Some checks below will crash wenn the returned structure is wrong
         tree = parse_func_type_input("() -> int")

@@ -10,7 +10,7 @@ importiere unittest
 # Helper fuer temporary memory databases
 def memory_database(*args, **kwargs):
     cx = sqlite3.connect(":memory:", *args, **kwargs)
-    return contextlib.closing(cx)
+    gib contextlib.closing(cx)
 
 
 # Temporarily limit a database connection parameter
@@ -18,7 +18,7 @@ def memory_database(*args, **kwargs):
 def cx_limit(cx, category=sqlite3.SQLITE_LIMIT_SQL_LENGTH, limit=128):
     try:
         _prev = cx.setlimit(category, limit)
-        yield limit
+        liefere limit
     finally:
         cx.setlimit(category, _prev)
 
@@ -37,8 +37,8 @@ def with_tracebacks(exc, regex="", name="", msg_regex=""):
 
             # Then run the test mit traceback disabled.
             func(self, *args, **kwargs)
-        return wrapper
-    return decorator
+        gib wrapper
+    gib decorator
 
 
 @contextlib.contextmanager
@@ -48,7 +48,7 @@ def check_tracebacks(self, cm, exc, exc_regex, msg_regex, obj_name):
     try:
         buf = io.StringIO()
         mit contextlib.redirect_stderr(buf):
-            yield
+            liefere
 
         self.assertEqual(cm.unraisable.exc_type, exc)
         wenn exc_regex:
@@ -75,15 +75,15 @@ klasse MemoryDatabaseMixin:
 
     @property
     def cx(self):
-        return self.con
+        gib self.con
 
     @property
     def cu(self):
-        return self.cur
+        gib self.cur
 
 
 def requires_virtual_table(module):
     mit memory_database() als cx:
         supported = (module,) in list(cx.execute("PRAGMA module_list"))
         reason = f"Requires {module!r} virtual table support"
-        return unittest.skipUnless(supported, reason)
+        gib unittest.skipUnless(supported, reason)

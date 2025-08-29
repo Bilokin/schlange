@@ -33,11 +33,11 @@ def _splitparam(param):
     # RDM: we might have a Header here; fuer now just stringify it.
     a, sep, b = str(param).partition(';')
     wenn nicht sep:
-        return a.strip(), Nichts
-    return a.strip(), b.strip()
+        gib a.strip(), Nichts
+    gib a.strip(), b.strip()
 
 def _formatparam(param, value=Nichts, quote=Wahr):
-    """Convenience function to format und return a key=value pair.
+    """Convenience function to format und gib a key=value pair.
 
     This will quote the value wenn needed oder wenn quote is true.  If value is a
     three tuple (charset, language, value), it will be encoded according
@@ -53,22 +53,22 @@ def _formatparam(param, value=Nichts, quote=Wahr):
             # Encode als per RFC 2231
             param += '*'
             value = utils.encode_rfc2231(value[2], value[0], value[1])
-            return '%s=%s' % (param, value)
+            gib '%s=%s' % (param, value)
         sonst:
             try:
                 value.encode('ascii')
             except UnicodeEncodeError:
                 param += '*'
                 value = utils.encode_rfc2231(value, 'utf-8', '')
-                return '%s=%s' % (param, value)
+                gib '%s=%s' % (param, value)
         # BAW: Please check this.  I think that wenn quote is set it should
         # force quoting even wenn nicht necessary.
         wenn quote oder tspecials.search(value):
-            return '%s="%s"' % (param, utils.quote(value))
+            gib '%s="%s"' % (param, utils.quote(value))
         sonst:
-            return '%s=%s' % (param, value)
+            gib '%s=%s' % (param, value)
     sonst:
-        return param
+        gib param
 
 def _parseparam(s):
     # RDM This might be a Header, so fuer now stringify it.
@@ -87,18 +87,18 @@ def _parseparam(s):
             f = f[:i].strip().lower() + '=' + f[i+1:].strip()
         plist.append(f.strip())
         s = s[end:]
-    return plist
+    gib plist
 
 
 def _unquotevalue(value):
     # This is different than utils.collapse_rfc2231_value() because it doesn't
     # try to convert the value to a unicode.  Message.get_param() und
-    # Message.get_params() are both currently defined to return the tuple in
+    # Message.get_params() are both currently defined to gib the tuple in
     # the face of RFC 2231 parameters.
     wenn isinstance(value, tuple):
-        return value[0], value[1], utils.unquote(value[2])
+        gib value[0], value[1], utils.unquote(value[2])
     sonst:
-        return utils.unquote(value)
+        gib utils.unquote(value)
 
 
 def _decode_uu(encoded):
@@ -129,7 +129,7 @@ def _decode_uu(encoded):
             decoded_line = binascii.a2b_uu(line[:nbytes])
         decoded_lines.append(decoded_line)
 
-    return b''.join(decoded_lines)
+    gib b''.join(decoded_lines)
 
 
 klasse Message:
@@ -162,7 +162,7 @@ klasse Message:
     def __str__(self):
         """Return the entire formatted message als a string.
         """
-        return self.as_string()
+        gib self.as_string()
 
     def as_string(self, unixfrom=Falsch, maxheaderlen=0, policy=Nichts):
         """Return the entire formatted message als a string.
@@ -186,12 +186,12 @@ klasse Message:
                       maxheaderlen=maxheaderlen,
                       policy=policy)
         g.flatten(self, unixfrom=unixfrom)
-        return fp.getvalue()
+        gib fp.getvalue()
 
     def __bytes__(self):
         """Return the entire formatted message als a bytes object.
         """
-        return self.as_bytes()
+        gib self.as_bytes()
 
     def as_bytes(self, unixfrom=Falsch, policy=Nichts):
         """Return the entire formatted message als a bytes object.
@@ -206,11 +206,11 @@ klasse Message:
         fp = BytesIO()
         g = BytesGenerator(fp, mangle_from_=Falsch, policy=policy)
         g.flatten(self, unixfrom=unixfrom)
-        return fp.getvalue()
+        gib fp.getvalue()
 
     def is_multipart(self):
         """Return Wahr wenn the message consists of multiple parts."""
-        return isinstance(self._payload, list)
+        gib isinstance(self._payload, list)
 
     #
     # Unix From_ line
@@ -219,7 +219,7 @@ klasse Message:
         self._unixfrom = unixfrom
 
     def get_unixfrom(self):
-        return self._unixfrom
+        gib self._unixfrom
 
     #
     # Payload manipulation.
@@ -276,11 +276,11 @@ klasse Message:
         # converted in both the decode und non-decode path.
         wenn self.is_multipart():
             wenn decode:
-                return Nichts
+                gib Nichts
             wenn i is Nichts:
-                return self._payload
+                gib self._payload
             sonst:
-                return self._payload[i]
+                gib self._payload[i]
         # For backward compatibility, Use isinstance und this error message
         # instead of the more logical is_multipart test.
         wenn i is nicht Nichts und nicht isinstance(self._payload, list):
@@ -303,7 +303,7 @@ klasse Message:
                         payload = bpayload.decode('ascii', 'replace')
                 except UnicodeEncodeError:
                     pass
-            return payload
+            gib payload
         wenn isinstance(payload, str):
             try:
                 bpayload = payload.encode('ascii', 'surrogateescape')
@@ -316,23 +316,23 @@ klasse Message:
         sonst:
             bpayload = payload
         wenn cte == 'quoted-printable':
-            return quopri.decodestring(bpayload)
+            gib quopri.decodestring(bpayload)
         sowenn cte == 'base64':
             # XXX: this is a bit of a hack; decode_b should probably be factored
             # out somewhere, but I haven't figured out where yet.
             value, defects = decode_b(b''.join(bpayload.splitlines()))
             fuer defect in defects:
                 self.policy.handle_defect(self, defect)
-            return value
+            gib value
         sowenn cte in ('x-uuencode', 'uuencode', 'uue', 'x-uue'):
             try:
-                return _decode_uu(bpayload)
+                gib _decode_uu(bpayload)
             except ValueError:
                 # Some decoding problem.
-                return bpayload
+                gib bpayload
         wenn isinstance(payload, str):
-            return bpayload
-        return payload
+            gib bpayload
+        gib payload
 
     def set_payload(self, payload, charset=Nichts):
         """Set the payload to the given value.
@@ -343,7 +343,7 @@ klasse Message:
         wenn hasattr(payload, 'encode'):
             wenn charset is Nichts:
                 self._payload = payload
-                return
+                gib
             wenn nicht isinstance(charset, Charset):
                 charset = Charset(charset)
             payload = payload.encode(charset.output_charset, 'surrogateescape')
@@ -371,7 +371,7 @@ klasse Message:
         wenn charset is Nichts:
             self.del_param('charset')
             self._charset = Nichts
-            return
+            gib
         wenn nicht isinstance(charset, Charset):
             charset = Charset(charset)
         self._charset = charset
@@ -404,14 +404,14 @@ klasse Message:
     def get_charset(self):
         """Return the Charset instance associated mit the message's payload.
         """
-        return self._charset
+        gib self._charset
 
     #
     # MAPPING INTERFACE (partial)
     #
     def __len__(self):
         """Return the total number of headers, including duplicates."""
-        return len(self._headers)
+        gib len(self._headers)
 
     def __getitem__(self, name):
         """Get a header value.
@@ -422,7 +422,7 @@ klasse Message:
         occurrence gets returned is undefined.  Use get_all() to get all
         the values matching a header field name.
         """
-        return self.get(name)
+        gib self.get(name)
 
     def __setitem__(self, name, val):
         """Set the value of a header.
@@ -458,12 +458,12 @@ klasse Message:
         name_lower = name.lower()
         fuer k, v in self._headers:
             wenn name_lower == k.lower():
-                return Wahr
-        return Falsch
+                gib Wahr
+        gib Falsch
 
     def __iter__(self):
         fuer field, value in self._headers:
-            yield field
+            liefere field
 
     def keys(self):
         """Return a list of all the message's header field names.
@@ -473,7 +473,7 @@ klasse Message:
         Any fields deleted und re-inserted are always appended to the header
         list.
         """
-        return [k fuer k, v in self._headers]
+        gib [k fuer k, v in self._headers]
 
     def values(self):
         """Return a list of all the message's header values.
@@ -483,7 +483,7 @@ klasse Message:
         Any fields deleted und re-inserted are always appended to the header
         list.
         """
-        return [self.policy.header_fetch_parse(k, v)
+        gib [self.policy.header_fetch_parse(k, v)
                 fuer k, v in self._headers]
 
     def items(self):
@@ -494,20 +494,20 @@ klasse Message:
         Any fields deleted und re-inserted are always appended to the header
         list.
         """
-        return [(k, self.policy.header_fetch_parse(k, v))
+        gib [(k, self.policy.header_fetch_parse(k, v))
                 fuer k, v in self._headers]
 
     def get(self, name, failobj=Nichts):
         """Get a header value.
 
-        Like __getitem__() but return failobj instead of Nichts when the field
+        Like __getitem__() but gib failobj instead of Nichts when the field
         is missing.
         """
         name = name.lower()
         fuer k, v in self._headers:
             wenn k.lower() == name:
-                return self.policy.header_fetch_parse(k, v)
-        return failobj
+                gib self.policy.header_fetch_parse(k, v)
+        gib failobj
 
     #
     # "Internal" methods (public API, but only intended fuer use by a parser
@@ -526,7 +526,7 @@ klasse Message:
 
         This is an "internal" API, intended only fuer use by a generator.
         """
-        return iter(self._headers.copy())
+        gib iter(self._headers.copy())
 
     #
     # Additional useful stuff
@@ -547,8 +547,8 @@ klasse Message:
             wenn k.lower() == name:
                 values.append(self.policy.header_fetch_parse(k, v))
         wenn nicht values:
-            return failobj
-        return values
+            gib failobj
+        gib values
 
     def add_header(self, _name, _value, **_params):
         """Extended header setting.
@@ -606,7 +606,7 @@ klasse Message:
         'maintype/subtype'.  If there was no Content-Type header in the
         message, the default type als given by get_default_type() will be
         returned.  Since according to RFC 2045, messages always have a default
-        type this will always return a value.
+        type this will always gib a value.
 
         RFC 2045 defines a message's default type to be text/plain unless it
         appears inside a multipart/digest container, in which case it would be
@@ -616,12 +616,12 @@ klasse Message:
         value = self.get('content-type', missing)
         wenn value is missing:
             # This should have no parameters
-            return self.get_default_type()
+            gib self.get_default_type()
         ctype = _splitparam(value)[0].lower()
         # RFC 2045, section 5.2 says wenn its invalid, use text/plain
         wenn ctype.count('/') != 1:
-            return 'text/plain'
-        return ctype
+            gib 'text/plain'
+        gib ctype
 
     def get_content_maintype(self):
         """Return the message's main content type.
@@ -630,7 +630,7 @@ klasse Message:
         get_content_type().
         """
         ctype = self.get_content_type()
-        return ctype.split('/')[0]
+        gib ctype.split('/')[0]
 
     def get_content_subtype(self):
         """Returns the message's sub-content type.
@@ -639,7 +639,7 @@ klasse Message:
         get_content_type().
         """
         ctype = self.get_content_type()
-        return ctype.split('/')[1]
+        gib ctype.split('/')[1]
 
     def get_default_type(self):
         """Return the 'default' content type.
@@ -648,7 +648,7 @@ klasse Message:
         messages that are subparts of multipart/digest containers.  Such
         subparts have a default content type of message/rfc822.
         """
-        return self._default_type
+        gib self._default_type
 
     def set_default_type(self, ctype):
         """Set the 'default' content type.
@@ -665,7 +665,7 @@ klasse Message:
         missing = object()
         value = self.get(header, missing)
         wenn value is missing:
-            return failobj
+            gib failobj
         params = []
         fuer p in _parseparam(value):
             try:
@@ -678,7 +678,7 @@ klasse Message:
                 val = ''
             params.append((name, val))
         params = utils.decode_params(params)
-        return params
+        gib params
 
     def get_params(self, failobj=Nichts, header='content-type', unquote=Wahr):
         """Return the message's Content-Type parameters, als a list.
@@ -689,28 +689,28 @@ klasse Message:
         the parameter the value is the empty string.  The value is as
         described in the get_param() method.
 
-        Optional failobj is the object to return wenn there is no Content-Type
+        Optional failobj is the object to gib wenn there is no Content-Type
         header.  Optional header is the header to search instead of
         Content-Type.  If unquote is Wahr, the value is unquoted.
         """
         missing = object()
         params = self._get_params_preserve(missing, header)
         wenn params is missing:
-            return failobj
+            gib failobj
         wenn unquote:
-            return [(k, _unquotevalue(v)) fuer k, v in params]
+            gib [(k, _unquotevalue(v)) fuer k, v in params]
         sonst:
-            return params
+            gib params
 
     def get_param(self, param, failobj=Nichts, header='content-type',
                   unquote=Wahr):
         """Return the parameter value wenn found in the Content-Type header.
 
-        Optional failobj is the object to return wenn there is no Content-Type
+        Optional failobj is the object to gib wenn there is no Content-Type
         header, oder the Content-Type header has no such parameter.  Optional
         header is the header to search instead of Content-Type.
 
-        Parameter keys are always compared case insensitively.  The return
+        Parameter keys are always compared case insensitively.  The gib
         value can either be a string, oder a 3-tuple wenn the parameter was RFC
         2231 encoded.  When it's a 3-tuple, the elements of the value are of
         the form (CHARSET, LANGUAGE, VALUE).  Note that both CHARSET und
@@ -720,21 +720,21 @@ klasse Message:
         the 3-tuple) is always unquoted, unless unquote is set to Falsch.
 
         If your application doesn't care whether the parameter was RFC 2231
-        encoded, it can turn the return value into a string als follows:
+        encoded, it can turn the gib value into a string als follows:
 
             rawparam = msg.get_param('foo')
             param = email.utils.collapse_rfc2231_value(rawparam)
 
         """
         wenn header nicht in self:
-            return failobj
+            gib failobj
         fuer k, v in self._get_params_preserve(failobj, header):
             wenn k.lower() == param.lower():
                 wenn unquote:
-                    return _unquotevalue(v)
+                    gib _unquotevalue(v)
                 sonst:
-                    return v
-        return failobj
+                    gib v
+        gib failobj
 
     def set_param(self, param, value, header='Content-Type', requote=Wahr,
                   charset=Nichts, language='', replace=Falsch):
@@ -796,7 +796,7 @@ klasse Message:
         header.
         """
         wenn header nicht in self:
-            return
+            gib
         new_ctype = ''
         fuer p, v in self.get_params(header=header, unquote=requote):
             wenn p.lower() != param.lower():
@@ -833,7 +833,7 @@ klasse Message:
             self['MIME-Version'] = '1.0'
         wenn header nicht in self:
             self[header] = type
-            return
+            gib
         params = self.get_params(header=header, unquote=requote)
         del self[header]
         self[header] = type
@@ -854,8 +854,8 @@ klasse Message:
         wenn filename is missing:
             filename = self.get_param('name', missing, 'content-type')
         wenn filename is missing:
-            return failobj
-        return utils.collapse_rfc2231_value(filename).strip()
+            gib failobj
+        gib utils.collapse_rfc2231_value(filename).strip()
 
     def get_boundary(self, failobj=Nichts):
         """Return the boundary associated mit the payload wenn present.
@@ -866,9 +866,9 @@ klasse Message:
         missing = object()
         boundary = self.get_param('boundary', missing)
         wenn boundary is missing:
-            return failobj
+            gib failobj
         # RFC 2046 says that boundaries may begin but nicht end in w/s
-        return utils.collapse_rfc2231_value(boundary).rstrip()
+        gib utils.collapse_rfc2231_value(boundary).rstrip()
 
     def set_boundary(self, boundary):
         """Set the boundary parameter in Content-Type to 'boundary'.
@@ -926,7 +926,7 @@ klasse Message:
         missing = object()
         charset = self.get_param('charset', missing)
         wenn charset is missing:
-            return failobj
+            gib failobj
         wenn isinstance(charset, tuple):
             # RFC 2231 encoded, so decode it, und it better end up als ascii.
             pcharset = charset[0] oder 'us-ascii'
@@ -942,9 +942,9 @@ klasse Message:
         try:
             charset.encode('us-ascii')
         except UnicodeError:
-            return failobj
+            gib failobj
         # RFC 2046, $4.1.2 says charsets are nicht case sensitive
-        return charset.lower()
+        gib charset.lower()
 
     def get_charsets(self, failobj=Nichts):
         """Return a list containing the charset(s) used in this message.
@@ -960,21 +960,21 @@ klasse Message:
 
         The list will contain one string fuer each part of the message, plus
         one fuer the container message (i.e. self), so that a non-multipart
-        message will still return a list of length 1.
+        message will still gib a list of length 1.
         """
-        return [part.get_content_charset(failobj) fuer part in self.walk()]
+        gib [part.get_content_charset(failobj) fuer part in self.walk()]
 
     def get_content_disposition(self):
         """Return the message's content-disposition wenn it exists, oder Nichts.
 
-        The return values can be either 'inline', 'attachment' oder Nichts
+        The gib values can be either 'inline', 'attachment' oder Nichts
         according to the rfc2183.
         """
         value = self.get('content-disposition')
         wenn value is Nichts:
-            return Nichts
+            gib Nichts
         c_d = _splitparam(value)[0].lower()
-        return c_d
+        gib c_d
 
     # I.e. def walk(self): ...
     von email.iterators importiere walk
@@ -1003,31 +1003,31 @@ klasse MIMEPart(Message):
         policy = self.policy wenn policy is Nichts sonst policy
         wenn maxheaderlen is Nichts:
             maxheaderlen = policy.max_line_length
-        return super().as_string(unixfrom, maxheaderlen, policy)
+        gib super().as_string(unixfrom, maxheaderlen, policy)
 
     def __str__(self):
-        return self.as_string(policy=self.policy.clone(utf8=Wahr))
+        gib self.as_string(policy=self.policy.clone(utf8=Wahr))
 
     def is_attachment(self):
         c_d = self.get('content-disposition')
-        return Falsch wenn c_d is Nichts sonst c_d.content_disposition == 'attachment'
+        gib Falsch wenn c_d is Nichts sonst c_d.content_disposition == 'attachment'
 
     def _find_body(self, part, preferencelist):
         wenn part.is_attachment():
-            return
+            gib
         maintype, subtype = part.get_content_type().split('/')
         wenn maintype == 'text':
             wenn subtype in preferencelist:
-                yield (preferencelist.index(subtype), part)
-            return
+                liefere (preferencelist.index(subtype), part)
+            gib
         wenn maintype != 'multipart' oder nicht self.is_multipart():
-            return
+            gib
         wenn subtype != 'related':
             fuer subpart in part.iter_parts():
-                yield von self._find_body(subpart, preferencelist)
-            return
+                liefere von self._find_body(subpart, preferencelist)
+            gib
         wenn 'related' in preferencelist:
-            yield (preferencelist.index('related'), part)
+            liefere (preferencelist.index('related'), part)
         candidate = Nichts
         start = part.get_param('start')
         wenn start:
@@ -1039,13 +1039,13 @@ klasse MIMEPart(Message):
             subparts = part.get_payload()
             candidate = subparts[0] wenn subparts sonst Nichts
         wenn candidate is nicht Nichts:
-            yield von self._find_body(candidate, preferencelist)
+            liefere von self._find_body(candidate, preferencelist)
 
     def get_body(self, preferencelist=('related', 'html', 'plain')):
         """Return best candidate mime part fuer display als 'body' of message.
 
         Do a depth first search, starting mit self, looking fuer the first part
-        matching each of the items in preferencelist, und return the part
+        matching each of the items in preferencelist, und gib the part
         corresponding to the first item that has a match, oder Nichts wenn no items
         have a match.  If 'related' is nicht included in preferencelist, consider
         the root part of any multipart/related encountered als a candidate
@@ -1059,7 +1059,7 @@ klasse MIMEPart(Message):
                 body = part
                 wenn prio == 0:
                     breche
-        return body
+        gib body
 
     _body_types = {('text', 'plain'),
                    ('text', 'html'),
@@ -1072,13 +1072,13 @@ klasse MIMEPart(Message):
         multipart/related, oder multipart/alternative in the multipart (unless
         they have a 'Content-Disposition: attachment' header) und include all
         remaining subparts in the returned iterator.  When applied to a
-        multipart/related, return all parts except the root part.  Return an
+        multipart/related, gib all parts except the root part.  Return an
         empty iterator when applied to a multipart/alternative oder a
         non-multipart.
         """
         maintype, subtype = self.get_content_type().split('/')
         wenn maintype != 'multipart' oder subtype == 'alternative':
-            return
+            gib
         payload = self.get_payload()
         # Certain malformed messages can have content type set to `multipart/*`
         # but still have single part body, in which case payload.copy() can
@@ -1087,7 +1087,7 @@ klasse MIMEPart(Message):
             parts = payload.copy()
         except AttributeError:
             # payload is nicht a list, it is most probably a string.
-            return
+            gib
 
         wenn maintype == 'multipart' und subtype == 'related':
             # For related, we treat everything but the root als an attachment.
@@ -1103,11 +1103,11 @@ klasse MIMEPart(Message):
                     sonst:
                         attachments.append(part)
                 wenn found:
-                    yield von attachments
-                    return
+                    liefere von attachments
+                    gib
             parts.pop(0)
-            yield von parts
-            return
+            liefere von parts
+            gib
         # Otherwise we more oder less invert the remaining logic in get_body.
         # This only really works in edge cases (ex: non-text related oder
         # alternatives) wenn the sending agent sets content-disposition.
@@ -1118,7 +1118,7 @@ klasse MIMEPart(Message):
                     nicht part.is_attachment() und subtype nicht in seen):
                 seen.append(subtype)
                 weiter
-            yield part
+            liefere part
 
     def iter_parts(self):
         """Return an iterator over all immediate subparts of a multipart.
@@ -1126,12 +1126,12 @@ klasse MIMEPart(Message):
         Return an empty iterator fuer a non-multipart.
         """
         wenn self.is_multipart():
-            yield von self.get_payload()
+            liefere von self.get_payload()
 
     def get_content(self, *args, content_manager=Nichts, **kw):
         wenn content_manager is Nichts:
             content_manager = self.policy.content_manager
-        return content_manager.get_content(self, *args, **kw)
+        gib content_manager.get_content(self, *args, **kw)
 
     def set_content(self, *args, content_manager=Nichts, **kw):
         wenn content_manager is Nichts:

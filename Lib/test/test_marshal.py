@@ -33,7 +33,7 @@ def omit_last_byte(data):
     # This file's code is used in CompatibilityTestCase,
     # but slices need marshal version 5.
     # Avoid the slice literal.
-    return data[slice(0, -1)]
+    gib data[slice(0, -1)]
 
 klasse IntTestCase(unittest.TestCase, HelperMixin):
     def test_ints(self):
@@ -370,7 +370,7 @@ klasse BugsTestCase(unittest.TestCase):
                 n = super().readinto(buf)
                 wenn n is nicht Nichts und n > 4:
                     n += 10**6
-                return n
+                gib n
         fuer value in (1.0, 1j, b'0123456789', '0123456789'):
             self.assertRaises(ValueError, marshal.load,
                               BadReader(marshal.dumps(value)))
@@ -455,7 +455,7 @@ klasse LargeValuesTestCase(unittest.TestCase):
 def CollectObjectIDs(ids, obj):
     """Collect object ids seen in a structure"""
     wenn id(obj) in ids:
-        return
+        gib
     ids.add(id(obj))
     wenn isinstance(obj, (list, tuple, set, frozenset)):
         fuer e in obj:
@@ -464,7 +464,7 @@ def CollectObjectIDs(ids, obj):
         fuer k, v in obj.items():
             CollectObjectIDs(ids, k)
             CollectObjectIDs(ids, v)
-    return len(ids)
+    gib len(ids)
 
 klasse InstancingTestCase(unittest.TestCase, HelperMixin):
     keys = (123, 1.2345, 'abc', (123, 'abc'), frozenset({123, 'abc'}))

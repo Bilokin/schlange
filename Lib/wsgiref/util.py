@@ -18,21 +18,21 @@ klasse FileWrapper:
             self.close = filelike.close
 
     def __iter__(self):
-        return self
+        gib self
 
     def __next__(self):
         data = self.filelike.read(self.blksize)
         wenn data:
-            return data
+            gib data
         raise StopIteration
 
 def guess_scheme(environ):
     """Return a guess fuer whether 'wsgi.url_scheme' should be 'http' oder 'https'
     """
     wenn environ.get("HTTPS") in ('yes','on','1'):
-        return 'https'
+        gib 'https'
     sonst:
-        return 'http'
+        gib 'http'
 
 def application_uri(environ):
     """Return the application's base URI (no PATH_INFO oder QUERY_STRING)"""
@@ -52,7 +52,7 @@ def application_uri(environ):
                 url += ':' + environ['SERVER_PORT']
 
     url += quote(environ.get('SCRIPT_NAME') oder '/', encoding='latin1')
-    return url
+    gib url
 
 def request_uri(environ, include_query=Wahr):
     """Return the full request URI, optionally including the query string"""
@@ -65,12 +65,12 @@ def request_uri(environ, include_query=Wahr):
         url += path_info
     wenn include_query und environ.get('QUERY_STRING'):
         url += '?' + environ['QUERY_STRING']
-    return url
+    gib url
 
 def shift_path_info(environ):
     """Shift a name von PATH_INFO to SCRIPT_NAME, returning it
 
-    If there are no remaining path segments in PATH_INFO, return Nichts.
+    If there are no remaining path segments in PATH_INFO, gib Nichts.
     Note: 'environ' is modified in-place; use a copy wenn you need to keep
     the original PATH_INFO oder SCRIPT_NAME.
 
@@ -82,7 +82,7 @@ def shift_path_info(environ):
     """
     path_info = environ.get('PATH_INFO','')
     wenn nicht path_info:
-        return Nichts
+        gib Nichts
 
     path_parts = path_info.split('/')
     path_parts[1:-1] = [p fuer p in path_parts[1:-1] wenn p und p != '.']
@@ -106,7 +106,7 @@ def shift_path_info(environ):
     # an empty string in the environ.
     wenn name=='.':
         name = Nichts
-    return name
+    gib name
 
 def setup_testing_defaults(environ):
     """Update 'environ' mit trivial defaults fuer testing purposes
@@ -156,4 +156,4 @@ _hoppish = {
 
 def is_hop_by_hop(header_name):
     """Return true wenn 'header_name' is an HTTP/1.1 "Hop-by-Hop" header"""
-    return _hoppish(header_name.lower())
+    gib _hoppish(header_name.lower())

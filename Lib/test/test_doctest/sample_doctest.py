@@ -73,4 +73,4 @@ __test__ = {'good': """
 
 def test_suite():
     importiere doctest
-    return doctest.DocTestSuite()
+    gib doctest.DocTestSuite()

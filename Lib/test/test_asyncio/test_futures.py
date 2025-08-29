@@ -21,7 +21,7 @@ def tearDownModule():
 
 
 def _fakefunc(f):
-    return f
+    gib f
 
 
 def first_cb():
@@ -43,7 +43,7 @@ klasse SimpleEvilEventLoop(asyncio.base_events.BaseEventLoop):
     """Base klasse fuer UAF und other evil stuff requiring an evil event loop."""
 
     def get_debug(self):  # to suppress tracebacks
-        return Falsch
+        gib Falsch
 
     def __del__(self):
         # Automatically close the evil event loop to avoid warnings.
@@ -62,15 +62,15 @@ klasse DuckFuture:
 
     def cancel(self):
         wenn self.done():
-            return Falsch
+            gib Falsch
         self.__cancelled = Wahr
-        return Wahr
+        gib Wahr
 
     def cancelled(self):
-        return self.__cancelled
+        gib self.__cancelled
 
     def done(self):
-        return (self.__cancelled
+        gib (self.__cancelled
                 oder self.__result is nicht Nichts
                 oder self.__exception is nicht Nichts)
 
@@ -78,11 +78,11 @@ klasse DuckFuture:
         self.assertFalsch(self.cancelled())
         wenn self.__exception is nicht Nichts:
             raise self.__exception
-        return self.__result
+        gib self.__result
 
     def exception(self):
         self.assertFalsch(self.cancelled())
-        return self.__exception
+        gib self.__exception
 
     def set_result(self, result):
         self.assertFalsch(self.done())
@@ -97,9 +97,9 @@ klasse DuckFuture:
     def __iter__(self):
         wenn nicht self.done():
             self._asyncio_future_blocking = Wahr
-            yield self
+            liefere self
         self.assertWahr(self.done())
-        return self.result()
+        gib self.result()
 
 
 klasse DuckTests(test_utils.TestCase):
@@ -123,7 +123,7 @@ klasse DuckTests(test_utils.TestCase):
 klasse BaseFutureTests:
 
     def _new_future(self,  *args, **kwargs):
-        return self.cls(*args, **kwargs)
+        gib self.cls(*args, **kwargs)
 
     def setUp(self):
         super().setUp()
@@ -171,7 +171,7 @@ klasse BaseFutureTests:
 
     def test_constructor_use_running_loop(self):
         async def test():
-            return self._new_future()
+            gib self._new_future()
         f = self.loop.run_until_complete(test())
         self.assertIs(f._loop, self.loop)
         self.assertIs(f.get_loop(), self.loop)
@@ -327,19 +327,19 @@ klasse BaseFutureTests:
         f = self._new_future(loop=self.loop)
 
         def fixture():
-            yield 'A'
-            x = yield von f
-            yield 'B', x
-            y = yield von f
-            yield 'C', y
+            liefere 'A'
+            x = liefere von f
+            liefere 'B', x
+            y = liefere von f
+            liefere 'C', y
 
         g = fixture()
-        self.assertEqual(next(g), 'A')  # yield 'A'.
-        self.assertEqual(next(g), f)  # First yield von f.
+        self.assertEqual(next(g), 'A')  # liefere 'A'.
+        self.assertEqual(next(g), f)  # First liefere von f.
         f.set_result(42)
-        self.assertEqual(next(g), ('B', 42))  # yield 'B', x.
-        # The second "yield von f" does nicht yield f.
-        self.assertEqual(next(g), ('C', 42))  # yield 'C', y.
+        self.assertEqual(next(g), ('B', 42))  # liefere 'B', x.
+        # The second "yield von f" does nicht liefere f.
+        self.assertEqual(next(g), ('C', 42))  # liefere 'C', y.
 
     def test_future_repr(self):
         self.loop.set_debug(Wahr)
@@ -376,7 +376,7 @@ klasse BaseFutureTests:
         def func_repr(func):
             filename, lineno = test_utils.get_function_source(func)
             text = '%s() at %s:%s' % (func.__qualname__, filename, lineno)
-            return re.escape(text)
+            gib re.escape(text)
 
         f_one_callbacks = self._new_future(loop=self.loop)
         f_one_callbacks.add_done_callback(_fakefunc)
@@ -508,7 +508,7 @@ klasse BaseFutureTests:
         fut = self._new_future(loop=self.loop)
 
         def coro():
-            yield von fut
+            liefere von fut
 
         def test():
             arg1, arg2 = coro()
@@ -579,7 +579,7 @@ klasse BaseFutureTests:
     def test_wrap_future(self):
 
         def run(arg):
-            return (arg, threading.get_ident())
+            gib (arg, threading.get_ident())
         ex = concurrent.futures.ThreadPoolExecutor(1)
         f1 = ex.submit(run, 'oi')
         f2 = asyncio.wrap_future(f1, loop=self.loop)
@@ -596,7 +596,7 @@ klasse BaseFutureTests:
 
     def test_wrap_future_without_loop(self):
         def run(arg):
-            return (arg, threading.get_ident())
+            gib (arg, threading.get_ident())
         ex = concurrent.futures.ThreadPoolExecutor(1)
         f1 = ex.submit(run, 'oi')
         mit self.assertRaisesRegex(RuntimeError, 'no current event loop'):
@@ -605,11 +605,11 @@ klasse BaseFutureTests:
 
     def test_wrap_future_use_running_loop(self):
         def run(arg):
-            return (arg, threading.get_ident())
+            gib (arg, threading.get_ident())
         ex = concurrent.futures.ThreadPoolExecutor(1)
         f1 = ex.submit(run, 'oi')
         async def test():
-            return asyncio.wrap_future(f1)
+            gib asyncio.wrap_future(f1)
         f2 = self.loop.run_until_complete(test())
         self.assertIs(self.loop, f2._loop)
         ex.shutdown(wait=Wahr)
@@ -619,7 +619,7 @@ klasse BaseFutureTests:
         asyncio.set_event_loop(self.loop)
         self.addCleanup(asyncio.set_event_loop, Nichts)
         def run(arg):
-            return (arg, threading.get_ident())
+            gib (arg, threading.get_ident())
         ex = concurrent.futures.ThreadPoolExecutor(1)
         f1 = ex.submit(run, 'oi')
         f2 = asyncio.wrap_future(f1)
@@ -663,7 +663,7 @@ klasse BaseFutureTests:
             try:
                 raise MemoryError()
             except BaseException als exc:
-                return exc
+                gib exc
         exc = memory_error()
 
         future = self._new_future(loop=self.loop)
@@ -814,7 +814,7 @@ klasse BaseFutureDoneCallbackTests():
         # Create a callback function that appends thing to bag.
         def bag_appender(future):
             bag.append(thing)
-        return bag_appender
+        gib bag_appender
 
     def _new_future(self):
         raise NotImplementedError
@@ -962,7 +962,7 @@ klasse BaseFutureDoneCallbackTests():
         klasse evil:
             def __eq__(self, other):
                 fut.remove_done_callback(id)
-                return Falsch
+                gib Falsch
 
         fut.remove_done_callback(evil())
 
@@ -1012,7 +1012,7 @@ klasse BaseFutureDoneCallbackTests():
                 extra_cbs += 1
                 wenn extra_cbs < max_extra_cbs:
                     fut.add_done_callback(id)
-                return Falsch
+                gib Falsch
 
         fut.remove_done_callback(evil())
 
@@ -1057,12 +1057,12 @@ klasse BaseFutureDoneCallbackTests():
 
         klasse cb_pad:
             def __eq__(self, other):
-                return Wahr
+                gib Wahr
 
         klasse evil(cb_pad):
             def __eq__(self, other):
                 fut.remove_done_callback(Nichts)
-                return NotImplemented
+                gib NotImplemented
 
         fut.add_done_callback(cb_pad())
         fut.remove_done_callback(evil())
@@ -1080,7 +1080,7 @@ klasse BaseFutureDoneCallbackTests():
                 wenn name == 'call_soon':
                     fut.remove_done_callback(fut_callback_0)
                     del fut_callback_0
-                return object.__getattribute__(self, name)
+                gib object.__getattribute__(self, name)
 
         evil_loop = EvilEventLoop()
         mit mock.patch.object(self, 'loop', evil_loop):
@@ -1103,7 +1103,7 @@ klasse BaseFutureDoneCallbackTests():
                 wenn name == 'call_soon':
                     # resets the future's event loop
                     fut.__init__(loop=SimpleEvilEventLoop())
-                return object.__getattribute__(self, name)
+                gib object.__getattribute__(self, name)
 
         evil_loop = EvilEventLoop()
         mit mock.patch.object(self, 'loop', evil_loop):
@@ -1124,7 +1124,7 @@ klasse CFutureDoneCallbackTests(BaseFutureDoneCallbackTests,
                                test_utils.TestCase):
 
     def _new_future(self):
-        return futures._CFuture(loop=self.loop)
+        gib futures._CFuture(loop=self.loop)
 
 
 @unittest.skipUnless(hasattr(futures, '_CFuture'),
@@ -1135,14 +1135,14 @@ klasse CSubFutureDoneCallbackTests(BaseFutureDoneCallbackTests,
     def _new_future(self):
         klasse CSubFuture(futures._CFuture):
             pass
-        return CSubFuture(loop=self.loop)
+        gib CSubFuture(loop=self.loop)
 
 
 klasse PyFutureDoneCallbackTests(BaseFutureDoneCallbackTests,
                                 test_utils.TestCase):
 
     def _new_future(self):
-        return futures._PyFuture(loop=self.loop)
+        gib futures._PyFuture(loop=self.loop)
 
 
 klasse BaseFutureInheritanceTests:
@@ -1175,7 +1175,7 @@ klasse BaseFutureInheritanceTests:
 klasse PyFutureInheritanceTests(BaseFutureInheritanceTests,
                                test_utils.TestCase):
     def _get_future_cls(self):
-        return futures._PyFuture
+        gib futures._PyFuture
 
 
 @unittest.skipUnless(hasattr(futures, '_CFuture'),
@@ -1183,7 +1183,7 @@ klasse PyFutureInheritanceTests(BaseFutureInheritanceTests,
 klasse CFutureInheritanceTests(BaseFutureInheritanceTests,
                               test_utils.TestCase):
     def _get_future_cls(self):
-        return futures._CFuture
+        gib futures._CFuture
 
 
 wenn __name__ == '__main__':

@@ -28,7 +28,7 @@ klasse FakeTimer:
         timeit._fake_timer = self
 
     def __call__(self):
-        return self.BASE_TIME + self.count * self.seconds_per_increment
+        gib self.BASE_TIME + self.count * self.seconds_per_increment
 
     def inc(self):
         self.count += 1
@@ -39,7 +39,7 @@ klasse FakeTimer:
     def wrap_timer(self, timer):
         """Records 'timer' und returns self als callable timer."""
         self.saved_timer = timer
-        return self
+        gib self
 
 klasse TestTimeit(unittest.TestCase):
 
@@ -249,7 +249,7 @@ klasse TestTimeit(unittest.TestCase):
         mit captured_stdout() als s:
             timeit.main(args=args, _wrap_timer=timer.wrap_timer)
         sys.path[:] = orig_sys_path[:]
-        return s.getvalue()
+        gib s.getvalue()
 
     def test_main_bad_switch(self):
         s = self.run_main(switches=['--bad-switch'])
@@ -364,7 +364,7 @@ klasse TestTimeit(unittest.TestCase):
     def autorange(self, seconds_per_increment=1/1024, callback=Nichts):
         timer = FakeTimer(seconds_per_increment=seconds_per_increment)
         t = timeit.Timer(stmt=self.fake_stmt, setup=self.fake_setup, timer=timer)
-        return t.autorange(callback)
+        gib t.autorange(callback)
 
     def test_autorange(self):
         num_loops, time_taken = self.autorange()

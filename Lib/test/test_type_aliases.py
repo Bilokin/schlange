@@ -54,7 +54,7 @@ klasse TypeParamsAccessTest(unittest.TestCase):
             klasse Outer[A]:
                 def inner[B](self):
                     type TA1[C] = TA1[A, B] | int
-                    return TA1
+                    gib TA1
             """
         )
         cls = ns["Outer"]
@@ -103,7 +103,7 @@ klasse TypeParamsAliasValueTest(unittest.TestCase):
     def test_alias_value_03(self):
         def outer[A]():
             type TA1[B] = dict[A, B]
-            return TA1
+            gib TA1
 
         o = outer()
         self.assertIsInstance(o, TypeAliasType)
@@ -115,7 +115,7 @@ klasse TypeParamsAliasValueTest(unittest.TestCase):
     def test_alias_value_04(self):
         def more_generic[T, *Ts, **P]():
             type TA[T2, *Ts2, **P2] = tuple[Callable[P, tuple[T, *Ts]], Callable[P2, tuple[T2, *Ts2]]]
-            return TA
+            gib TA
 
         alias = more_generic()
         self.assertIsInstance(alias, TypeAliasType)
@@ -400,7 +400,7 @@ klasse TypeParamsExoticGlobalsTest(unittest.TestCase):
     def test_exec_with_unusual_globals(self):
         klasse customdict(dict):
             def __missing__(self, key):
-                return key
+                gib key
 
         code = compile("type Alias = undefined", "test", "exec")
         ns = customdict()

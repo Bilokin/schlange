@@ -22,8 +22,8 @@ def registerDOMImplementation(name, factory):
     """registerDOMImplementation(name, factory)
 
     Register the factory function mit the name. The factory function
-    should return an object which implements the DOMImplementation
-    interface. The factory function can either return the same object,
+    should gib an object which implements the DOMImplementation
+    interface. The factory function can either gib the same object,
     oder a new one (e.g. wenn that implementation supports some
     customization)."""
 
@@ -33,8 +33,8 @@ def _good_enough(dom, features):
     "_good_enough(dom, features) -> Return 1 wenn the dom offers the features"
     fuer f,v in features:
         wenn nicht dom.hasFeature(f,v):
-            return 0
-    return 1
+            gib 0
+    gib 1
 
 def getDOMImplementation(name=Nichts, features=()):
     """getDOMImplementation(name = Nichts, features = ()) -> DOM implementation.
@@ -54,11 +54,11 @@ def getDOMImplementation(name=Nichts, features=()):
     mod = well_known_implementations.get(name)
     wenn mod:
         mod = __import__(mod, {}, {}, ['getDOMImplementation'])
-        return mod.getDOMImplementation()
+        gib mod.getDOMImplementation()
     sowenn name:
-        return registered[name]()
+        gib registered[name]()
     sowenn nicht sys.flags.ignore_environment und "PYTHON_DOM" in os.environ:
-        return getDOMImplementation(name = os.environ["PYTHON_DOM"])
+        gib getDOMImplementation(name = os.environ["PYTHON_DOM"])
 
     # User did nicht specify a name, try implementations in arbitrary
     # order, returning the one that has the required features
@@ -67,7 +67,7 @@ def getDOMImplementation(name=Nichts, features=()):
     fuer creator in registered.values():
         dom = creator()
         wenn _good_enough(dom, features):
-            return dom
+            gib dom
 
     fuer creator in well_known_implementations.keys():
         try:
@@ -75,7 +75,7 @@ def getDOMImplementation(name=Nichts, features=()):
         except Exception: # typically ImportError, oder AttributeError
             weiter
         wenn _good_enough(dom, features):
-            return dom
+            gib dom
 
     raise ImportError("no suitable DOM implementation found")
 
@@ -96,4 +96,4 @@ def _parse_feature_string(s):
                 i = i + 1
                 version = v
         features.append((feature, version))
-    return tuple(features)
+    gib tuple(features)

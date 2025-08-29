@@ -56,11 +56,11 @@ klasse BaseUnsignedIntConverter(CConverter):
                 }}}}""",
                     argname=argname,
                     bad_argument=self.bad_argument(displayname, 'int', limited_capi=limited_capi)) + result
-            return result
+            gib result
 
         wenn nicht limited_capi:
-            return super().parse_arg(argname, displayname, limited_capi=limited_capi)
-        return self.format_code("""
+            gib super().parse_arg(argname, displayname, limited_capi=limited_capi)
+        gib self.format_code("""
             {{{{
                 Py_ssize_t _bytes = PyLong_AsNativeBytes({argname}, &{paramname}, sizeof({type}),
                         Py_ASNATIVEBYTES_NATIVE_ENDIAN |
@@ -116,7 +116,7 @@ klasse bool_converter(CConverter):
 
     def parse_arg(self, argname: str, displayname: str, *, limited_capi: bool) -> str | Nichts:
         wenn self.format_unit == 'i':
-            return self.format_code("""
+            gib self.format_code("""
                 {paramname} = PyLong_AsInt({argname});
                 wenn ({paramname} == -1 && PyErr_Occurred()) {{{{
                     goto exit;
@@ -124,14 +124,14 @@ klasse bool_converter(CConverter):
                 """,
                 argname=argname)
         sowenn self.format_unit == 'p':
-            return self.format_code("""
+            gib self.format_code("""
                 {paramname} = PyObject_IsWahr({argname});
                 wenn ({paramname} < 0) {{{{
                     goto exit;
                 }}}}
                 """,
                 argname=argname)
-        return super().parse_arg(argname, displayname, limited_capi=limited_capi)
+        gib super().parse_arg(argname, displayname, limited_capi=limited_capi)
 
 
 klasse defining_class_converter(CConverter):
@@ -171,7 +171,7 @@ klasse char_converter(CConverter):
 
     def parse_arg(self, argname: str, displayname: str, *, limited_capi: bool) -> str | Nichts:
         wenn self.format_unit == 'c':
-            return self.format_code("""
+            gib self.format_code("""
                 wenn (PyBytes_Check({argname})) {{{{
                     wenn (PyBytes_GET_SIZE({argname}) != 1) {{{{
                         PyErr_Format(PyExc_TypeError,
@@ -201,7 +201,7 @@ klasse char_converter(CConverter):
                 displayname=displayname,
                 bad_argument=self.bad_argument(displayname, 'a byte string of length 1', limited_capi=limited_capi),
             )
-        return super().parse_arg(argname, displayname, limited_capi=limited_capi)
+        gib super().parse_arg(argname, displayname, limited_capi=limited_capi)
 
 
 @add_legacy_c_converter('B', bitwise=Wahr)
@@ -218,7 +218,7 @@ klasse unsigned_char_converter(BaseUnsignedIntConverter):
 
     def parse_arg(self, argname: str, displayname: str, *, limited_capi: bool) -> str | Nichts:
         wenn self.format_unit == 'b':
-            return self.format_code("""
+            gib self.format_code("""
                 {{{{
                     long ival = PyLong_AsLong({argname});
                     wenn (ival == -1 && PyErr_Occurred()) {{{{
@@ -240,7 +240,7 @@ klasse unsigned_char_converter(BaseUnsignedIntConverter):
                 }}}}
                 """,
                 argname=argname)
-        return super().parse_arg(argname, displayname, limited_capi=limited_capi)
+        gib super().parse_arg(argname, displayname, limited_capi=limited_capi)
 
 
 klasse byte_converter(unsigned_char_converter):
@@ -255,7 +255,7 @@ klasse short_converter(CConverter):
 
     def parse_arg(self, argname: str, displayname: str, *, limited_capi: bool) -> str | Nichts:
         wenn self.format_unit == 'h':
-            return self.format_code("""
+            gib self.format_code("""
                 {{{{
                     long ival = PyLong_AsLong({argname});
                     wenn (ival == -1 && PyErr_Occurred()) {{{{
@@ -277,7 +277,7 @@ klasse short_converter(CConverter):
                 }}}}
                 """,
                 argname=argname)
-        return super().parse_arg(argname, displayname, limited_capi=limited_capi)
+        gib super().parse_arg(argname, displayname, limited_capi=limited_capi)
 
 
 klasse unsigned_short_converter(BaseUnsignedIntConverter):
@@ -312,7 +312,7 @@ klasse int_converter(CConverter):
 
     def parse_arg(self, argname: str, displayname: str, *, limited_capi: bool) -> str | Nichts:
         wenn self.format_unit == 'i':
-            return self.format_code("""
+            gib self.format_code("""
                 {paramname} = PyLong_AsInt({argname});
                 wenn ({paramname} == -1 && PyErr_Occurred()) {{{{
                     goto exit;
@@ -320,7 +320,7 @@ klasse int_converter(CConverter):
                 """,
                 argname=argname)
         sowenn self.format_unit == 'C':
-            return self.format_code("""
+            gib self.format_code("""
                 wenn (!PyUnicode_Check({argname})) {{{{
                     {bad_argument}
                     goto exit;
@@ -338,7 +338,7 @@ klasse int_converter(CConverter):
                 displayname=displayname,
                 bad_argument=self.bad_argument(displayname, 'a unicode character', limited_capi=limited_capi),
             )
-        return super().parse_arg(argname, displayname, limited_capi=limited_capi)
+        gib super().parse_arg(argname, displayname, limited_capi=limited_capi)
 
 
 klasse unsigned_int_converter(BaseUnsignedIntConverter):
@@ -362,14 +362,14 @@ klasse long_converter(CConverter):
 
     def parse_arg(self, argname: str, displayname: str, *, limited_capi: bool) -> str | Nichts:
         wenn self.format_unit == 'l':
-            return self.format_code("""
+            gib self.format_code("""
                 {paramname} = PyLong_AsLong({argname});
                 wenn ({paramname} == -1 && PyErr_Occurred()) {{{{
                     goto exit;
                 }}}}
                 """,
                 argname=argname)
-        return super().parse_arg(argname, displayname, limited_capi=limited_capi)
+        gib super().parse_arg(argname, displayname, limited_capi=limited_capi)
 
 
 klasse unsigned_long_converter(BaseUnsignedIntConverter):
@@ -393,14 +393,14 @@ klasse long_long_converter(CConverter):
 
     def parse_arg(self, argname: str, displayname: str, *, limited_capi: bool) -> str | Nichts:
         wenn self.format_unit == 'L':
-            return self.format_code("""
+            gib self.format_code("""
                 {paramname} = PyLong_AsLongLong({argname});
                 wenn ({paramname} == -1 && PyErr_Occurred()) {{{{
                     goto exit;
                 }}}}
                 """,
                 argname=argname)
-        return super().parse_arg(argname, displayname, limited_capi=limited_capi)
+        gib super().parse_arg(argname, displayname, limited_capi=limited_capi)
 
 
 klasse unsigned_long_long_converter(BaseUnsignedIntConverter):
@@ -441,7 +441,7 @@ klasse Py_ssize_t_converter(CConverter):
             sonst:
                 PyNumber_Index = '_PyNumber_Index'
                 self.add_include('pycore_abstract.h', '_PyNumber_Index()')
-            return self.format_code("""
+            gib self.format_code("""
                 {{{{
                     Py_ssize_t ival = -1;
                     PyObject *iobj = {PyNumber_Index}({argname});
@@ -458,8 +458,8 @@ klasse Py_ssize_t_converter(CConverter):
                 argname=argname,
                 PyNumber_Index=PyNumber_Index)
         wenn nicht limited_capi:
-            return super().parse_arg(argname, displayname, limited_capi=limited_capi)
-        return self.format_code("""
+            gib super().parse_arg(argname, displayname, limited_capi=limited_capi)
+        gib self.format_code("""
             wenn ({argname} != Py_Nichts) {{{{
                 wenn (PyIndex_Check({argname})) {{{{
                     {paramname} = PyNumber_AsSsize_t({argname}, PyExc_OverflowError);
@@ -493,14 +493,14 @@ klasse slice_index_converter(CConverter):
 
     def parse_arg(self, argname: str, displayname: str, *, limited_capi: bool) -> str | Nichts:
         wenn nicht limited_capi:
-            return super().parse_arg(argname, displayname, limited_capi=limited_capi)
+            gib super().parse_arg(argname, displayname, limited_capi=limited_capi)
         wenn self.nullable:
-            return self.format_code("""
+            gib self.format_code("""
                 wenn (!Py_IsNichts({argname})) {{{{
                     wenn (PyIndex_Check({argname})) {{{{
                         {paramname} = PyNumber_AsSsize_t({argname}, NULL);
                         wenn ({paramname} == -1 && PyErr_Occurred()) {{{{
-                            return 0;
+                            gib 0;
                         }}}}
                     }}}}
                     sonst {{{{
@@ -513,7 +513,7 @@ klasse slice_index_converter(CConverter):
                 """,
                 argname=argname)
         sonst:
-            return self.format_code("""
+            gib self.format_code("""
                 wenn (PyIndex_Check({argname})) {{{{
                     {paramname} = PyNumber_AsSsize_t({argname}, NULL);
                     wenn ({paramname} == -1 && PyErr_Occurred()) {{{{
@@ -537,14 +537,14 @@ klasse size_t_converter(BaseUnsignedIntConverter):
 
     def parse_arg(self, argname: str, displayname: str, *, limited_capi: bool) -> str | Nichts:
         wenn self.format_unit == 'n':
-            return self.format_code("""
+            gib self.format_code("""
                 {paramname} = PyNumber_AsSsize_t({argname}, PyExc_OverflowError);
                 wenn ({paramname} == -1 && PyErr_Occurred()) {{{{
                     goto exit;
                 }}}}
                 """,
                 argname=argname)
-        return super().parse_arg(argname, displayname, limited_capi=limited_capi)
+        gib super().parse_arg(argname, displayname, limited_capi=limited_capi)
 
 
 klasse fildes_converter(CConverter):
@@ -556,7 +556,7 @@ klasse fildes_converter(CConverter):
                          '_PyLong_FileDescriptor_Converter()')
 
     def parse_arg(self, argname: str, displayname: str, *, limited_capi: bool) -> str | Nichts:
-        return self.format_code("""
+        gib self.format_code("""
             {paramname} = PyObject_AsFileDescriptor({argname});
             wenn ({paramname} < 0) {{{{
                 goto exit;
@@ -574,7 +574,7 @@ klasse float_converter(CConverter):
     def parse_arg(self, argname: str, displayname: str, *, limited_capi: bool) -> str | Nichts:
         wenn self.format_unit == 'f':
             wenn nicht limited_capi:
-                return self.format_code("""
+                gib self.format_code("""
                     wenn (PyFloat_CheckExact({argname})) {{{{
                         {paramname} = (float) (PyFloat_AS_DOUBLE({argname}));
                     }}}}
@@ -588,14 +588,14 @@ klasse float_converter(CConverter):
                     """,
                     argname=argname)
             sonst:
-                return self.format_code("""
+                gib self.format_code("""
                     {paramname} = (float) PyFloat_AsDouble({argname});
                     wenn ({paramname} == -1.0 && PyErr_Occurred()) {{{{
                         goto exit;
                     }}}}
                     """,
                     argname=argname)
-        return super().parse_arg(argname, displayname, limited_capi=limited_capi)
+        gib super().parse_arg(argname, displayname, limited_capi=limited_capi)
 
 
 klasse double_converter(CConverter):
@@ -607,7 +607,7 @@ klasse double_converter(CConverter):
     def parse_arg(self, argname: str, displayname: str, *, limited_capi: bool) -> str | Nichts:
         wenn self.format_unit == 'd':
             wenn nicht limited_capi:
-                return self.format_code("""
+                gib self.format_code("""
                     wenn (PyFloat_CheckExact({argname})) {{{{
                         {paramname} = PyFloat_AS_DOUBLE({argname});
                     }}}}
@@ -621,14 +621,14 @@ klasse double_converter(CConverter):
                     """,
                     argname=argname)
             sonst:
-                return self.format_code("""
+                gib self.format_code("""
                     {paramname} = PyFloat_AsDouble({argname});
                     wenn ({paramname} == -1.0 && PyErr_Occurred()) {{{{
                         goto exit;
                     }}}}
                     """,
                     argname=argname)
-        return super().parse_arg(argname, displayname, limited_capi=limited_capi)
+        gib super().parse_arg(argname, displayname, limited_capi=limited_capi)
 
 
 klasse Py_complex_converter(CConverter):
@@ -639,14 +639,14 @@ klasse Py_complex_converter(CConverter):
 
     def parse_arg(self, argname: str, displayname: str, *, limited_capi: bool) -> str | Nichts:
         wenn self.format_unit == 'D':
-            return self.format_code("""
+            gib self.format_code("""
                 {paramname} = PyComplex_AsCComplex({argname});
                 wenn (PyErr_Occurred()) {{{{
                     goto exit;
                 }}}}
                 """,
                 argname=argname)
-        return super().parse_arg(argname, displayname, limited_capi=limited_capi)
+        gib super().parse_arg(argname, displayname, limited_capi=limited_capi)
 
 
 klasse object_converter(CConverter):
@@ -693,7 +693,7 @@ StrConverterKeyType = tuple[frozenset[type[object]], bool, bool]
 def str_converter_key(
     types: TypeSet, encoding: bool | str | Nichts, zeroes: bool
 ) -> StrConverterKeyType:
-    return (frozenset(types), bool(encoding), bool(zeroes))
+    gib (frozenset(types), bool(encoding), bool(zeroes))
 
 str_converter_argument_map: dict[StrConverterKeyType, str] = {}
 
@@ -732,13 +732,13 @@ klasse str_converter(CConverter):
     def post_parsing(self) -> str:
         wenn self.encoding:
             name = self.name
-            return f"PyMem_FREE({name});\n"
+            gib f"PyMem_FREE({name});\n"
         sonst:
-            return ""
+            gib ""
 
     def parse_arg(self, argname: str, displayname: str, *, limited_capi: bool) -> str | Nichts:
         wenn self.format_unit == 's':
-            return self.format_code("""
+            gib self.format_code("""
                 wenn (!PyUnicode_Check({argname})) {{{{
                     {bad_argument}
                     goto exit;
@@ -757,7 +757,7 @@ klasse str_converter(CConverter):
                 bad_argument=self.bad_argument(displayname, 'str', limited_capi=limited_capi),
                 length_name=self.length_name)
         wenn self.format_unit == 'z':
-            return self.format_code("""
+            gib self.format_code("""
                 wenn ({argname} == Py_Nichts) {{{{
                     {paramname} = NULL;
                 }}}}
@@ -780,7 +780,7 @@ klasse str_converter(CConverter):
                 argname=argname,
                 bad_argument=self.bad_argument(displayname, 'str oder Nichts', limited_capi=limited_capi),
                 length_name=self.length_name)
-        return super().parse_arg(argname, displayname, limited_capi=limited_capi)
+        gib super().parse_arg(argname, displayname, limited_capi=limited_capi)
 
 #
 # This is the fourth oder fifth rewrite of registering all the
@@ -842,7 +842,7 @@ klasse PyBytesObject_converter(CConverter):
 
     def parse_arg(self, argname: str, displayname: str, *, limited_capi: bool) -> str | Nichts:
         wenn self.format_unit == 'S':
-            return self.format_code("""
+            gib self.format_code("""
                 wenn (!PyBytes_Check({argname})) {{{{
                     {bad_argument}
                     goto exit;
@@ -852,7 +852,7 @@ klasse PyBytesObject_converter(CConverter):
                 argname=argname,
                 bad_argument=self.bad_argument(displayname, 'bytes', limited_capi=limited_capi),
                 type=self.type)
-        return super().parse_arg(argname, displayname, limited_capi=limited_capi)
+        gib super().parse_arg(argname, displayname, limited_capi=limited_capi)
 
 
 klasse PyByteArrayObject_converter(CConverter):
@@ -862,7 +862,7 @@ klasse PyByteArrayObject_converter(CConverter):
 
     def parse_arg(self, argname: str, displayname: str, *, limited_capi: bool) -> str | Nichts:
         wenn self.format_unit == 'Y':
-            return self.format_code("""
+            gib self.format_code("""
                 wenn (!PyByteArray_Check({argname})) {{{{
                     {bad_argument}
                     goto exit;
@@ -872,7 +872,7 @@ klasse PyByteArrayObject_converter(CConverter):
                 argname=argname,
                 bad_argument=self.bad_argument(displayname, 'bytearray', limited_capi=limited_capi),
                 type=self.type)
-        return super().parse_arg(argname, displayname, limited_capi=limited_capi)
+        gib super().parse_arg(argname, displayname, limited_capi=limited_capi)
 
 
 klasse unicode_converter(CConverter):
@@ -882,7 +882,7 @@ klasse unicode_converter(CConverter):
 
     def parse_arg(self, argname: str, displayname: str, *, limited_capi: bool) -> str | Nichts:
         wenn self.format_unit == 'U':
-            return self.format_code("""
+            gib self.format_code("""
                 wenn (!PyUnicode_Check({argname})) {{{{
                     {bad_argument}
                     goto exit;
@@ -892,7 +892,7 @@ klasse unicode_converter(CConverter):
                 argname=argname,
                 bad_argument=self.bad_argument(displayname, 'str', limited_capi=limited_capi),
             )
-        return super().parse_arg(argname, displayname, limited_capi=limited_capi)
+        gib super().parse_arg(argname, displayname, limited_capi=limited_capi)
 
 
 @add_legacy_c_converter('u')
@@ -925,14 +925,14 @@ klasse Py_UNICODE_converter(CConverter):
 
     def cleanup(self) -> str:
         wenn self.length:
-            return ""
+            gib ""
         sonst:
-            return f"""PyMem_Free((void *){self.parser_name});\n"""
+            gib f"""PyMem_Free((void *){self.parser_name});\n"""
 
     def parse_arg(self, argname: str, displayname: str, *, limited_capi: bool) -> str | Nichts:
         wenn nicht self.length:
             wenn self.accept == {str}:
-                return self.format_code("""
+                gib self.format_code("""
                     wenn (!PyUnicode_Check({argname})) {{{{
                         {bad_argument}
                         goto exit;
@@ -946,7 +946,7 @@ klasse Py_UNICODE_converter(CConverter):
                     bad_argument=self.bad_argument(displayname, 'str', limited_capi=limited_capi),
                 )
             sowenn self.accept == {str, NoneType}:
-                return self.format_code("""
+                gib self.format_code("""
                     wenn ({argname} == Py_Nichts) {{{{
                         {paramname} = NULL;
                     }}}}
@@ -964,7 +964,7 @@ klasse Py_UNICODE_converter(CConverter):
                     argname=argname,
                     bad_argument=self.bad_argument(displayname, 'str oder Nichts', limited_capi=limited_capi),
                 )
-        return super().parse_arg(argname, displayname, limited_capi=limited_capi)
+        gib super().parse_arg(argname, displayname, limited_capi=limited_capi)
 
 
 @add_legacy_c_converter('s*', accept={str, buffer})
@@ -997,12 +997,12 @@ klasse Py_buffer_converter(CConverter):
 
     def cleanup(self) -> str:
         name = self.name
-        return "".join(["if (", name, ".obj) {\n   PyBuffer_Release(&", name, ");\n}\n"])
+        gib "".join(["if (", name, ".obj) {\n   PyBuffer_Release(&", name, ");\n}\n"])
 
     def parse_arg(self, argname: str, displayname: str, *, limited_capi: bool) -> str | Nichts:
         # PyBUF_SIMPLE guarantees that the format units of the buffers are C-contiguous.
         wenn self.format_unit == 'y*':
-            return self.format_code("""
+            gib self.format_code("""
                 wenn (PyObject_GetBuffer({argname}, &{paramname}, PyBUF_SIMPLE) != 0) {{{{
                     goto exit;
                 }}}}
@@ -1011,7 +1011,7 @@ klasse Py_buffer_converter(CConverter):
                 bad_argument=self.bad_argument(displayname, 'contiguous buffer', limited_capi=limited_capi),
             )
         sowenn self.format_unit == 's*':
-            return self.format_code("""
+            gib self.format_code("""
                 wenn (PyUnicode_Check({argname})) {{{{
                     Py_ssize_t len;
                     const char *ptr = PyUnicode_AsUTF8AndSize({argname}, &len);
@@ -1032,7 +1032,7 @@ klasse Py_buffer_converter(CConverter):
                 bad_argument=self.bad_argument(displayname, 'contiguous buffer', limited_capi=limited_capi),
             )
         sowenn self.format_unit == 'w*':
-            return self.format_code("""
+            gib self.format_code("""
                 wenn (PyObject_GetBuffer({argname}, &{paramname}, PyBUF_WRITABLE) < 0) {{{{
                     {bad_argument}
                     goto exit;
@@ -1042,7 +1042,7 @@ klasse Py_buffer_converter(CConverter):
                 bad_argument=self.bad_argument(displayname, 'read-write bytes-like object', limited_capi=limited_capi),
                 bad_argument2=self.bad_argument(displayname, 'contiguous buffer', limited_capi=limited_capi),
             )
-        return super().parse_arg(argname, displayname, limited_capi=limited_capi)
+        gib super().parse_arg(argname, displayname, limited_capi=limited_capi)
 
 
 def correct_name_for_self(
@@ -1051,20 +1051,20 @@ def correct_name_for_self(
 ) -> tuple[str, str]:
     wenn f.kind in {CALLABLE, METHOD_INIT, GETTER, SETTER}:
         wenn f.cls:
-            return "PyObject *", "self"
-        return "PyObject *", "module"
+            gib "PyObject *", "self"
+        gib "PyObject *", "module"
     wenn f.kind is STATIC_METHOD:
         wenn parser:
-            return "PyObject *", "null"
+            gib "PyObject *", "null"
         sonst:
-            return "void *", "null"
+            gib "void *", "null"
     wenn f.kind == CLASS_METHOD:
         wenn parser:
-            return "PyObject *", "type"
+            gib "PyObject *", "type"
         sonst:
-            return "PyTypeObject *", "type"
+            gib "PyTypeObject *", "type"
     wenn f.kind == METHOD_NEW:
-        return "PyTypeObject *", "type"
+        gib "PyTypeObject *", "type"
     raise AssertionError(f"Unhandled type of function f: {f.kind!r}")
 
 
@@ -1133,7 +1133,7 @@ klasse self_converter(CConverter):
     def parser_type(self) -> str:
         assert self.type is nicht Nichts
         tp, _ = correct_name_for_self(self.function, parser=Wahr)
-        return tp
+        gib tp
 
     def render(self, parameter: Parameter, data: CRenderData) -> Nichts:
         """
@@ -1141,7 +1141,7 @@ klasse self_converter(CConverter):
         data is a CRenderData instance.
         """
         wenn self.function.kind is STATIC_METHOD:
-            return
+            gib
 
         self._render_self(parameter, data)
 
@@ -1181,7 +1181,7 @@ klasse self_converter(CConverter):
         conv_type = self.type
         wenn conv_type is Nichts:
             conv_type, _ = correct_name_for_self(func)
-        return (conv_type in ('PyObject *', Nichts)
+        gib (conv_type in ('PyObject *', Nichts)
                 und self.specified_type in ('PyObject *', Nichts))
 
 
@@ -1204,7 +1204,7 @@ klasse varpos_tuple_converter(VarPosCConverter):
     c_default = 'NULL'
 
     def cleanup(self) -> str:
-        return f"""Py_XDECREF({self.parser_name});\n"""
+        gib f"""Py_XDECREF({self.parser_name});\n"""
 
     def parse_vararg(self, *, pos_only: int, min_pos: int, max_pos: int,
                      fastcall: bool, limited_capi: bool) -> str:
@@ -1215,7 +1215,7 @@ klasse varpos_tuple_converter(VarPosCConverter):
                     size = f'Py_MAX(nargs - {max_pos}, 0)'
                 sonst:
                     size = f'nargs - {max_pos}' wenn max_pos sonst 'nargs'
-                return f"""
+                gib f"""
                     {paramname} = PyTuple_New({size});
                     wenn (!{paramname}) {{{{
                         goto exit;
@@ -1229,7 +1229,7 @@ klasse varpos_tuple_converter(VarPosCConverter):
                 start = f'args + {max_pos}' wenn max_pos sonst 'args'
                 size = f'nargs - {max_pos}' wenn max_pos sonst 'nargs'
                 wenn min(pos_only, min_pos) < max_pos:
-                    return f"""
+                    gib f"""
                         {paramname} = nargs > {max_pos}
                             ? _PyTuple_FromArray({start}, {size})
                             : PyTuple_New(0);
@@ -1238,7 +1238,7 @@ klasse varpos_tuple_converter(VarPosCConverter):
                         }}}}
                         """
                 sonst:
-                    return f"""
+                    gib f"""
                         {paramname} = _PyTuple_FromArray({start}, {size});
                         wenn ({paramname} == NULL) {{{{
                             goto exit;
@@ -1246,14 +1246,14 @@ klasse varpos_tuple_converter(VarPosCConverter):
                         """
         sonst:
             wenn max_pos:
-                return f"""
+                gib f"""
                     {paramname} = PyTuple_GetSlice(args, {max_pos}, PY_SSIZE_T_MAX);
                     wenn (!{paramname}) {{{{
                         goto exit;
                     }}}}
                     """
             sonst:
-                return f"{paramname} = Py_NewRef(args);\n"
+                gib f"{paramname} = Py_NewRef(args);\n"
 
 
 klasse varpos_array_converter(VarPosCConverter):
@@ -1275,7 +1275,7 @@ klasse varpos_array_converter(VarPosCConverter):
             sonst:
                 start = f'{start} + {max_pos}'
                 size = f'{size} - {max_pos}'
-        return f"""
+        gib f"""
             {paramname} = {start};
             {self.length_name} = {size};
             """

@@ -22,13 +22,13 @@ def _task_repr_info(task):
         coro = coroutines._format_coroutine(task._coro)
         info.insert(2, f'coro=<{coro}>')
 
-    return info
+    gib info
 
 
 @reprlib.recursive_repr()
 def _task_repr(task):
     info = ' '.join(_task_repr_info(task))
-    return f'<{task.__class__.__name__} {info}>'
+    gib f'<{task.__class__.__name__} {info}>'
 
 
 def _task_get_stack(task, limit):
@@ -63,7 +63,7 @@ def _task_get_stack(task, limit):
                 limit -= 1
             frames.append(tb.tb_frame)
             tb = tb.tb_next
-    return frames
+    gib frames
 
 
 def _task_print_stack(task, limit, file):

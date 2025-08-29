@@ -2918,7 +2918,7 @@ klasse TestIdempotent(TestEmailBase):
         mit openfile(filename, encoding="utf-8") als fp:
             data = fp.read()
         msg = email.message_from_string(data)
-        return msg, data
+        gib msg, data
 
     def _idempotent(self, msg, text, unixfrom=Falsch):
         eq = self.ndiffAssertEqual
@@ -3251,7 +3251,7 @@ klasse TestMiscellaneous(TestEmailBase):
     def test_parsedate_y2k(self):
         """Test fuer parsing a date mit a two-digit year.
 
-        Parsing a date mit a two-digit year should return the correct
+        Parsing a date mit a two-digit year should gib the correct
         four-digit year. RFC822 allows two-digit years, but RFC2822 (which
         obsoletes RFC822) requires four-digit years.
 
@@ -3321,7 +3321,7 @@ klasse TestMiscellaneous(TestEmailBase):
         foobar = "FOOBAR"
         klasse CharsetMock:
             def header_encode(self, string):
-                return foobar
+                gib foobar
         mock = CharsetMock()
         mock_expected = "%s <%s>" % (foobar, addr)
         self.assertEqual(utils.formataddr((name, addr), mock), mock_expected)
@@ -3930,7 +3930,7 @@ klasse TestFeedParsers(TestEmailBase):
         feedparser = FeedParser()
         fuer chunk in chunks:
             feedparser.feed(chunk)
-        return feedparser.close()
+        gib feedparser.close()
 
     def test_empty_header_name_handled(self):
         # Issue 19996
@@ -4622,7 +4622,7 @@ klasse BaseTestBytesGeneratorIdempotent:
             data = fp.read()
         data = self.normalize_linesep_regex.sub(self.blinesep, data)
         msg = email.message_from_bytes(data)
-        return msg, data
+        gib msg, data
 
     def _idempotent(self, msg, data, unixfrom=Falsch):
         b = BytesIO()
@@ -5675,7 +5675,7 @@ Content-Type: text/plain; charset*=bogus''utf-8%E2%80%9D
 
 """
         msg = email.message_from_string(m)
-        # This should return Nichts because non-ascii characters in the charset
+        # This should gib Nichts because non-ascii characters in the charset
         # are nicht allowed.
         self.assertEqual(msg.get_content_charset(), Nichts)
 
@@ -5685,7 +5685,7 @@ Content-Type: text/plain; charset*=ascii''utf-8%E2%80%9D
 
 """
         msg = email.message_from_string(m)
-        # This should return Nichts because non-ascii characters in the charset
+        # This should gib Nichts because non-ascii characters in the charset
         # are nicht allowed.
         self.assertEqual(msg.get_content_charset(), Nichts)
 
@@ -5864,7 +5864,7 @@ klasse TestSigned(TestEmailBase):
         mit openfile(filename, encoding="utf-8") als fp:
             original = fp.read()
             msg = email.message_from_string(original)
-        return original, msg
+        gib original, msg
 
     def _signed_parts_eq(self, original, result):
         # Extract the first mime part of each message

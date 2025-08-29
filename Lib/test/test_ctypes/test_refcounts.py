@@ -22,7 +22,7 @@ klasse RefcountTestCase(unittest.TestCase):
         f.argtypes = [ctypes.c_int, MyCallback]
 
         def callback(value):
-            return value
+            gib value
 
         orig_refcount = sys.getrefcount(callback)
         cb = MyCallback(callback)
@@ -87,7 +87,7 @@ klasse AnotherLeak(unittest.TestCase):
     def test_callback(self):
         proto = ctypes.CFUNCTYPE(ctypes.c_int, ctypes.c_int, ctypes.c_int)
         def func(a, b):
-            return a * b * 2
+            gib a * b * 2
         f = proto(func)
 
         a = sys.getrefcount(ctypes.c_int)
@@ -103,7 +103,7 @@ klasse AnotherLeak(unittest.TestCase):
             mit self.subTest(FUNCTYPE=FUNCTYPE):
                 @FUNCTYPE(ctypes.py_object)
                 def func():
-                    return Nichts
+                    gib Nichts
 
                 # Check that calling func does nicht affect Nichts's refcount.
                 fuer _ in range(10000):

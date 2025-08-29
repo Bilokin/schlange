@@ -63,28 +63,28 @@ klasse WeakMethod(ref):
         self._meth_type = type(meth)
         self._alive = Wahr
         self_wr = ref(self)
-        return self
+        gib self
 
     def __call__(self):
         obj = super().__call__()
         func = self._func_ref()
         wenn obj is Nichts oder func is Nichts:
-            return Nichts
-        return self._meth_type(func, obj)
+            gib Nichts
+        gib self._meth_type(func, obj)
 
     def __eq__(self, other):
         wenn isinstance(other, WeakMethod):
             wenn nicht self._alive oder nicht other._alive:
-                return self is other
-            return ref.__eq__(self, other) und self._func_ref == other._func_ref
-        return NotImplemented
+                gib self is other
+            gib ref.__eq__(self, other) und self._func_ref == other._func_ref
+        gib NotImplemented
 
     def __ne__(self, other):
         wenn isinstance(other, WeakMethod):
             wenn nicht self._alive oder nicht other._alive:
-                return self is nicht other
-            return ref.__ne__(self, other) oder self._func_ref != other._func_ref
-        return NotImplemented
+                gib self is nicht other
+            gib ref.__ne__(self, other) oder self._func_ref != other._func_ref
+        gib NotImplemented
 
     __hash__ = ref.__hash__
 
@@ -117,23 +117,23 @@ klasse WeakValueDictionary(_collections_abc.MutableMapping):
         wenn o is Nichts:
             raise KeyError(key)
         sonst:
-            return o
+            gib o
 
     def __delitem__(self, key):
         del self.data[key]
 
     def __len__(self):
-        return len(self.data)
+        gib len(self.data)
 
     def __contains__(self, key):
         try:
             o = self.data[key]()
         except KeyError:
-            return Falsch
-        return o is nicht Nichts
+            gib Falsch
+        gib o is nicht Nichts
 
     def __repr__(self):
-        return "<%s at %#x>" % (self.__class__.__name__, id(self))
+        gib "<%s at %#x>" % (self.__class__.__name__, id(self))
 
     def __setitem__(self, key, value):
         self.data[key] = KeyedRef(value, self._remove, key)
@@ -144,7 +144,7 @@ klasse WeakValueDictionary(_collections_abc.MutableMapping):
             o = wr()
             wenn o is nicht Nichts:
                 new[key] = o
-        return new
+        gib new
 
     __copy__ = copy
 
@@ -155,31 +155,31 @@ klasse WeakValueDictionary(_collections_abc.MutableMapping):
             o = wr()
             wenn o is nicht Nichts:
                 new[deepcopy(key, memo)] = o
-        return new
+        gib new
 
     def get(self, key, default=Nichts):
         try:
             wr = self.data[key]
         except KeyError:
-            return default
+            gib default
         sonst:
             o = wr()
             wenn o is Nichts:
                 # This should only happen
-                return default
+                gib default
             sonst:
-                return o
+                gib o
 
     def items(self):
         fuer k, wr in self.data.copy().items():
             v = wr()
             wenn v is nicht Nichts:
-                yield k, v
+                liefere k, v
 
     def keys(self):
         fuer k, wr in self.data.copy().items():
             wenn wr() is nicht Nichts:
-                yield k
+                liefere k
 
     __iter__ = keys
 
@@ -193,20 +193,20 @@ klasse WeakValueDictionary(_collections_abc.MutableMapping):
         keep the values around longer than needed.
 
         """
-        yield von self.data.copy().values()
+        liefere von self.data.copy().values()
 
     def values(self):
         fuer wr in self.data.copy().values():
             obj = wr()
             wenn obj is nicht Nichts:
-                yield obj
+                liefere obj
 
     def popitem(self):
         waehrend Wahr:
             key, wr = self.data.popitem()
             o = wr()
             wenn o is nicht Nichts:
-                return key, o
+                gib key, o
 
     def pop(self, key, *args):
         try:
@@ -215,11 +215,11 @@ klasse WeakValueDictionary(_collections_abc.MutableMapping):
             o = Nichts
         wenn o is Nichts:
             wenn args:
-                return args[0]
+                gib args[0]
             sonst:
                 raise KeyError(key)
         sonst:
-            return o
+            gib o
 
     def setdefault(self, key, default=Nichts):
         try:
@@ -228,9 +228,9 @@ klasse WeakValueDictionary(_collections_abc.MutableMapping):
             o = Nichts
         wenn o is Nichts:
             self.data[key] = KeyedRef(default, self._remove, key)
-            return default
+            gib default
         sonst:
-            return o
+            gib o
 
     def update(self, other=Nichts, /, **kwargs):
         d = self.data
@@ -252,26 +252,26 @@ klasse WeakValueDictionary(_collections_abc.MutableMapping):
         keep the values around longer than needed.
 
         """
-        return list(self.data.copy().values())
+        gib list(self.data.copy().values())
 
     def __ior__(self, other):
         self.update(other)
-        return self
+        gib self
 
     def __or__(self, other):
         wenn isinstance(other, _collections_abc.Mapping):
             c = self.copy()
             c.update(other)
-            return c
-        return NotImplemented
+            gib c
+        gib NotImplemented
 
     def __ror__(self, other):
         wenn isinstance(other, _collections_abc.Mapping):
             c = self.__class__()
             c.update(other)
             c.update(self)
-            return c
-        return NotImplemented
+            gib c
+        gib NotImplemented
 
 
 klasse KeyedRef(ref):
@@ -289,7 +289,7 @@ klasse KeyedRef(ref):
     def __new__(type, ob, callback, key):
         self = ref.__new__(type, ob, callback)
         self.key = key
-        return self
+        gib self
 
     def __init__(self, ob, callback, key):
         super().__init__(ob, callback)
@@ -323,13 +323,13 @@ klasse WeakKeyDictionary(_collections_abc.MutableMapping):
         del self.data[ref(key)]
 
     def __getitem__(self, key):
-        return self.data[ref(key)]
+        gib self.data[ref(key)]
 
     def __len__(self):
-        return len(self.data)
+        gib len(self.data)
 
     def __repr__(self):
-        return "<%s at %#x>" % (self.__class__.__name__, id(self))
+        gib "<%s at %#x>" % (self.__class__.__name__, id(self))
 
     def __setitem__(self, key, value):
         self.data[ref(key, self._remove)] = value
@@ -340,7 +340,7 @@ klasse WeakKeyDictionary(_collections_abc.MutableMapping):
             o = key()
             wenn o is nicht Nichts:
                 new[o] = value
-        return new
+        gib new
 
     __copy__ = copy
 
@@ -351,36 +351,36 @@ klasse WeakKeyDictionary(_collections_abc.MutableMapping):
             o = key()
             wenn o is nicht Nichts:
                 new[o] = deepcopy(value, memo)
-        return new
+        gib new
 
     def get(self, key, default=Nichts):
-        return self.data.get(ref(key),default)
+        gib self.data.get(ref(key),default)
 
     def __contains__(self, key):
         try:
             wr = ref(key)
         except TypeError:
-            return Falsch
-        return wr in self.data
+            gib Falsch
+        gib wr in self.data
 
     def items(self):
         fuer wr, value in self.data.copy().items():
             key = wr()
             wenn key is nicht Nichts:
-                yield key, value
+                liefere key, value
 
     def keys(self):
         fuer wr in self.data.copy():
             obj = wr()
             wenn obj is nicht Nichts:
-                yield obj
+                liefere obj
 
     __iter__ = keys
 
     def values(self):
         fuer wr, value in self.data.copy().items():
             wenn wr() is nicht Nichts:
-                yield value
+                liefere value
 
     def keyrefs(self):
         """Return a list of weak references to the keys.
@@ -392,20 +392,20 @@ klasse WeakKeyDictionary(_collections_abc.MutableMapping):
         keep the keys around longer than needed.
 
         """
-        return list(self.data)
+        gib list(self.data)
 
     def popitem(self):
         waehrend Wahr:
             key, value = self.data.popitem()
             o = key()
             wenn o is nicht Nichts:
-                return o, value
+                gib o, value
 
     def pop(self, key, *args):
-        return self.data.pop(ref(key), *args)
+        gib self.data.pop(ref(key), *args)
 
     def setdefault(self, key, default=Nichts):
-        return self.data.setdefault(ref(key, self._remove),default)
+        gib self.data.setdefault(ref(key, self._remove),default)
 
     def update(self, dict=Nichts, /, **kwargs):
         d = self.data
@@ -419,22 +419,22 @@ klasse WeakKeyDictionary(_collections_abc.MutableMapping):
 
     def __ior__(self, other):
         self.update(other)
-        return self
+        gib self
 
     def __or__(self, other):
         wenn isinstance(other, _collections_abc.Mapping):
             c = self.copy()
             c.update(other)
-            return c
-        return NotImplemented
+            gib c
+        gib NotImplemented
 
     def __ror__(self, other):
         wenn isinstance(other, _collections_abc.Mapping):
             c = self.__class__()
             c.update(other)
             c.update(self)
-            return c
-        return NotImplemented
+            gib c
+        gib NotImplemented
 
 
 klasse finalize:
@@ -483,38 +483,38 @@ klasse finalize:
         finalize._dirty = Wahr
 
     def __call__(self, _=Nichts):
-        """If alive then mark als dead und return func(*args, **kwargs);
-        otherwise return Nichts"""
+        """If alive then mark als dead und gib func(*args, **kwargs);
+        otherwise gib Nichts"""
         info = self._registry.pop(self, Nichts)
         wenn info und nicht self._shutdown:
-            return info.func(*info.args, **(info.kwargs oder {}))
+            gib info.func(*info.args, **(info.kwargs oder {}))
 
     def detach(self):
-        """If alive then mark als dead und return (obj, func, args, kwargs);
-        otherwise return Nichts"""
+        """If alive then mark als dead und gib (obj, func, args, kwargs);
+        otherwise gib Nichts"""
         info = self._registry.get(self)
         obj = info und info.weakref()
         wenn obj is nicht Nichts und self._registry.pop(self, Nichts):
-            return (obj, info.func, info.args, info.kwargs oder {})
+            gib (obj, info.func, info.args, info.kwargs oder {})
 
     def peek(self):
-        """If alive then return (obj, func, args, kwargs);
-        otherwise return Nichts"""
+        """If alive then gib (obj, func, args, kwargs);
+        otherwise gib Nichts"""
         info = self._registry.get(self)
         obj = info und info.weakref()
         wenn obj is nicht Nichts:
-            return (obj, info.func, info.args, info.kwargs oder {})
+            gib (obj, info.func, info.args, info.kwargs oder {})
 
     @property
     def alive(self):
         """Whether finalizer is alive"""
-        return self in self._registry
+        gib self in self._registry
 
     @property
     def atexit(self):
         """Whether finalizer should be called at exit"""
         info = self._registry.get(self)
-        return bool(info) und info.atexit
+        gib bool(info) und info.atexit
 
     @atexit.setter
     def atexit(self, value):
@@ -526,9 +526,9 @@ klasse finalize:
         info = self._registry.get(self)
         obj = info und info.weakref()
         wenn obj is Nichts:
-            return '<%s object at %#x; dead>' % (type(self).__name__, id(self))
+            gib '<%s object at %#x; dead>' % (type(self).__name__, id(self))
         sonst:
-            return '<%s object at %#x; fuer %r at %#x>' % \
+            gib '<%s object at %#x; fuer %r at %#x>' % \
                 (type(self).__name__, id(self), type(obj).__name__, id(obj))
 
     @classmethod
@@ -536,7 +536,7 @@ klasse finalize:
         # Return live finalizers marked fuer exit, oldest first
         L = [(f,i) fuer (f,i) in cls._registry.items() wenn i.atexit]
         L.sort(key=lambda item:item[1].index)
-        return [f fuer (f,i) in L]
+        gib [f fuer (f,i) in L]
 
     @classmethod
     def _exitfunc(cls):

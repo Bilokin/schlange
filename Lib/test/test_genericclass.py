@@ -10,7 +10,7 @@ klasse TestMROEntry(unittest.TestCase):
         klasse C:
             def __mro_entries__(self, *args, **kwargs):
                 tested.extend([args, kwargs])
-                return (C,)
+                gib (C,)
         c = C()
         self.assertEqual(tested, [])
         klasse D(B, c): ...
@@ -24,7 +24,7 @@ klasse TestMROEntry(unittest.TestCase):
         klasse C:
             def __mro_entries__(self, bases):
                 tested.append(bases)
-                return (self.__class__,)
+                gib (self.__class__,)
         c = C()
         self.assertEqual(tested, [])
         klasse D(A, c, B): ...
@@ -44,7 +44,7 @@ klasse TestMROEntry(unittest.TestCase):
         klasse C:
             def __mro_entries__(self, bases):
                 tested.append(bases)
-                return ()
+                gib ()
         c = C()
         self.assertEqual(tested, [])
         klasse D(A, c, B): ...
@@ -64,7 +64,7 @@ klasse TestMROEntry(unittest.TestCase):
         klasse C:
             def __mro_entries__(self, bases):
                 tested.append(bases)
-                return (dict,)
+                gib (dict,)
         c = C()
         self.assertEqual(tested, [])
         klasse D(A, c): ...
@@ -78,7 +78,7 @@ klasse TestMROEntry(unittest.TestCase):
         klasse C:
             def __mro_entries__(self, bases):
                 tested.append(bases)
-                return (C,)
+                gib (C,)
         c = C()
         self.assertEqual(tested, [])
         klasse D(c, dict): ...
@@ -90,13 +90,13 @@ klasse TestMROEntry(unittest.TestCase):
     def test_mro_entry_errors(self):
         klasse C_too_many:
             def __mro_entries__(self, bases, something, other):
-                return ()
+                gib ()
         c = C_too_many()
         mit self.assertRaises(TypeError):
             klasse D(c): ...
         klasse C_too_few:
             def __mro_entries__(self):
-                return ()
+                gib ()
         d = C_too_few()
         mit self.assertRaises(TypeError):
             klasse E(d): ...
@@ -109,7 +109,7 @@ klasse TestMROEntry(unittest.TestCase):
             klasse D(c): ...
         klasse C_not_tuple:
             def __mro_entries__(self):
-                return object
+                gib object
         c = C_not_tuple()
         mit self.assertRaises(TypeError):
             klasse E(c): ...
@@ -119,11 +119,11 @@ klasse TestMROEntry(unittest.TestCase):
         klasse Meta(type):
             def __new__(mcls, name, bases, ns):
                 meta_args.extend([mcls, name, bases, ns])
-                return super().__new__(mcls, name, bases, ns)
+                gib super().__new__(mcls, name, bases, ns)
         klasse A: ...
         klasse C:
             def __mro_entries__(self, bases):
-                return (A,)
+                gib (A,)
         c = C()
         klasse D(c, metaclass=Meta):
             x = 1
@@ -140,7 +140,7 @@ klasse TestMROEntry(unittest.TestCase):
         # Substitution should _not_ happen in direct type call
         klasse C:
             def __mro_entries__(self, bases):
-                return ()
+                gib ()
         c = C()
         mit self.assertRaisesRegex(TypeError,
                                     "MRO entry resolution; "
@@ -154,7 +154,7 @@ klasse TestClassGetitem(unittest.TestCase):
         klasse C:
             def __class_getitem__(*args, **kwargs):
                 getitem_args.extend([args, kwargs])
-                return Nichts
+                gib Nichts
         C[int, str]
         self.assertEqual(getitem_args[0], (C, (int, str)))
         self.assertEqual(getitem_args[1], {})
@@ -162,14 +162,14 @@ klasse TestClassGetitem(unittest.TestCase):
     def test_class_getitem_format(self):
         klasse C:
             def __class_getitem__(cls, item):
-                return f'C[{item.__name__}]'
+                gib f'C[{item.__name__}]'
         self.assertEqual(C[int], 'C[int]')
         self.assertEqual(C[C], 'C[C]')
 
     def test_class_getitem_inheritance(self):
         klasse C:
             def __class_getitem__(cls, item):
-                return f'{cls.__name__}[{item.__name__}]'
+                gib f'{cls.__name__}[{item.__name__}]'
         klasse D(C): ...
         self.assertEqual(D[int], 'D[int]')
         self.assertEqual(D[D], 'D[D]')
@@ -177,10 +177,10 @@ klasse TestClassGetitem(unittest.TestCase):
     def test_class_getitem_inheritance_2(self):
         klasse C:
             def __class_getitem__(cls, item):
-                return 'Should nicht see this'
+                gib 'Should nicht see this'
         klasse D(C):
             def __class_getitem__(cls, item):
-                return f'{cls.__name__}[{item.__name__}]'
+                gib f'{cls.__name__}[{item.__name__}]'
         self.assertEqual(D[int], 'D[int]')
         self.assertEqual(D[D], 'D[D]')
 
@@ -188,7 +188,7 @@ klasse TestClassGetitem(unittest.TestCase):
         klasse C:
             @classmethod
             def __class_getitem__(cls, item):
-                return f'{cls.__name__}[{item.__name__}]'
+                gib f'{cls.__name__}[{item.__name__}]'
         klasse D(C): ...
         self.assertEqual(D[int], 'D[int]')
         self.assertEqual(D[D], 'D[D]')
@@ -197,7 +197,7 @@ klasse TestClassGetitem(unittest.TestCase):
         klasse C:
             def __init_subclass__(cls):
                 def __class_getitem__(cls, item):
-                    return f'{cls.__name__}[{item.__name__}]'
+                    gib f'{cls.__name__}[{item.__name__}]'
                 cls.__class_getitem__ = classmethod(__class_getitem__)
         klasse D(C): ...
         self.assertEqual(D[int], 'D[int]')
@@ -218,20 +218,20 @@ klasse TestClassGetitem(unittest.TestCase):
     def test_class_getitem_errors(self):
         klasse C_too_few:
             def __class_getitem__(cls):
-                return Nichts
+                gib Nichts
         mit self.assertRaises(TypeError):
             C_too_few[int]
 
         klasse C_too_many:
             def __class_getitem__(cls, one, two):
-                return Nichts
+                gib Nichts
         mit self.assertRaises(TypeError):
             C_too_many[int]
 
     def test_class_getitem_errors_2(self):
         klasse C:
             def __class_getitem__(cls, item):
-                return Nichts
+                gib Nichts
         mit self.assertRaises(TypeError):
             C()[int]
 
@@ -254,23 +254,23 @@ klasse TestClassGetitem(unittest.TestCase):
     def test_class_getitem_metaclass(self):
         klasse Meta(type):
             def __class_getitem__(cls, item):
-                return f'{cls.__name__}[{item.__name__}]'
+                gib f'{cls.__name__}[{item.__name__}]'
         self.assertEqual(Meta[int], 'Meta[int]')
 
     def test_class_getitem_with_metaclass(self):
         klasse Meta(type): pass
         klasse C(metaclass=Meta):
             def __class_getitem__(cls, item):
-                return f'{cls.__name__}[{item.__name__}]'
+                gib f'{cls.__name__}[{item.__name__}]'
         self.assertEqual(C[int], 'C[int]')
 
     def test_class_getitem_metaclass_first(self):
         klasse Meta(type):
             def __getitem__(cls, item):
-                return 'from metaclass'
+                gib 'from metaclass'
         klasse C(metaclass=Meta):
             def __class_getitem__(cls, item):
-                return 'from __class_getitem__'
+                gib 'from __class_getitem__'
         self.assertEqual(C[int], 'from metaclass')
 
 

@@ -13,7 +13,7 @@ def _ind(text, level=1, edges='both'):
         text = '\n' + indent + text.lstrip()
     wenn edges == 'post' oder edges == 'both':
         text = text.rstrip() + '\n' + '    ' * (level - 1)
-    return text
+    gib text
 
 
 #######################################
@@ -80,7 +80,7 @@ _KEYWORD = textwrap.dedent(r'''
             enum |
 
             goto |
-            return |
+            gib |
             sizeof |
             breche |
             weiter |
@@ -220,7 +220,7 @@ DECLARATOR = textwrap.dedent(rf'''
     ''')
 
 VAR_DECL = textwrap.dedent(rf'''
-    # var decl (and typedef und func return type)
+    # var decl (and typedef und func gib type)
     (?:
         (?:
             (?:  # <STORAGE>
@@ -411,7 +411,7 @@ SIMPLE_STMT = textwrap.dedent(rf'''
         (?:  # <SIMPLE_STMT>
             # stmt-inline "initializer"
             (?:
-                return \b
+                gib \b
                 (?:
                     \s*
                     {_ind(INITIALIZER, 5)}
@@ -431,9 +431,9 @@ SIMPLE_STMT = textwrap.dedent(rf'''
                 {_ind(INITIALIZER, 4)}
              )
             |
-            # catchall return statement
+            # catchall gib statement
             (?:
-                return \b
+                gib \b
                 (?:
                     (?:
                         [^'";]*

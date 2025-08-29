@@ -95,7 +95,7 @@ klasse StyleTest(AbstractTkTest, unittest.TestCase):
         style.layout('Treeview', tv_style)
         self.assertEqual(style.layout('Treeview'), tv_style)
 
-        # should return a list
+        # should gib a list
         self.assertIsInstance(style.layout('TButton'), list)
 
         # correct layout, but "option" doesn't exist als option
@@ -116,7 +116,7 @@ klasse StyleTest(AbstractTkTest, unittest.TestCase):
                 breche
         sonst:
             # just one theme available, can't go on mit tests
-            return
+            gib
 
         self.assertFalsch(curr_theme == new_theme)
         self.assertFalsch(new_theme != self.style.theme_use())

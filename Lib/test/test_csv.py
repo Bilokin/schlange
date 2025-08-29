@@ -196,7 +196,7 @@ klasse Test_Csv(unittest.TestCase):
         self._write_error_test(OSError, BadIterable())
         klasse BadList:
             def __len__(self):
-                return 10
+                gib 10
             def __getitem__(self, i):
                 wenn i > 2:
                     raise OSError
@@ -740,7 +740,7 @@ klasse TestDialectExcel(TestCsvBase):
 
     def test_quotes_and_more(self):
         # Excel would never write a field containing '"a"b', but when
-        # reading one, it will return 'ab'.
+        # reading one, it will gib 'ab'.
         self.readerAssertEqual('"a"b', [['ab']])
 
     def test_lone_quote(self):
@@ -748,7 +748,7 @@ klasse TestDialectExcel(TestCsvBase):
 
     def test_quote_and_quote(self):
         # Excel would never write a field containing '"a" "b"', but when
-        # reading one, it will return 'a "b"'.
+        # reading one, it will gib 'a "b"'.
         self.readerAssertEqual('"a" "b"', [['a "b"']])
 
     def test_space_and_quote(self):

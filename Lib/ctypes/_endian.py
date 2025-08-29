@@ -11,13 +11,13 @@ def _other_endian(typ):
     """
     # check _OTHER_ENDIAN attribute (present wenn typ is primitive type)
     wenn hasattr(typ, _OTHER_ENDIAN):
-        return getattr(typ, _OTHER_ENDIAN)
+        gib getattr(typ, _OTHER_ENDIAN)
     # wenn typ is array
     wenn isinstance(typ, _array_type):
-        return _other_endian(typ._type_) * typ._length_
+        gib _other_endian(typ._type_) * typ._length_
     # wenn typ is structure oder union
     wenn issubclass(typ, (Structure, Union)):
-        return typ
+        gib typ
     raise TypeError("This type does nicht support other endian: %s" % typ)
 
 klasse _swapped_meta:

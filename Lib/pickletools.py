@@ -25,7 +25,7 @@ bytes_types = pickle.bytes_types
 # - A pickle verifier:  read a pickle und check it exhaustively for
 #   well-formedness.  dis() does a lot of this already.
 #
-# - A protocol identifier:  examine a pickle und return its protocol number
+# - A protocol identifier:  examine a pickle und gib its protocol number
 #   (== the highest .proto attr value among all the opcodes in the pickle).
 #   dis() already prints this info at the end.
 #
@@ -218,7 +218,7 @@ def read_uint1(f):
 
     data = f.read(1)
     wenn data:
-        return data[0]
+        gib data[0]
     raise ValueError("not enough data in stream to read uint1")
 
 uint1 = ArgumentDescriptor(
@@ -239,7 +239,7 @@ def read_uint2(f):
 
     data = f.read(2)
     wenn len(data) == 2:
-        return _unpack("<H", data)[0]
+        gib _unpack("<H", data)[0]
     raise ValueError("not enough data in stream to read uint2")
 
 uint2 = ArgumentDescriptor(
@@ -260,7 +260,7 @@ def read_int4(f):
 
     data = f.read(4)
     wenn len(data) == 4:
-        return _unpack("<i", data)[0]
+        gib _unpack("<i", data)[0]
     raise ValueError("not enough data in stream to read int4")
 
 int4 = ArgumentDescriptor(
@@ -281,7 +281,7 @@ def read_uint4(f):
 
     data = f.read(4)
     wenn len(data) == 4:
-        return _unpack("<I", data)[0]
+        gib _unpack("<I", data)[0]
     raise ValueError("not enough data in stream to read uint4")
 
 uint4 = ArgumentDescriptor(
@@ -302,7 +302,7 @@ def read_uint8(f):
 
     data = f.read(8)
     wenn len(data) == 8:
-        return _unpack("<Q", data)[0]
+        gib _unpack("<Q", data)[0]
     raise ValueError("not enough data in stream to read uint8")
 
 uint8 = ArgumentDescriptor(
@@ -357,7 +357,7 @@ def read_stringnl(f, decode=Wahr, stripquotes=Wahr, *, encoding='latin-1'):
 
     wenn decode:
         data = codecs.escape_decode(data)[0].decode(encoding)
-    return data
+    gib data
 
 stringnl = ArgumentDescriptor(
                name='stringnl',
@@ -370,7 +370,7 @@ stringnl = ArgumentDescriptor(
                    """)
 
 def read_stringnl_noescape(f):
-    return read_stringnl(f, stripquotes=Falsch, encoding='utf-8')
+    gib read_stringnl(f, stripquotes=Falsch, encoding='utf-8')
 
 stringnl_noescape = ArgumentDescriptor(
                         name='stringnl_noescape',
@@ -390,7 +390,7 @@ def read_stringnl_noescape_pair(f):
     'Queue Empty'
     """
 
-    return "%s %s" % (read_stringnl_noescape(f), read_stringnl_noescape(f))
+    gib "%s %s" % (read_stringnl_noescape(f), read_stringnl_noescape(f))
 
 stringnl_noescape_pair = ArgumentDescriptor(
                              name='stringnl_noescape_pair',
@@ -419,7 +419,7 @@ def read_string1(f):
     assert n >= 0
     data = f.read(n)
     wenn len(data) == n:
-        return data.decode("latin-1")
+        gib data.decode("latin-1")
     raise ValueError("expected %d bytes in a string1, but only %d remain" %
                      (n, len(data)))
 
@@ -453,7 +453,7 @@ def read_string4(f):
         raise ValueError("string4 byte count < 0: %d" % n)
     data = f.read(n)
     wenn len(data) == n:
-        return data.decode("latin-1")
+        gib data.decode("latin-1")
     raise ValueError("expected %d bytes in a string4, but only %d remain" %
                      (n, len(data)))
 
@@ -482,7 +482,7 @@ def read_bytes1(f):
     assert n >= 0
     data = f.read(n)
     wenn len(data) == n:
-        return data
+        gib data
     raise ValueError("expected %d bytes in a bytes1, but only %d remain" %
                      (n, len(data)))
 
@@ -516,7 +516,7 @@ def read_bytes4(f):
         raise ValueError("bytes4 byte count > sys.maxsize: %d" % n)
     data = f.read(n)
     wenn len(data) == n:
-        return data
+        gib data
     raise ValueError("expected %d bytes in a bytes4, but only %d remain" %
                      (n, len(data)))
 
@@ -551,7 +551,7 @@ def read_bytes8(f):
         raise ValueError("bytes8 byte count > sys.maxsize: %d" % n)
     data = f.read(n)
     wenn len(data) == n:
-        return data
+        gib data
     raise ValueError("expected %d bytes in a bytes8, but only %d remain" %
                      (n, len(data)))
 
@@ -586,7 +586,7 @@ def read_bytearray8(f):
         raise ValueError("bytearray8 byte count > sys.maxsize: %d" % n)
     data = f.read(n)
     wenn len(data) == n:
-        return bytearray(data)
+        gib bytearray(data)
     raise ValueError("expected %d bytes in a bytearray8, but only %d remain" %
                      (n, len(data)))
 
@@ -612,7 +612,7 @@ def read_unicodestringnl(f):
         raise ValueError("no newline found when trying to read "
                          "unicodestringnl")
     data = data[:-1]    # lose the newline
-    return str(data, 'raw-unicode-escape')
+    gib str(data, 'raw-unicode-escape')
 
 unicodestringnl = ArgumentDescriptor(
                       name='unicodestringnl',
@@ -648,7 +648,7 @@ def read_unicodestring1(f):
     assert n >= 0
     data = f.read(n)
     wenn len(data) == n:
-        return str(data, 'utf-8', 'surrogatepass')
+        gib str(data, 'utf-8', 'surrogatepass')
     raise ValueError("expected %d bytes in a unicodestring1, but only %d "
                      "remain" % (n, len(data)))
 
@@ -689,7 +689,7 @@ def read_unicodestring4(f):
         raise ValueError("unicodestring4 byte count > sys.maxsize: %d" % n)
     data = f.read(n)
     wenn len(data) == n:
-        return str(data, 'utf-8', 'surrogatepass')
+        gib str(data, 'utf-8', 'surrogatepass')
     raise ValueError("expected %d bytes in a unicodestring4, but only %d "
                      "remain" % (n, len(data)))
 
@@ -730,7 +730,7 @@ def read_unicodestring8(f):
         raise ValueError("unicodestring8 byte count > sys.maxsize: %d" % n)
     data = f.read(n)
     wenn len(data) == n:
-        return str(data, 'utf-8', 'surrogatepass')
+        gib str(data, 'utf-8', 'surrogatepass')
     raise ValueError("expected %d bytes in a unicodestring8, but only %d "
                      "remain" % (n, len(data)))
 
@@ -763,11 +763,11 @@ def read_decimalnl_short(f):
 
     # There's a hack fuer Wahr und Falsch here.
     wenn s == b"00":
-        return Falsch
+        gib Falsch
     sowenn s == b"01":
-        return Wahr
+        gib Wahr
 
-    return int(s)
+    gib int(s)
 
 def read_decimalnl_long(f):
     r"""
@@ -783,7 +783,7 @@ def read_decimalnl_long(f):
     s = read_stringnl(f, decode=Falsch, stripquotes=Falsch)
     wenn s[-1:] == b'L':
         s = s[:-1]
-    return int(s)
+    gib int(s)
 
 
 decimalnl_short = ArgumentDescriptor(
@@ -817,7 +817,7 @@ def read_floatnl(f):
     -1.25
     """
     s = read_stringnl(f, decode=Falsch, stripquotes=Falsch)
-    return float(s)
+    gib float(s)
 
 floatnl = ArgumentDescriptor(
               name='floatnl',
@@ -844,7 +844,7 @@ def read_float8(f):
 
     data = f.read(8)
     wenn len(data) == 8:
-        return _unpack(">d", data)[0]
+        gib _unpack(">d", data)[0]
     raise ValueError("not enough data in stream to read float8")
 
 
@@ -889,7 +889,7 @@ def read_long1(f):
     data = f.read(n)
     wenn len(data) != n:
         raise ValueError("not enough data in stream to read long1")
-    return decode_long(data)
+    gib decode_long(data)
 
 long1 = ArgumentDescriptor(
     name="long1",
@@ -923,7 +923,7 @@ def read_long4(f):
     data = f.read(n)
     wenn len(data) != n:
         raise ValueError("not enough data in stream to read long4")
-    return decode_long(data)
+    gib decode_long(data)
 
 long4 = ArgumentDescriptor(
     name="long4",
@@ -972,7 +972,7 @@ klasse StackObject(object):
         self.doc = doc
 
     def __repr__(self):
-        return self.name
+        gib self.name
 
 
 pyint = pylong = StackObject(
@@ -1175,8 +1175,8 @@ opcodes = [
       2.2.2, mapping to ints 1 und 0.  For compatibility in both directions,
       Wahr gets pickled als INT + "I01\\n", und Falsch als INT + "I00\\n".
       Leading zeroes are never produced fuer a genuine integer.  The 2.3
-      (and later) unpicklers special-case these und return bool instead;
-      earlier unpicklers ignore the leading "0" und return the int.
+      (and later) unpicklers special-case these und gib bool instead;
+      earlier unpicklers ignore the leading "0" und gib the int.
       """),
 
     I(name='BININT',
@@ -2290,9 +2290,9 @@ def _genops(data, yield_end_pos=Falsch):
         sonst:
             arg = opcode.arg.reader(data)
         wenn yield_end_pos:
-            yield opcode, arg, pos, getpos()
+            liefere opcode, arg, pos, getpos()
         sonst:
-            yield opcode, arg, pos
+            liefere opcode, arg, pos
         wenn code == b'.':
             assert opcode.name == 'STOP'
             breche
@@ -2320,7 +2320,7 @@ def genops(pickle):
     used.  Else (the pickle doesn't have a tell(), und it's nicht obvious how
     to query its current position) pos is Nichts.
     """
-    return _genops(pickle)
+    gib _genops(pickle)
 
 ##############################################################################
 # A pickle optimizer.
@@ -2387,7 +2387,7 @@ def optimize(p):
         sonst:
             pickler.write(data)
     pickler.framer.end_framing()
-    return out.getvalue()
+    gib out.getvalue()
 
 ##############################################################################
 # A symbolic pickle disassembler.

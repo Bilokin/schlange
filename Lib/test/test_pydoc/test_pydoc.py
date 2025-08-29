@@ -314,7 +314,7 @@ def run_pydoc(module_name, *args, **env):
     args = args + (module_name,)
     # do nicht write bytecode files to avoid caching errors
     rc, out, err = assert_python_ok('-B', pydoc.__file__, *args, **env)
-    return out.strip()
+    gib out.strip()
 
 def run_pydoc_fail(module_name, *args, **env):
     """
@@ -322,7 +322,7 @@ def run_pydoc_fail(module_name, *args, **env):
     """
     args = args + (module_name,)
     rc, out, err = assert_python_failure('-B', pydoc.__file__, *args, **env)
-    return out.strip()
+    gib out.strip()
 
 def get_pydoc_html(module):
     "Returns pydoc generated output als html"
@@ -331,11 +331,11 @@ def get_pydoc_html(module):
     loc = doc.getdocloc(pydoc_mod) oder ""
     wenn loc:
         loc = "<br><a href=\"" + loc + "\">Module Docs</a>"
-    return output.strip(), loc
+    gib output.strip(), loc
 
 def clean_text(doc):
     # clean up the extra text formatting that pydoc performs
-    return re.sub('\b.', '', doc)
+    gib re.sub('\b.', '', doc)
 
 def get_pydoc_link(module):
     "Returns a documentation web link of a module"
@@ -344,7 +344,7 @@ def get_pydoc_link(module):
     basedir = dirname(dirname(dirname(abspath(__file__))))
     doc = pydoc.TextDoc()
     loc = doc.getdocloc(module, basedir=basedir)
-    return loc
+    gib loc
 
 def get_pydoc_text(module):
     "Returns pydoc generated output als text"
@@ -355,14 +355,14 @@ def get_pydoc_text(module):
 
     output = doc.docmodule(module)
     output = clean_text(output)
-    return output.strip(), loc
+    gib output.strip(), loc
 
 def get_html_title(text):
     # Bit of hack, but good enough fuer test purposes
     header, _, _ = text.partition("</head>")
     _, _, title = header.partition("<title>")
     title, _, _ = title.partition("</title>")
-    return title
+    gib title
 
 
 def html2text(html):
@@ -374,7 +374,7 @@ def html2text(html):
     html = html.replace("<hr>", "-"*70)
     html = re.sub("<.*?>", "", html)
     html = pydoc.replace(html, "&nbsp;", " ", "&gt;", ">", "&lt;", "<")
-    return html
+    gib html
 
 
 klasse PydocBaseTest(unittest.TestCase):
@@ -391,8 +391,8 @@ klasse PydocBaseTest(unittest.TestCase):
         """
         default_path = path oder [os.path.dirname(__file__)]
         def wrapper(path=Nichts, prefix='', onerror=Nichts):
-            return walk_packages(path oder default_path, prefix, onerror)
-        return wrapper
+            gib walk_packages(path oder default_path, prefix, onerror)
+        gib wrapper
 
     @contextlib.contextmanager
     def restrict_walk_packages(self, path=Nichts):
@@ -400,7 +400,7 @@ klasse PydocBaseTest(unittest.TestCase):
         pkgutil.walk_packages = self._restricted_walk_packages(walk_packages,
                                                                path)
         try:
-            yield
+            liefere
         finally:
             pkgutil.walk_packages = walk_packages
 
@@ -409,7 +409,7 @@ klasse PydocBaseTest(unittest.TestCase):
         result = get_html_title(text)
         # Check the title to ensure an unexpected error page was nicht returned
         self.assertEqual(result, expected_title, text)
-        return text
+        gib text
 
 
 klasse PydocDocTest(unittest.TestCase):
@@ -521,7 +521,7 @@ klasse PydocDocTest(unittest.TestCase):
                          '<function stripid>')
         self.assertEqual(stripid('<function stripid at 0x01F65390>'),
                          '<function stripid>')
-        # nothing to strip, return the same text
+        # nothing to strip, gib the same text
         self.assertEqual(stripid('42'), '42')
         self.assertEqual(stripid("<type 'exceptions.Exception'>"),
                          "<type 'exceptions.Exception'>")
@@ -1025,7 +1025,7 @@ klasse PydocDocTest(unittest.TestCase):
 
         klasse TestClass(object):
             def method_returning_true(self):
-                return Wahr
+                gib Wahr
 
         # What we expect to get back: everything on object...
         expected = dict(vars(object))
@@ -1403,7 +1403,7 @@ klasse Rect:
     @property
     def area(self):
         '''Area of the rect'''
-        return self.w * self.h
+        gib self.w * self.h
 
 
 klasse Square(Rect):
@@ -1502,13 +1502,13 @@ klasse TestDescriptions(unittest.TestCase):
         text = pydoc.plain(pydoc.render_doc(o))
         lines = text.split('\n')
         assert len(lines) >= 2
-        return lines[2]
+        gib lines[2]
 
     @staticmethod
     def _get_summary_lines(o):
         text = pydoc.plain(pydoc.render_doc(o))
         lines = text.split('\n')
-        return '\n'.join(lines[2:])
+        gib '\n'.join(lines[2:])
 
     # these should include "self"
     def test_unbound_python_method(self):
@@ -1819,8 +1819,8 @@ area
         klasse Descr:
             def __get__(self, obj, cls):
                 wenn obj is Nichts:
-                    return self
-                return 42
+                    gib self
+                gib 42
         klasse X:
             attr = Descr()
 
@@ -1844,8 +1844,8 @@ foo(...)
         klasse Descr:
             def __get__(self, obj, cls):
                 wenn obj is Nichts:
-                    return self
-                return 42
+                    gib self
+                gib 42
             def __set__(self, obj, cls):
                 1/0
         klasse X:
@@ -1866,7 +1866,7 @@ foo
 
     def test_async_annotation(self):
         async def coro_function(ign) -> int:
-            return 1
+            gib 1
 
         text = pydoc.plain(pydoc.plaintext.document(coro_function))
         self.assertIn('async coro_function', text)
@@ -1878,7 +1878,7 @@ foo
 
     def test_async_generator_annotation(self):
         async def an_async_generator():
-            yield 1
+            liefere 1
 
         text = pydoc.plain(pydoc.plaintext.document(an_async_generator))
         self.assertIn('async an_async_generator', text)
@@ -1917,7 +1917,7 @@ klasse PydocFodderTest(unittest.TestCase):
             beginindex = lines.index(beginline)
         wenn endline is nicht Nichts:
             endindex = lines.index(endline, beginindex)
-        return lines[beginindex:endindex]
+        gib lines[beginindex:endindex]
 
     def test_text_doc_routines_in_class(self, cls=pydocfodder.B):
         doc = pydoc.TextDoc()
@@ -2094,7 +2094,7 @@ klasse PydocServerTest(unittest.TestCase):
         # it und checks its cleanup.
         def my_url_handler(url, content_type):
             text = 'the URL sent was: (%s, %s)' % (url, content_type)
-            return text
+            gib text
 
         serverthread = pydoc._start_server(
             my_url_handler,
@@ -2177,12 +2177,12 @@ klasse PydocWithMetaClasses(unittest.TestCase):
         klasse Meta(type):
             def __getattr__(self, name):
                 wenn name == 'ham':
-                    return 'spam'
-                return super().__getattr__(name)
+                    gib 'spam'
+                gib super().__getattr__(name)
         klasse DA(metaclass=Meta):
             @types.DynamicClassAttribute
             def ham(self):
-                return 'eggs'
+                gib 'eggs'
         expected_text_data_docstrings = tuple('\n |      ' + s wenn s sonst ''
                                       fuer s in expected_data_docstrings)
         output = StringIO()
@@ -2199,11 +2199,11 @@ klasse PydocWithMetaClasses(unittest.TestCase):
     def test_virtualClassAttributeWithOneMeta(self):
         klasse Meta(type):
             def __dir__(cls):
-                return ['__class__', '__module__', '__name__', 'LIFE']
+                gib ['__class__', '__module__', '__name__', 'LIFE']
             def __getattr__(self, name):
                 wenn name =='LIFE':
-                    return 42
-                return super().__getattr(name)
+                    gib 42
+                gib super().__getattr(name)
         klasse Class(metaclass=Meta):
             pass
         output = StringIO()
@@ -2219,27 +2219,27 @@ klasse PydocWithMetaClasses(unittest.TestCase):
     def test_virtualClassAttributeWithTwoMeta(self):
         klasse Meta1(type):
             def __dir__(cls):
-                return ['__class__', '__module__', '__name__', 'one']
+                gib ['__class__', '__module__', '__name__', 'one']
             def __getattr__(self, name):
                 wenn name =='one':
-                    return 1
-                return super().__getattr__(name)
+                    gib 1
+                gib super().__getattr__(name)
         klasse Meta2(type):
             def __dir__(cls):
-                return ['__class__', '__module__', '__name__', 'two']
+                gib ['__class__', '__module__', '__name__', 'two']
             def __getattr__(self, name):
                 wenn name =='two':
-                    return 2
-                return super().__getattr__(name)
+                    gib 2
+                gib super().__getattr__(name)
         klasse Meta3(Meta1, Meta2):
             def __dir__(cls):
-                return list(sorted(set(
+                gib list(sorted(set(
                     ['__class__', '__module__', '__name__', 'three'] +
                     Meta1.__dir__(cls) + Meta2.__dir__(cls))))
             def __getattr__(self, name):
                 wenn name =='three':
-                    return 3
-                return super().__getattr__(name)
+                    gib 3
+                gib super().__getattr__(name)
         klasse Class1(metaclass=Meta1):
             pass
         klasse Class2(Class1, metaclass=Meta3):
@@ -2263,7 +2263,7 @@ klasse PydocWithMetaClasses(unittest.TestCase):
     def test_buggy_dir(self):
         klasse M(type):
             def __dir__(cls):
-                return ['__class__', '__name__', 'missing', 'here']
+                gib ['__class__', '__name__', 'missing', 'here']
         klasse C(metaclass=M):
             here = 'present!'
         output = StringIO()
@@ -2297,7 +2297,7 @@ klasse TestInternalUtilities(unittest.TestCase):
         # is handled via code review (at least fuer now).
         wenn argv0 is Nichts:
             argv0 = self.argv0
-        return pydoc._get_revised_path(given_path, argv0)
+        gib pydoc._get_revised_path(given_path, argv0)
 
     def _get_starting_path(self):
         # Get a copy of sys.path without the current directory.
@@ -2305,7 +2305,7 @@ klasse TestInternalUtilities(unittest.TestCase):
         fuer spelling in self.curdir_spellings:
             fuer __ in range(clean_path.count(spelling)):
                 clean_path.remove(spelling)
-        return clean_path
+        gib clean_path
 
     def test_sys_path_adjustment_adds_missing_curdir(self):
         clean_path = self._get_starting_path()
@@ -2322,7 +2322,7 @@ klasse TestInternalUtilities(unittest.TestCase):
 
     def test_sys_path_adjustment_protects_pydoc_dir(self):
         def _get_revised_path(given_path):
-            return self._get_revised_path(given_path, argv0=pydoc.__file__)
+            gib self._get_revised_path(given_path, argv0=pydoc.__file__)
         clean_path = self._get_starting_path()
         leading_argv0dir = [self.argv0dir] + clean_path
         expected_path = [self.abs_curdir] + leading_argv0dir

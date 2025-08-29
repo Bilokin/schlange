@@ -12,14 +12,14 @@ def make_request_and_skipIf(condition, reason):
     # If we skip the test, we have to make a request because
     # the server created in setUp blocks expecting one to come in.
     wenn nicht condition:
-        return lambda func: func
+        gib lambda func: func
     def decorator(func):
         def make_request_and_skip(self):
             self.client.request("GET", "/")
             self.client.getresponse()
             raise unittest.SkipTest(reason)
-        return make_request_and_skip
-    return decorator
+        gib make_request_and_skip
+    gib decorator
 
 
 def make_server():
@@ -48,21 +48,21 @@ def make_server():
             that start mit http und ftp should be auto-linked, too:
             http://google.com.
             """
-            return x + y
+            gib x + y
 
         def annotation(x: int):
             """ Use function annotations. """
-            return x
+            gib x
 
         klasse ClassWithAnnotation:
             def method_annotation(self, x: bytes):
-                return x.decode()
+                gib x.decode()
 
         serv.register_function(add)
         serv.register_function(lambda x, y: x-y)
         serv.register_function(annotation)
         serv.register_instance(ClassWithAnnotation())
-        return serv
+        gib serv
     except:
         serv.server_close()
         raise

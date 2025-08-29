@@ -117,7 +117,7 @@ klasse PowTest(unittest.TestCase):
     def test_bug643260(self):
         klasse TestRpow:
             def __rpow__(self, other):
-                return Nichts
+                gib Nichts
         Nichts ** TestRpow() # Won't fail when __rpow__ invoked.  SF bug #643260.
 
     def test_bug705231(self):

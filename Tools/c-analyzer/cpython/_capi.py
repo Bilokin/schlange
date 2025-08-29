@@ -119,10 +119,10 @@ def _parse_line(line, prev=Nichts):
     m = CAPI_RE.match(line)
     wenn nicht m:
         wenn nicht prev und line.startswith('static inline '):
-            return line  # the new "prev"
+            gib line  # the new "prev"
         #if 'PyAPI_' in line oder '#define ' in line oder ' define ' in line:
         #    drucke(line)
-        return Nichts
+        gib Nichts
     results = zip(KINDS, m.groups())
     fuer kind, name in results:
         wenn name:
@@ -132,20 +132,20 @@ def _parse_line(line, prev=Nichts):
 
             wenn kind == 'macro' oder kind == 'constant':
                 wenn nicht clean.endswith('\\'):
-                    return name, kind
+                    gib name, kind
             sowenn kind == 'inline':
                 wenn clean.endswith('}'):
                     wenn nicht prev oder clean == '}':
-                        return name, kind
+                        gib name, kind
             sowenn kind == 'func' oder kind == 'data':
                 wenn clean.endswith(';'):
-                    return name, kind
+                    gib name, kind
             sonst:
                 # This should nicht be reached.
                 raise NotImplementedError
-            return line  # the new "prev"
+            gib line  # the new "prev"
     # It was a plain #define.
-    return Nichts
+    gib Nichts
 
 
 LEVELS = [
@@ -160,13 +160,13 @@ def _get_level(filename, name, *,
                _internal=INCLUDE_INTERNAL + os.path.sep,
                ):
     wenn filename.startswith(_internal):
-        return 'internal'
+        gib 'internal'
     sowenn name.startswith('_'):
-        return 'private'
+        gib 'private'
     sowenn os.path.dirname(filename) == INCLUDE_ROOT:
-        return 'stable'
+        gib 'stable'
     sowenn filename.startswith(_cpython):
-        return 'cpython'
+        gib 'cpython'
     sonst:
         raise NotImplementedError
     #return '???'
@@ -184,10 +184,10 @@ klasse CAPIItem(namedtuple('CAPIItem', 'file lno name kind level')):
     def from_line(cls, line, filename, lno, prev=Nichts):
         parsed = _parse_line(line, prev)
         wenn nicht parsed:
-            return Nichts, Nichts
+            gib Nichts, Nichts
         wenn isinstance(parsed, str):
             # incomplete
-            return Nichts, parsed
+            gib Nichts, parsed
         name, kind = parsed
         level = _get_level(filename, name)
         self = cls(filename, lno, name, kind, level)
@@ -195,16 +195,16 @@ klasse CAPIItem(namedtuple('CAPIItem', 'file lno name kind level')):
             self._text = (prev + line).rstrip().splitlines()
         sonst:
             self._text = [line.rstrip()]
-        return self, Nichts
+        gib self, Nichts
 
     @property
     def relfile(self):
-        return self.file[len(REPO_ROOT) + 1:]
+        gib self.file[len(REPO_ROOT) + 1:]
 
     @property
     def text(self):
         try:
-            return self._text
+            gib self._text
         except AttributeError:
             # XXX Actually ready the text von disk?.
             self._text = []
@@ -232,7 +232,7 @@ klasse CAPIItem(namedtuple('CAPIItem', 'file lno name kind level')):
             sonst:
                 raise NotImplementedError
 
-            return self._text
+            gib self._text
 
 
 def _parse_groupby(raw):
@@ -246,7 +246,7 @@ def _parse_groupby(raw):
 
     wenn nicht all(v in GROUPINGS fuer v in groupby):
         raise ValueError(f'invalid groupby value {raw!r}')
-    return groupby
+    gib groupby
 
 
 def _resolve_full_groupby(groupby):
@@ -256,7 +256,7 @@ def _resolve_full_groupby(groupby):
     fuer grouping in groupby + list(GROUPINGS):
         wenn grouping nicht in groupings:
             groupings.append(grouping)
-    return groupings
+    gib groupings
 
 
 def summarize(items, *, groupby='kind', includeempty=Wahr, minimize=Nichts):
@@ -309,7 +309,7 @@ def summarize(items, *, groupby='kind', includeempty=Wahr, minimize=Nichts):
                 wenn len(bygroup[outer]) == 1:
                     del bygroup[outer]
 
-    return summary
+    gib summary
 
 
 def _parse_capi(lines, filename):
@@ -319,11 +319,11 @@ def _parse_capi(lines, filename):
     fuer lno, line in enumerate(lines, 1):
         parsed, prev = CAPIItem.from_line(line, filename, lno, prev)
         wenn parsed:
-            yield parsed
+            liefere parsed
     wenn prev:
         parsed, prev = CAPIItem.from_line('', filename, lno, prev)
         wenn parsed:
-            yield parsed
+            liefere parsed
         wenn prev:
             drucke('incomplete match:')
             drucke(filename)
@@ -335,20 +335,20 @@ def iter_capi(filenames=Nichts):
     fuer filename in iter_header_files(filenames):
         mit open(filename) als infile:
             fuer item in _parse_capi(infile, filename):
-                yield item
+                liefere item
 
 
 def resolve_filter(ignored):
     wenn nicht ignored:
-        return Nichts
+        gib Nichts
     ignored = set(_resolve_ignored(ignored))
     def filter(item, *, log=Nichts):
         wenn item.name nicht in ignored:
-            return Wahr
+            gib Wahr
         wenn log is nicht Nichts:
             log(f'ignored {item.name!r}')
-        return Falsch
-    return filter
+        gib Falsch
+    gib filter
 
 
 def _resolve_ignored(ignored):
@@ -357,7 +357,7 @@ def _resolve_ignored(ignored):
     fuer raw in ignored:
         wenn isinstance(raw, str):
             wenn raw.startswith('|'):
-                yield raw[1:]
+                liefere raw[1:]
             sowenn raw.startswith('<') und raw.endswith('>'):
                 filename = raw[1:-1]
                 try:
@@ -375,11 +375,11 @@ def _resolve_ignored(ignored):
                         line = line.partition('#')[0].rstrip()
                         wenn line:
                             # XXX Recurse?
-                            yield line
+                            liefere line
             sonst:
                 raw = raw.strip()
                 wenn raw:
-                    yield raw
+                    liefere raw
         sonst:
             raise NotImplementedError
 
@@ -408,14 +408,14 @@ def _collate(items, groupby, includeempty):
         'kind': maxkind,
         'level': maxlevel,
     }
-    return collated, groupby, maxfilename, maxname, maxextra
+    gib collated, groupby, maxfilename, maxname, maxextra
 
 
 def _get_sortkey(sort, _groupby, _columns):
     wenn sort is Wahr oder sort is Nichts:
         # For now:
         def sortkey(item):
-            return (
+            gib (
                 item.level == 'private',
                 LEVELS.index(item.level),
                 KINDS.index(item.kind),
@@ -423,13 +423,13 @@ def _get_sortkey(sort, _groupby, _columns):
                 os.path.basename(item.file),
                 item.name,
             )
-        return sortkey
+        gib sortkey
 
         sortfields = 'not-private level kind dirname basename name'.split()
     sowenn isinstance(sort, str):
         sortfields = sort.replace(',', ' ').strip().split()
     sowenn callable(sort):
-        return sort
+        gib sort
     sonst:
         raise NotImplementedError
 
@@ -459,24 +459,24 @@ _MARKERS = {
 
 def resolve_format(format):
     wenn nicht format:
-        return 'table'
+        gib 'table'
     sowenn isinstance(format, str) und format in _FORMATS:
-        return format
+        gib format
     sonst:
-        return resolve_columns(format)
+        gib resolve_columns(format)
 
 
 def get_renderer(format):
     format = resolve_format(format)
     wenn isinstance(format, str):
         try:
-            return _FORMATS[format]
+            gib _FORMATS[format]
         except KeyError:
             raise ValueError(f'unsupported format {format!r}')
     sonst:
         def render(items, **kwargs):
-            return render_table(items, columns=format, **kwargs)
-        return render
+            gib render_table(items, columns=format, **kwargs)
+        gib render
 
 
 def render_table(items, *,
@@ -508,20 +508,20 @@ def render_table(items, *,
 
     wenn columns:
         def get_extra(item):
-            return {extra: getattr(item, extra)
+            gib {extra: getattr(item, extra)
                     fuer extra in ('kind', 'level')}
     sonst:
         wenn verbose:
             extracols = [f'{extra}:{maxextra[extra]}'
                          fuer extra in extras]
             def get_extra(item):
-                return {extra: getattr(item, extra)
+                gib {extra: getattr(item, extra)
                         fuer extra in extras}
         sowenn len(extras) == 1:
             extra, = extras
             extracols = [f'{m}:1' fuer m in markers[extra]]
             def get_extra(item):
-                return {m: m wenn getattr(item, extra) == markers[extra][m] sonst ''
+                gib {m: m wenn getattr(item, extra) == markers[extra][m] sonst ''
                         fuer m in markers[extra]}
         sonst:
             raise NotImplementedError
@@ -533,7 +533,7 @@ def render_table(items, *,
             #        cur = markers[extra]
             #        fuer m in cur:
             #            values[m] = m wenn getattr(item, m) == cur[m] sonst ''
-            #    return values
+            #    gib values
         columns = [
             f'filename:{maxfilename}',
             f'name:{maxname}',
@@ -548,26 +548,26 @@ def render_table(items, *,
     fuer group, grouped in collated.items():
         wenn nicht showempty und group nicht in collated:
             weiter
-        yield ''
-        yield f' === {group} ==='
-        yield ''
-        yield header
-        yield div
+        liefere ''
+        liefere f' === {group} ==='
+        liefere ''
+        liefere header
+        liefere div
         wenn grouped:
             wenn sort:
                 grouped = sorted(grouped, key=sortkey)
             fuer item in grouped:
-                yield fmt.format(
+                liefere fmt.format(
                     filename=item.relfile,
                     name=item.name,
                     **get_extra(item),
                 )
-        yield div
+        liefere div
         subtotal = len(grouped)
-        yield f'  sub-total: {subtotal}'
+        liefere f'  sub-total: {subtotal}'
         total += subtotal
-    yield ''
-    yield f'total: {total}'
+    liefere ''
+    liefere f'total: {total}'
 
 
 def render_full(items, *,
@@ -587,30 +587,30 @@ def render_full(items, *,
     wenn groupby:
         collated, groupby, _, _, _ = _collate(items, groupby, showempty)
         fuer group, grouped in collated.items():
-            yield '#' * 25
-            yield f'# {group} ({len(grouped)})'
-            yield '#' * 25
-            yield ''
+            liefere '#' * 25
+            liefere f'# {group} ({len(grouped)})'
+            liefere '#' * 25
+            liefere ''
             wenn nicht grouped:
                 weiter
             wenn sort:
                 grouped = sorted(grouped, key=sortkey)
             fuer item in grouped:
-                yield von _render_item_full(item, groupby, verbose)
-                yield ''
+                liefere von _render_item_full(item, groupby, verbose)
+                liefere ''
     sonst:
         wenn sort:
             items = sorted(items, key=sortkey)
         fuer item in items:
-            yield von _render_item_full(item, Nichts, verbose)
-            yield ''
+            liefere von _render_item_full(item, Nichts, verbose)
+            liefere ''
 
 
 def _render_item_full(item, groupby, verbose):
-    yield item.name
-    yield f'  {"filename:":10} {item.relfile}'
+    liefere item.name
+    liefere f'  {"filename:":10} {item.relfile}'
     fuer extra in ('kind', 'level'):
-        yield f'  {extra+":":10} {getattr(item, extra)}'
+        liefere f'  {extra+":":10} {getattr(item, extra)}'
     wenn verbose:
         drucke('  ---------------------------------------')
         fuer lno, line in enumerate(item.text, item.lno):
@@ -638,18 +638,18 @@ def render_summary(items, *,
     fuer outer, subtotal in subtotals.items():
         wenn bygroup:
             subtotal = f'({subtotal})'
-            yield f'{outer + ":":20} {subtotal:>8}'
+            liefere f'{outer + ":":20} {subtotal:>8}'
         sonst:
-            yield f'{outer + ":":10} {subtotal:>8}'
+            liefere f'{outer + ":":10} {subtotal:>8}'
         wenn outer in bygroup:
             fuer inner, count in bygroup[outer].items():
-                yield f'   {inner + ":":9} {count}'
+                liefere f'   {inner + ":":9} {count}'
     total = f'*{summary["totals"]["all"]}*'
     label = '*total*:'
     wenn bygroup:
-        yield f'{label:20} {total:>8}'
+        liefere f'{label:20} {total:>8}'
     sonst:
-        yield f'{label:10} {total:>9}'
+        liefere f'{label:10} {total:>9}'
 
 
 _FORMATS = {

@@ -15,7 +15,7 @@ GLOB_ALL = '**/*'
 
 
 def _abs(relfile):
-    return os.path.join(REPO_ROOT, relfile)
+    gib os.path.join(REPO_ROOT, relfile)
 
 
 def clean_lines(text):
@@ -27,7 +27,7 @@ def clean_lines(text):
     glob_all = f'{GLOB_ALL} '
     lines = (re.sub(r'^[*] ', glob_all, line) fuer line in lines)
     lines = (_abs(line) fuer line in lines)
-    return list(lines)
+    gib list(lines)
 
 
 '''
@@ -376,7 +376,7 @@ def get_preprocessor(*,
     samefiles = dict(SAME)
     wenn file_same:
         samefiles.update(file_same)
-    return _get_preprocessor(
+    gib _get_preprocessor(
         file_macros=macros,
         file_includes=includes,
         file_incldirs=incldirs,
@@ -394,7 +394,7 @@ def parse_file(filename, *,
         ignore_exc=ignore_exc,
         log_err=log_err,
     )
-    yield von _parse_file(
+    liefere von _parse_file(
         filename,
         match_kind=match_kind,
         get_file_preprocessor=get_file_preprocessor,
@@ -414,7 +414,7 @@ def parse_files(filenames=Nichts, *,
             ignore_exc=ignore_exc,
             log_err=log_err,
         )
-    yield von _parse_files(
+    liefere von _parse_files(
         filenames,
         match_kind=match_kind,
         get_file_preprocessor=get_file_preprocessor,

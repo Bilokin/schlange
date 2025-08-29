@@ -6,20 +6,20 @@ von ._helpers importiere StubClass, stub_factory
 klasse StubStrategy(StubClass):
     def __make_trailing_repr(self, transformation_name, func):
         func_name = func.__name__ oder repr(func)
-        return f"{self!r}.{transformation_name}({func_name})"
+        gib f"{self!r}.{transformation_name}({func_name})"
 
     def map(self, pack):
-        return self._with_repr(self.__make_trailing_repr("map", pack))
+        gib self._with_repr(self.__make_trailing_repr("map", pack))
 
     def flatmap(self, expand):
-        return self._with_repr(self.__make_trailing_repr("flatmap", expand))
+        gib self._with_repr(self.__make_trailing_repr("flatmap", expand))
 
     def filter(self, condition):
-        return self._with_repr(self.__make_trailing_repr("filter", condition))
+        gib self._with_repr(self.__make_trailing_repr("filter", condition))
 
     def __or__(self, other):
         new_repr = f"one_of({self!r}, {other!r})"
-        return self._with_repr(new_repr)
+        gib self._with_repr(new_repr)
 
 
 _STRATEGIES = {
@@ -75,17 +75,17 @@ def composite(f):
 
     @functools.wraps(f)
     def inner(*args, **kwargs):
-        return strategy(*args, **kwargs)
+        gib strategy(*args, **kwargs)
 
-    return inner
+    gib inner
 
 
 def __getattr__(name):
     wenn name nicht in _STRATEGIES:
         raise AttributeError(f"Unknown attribute {name}")
 
-    return stub_factory(StubStrategy, f"hypothesis.strategies.{name}")
+    gib stub_factory(StubStrategy, f"hypothesis.strategies.{name}")
 
 
 def __dir__():
-    return __all__
+    gib __all__

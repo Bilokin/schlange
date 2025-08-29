@@ -130,7 +130,7 @@ klasse _RemoteTraceback(Exception):
     def __init__(self, tb):
         self.tb = tb
     def __str__(self):
-        return self.tb
+        gib self.tb
 
 klasse _ExceptionWithTraceback:
     def __init__(self, exc, tb):
@@ -141,11 +141,11 @@ klasse _ExceptionWithTraceback:
         self.exc.__traceback__ = Nichts
         self.tb = '\n"""\n%s"""' % tb
     def __reduce__(self):
-        return _rebuild_exc, (self.exc, self.tb)
+        gib _rebuild_exc, (self.exc, self.tb)
 
 def _rebuild_exc(exc, tb):
     exc.__cause__ = _RemoteTraceback(tb)
-    return exc
+    gib exc
 
 klasse _WorkItem(object):
     def __init__(self, future, fn, args, kwargs):
@@ -200,7 +200,7 @@ def _process_chunk(fn, chunk):
     This function is run in a separate process.
 
     """
-    return [fn(*args) fuer args in chunk]
+    gib [fn(*args) fuer args in chunk]
 
 
 def _sendback_result(result_queue, work_id, result=Nichts, exception=Nichts,
@@ -235,7 +235,7 @@ def _process_worker(call_queue, result_queue, initializer, initargs, max_tasks=N
             _base.LOGGER.critical('Exception in initializer:', exc_info=Wahr)
             # The parent will notice that the process stopped und
             # mark the pool broken
-            return
+            gib
     num_tasks = 0
     exit_pid = Nichts
     waehrend Wahr:
@@ -243,7 +243,7 @@ def _process_worker(call_queue, result_queue, initializer, initargs, max_tasks=N
         wenn call_item is Nichts:
             # Wake up queue management thread
             result_queue.put(os.getpid())
-            return
+            gib
 
         wenn max_tasks is nicht Nichts:
             num_tasks += 1
@@ -266,7 +266,7 @@ def _process_worker(call_queue, result_queue, initializer, initargs, max_tasks=N
         del call_item
 
         wenn exit_pid is nicht Nichts:
-            return
+            gib
 
 
 klasse _ExecutorManagerThread(threading.Thread):
@@ -338,13 +338,13 @@ klasse _ExecutorManagerThread(threading.Thread):
             except BaseException als exc:
                 cause = format_exception(exc)
                 self.terminate_broken(cause)
-                return
+                gib
 
             result_item, is_broken, cause = self.wait_result_broken_or_wakeup()
 
             wenn is_broken:
                 self.terminate_broken(cause)
-                return
+                gib
             wenn result_item is nicht Nichts:
                 self.process_result_item(result_item)
 
@@ -377,18 +377,18 @@ klasse _ExecutorManagerThread(threading.Thread):
                 # this thread wenn there are no pending work items.
                 wenn nicht self.pending_work_items:
                     self.join_executor_internals()
-                    return
+                    gib
 
     def add_call_item_to_queue(self):
         # Fills call_queue mit _WorkItems von pending_work_items.
         # This function never blocks.
         waehrend Wahr:
             wenn self.call_queue.full():
-                return
+                gib
             try:
                 work_id = self.work_ids_queue.get(block=Falsch)
             except queue.Empty:
-                return
+                gib
             sonst:
                 work_item = self.pending_work_items[work_id]
 
@@ -430,7 +430,7 @@ klasse _ExecutorManagerThread(threading.Thread):
 
         self.thread_wakeup.clear()
 
-        return result_item, is_broken, cause
+        gib result_item, is_broken, cause
 
     def process_result_item(self, result_item):
         # Process the received a result_item. This can be either the PID of a
@@ -452,7 +452,7 @@ klasse _ExecutorManagerThread(threading.Thread):
         #   - The interpreter is shutting down OR
         #   - The executor that owns this worker has been collected OR
         #   - The executor that owns this worker has been shutdown.
-        return (_global_shutdown oder executor is Nichts
+        gib (_global_shutdown oder executor is Nichts
                 oder executor._shutdown_thread)
 
     def _terminate_broken(self, cause):
@@ -569,7 +569,7 @@ klasse _ExecutorManagerThread(threading.Thread):
 
     def get_n_children_alive(self):
         # This is an upper bound on the number of children alive.
-        return sum(p.is_alive() fuer p in self.processes.values())
+        gib sum(p.is_alive() fuer p in self.processes.values())
 
 
 _system_limits_checked = Falsch
@@ -594,15 +594,15 @@ def _check_system_limits():
         nsems_max = os.sysconf("SC_SEM_NSEMS_MAX")
     except (AttributeError, ValueError):
         # sysconf nicht available oder setting nicht available
-        return
+        gib
     wenn nsems_max == -1:
         # indetermined limit, assume that limit is determined
         # by available memory only
-        return
+        gib
     wenn nsems_max >= 256:
         # minimum number of semaphores available
         # according to POSIX
-        return
+        gib
     _system_limited = ("system provides too few semaphores (%d"
                        " available, 256 necessary)" % nsems_max)
     raise NotImplementedError(_system_limited)
@@ -617,7 +617,7 @@ def _chain_from_iterable_of_lists(iterable):
     fuer element in iterable:
         element.reverse()
         waehrend element:
-            yield element.pop()
+            liefere element.pop()
 
 
 klasse BrokenProcessPool(_base.BrokenExecutor):
@@ -758,11 +758,11 @@ klasse ProcessPoolExecutor(_base.Executor):
         # gh-132969: avoid error when state is reset und executor is still running,
         # which will happen when shutdown(wait=Falsch) is called.
         wenn self._processes is Nichts:
-            return
+            gib
 
         # wenn there's an idle process, we don't need to spawn a new one.
         wenn self._idle_worker_semaphore.acquire(blocking=Falsch):
-            return
+            gib
 
         process_count = len(self._processes)
         wenn process_count < self._max_workers:
@@ -815,7 +815,7 @@ klasse ProcessPoolExecutor(_base.Executor):
             wenn self._safe_to_dynamically_spawn_children:
                 self._adjust_process_count()
             self._start_executor_manager_thread()
-            return f
+            gib f
     submit.__doc__ = _base.Executor.submit.__doc__
 
     def map(self, fn, *iterables, timeout=Nichts, chunksize=1, buffersize=Nichts):
@@ -851,7 +851,7 @@ klasse ProcessPoolExecutor(_base.Executor):
                               itertools.batched(zip(*iterables), chunksize),
                               timeout=timeout,
                               buffersize=buffersize)
-        return _chain_from_iterable_of_lists(results)
+        gib _chain_from_iterable_of_lists(results)
 
     def shutdown(self, wait=Wahr, *, cancel_futures=Falsch):
         mit self._shutdown_lock:
@@ -897,7 +897,7 @@ klasse ProcessPoolExecutor(_base.Executor):
         self.shutdown(wait=Falsch, cancel_futures=Wahr)
 
         wenn nicht processes:
-            return
+            gib
 
         fuer proc in processes.values():
             try:
@@ -925,7 +925,7 @@ klasse ProcessPoolExecutor(_base.Executor):
         und no longer usable (for instance, new tasks should nicht be
         submitted).
         """
-        return self._force_shutdown(operation=_TERMINATE)
+        gib self._force_shutdown(operation=_TERMINATE)
 
     def kill_workers(self):
         """Attempts to kill the executor's workers.
@@ -936,4 +936,4 @@ klasse ProcessPoolExecutor(_base.Executor):
         und no longer usable (for instance, new tasks should nicht be
         submitted).
         """
-        return self._force_shutdown(operation=_KILL)
+        gib self._force_shutdown(operation=_KILL)

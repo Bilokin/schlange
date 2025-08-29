@@ -79,7 +79,7 @@ def all_pickle_protocols(test_func):
             mit self.subTest(pickle_proto=proto):
                 test_func(self, proto=proto)
 
-    return wrapper
+    gib wrapper
 
 
 klasse Employee:
@@ -878,7 +878,7 @@ def template_replace(templates: list[str], replacements: dict[str, list[str]]) -
         wenn x nicht in rendered_templates_no_duplicates:
             rendered_templates_no_duplicates.append(x)
 
-    return rendered_templates_no_duplicates
+    gib rendered_templates_no_duplicates
 
 
 klasse TemplateReplacementTests(BaseTestCase):
@@ -1681,7 +1681,7 @@ klasse TypeVarTupleTests(BaseTestCase):
         self.assertEqual(g.__args__, (str, *Ts, int, type(Nichts)))
         self.assertEqual(h.__args__, (str, Unpack[Ts], int, type(Nichts)))
 
-        # TypeVarTuple als the return
+        # TypeVarTuple als the gib
 
         i = Callable[[Nichts], *Ts]
         j = Callable[[Nichts], Unpack[Ts]]
@@ -2239,7 +2239,7 @@ klasse UnionTests(BaseTestCase):
         Union[Element, str]  # Shouldn't crash
 
         def Elem(*args):
-            return Element(*args)
+            gib Element(*args)
 
         Union[Elem, str]  # Nor should this
 
@@ -2491,7 +2491,7 @@ klasse BaseCallableTests:
         Callable = self.Callable
         klasse C1(Callable):
             def __call__(self):
-                return Nichts
+                gib Nichts
         a = C1[[int], T]
         self.assertIs(a().__class__, C1)
         self.assertEqual(a().__orig_class__, C1[[int], T])
@@ -2773,16 +2773,16 @@ klasse MySimpleMapping(SimpleMapping[XK, XV]):
         self.store = {}
 
     def __getitem__(self, key: str):
-        return self.store[key]
+        gib self.store[key]
 
     def __setitem__(self, key: str, value):
         self.store[key] = value
 
     def get(self, key: str, default=Nichts):
         try:
-            return self.store[key]
+            gib self.store[key]
         except KeyError:
-            return default
+            gib default
 
 
 klasse Coordinate(Protocol):
@@ -2822,8 +2822,8 @@ klasse Other:
     attr: int = 1
     def meth(self, arg: str) -> int:
         wenn arg == 'this':
-            return 1
-        return 0
+            gib 1
+        gib 0
 
 klasse NT(NamedTuple):
     x: int
@@ -3027,7 +3027,7 @@ klasse ProtocolTests(BaseTestCase):
 
         klasse C(B):
             def ameth(self) -> int:
-                return 26
+                gib 26
 
         mit self.assertRaises(TypeError):
             B()
@@ -3241,7 +3241,7 @@ klasse ProtocolTests(BaseTestCase):
             meth: Callable[[], Nichts]
             meth2: Callable[[int, str], bool]
             def meth(self): pass
-            def meth2(self, x, y): return Wahr
+            def meth2(self, x, y): gib Wahr
 
         self.assertNotIsSubclass(AnnotatedButNotAProtocol, CallableMembersProto)
         self.assertIsSubclass(NotAProtocolButAnImplicitSubclass, CallableMembersProto)
@@ -3405,7 +3405,7 @@ klasse ProtocolTests(BaseTestCase):
         klasse Eggs:
             def __getattr__(self, attr):
                 wenn attr == "x":
-                    return 42
+                    gib 42
                 raise AttributeError(attr)
 
         self.assertNotIsInstance(Eggs(), Spam)
@@ -3509,11 +3509,11 @@ klasse ProtocolTests(BaseTestCase):
         klasse C:
             @property
             def attr(self):
-                return 42
+                gib 42
 
         klasse CustomDescriptor:
             def __get__(self, obj, objtype=Nichts):
-                return 42
+                gib 42
 
         klasse D:
             attr = CustomDescriptor()
@@ -3597,11 +3597,11 @@ klasse ProtocolTests(BaseTestCase):
         klasse CustomDirWithX:
             x = 10
             def __dir__(self):
-                return []
+                gib []
 
         klasse CustomDirWithoutX:
             def __dir__(self):
-                return ["x"]
+                gib ["x"]
 
         self.assertIsInstance(CustomDirWithX(), HasX)
         self.assertNotIsInstance(CustomDirWithoutX(), HasX)
@@ -3701,7 +3701,7 @@ klasse ProtocolTests(BaseTestCase):
                 self.attr = attr
 
             def meth(self, arg):
-                return 0
+                gib 0
 
         klasse Bad: pass
 
@@ -3886,7 +3886,7 @@ klasse ProtocolTests(BaseTestCase):
         klasse C(P):
             @classmethod
             def __subclasshook__(cls, other):
-                return other.__name__.startswith("OK")
+                gib other.__name__.startswith("OK")
 
         self.assertIsInstance(OKClass(), C)
         self.assertNotIsInstance(BadClass(), C)
@@ -3903,7 +3903,7 @@ klasse ProtocolTests(BaseTestCase):
 
             @classmethod
             def __subclasshook__(cls, other):
-                return hasattr(other, 'x')
+                gib hasattr(other, 'x')
 
         klasse Empty: pass
 
@@ -3921,7 +3921,7 @@ klasse ProtocolTests(BaseTestCase):
         klasse NotRuntimeCheckable(Protocol):
             @classmethod
             def __subclasshook__(cls, other):
-                return hasattr(other, 'x')
+                gib hasattr(other, 'x')
 
         must_be_runtime_checkable = (
             "Instance und klasse checks can only be used "
@@ -4027,7 +4027,7 @@ klasse ProtocolTests(BaseTestCase):
             x = 1
 
             def bar(self, x: str) -> str:
-                return x
+                gib x
 
         self.assertIsInstance(Test(), PSub)
 
@@ -4050,7 +4050,7 @@ klasse ProtocolTests(BaseTestCase):
         klasse B3[T1, T2](A[T2], Protocol):
             @staticmethod
             def get_typeparams():
-                return (T1, T2)
+                gib (T1, T2)
         self.assertEqual(B3.__parameters__, B3.get_typeparams())
 
     def test_pep695_generic_protocol_callable_members(self):
@@ -4105,7 +4105,7 @@ klasse ProtocolTests(BaseTestCase):
             def __new__(cls, *args):
                 self = super().__new__(cls, *args)
                 self.test = 'OK'
-                return self
+                gib self
 
         self.assertEqual(C[int]().test, 'OK')
         mit self.assertRaises(TypeError):
@@ -4307,7 +4307,7 @@ klasse ProtocolTests(BaseTestCase):
 
         klasse C:
             def __complex__(self):
-                return 0j
+                gib 0j
 
         self.assertIsSubclass(complex, typing.SupportsComplex)
         self.assertIsSubclass(C, typing.SupportsComplex)
@@ -4317,7 +4317,7 @@ klasse ProtocolTests(BaseTestCase):
 
         klasse B:
             def __bytes__(self):
-                return b''
+                gib b''
 
         self.assertIsSubclass(bytes, typing.SupportsBytes)
         self.assertIsSubclass(B, typing.SupportsBytes)
@@ -4346,7 +4346,7 @@ klasse ProtocolTests(BaseTestCase):
         self.assertIsInstance(0, typing.SupportsAbs)
         klasse C1(typing.SupportsInt):
             def __int__(self) -> int:
-                return 42
+                gib 42
         klasse C2(C1):
             pass
         c = C2()
@@ -4360,9 +4360,9 @@ klasse ProtocolTests(BaseTestCase):
         klasse A: pass
         klasse B:
             def __iter__(self):
-                return []
+                gib []
             def close(self):
-                return 0
+                gib 0
 
         self.assertIsSubclass(B, Custom)
         self.assertNotIsSubclass(A, Custom)
@@ -4374,7 +4374,7 @@ klasse ProtocolTests(BaseTestCase):
         klasse C: pass
         klasse D:
             def __buffer__(self, flags: int) -> memoryview:
-                return memoryview(b'')
+                gib memoryview(b'')
             def __release_buffer__(self, mv: memoryview) -> Nichts:
                 pass
 
@@ -4391,7 +4391,7 @@ klasse ProtocolTests(BaseTestCase):
         klasse A: pass
         klasse B:
             def read(self, sz=-1):
-                return b""
+                gib b""
             def close(self):
                 pass
 
@@ -4470,9 +4470,9 @@ klasse ProtocolTests(BaseTestCase):
 
         klasse Concrete:
             a: int
-            def b(self) -> str: return "capybara"
+            def b(self) -> str: gib "capybara"
             @property
-            def c(self) -> int: return 5
+            def c(self) -> int: gib 5
 
         mit self.assertRaisesRegex(TypeError, "not a Protocol"):
             get_protocol_members(Concrete)
@@ -4481,9 +4481,9 @@ klasse ProtocolTests(BaseTestCase):
 
         klasse ConcreteInherit(P):
             a: int = 42
-            def b(self) -> str: return "capybara"
+            def b(self) -> str: gib "capybara"
             @property
-            def c(self) -> int: return 5
+            def c(self) -> int: gib 5
 
         mit self.assertRaisesRegex(TypeError, "not a Protocol"):
             get_protocol_members(ConcreteInherit)
@@ -4595,7 +4595,7 @@ klasse ProtocolTests(BaseTestCase):
             y: float
 
             def square_norm(self) -> float:
-                return self.x ** 2 + self.y ** 2
+                gib self.x ** 2 + self.y ** 2
 
         self.assertEqual(Vec2D.__protocol_attrs__, {'x', 'y', 'square_norm'})
         expected_error_message = (
@@ -4897,15 +4897,15 @@ klasse GenericTests(BaseTestCase):
     def test_abc_bases(self):
         klasse MM(MutableMapping[str, str]):
             def __getitem__(self, k):
-                return Nichts
+                gib Nichts
             def __setitem__(self, k, v):
                 pass
             def __delitem__(self, k):
                 pass
             def __iter__(self):
-                return iter(())
+                gib iter(())
             def __len__(self):
-                return 0
+                gib 0
         # this should just work
         MM().update()
         self.assertIsInstance(MM(), collections.abc.MutableMapping)
@@ -4932,7 +4932,7 @@ klasse GenericTests(BaseTestCase):
                 raise NotImplementedError
             wenn tp.__args__:
                 KT, VT = tp.__args__
-                return all(
+                gib all(
                     isinstance(k, KT) und isinstance(v, VT)
                     fuer k, v in obj.items()
                 )
@@ -4945,7 +4945,7 @@ klasse GenericTests(BaseTestCase):
             # Check wenn an instance conforms to the generic class
             wenn nicht hasattr(obj, '__orig_class__'):
                 raise NotImplementedError
-            return obj.__orig_class__ == tp
+            gib obj.__orig_class__ == tp
         klasse Node(Generic[T]): ...
         self.assertWahr(naive_generic_check(Node[int](), Node[int]))
         self.assertFalsch(naive_generic_check(Node[str](), Node[int]))
@@ -4955,7 +4955,7 @@ klasse GenericTests(BaseTestCase):
 
         def naive_list_base_check(obj, tp):
             # Check wenn list conforms to a List subclass
-            return all(isinstance(x, tp.__orig_bases__[0].__args__[0])
+            gib all(isinstance(x, tp.__orig_bases__[0].__args__[0])
                        fuer x in obj)
         klasse C(List[int]): ...
         self.assertWahr(naive_list_base_check([1, 2, 3], C))
@@ -5206,7 +5206,7 @@ klasse GenericTests(BaseTestCase):
         klasse T2(Tuple[T, ...]): ...
         klasse C1(typing.Container[T]):
             def __contains__(self, item):
-                return Falsch
+                gib Falsch
 
         self.assertEqual(T1.__parameters__, (T, KT))
         self.assertEqual(T1[int, str].__args__, (int, str))
@@ -5546,7 +5546,7 @@ klasse GenericTests(BaseTestCase):
     def test_multiple_inheritance_non_type_with___mro_entries__(self):
         klasse GoodEntries:
             def __mro_entries__(self, bases):
-                return (object,)
+                gib (object,)
 
         klasse A(List[int], GoodEntries()): ...
 
@@ -5560,19 +5560,19 @@ klasse GenericTests(BaseTestCase):
     def test_multiple_inheritance_non_type_bad___mro_entries__(self):
         klasse BadEntries:
             def __mro_entries__(self, bases):
-                return Nichts
+                gib Nichts
 
         # Error should be von the type machinery, nicht von typing.py
         mit self.assertRaisesRegex(
             TypeError,
-            r"^__mro_entries__ must return a tuple",
+            r"^__mro_entries__ must gib a tuple",
         ):
             klasse A(List[int], BadEntries()): ...
 
     def test_multiple_inheritance___mro_entries___returns_non_type(self):
         klasse BadEntries:
             def __mro_entries__(self, bases):
-                return (object(),)
+                gib (object(),)
 
         # Error should be von the type machinery, nicht von typing.py
         mit self.assertRaisesRegex(
@@ -5643,10 +5643,10 @@ klasse GenericTests(BaseTestCase):
                 self.a = a
 
             def get(self):
-                return self.a
+                gib self.a
 
             def visit(self) -> T:
-                return self.a
+                gib self.a
 
         V = Visitor[typing.List[int]]
 
@@ -5713,7 +5713,7 @@ klasse GenericTests(BaseTestCase):
                 # call object
                 obj = super().__new__(cls)
                 obj.arg = arg
-                return obj
+                gib obj
 
         # mro: C, A, Generic, B, object
         klasse C(A, B):
@@ -5754,7 +5754,7 @@ klasse GenericTests(BaseTestCase):
                 # call object
                 obj = super().__new__(cls)
                 obj.from_b = 'b'
-                return obj
+                gib obj
 
         # mro: C, A, Generic, B, object
         klasse C(A, B):
@@ -5765,7 +5765,7 @@ klasse GenericTests(BaseTestCase):
                 # call A
                 obj = super().__new__(cls)
                 obj.from_c = 'c'
-                return obj
+                gib obj
 
         c = C('foo')
         self.assertEqual(c.arg, 'foo')
@@ -5960,7 +5960,7 @@ klasse FinalDecoratorTests(BaseTestCase):
             def __init__(self, func):
                 self.func = func
             def __call__(self, *args, **kwargs):
-                return self.func(*args, **kwargs)
+                gib self.func(*args, **kwargs)
 
         # Check that no error is thrown wenn the attribute
         # is nicht writable.
@@ -5972,7 +5972,7 @@ klasse FinalDecoratorTests(BaseTestCase):
 
         klasse Meta(type):
             @property
-            def __final__(self): return "can't set me"
+            def __final__(self): gib "can't set me"
         @final
         klasse WithMeta(metaclass=Meta): ...
         self.assertEqual(WithMeta.__final__, "can't set me")
@@ -6032,25 +6032,25 @@ klasse OverrideDecoratorTests(BaseTestCase):
         klasse Derived(Base):
             @override
             def normal_method(self):
-                return 42
+                gib 42
 
             @classmethod
             @override
             def class_method_good_order(cls):
-                return 42
+                gib 42
             @override
             @classmethod
             def class_method_bad_order(cls):
-                return 42
+                gib 42
 
             @staticmethod
             @override
             def static_method_good_order():
-                return 42
+                gib 42
             @override
             @staticmethod
             def static_method_bad_order():
-                return 42
+                gib 42
 
         self.assertIsSubclass(Derived, Base)
         instance = Derived()
@@ -6079,20 +6079,20 @@ klasse OverrideDecoratorTests(BaseTestCase):
         klasse Base:
             @property
             def correct(self) -> int:
-                return 1
+                gib 1
             @property
             def wrong(self) -> int:
-                return 1
+                gib 1
 
         klasse Child(Base):
             @property
             @override
             def correct(self) -> int:
-                return 2
+                gib 2
             @override
             @property
             def wrong(self) -> int:
-                return 2
+                gib 2
 
         instance = Child()
         self.assertEqual(instance.correct, 2)
@@ -6107,13 +6107,13 @@ klasse OverrideDecoratorTests(BaseTestCase):
             def __init__(self, fget):
                 self.fget = fget
             def __get__(self, obj, objtype=Nichts):
-                return self.fget(obj)
+                gib self.fget(obj)
 
         klasse WithOverride:
             @override  # must nicht fail on object mit `__slots__`
             @CustomProp
             def some(self):
-                return 1
+                gib 1
 
         self.assertEqual(WithOverride.some, 1)
         self.assertNotHasAttr(WithOverride.some, "__override__")
@@ -6122,18 +6122,18 @@ klasse OverrideDecoratorTests(BaseTestCase):
         def with_wraps(f):  # similar to `lru_cache` definition
             @wraps(f)
             def wrapper(*args, **kwargs):
-                return f(*args, **kwargs)
-            return wrapper
+                gib f(*args, **kwargs)
+            gib wrapper
 
         klasse WithOverride:
             @override
             @with_wraps
             def on_top(self, a: int) -> int:
-                return a + 1
+                gib a + 1
             @with_wraps
             @override
             def on_bottom(self, a: int) -> int:
-                return a + 2
+                gib a + 2
 
         instance = WithOverride()
         self.assertEqual(instance.on_top(1), 2)
@@ -6328,7 +6328,7 @@ klasse NoTypeCheckTests(BaseTestCase):
         mit self.assertWarnsRegex(DeprecationWarning, depr_msg):
             @no_type_check_decorator
             def magic_decorator(func):
-                return func
+                gib func
 
         self.assertEqual(magic_decorator.__name__, 'magic_decorator')
 
@@ -6373,7 +6373,7 @@ klasse InternalsTests(BaseTestCase):
 
 @lru_cache()
 def cached_func(x, y):
-    return 3 * x + y
+    gib 3 * x + y
 
 
 klasse MethodHolder:
@@ -6436,7 +6436,7 @@ klasse OverloadTests(BaseTestCase):
         def blah():
             pass
 
-        return blah, [overload1, overload2]
+        gib blah, [overload1, overload2]
 
     # Make sure we don't clear the global overload registry
     @patch("typing._overload_registry",
@@ -6484,8 +6484,8 @@ klasse AwaitableWrapper(typing.Awaitable[T_a]):
         self.value = value
 
     def __await__(self) -> typing.Iterator[T_a]:
-        yield
-        return self.value
+        liefere
+        gib self.value
 
 klasse AsyncIteratorWrapper(typing.AsyncIterator[T_a]):
 
@@ -6493,20 +6493,20 @@ klasse AsyncIteratorWrapper(typing.AsyncIterator[T_a]):
         self.value = value
 
     def __aiter__(self) -> typing.AsyncIterator[T_a]:
-        return self
+        gib self
 
     async def __anext__(self) -> T_a:
         data = await self.value
         wenn data:
-            return data
+            gib data
         sonst:
             raise StopAsyncIteration
 
 klasse ACM:
     async def __aenter__(self) -> int:
-        return 42
+        gib 42
     async def __aexit__(self, etype, eval, tb):
-        return Nichts
+        gib Nichts
 
 klasse A:
     y: float
@@ -6537,15 +6537,15 @@ klasse CoolEmployeeWithDefault(NamedTuple):
 klasse XMeth(NamedTuple):
     x: int
     def double(self):
-        return 2 * self.x
+        gib 2 * self.x
 
 klasse XRepr(NamedTuple):
     x: int
     y: int = 1
     def __str__(self):
-        return f'{self.x} -> {self.y}'
+        gib f'{self.x} -> {self.y}'
     def __add__(self, other):
-        return 0
+        gib 0
 
 Label = TypedDict('Label', [('label', str)])
 
@@ -6608,7 +6608,7 @@ klasse HasForeignBaseClass(mod_generics_cache.A):
 async def g_with(am: typing.AsyncContextManager[int]):
     x: int
     async mit am als x:
-        return x
+        gib x
 
 try:
     g_with(ACM()).send(Nichts)
@@ -7146,7 +7146,7 @@ klasse GetTypeHintsTests(BaseTestCase):
 
         klasse MyClass:
             def __class_getitem__(cls, args):
-                return MyAlias(cls, args)
+                gib MyAlias(cls, args)
 
         # Using a forward reference is important, otherwise it works als expected.
         # `y` tests that the `GenericAlias` subclass is preserved when stripping `Annotated`.
@@ -7399,7 +7399,7 @@ klasse CollectionsAbcTests(BaseTestCase):
 
     def test_awaitable(self):
         async def foo() -> typing.Awaitable[int]:
-            return await AwaitableWrapper(42)
+            gib await AwaitableWrapper(42)
         g = foo()
         self.assertIsInstance(g, typing.Awaitable)
         self.assertNotIsInstance(foo, typing.Awaitable)
@@ -7407,7 +7407,7 @@ klasse CollectionsAbcTests(BaseTestCase):
 
     def test_coroutine(self):
         async def foo():
-            return
+            gib
         g = foo()
         self.assertIsInstance(g, typing.Coroutine)
         mit self.assertRaises(TypeError):
@@ -7658,7 +7658,7 @@ klasse CollectionsAbcTests(BaseTestCase):
 
     def test_generator(self):
         def foo():
-            yield 42
+            liefere 42
         g = foo()
         self.assertIsSubclass(type(g), typing.Generator)
 
@@ -7683,7 +7683,7 @@ klasse CollectionsAbcTests(BaseTestCase):
 
     def test_async_generator(self):
         async def f():
-             yield 42
+             liefere 42
         g = f()
         self.assertIsSubclass(type(g), typing.AsyncGenerator)
 
@@ -7705,15 +7705,15 @@ klasse CollectionsAbcTests(BaseTestCase):
 
         klasse MMC(MMA):
             def __getitem__(self, k):
-                return Nichts
+                gib Nichts
             def __setitem__(self, k, v):
                 pass
             def __delitem__(self, k):
                 pass
             def __iter__(self):
-                return iter(())
+                gib iter(())
             def __len__(self):
-                return 0
+                gib 0
 
         self.assertEqual(len(MMC()), 0)
         self.assertWahr(callable(MMC.update))
@@ -7721,15 +7721,15 @@ klasse CollectionsAbcTests(BaseTestCase):
 
         klasse MMB(typing.MutableMapping[KT, VT]):
             def __getitem__(self, k):
-                return Nichts
+                gib Nichts
             def __setitem__(self, k, v):
                 pass
             def __delitem__(self, k):
                 pass
             def __iter__(self):
-                return iter(())
+                gib iter(())
             def __len__(self):
-                return 0
+                gib 0
 
         self.assertEqual(len(MMB()), 0)
         self.assertEqual(len(MMB[str, str]()), 0)
@@ -7757,7 +7757,7 @@ klasse CollectionsAbcTests(BaseTestCase):
         self.assertNotIsSubclass(list, I)
 
         klasse G(typing.Generator[int, int, int]): ...
-        def g(): yield 0
+        def g(): liefere 0
         self.assertIsSubclass(G, typing.Generator)
         self.assertIsSubclass(G, typing.Iterable)
         self.assertIsSubclass(G, collections.abc.Generator)
@@ -7771,7 +7771,7 @@ klasse CollectionsAbcTests(BaseTestCase):
             def athrow(self, typ, val=Nichts, tb=Nichts):
                 pass
 
-        async def g(): yield 0
+        async def g(): liefere 0
 
         self.assertIsSubclass(G, typing.AsyncGenerator)
         self.assertIsSubclass(G, typing.AsyncIterable)
@@ -7793,9 +7793,9 @@ klasse CollectionsAbcTests(BaseTestCase):
             @classmethod
             def __subclasshook__(cls, other):
                 wenn other.__name__ == 'Foo':
-                    return Wahr
+                    gib Wahr
                 sonst:
-                    return Falsch
+                    gib Falsch
 
         klasse C(Base): ...
         klasse Foo: ...
@@ -7851,7 +7851,7 @@ klasse OtherABCTests(BaseTestCase):
     def test_contextmanager(self):
         @contextlib.contextmanager
         def manager():
-            yield 42
+            liefere 42
 
         cm = manager()
         self.assertIsInstance(cm, typing.ContextManager)
@@ -7873,7 +7873,7 @@ klasse OtherABCTests(BaseTestCase):
         self.assertNotIsInstance(NotACM(), typing.AsyncContextManager)
         @contextlib.contextmanager
         def manager():
-            yield 42
+            liefere 42
 
         cm = manager()
         self.assertNotIsInstance(cm, typing.AsyncContextManager)
@@ -7899,7 +7899,7 @@ klasse TypeTests(BaseTestCase):
         klasse ProUser(User): pass
 
         def new_user(user_class: Type[User]) -> User:
-            return user_class()
+            gib user_class()
 
         new_user(BasicUser)
 
@@ -7912,7 +7912,7 @@ klasse TypeTests(BaseTestCase):
         U = TypeVar('U', bound=User)
 
         def new_user(user_class: Type[U]) -> U:
-            return user_class()
+            gib user_class()
 
         new_user(BasicUser)
 
@@ -7921,9 +7921,9 @@ klasse TypeTests(BaseTestCase):
 
         def foo(a: A) -> Optional[BaseException]:
             wenn a is Nichts:
-                return Nichts
+                gib Nichts
             sonst:
-                return a()
+                gib a()
 
         self.assertIsInstance(foo(KeyboardInterrupt), KeyboardInterrupt)
         self.assertIsNichts(foo(Nichts))
@@ -8084,13 +8084,13 @@ klasse NamedTupleTests(BaseTestCase):
             klasse XMethBad(NamedTuple):
                 x: int
                 def _fields(self):
-                    return 'no chance fuer this'
+                    gib 'no chance fuer this'
 
         mit self.assertRaises(AttributeError):
             klasse XMethBad2(NamedTuple):
                 x: int
                 def _source(self):
-                    return 'no chance fuer this als well'
+                    gib 'no chance fuer this als well'
 
     def test_annotation_type_check(self):
         # These are rejected by _type_check
@@ -8373,7 +8373,7 @@ klasse NamedTupleTests(BaseTestCase):
             def __getattribute__(self, attr):
                 wenn attr == "__set_name__":
                     raise CustomException
-                return object.__getattribute__(self, attr)
+                gib object.__getattribute__(self, attr)
 
         klasse VeryAnnoying(metaclass=Meta): pass
 
@@ -8392,13 +8392,13 @@ klasse NamedTupleTests(BaseTestCase):
         mit self.assertRaises(TypeError, msg=expected_message):
             klasse ThisWontWork(NamedTuple):
                 def __repr__(self):
-                    return super().__repr__()
+                    gib super().__repr__()
 
         mit self.assertRaises(TypeError, msg=expected_message):
             klasse ThisWontWorkEither(NamedTuple):
                 @property
                 def name(self):
-                    return __class__.__name__
+                    gib __class__.__name__
 
 
 klasse TypedDictTests(BaseTestCase):
@@ -8628,7 +8628,7 @@ klasse TypedDictTests(BaseTestCase):
                 lines.append(f'    {name}: {anno}')
             code = '\n'.join(lines)
             ns = run_code(code, extra_names)
-            return ns[class_name]
+            gib ns[class_name]
 
         fuer base_future in (Wahr, Falsch):
             fuer child_future in (Wahr, Falsch):
@@ -9247,7 +9247,7 @@ klasse IOTests(BaseTestCase):
     def test_io(self):
 
         def stuff(a: IO) -> AnyStr:
-            return a.readline()
+            gib a.readline()
 
         a = stuff.__annotations__['a']
         self.assertEqual(a.__parameters__, (AnyStr,))
@@ -9255,7 +9255,7 @@ klasse IOTests(BaseTestCase):
     def test_textio(self):
 
         def stuff(a: TextIO) -> str:
-            return a.readline()
+            gib a.readline()
 
         a = stuff.__annotations__['a']
         self.assertEqual(a.__parameters__, ())
@@ -9263,7 +9263,7 @@ klasse IOTests(BaseTestCase):
     def test_binaryio(self):
 
         def stuff(a: BinaryIO) -> bytes:
-            return a.readline()
+            gib a.readline()
 
         a = stuff.__annotations__['a']
         self.assertEqual(a.__parameters__, ())
@@ -9470,8 +9470,8 @@ klasse AnnotatedTests(BaseTestCase):
 
             def __eq__(self, other):
                 wenn nicht isinstance(other, C):
-                    return NotImplemented
-                return other.x == self.x
+                    gib NotImplemented
+                gib other.x == self.x
 
         A = Annotated[C, "a decoration"]
         a = A(5)
@@ -10598,7 +10598,7 @@ klasse RevealTypeTests(BaseTestCase):
 klasse DataclassTransformTests(BaseTestCase):
     def test_decorator(self):
         def create_model(*, frozen: bool = Falsch, kw_only: bool = Wahr):
-            return lambda cls: cls
+            gib lambda cls: cls
 
         decorated = dataclass_transform(kw_only_default=Wahr, order_default=Falsch)(create_model)
 
@@ -10657,7 +10657,7 @@ klasse DataclassTransformTests(BaseTestCase):
             def __new__(
                 cls, name, bases, namespace, *, init: bool = Wahr,
             ):
-                return super().__new__(cls, name, bases, namespace)
+                gib super().__new__(cls, name, bases, namespace)
 
         Decorated = dataclass_transform(
             order_default=Wahr, frozen_default=Wahr, field_specifiers=(Field,)
@@ -10835,7 +10835,7 @@ klasse UnionGenericAliasTests(BaseTestCase):
 def load_tests(loader, tests, pattern):
     importiere doctest
     tests.addTests(doctest.DocTestSuite(typing))
-    return tests
+    gib tests
 
 
 wenn __name__ == '__main__':

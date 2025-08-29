@@ -106,7 +106,7 @@ klasse PointersTestCase(unittest.TestCase):
         def func(arg):
             fuer i in range(10):
                 self.result.append(arg[i])
-            return 0
+            gib 0
         callback = PROTOTYPE(func)
 
         dll = CDLL(_ctypes_test.__file__)
@@ -384,7 +384,7 @@ klasse PointersTestCase(unittest.TestCase):
                     ('b', c_float),
                 )
 
-            return Cls
+            gib Cls
 
         ws_typ = WeakSet()
         ws_ptr = WeakSet()

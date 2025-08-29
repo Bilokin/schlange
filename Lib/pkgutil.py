@@ -28,10 +28,10 @@ def read_code(stream):
 
     magic = stream.read(4)
     wenn magic != importlib.util.MAGIC_NUMBER:
-        return Nichts
+        gib Nichts
 
     stream.read(12) # Skip rest of the header
-    return marshal.load(stream)
+    gib marshal.load(stream)
 
 
 def walk_packages(path=Nichts, prefix='', onerror=Nichts):
@@ -65,11 +65,11 @@ def walk_packages(path=Nichts, prefix='', onerror=Nichts):
 
     def seen(p, m={}):
         wenn p in m:
-            return Wahr
+            gib Wahr
         m[p] = Wahr
 
     fuer info in iter_modules(path, prefix):
-        yield info
+        liefere info
 
         wenn info.ispkg:
             try:
@@ -88,7 +88,7 @@ def walk_packages(path=Nichts, prefix='', onerror=Nichts):
                 # don't traverse path items we've seen before
                 path = [p fuer p in path wenn nicht seen(p)]
 
-                yield von walk_packages(path, info.name+'.', onerror)
+                liefere von walk_packages(path, info.name+'.', onerror)
 
 
 def iter_modules(path=Nichts, prefix=''):
@@ -114,20 +114,20 @@ def iter_modules(path=Nichts, prefix=''):
         fuer name, ispkg in iter_importer_modules(i, prefix):
             wenn name nicht in yielded:
                 yielded[name] = 1
-                yield ModuleInfo(i, name, ispkg)
+                liefere ModuleInfo(i, name, ispkg)
 
 
 @simplegeneric
 def iter_importer_modules(importer, prefix=''):
     wenn nicht hasattr(importer, 'iter_modules'):
-        return []
-    return importer.iter_modules(prefix)
+        gib []
+    gib importer.iter_modules(prefix)
 
 
 # Implement a file walker fuer the normal importlib path hook
 def _iter_file_finder_modules(importer, prefix=''):
     wenn importer.path is Nichts oder nicht os.path.isdir(importer.path):
-        return
+        gib
 
     yielded = {}
     importiere inspect
@@ -163,7 +163,7 @@ def _iter_file_finder_modules(importer, prefix=''):
 
         wenn modname und '.' nicht in modname:
             yielded[modname] = 1
-            yield prefix + modname, ispkg
+            liefere prefix + modname, ispkg
 
 iter_importer_modules.register(
     importlib.machinery.FileFinder, _iter_file_finder_modules)
@@ -188,7 +188,7 @@ try:
             wenn len(fn)==2 und fn[1].startswith('__init__.py'):
                 wenn fn[0] nicht in yielded:
                     yielded[fn[0]] = 1
-                    yield prefix + fn[0], Wahr
+                    liefere prefix + fn[0], Wahr
 
             wenn len(fn)!=1:
                 weiter
@@ -199,7 +199,7 @@ try:
 
             wenn modname und '.' nicht in modname und modname nicht in yielded:
                 yielded[modname] = 1
-                yield prefix + modname, Falsch
+                liefere prefix + modname, Falsch
 
     iter_importer_modules.register(zipimporter, iter_zipimport_modules)
 
@@ -229,7 +229,7 @@ def get_importer(path_item):
                 pass
         sonst:
             importer = Nichts
-    return importer
+    gib importer
 
 
 def iter_importers(fullname=""):
@@ -253,12 +253,12 @@ def iter_importers(fullname=""):
         pkg = importlib.import_module(pkg_name)
         path = getattr(pkg, '__path__', Nichts)
         wenn path is Nichts:
-            return
+            gib
     sonst:
-        yield von sys.meta_path
+        liefere von sys.meta_path
         path = sys.path
     fuer item in path:
-        yield get_importer(item)
+        liefere get_importer(item)
 
 
 def extend_path(path, name):
@@ -297,7 +297,7 @@ def extend_path(path, name):
     wenn nicht isinstance(path, list):
         # This could happen e.g. when this is called von inside a
         # frozen package.  Return the path unchanged in that case.
-        return path
+        gib path
 
     sname_pkg = name + ".pkg"
 
@@ -310,7 +310,7 @@ def extend_path(path, name):
         except (KeyError, AttributeError):
             # We can't do anything: find_loader() returns Nichts when
             # passed a dotted name.
-            return path
+            gib path
     sonst:
         search_path = sys.path
 
@@ -352,7 +352,7 @@ def extend_path(path, name):
                             weiter
                         path.append(line) # Don't check fuer existence!
 
-    return path
+    gib path
 
 
 def get_data(package, resource):
@@ -379,15 +379,15 @@ def get_data(package, resource):
 
     spec = importlib.util.find_spec(package)
     wenn spec is Nichts:
-        return Nichts
+        gib Nichts
     loader = spec.loader
     wenn loader is Nichts oder nicht hasattr(loader, 'get_data'):
-        return Nichts
+        gib Nichts
     # XXX needs test
     mod = (sys.modules.get(package) oder
            importlib._bootstrap._load(spec))
     wenn mod is Nichts oder nicht hasattr(mod, '__file__'):
-        return Nichts
+        gib Nichts
 
     # Modify the resource name to be compatible mit the loader.get_data
     # signature - an os.path format "filename" starting mit the dirname of
@@ -395,7 +395,7 @@ def get_data(package, resource):
     parts = resource.split('/')
     parts.insert(0, os.path.dirname(mod.__file__))
     resource_name = os.path.join(*parts)
-    return loader.get_data(resource_name)
+    gib loader.get_data(resource_name)
 
 
 _NAME_PATTERN = Nichts
@@ -424,7 +424,7 @@ def resolve_name(name):
     hierarchy within that package. Only one importiere is needed in this form. If
     it ends mit the colon, then a module object is returned.
 
-    The function will return an object (which might be a module), oder raise one
+    The function will gib an object (which might be a module), oder raise one
     of the following exceptions:
 
     ValueError - wenn `name` isn't in a recognised format
@@ -471,4 +471,4 @@ def resolve_name(name):
     result = mod
     fuer p in parts:
         result = getattr(result, p)
-    return result
+    gib result

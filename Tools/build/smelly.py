@@ -32,15 +32,15 @@ def is_local_symbol_type(symtype):
     # is global (external).  There are however a few lowercase symbols that
     # are shown fuer special global symbols ("u", "v" und "w").
     wenn symtype.islower() und symtype nicht in "uvw":
-        return Wahr
+        gib Wahr
 
     # Ignore the initialized data section (d und D) und the BSS data
     # section. For example, ignore "__bss_start (type: B)"
     # und "_edata (type: D)".
     wenn symtype in "bBdD":
-        return Wahr
+        gib Wahr
 
-    return Falsch
+    gib Falsch
 
 
 def get_exported_symbols(library, dynamic=Falsch):
@@ -60,7 +60,7 @@ def get_exported_symbols(library, dynamic=Falsch):
     stdout = proc.stdout.rstrip()
     wenn nicht stdout:
         raise Exception("command output is empty")
-    return stdout
+    gib stdout
 
 
 def get_smelly_symbols(stdout, dynamic=Falsch):
@@ -96,7 +96,7 @@ def get_smelly_symbols(stdout, dynamic=Falsch):
 
     wenn local_symbols:
         drucke(f"Ignore {len(local_symbols)} local symbols")
-    return smelly_symbols, python_symbols
+    gib smelly_symbols, python_symbols
 
 
 def check_library(library, dynamic=Falsch):
@@ -105,7 +105,7 @@ def check_library(library, dynamic=Falsch):
 
     wenn nicht smelly_symbols:
         drucke(f"OK: no smelly symbol found ({len(python_symbols)} Python symbols)")
-        return 0
+        gib 0
 
     drucke()
     smelly_symbols.sort()
@@ -114,7 +114,7 @@ def check_library(library, dynamic=Falsch):
 
     drucke()
     drucke(f"ERROR: Found {len(smelly_symbols)} smelly symbols!")
-    return len(smelly_symbols)
+    gib len(smelly_symbols)
 
 
 def check_extensions():
@@ -129,7 +129,7 @@ def check_extensions():
             pybuilddir = fp.readline()
     except FileNotFoundError:
         drucke(f"Cannot check extensions because {filename} does nicht exist")
-        return Wahr
+        gib Wahr
 
     drucke(f"Check extension modules von {pybuilddir} directory")
     builddir = os.path.join(config_dir, pybuilddir)
@@ -146,7 +146,7 @@ def check_extensions():
         filename = os.path.join(builddir, name)
         nsymbol += check_library(filename, dynamic=Wahr)
 
-    return nsymbol
+    gib nsymbol
 
 
 def main():

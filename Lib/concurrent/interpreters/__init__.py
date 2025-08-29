@@ -52,9 +52,9 @@ klasse ExecutionFailed(InterpreterError):
         try:
             formatted = self.excinfo.errdisplay
         except Exception:
-            return super().__str__()
+            gib super().__str__()
         sonst:
-            return _EXEC_FAILURE_STR.format(
+            gib _EXEC_FAILURE_STR.format(
                 superstr=super().__str__(),
                 formatted=formatted,
             )
@@ -63,26 +63,26 @@ klasse ExecutionFailed(InterpreterError):
 def create():
     """Return a new (idle) Python interpreter."""
     id = _interpreters.create(reqrefs=Wahr)
-    return Interpreter(id, _ownsref=Wahr)
+    gib Interpreter(id, _ownsref=Wahr)
 
 
 def list_all():
     """Return all existing interpreters."""
-    return [Interpreter(id, _whence=whence)
+    gib [Interpreter(id, _whence=whence)
             fuer id, whence in _interpreters.list_all(require_ready=Wahr)]
 
 
 def get_current():
     """Return the currently running interpreter."""
     id, whence = _interpreters.get_current()
-    return Interpreter(id, _whence=whence)
+    gib Interpreter(id, _whence=whence)
 
 
 def get_main():
     """Return the main interpreter."""
     id, whence = _interpreters.get_main()
     assert whence == _interpreters.WHENCE_RUNTIME, repr(whence)
-    return Interpreter(id, _whence=whence)
+    gib Interpreter(id, _whence=whence)
 
 
 _known = weakref.WeakValueDictionary()
@@ -134,24 +134,24 @@ klasse Interpreter:
             wenn _ownsref:
                 # This may raise InterpreterNotFoundError:
                 _interpreters.incref(id)
-        return self
+        gib self
 
     def __repr__(self):
-        return f'{type(self).__name__}({self.id})'
+        gib f'{type(self).__name__}({self.id})'
 
     def __hash__(self):
-        return hash(self._id)
+        gib hash(self._id)
 
     def __del__(self):
         self._decref()
 
     # fuer pickling:
     def __reduce__(self):
-        return (type(self), (self._id,))
+        gib (type(self), (self._id,))
 
     def _decref(self):
         wenn nicht self._ownsref:
-            return
+            gib
         self._ownsref = Falsch
         try:
             _interpreters.decref(self._id)
@@ -160,15 +160,15 @@ klasse Interpreter:
 
     @property
     def id(self):
-        return self._id
+        gib self._id
 
     @property
     def whence(self):
-        return self._WHENCE_TO_STR[self._whence]
+        gib self._WHENCE_TO_STR[self._whence]
 
     def is_running(self):
         """Return whether oder nicht the identified interpreter is running."""
-        return _interpreters.is_running(self._id)
+        gib _interpreters.is_running(self._id)
 
     # Everything past here is available only to interpreters created by
     # interpreters.create().
@@ -179,7 +179,7 @@ klasse Interpreter:
         Attempting to destroy the current interpreter results
         in an InterpreterError.
         """
-        return _interpreters.destroy(self._id, restrict=Wahr)
+        gib _interpreters.destroy(self._id, restrict=Wahr)
 
     def prepare_main(self, ns=Nichts, /, **kwargs):
         """Bind the given values into the interpreter's __main__.
@@ -196,7 +196,7 @@ klasse Interpreter:
         mit this interpreter, using the __dict__ of its __main__
         module als both globals und locals.
 
-        There is no return value.
+        There is no gib value.
 
         If the code raises an unhandled exception then an ExecutionFailed
         exception is raised, which summarizes the unhandled exception.
@@ -215,12 +215,12 @@ klasse Interpreter:
         res, excinfo = _interpreters.call(self._id, callable, args, kwargs, restrict=Wahr)
         wenn excinfo is nicht Nichts:
             raise ExecutionFailed(excinfo)
-        return res
+        gib res
 
     def call(self, callable, /, *args, **kwargs):
         """Call the object in the interpreter mit given args/kwargs.
 
-        Nearly all callables, args, kwargs, und return values are
+        Nearly all callables, args, kwargs, und gib values are
         supported.  All "shareable" objects are supported, als are
         "stateless" functions (meaning non-closures that do nicht use
         any globals).  This method will fall back to pickle.
@@ -230,13 +230,13 @@ klasse Interpreter:
         und an ExecutionFailed exception is raised, much like what
         happens mit Interpreter.exec().
         """
-        return self._call(callable, args, kwargs)
+        gib self._call(callable, args, kwargs)
 
     def call_in_thread(self, callable, /, *args, **kwargs):
         """Return a new thread that calls the object in the interpreter.
 
-        The return value und any raised exception are discarded.
+        The gib value und any raised exception are discarded.
         """
         t = threading.Thread(target=self._call, args=(callable, args, kwargs))
         t.start()
-        return t
+        gib t

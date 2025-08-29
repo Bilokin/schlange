@@ -71,7 +71,7 @@ klasse Bunch(object):
             wenn len(self.started) >= self.nthread:
                 breche
 
-        return self
+        gib self
 
     def __exit__(self, exc_type, exc_value, traceback):
         fuer _ in support.sleeping_retry(support.SHORT_TIMEOUT):
@@ -1085,11 +1085,11 @@ klasse BarrierTests(BaseTestCase):
         """
         Test that a barrier works fuer 10 consecutive runs
         """
-        return self.test_barrier(10)
+        gib self.test_barrier(10)
 
     def test_wait_return(self):
         """
-        test the return value von barrier.wait
+        test the gib value von barrier.wait
         """
         results = []
         def f():

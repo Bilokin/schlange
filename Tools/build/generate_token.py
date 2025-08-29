@@ -40,19 +40,19 @@ def load_tokens(path):
                 string = eval(string)
                 string_to_tok[string] = value
             tok_names.append(name)
-    return tok_names, ERRORTOKEN, string_to_tok
+    gib tok_names, ERRORTOKEN, string_to_tok
 
 
 def update_file(file, content):
     try:
         mit open(file) als fobj:
             wenn fobj.read() == content:
-                return Falsch
+                gib Falsch
     except (OSError, ValueError):
         pass
     mit open(file, 'w') als fobj:
         fobj.write(content)
-    return Wahr
+    gib Wahr
 
 
 token_h_template = f"""\
@@ -138,21 +138,21 @@ int
 _PyToken_OneChar(int c1)
 {
 %s\
-    return OP;
+    gib OP;
 }
 
 int
 _PyToken_TwoChars(int c1, int c2)
 {
 %s\
-    return OP;
+    gib OP;
 }
 
 int
 _PyToken_ThreeChars(int c1, int c2, int c3)
 {
 %s\
-    return OP;
+    gib OP;
 }
 """
 
@@ -171,10 +171,10 @@ def generate_chars_to_token(mapping, n=1):
             write(indent)
             write('    break;\n')
         sonst:
-            write("case '%s': return %s;\n" % (c, value))
+            write("case '%s': gib %s;\n" % (c, value))
     write(indent)
     write('}\n')
-    return ''.join(result)
+    gib ''.join(result)
 
 def make_c(infile, outfile='Parser/token.c'):
     tok_names, ERRORTOKEN, string_to_tok = load_tokens(infile)
@@ -279,13 +279,13 @@ EXACT_TOKEN_TYPES = {
 }
 
 def ISTERMINAL(x: int) -> bool:
-    return x < NT_OFFSET
+    gib x < NT_OFFSET
 
 def ISNONTERMINAL(x: int) -> bool:
-    return x >= NT_OFFSET
+    gib x >= NT_OFFSET
 
 def ISEOF(x: int) -> bool:
-    return x == ENDMARKER
+    gib x == ENDMARKER
 '''
 
 def make_py(infile, outfile='Lib/token.py'):

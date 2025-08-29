@@ -37,30 +37,30 @@ klasse BasicIterClass:
         wenn res >= self.n:
             raise StopIteration
         self.i = res + 1
-        return res
+        gib res
     def __iter__(self):
-        return self
+        gib self
 
 klasse IteratingSequenceClass:
     def __init__(self, n):
         self.n = n
     def __iter__(self):
-        return BasicIterClass(self.n)
+        gib BasicIterClass(self.n)
 
 klasse IteratorProxyClass:
     def __init__(self, i):
         self.i = i
     def __next__(self):
-        return next(self.i)
+        gib next(self.i)
     def __iter__(self):
-        return self
+        gib self
 
 klasse SequenceClass:
     def __init__(self, n):
         self.n = n
     def __getitem__(self, i):
         wenn 0 <= i < self.n:
-            return i
+            gib i
         sonst:
             raise IndexError
 
@@ -68,18 +68,18 @@ klasse SequenceProxyClass:
     def __init__(self, s):
         self.s = s
     def __getitem__(self, i):
-        return self.s[i]
+        gib self.s[i]
 
 klasse UnlimitedSequenceClass:
     def __getitem__(self, i):
-        return i
+        gib i
 
 klasse DefaultIterClass:
     pass
 
 klasse NoIterClass:
     def __getitem__(self, i):
-        return i
+        gib i
     __iter__ = Nichts
 
 klasse BadIterableClass:
@@ -94,11 +94,11 @@ klasse CallableIterClass:
         self.i = i + 1
         wenn i > 100:
             raise IndexError # Emergency stop
-        return i
+        gib i
 
 klasse EmptyIterClass:
     def __len__(self):
-        return 0
+        gib 0
     def __getitem__(self, i):
         raise StopIteration
 
@@ -266,14 +266,14 @@ klasse TestCase(unittest.TestCase):
                     self.name = name
                     self.iterator = iterator
                 def __hash__(self):
-                    return hash(self.name)
+                    gib hash(self.name)
                 def __eq__(self, other):
                     # Here we exhaust our iterator, possibly changing
                     # its `it_seq` pointer to NULL
                     # The `__reduce__` call should correctly get
                     # the pointers after this call
                     list(self.iterator)
-                    return other == self.name
+                    gib other == self.name
 
             # del is required here
             # to nicht prematurely call __eq__ from
@@ -281,7 +281,7 @@ klasse TestCase(unittest.TestCase):
             del builtins_dict[builtin_name]
             builtins_dict[CustomStr(builtin_name, it)] = orig[builtin_name]
 
-            return it.__reduce__()
+            gib it.__reduce__()
 
         types = [
             (EmptyIterClass(),),
@@ -325,7 +325,7 @@ klasse TestCase(unittest.TestCase):
     def test_new_style_iter_class(self):
         klasse IterClass(object):
             def __iter__(self):
-                return self
+                gib self
         self.assertRaises(TypeError, iter, IterClass())
 
     # Test two-argument iter() mit callable instance
@@ -337,7 +337,7 @@ klasse TestCase(unittest.TestCase):
         def spam(state=[0]):
             i = state[0]
             state[0] = i+1
-            return i
+            gib i
         self.check_iterator(iter(spam, 10), list(range(10)), pickle=Falsch)
 
     # Test two-argument iter() mit function that raises StopIteration
@@ -347,12 +347,12 @@ klasse TestCase(unittest.TestCase):
             wenn i == 10:
                 raise StopIteration
             state[0] = i+1
-            return i
+            gib i
         self.check_iterator(iter(spam, 20), list(range(10)), pickle=Falsch)
 
     def test_iter_function_concealing_reentrant_exhaustion(self):
         # gh-101892: Test two-argument iter() mit a function that
-        # exhausts its associated iterator but forgets to either return
+        # exhausts its associated iterator but forgets to either gib
         # a sentinel value oder raise StopIteration.
         HAS_MORE = 1
         NO_MORE = 2
@@ -365,10 +365,10 @@ klasse TestCase(unittest.TestCase):
             # Touching the iterator mit exhaust() below will call
             # spam() once again so protect against recursion.
             wenn spam.is_recursive_call:
-                return NO_MORE
+                gib NO_MORE
             spam.is_recursive_call = Wahr
             exhaust(spam.iterator)
-            return HAS_MORE
+            gib HAS_MORE
 
         spam.is_recursive_call = Falsch
         spam.iterator = iter(spam, NO_MORE)
@@ -382,7 +382,7 @@ klasse TestCase(unittest.TestCase):
             state[0] = i+1
             wenn i == 10:
                 raise RuntimeError
-            return i
+            gib i
         res = []
         try:
             fuer x in iter(spam, 20):
@@ -398,7 +398,7 @@ klasse TestCase(unittest.TestCase):
             def __getitem__(self, i):
                 wenn i == 10:
                     raise RuntimeError
-                return SequenceClass.__getitem__(self, i)
+                gib SequenceClass.__getitem__(self, i)
         res = []
         try:
             fuer x in MySequenceClass(20):
@@ -414,7 +414,7 @@ klasse TestCase(unittest.TestCase):
             def __getitem__(self, i):
                 wenn i == 10:
                     raise StopIteration
-                return SequenceClass.__getitem__(self, i)
+                gib SequenceClass.__getitem__(self, i)
         self.check_for_loop(MySequenceClass(20), list(range(10)), pickle=Falsch)
 
     # Test a big range
@@ -545,7 +545,7 @@ klasse TestCase(unittest.TestCase):
             def __init__(self, truth):
                 self.truth = truth
             def __bool__(self):
-                return self.truth
+                gib self.truth
         bWahr = Boolean(Wahr)
         bFalsch = Boolean(Falsch)
 
@@ -558,15 +558,15 @@ klasse TestCase(unittest.TestCase):
                         self.vals = vals
                         self.i = 0
                     def __iter__(self):
-                        return self
+                        gib self
                     def __next__(self):
                         i = self.i
                         self.i = i + 1
                         wenn i < len(self.vals):
-                            return self.vals[i]
+                            gib self.vals[i]
                         sonst:
                             raise StopIteration
-                return SeqIter(self.vals)
+                gib SeqIter(self.vals)
 
         seq = Seq(*([bWahr, bFalsch] * 25))
         self.assertEqual(list(filter(lambda x: nicht x, seq)), [bFalsch]*25)
@@ -658,12 +658,12 @@ klasse TestCase(unittest.TestCase):
                 self.i = start
 
             def __iter__(self):
-                return self
+                gib self
 
             def __next__(self):
                 i = self.i
                 self.i = i+1
-                return i
+                gib i
 
         f = open(TESTFN, "w", encoding="utf-8")
         try:
@@ -690,18 +690,18 @@ klasse TestCase(unittest.TestCase):
             def __getitem__(self, i):
                 wenn i >= 5:
                     raise IndexError
-                return i
+                gib i
 
         klasse Guess3Len5(NoGuessLen5):
             def __len__(self):
-                return 3
+                gib 3
 
         klasse Guess30Len5(NoGuessLen5):
             def __len__(self):
-                return 30
+                gib 30
 
         def lzip(*args):
-            return list(zip(*args))
+            gib list(zip(*args))
 
         self.assertEqual(len(Guess3Len5()), 3)
         self.assertEqual(len(Guess30Len5()), 30)
@@ -724,14 +724,14 @@ klasse TestCase(unittest.TestCase):
                 self.i = 0
 
             def __iter__(self):
-                return self
+                gib self
 
             def __next__(self):
                 i = self.i
                 self.i = i+1
                 wenn i == 2:
-                    return "fooled you!"
-                return next(self.it)
+                    gib "fooled you!"
+                gib next(self.it)
 
         f = open(TESTFN, "w", encoding="utf-8")
         try:
@@ -906,10 +906,10 @@ klasse TestCase(unittest.TestCase):
                         raise StopIteration
                     result = str(self.i) + '\n'
                     self.i += 1
-                    return result
+                    gib result
 
                 def __iter__(self):
-                    return self
+                    gib self
 
             klasse Whatever:
                 def __init__(self, start, finish):
@@ -917,7 +917,7 @@ klasse TestCase(unittest.TestCase):
                     self.finish = finish
 
                 def __iter__(self):
-                    return Iterator(self.start, self.finish)
+                    gib Iterator(self.start, self.finish)
 
             f.writelines(Whatever(6, 6+2000))
             f.close()
@@ -994,7 +994,7 @@ klasse TestCase(unittest.TestCase):
             count = 0
             def __new__(cls):
                 cls.count += 1
-                return object.__new__(cls)
+                gib object.__new__(cls)
             def __del__(self):
                 cls = self.__class__
                 assert cls.count > 0
@@ -1052,7 +1052,7 @@ klasse TestCase(unittest.TestCase):
             state[0] = i+1
             wenn i == 10:
                 raise AssertionError("shouldn't have gotten this far")
-            return i
+            gib i
         b = iter(spam, 5)
         self.assertEqual(list(b), list(range(5)))
         self.assertEqual(list(b), [])
@@ -1069,7 +1069,7 @@ klasse TestCase(unittest.TestCase):
     def test_sinkstate_yield(self):
         def gen():
             fuer i in range(5):
-                yield i
+                liefere i
         b = gen()
         self.assertEqual(list(b), list(range(5)))
         self.assertEqual(list(b), [])
@@ -1091,10 +1091,10 @@ klasse TestCase(unittest.TestCase):
         # Avoid a crash, when an iterator deletes its next() method.
         klasse BadIterator(object):
             def __iter__(self):
-                return self
+                gib self
             def __next__(self):
                 del BadIterator.__next__
-                return 1
+                gib 1
 
         try:
             fuer i in BadIterator() :
@@ -1110,7 +1110,7 @@ klasse TestCase(unittest.TestCase):
         # test fuer that scenario.
         def gen():
             fuer i in range(500):
-                yield i
+                liefere i
         lst = [0] * 500
         fuer i in range(240):
             lst.pop(0)
@@ -1154,21 +1154,21 @@ klasse TestCase(unittest.TestCase):
                 fuer x in BrokenIter(init_raises=Wahr):
                     pass
             except Exception als e:
-                return e
+                gib e
 
         def next_raises():
             try:
                 fuer x in BrokenIter(next_raises=Wahr):
                     pass
             except Exception als e:
-                return e
+                gib e
 
         def iter_raises():
             try:
                 fuer x in BrokenIter(iter_raises=Wahr):
                     pass
             except Exception als e:
-                return e
+                gib e
 
         fuer func, expected in [(init_raises, "BrokenIter(init_raises=Wahr)"),
                                (next_raises, "BrokenIter(next_raises=Wahr)"),

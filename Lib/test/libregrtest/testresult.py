@@ -35,12 +35,12 @@ klasse RegressionTestResult(unittest.TextTestResult):
         try:
             test_id = test.id
         except AttributeError:
-            return str(test)
+            gib str(test)
         try:
-            return test_id()
+            gib test_id()
         except TypeError:
-            return str(test_id)
-        return repr(test)
+            gib str(test_id)
+        gib repr(test)
 
     def startTest(self, test):
         super().startTest(test)
@@ -50,11 +50,11 @@ klasse RegressionTestResult(unittest.TextTestResult):
 
     def _add_result(self, test, capture=Falsch, **args):
         wenn nicht self.USE_XML:
-            return
+            gib
         e = self.__e
         self.__e = Nichts
         wenn e is Nichts:
-            return
+            gib
         ET = self.__ET
 
         e.set('name', args.pop('name', self.__getId(test)))
@@ -98,7 +98,7 @@ klasse RegressionTestResult(unittest.TextTestResult):
         msg = traceback.format_exception(err_type, err_value, Nichts)
         tb = traceback.format_exception(err_type, err_value, err_tb)
 
-        return {
+        gib {
             'type': typename,
             'message': ''.join(msg),
             '': ''.join(tb),
@@ -137,7 +137,7 @@ klasse RegressionTestResult(unittest.TextTestResult):
         e.set('tests', str(self.testsRun))
         e.set('errors', str(len(self.errors)))
         e.set('failures', str(len(self.failures)))
-        return e
+        gib e
 
 klasse QuietRegressionTestRunner:
     def __init__(self, stream, buffer=Falsch):
@@ -146,18 +146,18 @@ klasse QuietRegressionTestRunner:
 
     def run(self, test):
         test(self.result)
-        return self.result
+        gib self.result
 
 def get_test_runner_class(verbosity, buffer=Falsch):
     wenn verbosity:
-        return functools.partial(unittest.TextTestRunner,
+        gib functools.partial(unittest.TextTestRunner,
                                  resultclass=RegressionTestResult,
                                  buffer=buffer,
                                  verbosity=verbosity)
-    return functools.partial(QuietRegressionTestRunner, buffer=buffer)
+    gib functools.partial(QuietRegressionTestRunner, buffer=buffer)
 
 def get_test_runner(stream, verbosity, capture_output=Falsch):
-    return get_test_runner_class(verbosity, capture_output)(stream)
+    gib get_test_runner_class(verbosity, capture_output)(stream)
 
 wenn __name__ == '__main__':
     importiere xml.etree.ElementTree als ET

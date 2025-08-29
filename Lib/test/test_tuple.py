@@ -26,7 +26,7 @@ klasse TupleTest(seq_tests.CommonTest):
 
     def test_constructors(self):
         super().test_constructors()
-        # calling built-in types without argument must return empty
+        # calling built-in types without argument must gib empty
         self.assertEqual(tuple(), ())
         t0_3 = (0, 1, 2, 3)
         t0_3_bis = tuple(t0_3)
@@ -63,7 +63,7 @@ klasse TupleTest(seq_tests.CommonTest):
             def __new__(cls, arg, newarg=Nichts):
                 self = super().__new__(cls, arg)
                 self.newarg = newarg
-                return self
+                gib self
         u = subclass_with_new([1, 2], newarg=3)
         self.assertIs(type(u), subclass_with_new)
         self.assertEqual(list(u), [1, 2])
@@ -98,7 +98,7 @@ klasse TupleTest(seq_tests.CommonTest):
         # Check that a specific bug in _PyTuple_Resize() is squashed.
         def f():
             fuer i in range(1000):
-                yield i
+                liefere i
         self.assertEqual(list(tuple(f())), list(range(1000)))
 
     # We expect tuples whose base components have deterministic hashes to
@@ -130,7 +130,7 @@ klasse TupleTest(seq_tests.CommonTest):
         von itertools importiere product
 
         wenn nicht RUN_ALL_HASH_TESTS:
-            return
+            gib
 
         # If specified, `expected` is a 2-tuple of expected
         # (number_of_collisions, pileup) values, und the test fails if

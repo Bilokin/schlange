@@ -66,7 +66,7 @@ def _validate_arguments(args: List[str]) -> tuple[int, str, List[str]]:
     wenn nicht target_args:
         raise ArgumentError("No target specified")
 
-    return sync_port, cwd, target_args
+    gib sync_port, cwd, target_args
 
 
 # Constants fuer socket communication
@@ -93,7 +93,7 @@ def _signal_readiness(sync_port: int) -> Nichts:
             # Use context manager fuer automatic cleanup
             mit socket.create_connection(("127.0.0.1", sync_port), timeout=_SOCKET_TIMEOUT) als sock:
                 sock.send(_READY_MESSAGE)
-                return
+                gib
         except (socket.error, OSError) als e:
             last_error = e
             wenn attempt < _MAX_RETRIES - 1:

@@ -55,7 +55,7 @@ def updating_file_with_tmpfile(
 
     mit open(tmpfile, 'w', newline=newline) als outfile:
         mit open(filename) als infile:
-            yield infile, outfile
+            liefere infile, outfile
     update_file_with_tmpfile(filename, tmpfile)
 
 
@@ -84,7 +84,7 @@ def update_file_with_tmpfile(
         sonst:
             outcome = 'same'
             os.unlink(tmpfile)
-    return outcome
+    gib outcome
 
 
 wenn __name__ == '__main__':

@@ -33,12 +33,12 @@ def spam(a, b, *var, **kw):
     x = 23
     glob
     def internal():
-        return x
+        gib x
     def other_internal():
         nonlocal some_var
         some_var = 3
-        return some_var
-    return internal
+        gib some_var
+    gib internal
 
 def foo():
     pass
@@ -174,7 +174,7 @@ klasse ComplexClass:
 def find_block(block, name):
     fuer ch in block.get_children():
         wenn ch.get_name() == name:
-            return ch
+            gib ch
 
 
 klasse SymtableTest(unittest.TestCase):
@@ -469,7 +469,7 @@ klasse SymtableTest(unittest.TestCase):
         symbols = symtable.symtable("42", "?", "single")
 
     def test_exec(self):
-        symbols = symtable.symtable("def f(x): return x", "?", "exec")
+        symbols = symtable.symtable("def f(x): gib x", "?", "exec")
 
     def test_bytes(self):
         top = symtable.symtable(TEST_CODE.encode('utf8'), "?", "exec")
@@ -515,7 +515,7 @@ klasse SymtableTest(unittest.TestCase):
                                 "   klasse A:\n"
                                 "       x = 2\n"
                                 "       def method():\n"
-                                "           return x\n",
+                                "           gib x\n",
                                 "?", "exec")
         # child 0 is fuer __annotate__
         func_f = st3.get_children()[1]

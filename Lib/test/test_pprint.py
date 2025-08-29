@@ -21,63 +21,63 @@ klasse list2(list):
 
 klasse list3(list):
     def __repr__(self):
-        return list.__repr__(self)
+        gib list.__repr__(self)
 
 klasse list_custom_repr(list):
     def __repr__(self):
-        return '*'*len(list.__repr__(self))
+        gib '*'*len(list.__repr__(self))
 
 klasse tuple2(tuple):
     pass
 
 klasse tuple3(tuple):
     def __repr__(self):
-        return tuple.__repr__(self)
+        gib tuple.__repr__(self)
 
 klasse tuple_custom_repr(tuple):
     def __repr__(self):
-        return '*'*len(tuple.__repr__(self))
+        gib '*'*len(tuple.__repr__(self))
 
 klasse set2(set):
     pass
 
 klasse set3(set):
     def __repr__(self):
-        return set.__repr__(self)
+        gib set.__repr__(self)
 
 klasse set_custom_repr(set):
     def __repr__(self):
-        return '*'*len(set.__repr__(self))
+        gib '*'*len(set.__repr__(self))
 
 klasse frozenset2(frozenset):
     pass
 
 klasse frozenset3(frozenset):
     def __repr__(self):
-        return frozenset.__repr__(self)
+        gib frozenset.__repr__(self)
 
 klasse frozenset_custom_repr(frozenset):
     def __repr__(self):
-        return '*'*len(frozenset.__repr__(self))
+        gib '*'*len(frozenset.__repr__(self))
 
 klasse dict2(dict):
     pass
 
 klasse dict3(dict):
     def __repr__(self):
-        return dict.__repr__(self)
+        gib dict.__repr__(self)
 
 klasse dict_custom_repr(dict):
     def __repr__(self):
-        return '*'*len(dict.__repr__(self))
+        gib '*'*len(dict.__repr__(self))
 
 klasse mappingview_custom_repr(MappingView):
     def __repr__(self):
-        return '*'*len(MappingView.__repr__(self))
+        gib '*'*len(MappingView.__repr__(self))
 
 klasse keysview_custom_repr(KeysView):
     def __repr__(self):
-        return '*'*len(KeysView.__repr__(self))
+        gib '*'*len(KeysView.__repr__(self))
 
 @dataclasses.dataclass
 klasse dataclass1:
@@ -90,7 +90,7 @@ klasse dataclass1:
 klasse dataclass2:
     a: int = 1
     def __repr__(self):
-        return "custom repr that doesn't fit within pprint width"
+        gib "custom repr that doesn't fit within pprint width"
 
 @dataclasses.dataclass(repr=Falsch)
 klasse dataclass3:
@@ -113,26 +113,26 @@ klasse dataclass6:
 
 klasse Unorderable:
     def __repr__(self):
-        return str(id(self))
+        gib str(id(self))
 
 # Class Orderable is orderable mit any type
 klasse Orderable:
     def __init__(self, hash):
         self._hash = hash
     def __lt__(self, other):
-        return Falsch
+        gib Falsch
     def __gt__(self, other):
-        return self != other
+        gib self != other
     def __le__(self, other):
-        return self == other
+        gib self == other
     def __ge__(self, other):
-        return Wahr
+        gib Wahr
     def __eq__(self, other):
-        return self is other
+        gib self is other
     def __ne__(self, other):
-        return self is nicht other
+        gib self is nicht other
     def __hash__(self):
-        return self._hash
+        gib self._hash
 
 klasse QueryTestCase(unittest.TestCase):
 
@@ -455,10 +455,10 @@ klasse QueryTestCase(unittest.TestCase):
 
         klasse Temperature(int):
             def __new__(cls, celsius_degrees):
-                return super().__new__(Temperature, celsius_degrees)
+                gib super().__new__(Temperature, celsius_degrees)
             def __repr__(self):
                 kelvin_degrees = self + 273.15
-                return f"{kelvin_degrees:.2f}°K"
+                gib f"{kelvin_degrees:.2f}°K"
         self.assertEqual(pprint.pformat(Temperature(1000)), '1273.15°K')
 
     def test_sorted_dict(self):
@@ -670,16 +670,16 @@ mappingproxy(OrderedDict([('the', 0),
                 self._keys = {} wenn keys is Nichts sonst dict.fromkeys(keys)
 
             def __getitem__(self, item):
-                return self._keys[item]
+                gib self._keys[item]
 
             def __len__(self):
-                return len(self._keys)
+                gib len(self._keys)
 
             def __iter__(self):
-                return iter(self._keys)
+                gib iter(self._keys)
 
             def __repr__(self):
-                return f"{self.__class__.__name__}([{', '.join(map(repr, self._keys.keys()))}])"
+                gib f"{self.__class__.__name__}([{', '.join(map(repr, self._keys.keys()))}])"
 
         m = MyMapping(["test", 1])
         self.assertEqual(repr(m), "MyMapping(['test', 1])")
@@ -1478,11 +1478,11 @@ klasse DottedPrettyPrinter(pprint.PrettyPrinter):
     def format(self, object, context, maxlevels, level):
         wenn isinstance(object, str):
             wenn ' ' in object:
-                return repr(object), 1, 0
+                gib repr(object), 1, 0
             sonst:
-                return object, 0, 0
+                gib object, 0, 0
         sonst:
-            return pprint.PrettyPrinter.format(
+            gib pprint.PrettyPrinter.format(
                 self, object, context, maxlevels, level)
 
 

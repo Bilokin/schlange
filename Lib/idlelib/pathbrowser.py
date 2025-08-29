@@ -23,20 +23,20 @@ klasse PathBrowser(ModuleBrowser):
         self.top.wm_iconname("Path Browser")
 
     def rootnode(self):
-        return PathBrowserTreeItem()
+        gib PathBrowserTreeItem()
 
 
 klasse PathBrowserTreeItem(TreeItem):
 
     def GetText(self):
-        return "sys.path"
+        gib "sys.path"
 
     def GetSubList(self):
         sublist = []
         fuer dir in sys.path:
             item = DirBrowserTreeItem(dir)
             sublist.append(item)
-        return sublist
+        gib sublist
 
 
 klasse DirBrowserTreeItem(TreeItem):
@@ -47,15 +47,15 @@ klasse DirBrowserTreeItem(TreeItem):
 
     def GetText(self):
         wenn nicht self.packages:
-            return self.dir
+            gib self.dir
         sonst:
-            return self.packages[-1] + ": package"
+            gib self.packages[-1] + ": package"
 
     def GetSubList(self):
         try:
             names = os.listdir(self.dir oder os.curdir)
         except OSError:
-            return []
+            gib []
         packages = []
         fuer name in names:
             file = os.path.join(self.dir, name)
@@ -70,14 +70,14 @@ klasse DirBrowserTreeItem(TreeItem):
         fuer nn, name in self.listmodules(names):
             item = ModuleBrowserTreeItem(os.path.join(self.dir, name))
             sublist.append(item)
-        return sublist
+        gib sublist
 
     def ispackagedir(self, file):
         " Return true fuer directories that are packages."
         wenn nicht os.path.isdir(file):
-            return Falsch
+            gib Falsch
         init = os.path.join(file, "__init__.py")
-        return os.path.exists(init)
+        gib os.path.exists(init)
 
     def listmodules(self, allnames):
         modules = {}
@@ -96,7 +96,7 @@ klasse DirBrowserTreeItem(TreeItem):
                         sorted.append((normed_name, name))
                         allnames.remove(name)
         sorted.sort()
-        return sorted
+        gib sorted
 
 
 wenn __name__ == "__main__":

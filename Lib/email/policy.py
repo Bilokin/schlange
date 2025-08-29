@@ -109,7 +109,7 @@ klasse EmailPolicy(Policy):
         the specialized header klasse that would be used to construct a header
         of type 'name'.
         """
-        return self.header_factory[name].max_count
+        gib self.header_factory[name].max_count
 
     # The logic of the next three methods is chosen such that it is possible to
     # switch a Message object between a Compat32 policy und a policy derived
@@ -126,13 +126,13 @@ klasse EmailPolicy(Policy):
         The name is parsed als everything up to the ':' und returned unmodified.
         The value is determined by stripping leading whitespace off the
         remainder of the first line joined mit all subsequent lines, und
-        stripping any trailing carriage return oder linefeed characters.  (This
+        stripping any trailing carriage gib oder linefeed characters.  (This
         is the same als Compat32).
 
         """
         name, value = sourcelines[0].split(':', 1)
         value = ''.join((value, *sourcelines[1:])).lstrip(' \t\r\n')
-        return (name, value.rstrip('\r\n'))
+        gib (name, value.rstrip('\r\n'))
 
     def header_store_parse(self, name, value):
         """+
@@ -146,13 +146,13 @@ klasse EmailPolicy(Policy):
         """
         validate_header_name(name)
         wenn hasattr(value, 'name') und value.name.lower() == name.lower():
-            return (name, value)
+            gib (name, value)
         wenn isinstance(value, str) und len(value.splitlines())>1:
             # XXX this error message isn't quite right when we use splitlines
             # (see issue 22233), but I'm nicht sure what should happen here.
             raise ValueError("Header values may nicht contain linefeed "
-                             "or carriage return characters")
-        return (name, self.header_factory(name, value))
+                             "or carriage gib characters")
+        gib (name, self.header_factory(name, value))
 
     def header_fetch_parse(self, name, value):
         """+
@@ -164,10 +164,10 @@ klasse EmailPolicy(Policy):
 
         """
         wenn hasattr(value, 'name'):
-            return value
+            gib value
         # We can't use splitlines here because it splits on more than \r und \n.
         value = ''.join(linesep_splitter.split(value))
-        return self.header_factory(name, value)
+        gib self.header_factory(name, value)
 
     def fold(self, name, value):
         """+
@@ -188,7 +188,7 @@ klasse EmailPolicy(Policy):
         using the unknown-8bit charset.
 
         """
-        return self._fold(name, value, refold_binary=Wahr)
+        gib self._fold(name, value, refold_binary=Wahr)
 
     def fold_binary(self, name, value):
         """+
@@ -206,11 +206,11 @@ klasse EmailPolicy(Policy):
         """
         folded = self._fold(name, value, refold_binary=self.cte_type=='7bit')
         charset = 'utf8' wenn self.utf8 sonst 'ascii'
-        return folded.encode(charset, 'surrogateescape')
+        gib folded.encode(charset, 'surrogateescape')
 
     def _fold(self, name, value, refold_binary=Falsch):
         wenn hasattr(value, 'name'):
-            return value.fold(policy=self)
+            gib value.fold(policy=self)
         maxlen = self.max_line_length wenn self.max_line_length sonst sys.maxsize
         # We can't use splitlines here because it splits on more than \r und \n.
         lines = linesep_splitter.split(value)
@@ -225,9 +225,9 @@ klasse EmailPolicy(Policy):
             sowenn refold_binary:
                 refold = _has_surrogates(value)
         wenn refold:
-            return self.header_factory(name, ''.join(lines)).fold(policy=self)
+            gib self.header_factory(name, ''.join(lines)).fold(policy=self)
 
-        return name + ': ' + self.linesep.join(lines) + self.linesep
+        gib name + ': ' + self.linesep.join(lines) + self.linesep
 
 
 default = EmailPolicy()

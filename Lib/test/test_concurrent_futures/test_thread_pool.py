@@ -81,7 +81,7 @@ klasse ThreadPoolExecutorTest(ThreadPoolMixin, ExecutorTest, BaseTestCase):
                 p = mp.get_context('fork').Process(target=lambda: 1)
                 p.start()
             p.join()
-            return p.exitcode
+            gib p.exitcode
 
         mit futures.ThreadPoolExecutor(1) als pool:
             process_exitcode = pool.submit(fork_process_and_return_exitcode).result()

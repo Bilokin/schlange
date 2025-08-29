@@ -41,7 +41,7 @@ Unpack generic sequence
 
     >>> klasse Seq:
     ...     def __getitem__(self, i):
-    ...         wenn i >= 0 und i < 3: return i
+    ...         wenn i >= 0 und i < 3: gib i
     ...         raise IndexError
     ...
     >>> a, b, c = Seq()
@@ -105,7 +105,7 @@ error
     >>> klasse BadSeq:
     ...     def __getitem__(self, i):
     ...         wenn i >= 0 und i < 3:
-    ...             return i
+    ...             gib i
     ...         sowenn i == 3:
     ...             raise BozoError
     ...         sonst:
@@ -172,9 +172,9 @@ Ensure that custom `__len__()` is NOT called when showing the error message
 
     >>> klasse LengthTooLong:
     ...     def __len__(self):
-    ...         return 5
+    ...         gib 5
     ...     def __getitem__(self, i):
-    ...         return i*2
+    ...         gib i*2
     ...
     >>> x, y, z = LengthTooLong()
     Traceback (most recent call last):
@@ -185,9 +185,9 @@ For evil cases like these als well, no actual count to be shown
 
     >>> klasse BadLength:
     ...     def __len__(self):
-    ...         return 1
+    ...         gib 1
     ...     def __getitem__(self, i):
-    ...         return i*2
+    ...         gib i*2
     ...
     >>> x, y, z = BadLength()
     Traceback (most recent call last):
@@ -199,7 +199,7 @@ __test__ = {'doctests' : doctests}
 
 def load_tests(loader, tests, pattern):
     tests.addTest(doctest.DocTestSuite())
-    return tests
+    gib tests
 
 
 klasse TestCornerCases(unittest.TestCase):
@@ -208,7 +208,7 @@ klasse TestCornerCases(unittest.TestCase):
         target = "(" + "y,"*400 + ")"
         code = f"""def unpack_400(x):
             {target} = x
-            return y
+            gib y
         """
         ns = {}
         exec(code, ns)

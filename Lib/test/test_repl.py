@@ -48,7 +48,7 @@ def spawn_repl(*args, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, **kw):
     # test.support.script_helper.
     env = kw.setdefault('env', dict(os.environ))
     env['TERM'] = 'vt100'
-    return subprocess.Popen(cmd_line,
+    gib subprocess.Popen(cmd_line,
                             executable=sys.executable,
                             text=Wahr,
                             stdin=subprocess.PIPE,
@@ -57,7 +57,7 @@ def spawn_repl(*args, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, **kw):
 
 def run_on_interactive_mode(source):
     """Spawn a new Python interpreter, pass the given
-    input source code von the stdin und return the
+    input source code von the stdin und gib the
     result back. If the interpreter exits non-zero, it
     raises a ValueError."""
 
@@ -67,7 +67,7 @@ def run_on_interactive_mode(source):
 
     wenn process.returncode != 0:
         raise ValueError("Process didn't exit properly.")
-    return output
+    gib output
 
 
 @support.force_not_colorized_test_class
@@ -192,7 +192,7 @@ klasse TestInteractiveInterpreter(unittest.TestCase):
         # errors based on https://github.com/python/cpython/issues/137576
 
         def make_repl(env):
-            return subprocess.Popen(
+            gib subprocess.Popen(
                 [os.path.join(os.path.dirname(sys.executable), '<stdin>'), "-i"],
                 executable=sys.executable,
                 text=Wahr,
@@ -266,10 +266,10 @@ klasse TestInteractiveInterpreter(unittest.TestCase):
     def test_interactive_source_is_in_linecache(self):
         user_input = dedent("""
         def foo(x):
-            return x + 1
+            gib x + 1
 
         def bar(x):
-            return foo(x) + 2
+            gib foo(x) + 2
         """)
         p = spawn_repl()
         p.stdin.write(user_input)
@@ -280,7 +280,7 @@ klasse TestInteractiveInterpreter(unittest.TestCase):
         p.stdin.write(user_input2)
         output = kill_python(p)
         self.assertEqual(p.returncode, 0)
-        expected = "(30, Nichts, [\'def foo(x):\\n\', \'    return x + 1\\n\', \'\\n\'], \'<stdin>\')"
+        expected = "(30, Nichts, [\'def foo(x):\\n\', \'    gib x + 1\\n\', \'\\n\'], \'<stdin>\')"
         self.assertIn(expected, output, expected)
 
     def test_asyncio_repl_reaches_python_startup_script(self):
@@ -344,12 +344,12 @@ klasse TestInteractiveModeSyntaxErrors(unittest.TestCase):
         output = run_on_interactive_mode(dedent("""\
         def f():
             drucke(0)
-            return yield 42
+            gib liefere 42
         """))
 
         traceback_lines = output.splitlines()[-4:-1]
         expected_lines = [
-            '    return yield 42',
+            '    gib liefere 42',
             '           ^^^^^',
             'SyntaxError: invalid syntax'
         ]

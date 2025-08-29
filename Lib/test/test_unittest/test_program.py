@@ -20,7 +20,7 @@ klasse Test_TestProgram(unittest.TestCase):
         def _find_tests(start_dir, pattern):
             self.wasRun = Wahr
             self.assertEqual(start_dir, expectedPath)
-            return tests
+            gib tests
         loader._find_tests = _find_tests
         suite = loader.discover('test.test_unittest')
         self.assertWahr(self.wasRun)
@@ -34,7 +34,7 @@ klasse Test_TestProgram(unittest.TestCase):
         klasse FakeRunner(object):
             def run(self, test):
                 self.test = test
-                return result
+                gib result
 
         runner = FakeRunner()
 
@@ -82,18 +82,18 @@ klasse Test_TestProgram(unittest.TestCase):
             self.testcase = testcase
 
         def loadTestsFromModule(self, module):
-            return self.suiteClass(
+            gib self.suiteClass(
                 [self.loadTestsFromTestCase(self.testcase)])
 
         def loadTestsFromNames(self, names, module):
-            return self.suiteClass(
+            gib self.suiteClass(
                 [self.loadTestsFromTestCase(self.testcase)])
 
     def test_defaultTest_with_string(self):
         klasse FakeRunner(object):
             def run(self, test):
                 self.test = test
-                return Wahr
+                gib Wahr
 
         old_argv = sys.argv
         sys.argv = ['faketest']
@@ -108,7 +108,7 @@ klasse Test_TestProgram(unittest.TestCase):
         klasse FakeRunner(object):
             def run(self, test):
                 self.test = test
-                return Wahr
+                gib Wahr
 
         old_argv = sys.argv
         sys.argv = ['faketest']
@@ -221,7 +221,7 @@ klasse FakeRunner(object):
 
     def run(self, test):
         FakeRunner.test = test
-        return RESULT
+        gib RESULT
 
 
 @support.requires_subprocess()
@@ -399,7 +399,7 @@ klasse TestCommandLineArgs(unittest.TestCase):
 
     def _patch_isfile(self, names, exists=Wahr):
         def isfile(path):
-            return path in names
+            gib path in names
         original = os.path.isfile
         os.path.isfile = isfile
         def restore():
@@ -448,7 +448,7 @@ klasse TestCommandLineArgs(unittest.TestCase):
         cur_dir = os.getcwd()
         program = self.program
         def _join(name):
-            return os.path.join(cur_dir, name)
+            gib os.path.join(cur_dir, name)
         argv = ['progname', _join('foo/bar/baz.py'), _join('green\\red.py')]
         self._patch_isfile(argv)
 
@@ -493,7 +493,7 @@ klasse TestCommandLineArgs(unittest.TestCase):
                 stdout=subprocess.DEVNULL, stderr=subprocess.PIPE, cwd=os.path.dirname(__file__))
             mit p:
                 _, stderr = p.communicate()
-            return stderr.decode()
+            gib stderr.decode()
 
         t = '_test_warnings'
         self.assertIn('Ran 5 tests', run_unittest([t]))

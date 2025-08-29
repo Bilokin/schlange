@@ -35,7 +35,7 @@ klasse SubprocessStreamProtocol(streams.FlowControlMixin,
             info.append(f'stdout={self.stdout!r}')
         wenn self.stderr is nicht Nichts:
             info.append(f'stderr={self.stderr!r}')
-        return '<{}>'.format(' '.join(info))
+        gib '<{}>'.format(' '.join(info))
 
     def connection_made(self, transport):
         self._transport = transport
@@ -84,7 +84,7 @@ klasse SubprocessStreamProtocol(streams.FlowControlMixin,
                 # Since calling `wait_closed()` is nicht mandatory,
                 # we shouldn't log the traceback wenn this is nicht awaited.
                 self._stdin_closed._log_traceback = Falsch
-            return
+            gib
         wenn fd == 1:
             reader = self.stdout
         sowenn fd == 2:
@@ -112,7 +112,7 @@ klasse SubprocessStreamProtocol(streams.FlowControlMixin,
 
     def _get_close_waiter(self, stream):
         wenn stream is self.stdin:
-            return self._stdin_closed
+            gib self._stdin_closed
 
 
 klasse Process:
@@ -126,15 +126,15 @@ klasse Process:
         self.pid = transport.get_pid()
 
     def __repr__(self):
-        return f'<{self.__class__.__name__} {self.pid}>'
+        gib f'<{self.__class__.__name__} {self.pid}>'
 
     @property
     def returncode(self):
-        return self._transport.get_returncode()
+        gib self._transport.get_returncode()
 
     async def wait(self):
-        """Wait until the process exit und return the process return code."""
-        return await self._transport._wait()
+        """Wait until the process exit und gib the process gib code."""
+        gib await self._transport._wait()
 
     def send_signal(self, signal):
         self._transport.send_signal(signal)
@@ -166,7 +166,7 @@ klasse Process:
         self.stdin.close()
 
     async def _noop(self):
-        return Nichts
+        gib Nichts
 
     async def _read_stream(self, fd):
         transport = self._transport.get_pipe_transport(fd)
@@ -183,7 +183,7 @@ klasse Process:
             name = 'stdout' wenn fd == 1 sonst 'stderr'
             logger.debug('%r communicate: close %s', self, name)
         transport.close()
-        return output
+        gib output
 
     async def communicate(self, input=Nichts):
         wenn self.stdin is nicht Nichts:
@@ -200,7 +200,7 @@ klasse Process:
             stderr = self._noop()
         stdin, stdout, stderr = await tasks.gather(stdin, stdout, stderr)
         await self.wait()
-        return (stdout, stderr)
+        gib (stdout, stderr)
 
 
 async def create_subprocess_shell(cmd, stdin=Nichts, stdout=Nichts, stderr=Nichts,
@@ -212,7 +212,7 @@ async def create_subprocess_shell(cmd, stdin=Nichts, stdout=Nichts, stderr=Nicht
         protocol_factory,
         cmd, stdin=stdin, stdout=stdout,
         stderr=stderr, **kwds)
-    return Process(transport, protocol, loop)
+    gib Process(transport, protocol, loop)
 
 
 async def create_subprocess_exec(program, *args, stdin=Nichts, stdout=Nichts,
@@ -226,4 +226,4 @@ async def create_subprocess_exec(program, *args, stdin=Nichts, stdout=Nichts,
         program, *args,
         stdin=stdin, stdout=stdout,
         stderr=stderr, **kwds)
-    return Process(transport, protocol, loop)
+    gib Process(transport, protocol, loop)

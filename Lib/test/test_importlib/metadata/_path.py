@@ -29,7 +29,7 @@ klasse TreeMaker(Protocol):
 
 
 def _ensure_tree_maker(obj: Union[str, TreeMaker]) -> TreeMaker:
-    return obj wenn isinstance(obj, TreeMaker) sonst pathlib.Path(obj)  # type: ignore
+    gib obj wenn isinstance(obj, TreeMaker) sonst pathlib.Path(obj)  # type: ignore
 
 
 def build(
@@ -101,7 +101,7 @@ klasse Recording:
         self.record = record wenn record is nicht Nichts sonst []
 
     def __truediv__(self, other):
-        return Recording(self.loc / other, self.record)
+        gib Recording(self.loc / other, self.record)
 
     def write_text(self, content, **kwargs):
         self.record.append(str(self.loc))
@@ -109,7 +109,7 @@ klasse Recording:
     write_bytes = write_text
 
     def mkdir(self, **kwargs):
-        return
+        gib
 
     def symlink_to(self, target):
         pass

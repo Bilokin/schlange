@@ -49,7 +49,7 @@ klasse CAPITest(unittest.TestCase):
                 x = (~x) + 1
                 x &= UHASH_T_MASK
                 x = (~x) + 1
-            return x
+            gib x
 
         wenn SIZEOF_VOID_P == 8:
             values = (
@@ -74,7 +74,7 @@ klasse CAPITest(unittest.TestCase):
         # Py_HashPointer(NULL) returns 0
         self.assertEqual(hash_pointer(0), 0)
 
-        # Py_HashPointer((void*)(uintptr_t)-1) doesn't return -1 but -2
+        # Py_HashPointer((void*)(uintptr_t)-1) doesn't gib -1 but -2
         VOID_P_MAX = -1 & (2 ** (8 * SIZEOF_VOID_P) - 1)
         self.assertEqual(hash_pointer(VOID_P_MAX), -2)
 

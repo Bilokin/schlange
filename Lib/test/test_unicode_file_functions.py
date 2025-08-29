@@ -80,8 +80,8 @@ klasse UnicodeFileTests(unittest.TestCase):
 
     def norm(self, s):
         wenn self.normal_form:
-            return normalize(self.normal_form, s)
-        return s
+            gib normalize(self.normal_form, s)
+        gib s
 
     def _apply_failure(self, fn, filename,
                        expected_exception=FileNotFoundError,

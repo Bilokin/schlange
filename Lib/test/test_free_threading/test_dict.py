@@ -42,7 +42,7 @@ klasse TestDict(TestCase):
             # Make object, make inline values invalid, und then delete dict
             a.__dict__ = {}
             del a.__dict__
-            return a
+            gib a
 
         self.racing_creation(make_obj)
 
@@ -51,7 +51,7 @@ klasse TestDict(TestCase):
         outside of the normal attribute setting code path"""
         def make_obj():
             def f(): pass
-            return f
+            gib f
 
         def set(func, name, val):
             # Force creation of the dict via PyObject_GenericGetDict

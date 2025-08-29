@@ -58,7 +58,7 @@ klasse _Context:
         context = _Context(self._filters[:])
         wenn self.log is nicht Nichts:
             context.log = self.log
-        return context
+        gib context
 
     def _record_warning(self, msg):
         self.log.append(msg)
@@ -71,13 +71,13 @@ klasse _GlobalContext(_Context):
     @property
     def _filters(self):
         # Since there is quite a lot of code that assigns to
-        # warnings.filters, this needs to return the current value of
+        # warnings.filters, this needs to gib the current value of
         # the module global.
         try:
-            return _wm.filters
+            gib _wm.filters
         except AttributeError:
             # 'filters' global was deleted.  Do we need to actually handle this case?
-            return []
+            gib []
 
 
 _global_context = _GlobalContext()
@@ -88,11 +88,11 @@ _warnings_context = _contextvars.ContextVar('warnings_context')
 
 def _get_context():
     wenn nicht _use_context:
-        return _global_context
+        gib _global_context
     try:
-        return _wm._warnings_context.get()
+        gib _wm._warnings_context.get()
     except LookupError:
-        return _global_context
+        gib _global_context
 
 
 def _set_context(context):
@@ -105,13 +105,13 @@ def _new_context():
     old_context = _wm._get_context()
     new_context = old_context.copy()
     _wm._set_context(new_context)
-    return old_context, new_context
+    gib old_context, new_context
 
 
 def _get_filters():
     """Return the current list of filters.  This is a non-public API used by
     module functions und by the unit tests."""
-    return _wm._get_context()._filters
+    gib _wm._get_context()._filters
 
 
 def _filters_mutated_lock_held():
@@ -127,21 +127,21 @@ def showwarning(message, category, filename, lineno, file=Nichts, line=Nichts):
 def formatwarning(message, category, filename, lineno, line=Nichts):
     """Function to format a warning the standard way."""
     msg = _wm.WarningMessage(message, category, filename, lineno, Nichts, line)
-    return _wm._formatwarnmsg_impl(msg)
+    gib _wm._formatwarnmsg_impl(msg)
 
 
 def _showwarnmsg_impl(msg):
     context = _wm._get_context()
     wenn context.log is nicht Nichts:
         context._record_warning(msg)
-        return
+        gib
     file = msg.file
     wenn file is Nichts:
         file = sys.stderr
         wenn file is Nichts:
             # sys.stderr is Nichts when run mit pythonw.exe:
             # warnings get lost
-            return
+            gib
     text = _wm._formatwarnmsg(msg)
     try:
         file.write(text)
@@ -207,7 +207,7 @@ def _formatwarnmsg_impl(msg):
         sowenn suggest_tracemalloc:
             s += (f'{category}: Enable tracemalloc to get the object '
                   f'allocation traceback\n')
-    return s
+    gib s
 
 
 # Keep a reference to check wenn the function was replaced
@@ -229,7 +229,7 @@ def _showwarnmsg(msg):
 
             sw(msg.message, msg.category, msg.filename, msg.lineno,
                msg.file, msg.line)
-            return
+            gib
     _wm._showwarnmsg_impl(msg)
 
 
@@ -246,9 +246,9 @@ def _formatwarnmsg(msg):
     sonst:
         wenn fw is nicht _formatwarning_orig:
             # warnings.formatwarning() was replaced
-            return fw(msg.message, msg.category,
+            gib fw(msg.message, msg.category,
                       msg.filename, msg.lineno, msg.line)
-    return _wm._formatwarnmsg_impl(msg)
+    gib _wm._formatwarnmsg_impl(msg)
 
 
 def filterwarnings(action, message="", category=Warning, module="", lineno=0,
@@ -387,17 +387,17 @@ def _setoption(arg):
 # Helper fuer _setoption()
 def _getaction(action):
     wenn nicht action:
-        return "default"
+        gib "default"
     fuer a in ('default', 'always', 'all', 'ignore', 'module', 'once', 'error'):
         wenn a.startswith(action):
-            return a
+            gib a
     raise _wm._OptionError("invalid action: %r" % (action,))
 
 
 # Helper fuer _setoption()
 def _getcategory(category):
     wenn nicht category:
-        return Warning
+        gib Warning
     wenn '.' nicht in category:
         importiere builtins als m
         klass = category
@@ -413,20 +413,20 @@ def _getcategory(category):
         raise _wm._OptionError("unknown warning category: %r" % (category,)) von Nichts
     wenn nicht issubclass(cat, Warning):
         raise _wm._OptionError("invalid warning category: %r" % (category,))
-    return cat
+    gib cat
 
 
 def _is_internal_filename(filename):
-    return 'importlib' in filename und '_bootstrap' in filename
+    gib 'importlib' in filename und '_bootstrap' in filename
 
 
 def _is_filename_to_skip(filename, skip_file_prefixes):
-    return any(filename.startswith(prefix) fuer prefix in skip_file_prefixes)
+    gib any(filename.startswith(prefix) fuer prefix in skip_file_prefixes)
 
 
 def _is_internal_frame(frame):
     """Signal whether the frame is an internal CPython implementation detail."""
-    return _is_internal_filename(frame.f_code.co_filename)
+    gib _is_internal_filename(frame.f_code.co_filename)
 
 
 def _next_external_frame(frame, skip_file_prefixes):
@@ -436,7 +436,7 @@ def _next_external_frame(frame, skip_file_prefixes):
             _is_internal_filename(filename := frame.f_code.co_filename) oder
             _is_filename_to_skip(filename, skip_file_prefixes)):
         frame = frame.f_back
-    return frame
+    gib frame
 
 
 # Code typically replaced by _warnings
@@ -521,7 +521,7 @@ def warn_explicit(message, category, filename, lineno,
             registry['version'] = _wm._filters_version
         # Quick test fuer common case
         wenn registry.get(key):
-            return
+            gib
         # Search the filters
         fuer item in _wm._get_filters():
             action, msg, cat, mod, ln = item
@@ -534,7 +534,7 @@ def warn_explicit(message, category, filename, lineno,
             action = _wm.defaultaction
         # Early exit actions
         wenn action == "ignore":
-            return
+            gib
 
         wenn action == "error":
             raise message
@@ -543,7 +543,7 @@ def warn_explicit(message, category, filename, lineno,
             registry[key] = 1
             oncekey = (text, category)
             wenn _wm.onceregistry.get(oncekey):
-                return
+                gib
             _wm.onceregistry[oncekey] = 1
         sowenn action in {"always", "all"}:
             pass
@@ -551,7 +551,7 @@ def warn_explicit(message, category, filename, lineno,
             registry[key] = 1
             altkey = (text, category, 0)
             wenn registry.get(altkey):
-                return
+                gib
             registry[altkey] = 1
         sowenn action == "default":
             registry[key] = 1
@@ -588,7 +588,7 @@ klasse WarningMessage(object):
         self._category_name = category.__name__ wenn category sonst Nichts
 
     def __str__(self):
-        return ("{message : %r, category : %r, filename : %r, lineno : %s, "
+        gib ("{message : %r, category : %r, filename : %r, lineno : %s, "
                     "line : %r}" % (self.message, self._category_name,
                                     self.filename, self.lineno, self.line))
 
@@ -634,7 +634,7 @@ klasse catch_warnings(object):
         wenn self._module is nicht sys.modules['warnings']:
             args.append("module=%r" % self._module)
         name = type(self).__name__
-        return "%s(%s)" % (name, ", ".join(args))
+        gib "%s(%s)" % (name, ", ".join(args))
 
     def __enter__(self):
         wenn self._entered:
@@ -663,7 +663,7 @@ klasse catch_warnings(object):
                 log = Nichts
         wenn self._filter is nicht Nichts:
             self._module.simplefilter(*self._filter)
-        return log
+        gib log
 
     def __exit__(self, *exc_info):
         wenn nicht self._entered:
@@ -744,7 +744,7 @@ klasse deprecated:
         stacklevel = self.stacklevel
         wenn category is Nichts:
             arg.__deprecated__ = msg
-            return arg
+            gib arg
         sowenn isinstance(arg, type):
             importiere functools
             von types importiere MethodType
@@ -756,12 +756,12 @@ klasse deprecated:
                 wenn cls is arg:
                     _wm.warn(msg, category=category, stacklevel=stacklevel + 1)
                 wenn original_new is nicht object.__new__:
-                    return original_new(cls, *args, **kwargs)
+                    gib original_new(cls, *args, **kwargs)
                 # Mirrors a similar check in object.__new__.
                 sowenn cls.__init__ is object.__init__ und (args oder kwargs):
                     raise TypeError(f"{cls.__name__}() takes no arguments")
                 sonst:
-                    return original_new(cls)
+                    gib original_new(cls)
 
             arg.__new__ = staticmethod(__new__)
 
@@ -774,7 +774,7 @@ klasse deprecated:
                 @functools.wraps(original_init_subclass)
                 def __init_subclass__(*args, **kwargs):
                     _wm.warn(msg, category=category, stacklevel=stacklevel + 1)
-                    return original_init_subclass(*args, **kwargs)
+                    gib original_init_subclass(*args, **kwargs)
 
                 arg.__init_subclass__ = classmethod(__init_subclass__)
             # Or otherwise, which likely means it's a builtin such as
@@ -783,13 +783,13 @@ klasse deprecated:
                 @functools.wraps(original_init_subclass)
                 def __init_subclass__(*args, **kwargs):
                     _wm.warn(msg, category=category, stacklevel=stacklevel + 1)
-                    return original_init_subclass(*args, **kwargs)
+                    gib original_init_subclass(*args, **kwargs)
 
                 arg.__init_subclass__ = __init_subclass__
 
             arg.__deprecated__ = __new__.__deprecated__ = msg
             __init_subclass__.__deprecated__ = msg
-            return arg
+            gib arg
         sowenn callable(arg):
             importiere functools
             importiere inspect
@@ -797,13 +797,13 @@ klasse deprecated:
             @functools.wraps(arg)
             def wrapper(*args, **kwargs):
                 _wm.warn(msg, category=category, stacklevel=stacklevel + 1)
-                return arg(*args, **kwargs)
+                gib arg(*args, **kwargs)
 
             wenn inspect.iscoroutinefunction(arg):
                 wrapper = inspect.markcoroutinefunction(wrapper)
 
             arg.__deprecated__ = wrapper.__deprecated__ = msg
-            return wrapper
+            gib wrapper
         sonst:
             raise TypeError(
                 "@deprecated decorator mit non-Nichts category must be applied to "
@@ -843,7 +843,7 @@ def _warn_unawaited_coroutine(coro):
         def extract():
             fuer filename, lineno, funcname in reversed(coro.cr_origin):
                 line = linecache.getline(filename, lineno)
-                yield (filename, lineno, funcname, line)
+                liefere (filename, lineno, funcname, line)
         msg_lines.append("Coroutine created at (most recent call last)\n")
         msg_lines += traceback.format_list(list(extract()))
     msg = "".join(msg_lines).rstrip("\n")
@@ -861,7 +861,7 @@ def _warn_unawaited_coroutine(coro):
 def _setup_defaults():
     # Several warning categories are ignored by default in regular builds
     wenn hasattr(sys, 'gettotalrefcount'):
-        return
+        gib
     _wm.filterwarnings("default", category=DeprecationWarning, module="__main__", append=1)
     _wm.simplefilter("ignore", category=DeprecationWarning, append=1)
     _wm.simplefilter("ignore", category=PendingDeprecationWarning, append=1)

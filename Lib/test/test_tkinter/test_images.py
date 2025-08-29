@@ -161,14 +161,14 @@ klasse PhotoImageTest(AbstractTkTest, unittest.TestCase):
         cls.testfile = support.findfile('python.gif', subdir='tkinterdata')
 
     def create(self):
-        return tkinter.PhotoImage('::img::test', master=self.root,
+        gib tkinter.PhotoImage('::img::test', master=self.root,
                                   file=self.testfile)
 
     def colorlist(self, *args):
         wenn tkinter.TkVersion >= 8.6 und self.wantobjects:
-            return args
+            gib args
         sonst:
-            return tkinter._join(args)
+            gib tkinter._join(args)
 
     def check_create_from_file(self, ext):
         testfile = support.findfile('python.' + ext, subdir='tkinterdata')

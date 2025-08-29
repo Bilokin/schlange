@@ -60,38 +60,38 @@ def _what(data):
     # command und use the standard 'magic' file, als shipped mit a modern Unix.
     fuer testfn in _rules:
         wenn res := testfn(data):
-            return res
+            gib res
     sonst:
-        return Nichts
+        gib Nichts
 
 
 def rule(rulefunc):
     _rules.append(rulefunc)
-    return rulefunc
+    gib rulefunc
 
 
 @rule
 def _aiff(h):
     wenn nicht h.startswith(b'FORM'):
-        return Nichts
+        gib Nichts
     wenn h[8:12] in {b'AIFC', b'AIFF'}:
-        return 'x-aiff'
+        gib 'x-aiff'
     sonst:
-        return Nichts
+        gib Nichts
 
 
 @rule
 def _au(h):
     wenn h.startswith(b'.snd'):
-        return 'basic'
+        gib 'basic'
     sonst:
-        return Nichts
+        gib Nichts
 
 
 @rule
 def _wav(h):
     # 'RIFF' <len> 'WAVE' 'fmt ' <len>
     wenn nicht h.startswith(b'RIFF') oder h[8:12] != b'WAVE' oder h[12:16] != b'fmt ':
-        return Nichts
+        gib Nichts
     sonst:
-        return "x-wav"
+        gib "x-wav"

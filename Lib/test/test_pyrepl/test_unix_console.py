@@ -34,7 +34,7 @@ def unix_console(events, **kwargs):
     console.prepare()
     fuer key, val in kwargs.items():
         setattr(console, key, val)
-    return console
+    gib console
 
 
 handle_events_unix_console = partial(
@@ -236,11 +236,11 @@ klasse TestConsole(TestCase):
         console.getheightwidth = MagicMock(lambda _: (2, 80))
 
         def same_reader(_):
-            return reader
+            gib reader
 
         def same_console(events):
             console.get_event = MagicMock(side_effect=events)
-            return console
+            gib console
 
         _, con = handle_all_events(
             [Event(evt="resize", data=Nichts)],
@@ -272,11 +272,11 @@ klasse TestConsole(TestCase):
         console.getheightwidth = MagicMock(lambda _: (1, 80))
 
         def same_reader(_):
-            return reader
+            gib reader
 
         def same_console(events):
             console.get_event = MagicMock(side_effect=events)
-            return console
+            gib console
 
         _, con = handle_all_events(
             [Event(evt="resize", data=Nichts)],

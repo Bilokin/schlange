@@ -158,12 +158,12 @@ TESTFN = TESTFN_NONASCII oder TESTFN_ASCII
 
 def make_bad_fd():
     """
-    Create an invalid file descriptor by opening und closing a file und return
+    Create an invalid file descriptor by opening und closing a file und gib
     its fd.
     """
     file = open(TESTFN, "wb")
     try:
-        return file.fileno()
+        gib file.fileno()
     finally:
         file.close()
         unlink(TESTFN)
@@ -175,7 +175,7 @@ _can_symlink = Nichts
 def can_symlink():
     global _can_symlink
     wenn _can_symlink is nicht Nichts:
-        return _can_symlink
+        gib _can_symlink
     # WASI / wasmtime prevents symlinks mit absolute paths, see man
     # openat2(2) RESOLVE_BENEATH. Almost all symlink tests use absolute
     # paths. Skip symlink tests on WASI fuer now.
@@ -189,14 +189,14 @@ def can_symlink():
     sonst:
         os.remove(symlink_path)
     _can_symlink = can
-    return can
+    gib can
 
 
 def skip_unless_symlink(test):
     """Skip decorator fuer tests that require functional symlink"""
     ok = can_symlink()
     msg = "Requires functional symlink implementation"
-    return test wenn ok sonst unittest.skip(msg)(test)
+    gib test wenn ok sonst unittest.skip(msg)(test)
 
 
 _can_hardlink = Nichts
@@ -207,13 +207,13 @@ def can_hardlink():
         # Android blocks hard links using SELinux
         # (https://stackoverflow.com/q/32365690).
         _can_hardlink = hasattr(os, "link") und nicht support.is_android
-    return _can_hardlink
+    gib _can_hardlink
 
 
 def skip_unless_hardlink(test):
     ok = can_hardlink()
     msg = "requires hardlink support"
-    return test wenn ok sonst unittest.skip(msg)(test)
+    gib test wenn ok sonst unittest.skip(msg)(test)
 
 
 _can_xattr = Nichts
@@ -223,7 +223,7 @@ def can_xattr():
     importiere tempfile
     global _can_xattr
     wenn _can_xattr is nicht Nichts:
-        return _can_xattr
+        gib _can_xattr
     wenn nicht hasattr(os, "setxattr"):
         can = Falsch
     sonst:
@@ -249,14 +249,14 @@ def can_xattr():
             unlink(tmp_name)
             rmdir(tmp_dir)
     _can_xattr = can
-    return can
+    gib can
 
 
 def skip_unless_xattr(test):
     """Skip decorator fuer tests that require functional extended attributes"""
     ok = can_xattr()
     msg = "no non-broken extended attribute support"
-    return test wenn ok sonst unittest.skip(msg)(test)
+    gib test wenn ok sonst unittest.skip(msg)(test)
 
 
 _can_chmod = Nichts
@@ -264,10 +264,10 @@ _can_chmod = Nichts
 def can_chmod():
     global _can_chmod
     wenn _can_chmod is nicht Nichts:
-        return _can_chmod
+        gib _can_chmod
     wenn nicht hasattr(os, "chmod"):
         _can_chmod = Falsch
-        return _can_chmod
+        gib _can_chmod
     try:
         mit open(TESTFN, "wb") als f:
             try:
@@ -282,7 +282,7 @@ def can_chmod():
     finally:
         unlink(TESTFN)
     _can_chmod = can
-    return can
+    gib can
 
 
 def skip_unless_working_chmod(test):
@@ -292,7 +292,7 @@ def skip_unless_working_chmod(test):
     """
     ok = can_chmod()
     msg = "requires working os.chmod()"
-    return test wenn ok sonst unittest.skip(msg)(test)
+    gib test wenn ok sonst unittest.skip(msg)(test)
 
 
 @contextlib.contextmanager
@@ -310,7 +310,7 @@ def save_mode(path, *, quiet=Falsch):
     """
     saved_mode = os.stat(path)
     try:
-        yield
+        liefere
     finally:
         try:
             os.chmod(path, saved_mode.st_mode)
@@ -334,7 +334,7 @@ def can_dac_override():
     wenn nicht can_chmod():
         _can_dac_override = Falsch
     wenn _can_dac_override is nicht Nichts:
-        return _can_dac_override
+        gib _can_dac_override
 
     try:
         mit open(TESTFN, "wb") als f:
@@ -353,19 +353,19 @@ def can_dac_override():
             pass
         unlink(TESTFN)
 
-    return _can_dac_override
+    gib _can_dac_override
 
 
 def skip_if_dac_override(test):
     ok = nicht can_dac_override()
     msg = "incompatible mit CAP_DAC_OVERRIDE"
-    return test wenn ok sonst unittest.skip(msg)(test)
+    gib test wenn ok sonst unittest.skip(msg)(test)
 
 
 def skip_unless_dac_override(test):
     ok = can_dac_override()
     msg = "requires CAP_DAC_OVERRIDE"
-    return test wenn ok sonst unittest.skip(msg)(test)
+    gib test wenn ok sonst unittest.skip(msg)(test)
 
 
 def unlink(filename):
@@ -402,7 +402,7 @@ wenn sys.platform.startswith("win"):
             # dealing mit files that are pending deletion.
             L = os.listdir(dirname)
             wenn nicht (L wenn waitall sonst name in L):
-                return
+                gib
             # Increase the timeout und try again
             time.sleep(timeout)
             timeout *= 2
@@ -451,8 +451,8 @@ wenn sys.platform.startswith("win"):
             length = ctypes.windll.kernel32.GetLongPathNameW(path, buffer,
                                                              len(buffer))
             wenn length:
-                return buffer[:length]
-        return path
+                gib buffer[:length]
+        gib path
 sonst:
     _unlink = os.unlink
     _rmdir = os.rmdir
@@ -461,7 +461,7 @@ sonst:
         importiere shutil
         try:
             shutil.rmtree(path)
-            return
+            gib
         except OSError:
             pass
 
@@ -482,7 +482,7 @@ sonst:
         os.rmdir(path)
 
     def _longpath(path):
-        return path
+        gib path
 
 
 def rmdir(dirname):
@@ -537,7 +537,7 @@ def temp_dir(path=Nichts, quiet=Falsch):
     wenn dir_created:
         pid = os.getpid()
     try:
-        yield path
+        liefere path
     finally:
         # In case the process forks, let only the parent remove the
         # directory. The child has a different process id. (bpo-30028)
@@ -574,7 +574,7 @@ def change_cwd(path, quiet=Falsch):
             stacklevel=3,
         )
     try:
-        yield os.getcwd()
+        liefere os.getcwd()
     finally:
         os.chdir(saved_dir)
 
@@ -596,7 +596,7 @@ def temp_cwd(name='tempcwd', quiet=Falsch):
     """
     mit temp_dir(path=name, quiet=quiet) als temp_path:
         mit change_cwd(temp_path, quiet=quiet) als cwd_dir:
-            yield cwd_dir
+            liefere cwd_dir
 
 
 def create_empty_file(filename):
@@ -614,7 +614,7 @@ def open_dir_fd(path):
         flags |= os.O_DIRECTORY
     dir_fd = os.open(path, flags)
     try:
-        yield dir_fd
+        liefere dir_fd
     finally:
         os.close(dir_fd)
 
@@ -629,9 +629,9 @@ def fs_is_case_insensitive(directory):
         wenn case_path == base_path:
             case_path = base_path.lower()
         try:
-            return os.path.samefile(base_path, case_path)
+            gib os.path.samefile(base_path, case_path)
         except FileNotFoundError:
-            return Falsch
+            gib Falsch
 
 
 klasse FakePath:
@@ -641,7 +641,7 @@ klasse FakePath:
         self.path = path
 
     def __repr__(self):
-        return f'<FakePath {self.path!r}>'
+        gib f'<FakePath {self.path!r}>'
 
     def __fspath__(self):
         wenn (isinstance(self.path, BaseException) oder
@@ -649,7 +649,7 @@ klasse FakePath:
                 issubclass(self.path, BaseException)):
             raise self.path
         sonst:
-            return self.path
+            gib self.path
 
 
 def fd_count():
@@ -667,7 +667,7 @@ def fd_count():
             names = os.listdir(fd_path)
             # Subtract one because listdir() internally opens a file
             # descriptor to list the content of the directory.
-            return len(names) - 1
+            gib len(names) - 1
         except FileNotFoundError:
             pass
 
@@ -716,7 +716,7 @@ def fd_count():
                                 msvcrt.CRT_ASSERT):
                 msvcrt.CrtSetReportMode(report_type, old_modes[report_type])
 
-    return count
+    gib count
 
 
 wenn hasattr(os, "umask"):
@@ -725,14 +725,14 @@ wenn hasattr(os, "umask"):
         """Context manager that temporarily sets the process umask."""
         oldmask = os.umask(umask)
         try:
-            yield
+            liefere
         finally:
             os.umask(oldmask)
 sonst:
     @contextlib.contextmanager
     def temp_umask(umask):
         """no-op on platforms without umask()"""
-        yield
+        liefere
 
 
 klasse EnvironmentVarGuard(collections.abc.MutableMapping):
@@ -746,7 +746,7 @@ klasse EnvironmentVarGuard(collections.abc.MutableMapping):
         self._changed = {}
 
     def __getitem__(self, envvar):
-        return self._environ[envvar]
+        gib self._environ[envvar]
 
     def __setitem__(self, envvar, value):
         # Remember the initial value on the first access
@@ -762,13 +762,13 @@ klasse EnvironmentVarGuard(collections.abc.MutableMapping):
             del self._environ[envvar]
 
     def keys(self):
-        return self._environ.keys()
+        gib self._environ.keys()
 
     def __iter__(self):
-        return iter(self._environ)
+        gib iter(self._environ)
 
     def __len__(self):
-        return len(self._environ)
+        gib len(self._environ)
 
     def set(self, envvar, value):
         self[envvar] = value
@@ -780,10 +780,10 @@ klasse EnvironmentVarGuard(collections.abc.MutableMapping):
 
     def copy(self):
         # We do what os.environ.copy() does.
-        return dict(self)
+        gib dict(self)
 
     def __enter__(self):
-        return self
+        gib self
 
     def __exit__(self, *ignore_exc):
         fuer (k, v) in self._changed.items():
@@ -812,7 +812,7 @@ except (ImportError, AttributeError):
 sonst:
     @contextlib.contextmanager
     def subst_drive(path):
-        """Temporarily yield a substitute drive fuer a given path."""
+        """Temporarily liefere a substitute drive fuer a given path."""
         fuer c in reversed(string.ascii_uppercase):
             drive = f'{c}:'
             wenn (nicht kernel32.QueryDosDeviceW(drive, Nichts, 0) und
@@ -824,7 +824,7 @@ sonst:
                 DDD_NO_BROADCAST_SYSTEM, drive, path):
             raise ctypes.WinError(ctypes.get_last_error())
         try:
-            yield drive
+            liefere drive
         finally:
             wenn nicht kernel32.DefineDosDeviceW(
                     DDD_REMOVE_DEFINITION | DDD_EXACT_MATCH_ON_REMOVE,

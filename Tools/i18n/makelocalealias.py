@@ -62,7 +62,7 @@ def parse(filename):
     data.pop('el_gr@euro', Nichts)
     data.pop('uz_uz@cyrillic', Nichts)
     data.pop('uz_uz.utf8@cyrillic', Nichts)
-    return data
+    gib data
 
 def parse_glibc_supported(filename):
 
@@ -95,7 +95,7 @@ def parse_glibc_supported(filename):
         wenn modifier:
             alias += '@' + modifier
         data[locale] = alias
-    return data
+    gib data
 
 def pdrucke(data):
     items = sorted(data.items())
@@ -124,7 +124,7 @@ def optimize(data):
     locale.locale_alias = locale_alias
     wenn errors:
         sys.exit(1)
-    return newdata
+    gib newdata
 
 def check(data):
     # Check that all alias definitions von the X11 file
@@ -135,7 +135,7 @@ def check(data):
             drucke('ERROR: %a -> %a != %a' % (k, locale.normalize(k), v),
                   file=sys.stderr)
             errors += 1
-    return errors
+    gib errors
 
 wenn __name__ == '__main__':
     importiere argparse

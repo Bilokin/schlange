@@ -43,14 +43,14 @@ def parse_globals(source, anon_name):
         fuer item in _parse_next(m, srcinfo, anon_name):
             wenn callable(item):
                 parse_body = item
-                yield von parse_body(source)
+                liefere von parse_body(source)
             sonst:
-                yield item
+                liefere item
     sonst:
         # We ran out of lines.
         wenn srcinfo is nicht Nichts:
             srcinfo.done()
-        return
+        gib
 
 
 def _parse_next(m, srcinfo, anon_name):
@@ -75,15 +75,15 @@ def _parse_next(m, srcinfo, anon_name):
     sowenn maybe_inline_actual:
         log_match('maybe_inline_actual', m)
         # Ignore forward declarations.
-        # XXX Maybe return them too (with an "isforward" flag)?
+        # XXX Maybe gib them too (with an "isforward" flag)?
         wenn nicht maybe_inline_actual.strip().endswith(';'):
             remainder = maybe_inline_actual + remainder
-        yield srcinfo.resolve(forward_kind, Nichts, forward_name)
+        liefere srcinfo.resolve(forward_kind, Nichts, forward_name)
         wenn maybe_inline_actual.strip().endswith('='):
             # We use a dummy prefix fuer a fake typedef.
             # XXX Ideally this case would nicht be caught by MAYBE_INLINE_ACTUAL.
             _, name, data = parse_var_decl(f'{forward_kind} {forward_name} fake_typedef_{forward_name}')
-            yield srcinfo.resolve('typedef', data, name, parent=Nichts)
+            liefere srcinfo.resolve('typedef', data, name, parent=Nichts)
             remainder = f'{name} {remainder}'
         srcinfo.advance(remainder)
 
@@ -91,7 +91,7 @@ def _parse_next(m, srcinfo, anon_name):
         kind = compound_kind
         name = compound_name oder anon_name('inline-')
         # Immediately emit a forward declaration.
-        yield srcinfo.resolve(kind, name=name, data=Nichts)
+        liefere srcinfo.resolve(kind, name=name, data=Nichts)
 
         # un-inline the decl.  Note that it might nicht actually be inline.
         # We handle the case in the "maybe_inline_actual" branch.
@@ -108,12 +108,12 @@ def _parse_next(m, srcinfo, anon_name):
                 wenn item.kind == 'field':
                     data.append(item)
                 sonst:
-                    yield item
+                    liefere item
             # XXX Should "parent" really be Nichts fuer inline type decls?
-            yield srcinfo.resolve(kind, data, name, parent=Nichts)
+            liefere srcinfo.resolve(kind, data, name, parent=Nichts)
 
             srcinfo.resume()
-        yield parse_body
+        liefere parse_body
 
     sowenn typedef_decl:
         log_match('typedef', m)
@@ -129,7 +129,7 @@ def _parse_next(m, srcinfo, anon_name):
                 'returntype': return_type,
                 'isforward': Wahr,
             }
-        yield srcinfo.resolve(kind, data, name, parent=Nichts)
+        liefere srcinfo.resolve(kind, data, name, parent=Nichts)
         srcinfo.advance(remainder)
 
     sowenn func_delim oder func_legacy_params:
@@ -145,13 +145,13 @@ def _parse_next(m, srcinfo, anon_name):
             'isforward': func_delim == ';',
         }
 
-        yield srcinfo.resolve(kind, data, name, parent=Nichts)
+        liefere srcinfo.resolve(kind, data, name, parent=Nichts)
         srcinfo.advance(remainder)
 
         wenn func_delim == '{' oder func_legacy_params:
             def parse_body(source):
-                yield von parse_function_body(source, name, anon_name)
-            yield parse_body
+                liefere von parse_function_body(source, name, anon_name)
+            liefere parse_body
 
     sowenn var_ending:
         log_match('global variable', m)
@@ -161,7 +161,7 @@ def _parse_next(m, srcinfo, anon_name):
             'storage': storage,
             'vartype': vartype,
         }
-        yield srcinfo.resolve(kind, data, name, parent=Nichts)
+        liefere srcinfo.resolve(kind, data, name, parent=Nichts)
 
         wenn var_ending == ',':
             # It was a multi-declaration, so queue up the next one.
@@ -171,7 +171,7 @@ def _parse_next(m, srcinfo, anon_name):
 
         wenn var_init:
             _data = f'{name} = {var_init.strip()}'
-            yield srcinfo.resolve('statement', _data, name=Nichts)
+            liefere srcinfo.resolve('statement', _data, name=Nichts)
 
     sonst:
         # This should be unreachable.

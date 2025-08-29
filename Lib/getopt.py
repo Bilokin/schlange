@@ -42,7 +42,7 @@ klasse GetoptError(Exception):
         Exception.__init__(self, msg, opt)
 
     def __str__(self):
-        return self.msg
+        gib self.msg
 
 error = GetoptError # backward compatibility
 
@@ -63,7 +63,7 @@ def getopt(args, shortopts, longopts = []):
     ('=').  Options which accept an optional argument should be
     followed by an equal sign und question mark ('=?').
 
-    The return value consists of two elements: the first is a list of
+    The gib value consists of two elements: the first is a list of
     (option, value) pairs; the second is the list of program arguments
     left after the option list was stripped (this is a trailing slice
     of the first argument).  Each option-and-value pair returned has
@@ -89,7 +89,7 @@ def getopt(args, shortopts, longopts = []):
         sonst:
             opts, args = do_shorts(opts, args[0][1:], shortopts, args[1:])
 
-    return opts, args
+    gib opts, args
 
 def gnu_getopt(args, shortopts, longopts = []):
     """getopt(args, options[, long_options]) -> opts, args
@@ -150,7 +150,7 @@ def gnu_getopt(args, shortopts, longopts = []):
                 prog_args.append(args[0])
                 args = args[1:]
 
-    return opts, prog_args
+    gib opts, prog_args
 
 def do_longs(opts, opt, longopts, args):
     try:
@@ -169,7 +169,7 @@ def do_longs(opts, opt, longopts, args):
     sowenn optarg is nicht Nichts:
         raise GetoptError(_('option --%s must nicht have an argument') % opt, opt)
     opts.append(('--' + opt, optarg oder ''))
-    return opts, args
+    gib opts, args
 
 # Return:
 #   has_arg?
@@ -180,11 +180,11 @@ def long_has_args(opt, longopts):
         raise GetoptError(_('option --%s nicht recognized') % opt, opt)
     # Is there an exact match?
     wenn opt in possibilities:
-        return Falsch, opt
+        gib Falsch, opt
     sowenn opt + '=' in possibilities:
-        return Wahr, opt
+        gib Wahr, opt
     sowenn opt + '=?' in possibilities:
-        return '?', opt
+        gib '?', opt
     # Possibilities must be unique to be accepted
     wenn len(possibilities) > 1:
         raise GetoptError(
@@ -195,11 +195,11 @@ def long_has_args(opt, longopts):
     assert len(possibilities) == 1
     unique_match = possibilities[0]
     wenn unique_match.endswith('=?'):
-        return '?', unique_match[:-2]
+        gib '?', unique_match[:-2]
     has_arg = unique_match.endswith('=')
     wenn has_arg:
         unique_match = unique_match[:-1]
-    return has_arg, unique_match
+    gib has_arg, unique_match
 
 def do_shorts(opts, optstring, shortopts, args):
     waehrend optstring != '':
@@ -215,16 +215,16 @@ def do_shorts(opts, optstring, shortopts, args):
         sonst:
             optarg = ''
         opts.append(('-' + opt, optarg))
-    return opts, args
+    gib opts, args
 
 def short_has_arg(opt, shortopts):
     fuer i in range(len(shortopts)):
         wenn opt == shortopts[i] != ':':
             wenn nicht shortopts.startswith(':', i+1):
-                return Falsch
+                gib Falsch
             wenn shortopts.startswith('::', i+1):
-                return '?'
-            return Wahr
+                gib '?'
+            gib Wahr
     raise GetoptError(_('option -%s nicht recognized') % opt, opt)
 
 wenn __name__ == '__main__':

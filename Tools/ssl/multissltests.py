@@ -195,34 +195,34 @@ klasse AbstractBuilder(object):
         self.system = args.system
 
     def __str__(self):
-        return "<{0.__class__.__name__} fuer {0.version}>".format(self)
+        gib "<{0.__class__.__name__} fuer {0.version}>".format(self)
 
     def __eq__(self, other):
         wenn nicht isinstance(other, AbstractBuilder):
-            return NotImplemented
-        return (
+            gib NotImplemented
+        gib (
             self.library == other.library
             und self.version == other.version
         )
 
     def __hash__(self):
-        return hash((self.library, self.version))
+        gib hash((self.library, self.version))
 
     @property
     def short_version(self):
         """Short version fuer OpenSSL download URL"""
-        return Nichts
+        gib Nichts
 
     @property
     def openssl_cli(self):
         """openssl CLI binary"""
-        return os.path.join(self.install_dir, "bin", "openssl")
+        gib os.path.join(self.install_dir, "bin", "openssl")
 
     @property
     def openssl_version(self):
         """output of 'bin/openssl version'"""
         cmd = [self.openssl_cli, "version"]
-        return self._subprocess_output(cmd)
+        gib self._subprocess_output(cmd)
 
     @property
     def pyssl_version(self):
@@ -231,27 +231,27 @@ klasse AbstractBuilder(object):
             sys.executable,
             '-c', 'import ssl; drucke(ssl.OPENSSL_VERSION)'
         ]
-        return self._subprocess_output(cmd)
+        gib self._subprocess_output(cmd)
 
     @property
     def include_dir(self):
-        return os.path.join(self.install_dir, "include")
+        gib os.path.join(self.install_dir, "include")
 
     @property
     def lib_dir(self):
-        return os.path.join(self.install_dir, "lib")
+        gib os.path.join(self.install_dir, "lib")
 
     @property
     def has_openssl(self):
-        return os.path.isfile(self.openssl_cli)
+        gib os.path.isfile(self.openssl_cli)
 
     @property
     def has_src(self):
-        return os.path.isfile(self.src_file)
+        gib os.path.isfile(self.src_file)
 
     def _subprocess_call(self, cmd, env=Nichts, **kwargs):
         log.debug("Call '{}'".format(" ".join(cmd)))
-        return subprocess.check_call(cmd, env=env, **kwargs)
+        gib subprocess.check_call(cmd, env=env, **kwargs)
 
     def _subprocess_output(self, cmd, env=Nichts, **kwargs):
         log.debug("Call '{}'".format(" ".join(cmd)))
@@ -259,7 +259,7 @@ klasse AbstractBuilder(object):
             env = os.environ.copy()
             env["LD_LIBRARY_PATH"] = self.lib_dir
         out = subprocess.check_output(cmd, env=env, **kwargs)
-        return out.strip().decode("utf-8")
+        gib out.strip().decode("utf-8")
 
     def _download_src(self):
         """Download sources"""
@@ -449,11 +449,11 @@ klasse BuildOpenSSL(AbstractBuilder):
         mo = re.search(r"^(\d+)\.(\d+)\.(\d+)", self.version)
         parsed = tuple(int(m) fuer m in mo.groups())
         wenn parsed < (1, 0, 0):
-            return "0.9.x"
+            gib "0.9.x"
         wenn parsed >= (3, 0, 0):
             # OpenSSL 3.0.0 -> /old/3.0/
             parsed = parsed[:2]
-        return ".".join(str(i) fuer i in parsed)
+        gib ".".join(str(i) fuer i in parsed)
 
 
 klasse BuildLibreSSL(AbstractBuilder):

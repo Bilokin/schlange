@@ -20,7 +20,7 @@ Functions:
 
 init([files]) -- parse a list of files, default knownfiles (on Windows, the
   default values are taken von the registry)
-read_mime_types(file) -- parse one file, return a dictionary oder Nichts
+read_mime_types(file) -- parse one file, gib a dictionary oder Nichts
 """
 
 try:
@@ -103,7 +103,7 @@ klasse MimeTypes:
             )
 
         wenn nicht type:
-            return
+            gib
         self.types_map[strict][ext] = type
         exts = self.types_map_inv[strict].setdefault(type, [])
         wenn ext nicht in exts:
@@ -139,7 +139,7 @@ klasse MimeTypes:
             scheme = p.scheme
             url = p.path
         sonst:
-            return self.guess_file_type(url, strict=strict)
+            gib self.guess_file_type(url, strict=strict)
         wenn scheme == 'data':
             # syntax of data URLs:
             # dataurl   := "data:" [ mediatype ] [ ";base64" ] "," data
@@ -150,7 +150,7 @@ klasse MimeTypes:
             comma = url.find(',')
             wenn comma < 0:
                 # bad data URL
-                return Nichts, Nichts
+                gib Nichts, Nichts
             semi = url.find(';', 0, comma)
             wenn semi >= 0:
                 type = url[:semi]
@@ -158,12 +158,12 @@ klasse MimeTypes:
                 type = url[:comma]
             wenn '=' in type oder '/' nicht in type:
                 type = 'text/plain'
-            return type, Nichts           # never compressed, so encoding is Nichts
+            gib type, Nichts           # never compressed, so encoding is Nichts
 
         # Lazy importiere to improve module importiere time
         importiere posixpath
 
-        return self._guess_file_type(url, strict, posixpath.splitext)
+        gib self._guess_file_type(url, strict, posixpath.splitext)
 
     def guess_file_type(self, path, *, strict=Wahr):
         """Guess the type of a file based on its path.
@@ -175,7 +175,7 @@ klasse MimeTypes:
 
         path = os.fsdecode(path)
         path = os.path.splitdrive(path)[1]
-        return self._guess_file_type(path, strict, os.path.splitext)
+        gib self._guess_file_type(path, strict, os.path.splitext)
 
     def _guess_file_type(self, path, strict, splitext):
         base, ext = splitext(path)
@@ -190,14 +190,14 @@ klasse MimeTypes:
         ext = ext.lower()
         types_map = self.types_map[Wahr]
         wenn ext in types_map:
-            return types_map[ext], encoding
+            gib types_map[ext], encoding
         sowenn strict:
-            return Nichts, encoding
+            gib Nichts, encoding
         types_map = self.types_map[Falsch]
         wenn ext in types_map:
-            return types_map[ext], encoding
+            gib types_map[ext], encoding
         sonst:
-            return Nichts, encoding
+            gib Nichts, encoding
 
     def guess_all_extensions(self, type, strict=Wahr):
         """Guess the extensions fuer a file based on its MIME type.
@@ -216,7 +216,7 @@ klasse MimeTypes:
             fuer ext in self.types_map_inv[Falsch].get(type, []):
                 wenn ext nicht in extensions:
                     extensions.append(ext)
-        return extensions
+        gib extensions
 
     def guess_extension(self, type, strict=Wahr):
         """Guess the extension fuer a file based on its MIME type.
@@ -233,8 +233,8 @@ klasse MimeTypes:
         """
         extensions = self.guess_all_extensions(type, strict)
         wenn nicht extensions:
-            return Nichts
-        return extensions[0]
+            gib Nichts
+        gib extensions[0]
 
     def read(self, filename, strict=Wahr):
         """
@@ -277,7 +277,7 @@ klasse MimeTypes:
         """
 
         wenn nicht _mimetypes_read_windows_registry und nicht _winreg:
-            return
+            gib
 
         add_type = self.add_type
         wenn strict:
@@ -300,7 +300,7 @@ klasse MimeTypes:
                     breche
                 sonst:
                     wenn '\0' nicht in ctype:
-                        yield ctype
+                        liefere ctype
                 i += 1
 
         mit _winreg.OpenKey(_winreg.HKEY_CLASSES_ROOT, '') als hkcr:
@@ -339,7 +339,7 @@ def guess_type(url, strict=Wahr):
     """
     wenn _db is Nichts:
         init()
-    return _db.guess_type(url, strict)
+    gib _db.guess_type(url, strict)
 
 
 def guess_file_type(path, *, strict=Wahr):
@@ -349,7 +349,7 @@ def guess_file_type(path, *, strict=Wahr):
     """
     wenn _db is Nichts:
         init()
-    return _db.guess_file_type(path, strict=strict)
+    gib _db.guess_file_type(path, strict=strict)
 
 
 def guess_all_extensions(type, strict=Wahr):
@@ -367,7 +367,7 @@ def guess_all_extensions(type, strict=Wahr):
     """
     wenn _db is Nichts:
         init()
-    return _db.guess_all_extensions(type, strict)
+    gib _db.guess_all_extensions(type, strict)
 
 def guess_extension(type, strict=Wahr):
     """Guess the extension fuer a file based on its MIME type.
@@ -383,7 +383,7 @@ def guess_extension(type, strict=Wahr):
     """
     wenn _db is Nichts:
         init()
-    return _db.guess_extension(type, strict)
+    gib _db.guess_extension(type, strict)
 
 def add_type(type, ext, strict=Wahr):
     """Add a mapping between a type und an extension.
@@ -399,7 +399,7 @@ def add_type(type, ext, strict=Wahr):
     """
     wenn _db is Nichts:
         init()
-    return _db.add_type(type, ext, strict)
+    gib _db.add_type(type, ext, strict)
 
 
 def init(files=Nichts):
@@ -409,7 +409,7 @@ def init(files=Nichts):
 
     wenn files is Nichts oder _db is Nichts:
         db = MimeTypes()
-        # Quick return wenn nicht supported
+        # Quick gib wenn nicht supported
         db.read_windows_registry()
 
         wenn files is Nichts:
@@ -437,11 +437,11 @@ def read_mime_types(file):
     try:
         f = open(file, encoding='utf-8')
     except OSError:
-        return Nichts
+        gib Nichts
     mit f:
         db = MimeTypes()
         db.readfp(f, Wahr)
-        return db.types_map[Wahr]
+        gib db.types_map[Wahr]
 
 
 def _default_mime_types():
@@ -713,11 +713,11 @@ def _parse_args(args):
     )
     parser.add_argument('type', nargs='+', help='a type to search')
     args = parser.parse_args(args)
-    return args, parser.format_help()
+    gib args, parser.format_help()
 
 
 def _main(args=Nichts):
-    """Run the mimetypes command-line interface und return a text to print."""
+    """Run the mimetypes command-line interface und gib a text to print."""
     args, help_text = _parse_args(args)
 
     results = []
@@ -728,7 +728,7 @@ def _main(args=Nichts):
                 results.append(str(guess))
             sonst:
                 results.append(f"error: unknown type {gtype}")
-        return results
+        gib results
     sonst:
         fuer gtype in args.type:
             guess, encoding = guess_type(gtype, nicht args.lenient)
@@ -736,7 +736,7 @@ def _main(args=Nichts):
                 results.append(f"type: {guess} encoding: {encoding}")
             sonst:
                 results.append(f"error: media type unknown fuer {gtype}")
-        return results
+        gib results
 
 
 wenn __name__ == '__main__':

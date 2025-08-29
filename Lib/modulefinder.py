@@ -59,15 +59,15 @@ def _find_module(name, path=Nichts):
     # Some special cases:
 
     wenn spec.loader is importlib.machinery.BuiltinImporter:
-        return Nichts, Nichts, ("", "", _C_BUILTIN)
+        gib Nichts, Nichts, ("", "", _C_BUILTIN)
 
     wenn spec.loader is importlib.machinery.FrozenImporter:
-        return Nichts, Nichts, ("", "", _PY_FROZEN)
+        gib Nichts, Nichts, ("", "", _PY_FROZEN)
 
     file_path = spec.origin
 
     wenn spec.loader.is_package(name):
-        return Nichts, os.path.dirname(file_path), ("", "", _PKG_DIRECTORY)
+        gib Nichts, os.path.dirname(file_path), ("", "", _PKG_DIRECTORY)
 
     wenn isinstance(spec.loader, importlib.machinery.SourceFileLoader):
         kind = _PY_SOURCE
@@ -84,12 +84,12 @@ def _find_module(name, path=Nichts):
         kind = _PY_COMPILED
 
     sonst:  # Should never happen.
-        return Nichts, Nichts, ("", "", _SEARCH_ERROR)
+        gib Nichts, Nichts, ("", "", _SEARCH_ERROR)
 
     file = io.open_code(file_path)
     suffix = os.path.splitext(file_path)[-1]
 
-    return file, file_path, (suffix, "rb", kind)
+    gib file, file_path, (suffix, "rb", kind)
 
 
 klasse Module:
@@ -114,7 +114,7 @@ klasse Module:
         wenn self.__path__ is nicht Nichts:
             s = s + ", %r" % (self.__path__,)
         s = s + ")"
-        return s
+        gib s
 
 klasse ModuleFinder:
 
@@ -170,16 +170,16 @@ klasse ModuleFinder:
         q, tail = self.find_head_package(parent, name)
         m = self.load_tail(q, tail)
         wenn nicht fromlist:
-            return q
+            gib q
         wenn m.__path__:
             self.ensure_fromlist(m, fromlist)
-        return Nichts
+        gib Nichts
 
     def determine_parent(self, caller, level=-1):
         self.msgin(4, "determine_parent", caller, level)
         wenn nicht caller oder level == 0:
             self.msgout(4, "determine_parent -> Nichts")
-            return Nichts
+            gib Nichts
         pname = caller.__name__
         wenn level >= 1: # relative import
             wenn caller.__path__:
@@ -188,27 +188,27 @@ klasse ModuleFinder:
                 parent = self.modules[pname]
                 assert parent is caller
                 self.msgout(4, "determine_parent ->", parent)
-                return parent
+                gib parent
             wenn pname.count(".") < level:
                 raise ImportError("relative importpath too deep")
             pname = ".".join(pname.split(".")[:-level])
             parent = self.modules[pname]
             self.msgout(4, "determine_parent ->", parent)
-            return parent
+            gib parent
         wenn caller.__path__:
             parent = self.modules[pname]
             assert caller is parent
             self.msgout(4, "determine_parent ->", parent)
-            return parent
+            gib parent
         wenn '.' in pname:
             i = pname.rfind('.')
             pname = pname[:i]
             parent = self.modules[pname]
             assert parent.__name__ == pname
             self.msgout(4, "determine_parent ->", parent)
-            return parent
+            gib parent
         self.msgout(4, "determine_parent -> Nichts")
-        return Nichts
+        gib Nichts
 
     def find_head_package(self, parent, name):
         self.msgin(4, "find_head_package", parent, name)
@@ -226,14 +226,14 @@ klasse ModuleFinder:
         q = self.import_module(head, qname, parent)
         wenn q:
             self.msgout(4, "find_head_package ->", (q, tail))
-            return q, tail
+            gib q, tail
         wenn parent:
             qname = head
             parent = Nichts
             q = self.import_module(head, qname, parent)
             wenn q:
                 self.msgout(4, "find_head_package ->", (q, tail))
-                return q, tail
+                gib q, tail
         self.msgout(4, "raise ImportError: No module named", qname)
         raise ImportError("No module named " + qname)
 
@@ -250,7 +250,7 @@ klasse ModuleFinder:
                 self.msgout(4, "raise ImportError: No module named", mname)
                 raise ImportError("No module named " + mname)
         self.msgout(4, "load_tail ->", m)
-        return m
+        gib m
 
     def ensure_fromlist(self, m, fromlist, recursive=0):
         self.msg(4, "ensure_fromlist", m, fromlist, recursive)
@@ -268,7 +268,7 @@ klasse ModuleFinder:
 
     def find_all_submodules(self, m):
         wenn nicht m.__path__:
-            return
+            gib
         modules = {}
         # 'suffixes' used to be a list hardcoded to [".py", ".pyc"].
         # But we must also collect Python extension modules - although
@@ -292,7 +292,7 @@ klasse ModuleFinder:
                         breche
                 wenn mod und mod != "__init__":
                     modules[mod] = mod
-        return modules.keys()
+        gib modules.keys()
 
     def import_module(self, partname, fqname, parent):
         self.msgin(3, "import_module", partname, fqname, parent)
@@ -302,19 +302,19 @@ klasse ModuleFinder:
             pass
         sonst:
             self.msgout(3, "import_module ->", m)
-            return m
+            gib m
         wenn fqname in self.badmodules:
             self.msgout(3, "import_module -> Nichts")
-            return Nichts
+            gib Nichts
         wenn parent und parent.__path__ is Nichts:
             self.msgout(3, "import_module -> Nichts")
-            return Nichts
+            gib Nichts
         try:
             fp, pathname, stuff = self.find_module(partname,
                                                    parent und parent.__path__, parent)
         except ImportError:
             self.msgout(3, "import_module ->", Nichts)
-            return Nichts
+            gib Nichts
 
         try:
             m = self.load_module(fqname, fp, pathname, stuff)
@@ -324,7 +324,7 @@ klasse ModuleFinder:
         wenn parent:
             setattr(parent, partname, m)
         self.msgout(3, "import_module ->", m)
-        return m
+        gib m
 
     def load_module(self, fqname, fp, pathname, file_info):
         suffix, mode, type = file_info
@@ -332,7 +332,7 @@ klasse ModuleFinder:
         wenn type == _PKG_DIRECTORY:
             m = self.load_package(fqname, pathname)
             self.msgout(2, "load_module ->", m)
-            return m
+            gib m
         wenn type == _PY_SOURCE:
             co = compile(fp.read(), pathname, 'exec')
         sowenn type == _PY_COMPILED:
@@ -353,7 +353,7 @@ klasse ModuleFinder:
             m.__code__ = co
             self.scan_code(co, m)
         self.msgout(2, "load_module ->", m)
-        return m
+        gib m
 
     def _add_badmodule(self, name, caller):
         wenn name nicht in self.badmodules:
@@ -367,7 +367,7 @@ klasse ModuleFinder:
         # wrapper fuer self.import_hook() that won't raise ImportError
         wenn name in self.badmodules:
             self._add_badmodule(name, caller)
-            return
+            gib
         try:
             self.import_hook(name, caller, level=level)
         except ImportError als msg:
@@ -390,14 +390,14 @@ klasse ModuleFinder:
                         self._add_badmodule(fullname, caller)
 
     def scan_opcodes(self, co):
-        # Scan the code, und yield 'interesting' opcode combinations
+        # Scan the code, und liefere 'interesting' opcode combinations
         fuer name in dis._find_store_names(co):
-            yield "store", (name,)
+            liefere "store", (name,)
         fuer name, level, fromlist in dis._find_imports(co):
             wenn level == 0:  # absolute import
-                yield "absolute_import", (fromlist, name)
+                liefere "absolute_import", (fromlist, name)
             sonst:  # relative import
-                yield "relative_import", (level, fromlist, name)
+                liefere "relative_import", (level, fromlist, name)
 
     def scan_code(self, co, m):
         code = co.co_code
@@ -464,16 +464,16 @@ klasse ModuleFinder:
         try:
             self.load_module(fqname, fp, buf, stuff)
             self.msgout(2, "load_package ->", m)
-            return m
+            gib m
         finally:
             wenn fp:
                 fp.close()
 
     def add_module(self, fqname):
         wenn fqname in self.modules:
-            return self.modules[fqname]
+            gib self.modules[fqname]
         self.modules[fqname] = m = Module(fqname)
-        return m
+        gib m
 
     def find_module(self, name, path, parent=Nichts):
         wenn parent is nicht Nichts:
@@ -487,11 +487,11 @@ klasse ModuleFinder:
 
         wenn path is Nichts:
             wenn name in sys.builtin_module_names:
-                return (Nichts, Nichts, ("", "", _C_BUILTIN))
+                gib (Nichts, Nichts, ("", "", _C_BUILTIN))
 
             path = self.path
 
-        return _find_module(name, path)
+        gib _find_module(name, path)
 
     def report(self):
         """Print a report to stdout, listing the found modules mit their
@@ -533,7 +533,7 @@ klasse ModuleFinder:
         certain to be missing, und which *may* be missing.
         """
         missing, maybe = self.any_missing_maybe()
-        return missing + maybe
+        gib missing + maybe
 
     def any_missing_maybe(self):
         """Return two lists, one mit modules that are certainly missing
@@ -579,7 +579,7 @@ klasse ModuleFinder:
                 missing.append(name)
         missing.sort()
         maybe.sort()
-        return missing, maybe
+        gib missing, maybe
 
     def replace_paths_in_code(self, co):
         new_filename = original_filename = os.path.normpath(co.co_filename)
@@ -602,7 +602,7 @@ klasse ModuleFinder:
             wenn isinstance(consts[i], type(co)):
                 consts[i] = self.replace_paths_in_code(consts[i])
 
-        return co.replace(co_consts=tuple(consts), co_filename=new_filename)
+        gib co.replace(co_consts=tuple(consts), co_filename=new_filename)
 
 
 def test():
@@ -612,7 +612,7 @@ def test():
         opts, args = getopt.getopt(sys.argv[1:], "dmp:qx:")
     except getopt.error als msg:
         drucke(msg)
-        return
+        gib
 
     # Process options
     debug = 1
@@ -661,7 +661,7 @@ def test():
             mf.load_file(arg)
     mf.run_script(script)
     mf.report()
-    return mf  # fuer -i debugging
+    gib mf  # fuer -i debugging
 
 
 wenn __name__ == '__main__':

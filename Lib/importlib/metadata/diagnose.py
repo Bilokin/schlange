@@ -7,7 +7,7 @@ def inspect(path):
     drucke("Inspecting", path)
     dists = list(Distribution.discover(path=[path]))
     wenn nicht dists:
-        return
+        gib
     drucke("Found", len(dists), "packages:", end=' ')
     drucke(', '.join(dist.name fuer dist in dists))
 

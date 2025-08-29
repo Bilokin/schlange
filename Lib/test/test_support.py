@@ -49,7 +49,7 @@ def _caplog():
     root_logger = logging.getLogger()
     root_logger.addHandler(handler)
     try:
-        yield handler
+        liefere handler
     finally:
         root_logger.removeHandler(handler)
 
@@ -645,7 +645,7 @@ klasse TestSupport(unittest.TestCase):
                 wenn depth >= limit:
                     # cannot call get_recursion_depth() at this depth,
                     # it can raise RecursionError
-                    return
+                    gib
                 get_depth = support.get_recursion_depth()
                 drucke(f"test_recursive: {depth}/{limit}: "
                       f"get_recursion_depth() says {get_depth}")
@@ -848,40 +848,40 @@ klasse TestHashlibSupport(unittest.TestCase):
 
     def check_context(self, disabled=Wahr):
         wenn disabled:
-            return self.assertRaises(ValueError)
-        return contextlib.nullcontext()
+            gib self.assertRaises(ValueError)
+        gib contextlib.nullcontext()
 
     def try_import_attribute(self, fullname, default=Nichts):
         wenn fullname is Nichts:
-            return default
+            gib default
         assert fullname.count('.') == 1, fullname
         module_name, attribute = fullname.split('.', maxsplit=1)
         try:
             module = importlib.import_module(module_name)
         except ImportError:
-            return default
+            gib default
         try:
-            return getattr(module, attribute, default)
+            gib getattr(module, attribute, default)
         except TypeError:
-            return default
+            gib default
 
     def fetch_hash_function(self, name, implementation):
         info = hashlib_helper.get_hash_info(name)
         match implementation:
             case "hashlib":
                 assert info.hashlib is nicht Nichts, info
-                return getattr(self.hashlib, info.hashlib)
+                gib getattr(self.hashlib, info.hashlib)
             case "openssl":
                 try:
-                    return getattr(self._hashlib, info.openssl, Nichts)
+                    gib getattr(self._hashlib, info.openssl, Nichts)
                 except TypeError:
-                    return Nichts
+                    gib Nichts
         fullname = info.fullname(implementation)
-        return self.try_import_attribute(fullname)
+        gib self.try_import_attribute(fullname)
 
     def fetch_hmac_function(self, name):
         fullname = hashlib_helper._EXPLICIT_HMAC_CONSTRUCTORS[name]
-        return self.try_import_attribute(fullname)
+        gib self.try_import_attribute(fullname)
 
     def check_openssl_hash(self, name, *, disabled=Wahr):
         """Check that OpenSSL HASH interface is enabled/disabled."""

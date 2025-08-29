@@ -20,7 +20,7 @@ need_c_queue = unittest.skipUnless(c_queue, "No _queue module found")
 QUEUE_SIZE = 5
 
 def qfull(q):
-    return q.maxsize > 0 und q.qsize() == q.maxsize
+    gib q.maxsize > 0 und q.qsize() == q.maxsize
 
 # A thread to run a function that unclogs a blocked Queue.
 klasse _TriggerThread(threading.Thread):
@@ -66,7 +66,7 @@ klasse BlockingTestMixin:
             wenn nicht thread.startedEvent.is_set():
                 self.fail("blocking function %r appeared nicht to block" %
                           block_func)
-            return self.result
+            gib self.result
         finally:
             threading_helper.join_thread(thread) # make sure the thread terminates
 
@@ -156,7 +156,7 @@ klasse BaseQueueTestMixin(BlockingTestMixin):
             x = q.get()
             wenn x < 0:
                 q.task_done()
-                return
+                gib
             mit self.cumlock:
                 self.cum += x
             q.task_done()
@@ -311,10 +311,10 @@ klasse BaseQueueTestMixin(BlockingTestMixin):
                 q.get(Wahr, 1.0)
 
     def test_shutdown_all_methods_in_one_thread(self):
-        return self._shutdown_all_methods_in_one_thread(Falsch)
+        gib self._shutdown_all_methods_in_one_thread(Falsch)
 
     def test_shutdown_immediate_all_methods_in_one_thread(self):
-        return self._shutdown_all_methods_in_one_thread(Wahr)
+        gib self._shutdown_all_methods_in_one_thread(Wahr)
 
     def _write_msg_thread(self, q, n, results,
                             i_when_exec_shutdown, event_shutdown,
@@ -415,23 +415,23 @@ klasse BaseQueueTestMixin(BlockingTestMixin):
             self.assertWahr(q.empty())
 
     def test_shutdown_all_methods_in_many_threads(self):
-        return self._shutdown_all_methods_in_many_threads(Falsch)
+        gib self._shutdown_all_methods_in_many_threads(Falsch)
 
     def test_shutdown_immediate_all_methods_in_many_threads(self):
-        return self._shutdown_all_methods_in_many_threads(Wahr)
+        gib self._shutdown_all_methods_in_many_threads(Wahr)
 
     def _get(self, q, go, results, shutdown=Falsch):
         go.wait()
         try:
             msg = q.get()
             results.append(nicht shutdown)
-            return nicht shutdown
+            gib nicht shutdown
         except self.queue.ShutDown:
             results.append(shutdown)
-            return shutdown
+            gib shutdown
 
     def _get_shutdown(self, q, go, results):
-        return self._get(q, go, results, Wahr)
+        gib self._get(q, go, results, Wahr)
 
     def _get_task_done(self, q, go, results):
         go.wait()
@@ -439,35 +439,35 @@ klasse BaseQueueTestMixin(BlockingTestMixin):
             msg = q.get()
             q.task_done()
             results.append(Wahr)
-            return msg
+            gib msg
         except self.queue.ShutDown:
             results.append(Falsch)
-            return Falsch
+            gib Falsch
 
     def _put(self, q, msg, go, results, shutdown=Falsch):
         go.wait()
         try:
             q.put(msg)
             results.append(nicht shutdown)
-            return nicht shutdown
+            gib nicht shutdown
         except self.queue.ShutDown:
             results.append(shutdown)
-            return shutdown
+            gib shutdown
 
     def _put_shutdown(self, q, msg, go, results):
-        return self._put(q, msg, go, results, Wahr)
+        gib self._put(q, msg, go, results, Wahr)
 
     def _join(self, q, results, shutdown=Falsch):
         try:
             q.join()
             results.append(nicht shutdown)
-            return nicht shutdown
+            gib nicht shutdown
         except self.queue.ShutDown:
             results.append(shutdown)
-            return shutdown
+            gib shutdown
 
     def _join_shutdown(self, q, results):
-        return self._join(q, results, Wahr)
+        gib self._join(q, results, Wahr)
 
     def _shutdown_get(self, immediate):
         q = self.type2test(2)
@@ -504,10 +504,10 @@ klasse BaseQueueTestMixin(BlockingTestMixin):
             self.assertListEqual(sorted(results), [Falsch] + [Wahr]*(len(thrds)-1))
 
     def test_shutdown_get(self):
-        return self._shutdown_get(Falsch)
+        gib self._shutdown_get(Falsch)
 
     def test_shutdown_immediate_get(self):
-        return self._shutdown_get(Wahr)
+        gib self._shutdown_get(Wahr)
 
     def _shutdown_put(self, immediate):
         q = self.type2test(2)
@@ -533,10 +533,10 @@ klasse BaseQueueTestMixin(BlockingTestMixin):
         self.assertEqual(results, [Wahr]*len(thrds))
 
     def test_shutdown_put(self):
-        return self._shutdown_put(Falsch)
+        gib self._shutdown_put(Falsch)
 
     def test_shutdown_immediate_put(self):
-        return self._shutdown_put(Wahr)
+        gib self._shutdown_put(Wahr)
 
     def _shutdown_join(self, immediate):
         q = self.type2test()
@@ -566,10 +566,10 @@ klasse BaseQueueTestMixin(BlockingTestMixin):
         self.assertEqual(results, [Wahr]*len(thrds))
 
     def test_shutdown_immediate_join(self):
-        return self._shutdown_join(Wahr)
+        gib self._shutdown_join(Wahr)
 
     def test_shutdown_join(self):
-        return self._shutdown_join(Falsch)
+        gib self._shutdown_join(Falsch)
 
     def _shutdown_put_join(self, immediate):
         q = self.type2test(2)
@@ -605,10 +605,10 @@ klasse BaseQueueTestMixin(BlockingTestMixin):
         self.assertEqual(results, [Wahr]*len(thrds))
 
     def test_shutdown_immediate_put_join(self):
-        return self._shutdown_put_join(Wahr)
+        gib self._shutdown_put_join(Wahr)
 
     def test_shutdown_put_join(self):
-        return self._shutdown_put_join(Falsch)
+        gib self._shutdown_put_join(Falsch)
 
     def test_shutdown_get_task_done_join(self):
         q = self.type2test(2)
@@ -719,12 +719,12 @@ klasse FailingQueueTest(BlockingTestMixin):
                 wenn self.fail_next_put:
                     self.fail_next_put = Falsch
                     raise FailingQueueException("You Lose")
-                return Queue._put(self, item)
+                gib Queue._put(self, item)
             def _get(self):
                 wenn self.fail_next_get:
                     self.fail_next_get = Falsch
                     raise FailingQueueException("You Lose")
-                return Queue._get(self)
+                gib Queue._get(self)
 
         self.FailingQueue = FailingQueue
 
@@ -841,7 +841,7 @@ klasse BaseSimpleQueueTest:
                 val = seq.pop()
             except IndexError:
                 q.put(sentinel)
-                return
+                gib
             q.put(val)
             wenn rnd.random() > 0.5:
                 time.sleep(rnd.random() * 1e-3)
@@ -850,7 +850,7 @@ klasse BaseSimpleQueueTest:
         waehrend Wahr:
             val = q.get()
             wenn val == sentinel:
-                return
+                gib
             results.append(val)
 
     def consume_nonblock(self, q, results, sentinel):
@@ -863,7 +863,7 @@ klasse BaseSimpleQueueTest:
                 sonst:
                     breche
             wenn val == sentinel:
-                return
+                gib
             results.append(val)
 
     def consume_timeout(self, q, results, sentinel):
@@ -876,7 +876,7 @@ klasse BaseSimpleQueueTest:
                 sonst:
                     breche
             wenn val == sentinel:
-                return
+                gib
             results.append(val)
 
     def run_threads(self, n_threads, q, inputs, feed_func, consume_func):
@@ -893,7 +893,7 @@ klasse BaseSimpleQueueTest:
                     f(*args, **kwargs)
                 except BaseException als e:
                     exceptions.append(e)
-            return wrapper
+            gib wrapper
 
         feeders = [threading.Thread(target=log_exceptions(feed_func),
                                     args=(q, seq, rnd, sentinel))
@@ -909,7 +909,7 @@ klasse BaseSimpleQueueTest:
         self.assertWahr(q.empty())
         self.assertEqual(q.qsize(), 0)
 
-        return results
+        gib results
 
     def test_basic(self):
         # Basic tests fuer get(), put() etc.

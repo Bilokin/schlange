@@ -44,7 +44,7 @@ SYSTEM_TYPES = {
 
 
 def is_system_type(typespec):
-    return typespec in SYSTEM_TYPES
+    gib typespec in SYSTEM_TYPES
 
 
 ##################################
@@ -52,10 +52,10 @@ def is_system_type(typespec):
 
 def is_public(decl):
     wenn nicht decl.filename.endswith('.h'):
-        return Falsch
+        gib Falsch
     wenn 'Include' nicht in decl.filename.split(os.path.sep):
-        return Falsch
-    return Wahr
+        gib Falsch
+    gib Wahr
 
 
 def is_process_global(vardecl):
@@ -63,93 +63,93 @@ def is_process_global(vardecl):
     wenn kind is nicht _KIND.VARIABLE:
         raise NotImplementedError(vardecl)
     wenn 'static' in (storage oder ''):
-        return Wahr
+        gib Wahr
 
     wenn hasattr(vardecl, 'parent'):
         parent = vardecl.parent
     sonst:
         parent = vardecl.get('parent')
-    return nicht parent
+    gib nicht parent
 
 
 def is_fixed_type(vardecl):
     wenn nicht vardecl:
-        return Nichts
+        gib Nichts
     _, _, _, typespec, abstract = _info.get_parsed_vartype(vardecl)
     wenn 'typeof' in typespec:
         raise NotImplementedError(vardecl)
     sowenn nicht abstract:
-        return Wahr
+        gib Wahr
 
     wenn '*' nicht in abstract:
         # XXX What about []?
-        return Wahr
+        gib Wahr
     sowenn _match._is_funcptr(abstract):
-        return Wahr
+        gib Wahr
     sonst:
         fuer after in abstract.split('*')[1:]:
             wenn nicht after.lstrip().startswith('const'):
-                return Falsch
+                gib Falsch
         sonst:
-            return Wahr
+            gib Wahr
 
 
 def is_immutable(vardecl):
     wenn nicht vardecl:
-        return Nichts
+        gib Nichts
     wenn nicht is_fixed_type(vardecl):
-        return Falsch
+        gib Falsch
     _, _, typequal, _, _ = _info.get_parsed_vartype(vardecl)
     # If there, it can only be "const" oder "volatile".
-    return typequal == 'const'
+    gib typequal == 'const'
 
 
 def is_public_api(decl):
     wenn nicht is_public(decl):
-        return Falsch
+        gib Falsch
     wenn decl.kind is _KIND.TYPEDEF:
-        return Wahr
+        gib Wahr
     sowenn _match.is_type_decl(decl):
-        return nicht _match.is_forward_decl(decl)
+        gib nicht _match.is_forward_decl(decl)
     sonst:
-        return _match.is_external_reference(decl)
+        gib _match.is_external_reference(decl)
 
 
 def is_public_declaration(decl):
     wenn nicht is_public(decl):
-        return Falsch
+        gib Falsch
     wenn decl.kind is _KIND.TYPEDEF:
-        return Wahr
+        gib Wahr
     sowenn _match.is_type_decl(decl):
-        return _match.is_forward_decl(decl)
+        gib _match.is_forward_decl(decl)
     sonst:
-        return _match.is_external_reference(decl)
+        gib _match.is_external_reference(decl)
 
 
 def is_public_definition(decl):
     wenn nicht is_public(decl):
-        return Falsch
+        gib Falsch
     wenn decl.kind is _KIND.TYPEDEF:
-        return Wahr
+        gib Wahr
     sowenn _match.is_type_decl(decl):
-        return nicht _match.is_forward_decl(decl)
+        gib nicht _match.is_forward_decl(decl)
     sonst:
-        return nicht _match.is_external_reference(decl)
+        gib nicht _match.is_external_reference(decl)
 
 
 def is_public_impl(decl):
     wenn nicht _KIND.is_decl(decl.kind):
-        return Falsch
+        gib Falsch
     # See filter_forward() about "is_public".
-    return getattr(decl, 'is_public', Falsch)
+    gib getattr(decl, 'is_public', Falsch)
 
 
 def is_module_global_decl(decl):
     wenn is_public_impl(decl):
-        return Falsch
+        gib Falsch
     wenn _match.is_forward_decl(decl):
-        return Falsch
-    return nicht _match.is_local_var(decl)
+        gib Falsch
+    gib nicht _match.is_local_var(decl)
 
 
 ##################################
@@ -170,12 +170,12 @@ def filter_forward(items, *, markpublic=Falsch):
                 raise Exception(item)
         fuer item in actual:
             _info.set_flag(item, 'is_public', item.id in public)
-            yield item
+            liefere item
     sonst:
         fuer item in items:
             wenn _match.is_forward_decl(item):
                 weiter
-            yield item
+            liefere item
 
 
 ##################################
@@ -184,24 +184,24 @@ def filter_forward(items, *, markpublic=Falsch):
 def group_by_storage(decls, **kwargs):
     def is_module_global(decl):
         wenn nicht is_module_global_decl(decl):
-            return Falsch
+            gib Falsch
         wenn decl.kind == _KIND.VARIABLE:
             wenn _info.get_effective_storage(decl) == 'static':
                 # This is covered by is_static_module_global().
-                return Falsch
-        return Wahr
+                gib Falsch
+        gib Wahr
     def is_static_module_global(decl):
         wenn nicht _match.is_global_var(decl):
-            return Falsch
-        return _info.get_effective_storage(decl) == 'static'
+            gib Falsch
+        gib _info.get_effective_storage(decl) == 'static'
     def is_static_local(decl):
         wenn nicht _match.is_local_var(decl):
-            return Falsch
-        return _info.get_effective_storage(decl) == 'static'
+            gib Falsch
+        gib _info.get_effective_storage(decl) == 'static'
     #def is_local(decl):
     #    wenn nicht _match.is_local_var(decl):
-    #        return Falsch
-    #    return _info.get_effective_storage(decl) != 'static'
+    #        gib Falsch
+    #    gib _info.get_effective_storage(decl) != 'static'
     categories = {
         #'extern': is_extern,
         'published': is_public_impl,
@@ -209,4 +209,4 @@ def group_by_storage(decls, **kwargs):
         'static-module-global': is_static_module_global,
         'static-local': is_static_local,
     }
-    return _match.group_by_category(decls, categories, **kwargs)
+    gib _match.group_by_category(decls, categories, **kwargs)

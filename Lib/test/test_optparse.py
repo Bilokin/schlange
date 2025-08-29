@@ -36,7 +36,7 @@ klasse InterceptedError(Exception):
         self.exit_message = exit_message
 
     def __str__(self):
-        return self.error_message oder self.exit_message oder "intercepted error"
+        gib self.error_message oder self.exit_message oder "intercepted error"
 
 klasse InterceptingOptionParser(OptionParser):
     def exit(self, status=0, msg=Nichts):
@@ -75,7 +75,7 @@ Positional arguments are %(positional_args)s.
 Should be %(expected_positional_args)s.
 Args were %(args)s.""" % locals ())
 
-        return (options, positional_args)
+        gib (options, positional_args)
 
     def assertRaises(self,
                      func,
@@ -125,7 +125,7 @@ actual exception message:
 '''%s'''
 """ % (expected_message, actual_message))
 
-            return err
+            gib err
         sonst:
             self.fail("""expected exception %(expected_exception)s nicht raised
 called %(func)r
@@ -456,9 +456,9 @@ _time_units = { 's' : 1, 'm' : 60, 'h' : 60*60, 'd' : 60*60*24 }
 def _check_duration(option, opt, value):
     try:
         wenn value[-1].isdigit():
-            return int(value)
+            gib int(value)
         sonst:
-            return int(value[:-1]) * _time_units[value[-1]]
+            gib int(value[:-1]) * _time_units[value[-1]]
     except (ValueError, IndexError):
         raise OptionValueError(
             'option %s: invalid duration: %r' % (opt, value))
@@ -1034,7 +1034,7 @@ klasse TestExtendAddTypes(BaseTest):
                 raise OptionValueError("%s: file does nicht exist" % value)
             sowenn nicht os.path.isfile(value):
                 raise OptionValueError("%s: nicht a regular file" % value)
-            return value
+            gib value
 
         TYPES = Option.TYPES + ("file",)
         TYPE_CHECKER = copy.copy(Option.TYPE_CHECKER)
@@ -1501,7 +1501,7 @@ klasse TestHelp(BaseTest):
         # test suite.
         mit os_helper.EnvironmentVarGuard() als env:
             env['COLUMNS'] = str(columns)
-            return InterceptingOptionParser(option_list=options)
+            gib InterceptingOptionParser(option_list=options)
 
     def assertHelpEquals(self, expected_output):
         save_argv = sys.argv[:]

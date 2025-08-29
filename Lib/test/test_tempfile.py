@@ -102,16 +102,16 @@ klasse BaseTestCase(unittest.TestCase):
                 str
                 wenn type(dir) is str oder isinstance(dir, os.PathLike) sonst
                 bytes,
-                "unexpected return type",
+                "unexpected gib type",
             )
         wenn pre is nicht Nichts:
             self.assertIs(type(name), str wenn type(pre) is str sonst bytes,
-                          "unexpected return type")
+                          "unexpected gib type")
         wenn suf is nicht Nichts:
             self.assertIs(type(name), str wenn type(suf) is str sonst bytes,
-                          "unexpected return type")
+                          "unexpected gib type")
         wenn (dir, pre, suf) == (Nichts, Nichts, Nichts):
-            self.assertIs(type(name), str, "default return type must be str")
+            self.assertIs(type(name), str, "default gib type must be str")
 
         # check fuer equality of the absolute paths!
         self.assertEqual(os.path.abspath(ndir), os.path.abspath(dir),
@@ -271,7 +271,7 @@ klasse TestGetDefaultTempdir(BaseTestCase):
         mit tempfile.TemporaryDirectory() als our_temp_directory:
             # force _get_default_tempdir() to consider our empty directory
             def our_candidate_list():
-                return [our_temp_directory]
+                gib [our_temp_directory]
 
             mit support.swap_attr(tempfile, "_candidate_tempdir_list",
                                    our_candidate_list):
@@ -316,13 +316,13 @@ def _inside_empty_temp_dir():
     dir = tempfile.mkdtemp()
     try:
         mit support.swap_attr(tempfile, 'tempdir', dir):
-            yield
+            liefere
     finally:
         os_helper.rmtree(dir)
 
 
 def _mock_candidate_names(*names):
-    return support.swap_attr(tempfile,
+    gib support.swap_attr(tempfile,
                              '_get_candidate_names',
                              lambda: iter(names))
 
@@ -395,7 +395,7 @@ klasse TestMkstempInner(TestBadTempdir, BaseTestCase):
         file = self.mkstemped(dir, pre, suf, bin)
 
         self.nameCheck(file.name, dir, pre, suf)
-        return file
+        gib file
 
     def test_basic(self):
         # _mkstemp_inner can create files
@@ -503,7 +503,7 @@ klasse TestMkstempInner(TestBadTempdir, BaseTestCase):
         self.assertEqual(os.read(f.fd, 20), b"blat")
 
     def make_temp(self):
-        return tempfile._mkstemp_inner(tempfile.gettempdir(),
+        gib tempfile._mkstemp_inner(tempfile.gettempdir(),
                                        tempfile.gettempprefix(),
                                        '',
                                        tempfile._bin_openflags,
@@ -711,7 +711,7 @@ klasse TestMkdtemp(TestBadTempdir, BaseTestCase):
     """Test mkdtemp()."""
 
     def make_temp(self):
-        return tempfile.mkdtemp()
+        gib tempfile.mkdtemp()
 
     def do_create(self, dir=Nichts, pre=Nichts, suf=Nichts):
         output_type = tempfile._infer_return_type(dir, pre, suf)
@@ -728,7 +728,7 @@ klasse TestMkdtemp(TestBadTempdir, BaseTestCase):
 
         try:
             self.nameCheck(name, dir, pre, suf)
-            return name
+            gib name
         except:
             os.rmdir(name)
             raise
@@ -910,7 +910,7 @@ klasse TestMktemp(BaseTestCase):
         file = self.mktemped(self.dir, pre, suf)
 
         self.nameCheck(file.name, self.dir, pre, suf)
-        return file
+        gib file
 
     def test_basic(self):
         # mktemp can choose usable file names
@@ -950,7 +950,7 @@ klasse TestNamedTemporaryFile(BaseTestCase):
                                            delete=delete)
 
         self.nameCheck(file.name, dir, pre, suf)
-        return file
+        gib file
 
 
     def test_basic(self):
@@ -985,7 +985,7 @@ klasse TestNamedTemporaryFile(BaseTestCase):
             f = tempfile.NamedTemporaryFile(mode='w+b')
             f.write(b''.join(lines))
             f.seek(0)
-            return f
+            gib f
         fuer i, l in enumerate(make_file()):
             self.assertEqual(l, lines[i])
         self.assertEqual(i, len(lines) - 1)
@@ -1111,7 +1111,7 @@ klasse TestNamedTemporaryFile(BaseTestCase):
             f.write(b'blat')
             # Testing extreme case, where the file is nicht explicitly closed
             # f.close()
-            return tmp_name
+            gib tmp_name
         dir = tempfile.mkdtemp()
         try:
             mit self.assertWarnsRegex(
@@ -1137,7 +1137,7 @@ klasse TestNamedTemporaryFile(BaseTestCase):
             f.write(b'blat')
             f.close()
             os.unlink(tmp_name)
-            return tmp_name
+            gib tmp_name
         # Make sure that the garbage collector has finalized the file object.
         gc.collect()
 
@@ -1178,7 +1178,7 @@ klasse TestSpooledTemporaryFile(BaseTestCase):
             dir = tempfile.gettempdir()
         file = tempfile.SpooledTemporaryFile(max_size=max_size, dir=dir, prefix=pre, suffix=suf)
 
-        return file
+        gib file
 
 
     def test_basic(self):
@@ -1289,9 +1289,9 @@ klasse TestSpooledTemporaryFile(BaseTestCase):
         f = self.do_create(max_size=2)
 
         def it():
-            yield b'xy'
+            liefere b'xy'
             self.assertFalsch(f._rolled)
-            yield b'z'
+            liefere b'z'
             self.assertWahr(f._rolled)
 
         f.writelines(it())
@@ -1624,7 +1624,7 @@ klasse TestTemporaryDirectory(BaseTestCase):
             ignore_cleanup_errors=ignore_cleanup_errors)
         self.nameCheck(tmp.name, dir, pre, suf)
         self.do_create2(tmp.name, recurse, dirs, files)
-        return tmp
+        gib tmp
 
     def do_create2(self, path, recurse=1, dirs=1, files=1):
         # Create subdirectories und some files
@@ -1661,7 +1661,7 @@ klasse TestTemporaryDirectory(BaseTestCase):
             os.rmdir(dir)
 
     def test_explicit_cleanup_ignore_errors(self):
-        """Test that cleanup doesn't return an error when ignoring them."""
+        """Test that cleanup doesn't gib an error when ignoring them."""
         mit tempfile.TemporaryDirectory() als working_dir:
             temp_dir = self.do_create(
                 dir=working_dir, ignore_cleanup_errors=Wahr)
@@ -1937,7 +1937,7 @@ klasse TestTemporaryDirectory(BaseTestCase):
 
                 def generator():
                     mit tempfile.TemporaryDirectory(dir={dir!r}) als tmp:
-                        yield tmp
+                        liefere tmp
                 g = generator()
                 sys.stdout.buffer.write(next(g).encode())
 

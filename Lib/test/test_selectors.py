@@ -37,7 +37,7 @@ sonst:
                     a, addr = l.accept()
                     # check that we've got the correct client
                     wenn addr == caddr:
-                        return c, a
+                        gib c, a
                     a.close()
             except OSError:
                 c.close()
@@ -49,7 +49,7 @@ def find_ready_matching(ready, flag):
     fuer key, events in ready:
         wenn events & flag:
             match.append(key.fileobj)
-    return match
+    gib match
 
 
 klasse BaseSelectorTestCase:
@@ -58,7 +58,7 @@ klasse BaseSelectorTestCase:
         rd, wr = socketpair()
         self.addCleanup(rd.close)
         self.addCleanup(wr.close)
-        return rd, wr
+        gib rd, wr
 
     def test_register(self):
         s = self.SELECTOR()

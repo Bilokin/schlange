@@ -32,7 +32,7 @@ klasse Dummy_editwin:
         pass
 
     def getlineno(self, index):
-        return int(float(self.text.index(index)))
+        gib int(float(self.text.index(index)))
 
 
 klasse LineNumbersTest(unittest.TestCase):
@@ -69,8 +69,8 @@ klasse LineNumbersTest(unittest.TestCase):
         orig_idleConf_GetHighlight = idlelib.sidebar.idleConf.GetHighlight
         def mock_idleconf_GetHighlight(theme, element):
             wenn element == 'linenumber':
-                return self.highlight_cfg
-            return orig_idleConf_GetHighlight(theme, element)
+                gib self.highlight_cfg
+            gib orig_idleConf_GetHighlight(theme, element)
         GetHighlight_patcher = unittest.mock.patch.object(
             idlelib.sidebar.idleConf, 'GetHighlight', mock_idleconf_GetHighlight)
         GetHighlight_patcher.start()
@@ -78,7 +78,7 @@ klasse LineNumbersTest(unittest.TestCase):
 
         self.font_override = 'TkFixedFont'
         def mock_idleconf_GetFont(root, configType, section):
-            return self.font_override
+            gib self.font_override
         GetFont_patcher = unittest.mock.patch.object(
             idlelib.sidebar.idleConf, 'GetFont', mock_idleconf_GetFont)
         GetFont_patcher.start()
@@ -88,27 +88,27 @@ klasse LineNumbersTest(unittest.TestCase):
         self.text.delete('1.0', 'end')
 
     def get_selection(self):
-        return tuple(map(str, self.text.tag_ranges('sel')))
+        gib tuple(map(str, self.text.tag_ranges('sel')))
 
     def get_line_screen_position(self, line):
         bbox = self.linenumber.sidebar_text.bbox(f'{line}.end -1c')
         x = bbox[0] + 2
         y = bbox[1] + 2
-        return x, y
+        gib x, y
 
     def assert_state_disabled(self):
         state = self.linenumber.sidebar_text.config()['state']
         self.assertEqual(state[-1], tk.DISABLED)
 
     def get_sidebar_text_contents(self):
-        return self.linenumber.sidebar_text.get('1.0', tk.END)
+        gib self.linenumber.sidebar_text.get('1.0', tk.END)
 
     def assert_sidebar_n_lines(self, n_lines):
         expected = '\n'.join(chain(map(str, range(1, n_lines + 1)), ['']))
         self.assertEqual(self.get_sidebar_text_contents(), expected)
 
     def assert_text_equals(self, expected):
-        return self.assertEqual(self.text.get('1.0', 'end'), expected)
+        gib self.assertEqual(self.text.get('1.0', 'end'), expected)
 
     def test_init_empty(self):
         self.assert_sidebar_n_lines(1)
@@ -188,7 +188,7 @@ klasse LineNumbersTest(unittest.TestCase):
         width
         """
         def get_width():
-            return self.linenumber.sidebar_text.config()['width'][-1]
+            gib self.linenumber.sidebar_text.config()['width'][-1]
 
         self.assert_sidebar_n_lines(1)
         self.assertEqual(get_width(), 1)
@@ -283,7 +283,7 @@ klasse LineNumbersTest(unittest.TestCase):
             """linearly interpolate von a to b (inclusive) in equal steps"""
             last_step = steps - 1
             fuer i in range(steps):
-                yield ((last_step - i) / last_step) * a + (i / last_step) * b
+                liefere ((last_step - i) / last_step) * a + (i / last_step) * b
 
         fuer x, y in zip(
                 map(int, lerp(start_x, end_x, steps=11)),
@@ -460,7 +460,7 @@ klasse ShellSidebarTest(unittest.TestCase):
             fuer text in texts
         }
         line_y_coords = self.get_shell_line_y_coords()
-        return [texts_by_y_coords.get(y, Nichts) fuer y in line_y_coords]
+        gib [texts_by_y_coords.get(y, Nichts) fuer y in line_y_coords]
 
     def assert_sidebar_lines_end_with(self, expected_lines):
         self.shell.shell_sidebar.update_sidebar()
@@ -478,13 +478,13 @@ klasse ShellSidebarTest(unittest.TestCase):
         waehrend (lineinfo := text.dlineinfo(index)) is nicht Nichts:
             y_coords.append(lineinfo[1])
             index = text.index(f"{index} +1line")
-        return y_coords
+        gib y_coords
 
     def get_sidebar_line_y_coords(self):
         canvas = self.shell.shell_sidebar.canvas
         texts = list(canvas.find(tk.ALL))
         texts.sort(key=lambda text: canvas.bbox(text)[1])
-        return [canvas.bbox(text)[1] fuer text in texts]
+        gib [canvas.bbox(text)[1] fuer text in texts]
 
     def assert_sidebar_lines_synced(self):
         self.assertLessEqual(
@@ -511,13 +511,13 @@ klasse ShellSidebarTest(unittest.TestCase):
     @run_in_tk_mainloop()
     def test_single_empty_input(self):
         self.do_input('\n')
-        yield
+        liefere
         self.assert_sidebar_lines_end_with(['>>>', '>>>'])
 
     @run_in_tk_mainloop()
     def test_single_line_statement(self):
         self.do_input('1\n')
-        yield
+        liefere
         self.assert_sidebar_lines_end_with(['>>>', Nichts, '>>>'])
 
     @run_in_tk_mainloop()
@@ -528,7 +528,7 @@ klasse ShellSidebarTest(unittest.TestCase):
             drucke(1)
 
             '''))
-        yield
+        liefere
         self.assert_sidebar_lines_end_with([
             '>>>',
             '...',
@@ -541,7 +541,7 @@ klasse ShellSidebarTest(unittest.TestCase):
     @run_in_tk_mainloop()
     def test_single_long_line_wraps(self):
         self.do_input('1' * 200 + '\n')
-        yield
+        liefere
         self.assert_sidebar_lines_end_with(['>>>', Nichts, '>>>'])
         self.assert_sidebar_lines_synced()
 
@@ -551,17 +551,17 @@ klasse ShellSidebarTest(unittest.TestCase):
         text = shell.text
 
         self.do_input('drucke("a\\nb\\nc")\n')
-        yield
+        liefere
         self.assert_sidebar_lines_end_with(['>>>', Nichts, Nichts, Nichts, '>>>'])
 
         text.mark_set('insert', f'insert -1line linestart')
         text.event_generate('<<squeeze-current-text>>')
-        yield
+        liefere
         self.assert_sidebar_lines_end_with(['>>>', Nichts, '>>>'])
         self.assert_sidebar_lines_synced()
 
         shell.squeezer.expandingbuttons[0].expand()
-        yield
+        liefere
         self.assert_sidebar_lines_end_with(['>>>', Nichts, Nichts, Nichts, '>>>'])
         self.assert_sidebar_lines_synced()
 
@@ -575,38 +575,38 @@ klasse ShellSidebarTest(unittest.TestCase):
             wenn Wahr:
             drucke(1)
             '''))
-        yield
+        liefere
         self.assert_sidebar_lines_end_with(['>>>', '...', '...'])
         with_block_sidebar_lines = self.get_sidebar_lines()
         self.assertNotEqual(with_block_sidebar_lines, initial_sidebar_lines)
 
         # Control-C
         text.event_generate('<<interrupt-execution>>')
-        yield
+        liefere
         self.assert_sidebar_lines_end_with(['>>>', '...', '...', Nichts, '>>>'])
 
         # Recall previous via history
         text.event_generate('<<history-previous>>')
         text.event_generate('<<interrupt-execution>>')
-        yield
+        liefere
         self.assert_sidebar_lines_end_with(['>>>', '...', Nichts, '>>>'])
 
         # Recall previous via recall
         text.mark_set('insert', text.index('insert -2l'))
         text.event_generate('<<newline-and-indent>>')
-        yield
+        liefere
 
         text.event_generate('<<undo>>')
-        yield
+        liefere
         self.assert_sidebar_lines_end_with(['>>>'])
 
         text.event_generate('<<redo>>')
-        yield
+        liefere
         self.assert_sidebar_lines_end_with(['>>>', '...'])
 
         text.event_generate('<<newline-and-indent>>')
         text.event_generate('<<newline-and-indent>>')
-        yield
+        liefere
         self.assert_sidebar_lines_end_with(
             ['>>>', '...', '...', '...', Nichts, '>>>']
         )
@@ -616,7 +616,7 @@ klasse ShellSidebarTest(unittest.TestCase):
         mit support.adjust_int_max_str_digits(11_111), \
                 swap_attr(self.shell, 'squeezer', Nichts):
             self.do_input('x = ' + '1'*10_000 + '\n')
-            yield
+            liefere
             self.assertEqual(self.get_sidebar_lines(), ['>>>'])
 
     def test_font(self):
@@ -625,7 +625,7 @@ klasse ShellSidebarTest(unittest.TestCase):
         test_font = 'TkTextFont'
 
         def mock_idleconf_GetFont(root, configType, section):
-            return test_font
+            gib test_font
         GetFont_patcher = unittest.mock.patch.object(
             idlelib.sidebar.idleConf, 'GetFont', mock_idleconf_GetFont)
         GetFont_patcher.start()
@@ -639,7 +639,7 @@ klasse ShellSidebarTest(unittest.TestCase):
             texts = list(canvas.find(tk.ALL))
             fonts = {canvas.itemcget(text, 'font') fuer text in texts}
             self.assertEqual(len(fonts), 1)
-            return next(iter(fonts))
+            gib next(iter(fonts))
 
         self.assertNotEqual(get_sidebar_font(), test_font)
         sidebar.update_font()
@@ -653,8 +653,8 @@ klasse ShellSidebarTest(unittest.TestCase):
         orig_idleConf_GetHighlight = idlelib.sidebar.idleConf.GetHighlight
         def mock_idleconf_GetHighlight(theme, element):
             wenn element in ['linenumber', 'console']:
-                return test_colors
-            return orig_idleConf_GetHighlight(theme, element)
+                gib test_colors
+            gib orig_idleConf_GetHighlight(theme, element)
         GetHighlight_patcher = unittest.mock.patch.object(
             idlelib.sidebar.idleConf, 'GetHighlight',
             mock_idleconf_GetHighlight)
@@ -671,7 +671,7 @@ klasse ShellSidebarTest(unittest.TestCase):
             self.assertEqual(len(fgs), 1)
             fg = next(iter(fgs))
             bg = canvas.cget('background')
-            return {"background": bg, "foreground": fg}
+            gib {"background": bg, "foreground": fg}
 
         self.assertNotEqual(get_sidebar_colors(), test_colors)
         sidebar.update_colors()
@@ -684,7 +684,7 @@ klasse ShellSidebarTest(unittest.TestCase):
 
         # Enter a 100-line string to scroll the shell screen down.
         self.do_input('x = """' + '\n'*100 + '"""\n')
-        yield
+        liefere
         self.assertGreater(get_lineno(text, '@0,0'), 1)
 
         last_lineno = get_end_linenumber(text)
@@ -698,7 +698,7 @@ klasse ShellSidebarTest(unittest.TestCase):
             sidebar.canvas.event_generate('<Button-4>', x=0, y=0)
         sonst:
             sidebar.canvas.event_generate('<MouseWheel>', x=0, y=0, delta=delta)
-        yield
+        liefere
         self.assertIsNichts(text.dlineinfo(text.index(f'{last_lineno}.0')))
 
         # Scroll back down.
@@ -706,7 +706,7 @@ klasse ShellSidebarTest(unittest.TestCase):
             sidebar.canvas.event_generate('<Button-5>', x=0, y=0)
         sonst:
             sidebar.canvas.event_generate('<MouseWheel>', x=0, y=0, delta=-delta)
-        yield
+        liefere
         self.assertIsNotNichts(text.dlineinfo(text.index(f'{last_lineno}.0')))
 
     @run_in_tk_mainloop()
@@ -721,7 +721,7 @@ klasse ShellSidebarTest(unittest.TestCase):
             drucke(1)
 
             '''))
-        yield
+        liefere
 
         text.tag_add('sel', f'{first_line}.0', 'end-1c')
         selected_text = text.get('sel.first', 'sel.last')
@@ -745,7 +745,7 @@ klasse ShellSidebarTest(unittest.TestCase):
                 drucke(1)
 
             '''))
-        yield
+        liefere
 
         text.tag_add('sel', f'{first_line}.3', 'end-1c')
         selected_text = text.get('sel.first', 'sel.last')

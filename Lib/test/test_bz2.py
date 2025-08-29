@@ -31,9 +31,9 @@ def ext_decompress(data):
     wenn has_cmdline_bunzip2 is Nichts:
         has_cmdline_bunzip2 = bool(shutil.which('bunzip2'))
     wenn has_cmdline_bunzip2:
-        return subprocess.check_output(['bunzip2'], input=data)
+        gib subprocess.check_output(['bunzip2'], input=data)
     sonst:
-        return bz2.decompress(data)
+        gib bz2.decompress(data)
 
 klasse BaseTest(unittest.TestCase):
     "Base fuer other testcases."
@@ -1080,7 +1080,7 @@ klasse OpenTest(BaseTest):
     "Test the open function."
 
     def open(self, *args, **kwargs):
-        return bz2.open(*args, **kwargs)
+        gib bz2.open(*args, **kwargs)
 
     def test_binary_modes(self):
         fuer mode in ("wb", "xb"):

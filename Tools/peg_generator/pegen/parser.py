@@ -22,7 +22,7 @@ def logger(method: F) -> F:
 
     def logger_wrapper(self: "Parser", *args: object) -> Any:
         wenn nicht self._verbose:
-            return method(self, *args)
+            gib method(self, *args)
         argsr = ",".join(repr(arg) fuer arg in args)
         fill = "  " * self._level
         drucke(f"{fill}{method_name}({argsr}) .... (looking at {self.showpeek()})")
@@ -30,10 +30,10 @@ def logger(method: F) -> F:
         tree = method(self, *args)
         self._level -= 1
         drucke(f"{fill}... {method_name}({argsr}) --> {tree!s:.200}")
-        return tree
+        gib tree
 
     logger_wrapper.__wrapped__ = method  # type: ignore[attr-defined]
-    return cast(F, logger_wrapper)
+    gib cast(F, logger_wrapper)
 
 
 def memoize(method: F) -> F:
@@ -47,7 +47,7 @@ def memoize(method: F) -> F:
         wenn key in self._cache und nicht self._verbose:
             tree, endmark = self._cache[key]
             self._reset(endmark)
-            return tree
+            gib tree
         # Slow path: no cache hit, oder verbose.
         verbose = self._verbose
         argsr = ",".join(repr(arg) fuer arg in args)
@@ -67,10 +67,10 @@ def memoize(method: F) -> F:
             wenn verbose:
                 drucke(f"{fill}{method_name}({argsr}) -> {tree!s:.200}")
             self._reset(endmark)
-        return tree
+        gib tree
 
     memoize_wrapper.__wrapped__ = method  # type: ignore[attr-defined]
-    return cast(F, memoize_wrapper)
+    gib cast(F, memoize_wrapper)
 
 
 def memoize_left_rec(
@@ -86,7 +86,7 @@ def memoize_left_rec(
         wenn key in self._cache und nicht self._verbose:
             tree, endmark = self._cache[key]
             self._reset(endmark)
-            return tree
+            gib tree
         # Slow path: no cache hit, oder verbose.
         verbose = self._verbose
         fill = "  " * self._level
@@ -151,10 +151,10 @@ def memoize_left_rec(
                 drucke(f"{fill}{method_name}() -> {tree!s:.200} [fresh]")
             wenn tree:
                 self._reset(endmark)
-        return tree
+        gib tree
 
     memoize_left_rec_wrapper.__wrapped__ = method  # type: ignore[attr-defined]
-    return memoize_left_rec_wrapper
+    gib memoize_left_rec_wrapper
 
 
 klasse Parser:
@@ -182,115 +182,115 @@ klasse Parser:
 
     def showpeek(self) -> str:
         tok = self._tokenizer.peek()
-        return f"{tok.start[0]}.{tok.start[1]}: {token.tok_name[tok.type]}:{tok.string!r}"
+        gib f"{tok.start[0]}.{tok.start[1]}: {token.tok_name[tok.type]}:{tok.string!r}"
 
     @memoize
     def name(self) -> Optional[tokenize.TokenInfo]:
         tok = self._tokenizer.peek()
         wenn tok.type == token.NAME und tok.string nicht in self.KEYWORDS:
-            return self._tokenizer.getnext()
-        return Nichts
+            gib self._tokenizer.getnext()
+        gib Nichts
 
     @memoize
     def number(self) -> Optional[tokenize.TokenInfo]:
         tok = self._tokenizer.peek()
         wenn tok.type == token.NUMBER:
-            return self._tokenizer.getnext()
-        return Nichts
+            gib self._tokenizer.getnext()
+        gib Nichts
 
     @memoize
     def string(self) -> Optional[tokenize.TokenInfo]:
         tok = self._tokenizer.peek()
         wenn tok.type == token.STRING:
-            return self._tokenizer.getnext()
-        return Nichts
+            gib self._tokenizer.getnext()
+        gib Nichts
 
     @memoize
     def fstring_start(self) -> Optional[tokenize.TokenInfo]:
         FSTRING_START = getattr(token, "FSTRING_START", Nichts)
         wenn nicht FSTRING_START:
-            return Nichts
+            gib Nichts
         tok = self._tokenizer.peek()
         wenn tok.type == FSTRING_START:
-            return self._tokenizer.getnext()
-        return Nichts
+            gib self._tokenizer.getnext()
+        gib Nichts
 
     @memoize
     def fstring_middle(self) -> Optional[tokenize.TokenInfo]:
         FSTRING_MIDDLE = getattr(token, "FSTRING_MIDDLE", Nichts)
         wenn nicht FSTRING_MIDDLE:
-            return Nichts
+            gib Nichts
         tok = self._tokenizer.peek()
         wenn tok.type == FSTRING_MIDDLE:
-            return self._tokenizer.getnext()
-        return Nichts
+            gib self._tokenizer.getnext()
+        gib Nichts
 
     @memoize
     def fstring_end(self) -> Optional[tokenize.TokenInfo]:
         FSTRING_END = getattr(token, "FSTRING_END", Nichts)
         wenn nicht FSTRING_END:
-            return Nichts
+            gib Nichts
         tok = self._tokenizer.peek()
         wenn tok.type == FSTRING_END:
-            return self._tokenizer.getnext()
-        return Nichts
+            gib self._tokenizer.getnext()
+        gib Nichts
 
     @memoize
     def op(self) -> Optional[tokenize.TokenInfo]:
         tok = self._tokenizer.peek()
         wenn tok.type == token.OP:
-            return self._tokenizer.getnext()
-        return Nichts
+            gib self._tokenizer.getnext()
+        gib Nichts
 
     @memoize
     def type_comment(self) -> Optional[tokenize.TokenInfo]:
         tok = self._tokenizer.peek()
         wenn tok.type == token.TYPE_COMMENT:
-            return self._tokenizer.getnext()
-        return Nichts
+            gib self._tokenizer.getnext()
+        gib Nichts
 
     @memoize
     def soft_keyword(self) -> Optional[tokenize.TokenInfo]:
         tok = self._tokenizer.peek()
         wenn tok.type == token.NAME und tok.string in self.SOFT_KEYWORDS:
-            return self._tokenizer.getnext()
-        return Nichts
+            gib self._tokenizer.getnext()
+        gib Nichts
 
     @memoize
     def expect(self, type: str) -> Optional[tokenize.TokenInfo]:
         tok = self._tokenizer.peek()
         wenn tok.string == type:
-            return self._tokenizer.getnext()
+            gib self._tokenizer.getnext()
         wenn type in exact_token_types:
             wenn tok.type == exact_token_types[type]:
-                return self._tokenizer.getnext()
+                gib self._tokenizer.getnext()
         wenn type in token.__dict__:
             wenn tok.type == token.__dict__[type]:
-                return self._tokenizer.getnext()
+                gib self._tokenizer.getnext()
         wenn tok.type == token.OP und tok.string == type:
-            return self._tokenizer.getnext()
-        return Nichts
+            gib self._tokenizer.getnext()
+        gib Nichts
 
     def expect_forced(self, res: Any, expectation: str) -> Optional[tokenize.TokenInfo]:
         wenn res is Nichts:
             raise self.make_syntax_error(f"expected {expectation}")
-        return res
+        gib res
 
     def positive_lookahead(self, func: Callable[..., T], *args: object) -> T:
         mark = self._mark()
         ok = func(*args)
         self._reset(mark)
-        return ok
+        gib ok
 
     def negative_lookahead(self, func: Callable[..., object], *args: object) -> bool:
         mark = self._mark()
         ok = func(*args)
         self._reset(mark)
-        return nicht ok
+        gib nicht ok
 
     def make_syntax_error(self, message: str, filename: str = "<unknown>") -> SyntaxError:
         tok = self._tokenizer.diagnose()
-        return SyntaxError(message, (filename, tok.start[0], 1 + tok.start[1], tok.line))
+        gib SyntaxError(message, (filename, tok.start[0], 1 + tok.start[1], tok.line))
 
 
 def simple_parser_main(parser_class: Type[Parser]) -> Nichts:

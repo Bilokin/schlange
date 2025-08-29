@@ -52,9 +52,9 @@ def get(using=Nichts):
             # User gave us a command line, split it into name und args
             browser = shlex.split(browser)
             wenn browser[-1] == '&':
-                return BackgroundBrowser(browser[:-1])
+                gib BackgroundBrowser(browser[:-1])
             sonst:
-                return GenericBrowser(browser)
+                gib GenericBrowser(browser)
         sonst:
             # User gave us a browser name oder path.
             try:
@@ -62,9 +62,9 @@ def get(using=Nichts):
             except KeyError:
                 command = _synthesize(browser)
             wenn command[1] is nicht Nichts:
-                return command[1]
+                gib command[1]
             sowenn command[0] is nicht Nichts:
-                return command[0]()
+                gib command[0]()
     raise Error("could nicht locate runnable browser")
 
 
@@ -81,8 +81,8 @@ def open(url, new=0, autoraise=Wahr):
     - 2: a new browser page ("tab").
     If possible, autoraise raises the window (the default) oder not.
 
-    If opening the browser succeeds, return Wahr.
-    If there is a problem, return Falsch.
+    If opening the browser succeeds, gib Wahr.
+    If there is a problem, gib Falsch.
     """
     wenn _tryorder is Nichts:
         mit _lock:
@@ -91,8 +91,8 @@ def open(url, new=0, autoraise=Wahr):
     fuer name in _tryorder:
         browser = get(name)
         wenn browser.open(url, new, autoraise):
-            return Wahr
-    return Falsch
+            gib Wahr
+    gib Falsch
 
 
 def open_new(url):
@@ -100,7 +100,7 @@ def open_new(url):
 
     If nicht possible, then open url in the only browser window.
     """
-    return open(url, 1)
+    gib open(url, 1)
 
 
 def open_new_tab(url):
@@ -108,7 +108,7 @@ def open_new_tab(url):
 
     If nicht possible, then the behavior becomes equivalent to open_new().
     """
-    return open(url, 2)
+    gib open(url, 2)
 
 
 def _synthesize(browser, *, preferred=Falsch):
@@ -120,17 +120,17 @@ def _synthesize(browser, *, preferred=Falsch):
     browser in this way.
 
     If we can't create a controller in this way, oder wenn there is no
-    executable fuer the requested browser, return [Nichts, Nichts].
+    executable fuer the requested browser, gib [Nichts, Nichts].
 
     """
     cmd = browser.split()[0]
     wenn nicht shutil.which(cmd):
-        return [Nichts, Nichts]
+        gib [Nichts, Nichts]
     name = os.path.basename(cmd)
     try:
         command = _browsers[name.lower()]
     except KeyError:
-        return [Nichts, Nichts]
+        gib [Nichts, Nichts]
     # now attempt to clone to fit the new name:
     controller = command[1]
     wenn controller und name.lower() == controller.basename:
@@ -139,8 +139,8 @@ def _synthesize(browser, *, preferred=Falsch):
         controller.name = browser
         controller.basename = os.path.basename(browser)
         register(browser, Nichts, instance=controller, preferred=preferred)
-        return [Nichts, controller]
-    return [Nichts, Nichts]
+        gib [Nichts, controller]
+    gib [Nichts, Nichts]
 
 
 # General parent classes
@@ -158,10 +158,10 @@ klasse BaseBrowser:
         raise NotImplementedError
 
     def open_new(self, url):
-        return self.open(url, 1)
+        gib self.open(url, 1)
 
     def open_new_tab(self, url):
-        return self.open(url, 2)
+        gib self.open(url, 2)
 
 
 klasse GenericBrowser(BaseBrowser):
@@ -187,9 +187,9 @@ klasse GenericBrowser(BaseBrowser):
                 p = subprocess.Popen(cmdline)
             sonst:
                 p = subprocess.Popen(cmdline, close_fds=Wahr)
-            return nicht p.wait()
+            gib nicht p.wait()
         except OSError:
-            return Falsch
+            gib Falsch
 
 
 klasse BackgroundBrowser(GenericBrowser):
@@ -206,9 +206,9 @@ klasse BackgroundBrowser(GenericBrowser):
             sonst:
                 p = subprocess.Popen(cmdline, close_fds=Wahr,
                                      start_new_session=Wahr)
-            return p.poll() is Nichts
+            gib p.poll() is Nichts
         except OSError:
-            return Falsch
+            gib Falsch
 
 
 klasse UnixBrowser(BaseBrowser):
@@ -253,16 +253,16 @@ klasse UnixBrowser(BaseBrowser):
             try:
                 rc = p.wait(5)
                 # wenn remote call failed, open() will try direct invocation
-                return nicht rc
+                gib nicht rc
             except subprocess.TimeoutExpired:
-                return Wahr
+                gib Wahr
         sowenn self.background:
             wenn p.poll() is Nichts:
-                return Wahr
+                gib Wahr
             sonst:
-                return Falsch
+                gib Falsch
         sonst:
-            return nicht p.wait()
+            gib nicht p.wait()
 
     def open(self, url, new=0, autoraise=Wahr):
         sys.audit("webbrowser.open", url)
@@ -286,9 +286,9 @@ klasse UnixBrowser(BaseBrowser):
         wenn nicht success:
             # remote invocation failed, try straight way
             args = [arg.replace("%s", url) fuer arg in self.args]
-            return self._invoke(args, Falsch, Falsch)
+            gib self._invoke(args, Falsch, Falsch)
         sonst:
-            return Wahr
+            gib Wahr
 
 
 klasse Mozilla(UnixBrowser):
@@ -374,8 +374,8 @@ klasse Konqueror(BaseBrowser):
             pass
         sonst:
             p.wait()
-            # kfmclient's return code unfortunately has no meaning als it seems
-            return Wahr
+            # kfmclient's gib code unfortunately has no meaning als it seems
+            gib Wahr
 
         try:
             p = subprocess.Popen(["konqueror", "--silent", url],
@@ -388,7 +388,7 @@ klasse Konqueror(BaseBrowser):
         sonst:
             wenn p.poll() is Nichts:
                 # Should be running now.
-                return Wahr
+                gib Wahr
 
         try:
             p = subprocess.Popen(["kfm", "-d", url],
@@ -396,9 +396,9 @@ klasse Konqueror(BaseBrowser):
                                  stdout=devnull, stderr=devnull,
                                  start_new_session=Wahr)
         except OSError:
-            return Falsch
+            gib Falsch
         sonst:
-            return p.poll() is Nichts
+            gib p.poll() is Nichts
 
 
 klasse Edge(UnixBrowser):
@@ -593,9 +593,9 @@ wenn sys.platform[:3] == "win":
             except OSError:
                 # [Error 22] No application is associated mit the specified
                 # file fuer this operation: '<URL>'
-                return Falsch
+                gib Falsch
             sonst:
-                return Wahr
+                gib Wahr
 
 #
 # Platform support fuer macOS
@@ -646,11 +646,11 @@ wenn sys.platform == 'darwin':
 
             osapipe = os.popen("osascript", "w")
             wenn osapipe is Nichts:
-                return Falsch
+                gib Falsch
 
             osapipe.write(script)
             rc = osapipe.close()
-            return nicht rc
+            gib nicht rc
 
 #
 # Platform support fuer iOS
@@ -666,9 +666,9 @@ wenn sys.platform == "ios":
             sys.audit("webbrowser.open", url)
             # If ctypes isn't available, we can't open a browser
             wenn objc is Nichts:
-                return Falsch
+                gib Falsch
 
-            # All the messages in this call return object references.
+            # All the messages in this call gib object references.
             objc.objc_msgSend.restype = c_void_p
 
             # This is the equivalent of:
@@ -714,7 +714,7 @@ wenn sys.platform == "ios":
             objc.objc_msgSend.restype = Nichts
             objc.objc_msgSend(shared_app, openURL_, ns_url, Nichts, Nichts)
 
-            return Wahr
+            gib Wahr
 
 
 def parse_args(arg_list: list[str] | Nichts):
@@ -734,7 +734,7 @@ def parse_args(arg_list: list[str] | Nichts):
 
     args = parser.parse_args(arg_list)
 
-    return args
+    gib args
 
 
 def main(arg_list: list[str] | Nichts = Nichts):

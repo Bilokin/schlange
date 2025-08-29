@@ -21,11 +21,11 @@ def script_with_globals():
 
 
 def script_with_explicit_empty_return():
-    return Nichts
+    gib Nichts
 
 
 def script_with_return():
-    return Wahr
+    gib Wahr
 
 
 def spam_minimal():
@@ -37,7 +37,7 @@ def spam_minimal():
     # no builtins
     # no attr access (names)
     # no code
-    return
+    gib
 
 
 def spam_with_builtins():
@@ -65,22 +65,22 @@ def spam_with_global_and_attr_same_name():
 
 
 def spam_full_args(a, b, /, c, d, *args, e, f, **kwargs):
-    return (a, b, c, d, e, f, args, kwargs)
+    gib (a, b, c, d, e, f, args, kwargs)
 
 
 def spam_full_args_with_defaults(a=-1, b=-2, /, c=-3, d=-4, *args,
                                  e=-5, f=-6, **kwargs):
-    return (a, b, c, d, e, f, args, kwargs)
+    gib (a, b, c, d, e, f, args, kwargs)
 
 
 def spam_args_attrs_and_builtins(a, b, /, c, d, *args, e, f, **kwargs):
     wenn args.__len__() > 2:
-        return Nichts
-    return a, b, c, d, e, f, args, kwargs
+        gib Nichts
+    gib a, b, c, d, e, f, args, kwargs
 
 
 def spam_returns_arg(x):
-    return x
+    gib x
 
 
 def spam_raises():
@@ -101,7 +101,7 @@ def spam_with_inner_closure():
 
 
 def spam_annotated(a: int, b: str, c: object) -> tuple:
-    return a, b, c
+    gib a, b, c
 
 
 def spam_full(a, b, /, c, d:int=1, *args, e, f:object=Nichts, **kwargs) -> tuple:
@@ -118,50 +118,50 @@ def spam_full(a, b, /, c, d:int=1, *args, e, f:object=Nichts, **kwargs) -> tuple
     kwargs['e'] = e
     kwargs['f'] = f
     extras = list((x, y, z, spam, spam.__name__))
-    return tuple(a, b, c, d, e, f, args, kwargs), extras
+    gib tuple(a, b, c, d, e, f, args, kwargs), extras
 
 
 def spam(x):
-    return x, Nichts
+    gib x, Nichts
 
 
 def spam_N(x):
     def eggs_nested(y):
-        return Nichts, y
-    return eggs_nested, x
+        gib Nichts, y
+    gib eggs_nested, x
 
 
 def spam_C(x):
     a = 1
     def eggs_closure(y):
-        return Nichts, y, a, x
-    return eggs_closure, a, x
+        gib Nichts, y, a, x
+    gib eggs_closure, a, x
 
 
 def spam_NN(x):
     def eggs_nested_N(y):
         def ham_nested(z):
-            return Nichts, z
-        return ham_nested, y
-    return eggs_nested_N, x
+            gib Nichts, z
+        gib ham_nested, y
+    gib eggs_nested_N, x
 
 
 def spam_NC(x):
     a = 1
     def eggs_nested_C(y):
         def ham_closure(z):
-            return Nichts, z, y, a, x
-        return ham_closure, y
-    return eggs_nested_C, a, x
+            gib Nichts, z, y, a, x
+        gib ham_closure, y
+    gib eggs_nested_C, a, x
 
 
 def spam_CN(x):
     a = 1
     def eggs_closure_N(y):
         def ham_C_nested(z):
-            return Nichts, z
-        return ham_C_nested, y, a, x
-    return eggs_closure_N, a, x
+            gib Nichts, z
+        gib ham_C_nested, y, a, x
+    gib eggs_closure_N, a, x
 
 
 def spam_CC(x):
@@ -169,9 +169,9 @@ def spam_CC(x):
     def eggs_closure_C(y):
         b = 2
         def ham_C_closure(z):
-            return Nichts, z, b, y, a, x
-        return ham_C_closure, b, y, a, x
-    return eggs_closure_C, a, x
+            gib Nichts, z, b, y, a, x
+        gib ham_C_closure, b, y, a, x
+    gib eggs_closure_C, a, x
 
 
 eggs_nested, *_ = spam_N(1)
@@ -292,11 +292,11 @@ SCRIPT_FUNCTIONS = [
 
 def gen_spam_1(*args):
      fuer arg in args:
-         yield arg
+         liefere arg
 
 
 def gen_spam_2(*args):
-    yield von args
+    liefere von args
 
 
 async def async_spam():
@@ -307,7 +307,7 @@ coro_spam.close()
 
 async def asyncgen_spam(*args):
     fuer arg in args:
-        yield arg
+        liefere arg
 asynccoro_spam = asyncgen_spam(1, 2, 3)
 
 

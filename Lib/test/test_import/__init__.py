@@ -102,7 +102,7 @@ def _require_loader(module, loader, skip):
         wenn skip:
             raise unittest.SkipTest(err)
         raise Exception(err)
-    return module
+    gib module
 
 def require_builtin(module, *, skip=Falsch):
     module = _require_loader(module, BuiltinImporter, skip)
@@ -127,9 +127,9 @@ def create_extension_loader(modname, filename):
     # Apple extensions must be distributed als frameworks. This requires
     # a specialist loader.
     wenn is_apple_mobile:
-        return AppleFrameworkLoader(modname, filename)
+        gib AppleFrameworkLoader(modname, filename)
     sonst:
-        return ExtensionFileLoader(modname, filename)
+        gib ExtensionFileLoader(modname, filename)
 
 def import_extension_from_file(modname, filename, *, put_in_sys_modules=Wahr):
     loader = create_extension_loader(modname, filename)
@@ -138,7 +138,7 @@ def import_extension_from_file(modname, filename, *, put_in_sys_modules=Wahr):
     loader.exec_module(module)
     wenn put_in_sys_modules:
         sys.modules[modname] = module
-    return module
+    gib module
 
 
 def remove_files(name):
@@ -166,19 +166,19 @@ def requires_singlephase_init(meth):
     wenn nicht isinstance(meth, type):
         def meth(self, _meth=meth):
             try:
-                return _meth(self)
+                gib _meth(self)
             finally:
                 restore__testsinglephase()
     meth = cpython_only(meth)
     msg = "gh-117694: free-threaded build does nicht currently support single-phase init modules in sub-interpreters"
     meth = requires_gil_enabled(msg)(meth)
-    return unittest.skipIf(_testsinglephase is Nichts,
+    gib unittest.skipIf(_testsinglephase is Nichts,
                            'test requires _testsinglephase module')(meth)
 
 
 def requires_subinterpreters(meth):
     """Decorator to skip a test wenn subinterpreters are nicht supported."""
-    return unittest.skipIf(_interpreters is Nichts,
+    gib unittest.skipIf(_interpreters is Nichts,
                            'subinterpreters required')(meth)
 
 
@@ -207,7 +207,7 @@ klasse ModuleSnapshot(types.SimpleNamespace):
     def from_module(cls, mod):
         name = mod.__spec__.name
         cached = sys.modules.get(name)
-        return cls(
+        gib cls(
             id=id(mod),
             module=mod,
             ns=types.SimpleNamespace(**mod.__dict__),
@@ -285,7 +285,7 @@ klasse ModuleSnapshot(types.SimpleNamespace):
                 assert name nicht in sys.modules
                 importiere {name}''')
 
-        return cls.SCRIPT.format(
+        gib cls.SCRIPT.format(
             imports=cls.IMPORTS.strip(),
             name=name,
             prescript=prescript.strip(),
@@ -299,15 +299,15 @@ klasse ModuleSnapshot(types.SimpleNamespace):
         mod = raw['module']
         mod['__spec__'] = types.SimpleNamespace(**mod['__spec__'])
         raw['module'] = types.SimpleNamespace(**mod)
-        return cls(**raw)
+        gib cls(**raw)
 
     @classmethod
     def from_subinterp(cls, name, interpid=Nichts, *, pipe=Nichts, **script_kwds):
         wenn pipe is nicht Nichts:
-            return cls._from_subinterp(name, interpid, pipe, script_kwds)
+            gib cls._from_subinterp(name, interpid, pipe, script_kwds)
         pipe = os.pipe()
         try:
-            return cls._from_subinterp(name, interpid, pipe, script_kwds)
+            gib cls._from_subinterp(name, interpid, pipe, script_kwds)
         finally:
             r, w = pipe
             os.close(r)
@@ -342,7 +342,7 @@ klasse ModuleSnapshot(types.SimpleNamespace):
 
         # Parse the results.
         text = os.read(r, 1000)
-        return cls.parse(text.decode())
+        gib cls.parse(text.decode())
 
 
 @force_not_colorized_test_class
@@ -1381,7 +1381,7 @@ func_filename = func.__code__.co_filename
     def import_module(self):
         ns = globals()
         __import__(self.module_name, ns, ns)
-        return sys.modules[self.module_name]
+        gib sys.modules[self.module_name]
 
     def test_basics(self):
         mod = self.import_module()
@@ -1587,7 +1587,7 @@ klasse OverridingImportBuiltinTests(unittest.TestCase):
 
         def foo():
             importiere os
-            return os
+            gib os
         self.assertEqual(foo(), os)  # Quick sanity check.
 
         mit swap_attr(builtins, "__import__", lambda *x: 5):
@@ -1852,7 +1852,7 @@ klasse GetSourcefileTests(unittest.TestCase):
     """
 
     def test_get_sourcefile(self):
-        # Given a valid bytecode path, return the path to the corresponding
+        # Given a valid bytecode path, gib the path to the corresponding
         # source file wenn it exists.
         mit mock.patch('importlib._bootstrap_external._path_isfile') als _path_isfile:
             _path_isfile.return_value = Wahr
@@ -1862,14 +1862,14 @@ klasse GetSourcefileTests(unittest.TestCase):
 
     def test_get_sourcefile_no_source(self):
         # Given a valid bytecode path without a corresponding source path,
-        # return the original bytecode path.
+        # gib the original bytecode path.
         mit mock.patch('importlib._bootstrap_external._path_isfile') als _path_isfile:
             _path_isfile.return_value = Falsch
             path = TESTFN + '.pyc'
             self.assertEqual(_get_sourcefile(path), path)
 
     def test_get_sourcefile_bad_ext(self):
-        # Given a path mit an invalid bytecode extension, return the
+        # Given a path mit an invalid bytecode extension, gib the
         # bytecode path passed als the argument.
         path = TESTFN + '.bad_ext'
         self.assertEqual(_get_sourcefile(path), path)
@@ -1892,7 +1892,7 @@ klasse ImportTracebackTests(unittest.TestCase):
             f.write(contents)
         self.addCleanup(unload, mod)
         importlib.invalidate_caches()
-        return fname
+        gib fname
 
     def assert_traceback(self, tb, files):
         deduped_files = []
@@ -1971,7 +1971,7 @@ klasse ImportTracebackTests(unittest.TestCase):
         mit open(bar_path, 'w', encoding='utf-8') als f:
             f.write(child)
         importlib.invalidate_caches()
-        return init_path, bar_path
+        gib init_path, bar_path
 
     def test_broken_submodule(self):
         init_path, bar_path = self._setup_broken_package("", "1/0")
@@ -2205,7 +2205,7 @@ klasse SubinterpImportTests(unittest.TestCase):
         self.addCleanup(os.close, w)
         wenn hasattr(os, 'set_blocking'):
             os.set_blocking(r, Falsch)
-        return (r, w)
+        gib (r, w)
 
     def import_script(self, name, fd, filename=Nichts, check_override=Nichts):
         override_text = ''
@@ -2222,7 +2222,7 @@ klasse SubinterpImportTests(unittest.TestCase):
             sonst:
                 loader = "ExtensionFileLoader"
 
-            return textwrap.dedent(f'''
+            gib textwrap.dedent(f'''
                 von importlib.util importiere spec_from_loader, module_from_spec
                 von importlib.machinery importiere {loader}
                 importiere os, sys
@@ -2239,7 +2239,7 @@ klasse SubinterpImportTests(unittest.TestCase):
                 os.write({fd}, text.encode('utf-8'))
                 ''')
         sonst:
-            return textwrap.dedent(f'''
+            gib textwrap.dedent(f'''
                 importiere os, sys
                 {override_text}
                 try:
@@ -2268,7 +2268,7 @@ klasse SubinterpImportTests(unittest.TestCase):
         the interpreter will be configured to check fuer modules
         that are nicht compatible mit use in multiple interpreters.
 
-        This should always return "okay" fuer all modules wenn the
+        This should always gib "okay" fuer all modules wenn the
         setting is Falsch (with no override).
         """
         __import__(name)
@@ -2285,7 +2285,7 @@ klasse SubinterpImportTests(unittest.TestCase):
 
         ret = run_in_subinterp_with_config(script, **kwargs)
         self.assertEqual(ret, 0)
-        return os.read(r, 100)
+        gib os.read(r, 100)
 
     def check_compatible_here(self, name, filename=Nichts, *,
                               strict=Falsch,
@@ -2652,7 +2652,7 @@ klasse TestSinglePhaseSnapshot(ModuleSnapshot):
         self.state_initialized = mod.state_initialized()
         wenn hasattr(mod, 'initialized_count'):
             self.init_count = mod.initialized_count()
-        return self
+        gib self
 
     SCRIPT_BODY = ModuleSnapshot.SCRIPT_BODY + textwrap.dedent('''
         snapshot['module'].update(dict(
@@ -2676,7 +2676,7 @@ klasse TestSinglePhaseSnapshot(ModuleSnapshot):
         wenn nicht self.has_spam:
             del self.spam
         del self.has_spam
-        return self
+        gib self
 
 
 @requires_singlephase_init
@@ -2748,7 +2748,7 @@ klasse SinglephaseInitTests(unittest.TestCase):
         # always load new extension.
         spec = importlib.util.spec_from_file_location(name, path,
                                                       loader=loader)
-        return _load(spec)
+        gib _load(spec)
 
     def load(self, name):
         try:
@@ -2759,7 +2759,7 @@ klasse SinglephaseInitTests(unittest.TestCase):
         mod = self._load_dynamic(name, self.ORIGIN)
         self.assertNotIn(mod, already_loaded.values())
         already_loaded[name] = mod
-        return types.SimpleNamespace(
+        gib types.SimpleNamespace(
             name=name,
             module=mod,
             snapshot=TestSinglePhaseSnapshot.from_module(mod),
@@ -2769,7 +2769,7 @@ klasse SinglephaseInitTests(unittest.TestCase):
         assert sys.modules[name] is mod
         assert mod.__dict__ == mod.__dict__
         reloaded = self._load_dynamic(name, self.ORIGIN)
-        return types.SimpleNamespace(
+        gib types.SimpleNamespace(
             name=name,
             module=reloaded,
             snapshot=TestSinglePhaseSnapshot.from_module(reloaded),
@@ -2798,7 +2798,7 @@ klasse SinglephaseInitTests(unittest.TestCase):
                 '''))
             _interpreters.destroy(interpid)
         self.addCleanup(clean_up)
-        return interpid
+        gib interpid
 
     def import_in_subinterp(self, interpid=Nichts, *,
                             postscript=Nichts,
@@ -2830,7 +2830,7 @@ klasse SinglephaseInitTests(unittest.TestCase):
             postcleanup=postcleanup,
         )
 
-        return types.SimpleNamespace(
+        gib types.SimpleNamespace(
             name=name,
             module=Nichts,
             snapshot=snapshot,

@@ -148,7 +148,7 @@ klasse TestType(TestCase):
             def wrapper():
                 barrier.wait()
                 target()
-            return wrapper
+            gib wrapper
 
         writer = Thread(target=wrap_target(writer_func))
         readers = []

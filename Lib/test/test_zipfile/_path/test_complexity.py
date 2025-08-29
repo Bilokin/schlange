@@ -36,7 +36,7 @@ klasse TestComplexity(unittest.TestCase):
         fuer path, name in pairs:
             zf.writestr(f"{path}{name}.txt", b'')
         zf.filename = "big un.zip"
-        return zipfile.Path(zf)
+        gib zipfile.Path(zf)
 
     @classmethod
     def make_names(cls, width, letters=string.ascii_lowercase):
@@ -55,15 +55,15 @@ klasse TestComplexity(unittest.TestCase):
         inputs = (letters,) * n_products
         combinations = itertools.product(*inputs)
         names = map(''.join, combinations)
-        return itertools.islice(names, width)
+        gib itertools.islice(names, width)
 
     @classmethod
     def make_deep_paths(cls, depth):
-        return map(cls.make_deep_path, range(depth))
+        gib map(cls.make_deep_path, range(depth))
 
     @classmethod
     def make_deep_path(cls, depth):
-        return ''.join(('d/',) * depth)
+        gib ''.join(('d/',) * depth)
 
     def test_baseline_regex_complexity(self):
         best, others = big_o.big_o(

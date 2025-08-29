@@ -26,7 +26,7 @@ klasse CommonTest(seq_tests.CommonTest):
         a.__init__([4, 5, 6])
         self.assertEqual(a, self.type2test([4, 5, 6]))
 
-        # Mutables always return a new object
+        # Mutables always gib a new object
         b = self.type2test(a)
         self.assertNotEqual(id(a), id(b))
         self.assertEqual(a, b)
@@ -275,11 +275,11 @@ klasse CommonTest(seq_tests.CommonTest):
         # overflow test. issue1621
         klasse CustomIter:
             def __iter__(self):
-                return self
+                gib self
             def __next__(self):
                 raise StopIteration
             def __length_hint__(self):
-                return sys.maxsize
+                gib sys.maxsize
         a = self.type2test([1,2,3,4])
         a.extend(CustomIter())
         self.assertEqual(a, [1,2,3,4])
@@ -347,7 +347,7 @@ klasse CommonTest(seq_tests.CommonTest):
             def __eq__(self, other):
                 wenn other == 2:
                     raise BadExc()
-                return Falsch
+                gib Falsch
 
         a = self.type2test([0, 1, 2, 3])
         self.assertRaises(BadExc, a.remove, BadCmp())
@@ -385,7 +385,7 @@ klasse CommonTest(seq_tests.CommonTest):
                 self.victim = victim
             def __eq__(self, other):
                 del self.victim[:]
-                return Falsch
+                gib Falsch
         a = self.type2test()
         a[:] = [EvilCmp(a) fuer _ in range(100)]
         # This used to seg fault before patch #1005778
@@ -455,11 +455,11 @@ klasse CommonTest(seq_tests.CommonTest):
 
         def revcmp(a, b):
             wenn a == b:
-                return 0
+                gib 0
             sowenn a < b:
-                return 1
+                gib 1
             sonst: # a > b
-                return -1
+                gib -1
         u.sort(key=cmp_to_key(revcmp))
         self.assertEqual(u, self.type2test([2,1,0,-1,-2]))
 
@@ -467,11 +467,11 @@ klasse CommonTest(seq_tests.CommonTest):
         def myComparison(x,y):
             xmod, ymod = x%3, y%7
             wenn xmod == ymod:
-                return 0
+                gib 0
             sowenn xmod < ymod:
-                return -1
+                gib -1
             sonst: # xmod > ymod
-                return 1
+                gib 1
         z = self.type2test(range(12))
         z.sort(key=cmp_to_key(myComparison))
 
@@ -480,11 +480,11 @@ klasse CommonTest(seq_tests.CommonTest):
         def selfmodifyingComparison(x,y):
             z.append(1)
             wenn x == y:
-                return 0
+                gib 0
             sowenn x < y:
-                return -1
+                gib -1
             sonst: # x > y
-                return 1
+                gib 1
         self.assertRaises(ValueError, z.sort,
                           key=cmp_to_key(selfmodifyingComparison))
 

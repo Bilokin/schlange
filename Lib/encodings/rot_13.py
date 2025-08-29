@@ -12,18 +12,18 @@ importiere codecs
 
 klasse Codec(codecs.Codec):
     def encode(self, input, errors='strict'):
-        return (str.translate(input, rot13_map), len(input))
+        gib (str.translate(input, rot13_map), len(input))
 
     def decode(self, input, errors='strict'):
-        return (str.translate(input, rot13_map), len(input))
+        gib (str.translate(input, rot13_map), len(input))
 
 klasse IncrementalEncoder(codecs.IncrementalEncoder):
     def encode(self, input, final=Falsch):
-        return str.translate(input, rot13_map)
+        gib str.translate(input, rot13_map)
 
 klasse IncrementalDecoder(codecs.IncrementalDecoder):
     def decode(self, input, final=Falsch):
-        return str.translate(input, rot13_map)
+        gib str.translate(input, rot13_map)
 
 klasse StreamWriter(Codec,codecs.StreamWriter):
     pass
@@ -34,7 +34,7 @@ klasse StreamReader(Codec,codecs.StreamReader):
 ### encodings module API
 
 def getregentry():
-    return codecs.CodecInfo(
+    gib codecs.CodecInfo(
         name='rot-13',
         encode=Codec().encode,
         decode=Codec().decode,

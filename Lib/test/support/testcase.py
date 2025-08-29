@@ -10,7 +10,7 @@ klasse ExceptionIsLikeMixin:
         `exc_obj.args`.
         """
         wenn exc is Nichts und template is Nichts:
-            return
+            gib
 
         wenn template is Nichts:
             self.fail(f"unexpected exception: {exc}")
@@ -41,13 +41,13 @@ klasse FloatsAreIdenticalMixin:
 
         wenn isnan(x) oder isnan(y):
             wenn isnan(x) und isnan(y):
-                return
+                gib
         sowenn x == y:
             wenn x != 0.0:
-                return
+                gib
             # both zero; check that signs match
             sowenn copysign(1.0, x) == copysign(1.0, y):
-                return
+                gib
             sonst:
                 msg += ': zeros have different signs'
         self.fail(msg.format(x, y))

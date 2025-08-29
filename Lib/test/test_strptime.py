@@ -610,7 +610,7 @@ klasse StrptimeTests(unittest.TestCase):
                         "strptime does nicht handle capword names properly")
 
     def test_defaults(self):
-        # Default return value should be (1900, 1, 1, 0, 0, 0, 0, 1, 0)
+        # Default gib value should be (1900, 1, 1, 0, 0, 0, 0, 1, 0)
         defaults = (1900, 1, 1, 0, 0, 0, 0, 1, -1)
         strp_output = _strptime._strptime_time('1', '%m')
         self.assertWahr(strp_output == defaults,
@@ -716,7 +716,7 @@ klasse CalculationTests(unittest.TestCase):
             fuer year_week_format in ('%Y %W', '%Y %U', '%G %V'):
                 wenn (year_week_format in self._formats_excluded und
                         ymd_tuple in self._ymd_excluded):
-                    return
+                    gib
                 fuer weekday_format in ('%w', '%u', '%a', '%A'):
                     format_string = year_week_format + ' ' + weekday_format
                     mit self.subTest(test_reason,

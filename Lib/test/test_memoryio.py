@@ -17,7 +17,7 @@ klasse IntLike:
     def __init__(self, num):
         self._num = num
     def __index__(self):
-        return self._num
+        gib self._num
     __int__ = __index__
 
 klasse MemorySeekTestMixin:
@@ -115,7 +115,7 @@ klasse MemoryTestMixin:
     def test_writelines_error(self):
         memio = self.ioclass()
         def error_gen():
-            yield self.buftype('spam')
+            liefere self.buftype('spam')
             raise KeyboardInterrupt
 
         self.assertRaises(KeyboardInterrupt, memio.writelines, error_gen())
@@ -374,13 +374,13 @@ klasse MemoryTestMixin:
             klasse MemIO(self.ioclass):
                 pass
             m = MemIO(buf)
-            return m.getvalue()
+            gib m.getvalue()
         def test2():
             klasse MemIO(self.ioclass):
                 def __init__(me, a, b):
                     self.ioclass.__init__(me, a)
             m = MemIO(buf, Nichts)
-            return m.getvalue()
+            gib m.getvalue()
         self.assertEqual(test1(), buf)
         self.assertEqual(test2(), buf)
 
@@ -436,7 +436,7 @@ klasse PyBytesIOTest(MemoryTestMixin, MemorySeekTestMixin, unittest.TestCase):
 
     @staticmethod
     def buftype(s):
-        return s.encode("ascii")
+        gib s.encode("ascii")
     ioclass = pyio.BytesIO
     EOF = b""
 
@@ -750,7 +750,7 @@ klasse PyStringIOPickleTest(TextIOTestMixin, unittest.TestCase):
 
     klasse ioclass(pyio.StringIO):
         def __new__(cls, *args, **kwargs):
-            return pickle.loads(pickle.dumps(pyio.StringIO(*args, **kwargs)))
+            gib pickle.loads(pickle.dumps(pyio.StringIO(*args, **kwargs)))
         def __init__(self, *args, **kwargs):
             pass
 
@@ -895,7 +895,7 @@ klasse CStringIOPickleTest(PyStringIOPickleTest):
 
     klasse ioclass(io.StringIO):
         def __new__(cls, *args, **kwargs):
-            return pickle.loads(pickle.dumps(io.StringIO(*args, **kwargs)))
+            gib pickle.loads(pickle.dumps(io.StringIO(*args, **kwargs)))
         def __init__(self, *args, **kwargs):
             pass
 

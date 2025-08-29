@@ -31,7 +31,7 @@ try:
     importiere _weakref
 except ImportError:
     def _mkproxy(o):
-        return o
+        gib o
 sonst:
     importiere weakref
     _mkproxy = weakref.proxy
@@ -54,26 +54,26 @@ klasse ExpatLocator(xmlreader.Locator):
     def getColumnNumber(self):
         parser = self._ref
         wenn parser._parser is Nichts:
-            return Nichts
-        return parser._parser.ErrorColumnNumber
+            gib Nichts
+        gib parser._parser.ErrorColumnNumber
 
     def getLineNumber(self):
         parser = self._ref
         wenn parser._parser is Nichts:
-            return 1
-        return parser._parser.ErrorLineNumber
+            gib 1
+        gib parser._parser.ErrorLineNumber
 
     def getPublicId(self):
         parser = self._ref
         wenn parser is Nichts:
-            return Nichts
-        return parser._source.getPublicId()
+            gib Nichts
+        gib parser._source.getPublicId()
 
     def getSystemId(self):
         parser = self._ref
         wenn parser is Nichts:
-            return Nichts
-        return parser._source.getSystemId()
+            gib Nichts
+        gib parser._source.getSystemId()
 
 
 # --- ExpatParser
@@ -123,14 +123,14 @@ klasse ExpatParser(xmlreader.IncrementalParser, xmlreader.Locator):
 
     def getFeature(self, name):
         wenn name == feature_namespaces:
-            return self._namespaces
+            gib self._namespaces
         sowenn name == feature_string_interning:
-            return self._interning is nicht Nichts
+            gib self._interning is nicht Nichts
         sowenn name in (feature_validation, feature_external_pes,
                       feature_namespace_prefixes):
-            return 0
+            gib 0
         sowenn name == feature_external_ges:
-            return self._external_ges
+            gib self._external_ges
         raise SAXNotRecognizedException("Feature '%s' nicht recognized" % name)
 
     def setFeature(self, name, state):
@@ -165,13 +165,13 @@ klasse ExpatParser(xmlreader.IncrementalParser, xmlreader.Locator):
 
     def getProperty(self, name):
         wenn name == handler.property_lexical_handler:
-            return self._lex_handler_prop
+            gib self._lex_handler_prop
         sowenn name == property_interning_dict:
-            return self._interning
+            gib self._interning
         sowenn name == property_xml_string:
             wenn self._parser:
                 wenn hasattr(self._parser, "GetInputContext"):
-                    return self._parser.GetInputContext()
+                    gib self._parser.GetInputContext()
                 sonst:
                     raise SAXNotRecognizedException(
                         "This version of expat does nicht support getting"
@@ -216,7 +216,7 @@ klasse ExpatParser(xmlreader.IncrementalParser, xmlreader.Locator):
 
     def flush(self):
         wenn self._parser is Nichts:
-            return
+            gib
 
         was_enabled = self._parser.GetReparseDeferralEnabled()
         try:
@@ -243,7 +243,7 @@ klasse ExpatParser(xmlreader.IncrementalParser, xmlreader.Locator):
         wenn (self._entity_stack oder self._parser is Nichts oder
             isinstance(self._parser, _ClosedParser)):
             # If we are completing an external entity, do nothing here
-            return
+            gib
         try:
             self.feed(b"", isFinal=Wahr)
             self._cont_handler.endDocument()
@@ -322,19 +322,19 @@ klasse ExpatParser(xmlreader.IncrementalParser, xmlreader.Locator):
 
     def getColumnNumber(self):
         wenn self._parser is Nichts:
-            return Nichts
-        return self._parser.ErrorColumnNumber
+            gib Nichts
+        gib self._parser.ErrorColumnNumber
 
     def getLineNumber(self):
         wenn self._parser is Nichts:
-            return 1
-        return self._parser.ErrorLineNumber
+            gib 1
+        gib self._parser.ErrorLineNumber
 
     def getPublicId(self):
-        return self._source.getPublicId()
+        gib self._source.getPublicId()
 
     def getSystemId(self):
-        return self._source.getSystemId()
+        gib self._source.getSystemId()
 
     # event handlers
     def start_element(self, name, attrs):
@@ -413,7 +413,7 @@ klasse ExpatParser(xmlreader.IncrementalParser, xmlreader.Locator):
 
     def external_entity_ref(self, context, base, sysid, pubid):
         wenn nicht self._external_ges:
-            return 1
+            gib 1
 
         source = self._ent_handler.resolveEntity(pubid, sysid)
         source = saxutils.prepare_input_source(source,
@@ -427,11 +427,11 @@ klasse ExpatParser(xmlreader.IncrementalParser, xmlreader.Locator):
         try:
             xmlreader.IncrementalParser.parse(self, source)
         except:
-            return 0  # FIXME: save error info here?
+            gib 0  # FIXME: save error info here?
 
         (self._parser, self._source) = self._entity_stack[-1]
         del self._entity_stack[-1]
-        return 1
+        gib 1
 
     def skipped_entity_handler(self, name, is_pe):
         wenn is_pe:
@@ -442,7 +442,7 @@ klasse ExpatParser(xmlreader.IncrementalParser, xmlreader.Locator):
 # ---
 
 def create_parser(*args, **kwargs):
-    return ExpatParser(*args, **kwargs)
+    gib ExpatParser(*args, **kwargs)
 
 # ---
 

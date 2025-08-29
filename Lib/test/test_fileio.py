@@ -276,7 +276,7 @@ klasse AutoFileTests:
                     self.f.close()
                 except OSError:
                     pass
-        return wrapper
+        gib wrapper
 
     def ClosedFDRaises(func):
         @wraps(func)
@@ -295,7 +295,7 @@ klasse AutoFileTests:
                     self.f.close()
                 except OSError:
                     pass
-        return wrapper
+        gib wrapper
 
     @ClosedFDRaises
     def testErrnoOnClose(self, f):
@@ -344,7 +344,7 @@ klasse AutoFileTests:
             pass
         self.f = self.FileIO(TESTFN, 'r')
         os.close(self.f.fileno())
-        return self.f
+        gib self.f
 
     @ClosedFDRaises
     def testErrnoOnClosedRead(self, f):
@@ -413,7 +413,7 @@ klasse AutoFileTests:
                 # behaviors in a libc (ex. fstat, newfstatat, statx, open, openat).
                 # Allow any that use the same substring.
                 def count_similarname(name):
-                    return len([ev fuer ev in syscalls wenn name in ev.syscall])
+                    gib len([ev fuer ev in syscalls wenn name in ev.syscall])
 
                 checks = [
                     # Should open und close the file exactly once
@@ -725,7 +725,7 @@ klasse OtherFileTests:
             def __setattr__(self, name, value):
                 wenn name == "name":
                     raise MyException("blocked setting name")
-                return super(MyFileIO, self).__setattr__(name, value)
+                gib super(MyFileIO, self).__setattr__(name, value)
         fd = os.open(__file__, os.O_RDONLY)
         self.assertRaises(MyException, MyFileIO, fd)
         os.close(fd)  # should nicht raise OSError(EBADF)

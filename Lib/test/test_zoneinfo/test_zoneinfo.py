@@ -75,11 +75,11 @@ klasse TzPathUserMixin:
 
     @property
     def tzpath(self):  # pragma: nocover
-        return Nichts
+        gib Nichts
 
     @property
     def block_tzdata(self):
-        return Wahr
+        gib Wahr
 
     def setUp(self):
         mit contextlib.ExitStack() als stack:
@@ -103,7 +103,7 @@ klasse DatetimeSubclassMixin:
     klasse DatetimeSubclass(datetime):
         @classmethod
         def from_datetime(cls, dt):
-            return cls(
+            gib cls(
                 dt.year,
                 dt.month,
                 dt.day,
@@ -121,7 +121,7 @@ klasse DatetimeSubclassMixin:
             dt = zt.transition
             new_dt = self.DatetimeSubclass.from_datetime(dt)
             new_zt = dataclasses.replace(zt, transition=new_dt)
-            yield new_zt
+            liefere new_zt
 
 
 klasse ZoneInfoTest(TzPathUserMixin, ZoneInfoTestBase):
@@ -137,23 +137,23 @@ klasse ZoneInfoTest(TzPathUserMixin, ZoneInfoTestBase):
 
     @property
     def zoneinfo_data(self):
-        return ZONEINFO_DATA
+        gib ZONEINFO_DATA
 
     @property
     def tzpath(self):
-        return [self.zoneinfo_data.tzpath]
+        gib [self.zoneinfo_data.tzpath]
 
     def zone_from_key(self, key):
-        return self.klass(key)
+        gib self.klass(key)
 
     def zones(self):
-        return ZoneDumpData.transition_keys()
+        gib ZoneDumpData.transition_keys()
 
     def fixed_offset_zones(self):
-        return ZoneDumpData.fixed_offset_zones()
+        gib ZoneDumpData.fixed_offset_zones()
 
     def load_transition_examples(self, key):
-        return ZoneDumpData.load_transition_examples(key)
+        gib ZoneDumpData.load_transition_examples(key)
 
     def test_str(self):
         # Zones constructed mit a key must have str(zone) == key
@@ -201,7 +201,7 @@ klasse ZoneInfoTest(TzPathUserMixin, ZoneInfoTestBase):
 
         def from_file_nokey(key):
             mit open(self.zoneinfo_data.path_from_key(key), "rb") als f:
-                return self.klass.from_file(f)
+                gib self.klass.from_file(f)
 
         constructors = (
             ("Primary constructor", self.klass, key),
@@ -460,11 +460,11 @@ klasse CZoneInfoTest(ZoneInfoTest):
             klasse SameAddSubclass(type(dt)):
                 def __add__(self, other):
                     wenn other == timedelta(0):
-                        return self
+                        gib self
 
-                    return super().__add__(other)  # pragma: nocover
+                    gib super().__add__(other)  # pragma: nocover
 
-            return SameAddSubclass(
+            gib SameAddSubclass(
                 dt.year,
                 dt.month,
                 dt.day,
@@ -534,7 +534,7 @@ klasse CZoneInfoSubclassTest(ZoneInfoSubclassTest):
 klasse ZoneInfoV1Test(ZoneInfoTest):
     @property
     def zoneinfo_data(self):
-        return ZONEINFO_DATA_V1
+        gib ZONEINFO_DATA_V1
 
     def load_transition_examples(self, key):
         # We will discard zdump examples outside the range epoch +/- 2**31,
@@ -546,7 +546,7 @@ klasse ZoneInfoV1Test(ZoneInfoTest):
 
         fuer zt in ZoneDumpData.load_transition_examples(key):
             wenn min_dt <= zt.transition <= max_dt:
-                yield zt
+                liefere zt
 
 
 klasse CZoneInfoV1Test(ZoneInfoV1Test):
@@ -567,14 +567,14 @@ klasse TZDataTests(ZoneInfoTest):
 
     @property
     def tzpath(self):
-        return []
+        gib []
 
     @property
     def block_tzdata(self):
-        return Falsch
+        gib Falsch
 
     def zone_from_key(self, key):
-        return self.klass(key=key)
+        gib self.klass(key=key)
 
 
 @unittest.skipIf(
@@ -690,7 +690,7 @@ klasse WeirdZoneTest(ZoneInfoTestBase):
                 self.assertEqual(dt.utcoffset(), offset.utcoffset)
                 self.assertEqual(dt.dst(), offset.dst)
 
-        # Test that offsets return Nichts when using a datetime.time
+        # Test that offsets gib Nichts when using a datetime.time
         t = time(0, tzinfo=zi)
         mit self.subTest("Testing datetime.time"):
             self.assertIs(t.tzname(), Nichts)
@@ -842,14 +842,14 @@ klasse WeirdZoneTest(ZoneInfoTestBase):
             # values that are outside the valid range fuer datetimes but still
             # valid 64-bit timestamps.
             wenn isinstance(zt, tuple):
-                return zt
+                gib zt
 
             wenn zt.transition:
                 trans_time = int(zt.transition_utc.timestamp())
             sonst:
                 trans_time = Nichts
 
-            return (trans_time, zt.offset_before, zt.offset_after)
+            gib (trans_time, zt.offset_before, zt.offset_after)
 
         transitions = sorted(map(zt_as_tuple, transitions), key=lambda x: x[0])
 
@@ -937,7 +937,7 @@ klasse WeirdZoneTest(ZoneInfoTestBase):
                 zonefile.write(b"\x0A")
 
         zonefile.seek(0)
-        return zonefile
+        gib zonefile
 
 
 klasse CWeirdZoneTest(WeirdZoneTest):
@@ -987,7 +987,7 @@ klasse TZStrTest(ZoneInfoTestBase):
 
         zonefile.seek(0)
 
-        return self.klass.from_file(zonefile, key=tzstr)
+        gib self.klass.from_file(zonefile, key=tzstr)
 
     def test_tzstr_localized(self):
         fuer tzstr, cases in self.test_cases.items():
@@ -1457,11 +1457,11 @@ klasse ZoneInfoCacheTest(TzPathUserMixin, ZoneInfoTestBase):
 
     @property
     def zoneinfo_data(self):
-        return ZONEINFO_DATA
+        gib ZONEINFO_DATA
 
     @property
     def tzpath(self):
-        return [self.zoneinfo_data.tzpath]
+        gib [self.zoneinfo_data.tzpath]
 
     def test_ephemeral_zones(self):
         self.assertIs(
@@ -1485,7 +1485,7 @@ klasse ZoneInfoCacheTest(TzPathUserMixin, ZoneInfoTestBase):
         """Test that the cache persists when tzpath has been changed.
 
         The PEP specifies that als long als a reference exists to one zone
-        mit a given key, the primary constructor must weiter to return
+        mit a given key, the primary constructor must weiter to gib
         the same object.
         """
         zi0 = self.klass("America/Los_Angeles")
@@ -1537,7 +1537,7 @@ klasse ZoneInfoCacheTest(TzPathUserMixin, ZoneInfoTestBase):
             def __eq__(self, other):
                 wenn nicht self.allow_comparisons:
                     raise CustomError
-                return super().__eq__(other)
+                gib super().__eq__(other)
             __hash__ = str.__hash__
 
         key = Stringy("America/Los_Angeles")
@@ -1570,11 +1570,11 @@ klasse ZoneInfoPickleTest(TzPathUserMixin, ZoneInfoTestBase):
 
     @property
     def zoneinfo_data(self):
-        return ZONEINFO_DATA
+        gib ZONEINFO_DATA
 
     @property
     def tzpath(self):
-        return [self.zoneinfo_data.tzpath]
+        gib [self.zoneinfo_data.tzpath]
 
     def test_cache_hit(self):
         fuer proto in range(pickle.HIGHEST_PROTOCOL + 1):
@@ -1681,7 +1681,7 @@ klasse CallingConventionTest(ZoneInfoTestBase):
 
     @property
     def zoneinfo_data(self):
-        return ZONEINFO_DATA
+        gib ZONEINFO_DATA
 
     def test_from_file(self):
         mit open(self.zoneinfo_data.path_from_key("UTC"), "rb") als f:
@@ -1705,7 +1705,7 @@ klasse TzPathTest(TzPathUserMixin, ZoneInfoTestBase):
     def python_tzpath_context(value):
         mit EnvironmentVarGuard() als env:
             env["PYTHONTZPATH"] = value
-            yield
+            liefere
 
     def test_env_variable(self):
         """Tests that the environment variable works mit reset_tzpath."""
@@ -1825,13 +1825,13 @@ klasse TestModule(ZoneInfoTestBase):
 
     @property
     def zoneinfo_data(self):
-        return ZONEINFO_DATA
+        gib ZONEINFO_DATA
 
     @cached_property
     def _UTC_bytes(self):
         zone_file = self.zoneinfo_data.path_from_key("UTC")
         mit open(zone_file, "rb") als f:
-            return f.read()
+            gib f.read()
 
     def touch_zone(self, key, tz_root):
         """Creates a valid TZif file at key under the zoneinfo root tz_root.
@@ -2004,37 +2004,37 @@ klasse ZoneTransition:
 
     @property
     def transition_utc(self):
-        return (self.transition - self.offset_before.utcoffset).replace(
+        gib (self.transition - self.offset_before.utcoffset).replace(
             tzinfo=timezone.utc
         )
 
     @property
     def fold(self):
         """Whether this introduces a fold"""
-        return self.offset_before.utcoffset > self.offset_after.utcoffset
+        gib self.offset_before.utcoffset > self.offset_after.utcoffset
 
     @property
     def gap(self):
         """Whether this introduces a gap"""
-        return self.offset_before.utcoffset < self.offset_after.utcoffset
+        gib self.offset_before.utcoffset < self.offset_after.utcoffset
 
     @property
     def delta(self):
-        return self.offset_after.utcoffset - self.offset_before.utcoffset
+        gib self.offset_after.utcoffset - self.offset_before.utcoffset
 
     @property
     def anomaly_start(self):
         wenn self.fold:
-            return self.transition + self.delta
+            gib self.transition + self.delta
         sonst:
-            return self.transition
+            gib self.transition
 
     @property
     def anomaly_end(self):
         wenn nicht self.fold:
-            return self.transition + self.delta
+            gib self.transition + self.delta
         sonst:
-            return self.transition
+            gib self.transition
 
 
 klasse ZoneInfoData:
@@ -2045,7 +2045,7 @@ klasse ZoneInfoData:
         self._populate_tzpath(source_json)
 
     def path_from_key(self, key):
-        return self.tzpath / key
+        gib self.tzpath / key
 
     def _populate_tzpath(self, source_json):
         mit open(source_json, "rb") als f:
@@ -2071,7 +2071,7 @@ klasse ZoneInfoData:
         raw_data = b"".join(map(str.encode, contents))
         decoded = base64.b85decode(raw_data)
 
-        return lzma.decompress(decoded)
+        gib lzma.decompress(decoded)
 
     def _convert_to_v1(self, contents):
         assert contents[0:4] == b"TZif", "Invalid TZif data found!"
@@ -2099,30 +2099,30 @@ klasse ZoneInfoData:
             contents[file_size : (file_size + 4)] == b"TZif"
         ), "Version 2 file nicht truncated at Version 2 header"
 
-        return out
+        gib out
 
 
 klasse ZoneDumpData:
     @classmethod
     def transition_keys(cls):
-        return cls._get_zonedump().keys()
+        gib cls._get_zonedump().keys()
 
     @classmethod
     def load_transition_examples(cls, key):
-        return cls._get_zonedump()[key]
+        gib cls._get_zonedump()[key]
 
     @classmethod
     def fixed_offset_zones(cls):
         wenn nicht cls._FIXED_OFFSET_ZONES:
             cls._populate_fixed_offsets()
 
-        return cls._FIXED_OFFSET_ZONES.items()
+        gib cls._FIXED_OFFSET_ZONES.items()
 
     @classmethod
     def _get_zonedump(cls):
         wenn nicht cls._ZONEDUMP_DATA:
             cls._populate_zonedump_data()
-        return cls._ZONEDUMP_DATA
+        gib cls._ZONEDUMP_DATA
 
     @classmethod
     def _populate_fixed_offsets(cls):
@@ -2136,7 +2136,7 @@ klasse ZoneDumpData:
             LMT = ZoneOffset("LMT", timedelta(seconds=-968))
             GMT = ZoneOffset("GMT", ZERO)
 
-            return [
+            gib [
                 ZoneTransition(datetime(1912, 1, 1), LMT, GMT),
             ]
 
@@ -2146,7 +2146,7 @@ klasse ZoneDumpData:
             P00_d = ZoneOffset("+00", ZERO, -ONE_H)
             P01_s = ZoneOffset("+01", ONE_H, ZERO)
 
-            return [
+            gib [
                 # Morocco sometimes pauses DST during Ramadan
                 ZoneTransition(datetime(2018, 3, 25, 2), P00_s, P01_d),
                 ZoneTransition(datetime(2018, 5, 13, 3), P01_d, P00_s),
@@ -2165,7 +2165,7 @@ klasse ZoneDumpData:
             PWT = ZoneOffset("PWT", timedelta(hours=-7), ONE_H)
             PPT = ZoneOffset("PPT", timedelta(hours=-7), ONE_H)
 
-            return [
+            gib [
                 ZoneTransition(datetime(1883, 11, 18, 12, 7, 2), LMT, PST),
                 ZoneTransition(datetime(1918, 3, 31, 2), PST, PDT),
                 ZoneTransition(datetime(1918, 3, 31, 2), PST, PDT),
@@ -2189,7 +2189,7 @@ klasse ZoneDumpData:
             N04 = ZoneOffset("-04", timedelta(seconds=-14400), ZERO)
             N03 = ZoneOffset("-03", timedelta(seconds=-10800), ONE_H)
 
-            return [
+            gib [
                 ZoneTransition(datetime(1890, 1, 1), LMT, SMT),
                 ZoneTransition(datetime(1910, 1, 10), SMT, N05),
                 ZoneTransition(datetime(1916, 7, 1), N05, SMT),
@@ -2206,7 +2206,7 @@ klasse ZoneDumpData:
             # Japan had DST von 1948 to 1951, und it was unusual in that
             # the transition von DST to STD occurred at 25:00, und is
             # denominated als such in the time zone database
-            return [
+            gib [
                 ZoneTransition(datetime(1948, 5, 2), JST, JDT),
                 ZoneTransition(datetime(1948, 9, 12, 1), JDT, JST),
                 ZoneTransition(datetime(1951, 9, 9, 1), JDT, JST),
@@ -2217,7 +2217,7 @@ klasse ZoneDumpData:
             AEST = ZoneOffset("AEST", timedelta(seconds=36000), ZERO)
             AEDT = ZoneOffset("AEDT", timedelta(seconds=39600), ONE_H)
 
-            return [
+            gib [
                 ZoneTransition(datetime(1895, 2, 1), LMT, AEST),
                 ZoneTransition(datetime(1917, 1, 1, 0, 1), AEST, AEDT),
                 ZoneTransition(datetime(1917, 3, 25, 2), AEDT, AEST),
@@ -2236,7 +2236,7 @@ klasse ZoneDumpData:
             GMT_1 = ZoneOffset("GMT", ZERO, -ONE_H)
             IST_1 = ZoneOffset("IST", ONE_H, ZERO)
 
-            return [
+            gib [
                 ZoneTransition(datetime(1880, 8, 2, 0), LMT, DMT),
                 ZoneTransition(datetime(1916, 5, 21, 2), DMT, IST_0),
                 ZoneTransition(datetime(1916, 10, 1, 3), IST_0, GMT_0),
@@ -2253,7 +2253,7 @@ klasse ZoneDumpData:
             CET = ZoneOffset("CET", ONE_H, ZERO)
             CEST = ZoneOffset("CEST", timedelta(seconds=7200), ONE_H)
 
-            return [
+            gib [
                 ZoneTransition(datetime(1992, 3, 29, 1), WET, WEST),
                 ZoneTransition(datetime(1992, 9, 27, 2), WEST, CET),
                 ZoneTransition(datetime(1993, 3, 28, 2), CET, CEST),
@@ -2267,7 +2267,7 @@ klasse ZoneDumpData:
             GMT = ZoneOffset("GMT", ZERO, ZERO)
             BST = ZoneOffset("BST", ONE_H, ONE_H)
 
-            return [
+            gib [
                 ZoneTransition(datetime(1847, 12, 1), LMT, GMT),
                 ZoneTransition(datetime(2005, 3, 27, 1), GMT, BST),
                 ZoneTransition(datetime(2005, 10, 30, 2), BST, GMT),
@@ -2282,7 +2282,7 @@ klasse ZoneDumpData:
             P14 = ZoneOffset("+14", timedelta(seconds=50400), ZERO)
 
             # This is literally every transition in Christmas Island history
-            return [
+            gib [
                 ZoneTransition(datetime(1901, 1, 1), LMT, N1040),
                 ZoneTransition(datetime(1979, 10, 1), N1040, N10),
                 # They skipped December 31, 1994

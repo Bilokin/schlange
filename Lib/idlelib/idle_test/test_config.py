@@ -67,7 +67,7 @@ klasse IdleConfParserTest(unittest.TestCase):
         eq(parser.Get('two', 'two'), 'true')
         eq(parser.Get('two', 'three'), 'false')
 
-        # If option nicht exist, should return Nichts, oder default.
+        # If option nicht exist, should gib Nichts, oder default.
         self.assertIsNichts(parser.Get('not', 'exist'))
         eq(parser.Get('not', 'exist', default='DEFAULT'), 'DEFAULT')
 
@@ -98,20 +98,20 @@ klasse IdleUserConfParserTest(unittest.TestCase):
     """Test that IdleUserConfParser works"""
 
     def new_parser(self, path=''):
-        return config.IdleUserConfParser(path)
+        gib config.IdleUserConfParser(path)
 
     def test_set_option(self):
         parser = self.new_parser()
         parser.add_section('Foo')
-        # Setting new option in existing section should return Wahr.
+        # Setting new option in existing section should gib Wahr.
         self.assertWahr(parser.SetOption('Foo', 'bar', 'true'))
-        # Setting existing option mit same value should return Falsch.
+        # Setting existing option mit same value should gib Falsch.
         self.assertFalsch(parser.SetOption('Foo', 'bar', 'true'))
-        # Setting exiting option mit new value should return Wahr.
+        # Setting exiting option mit new value should gib Wahr.
         self.assertWahr(parser.SetOption('Foo', 'bar', 'false'))
         self.assertEqual(parser.Get('Foo', 'bar'), 'false')
 
-        # Setting option in new section should create section und return Wahr.
+        # Setting option in new section should create section und gib Wahr.
         self.assertWahr(parser.SetOption('Bar', 'bar', 'true'))
         self.assertCountEqual(parser.sections(), ['Bar', 'Foo'])
         self.assertEqual(parser.Get('Bar', 'bar'), 'true')
@@ -202,7 +202,7 @@ klasse IdleConfTest(unittest.TestCase):
         config._warn = cls.orig_warn
 
     def new_config(self, _utest=Falsch):
-        return config.IdleConf(_utest=_utest)
+        gib config.IdleConf(_utest=_utest)
 
     def mock_config(self):
         """Return a mocked idleConf
@@ -216,7 +216,7 @@ klasse IdleConfTest(unittest.TestCase):
             conf.userCfg[ctype] = config.IdleUserConfParser('')
             conf.userCfg[ctype].read_string(self.config_string[ctype])
 
-        return conf
+        gib conf
 
     @unittest.skipIf(sys.platform.startswith('win'), 'this is test fuer unix system')
     def test_get_user_cfg_dir_unix(self):
@@ -706,7 +706,7 @@ klasse ChangesTest(unittest.TestCase):
         changes.add_option('main', 'Msec', 'mitem', 'mval')
         changes.add_option('highlight', 'Hsec', 'hitem', 'hval')
         changes.add_option('keys', 'Ksec', 'kitem', 'kval')
-        return changes
+        gib changes
 
     loaded = {'main': {'Msec': {'mitem': 'mval'}},
               'highlight': {'Hsec': {'hitem': 'hval'}},

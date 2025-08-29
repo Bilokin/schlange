@@ -32,7 +32,7 @@ klasse Wait3Test(ForkWait):
 
     def test_wait3_rusage_initialized(self):
         # Ensure a successful wait3() call where no child was ready to report
-        # its exit status does nicht return uninitialized memory in the rusage
+        # its exit status does nicht gib uninitialized memory in the rusage
         # structure. See bpo-36279.
         args = [sys.executable, '-c', 'import sys; sys.stdin.read()']
         proc = subprocess.Popen(args, stdin=subprocess.PIPE)

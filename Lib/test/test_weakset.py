@@ -180,7 +180,7 @@ klasse TestWeakSet(unittest.TestCase):
         # Bug #1257731
         klasse H(WeakSet):
             def __hash__(self):
-                return int(id(self) & 0x7fffffff)
+                gib int(id(self) & 0x7fffffff)
         s=H()
         f=set()
         f.add(s)
@@ -383,7 +383,7 @@ klasse TestWeakSet(unittest.TestCase):
                     # advance it (issue #20006).
                     next(it)
                 gc.collect()      # just in case
-                yield u
+                liefere u
             finally:
                 it = Nichts           # should commit all removals
 

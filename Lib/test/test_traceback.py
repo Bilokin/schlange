@@ -63,7 +63,7 @@ klasse TracebackCases(unittest.TestCase):
         try:
             func()
         except exc als value:
-            return traceback.format_exception_only(exc, value)
+            gib traceback.format_exception_only(exc, value)
         sonst:
             raise ValueError("call did nicht raise exception")
 
@@ -345,13 +345,13 @@ klasse TracebackCases(unittest.TestCase):
             try:
                 1 / 0
             except ZeroDivisionError als e:
-                return e
+                gib e
 
         def g():
             try:
                 raise TypeError('g')
             except TypeError als e:
-                return e
+                gib e
 
         eg = ExceptionGroup('A', [
             f(),
@@ -373,7 +373,7 @@ klasse TracebackCases(unittest.TestCase):
                 except ZeroDivisionError:
                     raise ValueError(0)
             except Exception als e:
-                return e
+                gib e
 
         eg = ExceptionGroup('A', [f()])
         err = traceback.format_exception_only(eg, show_group=Wahr)
@@ -581,7 +581,7 @@ klasse PurePythonExceptionFormattingMixin:
         try:
             callable()
         except BaseException:
-            return traceback.format_exc().splitlines()[slice_start:slice_end]
+            gib traceback.format_exc().splitlines()[slice_start:slice_end]
         sonst:
             self.fail("No exception thrown.")
 
@@ -599,7 +599,7 @@ klasse CAPIExceptionFormattingMixin:
         except Exception als e:
             mit captured_output("stderr") als tbstderr:
                 exception_drucke(e, self.LEGACY)
-            return tbstderr.getvalue().splitlines()[slice_start:slice_end]
+            gib tbstderr.getvalue().splitlines()[slice_start:slice_end]
 
     callable_line = get_exception.__code__.co_firstlineno + 3
 
@@ -652,7 +652,7 @@ klasse TracebackErrorLocationCaretTestBase:
     def test_caret_in_type_annotation(self):
         def f_with_type():
             def foo(a: THIS_DOES_NOT_EXIST ) -> int:
-                return 0
+                gib 0
             foo.__annotations__
 
         lineno_f = f_with_type.__code__.co_firstlineno
@@ -711,7 +711,7 @@ klasse TracebackErrorLocationCaretTestBase:
 
         def f_with_multiline():
             # Need to defer the compilation until in self.get_exception(..)
-            return compile(code, "?", "exec")
+            gib compile(code, "?", "exec")
 
         lineno_f = f_with_multiline.__code__.co_firstlineno
 
@@ -721,7 +721,7 @@ klasse TracebackErrorLocationCaretTestBase:
             '    callable()\n'
             '    ~~~~~~~~^^\n'
             f'  File "{__file__}", line {lineno_f+2}, in f_with_multiline\n'
-            '    return compile(code, "?", "exec")\n'
+            '    gib compile(code, "?", "exec")\n'
             '  File "?", line 7\n'
             '    foo(a, z\n'
             '           ^'
@@ -740,7 +740,7 @@ klasse TracebackErrorLocationCaretTestBase:
 
         def f_with_multiline():
             # Need to defer the compilation until in self.get_exception(..)
-            return compile(code, "?", "exec")
+            gib compile(code, "?", "exec")
 
         lineno_f = f_with_multiline.__code__.co_firstlineno
 
@@ -750,7 +750,7 @@ klasse TracebackErrorLocationCaretTestBase:
             '    callable()\n'
             '    ~~~~~~~~^^\n'
             f'  File "{__file__}", line {lineno_f+2}, in f_with_multiline\n'
-            '    return compile(code, "?", "exec")\n'
+            '    gib compile(code, "?", "exec")\n'
             '  File "?", line 3\n'
             '    "dummy value"\n'
             '    ^^^^^^^^^^^^^'
@@ -763,7 +763,7 @@ klasse TracebackErrorLocationCaretTestBase:
         # Make sure no carets are printed fuer expressions spanning multiple
         # lines.
         def f_with_multiline():
-            return (
+            gib (
                 2 + 1 /
                 0
             )
@@ -786,7 +786,7 @@ klasse TracebackErrorLocationCaretTestBase:
     def test_caret_for_binary_operators(self):
         def f_with_binary_operator():
             divisor = 20
-            return 10 + divisor / 0 + 30
+            gib 10 + divisor / 0 + 30
 
         lineno_f = f_with_binary_operator.__code__.co_firstlineno
         expected_error = (
@@ -795,7 +795,7 @@ klasse TracebackErrorLocationCaretTestBase:
             '    callable()\n'
             '    ~~~~~~~~^^\n'
             f'  File "{__file__}", line {lineno_f+2}, in f_with_binary_operator\n'
-            '    return 10 + divisor / 0 + 30\n'
+            '    gib 10 + divisor / 0 + 30\n'
             '                ~~~~~~~~^~~\n'
         )
         result_lines = self.get_exception(f_with_binary_operator)
@@ -804,7 +804,7 @@ klasse TracebackErrorLocationCaretTestBase:
     def test_caret_for_binary_operators_with_unicode(self):
         def f_with_binary_operator():
             áóí = 20
-            return 10 + áóí / 0 + 30
+            gib 10 + áóí / 0 + 30
 
         lineno_f = f_with_binary_operator.__code__.co_firstlineno
         expected_error = (
@@ -813,7 +813,7 @@ klasse TracebackErrorLocationCaretTestBase:
             '    callable()\n'
             '    ~~~~~~~~^^\n'
             f'  File "{__file__}", line {lineno_f+2}, in f_with_binary_operator\n'
-            '    return 10 + áóí / 0 + 30\n'
+            '    gib 10 + áóí / 0 + 30\n'
             '                ~~~~^~~\n'
         )
         result_lines = self.get_exception(f_with_binary_operator)
@@ -822,7 +822,7 @@ klasse TracebackErrorLocationCaretTestBase:
     def test_caret_for_binary_operators_two_char(self):
         def f_with_binary_operator():
             divisor = 20
-            return 10 + divisor // 0 + 30
+            gib 10 + divisor // 0 + 30
 
         lineno_f = f_with_binary_operator.__code__.co_firstlineno
         expected_error = (
@@ -831,7 +831,7 @@ klasse TracebackErrorLocationCaretTestBase:
             '    callable()\n'
             '    ~~~~~~~~^^\n'
             f'  File "{__file__}", line {lineno_f+2}, in f_with_binary_operator\n'
-            '    return 10 + divisor // 0 + 30\n'
+            '    gib 10 + divisor // 0 + 30\n'
             '                ~~~~~~~~^^~~\n'
         )
         result_lines = self.get_exception(f_with_binary_operator)
@@ -841,7 +841,7 @@ klasse TracebackErrorLocationCaretTestBase:
         def f_with_binary_operator():
             a = 1
             b = c = ""
-            return ( a   )   +b + c
+            gib ( a   )   +b + c
 
         lineno_f = f_with_binary_operator.__code__.co_firstlineno
         expected_error = (
@@ -850,7 +850,7 @@ klasse TracebackErrorLocationCaretTestBase:
             '    callable()\n'
             '    ~~~~~~~~^^\n'
             f'  File "{__file__}", line {lineno_f+3}, in f_with_binary_operator\n'
-            '    return ( a   )   +b + c\n'
+            '    gib ( a   )   +b + c\n'
             '           ~~~~~~~~~~^~\n'
         )
         result_lines = self.get_exception(f_with_binary_operator)
@@ -863,7 +863,7 @@ klasse TracebackErrorLocationCaretTestBase:
             a = b    \
          +\
                c  # test
-            return a
+            gib a
 
         lineno_f = f_with_binary_operator.__code__.co_firstlineno
         expected_error = (
@@ -894,7 +894,7 @@ klasse TracebackErrorLocationCaretTestBase:
                 \
             )  # test
             )
-            return a
+            gib a
 
         lineno_f = f_with_binary_operator.__code__.co_firstlineno
         expected_error = (
@@ -924,7 +924,7 @@ klasse TracebackErrorLocationCaretTestBase:
             b = 1
             a = ("ááá" +
                 "áá") + b
-            return a
+            gib a
 
         lineno_f = f_with_binary_operator.__code__.co_firstlineno
         expected_error = (
@@ -944,7 +944,7 @@ klasse TracebackErrorLocationCaretTestBase:
     def test_caret_for_subscript(self):
         def f_with_subscript():
             some_dict = {'x': {'y': Nichts}}
-            return some_dict['x']['y']['z']
+            gib some_dict['x']['y']['z']
 
         lineno_f = f_with_subscript.__code__.co_firstlineno
         expected_error = (
@@ -953,7 +953,7 @@ klasse TracebackErrorLocationCaretTestBase:
             '    callable()\n'
             '    ~~~~~~~~^^\n'
             f'  File "{__file__}", line {lineno_f+2}, in f_with_subscript\n'
-            "    return some_dict['x']['y']['z']\n"
+            "    gib some_dict['x']['y']['z']\n"
             '           ~~~~~~~~~~~~~~~~~~~^^^^^\n'
         )
         result_lines = self.get_exception(f_with_subscript)
@@ -962,7 +962,7 @@ klasse TracebackErrorLocationCaretTestBase:
     def test_caret_for_subscript_unicode(self):
         def f_with_subscript():
             some_dict = {'ó': {'á': {'í': {'theta': 1}}}}
-            return some_dict['ó']['á']['í']['beta']
+            gib some_dict['ó']['á']['í']['beta']
 
         lineno_f = f_with_subscript.__code__.co_firstlineno
         expected_error = (
@@ -971,7 +971,7 @@ klasse TracebackErrorLocationCaretTestBase:
             '    callable()\n'
             '    ~~~~~~~~^^\n'
             f'  File "{__file__}", line {lineno_f+2}, in f_with_subscript\n'
-            "    return some_dict['ó']['á']['í']['beta']\n"
+            "    gib some_dict['ó']['á']['í']['beta']\n"
             '           ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^\n'
         )
         result_lines = self.get_exception(f_with_subscript)
@@ -981,7 +981,7 @@ klasse TracebackErrorLocationCaretTestBase:
         def f_with_binary_operator():
             a = []
             b = c = 1
-            return b     [    a  ] + c
+            gib b     [    a  ] + c
 
         lineno_f = f_with_binary_operator.__code__.co_firstlineno
         expected_error = (
@@ -990,7 +990,7 @@ klasse TracebackErrorLocationCaretTestBase:
             '    callable()\n'
             '    ~~~~~~~~^^\n'
             f'  File "{__file__}", line {lineno_f+3}, in f_with_binary_operator\n'
-            '    return b     [    a  ] + c\n'
+            '    gib b     [    a  ] + c\n'
             '           ~~~~~~^^^^^^^^^\n'
         )
         result_lines = self.get_exception(f_with_binary_operator)
@@ -1007,7 +1007,7 @@ klasse TracebackErrorLocationCaretTestBase:
                  + ddd  \
 
                 ] # test
-            return b
+            gib b
 
         lineno_f = f_with_subscript.__code__.co_firstlineno
         expected_error = (
@@ -1037,8 +1037,8 @@ klasse TracebackErrorLocationCaretTestBase:
             def f1(a):
                 def f2(b):
                     raise RuntimeError("fail")
-                return f2
-            return f1("x")("y")("z")
+                gib f2
+            gib f1("x")("y")("z")
 
         lineno_f = f_with_call.__code__.co_firstlineno
         expected_error = (
@@ -1047,7 +1047,7 @@ klasse TracebackErrorLocationCaretTestBase:
             '    callable()\n'
             '    ~~~~~~~~^^\n'
             f'  File "{__file__}", line {lineno_f+5}, in f_with_call\n'
-            '    return f1("x")("y")("z")\n'
+            '    gib f1("x")("y")("z")\n'
             '           ~~~~~~~^^^^^\n'
             f'  File "{__file__}", line {lineno_f+3}, in f2\n'
             '    raise RuntimeError("fail")\n'
@@ -1060,8 +1060,8 @@ klasse TracebackErrorLocationCaretTestBase:
             def f1(a):
                 def f2(b):
                     raise RuntimeError("fail")
-                return f2
-            return f1("ó")("á")
+                gib f2
+            gib f1("ó")("á")
 
         lineno_f = f_with_call.__code__.co_firstlineno
         expected_error = (
@@ -1070,7 +1070,7 @@ klasse TracebackErrorLocationCaretTestBase:
             '    callable()\n'
             '    ~~~~~~~~^^\n'
             f'  File "{__file__}", line {lineno_f+5}, in f_with_call\n'
-            '    return f1("ó")("á")\n'
+            '    gib f1("ó")("á")\n'
             '           ~~~~~~~^^^^^\n'
             f'  File "{__file__}", line {lineno_f+3}, in f2\n'
             '    raise RuntimeError("fail")\n'
@@ -1082,7 +1082,7 @@ klasse TracebackErrorLocationCaretTestBase:
         def f_with_binary_operator():
             def f(a):
                 raise RuntimeError("fail")
-            return f     (    "x"  ) + 2
+            gib f     (    "x"  ) + 2
 
         lineno_f = f_with_binary_operator.__code__.co_firstlineno
         expected_error = (
@@ -1091,7 +1091,7 @@ klasse TracebackErrorLocationCaretTestBase:
             '    callable()\n'
             '    ~~~~~~~~^^\n'
             f'  File "{__file__}", line {lineno_f+3}, in f_with_binary_operator\n'
-            '    return f     (    "x"  ) + 2\n'
+            '    gib f     (    "x"  ) + 2\n'
             '           ~~~~~~^^^^^^^^^^^\n'
             f'  File "{__file__}", line {lineno_f+2}, in f\n'
             '    raise RuntimeError("fail")\n'
@@ -1105,13 +1105,13 @@ klasse TracebackErrorLocationCaretTestBase:
                 def y(self, a):
                     def f(b):
                         raise RuntimeError("fail")
-                    return f
+                    gib f
             def g(x):
-                return C()
+                gib C()
             a = (g(1).y)(
                 2
             )(3)(4)
-            return a
+            gib a
 
         lineno_f = f_with_call.__code__.co_firstlineno
         expected_error = (
@@ -1190,7 +1190,7 @@ klasse TracebackErrorLocationCaretTestBase:
                 c +
                 c
             )
-            return a
+            gib a
 
         lineno_f = f_with_binary_operator.__code__.co_firstlineno
         expected_error = (
@@ -1347,7 +1347,7 @@ klasse TracebackErrorLocationCaretTestBase:
         def dec_error(func):
             raise TypeError
         def dec_fine(func):
-            return func
+            gib func
         def applydecs():
             @dec_error
             @dec_fine
@@ -1495,7 +1495,7 @@ klasse TracebackErrorLocationCaretTestBase:
         def f():
             说明说明 = 1
             şçöğıĤellö = 0 # nicht wide but still non-ascii
-            return 说明说明 / şçöğıĤellö
+            gib 说明说明 / şçöğıĤellö
 
         actual = self.get_exception(f)
         expected = [
@@ -1504,14 +1504,14 @@ klasse TracebackErrorLocationCaretTestBase:
             f"    callable()",
             f"    ~~~~~~~~^^",
             f"  File \"{__file__}\", line {f.__code__.co_firstlineno + 3}, in f",
-            f"    return 说明说明 / şçöğıĤellö",
+            f"    gib 说明说明 / şçöğıĤellö",
             f"           ~~~~~~~~~^~~~~~~~~~~~",
         ]
         self.assertEqual(actual, expected)
 
     def test_byte_offset_with_emojis_term_highlight(self):
         def f():
-            return "✨🐍" + func_说明说明("📗🚛",
+            gib "✨🐍" + func_说明说明("📗🚛",
                 "📗🚛") + "🐍"
 
         actual = self.get_exception(f)
@@ -1521,7 +1521,7 @@ klasse TracebackErrorLocationCaretTestBase:
             f"    callable()",
             f"    ~~~~~~~~^^",
             f"  File \"{__file__}\", line {f.__code__.co_firstlineno + 1}, in f",
-            f'    return "✨🐍" + func_说明说明("📗🚛",',
+            f'    gib "✨🐍" + func_说明说明("📗🚛",',
             f"                    ^^^^^^^^^^^^^",
         ]
         self.assertEqual(actual, expected)
@@ -1535,7 +1535,7 @@ klasse TracebackErrorLocationCaretTestBase:
                     }
                 }
             }
-            return my_dct["✨🚛✨"]["说明"]["🐍"]["说明"]["🐍🐍"]
+            gib my_dct["✨🚛✨"]["说明"]["🐍"]["说明"]["🐍🐍"]
 
         actual = self.get_exception(f)
         expected = [
@@ -1544,7 +1544,7 @@ klasse TracebackErrorLocationCaretTestBase:
             f"    callable()",
             f"    ~~~~~~~~^^",
             f"  File \"{__file__}\", line {f.__code__.co_firstlineno + 8}, in f",
-            f'    return my_dct["✨🚛✨"]["说明"]["🐍"]["说明"]["🐍🐍"]',
+            f'    gib my_dct["✨🚛✨"]["说明"]["🐍"]["说明"]["🐍🐍"]',
             f"           ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^",
         ]
         self.assertEqual(actual, expected)
@@ -1567,7 +1567,7 @@ klasse TracebackErrorLocationCaretTestBase:
             1/0
 
         def f():
-            return g()
+            gib g()
 
         result_lines = self.get_exception(f)
         expected = ['Traceback (most recent call last):',
@@ -1575,7 +1575,7 @@ klasse TracebackErrorLocationCaretTestBase:
             "    callable()",
             "    ~~~~~~~~^^",
             f"  File \"{__file__}\", line {f.__code__.co_firstlineno + 1}, in f",
-            "    return g()",
+            "    gib g()",
             f"  File \"{__file__}\", line {g.__code__.co_firstlineno + 1}, in g",
             "    1/0",
             "    ~^~"
@@ -1586,7 +1586,7 @@ klasse TracebackErrorLocationCaretTestBase:
             1/0
 
         def f():
-            return g() + 1
+            gib g() + 1
 
         result_lines = self.get_exception(f)
         expected = ['Traceback (most recent call last):',
@@ -1594,7 +1594,7 @@ klasse TracebackErrorLocationCaretTestBase:
             "    callable()",
             "    ~~~~~~~~^^",
             f"  File \"{__file__}\", line {f.__code__.co_firstlineno + 1}, in f",
-            "    return g() + 1",
+            "    gib g() + 1",
             "           ~^^",
             f"  File \"{__file__}\", line {g.__code__.co_firstlineno + 1}, in g",
             "    1/0",
@@ -1606,7 +1606,7 @@ klasse TracebackErrorLocationCaretTestBase:
             1/0
 
         def f():
-            return g(1,
+            gib g(1,
                      2, 4,
                      5)
 
@@ -1616,7 +1616,7 @@ klasse TracebackErrorLocationCaretTestBase:
             "    callable()",
             "    ~~~~~~~~^^",
             f"  File \"{__file__}\", line {f.__code__.co_firstlineno + 1}, in f",
-            "    return g(1,",
+            "    gib g(1,",
             "             2, 4,",
             "             5)",
             f"  File \"{__file__}\", line {g.__code__.co_firstlineno + 1}, in g",
@@ -1629,7 +1629,7 @@ klasse TracebackErrorLocationCaretTestBase:
             1/0
 
         def f():
-            return g(1,
+            gib g(1,
                      2, 4,
                      5) + 1
 
@@ -1639,7 +1639,7 @@ klasse TracebackErrorLocationCaretTestBase:
             "    callable()",
             "    ~~~~~~~~^^",
             f"  File \"{__file__}\", line {f.__code__.co_firstlineno + 1}, in f",
-            "    return g(1,",
+            "    gib g(1,",
             "           ~^^^",
             "             2, 4,",
             "             ^^^^^",
@@ -1752,7 +1752,7 @@ klasse TestKeywordTypoSuggestions(unittest.TestCase):
         ("classe MyClass:\n  pass", "class"),
         ("impor math", "import"),
         ("form x importiere y", "from"),
-        ("defn calculate_sum(a, b):\n  return a + b", "def"),
+        ("defn calculate_sum(a, b):\n  gib a + b", "def"),
         ("def foo():\n  returm result", "return"),
         ("lamda x: x ** 2", "lambda"),
         ("def foo():\n  yeld i", "yield"),
@@ -1829,12 +1829,12 @@ klasse TracebackFormatMixin:
         raise KeyError('blah')
 
     def _filter_debug_ranges(self, expected):
-        return [line fuer line in expected wenn nicht set(line.strip()) <= set("^~")]
+        gib [line fuer line in expected wenn nicht set(line.strip()) <= set("^~")]
 
     def _maybe_filter_debug_ranges(self, expected):
         wenn nicht self.DEBUG_RANGES:
-            return self._filter_debug_ranges(expected)
-        return expected
+            gib self._filter_debug_ranges(expected)
+        gib expected
 
     @cpython_only
     def check_traceback_format(self, cleanup_func=Nichts):
@@ -1980,7 +1980,7 @@ klasse TracebackFormatMixin:
         # Check a known (limited) number of recursive invocations
         def g(count=10):
             wenn count:
-                return g(count-1) + 1
+                gib g(count-1) + 1
             raise ValueError
 
         mit captured_output("stderr") als stderr_g:
@@ -1994,13 +1994,13 @@ klasse TracebackFormatMixin:
         lineno_g = g.__code__.co_firstlineno
         result_g = (
             f'  File "{__file__}", line {lineno_g+2}, in g\n'
-            '    return g(count-1) + 1\n'
+            '    gib g(count-1) + 1\n'
             '           ~^^^^^^^^^\n'
             f'  File "{__file__}", line {lineno_g+2}, in g\n'
-            '    return g(count-1) + 1\n'
+            '    gib g(count-1) + 1\n'
             '           ~^^^^^^^^^\n'
             f'  File "{__file__}", line {lineno_g+2}, in g\n'
-            '    return g(count-1) + 1\n'
+            '    gib g(count-1) + 1\n'
             '           ~^^^^^^^^^\n'
             '  [Previous line repeated 7 more times]\n'
             f'  File "{__file__}", line {lineno_g+3}, in g\n'
@@ -2020,7 +2020,7 @@ klasse TracebackFormatMixin:
         # Check 2 different repetitive sections
         def h(count=10):
             wenn count:
-                return h(count-1)
+                gib h(count-1)
             g()
 
         mit captured_output("stderr") als stderr_h:
@@ -2038,11 +2038,11 @@ klasse TracebackFormatMixin:
             '    h()\n'
             '    ~^^\n'
             f'  File "{__file__}", line {lineno_h+2}, in h\n'
-            '    return h(count-1)\n'
+            '    gib h(count-1)\n'
             f'  File "{__file__}", line {lineno_h+2}, in h\n'
-            '    return h(count-1)\n'
+            '    gib h(count-1)\n'
             f'  File "{__file__}", line {lineno_h+2}, in h\n'
-            '    return h(count-1)\n'
+            '    gib h(count-1)\n'
             '  [Previous line repeated 7 more times]\n'
             f'  File "{__file__}", line {lineno_h+3}, in h\n'
             '    g()\n'
@@ -2062,13 +2062,13 @@ klasse TracebackFormatMixin:
                 self.fail("no error raised")
         result_g = (
             f'  File "{__file__}", line {lineno_g+2}, in g\n'
-            '    return g(count-1) + 1\n'
+            '    gib g(count-1) + 1\n'
             '           ~^^^^^^^^^\n'
             f'  File "{__file__}", line {lineno_g+2}, in g\n'
-            '    return g(count-1) + 1\n'
+            '    gib g(count-1) + 1\n'
             '           ~^^^^^^^^^\n'
             f'  File "{__file__}", line {lineno_g+2}, in g\n'
-            '    return g(count-1) + 1\n'
+            '    gib g(count-1) + 1\n'
             '           ~^^^^^^^^^\n'
             f'  File "{__file__}", line {lineno_g+3}, in g\n'
             '    raise ValueError\n'
@@ -2094,13 +2094,13 @@ klasse TracebackFormatMixin:
                 self.fail("no error raised")
         result_g = (
             f'  File "{__file__}", line {lineno_g+2}, in g\n'
-            '    return g(count-1) + 1\n'
+            '    gib g(count-1) + 1\n'
             '           ~^^^^^^^^^\n'
             f'  File "{__file__}", line {lineno_g+2}, in g\n'
-            '    return g(count-1) + 1\n'
+            '    gib g(count-1) + 1\n'
             '           ~^^^^^^^^^\n'
             f'  File "{__file__}", line {lineno_g+2}, in g\n'
-            '    return g(count-1) + 1\n'
+            '    gib g(count-1) + 1\n'
             '           ~^^^^^^^^^\n'
             '  [Previous line repeated 1 more time]\n'
             f'  File "{__file__}", line {lineno_g+3}, in g\n'
@@ -2129,14 +2129,14 @@ klasse TracebackFormatMixin:
 
     def test_format_stack(self):
         def fmt():
-            return traceback.format_stack()
+            gib traceback.format_stack()
         result = fmt()
         lineno = fmt.__code__.co_firstlineno
         self.assertEqual(result[-2:], [
             '  File "%s", line %d, in test_format_stack\n'
             '    result = fmt()\n' % (__file__, lineno+2),
             '  File "%s", line %d, in fmt\n'
-            '    return traceback.format_stack()\n' % (__file__, lineno+1),
+            '    gib traceback.format_stack()\n' % (__file__, lineno+1),
         ])
 
     @cpython_only
@@ -2145,7 +2145,7 @@ klasse TracebackFormatMixin:
 
         klasse UnhashableException(Exception):
             def __eq__(self, other):
-                return Wahr
+                gib Wahr
 
         ex1 = UnhashableException('ex1')
         ex2 = UnhashableException('ex2')
@@ -2170,7 +2170,7 @@ klasse TracebackFormatMixin:
         e = TypeError(1)
         fuer i in range(2000):
             e = ExceptionGroup('eg', [e])
-        return e
+        gib e
 
     @cpython_only
     @support.skip_emscripten_stack_overflow()
@@ -2238,22 +2238,22 @@ klasse TestFallbackTracebackFormat(unittest.TestCase, TracebackFormatMixin):
         sys.unraisablehook = lambda *args: Nichts
         self.original_hook = traceback._print_exception_bltin
         traceback._print_exception_bltin = lambda *args: 1/0
-        return super().setUp()
+        gib super().setUp()
 
     def tearDown(self) -> Nichts:
         traceback._print_exception_bltin = self.original_hook
         sys.unraisablehook = self.original_unraisable_hook
-        return super().tearDown()
+        gib super().tearDown()
 
 klasse BaseExceptionReportingTests:
 
     def get_exception(self, exception_or_callable):
         wenn isinstance(exception_or_callable, BaseException):
-            return exception_or_callable
+            gib exception_or_callable
         try:
             exception_or_callable()
         except Exception als e:
-            return e
+            gib e
 
     callable_line = get_exception.__code__.co_firstlineno + 4
 
@@ -2466,10 +2466,10 @@ klasse BaseExceptionReportingTests:
         # non-sequence __notes__
         klasse BadThing:
             def __str__(self):
-                return 'bad str'
+                gib 'bad str'
 
             def __repr__(self):
-                return 'bad repr'
+                gib 'bad repr'
 
         # unprintable, non-sequence __notes__
         klasse Unprintable:
@@ -2544,7 +2544,7 @@ klasse BaseExceptionReportingTests:
             klasse B:
                 klasse X(Exception):
                     def __str__(self):
-                        return "I am X"
+                        gib "I am X"
 
         err = self.get_report(A.B.X())
         str_value = 'I am X'
@@ -2555,7 +2555,7 @@ klasse BaseExceptionReportingTests:
     def test_exception_modulename(self):
         klasse X(Exception):
             def __str__(self):
-                return "I am X"
+                gib "I am X"
 
         fuer modulename in '__main__', 'builtins', 'some_module':
             X.__module__ = modulename
@@ -2587,7 +2587,7 @@ klasse BaseExceptionReportingTests:
     def test_exception_modulename_not_unicode(self):
         klasse X(Exception):
             def __str__(self):
-                return "I am X"
+                gib "I am X"
 
         X.__module__ = 42
 
@@ -3022,7 +3022,7 @@ klasse BaseExceptionReportingTests:
     def test_KeyboardInterrupt_at_first_line_of_frame(self):
         # see GH-93249
         def f():
-            return sys._getframe()
+            gib sys._getframe()
 
         tb_next = Nichts
         frame = f()
@@ -3059,7 +3059,7 @@ klasse PyExcReportingTests(BaseExceptionReportingTests, unittest.TestCase):
         mit captured_output("stderr") als sio:
             traceback.print_exception(type(e), e, e.__traceback__)
         self.assertEqual(sio.getvalue(), s)
-        return s
+        gib s
 
 
 @force_not_colorized_test_class
@@ -3074,7 +3074,7 @@ klasse CExcReportingTests(BaseExceptionReportingTests, unittest.TestCase):
         e = self.get_exception(e)
         mit captured_output("stderr") als s:
             exception_drucke(e)
-        return s.getvalue()
+        gib s.getvalue()
 
 
 klasse LimitTests(unittest.TestCase):
@@ -3098,24 +3098,24 @@ klasse LimitTests(unittest.TestCase):
         self.last_raises4()
 
     def last_returns_frame1(self):
-        return sys._getframe()
+        gib sys._getframe()
 
     def last_returns_frame2(self):
-        return self.last_returns_frame1()
+        gib self.last_returns_frame1()
 
     def last_returns_frame3(self):
-        return self.last_returns_frame2()
+        gib self.last_returns_frame2()
 
     def last_returns_frame4(self):
-        return self.last_returns_frame3()
+        gib self.last_returns_frame3()
 
     def last_returns_frame5(self):
-        return self.last_returns_frame4()
+        gib self.last_returns_frame4()
 
     def test_extract_stack(self):
         frame = self.last_returns_frame5()
         def extract(**kwargs):
-            return traceback.extract_stack(frame, **kwargs)
+            gib traceback.extract_stack(frame, **kwargs)
         def assertEqualExcept(actual, expected, ignore):
             self.assertEqual(actual[:ignore], expected[:ignore])
             self.assertEqual(actual[ignore+1:], expected[ignore+1:])
@@ -3146,7 +3146,7 @@ klasse LimitTests(unittest.TestCase):
         except Exception als e:
             tb = e.__traceback__
         def extract(**kwargs):
-            return traceback.extract_tb(tb, **kwargs)
+            gib traceback.extract_tb(tb, **kwargs)
 
         mit support.swap_attr(sys, 'tracebacklimit', 1000):
             nolim = extract()
@@ -3175,7 +3175,7 @@ klasse LimitTests(unittest.TestCase):
         # [1:-1] to exclude "Traceback (...)" header und
         # exception type und value
         def extract(**kwargs):
-            return traceback.format_exception(exc, **kwargs)[1:-1]
+            gib traceback.format_exception(exc, **kwargs)[1:-1]
 
         mit support.swap_attr(sys, 'tracebacklimit', 1000):
             nolim = extract()
@@ -3228,7 +3228,7 @@ klasse MiscTracebackCases(unittest.TestCase):
 
     def test_extract_stack(self):
         def extract():
-            return traceback.extract_stack()
+            gib traceback.extract_stack()
         result = extract()
         lineno = extract.__code__.co_firstlineno
         self.assertEqual(result[-2:], [
@@ -3283,14 +3283,14 @@ klasse TestStack(unittest.TestCase):
 
     def test_walk_stack(self):
         def deeper():
-            return list(traceback.walk_stack(Nichts))
+            gib list(traceback.walk_stack(Nichts))
         s1, s2 = list(traceback.walk_stack(Nichts)), deeper()
         self.assertEqual(len(s2) - len(s1), 1)
         self.assertEqual(s2[1:], s1)
 
     def test_walk_innermost_frame(self):
         def inner():
-            return list(traceback.walk_stack(Nichts))
+            gib list(traceback.walk_stack(Nichts))
         frames = inner()
         innermost_frame, _ = frames[0]
         self.assertEqual(innermost_frame.f_code.co_name, "inner")
@@ -3369,12 +3369,12 @@ klasse TestStack(unittest.TestCase):
         def some_inner(k, v):
             a = 1
             b = 2
-            return traceback.StackSummary.extract(
+            gib traceback.StackSummary.extract(
                 traceback.walk_stack(Nichts), capture_locals=Wahr, limit=1)
         s = some_inner(3, 4)
         self.assertEqual(
             ['  File "%s", line %d, in some_inner\n'
-             '    return traceback.StackSummary.extract(\n'
+             '    gib traceback.StackSummary.extract(\n'
              '    a = 1\n'
              '    b = 2\n'
              '    k = 3\n'
@@ -3384,10 +3384,10 @@ klasse TestStack(unittest.TestCase):
     def test_custom_format_frame(self):
         klasse CustomStackSummary(traceback.StackSummary):
             def format_frame_summary(self, frame_summary, colorize=Falsch):
-                return f'{frame_summary.filename}:{frame_summary.lineno}'
+                gib f'{frame_summary.filename}:{frame_summary.lineno}'
 
         def some_inner():
-            return CustomStackSummary.extract(
+            gib CustomStackSummary.extract(
                 traceback.walk_stack(Nichts), limit=1)
 
         s = some_inner()
@@ -3403,15 +3403,15 @@ klasse TestStack(unittest.TestCase):
             try:
                 f()
             except Exception als e:
-                return e.__traceback__
+                gib e.__traceback__
 
         tb = g()
 
         klasse Skip_G(traceback.StackSummary):
             def format_frame_summary(self, frame_summary, colorize=Falsch):
                 wenn frame_summary.name == 'g':
-                    return Nichts
-                return super().format_frame_summary(frame_summary)
+                    gib Nichts
+                gib super().format_frame_summary(frame_summary)
 
         stack = Skip_G.extract(
             traceback.walk_tb(tb)).format()
@@ -3467,12 +3467,12 @@ klasse Unrepresentable:
 # test_dont_swallow_subexceptions_of_falsey_exceptiongroup.
 klasse FalschyException(Exception):
     def __bool__(self):
-        return Falsch
+        gib Falsch
 
 
 klasse FalschyExceptionGroup(ExceptionGroup):
     def __bool__(self):
-        return Falsch
+        gib Falsch
 
 
 klasse TestTracebackException(unittest.TestCase):
@@ -3734,7 +3734,7 @@ klasse TestTracebackException(unittest.TestCase):
     def test_unhashable(self):
         klasse UnhashableException(Exception):
             def __eq__(self, other):
-                return Wahr
+                gib Wahr
 
         ex1 = UnhashableException('ex1')
         ex2 = UnhashableException('ex2')
@@ -3809,7 +3809,7 @@ klasse TestTracebackException(unittest.TestCase):
             try:
                 x/0
             except Exception als e:
-                return e
+                gib e
         exc = traceback.TracebackException.from_exception(f(), capture_locals=Wahr)
         output = StringIO()
         exc.drucke(file=output)
@@ -3874,7 +3874,7 @@ klasse TestTracebackException_ExceptionGroups(unittest.TestCase):
                 exc4 = e
             raise ExceptionGroup("eg2", [exc3, exc4])
         except ExceptionGroup als eg:
-            return eg
+            gib eg
         self.fail('Exception Not Raised')
 
     def test_exception_group_construction(self):
@@ -4077,7 +4077,7 @@ klasse SuggestionFormattingTestMixin:
         result_lines = self.get_exception(
             callable, slice_start=-1, slice_end=Nichts
         )
-        return result_lines[0]
+        gib result_lines[0]
 
 
 klasse BaseSuggestionTests(SuggestionFormattingTestMixin):
@@ -4182,7 +4182,7 @@ klasse BaseSuggestionTests(SuggestionFormattingTestMixin):
     def test_suggestions_for_same_name(self):
         klasse A:
             def __dir__(self):
-                return ['blech']
+                gib ['blech']
         actual = self.get_suggestion(A(), 'blech')
         self.assertNotIn("Did you mean", actual)
 
@@ -4270,7 +4270,7 @@ klasse SuggestionFormattingTestBase(SuggestionFormattingTestMixin):
         klasse B:
             def __getattribute__(self, attr):
                 a = A()
-                return a.blich
+                gib a.blich
 
         actual = self.get_suggestion(B(), 'something')
         self.assertIn("Did you mean", actual)
@@ -4316,7 +4316,7 @@ klasse SuggestionFormattingTestBase(SuggestionFormattingTestMixin):
         klasse Inner:
             @property
             def computed(self):
-                return 42
+                gib 42
 
         klasse Outer:
             def __init__(self):
@@ -4465,7 +4465,7 @@ klasse SuggestionFormattingTestBase(SuggestionFormattingTestMixin):
         module = tmpdir / (mod_name + ".py")
         module.write_text(code)
 
-        return mod_name
+        gib mod_name
 
     def get_import_from_suggestion(self, code, name):
         modname = self.make_module(code)
@@ -4482,7 +4482,7 @@ klasse SuggestionFormattingTestBase(SuggestionFormattingTestMixin):
         result_lines = self.get_exception(
             callable, slice_start=-1, slice_end=Nichts
         )
-        return result_lines[0]
+        gib result_lines[0]
 
     def test_import_from_suggestions(self):
         substitution = textwrap.dedent("""\
@@ -5059,13 +5059,13 @@ klasse TestColorizedTraceback(unittest.TestCase):
             y = x['a']['b']['c']
 
         def baz2(*args):
-            return (lambda *args: foo(*args))(1,2,3,4)
+            gib (lambda *args: foo(*args))(1,2,3,4)
 
         def baz1(*args):
-            return baz2(1,2,3,4)
+            gib baz2(1,2,3,4)
 
         def bar():
-            return baz1(1,
+            gib baz1(1,
                     2,3
                     ,4)
         try:
@@ -5094,7 +5094,7 @@ klasse TestColorizedTraceback(unittest.TestCase):
             )
         actual = "".join(exc.format(colorize=Wahr))
         def expected(t, m, fn, l, f, E, e, z):
-            return "".join(
+            gib "".join(
                 [
                     f'  File {fn}"<string>"{z}, line {l}1{z}\n',
                     f'    a {E}${z} b\n',
@@ -5120,7 +5120,7 @@ klasse TestColorizedTraceback(unittest.TestCase):
 
         lno_foo = foo.__code__.co_firstlineno
         def expected(t, m, fn, l, f, E, e, z):
-            return [
+            gib [
                 'Traceback (most recent call last):',
                 f'  File {fn}"{__file__}"{z}, '
                 f'line {l}{lno_foo+5}{z}, in {f}test_colorized_traceback_is_the_default{z}',
@@ -5153,7 +5153,7 @@ klasse TestColorizedTraceback(unittest.TestCase):
         lno_foo = foo.__code__.co_firstlineno
         actual = "".join(exc.format(colorize=Wahr)).splitlines()
         def expected(t, m, fn, l, f, E, e, z):
-            return [
+            gib [
                 f"  + Exception Group Traceback (most recent call last):",
                 f'  |   File {fn}"{__file__}"{z}, line {l}{lno_foo+9}{z}, in {f}test_colorized_traceback_from_exception_group{z}',
                 f'  |     {e}foo{z}{E}(){z}',

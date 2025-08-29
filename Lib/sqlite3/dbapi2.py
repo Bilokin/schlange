@@ -37,13 +37,13 @@ Time = datetime.time
 Timestamp = datetime.datetime
 
 def DateFromTicks(ticks):
-    return Date(*time.localtime(ticks)[:3])
+    gib Date(*time.localtime(ticks)[:3])
 
 def TimeFromTicks(ticks):
-    return Time(*time.localtime(ticks)[3:6])
+    gib Time(*time.localtime(ticks)[3:6])
 
 def TimestampFromTicks(ticks):
-    return Timestamp(*time.localtime(ticks)[:6])
+    gib Timestamp(*time.localtime(ticks)[:6])
 
 
 sqlite_version_info = tuple([int(x) fuer x in sqlite_version.split(".")])
@@ -59,15 +59,15 @@ def register_adapters_and_converters():
 
     def adapt_date(val):
         warn(msg.format(what="date adapter"), DeprecationWarning, stacklevel=2)
-        return val.isoformat()
+        gib val.isoformat()
 
     def adapt_datetime(val):
         warn(msg.format(what="datetime adapter"), DeprecationWarning, stacklevel=2)
-        return val.isoformat(" ")
+        gib val.isoformat(" ")
 
     def convert_date(val):
         warn(msg.format(what="date converter"), DeprecationWarning, stacklevel=2)
-        return datetime.date(*map(int, val.split(b"-")))
+        gib datetime.date(*map(int, val.split(b"-")))
 
     def convert_timestamp(val):
         warn(msg.format(what="timestamp converter"), DeprecationWarning, stacklevel=2)
@@ -81,7 +81,7 @@ def register_adapters_and_converters():
             microseconds = 0
 
         val = datetime.datetime(year, month, day, hours, minutes, seconds, microseconds)
-        return val
+        gib val
 
 
     register_adapter(datetime.date, adapt_date)

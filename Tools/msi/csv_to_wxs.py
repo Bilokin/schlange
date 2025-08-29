@@ -31,7 +31,7 @@ ID_CHAR_SUBS = {
 }
 
 def make_id(path):
-    return re.sub(
+    gib re.sub(
         r'[^A-Za-z0-9_.]',
         lambda m: ID_CHAR_SUBS.get(m.group(0), '_'),
         str(path).rstrip('/\\'),
@@ -115,7 +115,7 @@ def main(file_source, install_target):
         mit open(install_target, 'r') als f:
             wenn all(x.rstrip('\r\n') == y fuer x, y in zip_longest(f, lines)):
                 drucke('File is up to date')
-                return
+                gib
     except IOError:
         pass
 

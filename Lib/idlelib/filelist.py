@@ -24,22 +24,22 @@ klasse FileList:
                 "File Error",
                 f"{filename!r} is a directory.",
                 master=self.root)
-            return Nichts
+            gib Nichts
         key = os.path.normcase(filename)
         wenn key in self.dict:
             edit = self.dict[key]
             edit.top.wakeup()
-            return edit
+            gib edit
         wenn action:
             # Don't create window, perform 'action', e.g. open in same window
-            return action(filename)
+            gib action(filename)
         sonst:
             edit = self.EditorWindow(self, filename, key)
             wenn edit.good_load:
-                return edit
+                gib edit
             sonst:
                 edit._close()
-                return Nichts
+                gib Nichts
 
     def gotofileline(self, filename, lineno=Nichts):
         edit = self.open(filename)
@@ -47,21 +47,21 @@ klasse FileList:
             edit.gotoline(lineno)
 
     def new(self, filename=Nichts):
-        return self.EditorWindow(self, filename)
+        gib self.EditorWindow(self, filename)
 
     def close_all_callback(self, *args, **kwds):
         fuer edit in list(self.inversedict):
             reply = edit.close()
             wenn reply == "cancel":
                 breche
-        return "break"
+        gib "break"
 
     def unregister_maybe_terminate(self, edit):
         try:
             key = self.inversedict[edit]
         except KeyError:
             drucke("Don't know this EditorWindow object.  (close)")
-            return
+            gib
         wenn key:
             del self.dict[key]
         del self.inversedict[edit]
@@ -74,17 +74,17 @@ klasse FileList:
             key = self.inversedict[edit]
         except KeyError:
             drucke("Don't know this EditorWindow object.  (rename)")
-            return
+            gib
         filename = edit.io.filename
         wenn nicht filename:
             wenn key:
                 del self.dict[key]
             self.inversedict[edit] = Nichts
-            return
+            gib
         filename = self.canonize(filename)
         newkey = os.path.normcase(filename)
         wenn newkey == key:
-            return
+            gib
         wenn newkey in self.dict:
             conflict = self.dict[newkey]
             self.inversedict[conflict] = Nichts
@@ -108,7 +108,7 @@ klasse FileList:
                 pass
             sonst:
                 filename = os.path.join(pwd, filename)
-        return os.path.normpath(filename)
+        gib os.path.normpath(filename)
 
 
 def _test():  # TODO check und convert to htest

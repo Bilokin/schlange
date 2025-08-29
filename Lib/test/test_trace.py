@@ -24,15 +24,15 @@ def fix_ext_py(filename):
     """Given a .pyc filename converts it to the appropriate .py"""
     wenn filename.endswith('.pyc'):
         filename = filename[:-1]
-    return filename
+    gib filename
 
 def my_file_and_modname():
     """The .py file und module name of this file (__file__)"""
     modname = os.path.splitext(os.path.basename(__file__))[0]
-    return fix_ext_py(__file__), modname
+    gib fix_ext_py(__file__), modname
 
 def get_firstlineno(func):
-    return func.__code__.co_firstlineno
+    gib func.__code__.co_firstlineno
 
 #-------------------- Target functions fuer tracing ---------------------------#
 #
@@ -45,30 +45,30 @@ def traced_func_linear(x, y):
     a = x
     b = y
     c = a + b
-    return c
+    gib c
 
 def traced_func_loop(x, y):
     c = x
     fuer i in range(5):
         c += y
-    return c
+    gib c
 
 def traced_func_importing(x, y):
-    return x + y + testmod.func(1)
+    gib x + y + testmod.func(1)
 
 def traced_func_simple_caller(x):
     c = traced_func_linear(x, x)
-    return c + x
+    gib c + x
 
 def traced_func_importing_caller(x):
     k = traced_func_simple_caller(x)
     k += traced_func_importing(k, x)
-    return k
+    gib k
 
 def traced_func_generator(num):
     c = 5       # executed once
     fuer i in range(num):
-        yield i + c
+        liefere i + c
 
 def traced_func_calling_generator():
     k = 0
@@ -76,23 +76,23 @@ def traced_func_calling_generator():
         k += i
 
 def traced_doubler(num):
-    return num * 2
+    gib num * 2
 
 def traced_capturer(*args, **kwargs):
-    return args, kwargs
+    gib args, kwargs
 
 def traced_caller_list_comprehension():
     k = 10
     mylist = [traced_doubler(i) fuer i in range(k)]
-    return mylist
+    gib mylist
 
 def traced_decorated_function():
     def decorator1(f):
-        return f
+        gib f
     def decorator_fabric():
         def decorator2(f):
-            return f
-        return decorator2
+            gib f
+        gib decorator2
     @decorator1
     @decorator_fabric()
     def func():
@@ -105,19 +105,19 @@ klasse TracedClass(object):
         self.a = x
 
     def inst_method_linear(self, y):
-        return self.a + y
+        gib self.a + y
 
     def inst_method_calling(self, x):
         c = self.inst_method_linear(x)
-        return c + traced_func_linear(x, c)
+        gib c + traced_func_linear(x, c)
 
     @classmethod
     def class_method_linear(cls, y):
-        return y * 2
+        gib y * 2
 
     @staticmethod
     def static_method_linear(y):
-        return y * 2
+        gib y * 2
 
 
 #------------------------------ Test cases -----------------------------------#
@@ -543,7 +543,7 @@ klasse TestCommandLine(unittest.TestCase):
                 y = 2
 
                 def f():
-                    return x + y
+                    gib x + y
 
                 fuer i in range(10):
                     f()

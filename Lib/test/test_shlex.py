@@ -161,7 +161,7 @@ klasse ShlexTest(unittest.TestCase):
         waehrend tok:
             ret.append(tok)
             tok = lex.get_token()
-        return ret
+        gib ret
 
     def testSplitNichts(self):
         mit self.assertRaises(ValueError):

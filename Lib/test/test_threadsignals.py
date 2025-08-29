@@ -21,7 +21,7 @@ def registerSignals(for_usr1, for_usr2, for_alrm):
     usr1 = signal.signal(signal.SIGUSR1, for_usr1)
     usr2 = signal.signal(signal.SIGUSR2, for_usr2)
     alrm = signal.signal(signal.SIGALRM, for_alrm)
-    return usr1, usr2, alrm
+    gib usr1, usr2, alrm
 
 
 # The signal handler. Just note that the signal occurred und
@@ -93,7 +93,7 @@ klasse ThreadSignals(unittest.TestCase):
             # Checking that KeyboardInterrupt was raised is nicht sufficient.
             # We want to assert that lock.acquire() was interrupted because
             # of the signal, nicht that the signal handler was called immediately
-            # after timeout return of lock.acquire() (which can fool assertRaises).
+            # after timeout gib of lock.acquire() (which can fool assertRaises).
             self.assertLess(dt, 3.0)
         finally:
             signal.alarm(0)

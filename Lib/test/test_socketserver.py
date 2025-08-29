@@ -39,7 +39,7 @@ _real_select = select.select
 def receive(sock, n, timeout=test.support.SHORT_TIMEOUT):
     r, w, x = _real_select([sock], [], [], timeout)
     wenn sock in r:
-        return sock.recv(n)
+        gib sock.recv(n)
     sonst:
         raise RuntimeError("timed out on %r" % (sock,))
 
@@ -54,7 +54,7 @@ def simple_subprocess(testcase):
         # Don't raise an exception; it would be caught by the test harness.
         os._exit(72)
     try:
-        yield Nichts
+        liefere Nichts
     except:
         raise
     finally:
@@ -80,13 +80,13 @@ klasse SocketServerTest(unittest.TestCase):
 
     def pickaddr(self, proto):
         wenn proto == socket.AF_INET:
-            return (HOST, 0)
+            gib (HOST, 0)
         sonst:
             # XXX: We need a way to tell AF_UNIX to pick its own name
             # like AF_INET provides port==0.
             fn = socket_helper.create_unix_domain_name()
             self.test_files.append(fn)
-            return fn
+            gib fn
 
     def make_server(self, addr, svrcls, hdlrbase):
         klasse MyServer(svrcls):
@@ -107,7 +107,7 @@ klasse SocketServerTest(unittest.TestCase):
             self.skipTest('Cannot create server (%s, %s): %s' %
                           (svrcls, addr, e))
         self.assertEqual(server.server_address, server.socket.getsockname())
-        return server
+        gib server
 
     @threading_helper.reap_threads
     def run_server(self, svrcls, hdlrbase, testfunc):
@@ -479,7 +479,7 @@ klasse MiscTestCase(unittest.TestCase):
 
         klasse MyServer(socketserver.TCPServer):
             def verify_request(self, request, client_address):
-                return Falsch
+                gib Falsch
 
             shutdown_called = 0
             def shutdown_request(self, request):

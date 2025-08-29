@@ -16,7 +16,7 @@ def format_array(name, values):
         initial_indent=' ' * 4,
         subsequent_indent=' ' * 8,
     )
-    return '\n'.join(result)
+    gib '\n'.join(result)
 
 
 def conv_tables(long_bits):
@@ -40,7 +40,7 @@ def conv_tables(long_bits):
         convmultmax_base[base] = convmax
         assert i > 0
         convwidth_base[base] = i
-    return '\n'.join(
+    gib '\n'.join(
         [
             format_array(
                 'static const double log_base_BASE[37]', log_base_BASE

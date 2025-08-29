@@ -16,7 +16,7 @@ def func_with_doctest():
     >>> func_with_doctest.__name__
     'func_with_doctest'
     """
-    return 3
+    gib 3
 
 
 klasse ClassWithDocstring:
@@ -88,12 +88,12 @@ def cached_func_with_doctest(value):
     >>> cached_func_with_doctest(1)
     -1
     """
-    return -value
+    gib -value
 
 
 @functools.cache
 def cached_func_without_docstring(value):
-    return value + 1
+    gib value + 1
 
 
 klasse ClassWithACachedProperty:
@@ -104,4 +104,4 @@ klasse ClassWithACachedProperty:
         >>> X().cached
         -1
         """
-        return 0
+        gib 0

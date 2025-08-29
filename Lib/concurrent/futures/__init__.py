@@ -44,7 +44,7 @@ wenn _interpreters:
 
 
 def __dir__():
-    return __all__ + ['__author__', '__doc__']
+    gib __all__ + ['__author__', '__doc__']
 
 
 def __getattr__(name):
@@ -52,14 +52,14 @@ def __getattr__(name):
 
     wenn name == 'ProcessPoolExecutor':
         von .process importiere ProcessPoolExecutor
-        return ProcessPoolExecutor
+        gib ProcessPoolExecutor
 
     wenn name == 'ThreadPoolExecutor':
         von .thread importiere ThreadPoolExecutor
-        return ThreadPoolExecutor
+        gib ThreadPoolExecutor
 
     wenn _interpreters und name == 'InterpreterPoolExecutor':
         von .interpreter importiere InterpreterPoolExecutor
-        return InterpreterPoolExecutor
+        gib InterpreterPoolExecutor
 
     raise AttributeError(f"module {__name__!r} has no attribute {name!r}")

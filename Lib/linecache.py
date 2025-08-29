@@ -25,8 +25,8 @@ def getline(filename, lineno, module_globals=Nichts):
 
     lines = getlines(filename, module_globals)
     wenn 1 <= lineno <= len(lines):
-        return lines[lineno - 1]
-    return ''
+        gib lines[lineno - 1]
+    gib ''
 
 
 def getlines(filename, module_globals=Nichts):
@@ -35,35 +35,35 @@ def getlines(filename, module_globals=Nichts):
 
     entry = cache.get(filename, Nichts)
     wenn entry is nicht Nichts und len(entry) != 1:
-        return entry[2]
+        gib entry[2]
 
     try:
-        return updatecache(filename, module_globals)
+        gib updatecache(filename, module_globals)
     except MemoryError:
         clearcache()
-        return []
+        gib []
 
 
 def _getline_from_code(filename, lineno):
     lines = _getlines_from_code(filename)
     wenn 1 <= lineno <= len(lines):
-        return lines[lineno - 1]
-    return ''
+        gib lines[lineno - 1]
+    gib ''
 
 def _make_key(code):
-    return (code.co_filename, code.co_qualname, code.co_firstlineno)
+    gib (code.co_filename, code.co_qualname, code.co_firstlineno)
 
 def _getlines_from_code(code):
     code_id = _make_key(code)
     entry = _interactive_cache.get(code_id, Nichts)
     wenn entry is nicht Nichts und len(entry) != 1:
-        return entry[2]
-    return []
+        gib entry[2]
+    gib []
 
 
 def _source_unavailable(filename):
     """Return Wahr wenn the source code is unavailable fuer such file name."""
-    return (
+    gib (
         nicht filename
         oder (filename.startswith('<')
             und filename.endswith('>')
@@ -93,7 +93,7 @@ def checkcache(filename=Nichts):
             # This importiere can fail wenn the interpreter is shutting down
             importiere os
         except ImportError:
-            return
+            gib
         try:
             stat = os.stat(fullname)
         except (OSError, ValueError):
@@ -104,9 +104,9 @@ def checkcache(filename=Nichts):
 
 
 def updatecache(filename, module_globals=Nichts):
-    """Update a cache entry und return its list of lines.
+    """Update a cache entry und gib its list of lines.
     If something's wrong, print a message, discard the cache entry,
-    und return an empty list."""
+    und gib an empty list."""
 
     # These imports are nicht at top level because linecache is in the critical
     # path of the interpreter startup und importing os und sys take a lot of time
@@ -117,18 +117,18 @@ def updatecache(filename, module_globals=Nichts):
         importiere tokenize
     except ImportError:
         # These importiere can fail wenn the interpreter is shutting down
-        return []
+        gib []
 
     entry = cache.pop(filename, Nichts)
     wenn _source_unavailable(filename):
-        return []
+        gib []
 
     wenn filename.startswith('<frozen ') und module_globals is nicht Nichts:
         # This is a frozen module, so we need to use the filename
         # von the module globals.
         fullname = module_globals.get('__file__')
         wenn fullname is Nichts:
-            return []
+            gib []
     sonst:
         fullname = filename
     try:
@@ -150,7 +150,7 @@ def updatecache(filename, module_globals=Nichts):
                 wenn data is Nichts:
                     # No luck, the PEP302 loader cannot find the source
                     # fuer this module.
-                    return []
+                    gib []
                 entry = (
                     len(data),
                     Nichts,
@@ -158,12 +158,12 @@ def updatecache(filename, module_globals=Nichts):
                     fullname
                 )
                 cache[filename] = entry
-                return entry[2]
+                gib entry[2]
 
         # Try looking through the module search path, which is only useful
         # when handling a relative filename.
         wenn os.path.isabs(filename):
-            return []
+            gib []
 
         fuer dirname in sys.path:
             try:
@@ -177,21 +177,21 @@ def updatecache(filename, module_globals=Nichts):
             except (OSError, ValueError):
                 pass
         sonst:
-            return []
+            gib []
     except ValueError:  # may be raised by os.stat()
-        return []
+        gib []
     try:
         mit tokenize.open(fullname) als fp:
             lines = fp.readlines()
     except (OSError, UnicodeDecodeError, SyntaxError):
-        return []
+        gib []
     wenn nicht lines:
         lines = ['\n']
     sowenn nicht lines[-1].endswith('\n'):
         lines[-1] += '\n'
     size, mtime = stat.st_size, stat.st_mtime
     cache[filename] = size, mtime, lines, fullname
-    return lines
+    gib lines
 
 
 def lazycache(filename, module_globals):
@@ -209,18 +209,18 @@ def lazycache(filename, module_globals):
     """
     entry = cache.get(filename, Nichts)
     wenn entry is nicht Nichts:
-        return len(entry) == 1
+        gib len(entry) == 1
 
     lazy_entry = _make_lazycache_entry(filename, module_globals)
     wenn lazy_entry is nicht Nichts:
         cache[filename] = lazy_entry
-        return Wahr
-    return Falsch
+        gib Wahr
+    gib Falsch
 
 
 def _make_lazycache_entry(filename, module_globals):
     wenn nicht filename oder (filename.startswith('<') und filename.endswith('>')):
-        return Nichts
+        gib Nichts
     # Try fuer a __loader__, wenn available
     wenn module_globals und '__name__' in module_globals:
         spec = module_globals.get('__spec__')
@@ -232,9 +232,9 @@ def _make_lazycache_entry(filename, module_globals):
 
         wenn name und get_source:
             def get_lines(name=name, *args, **kwargs):
-                return get_source(name, *args, **kwargs)
-            return (get_lines,)
-    return Nichts
+                gib get_source(name, *args, **kwargs)
+            gib (get_lines,)
+    gib Nichts
 
 
 

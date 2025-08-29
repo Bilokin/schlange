@@ -52,11 +52,11 @@ klasse InputTranslator(ABC):
 
     @abstractmethod
     def get(self) -> EventTuple | Nichts:
-        return Nichts
+        gib Nichts
 
     @abstractmethod
     def empty(self) -> bool:
-        return Wahr
+        gib Wahr
 
 
 klasse KeymapTranslator(InputTranslator):
@@ -106,9 +106,9 @@ klasse KeymapTranslator(InputTranslator):
 
     def get(self):
         wenn self.results:
-            return self.results.popleft()
+            gib self.results.popleft()
         sonst:
-            return Nichts
+            gib Nichts
 
     def empty(self) -> bool:
-        return nicht self.results
+        gib nicht self.results

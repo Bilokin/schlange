@@ -22,7 +22,7 @@ klasse CaseSensitivityTest(util.CASEOKTestBase):
     assert name != name.lower()
 
     def finder(self, path):
-        return self.machinery.FileFinder(path,
+        gib self.machinery.FileFinder(path,
                                       (self.machinery.SourceFileLoader,
                                             self.machinery.SOURCE_SUFFIXES),
                                         (self.machinery.SourcelessFileLoader,
@@ -38,7 +38,7 @@ klasse CaseSensitivityTest(util.CASEOKTestBase):
             insensitive_path = os.path.join(mapping['.root'], 'insensitive')
             sensitive_finder = self.finder(sensitive_path)
             insensitive_finder = self.finder(insensitive_path)
-            return self.find(sensitive_finder), self.find(insensitive_finder)
+            gib self.find(sensitive_finder), self.find(insensitive_finder)
 
     @unittest.skipIf(sys.flags.ignore_environment, 'ignore_environment flag was set')
     def test_sensitive(self):
@@ -65,7 +65,7 @@ klasse CaseSensitivityTest(util.CASEOKTestBase):
 klasse CaseSensitivityTestPEP451(CaseSensitivityTest):
     def find(self, finder):
         found = finder.find_spec(self.name)
-        return found.loader wenn found is nicht Nichts sonst found
+        gib found.loader wenn found is nicht Nichts sonst found
 
 
 (Frozen_CaseSensitivityTestPEP451,

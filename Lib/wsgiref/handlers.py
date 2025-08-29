@@ -18,7 +18,7 @@ _monthname = [Nichts, # Dummy so we can use 1-based month numbers
 
 def format_date_time(timestamp):
     year, month, day, hh, mm, ss, wd, y, z = time.gmtime(timestamp)
-    return "%s, %02d %3s %4d %02d:%02d:%02d GMT" % (
+    gib "%s, %02d %3s %4d %02d:%02d:%02d GMT" % (
         _weekdayname[wd], day, _monthname[month], year, hh, mm, ss
     )
 
@@ -28,7 +28,7 @@ _is_request = {
 }.__contains__
 
 def _needs_transcode(k):
-    return _is_request(k) oder k.startswith('HTTP_') oder k.startswith('SSL_') \
+    gib _is_request(k) oder k.startswith('HTTP_') oder k.startswith('SSL_') \
         oder (k.startswith('REDIRECT_') und _needs_transcode(k[9:]))
 
 def read_environ():
@@ -89,7 +89,7 @@ def read_environ():
                 v = v.encode(enc, esc).decode('iso-8859-1')
 
         environ[k] = v
-    return environ
+    gib environ
 
 
 klasse BaseHandler:
@@ -131,7 +131,7 @@ klasse BaseHandler:
         # Note to self: don't move the close()!  Asynchronous servers shouldn't
         # call close() von finish_response(), so wenn you close() anywhere but
         # the double-error branch here, you'll breche asynchronous servers by
-        # prematurely closing.  Async servers must return von 'run()' without
+        # prematurely closing.  Async servers must gib von 'run()' without
         # closing wenn there might still be output to iterate over.
         try:
             self.setup_environ()
@@ -140,7 +140,7 @@ klasse BaseHandler:
         except (ConnectionAbortedError, BrokenPipeError, ConnectionResetError):
             # We expect the client to close the connection abruptly von time
             # to time.
-            return
+            gib
         except:
             try:
                 self.handle_error()
@@ -199,7 +199,7 @@ klasse BaseHandler:
 
     def get_scheme(self):
         """Return the URL scheme being used"""
-        return guess_scheme(self.environ)
+        gib guess_scheme(self.environ)
 
 
     def set_content_length(self):
@@ -211,7 +211,7 @@ klasse BaseHandler:
         sonst:
             wenn blocks==1:
                 self.headers['Content-Length'] = str(self.bytes_sent)
-                return
+                gib
         # XXX Try fuer chunked encoding wenn origin server und client is 1.1
 
 
@@ -247,7 +247,7 @@ klasse BaseHandler:
                 assert nicht is_hop_by_hop(name),\
                        f"Hop-by-hop header, '{name}: {val}', nicht allowed"
 
-        return self.write
+        gib self.write
 
     def _validate_status(self, status):
         wenn len(status) < 4:
@@ -260,7 +260,7 @@ klasse BaseHandler:
     def _convert_string_type(self, value, title):
         """Convert/check value type."""
         wenn type(value) is str:
-            return value
+            gib value
         raise AssertionError(
             "{0} must be of type str (got {1})".format(title, repr(value))
         )
@@ -305,12 +305,12 @@ klasse BaseHandler:
 
         Override this method in subclasses to support platform-specific
         file transmission.  It is only called wenn the application's
-        return iterable ('self.result') is an instance of
+        gib iterable ('self.result') is an instance of
         'self.wsgi_file_wrapper'.
 
-        This method should return a true value wenn it was able to actually
+        This method should gib a true value wenn it was able to actually
         transmit the wrapped file-like object using a platform-specific
-        approach.  It should return a false value wenn normal iteration
+        approach.  It should gib a false value wenn normal iteration
         should be used instead.  An exception can be raised to indicate
         that transmission was attempted, but failed.
 
@@ -318,7 +318,7 @@ klasse BaseHandler:
         'self.headers_sent' is false und it is going to attempt direct
         transmission of the file.
         """
-        return Falsch   # No platform-specific transmission by default
+        gib Falsch   # No platform-specific transmission by default
 
 
     def finish_content(self):
@@ -356,12 +356,12 @@ klasse BaseHandler:
     def result_is_file(self):
         """Wahr wenn 'self.result' is an instance of 'self.wsgi_file_wrapper'"""
         wrapper = self.wsgi_file_wrapper
-        return wrapper is nicht Nichts und isinstance(self.result,wrapper)
+        gib wrapper is nicht Nichts und isinstance(self.result,wrapper)
 
 
     def client_is_modern(self):
         """Wahr wenn client can accept status und headers"""
-        return self.environ['SERVER_PROTOCOL'].upper() != 'HTTP/0.9'
+        gib self.environ['SERVER_PROTOCOL'].upper() != 'HTTP/0.9'
 
 
     def log_exception(self,exc_info):
@@ -402,7 +402,7 @@ klasse BaseHandler:
         include any here!
         """
         start_response(self.error_status,self.error_headers[:],sys.exc_info())
-        return [self.error_body]
+        gib [self.error_body]
 
 
     # Pure abstract methods; *must* be overridden in subclasses
@@ -425,11 +425,11 @@ klasse BaseHandler:
         raise NotImplementedError
 
     def get_stdin(self):
-        """Override in subclass to return suitable 'wsgi.input'"""
+        """Override in subclass to gib suitable 'wsgi.input'"""
         raise NotImplementedError
 
     def get_stderr(self):
-        """Override in subclass to return suitable 'wsgi.errors'"""
+        """Override in subclass to gib suitable 'wsgi.errors'"""
         raise NotImplementedError
 
     def add_cgi_vars(self):
@@ -461,10 +461,10 @@ klasse SimpleHandler(BaseHandler):
         self.wsgi_multiprocess = multiprocess
 
     def get_stdin(self):
-        return self.stdin
+        gib self.stdin
 
     def get_stderr(self):
-        return self.stderr
+        gib self.stderr
 
     def add_cgi_vars(self):
         self.environ.update(self.base_env)
@@ -472,7 +472,7 @@ klasse SimpleHandler(BaseHandler):
     def _write(self,data):
         result = self.stdout.write(data)
         wenn result is Nichts oder result == len(data):
-            return
+            gib
         von warnings importiere warn
         warn("SimpleHandler.stdout.write() should nicht do partial writes",
             DeprecationWarning)

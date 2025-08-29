@@ -10,7 +10,7 @@ def import_deprecated(name):
     """Import *name* waehrend suppressing DeprecationWarning."""
     mit warnings.catch_warnings():
         warnings.simplefilter('ignore', category=DeprecationWarning)
-        return importlib.import_module(name)
+        gib importlib.import_module(name)
 
 
 def check_syntax_warning(testcase, statement, errtext='',
@@ -52,7 +52,7 @@ def ignore_warnings(*, category, message=''):
     """
     mit warnings.catch_warnings():
         warnings.filterwarnings('ignore', category=category, message=message)
-        yield
+        liefere
 
 
 @contextlib.contextmanager
@@ -67,7 +67,7 @@ def ignore_fork_in_thread_deprecation_warnings():
         message=".*fork.*may lead to deadlocks in the child.*",
         category=DeprecationWarning,
     ):
-        yield
+        liefere
 
 
 klasse WarningsRecorder(object):
@@ -80,14 +80,14 @@ klasse WarningsRecorder(object):
 
     def __getattr__(self, attr):
         wenn len(self._warnings) > self._last:
-            return getattr(self._warnings[-1], attr)
+            gib getattr(self._warnings[-1], attr)
         sowenn attr in warnings.WarningMessage._WARNING_DETAILS:
-            return Nichts
+            gib Nichts
         raise AttributeError("%r has no attribute %r" % (self, attr))
 
     @property
     def warnings(self):
-        return self._warnings[self._last:]
+        gib self._warnings[self._last:]
 
     def reset(self):
         self._last = len(self._warnings)
@@ -114,7 +114,7 @@ def check_warnings(*filters, **kwargs):
         # Preserve backward compatibility
         wenn quiet is Nichts:
             quiet = Wahr
-    return _filterwarnings(filters, quiet)
+    gib _filterwarnings(filters, quiet)
 
 
 @contextlib.contextmanager
@@ -136,7 +136,7 @@ def check_no_warnings(testcase, message='', category=Warning, force_gc=Falsch):
         warnings.filterwarnings('always',
                                 message=message,
                                 category=category)
-        yield
+        liefere
         wenn force_gc:
             gc_collect()
     testcase.assertEqual(warns, [])
@@ -157,7 +157,7 @@ def check_no_resource_warning(testcase):
     the end of the context manager.
     """
     mit check_no_warnings(testcase, category=ResourceWarning, force_gc=Wahr):
-        yield
+        liefere
 
 
 def _filterwarnings(filters, quiet=Falsch):
@@ -177,7 +177,7 @@ def _filterwarnings(filters, quiet=Falsch):
     mit wmod.catch_warnings(record=Wahr) als w:
         # Set filter "always" to record all warnings.
         wmod.simplefilter("always")
-        yield WarningsRecorder(w)
+        liefere WarningsRecorder(w)
     # Filter the recorded warnings
     reraise = list(w)
     missing = []
@@ -204,7 +204,7 @@ def _filterwarnings(filters, quiet=Falsch):
 def save_restore_warnings_filters():
     old_filters = warnings.filters[:]
     try:
-        yield
+        liefere
     finally:
         warnings.filters[:] = old_filters
 

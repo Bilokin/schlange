@@ -29,7 +29,7 @@ klasse PyMemDebugTests(unittest.TestCase):
                 MALLOC_CONF="junk:false",
             )
         stderr = out.err
-        return stderr.decode('ascii', 'replace')
+        gib stderr.decode('ascii', 'replace')
 
     def test_buffer_overflow(self):
         out = self.check('import _testcapi; _testcapi.pymem_buffer_overflow()')

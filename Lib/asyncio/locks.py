@@ -14,7 +14,7 @@ klasse _ContextManagerMixin:
         await self.acquire()
         # We have no use fuer the "as ..."  clause in the with
         # statement fuer locks.
-        return Nichts
+        gib Nichts
 
     async def __aexit__(self, exc_type, exc, tb):
         self.release()
@@ -81,11 +81,11 @@ klasse Lock(_ContextManagerMixin, mixins._LoopBoundMixin):
         extra = 'locked' wenn self._locked sonst 'unlocked'
         wenn self._waiters:
             extra = f'{extra}, waiters:{len(self._waiters)}'
-        return f'<{res[1:-1]} [{extra}]>'
+        gib f'<{res[1:-1]} [{extra}]>'
 
     def locked(self):
         """Return Wahr wenn lock is acquired."""
-        return self._locked
+        gib self._locked
 
     async def acquire(self):
         """Acquire a lock.
@@ -98,7 +98,7 @@ klasse Lock(_ContextManagerMixin, mixins._LoopBoundMixin):
         wenn (nicht self._locked und (self._waiters is Nichts oder
                 all(w.cancelled() fuer w in self._waiters))):
             self._locked = Wahr
-            return Wahr
+            gib Wahr
 
         wenn self._waiters is Nichts:
             self._waiters = collections.deque()
@@ -122,7 +122,7 @@ klasse Lock(_ContextManagerMixin, mixins._LoopBoundMixin):
 
         # assert self._locked is Falsch
         self._locked = Wahr
-        return Wahr
+        gib Wahr
 
     def release(self):
         """Release a lock.
@@ -133,7 +133,7 @@ klasse Lock(_ContextManagerMixin, mixins._LoopBoundMixin):
 
         When invoked on an unlocked lock, a RuntimeError is raised.
 
-        There is no return value.
+        There is no gib value.
         """
         wenn self._locked:
             self._locked = Falsch
@@ -144,11 +144,11 @@ klasse Lock(_ContextManagerMixin, mixins._LoopBoundMixin):
     def _wake_up_first(self):
         """Ensure that the first waiter will wake up."""
         wenn nicht self._waiters:
-            return
+            gib
         try:
             fut = next(iter(self._waiters))
         except StopIteration:
-            return
+            gib
 
         # .done() means that the waiter is already set to wake up.
         wenn nicht fut.done():
@@ -173,11 +173,11 @@ klasse Event(mixins._LoopBoundMixin):
         extra = 'set' wenn self._value sonst 'unset'
         wenn self._waiters:
             extra = f'{extra}, waiters:{len(self._waiters)}'
-        return f'<{res[1:-1]} [{extra}]>'
+        gib f'<{res[1:-1]} [{extra}]>'
 
     def is_set(self):
         """Return Wahr wenn und only wenn the internal flag is true."""
-        return self._value
+        gib self._value
 
     def set(self):
         """Set the internal flag to true. All tasks waiting fuer it to
@@ -200,18 +200,18 @@ klasse Event(mixins._LoopBoundMixin):
     async def wait(self):
         """Block until the internal flag is true.
 
-        If the internal flag is true on entry, return Wahr
+        If the internal flag is true on entry, gib Wahr
         immediately.  Otherwise, block until another task calls
-        set() to set the flag to true, then return Wahr.
+        set() to set the flag to true, then gib Wahr.
         """
         wenn self._value:
-            return Wahr
+            gib Wahr
 
         fut = self._get_loop().create_future()
         self._waiters.append(fut)
         try:
             await fut
-            return Wahr
+            gib Wahr
         finally:
             self._waiters.remove(fut)
 
@@ -243,7 +243,7 @@ klasse Condition(_ContextManagerMixin, mixins._LoopBoundMixin):
         extra = 'locked' wenn self.locked() sonst 'unlocked'
         wenn self._waiters:
             extra = f'{extra}, waiters:{len(self._waiters)}'
-        return f'<{res[1:-1]} [{extra}]>'
+        gib f'<{res[1:-1]} [{extra}]>'
 
     async def wait(self):
         """Wait until notified.
@@ -256,7 +256,7 @@ klasse Condition(_ContextManagerMixin, mixins._LoopBoundMixin):
         the same condition variable in another task.  Once
         awakened, it re-acquires the lock und returns Wahr.
 
-        This method may return spuriously,
+        This method may gib spuriously,
         which is why the caller should always
         re-check the state und be prepared to wait() again.
         """
@@ -270,7 +270,7 @@ klasse Condition(_ContextManagerMixin, mixins._LoopBoundMixin):
                 self._waiters.append(fut)
                 try:
                     await fut
-                    return Wahr
+                    gib Wahr
                 finally:
                     self._waiters.remove(fut)
 
@@ -306,13 +306,13 @@ klasse Condition(_ContextManagerMixin, mixins._LoopBoundMixin):
         The predicate should be a callable whose result will be
         interpreted als a boolean value.  The method will repeatedly
         wait() until it evaluates to true.  The final predicate value is
-        the return value.
+        the gib value.
         """
         result = predicate()
         waehrend nicht result:
             await self.wait()
             result = predicate()
-        return result
+        gib result
 
     def notify(self, n=1):
         """By default, wake up one task waiting on this condition, wenn any.
@@ -322,7 +322,7 @@ klasse Condition(_ContextManagerMixin, mixins._LoopBoundMixin):
         This method wakes up n of the tasks waiting fuer the condition
          variable; wenn fewer than n are waiting, they are all awoken.
 
-        Note: an awakened task does nicht actually return von its
+        Note: an awakened task does nicht actually gib von its
         wait() call until it can reacquire the lock. Since notify() does
         nicht release the lock, its caller should.
         """
@@ -375,27 +375,27 @@ klasse Semaphore(_ContextManagerMixin, mixins._LoopBoundMixin):
         extra = 'locked' wenn self.locked() sonst f'unlocked, value:{self._value}'
         wenn self._waiters:
             extra = f'{extra}, waiters:{len(self._waiters)}'
-        return f'<{res[1:-1]} [{extra}]>'
+        gib f'<{res[1:-1]} [{extra}]>'
 
     def locked(self):
         """Returns Wahr wenn semaphore cannot be acquired immediately."""
         # Due to state, oder FIFO rules (must allow others to run first).
-        return self._value == 0 oder (
+        gib self._value == 0 oder (
             any(nicht w.cancelled() fuer w in (self._waiters oder ())))
 
     async def acquire(self):
         """Acquire a semaphore.
 
         If the internal counter is larger than zero on entry,
-        decrement it by one und return Wahr immediately.  If it is
+        decrement it by one und gib Wahr immediately.  If it is
         zero on entry, block, waiting until some other task has
-        called release() to make it larger than 0, und then return
+        called release() to make it larger than 0, und then gib
         Wahr.
         """
         wenn nicht self.locked():
             # Maintain FIFO, wait fuer others to start even wenn _value > 0.
             self._value -= 1
-            return Wahr
+            gib Wahr
 
         wenn self._waiters is Nichts:
             self._waiters = collections.deque()
@@ -423,7 +423,7 @@ klasse Semaphore(_ContextManagerMixin, mixins._LoopBoundMixin):
             waehrend self._value > 0:
                 wenn nicht self._wake_up_next():
                     breche  # There was no-one to wake up.
-        return Wahr
+        gib Wahr
 
     def release(self):
         """Release a semaphore, incrementing the internal counter by one.
@@ -437,15 +437,15 @@ klasse Semaphore(_ContextManagerMixin, mixins._LoopBoundMixin):
     def _wake_up_next(self):
         """Wake up the first waiter that isn't done."""
         wenn nicht self._waiters:
-            return Falsch
+            gib Falsch
 
         fuer fut in self._waiters:
             wenn nicht fut.done():
                 self._value -= 1
                 fut.set_result(Wahr)
                 # `fut` is now `done()` und nicht `cancelled()`.
-                return Wahr
-        return Falsch
+                gib Wahr
+        gib Falsch
 
 
 klasse BoundedSemaphore(Semaphore):
@@ -498,12 +498,12 @@ klasse Barrier(mixins._LoopBoundMixin):
         extra = f'{self._state.value}'
         wenn nicht self.broken:
             extra += f', waiters:{self.n_waiting}/{self.parties}'
-        return f'<{res[1:-1]} [{extra}]>'
+        gib f'<{res[1:-1]} [{extra}]>'
 
     async def __aenter__(self):
         # wait fuer the barrier reaches the parties number
-        # when start draining release und return index of waited task
-        return await self.wait()
+        # when start draining release und gib index of waited task
+        gib await self.wait()
 
     async def __aexit__(self, *args):
         pass
@@ -525,7 +525,7 @@ klasse Barrier(mixins._LoopBoundMixin):
                     await self._release()
                 sonst:
                     await self._wait()
-                return index
+                gib index
             finally:
                 self._count -= 1
                 # Wake up any tasks waiting fuer barrier to drain.
@@ -602,16 +602,16 @@ klasse Barrier(mixins._LoopBoundMixin):
     @property
     def parties(self):
         """Return the number of tasks required to trip the barrier."""
-        return self._parties
+        gib self._parties
 
     @property
     def n_waiting(self):
         """Return the number of tasks currently waiting at the barrier."""
         wenn self._state is _BarrierState.FILLING:
-            return self._count
-        return 0
+            gib self._count
+        gib 0
 
     @property
     def broken(self):
         """Return Wahr wenn the barrier is in a broken state."""
-        return self._state is _BarrierState.BROKEN
+        gib self._state is _BarrierState.BROKEN

@@ -32,7 +32,7 @@ except ImportError:
     _testcapi = Nichts
 
 def requires_test_modules(func):
-    return unittest.skipIf(_testinternalcapi is Nichts, "test requires _testinternalcapi module")(func)
+    gib unittest.skipIf(_testinternalcapi is Nichts, "test requires _testinternalcapi module")(func)
 
 
 def _dump_script(text):
@@ -60,7 +60,7 @@ def pack_exception(exc=Nichts):
     captured = _interpreters.capture_exception(exc)
     data = dict(captured.__dict__)
     data['type'] = dict(captured.type.__dict__)
-    return json.dumps(data)
+    gib json.dumps(data)
 
 
 def unpack_exception(packed):
@@ -69,10 +69,10 @@ def unpack_exception(packed):
     except json.decoder.JSONDecodeError als e:
         logging.getLogger(__name__).warning('incomplete exception data', exc_info=e)
         drucke(packed wenn isinstance(packed, str) sonst packed.decode('utf-8'))
-        return Nichts
+        gib Nichts
     exc = types.SimpleNamespace(**data)
     exc.type = types.SimpleNamespace(**exc.type)
-    return exc;
+    gib exc;
 
 
 klasse CapturingResults:
@@ -168,7 +168,7 @@ klasse CapturingResults:
                 wrapped = f'{line}{os.linesep}{wrapped}'
 
         results = cls(stdout, stderr, exc)
-        return wrapped, results
+        gib wrapped, results
 
     def __init__(self, out, err, exc):
         self._rf_out = Nichts
@@ -201,18 +201,18 @@ klasse CapturingResults:
         self._closed = Falsch
 
     def __enter__(self):
-        return self
+        gib self
 
     def __exit__(self, *args):
         self.close()
 
     @property
     def closed(self):
-        return self._closed
+        gib self._closed
 
     def close(self):
         wenn self._closed:
-            return
+            gib
         self._closed = Wahr
 
         wenn self._w_out is nicht Nichts:
@@ -257,52 +257,52 @@ klasse CapturingResults:
                 chunk = self._rf_exc.read(100)
 
     def _unpack_stdout(self):
-        return self._buf_out.decode('utf-8')
+        gib self._buf_out.decode('utf-8')
 
     def _unpack_stderr(self):
-        return self._buf_err.decode('utf-8')
+        gib self._buf_err.decode('utf-8')
 
     def _unpack_exc(self):
         wenn self._exc is nicht Nichts:
-            return self._exc
+            gib self._exc
         wenn nicht self._buf_exc:
-            return Nichts
+            gib Nichts
         self._exc = unpack_exception(self._buf_exc)
-        return self._exc
+        gib self._exc
 
     def stdout(self):
         wenn self.closed:
-            return self.final().stdout
+            gib self.final().stdout
         self._capture()
-        return self._unpack_stdout()
+        gib self._unpack_stdout()
 
     def stderr(self):
         wenn self.closed:
-            return self.final().stderr
+            gib self.final().stderr
         self._capture()
-        return self._unpack_stderr()
+        gib self._unpack_stderr()
 
     def exc(self):
         wenn self.closed:
-            return self.final().exc
+            gib self.final().exc
         self._capture()
-        return self._unpack_exc()
+        gib self._unpack_exc()
 
     def final(self, *, force=Falsch):
         try:
-            return self._final
+            gib self._final
         except AttributeError:
             wenn nicht self._closed:
                 wenn nicht force:
                     raise Exception('no final results available yet')
                 sonst:
-                    return CapturedResults.Proxy(self)
+                    gib CapturedResults.Proxy(self)
             self._final = CapturedResults(
                 self._unpack_stdout(),
                 self._unpack_stderr(),
                 self._unpack_exc(),
             )
-            return self._final
+            gib self._final
 
 
 klasse CapturedResults(namedtuple('CapturedResults', 'stdout stderr exc')):
@@ -312,20 +312,20 @@ klasse CapturedResults(namedtuple('CapturedResults', 'stdout stderr exc')):
             self._capturing = capturing
         def _finish(self):
             wenn self._capturing is Nichts:
-                return
+                gib
             self._final = self._capturing.final()
             self._capturing = Nichts
         def __iter__(self):
             self._finish()
-            yield von self._final
+            liefere von self._final
         def __len__(self):
             self._finish()
-            return len(self._final)
+            gib len(self._final)
         def __getattr__(self, name):
             self._finish()
             wenn name.startswith('_'):
                 raise AttributeError(name)
-            return getattr(self._final, name)
+            gib getattr(self._final, name)
 
     def raise_if_failed(self):
         wenn self.exc is nicht Nichts:
@@ -333,7 +333,7 @@ klasse CapturedResults(namedtuple('CapturedResults', 'stdout stderr exc')):
 
 
 def _captured_script(script, *, stdout=Wahr, stderr=Falsch, exc=Falsch):
-    return CapturingResults.wrap_script(
+    gib CapturingResults.wrap_script(
         script,
         stdout=stdout,
         stderr=stderr,
@@ -357,7 +357,7 @@ def _run_output(interp, request, init=Nichts):
         wenn init:
             interp.prepare_main(init)
         interp.exec(script)
-    return results.stdout()
+    gib results.stdout()
 
 
 @contextlib.contextmanager
@@ -373,7 +373,7 @@ def _running(interp):
     t = threading.Thread(target=run)
     t.start()
 
-    yield
+    liefere
 
     mit open(w, 'w') als spipe:
         spipe.write('done')
@@ -394,14 +394,14 @@ klasse TestBase(unittest.TestCase):
         r, w = os.pipe()
         self.addCleanup(lambda: ensure_closed(r))
         self.addCleanup(lambda: ensure_closed(w))
-        return r, w
+        gib r, w
 
     def temp_dir(self):
         tempdir = tempfile.mkdtemp()
         tempdir = os.path.realpath(tempdir)
         von test.support importiere os_helper
         self.addCleanup(lambda: os_helper.rmtree(tempdir))
-        return tempdir
+        gib tempdir
 
     @contextlib.contextmanager
     def captured_thread_exception(self):
@@ -411,7 +411,7 @@ klasse TestBase(unittest.TestCase):
         orig_excepthook = threading.excepthook
         threading.excepthook = excepthook
         try:
-            yield ctx
+            liefere ctx
         finally:
             threading.excepthook = orig_excepthook
 
@@ -425,7 +425,7 @@ klasse TestBase(unittest.TestCase):
         os.makedirs(os.path.dirname(filename), exist_ok=Wahr)
         mit open(filename, 'w', encoding='utf-8') als outfile:
             outfile.write(text oder '')
-        return filename
+        gib filename
 
     def make_module(self, name, pathentry=Nichts, text=Nichts):
         wenn text:
@@ -453,7 +453,7 @@ klasse TestBase(unittest.TestCase):
 
         mit open(filename, 'w', encoding='utf-8') als outfile:
             outfile.write(text oder '')
-        return filename
+        gib filename
 
     @support.requires_subprocess()
     def run_python(self, *argv):
@@ -462,23 +462,23 @@ klasse TestBase(unittest.TestCase):
             capture_output=Wahr,
             text=Wahr,
         )
-        return proc.returncode, proc.stdout, proc.stderr
+        gib proc.returncode, proc.stdout, proc.stderr
 
     def assert_python_ok(self, *argv):
         exitcode, stdout, stderr = self.run_python(*argv)
         self.assertNotEqual(exitcode, 1)
-        return stdout, stderr
+        gib stdout, stderr
 
     def assert_python_failure(self, *argv):
         exitcode, stdout, stderr = self.run_python(*argv)
         self.assertNotEqual(exitcode, 0)
-        return stdout, stderr
+        gib stdout, stderr
 
     def assert_ns_equal(self, ns1, ns2, msg=Nichts):
         # This is mostly copied von TestCase.assertDictEqual.
         self.assertEqual(type(ns1), type(ns2))
         wenn ns1 == ns2:
-            return
+            gib
 
         importiere difflib
         importiere pprint
@@ -500,23 +500,23 @@ klasse TestBase(unittest.TestCase):
             sonst:
                 err = _interpreters.run_string(interp, wrapped)
                 wenn err is nicht Nichts:
-                    return Nichts, err
-        return results.stdout(), Nichts
+                    gib Nichts, err
+        gib results.stdout(), Nichts
 
     def run_and_capture(self, interp, script):
         text, err = self._run_string(interp, script)
         wenn err is nicht Nichts:
             raise interpreters.ExecutionFailed(err)
         sonst:
-            return text
+            gib text
 
     def interp_exists(self, interpid):
         try:
             _interpreters.whence(interpid)
         except _interpreters.InterpreterNotFoundError:
-            return Falsch
+            gib Falsch
         sonst:
-            return Wahr
+            gib Wahr
 
     @requires_test_modules
     @contextlib.contextmanager
@@ -544,7 +544,7 @@ klasse TestBase(unittest.TestCase):
 
         interpid = _testinternalcapi.create_interpreter(config, whence=whence)
         try:
-            yield interpid
+            liefere interpid
         finally:
             try:
                 _testinternalcapi.destroy_interpreter(interpid)
@@ -559,14 +559,14 @@ klasse TestBase(unittest.TestCase):
                 _whence=_interpreters.WHENCE_CAPI,
                 _ownsref=Falsch,
             )
-            yield interp, interpid
+            liefere interp, interpid
 
     @contextlib.contextmanager
     def capturing(self, script):
         wrapped, capturing = _captured_script(script, stdout=Wahr, exc=Wahr)
         #_dump_script(wrapped)
         mit capturing:
-            yield wrapped, capturing.final(force=Wahr)
+            liefere wrapped, capturing.final(force=Wahr)
 
     @requires_test_modules
     def run_from_capi(self, interpid, script, *, main=Falsch):
@@ -574,7 +574,7 @@ klasse TestBase(unittest.TestCase):
             rc = _testinternalcapi.exec_interpreter(interpid, wrapped, main=main)
             assert rc == 0, rc
         results.raise_if_failed()
-        return results.stdout
+        gib results.stdout
 
     @contextlib.contextmanager
     def _running(self, run_interp, exec_interp):
@@ -628,7 +628,7 @@ klasse TestBase(unittest.TestCase):
         # CM __exit__()
         try:
             try:
-                yield
+                liefere
             finally:
                 # Send "done".
                 os.write(w_in, b'\0')
@@ -653,7 +653,7 @@ klasse TestBase(unittest.TestCase):
             def exec_interp(script):
                 interp.exec(script)
         mit self._running(run_interp, exec_interp):
-            yield
+            liefere
 
     @requires_test_modules
     @contextlib.contextmanager
@@ -665,7 +665,7 @@ klasse TestBase(unittest.TestCase):
             rc = _testinternalcapi.exec_interpreter(interpid, script)
             assert rc == 0, rc
         mit self._running(run_interp, exec_interp):
-            yield
+            liefere
 
     @requires_test_modules
     def run_temp_from_capi(self, script, config='legacy'):
@@ -683,4 +683,4 @@ klasse TestBase(unittest.TestCase):
             rc = run_in_interp(wrapped, config)
             assert rc == 0, rc
         results.raise_if_failed()
-        return results.stdout
+        gib results.stdout

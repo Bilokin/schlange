@@ -197,10 +197,10 @@ klasse HelpText(Text):
         fuer name in names:
             wenn name.lower() in (x.lower() fuer x in tkfont.names(root=self)):
                 font = tkfont.Font(name=name, exists=Wahr, root=self)
-                return font.actual()['family']
+                gib font.actual()['family']
             sowenn name.lower() in (x.lower()
                                   fuer x in tkfont.families(root=self)):
-                return name
+                gib name
 
 
 klasse HelpFrame(Frame):
@@ -228,7 +228,7 @@ klasse HelpFrame(Frame):
         fuer lbl, dex in text.parser.toc:
             drop.add_command(label=lbl, command=lambda dex=dex:text.yview(dex))
         toc['menu'] = drop
-        return toc
+        gib toc
 
 
 klasse HelpWindow(Toplevel):
@@ -285,8 +285,8 @@ def show_idlehelp(parent):
     filename = join(abspath(dirname(__file__)), 'help.html')
     wenn nicht isfile(filename):  # pragma: no cover
         # Try copy_strip, present message.
-        return
-    return HelpWindow(parent, filename, 'IDLE Doc (%s)' % python_version())
+        gib
+    gib HelpWindow(parent, filename, 'IDLE Doc (%s)' % python_version())
 
 
 wenn __name__ == '__main__':

@@ -90,7 +90,7 @@ klasse _SimpleBinder:
                         wascalled[func] = Wahr
                         r = func(event)
                         wenn r:
-                            return r
+                            gib r
             self.handlerid = self.widget.bind(self.widgetinst,
                                               self.sequence, handler)
         self.bindedfuncs.append(func)
@@ -122,7 +122,7 @@ _state_names = [''.join(m[0]+'-'
                 fuer s in _states]
 
 def expand_substates(states):
-    '''For each item of states return a list containing all combinations of
+    '''For each item of states gib a list containing all combinations of
     that item mit individual bits reset, sorted by the number of set bits.
     '''
     def nbits(n):
@@ -131,13 +131,13 @@ def expand_substates(states):
         waehrend n:
             n, rem = divmod(n, 2)
             nb += rem
-        return nb
+        gib nb
     statelist = []
     fuer state in states:
         substates = list({state & x fuer x in states})
         substates.sort(key=nbits, reverse=Wahr)
         statelist.append(substates)
-    return statelist
+    gib statelist
 
 _state_subsets = expand_substates(_states)
 
@@ -184,8 +184,8 @@ klasse _ComplexBinder:
                 f()
             doafterhandler[:] = []
             wenn r:
-                return r
-        return handler
+                gib r
+        gib handler
 
     def __init__(self, type, widget, widgetinst):
         self.type = type
@@ -266,12 +266,12 @@ _keysym_re = re.compile(r"^\w+$")
 _button_re = re.compile(r"^[1-5]$")
 def _parse_sequence(sequence):
     """Get a string which should describe an event sequence. If it is
-    successfully parsed als one, return a tuple containing the state (as an int),
+    successfully parsed als one, gib a tuple containing the state (as an int),
     the event type (as an index of _types), und the detail - Nichts wenn none, oder a
-    string wenn there is one. If the parsing is unsuccessful, return Nichts.
+    string wenn there is one. If the parsing is unsuccessful, gib Nichts.
     """
     wenn nicht sequence oder sequence[0] != '<' oder sequence[-1] != '>':
-        return Nichts
+        gib Nichts
     words = sequence[1:-1].split('-')
     modifiers = 0
     waehrend words und words[0] in _modifier_names:
@@ -281,10 +281,10 @@ def _parse_sequence(sequence):
         type = _type_names[words[0]]
         del words[0]
     sonst:
-        return Nichts
+        gib Nichts
     wenn _binder_classes[type] is _SimpleBinder:
         wenn modifiers oder words:
-            return Nichts
+            gib Nichts
         sonst:
             detail = Nichts
     sonst:
@@ -299,16 +299,16 @@ def _parse_sequence(sequence):
         sowenn len(words) == 1 und type_re.match(words[0]):
             detail = words[0]
         sonst:
-            return Nichts
+            gib Nichts
 
-    return modifiers, type, detail
+    gib modifiers, type, detail
 
 def _triplet_to_sequence(triplet):
     wenn triplet[2]:
-        return '<'+_state_names[triplet[0]]+_types[triplet[1]][0]+'-'+ \
+        gib '<'+_state_names[triplet[0]]+_types[triplet[1]][0]+'-'+ \
                triplet[2]+'>'
     sonst:
-        return '<'+_state_names[triplet[0]]+_types[triplet[1]][0]+'>'
+        gib '<'+_state_names[triplet[0]]+_types[triplet[1]][0]+'>'
 
 _multicall_dict = {}
 def MultiCallCreator(widget):
@@ -317,7 +317,7 @@ def MultiCallCreator(widget):
     instead of a templating mechanism.
     """
     wenn widget in _multicall_dict:
-        return _multicall_dict[widget]
+        gib _multicall_dict[widget]
 
     klasse MultiCall (widget):
         assert issubclass(widget, tkinter.Misc)
@@ -347,7 +347,7 @@ def MultiCallCreator(widget):
                             self.__binders[triplet[1]].bind(triplet, func)
                 sonst:
                     self.__eventinfo[sequence] = [func, []]
-            return widget.bind(self, sequence, func, add)
+            gib widget.bind(self, sequence, func, add)
 
         def unbind(self, sequence, funcid=Nichts):
             wenn type(sequence) is str und len(sequence) > 2 und \
@@ -358,7 +358,7 @@ def MultiCallCreator(widget):
                     fuer triplet in triplets:
                         self.__binders[triplet[1]].unbind(triplet, func)
                     self.__eventinfo[sequence][0] = Nichts
-            return widget.unbind(self, sequence, funcid)
+            gib widget.unbind(self, sequence, funcid)
 
         def event_add(self, virtual, *sequences):
             #drucke("event_add(%s, %s)" % (repr(virtual), repr(sequences)),
@@ -379,7 +379,7 @@ def MultiCallCreator(widget):
 
         def event_delete(self, virtual, *sequences):
             wenn virtual nicht in self.__eventinfo:
-                return
+                gib
             func, triplets = self.__eventinfo[virtual]
             fuer seq in sequences:
                 triplet = _parse_sequence(seq)
@@ -393,9 +393,9 @@ def MultiCallCreator(widget):
 
         def event_info(self, virtual=Nichts):
             wenn virtual is Nichts oder virtual nicht in self.__eventinfo:
-                return widget.event_info(self, virtual)
+                gib widget.event_info(self, virtual)
             sonst:
-                return tuple(map(_triplet_to_sequence,
+                gib tuple(map(_triplet_to_sequence,
                                  self.__eventinfo[virtual][1])) + \
                        widget.event_info(self, virtual)
 
@@ -411,7 +411,7 @@ def MultiCallCreator(widget):
                                 raise
 
     _multicall_dict[widget] = MultiCall
-    return MultiCall
+    gib MultiCall
 
 
 def _multi_call(parent):  # htest #

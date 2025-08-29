@@ -15,14 +15,14 @@ klasse ASTGrammarPrinter:
     def children(self, node: Rule) -> Iterator[Any]:
         fuer value in node:
             wenn isinstance(value, list):
-                yield von value
+                liefere von value
             sonst:
-                yield value
+                liefere value
 
     def name(self, node: Rule) -> str:
         wenn nicht list(self.children(node)):
-            return repr(node)
-        return node.__class__.__name__
+            gib repr(node)
+        gib node.__class__.__name__
 
     def print_grammar_ast(self, grammar: Grammar, printer: Callable[..., Nichts] = print) -> Nichts:
         fuer rule in grammar.rules.values():
@@ -36,14 +36,14 @@ klasse ASTGrammarPrinter:
         sufix = "   " wenn istail sonst "│  "
 
         wenn nicht children:
-            return line
+            gib line
 
         *children, last = children
         fuer child in children:
             line += self.print_nodes_recursively(child, prefix + sufix, Falsch)
         line += self.print_nodes_recursively(last, prefix + sufix, Wahr)
 
-        return line
+        gib line
 
 
 def main() -> Nichts:

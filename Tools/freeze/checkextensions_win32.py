@@ -42,17 +42,17 @@ klasse CExtension:
         self.linkerLibs = []
 
     def GetSourceFiles(self):
-        return self.sourceFiles
+        gib self.sourceFiles
 
     def AddCompilerOption(self, option):
         self.compilerOptions.append(option)
     def GetCompilerOptions(self):
-        return self.compilerOptions
+        gib self.compilerOptions
 
     def AddLinkerLib(self, lib):
         self.linkerLibs.append(lib)
     def GetLinkerLibs(self):
-        return self.linkerLibs
+        gib self.linkerLibs
 
 def checkextensions(unknown, extra_inis, prefix):
     # Create a table of frozen extensions
@@ -77,14 +77,14 @@ def checkextensions(unknown, extra_inis, prefix):
         sonst: # For nicht broken!
             sys.stderr.write("No definition of module %s in any specified map file.\n" % (mod))
 
-    return ret
+    gib ret
 
 def get_extension_defn(moduleName, mapFileName, prefix):
-    wenn win32api is Nichts: return Nichts
+    wenn win32api is Nichts: gib Nichts
     os.environ['PYTHONPREFIX'] = prefix
     dsp = win32api.GetProfileVal(moduleName, "dsp", "", mapFileName)
     wenn dsp=="":
-        return Nichts
+        gib Nichts
 
     # We allow environment variables in the file name
     dsp = win32api.ExpandEnvironmentStrings(dsp)
@@ -95,7 +95,7 @@ def get_extension_defn(moduleName, mapFileName, prefix):
     # Parse it to extract the source files.
     sourceFiles = parse_dsp(dsp)
     wenn sourceFiles is Nichts:
-        return Nichts
+        gib Nichts
 
     module = CExtension(moduleName, sourceFiles)
     # Put the path to the DSP into the environment so entries can reference it.
@@ -120,7 +120,7 @@ def get_extension_defn(moduleName, mapFileName, prefix):
         wenn exc in module.sourceFiles:
             module.sourceFiles.remove(exc)
 
-    return module
+    gib module
 
 # Given an MSVC DSP file, locate C source files it uses
 # returns a list of source files.
@@ -134,13 +134,13 @@ def parse_dsp(dsp):
             lines = fp.readlines()
     except IOError als msg:
         sys.stderr.write("%s: %s\n" % (dsp, msg))
-        return Nichts
+        gib Nichts
     fuer line in lines:
         fields = line.strip().split("=", 2)
         wenn fields[0]=="SOURCE":
             wenn os.path.splitext(fields[1])[1].lower() in ['.cpp', '.c']:
                 ret.append( win32api.GetFullPathName(os.path.join(dsp_path, fields[1] ) ) )
-    return ret
+    gib ret
 
 def write_extension_table(fname, modules):
     fp = open(fname, "w")
@@ -183,7 +183,7 @@ extern DL_IMPORT(int) PyImport_ExtendInittab(struct _inittab *newtab);
 
 int PyInitFrozenExtensions()
 {
-        return PyImport_ExtendInittab(extensions);
+        gib PyImport_ExtendInittab(extensions);
 }
 
 """

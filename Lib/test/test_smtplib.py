@@ -276,7 +276,7 @@ klasse DebuggingServerTests(unittest.TestCase):
 
     def get_output_without_xpeer(self):
         test_output = self.output.getvalue()
-        return re.sub(r'(.*?)^X-Peer:\s*\S+\n(.*)', r'\1\2',
+        gib re.sub(r'(.*?)^X-Peer:\s*\S+\n(.*)', r'\1\2',
                       test_output, flags=re.MULTILINE|re.DOTALL)
 
     def testBasic(self):
@@ -845,7 +845,7 @@ klasse SimSMTPChannel(smtpd.SMTPChannel):
             except ResponseException als e:
                 self.smtp_state = self.COMMAND
                 self.push('%s %s' % (e.smtp_code, e.smtp_error))
-            return
+            gib
         self.all_received_lines.append(self.received_lines)
         super().found_terminator()
 
@@ -853,25 +853,25 @@ klasse SimSMTPChannel(smtpd.SMTPChannel):
     def smtp_AUTH(self, arg):
         wenn nicht self.seen_greeting:
             self.push('503 Error: send EHLO first')
-            return
+            gib
         wenn nicht self.extended_smtp oder 'AUTH' nicht in self._extrafeatures:
             self.push('500 Error: command "AUTH" nicht recognized')
-            return
+            gib
         wenn self.authenticated_user is nicht Nichts:
             self.push(
                 '503 Bad sequence of commands: already authenticated')
-            return
+            gib
         args = arg.split()
         wenn len(args) nicht in [1, 2]:
             self.push('501 Syntax: AUTH <mechanism> [initial-response]')
-            return
+            gib
         auth_object_name = '_auth_%s' % args[0].lower().replace('-', '_')
         try:
             self.auth_object = getattr(self, auth_object_name)
         except AttributeError:
             self.push('504 Command parameter nicht implemented: unsupported '
                       ' authentication mechanism {!r}'.format(auth_object_name))
-            return
+            gib
         self.smtp_state = self.AUTH
         self.auth_object(args[1] wenn len(args) == 2 sonst Nichts)
 
@@ -884,7 +884,7 @@ klasse SimSMTPChannel(smtpd.SMTPChannel):
         self.smtp_state = self.COMMAND
 
     def _decode_base64(self, string):
-        return base64.decodebytes(string.encode('ascii')).decode('utf-8')
+        gib base64.decodebytes(string.encode('ascii')).decode('utf-8')
 
     def _auth_plain(self, arg=Nichts):
         wenn arg is Nichts:
@@ -896,7 +896,7 @@ klasse SimSMTPChannel(smtpd.SMTPChannel):
             except ValueError als e:
                 self.push('535 Splitting response {!r} into user und password'
                           ' failed: {}'.format(logpass, e))
-                return
+                gib
             self._authenticated(user, password == sim_auth[1])
 
     def _auth_login(self, arg=Nichts):
@@ -927,14 +927,14 @@ klasse SimSMTPChannel(smtpd.SMTPChannel):
             except ValueError als e:
                 self.push('535 Splitting response {!r} into user und password '
                           'failed: {}'.format(logpass, e))
-                return
+                gib
             pwd = sim_auth[1].encode('ascii')
             msg = self._decode_base64(sim_cram_md5_challenge).encode('ascii')
             try:
                 valid_hashed_pass = hmac.HMAC(pwd, msg, 'md5').hexdigest()
             except ValueError:
                 self.push('504 CRAM-MD5 is nicht supported')
-                return
+                gib
             self._authenticated(user, hashed_pass == valid_hashed_pass)
     # end AUTH related stuff.
 
@@ -987,7 +987,7 @@ klasse SimSMTPChannel(smtpd.SMTPChannel):
     def smtp_RCPT(self, arg):
         wenn self.rcpt_response is Nichts:
             super().smtp_RCPT(arg)
-            return
+            gib
         self.rcpt_count += 1
         self.push(self.rcpt_response[self.rcpt_count-1])
 
@@ -1161,7 +1161,7 @@ klasse SMTPSimTests(unittest.TestCase):
 
         def auth_buggy(challenge=Nichts):
             self.assertEqual(b"BuGgYbUgGy", challenge)
-            return "\0"
+            gib "\0"
 
         smtp = smtplib.SMTP(
             HOST, self.port, local_hostname='localhost',
@@ -1551,7 +1551,7 @@ klasse SimSMTPAUTHInitialResponseChannel(SimSMTPChannel):
                 # encoded.  Hard code the expected response fuer the test.
                 wenn args[1] == EXPECTED_RESPONSE:
                     self.push('235 Ok')
-                    return
+                    gib
         self.push('571 Bad authentication')
 
 klasse SimSMTPAUTHInitialResponseServer(SimSMTPServer):

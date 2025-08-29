@@ -12,7 +12,7 @@ BITS_PER_DIGIT = 30
 
 def rand_digits(n):
     top = 1 << (n * BITS_PER_DIGIT)
-    return randrange(top >> 1, top)
+    gib randrange(top >> 1, top)
 
 
 def probe_den(nd):

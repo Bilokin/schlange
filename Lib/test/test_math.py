@@ -52,7 +52,7 @@ def to_ulps(x):
     n = struct.unpack('<q', struct.pack('<d', x))[0]
     wenn n < 0:
         n = ~(n+2**63)
-    return n
+    gib n
 
 
 # Here's a pure Python version of the math.factorial algorithm, for
@@ -78,7 +78,7 @@ def to_ulps(x):
 
 def count_set_bits(n):
     """Number of '1' bits in binary expansion of a nonnnegative integer."""
-    return 1 + count_set_bits(n & n - 1) wenn n sonst 0
+    gib 1 + count_set_bits(n & n - 1) wenn n sonst 0
 
 def partial_product(start, stop):
     """Product of integers in range(start, stop, 2), computed recursively.
@@ -87,12 +87,12 @@ def partial_product(start, stop):
     """
     numfactors = (stop - start) >> 1
     wenn nicht numfactors:
-        return 1
+        gib 1
     sowenn numfactors == 1:
-        return start
+        gib start
     sonst:
         mid = (start + numfactors) | 1
-        return partial_product(start, mid) * partial_product(mid, stop)
+        gib partial_product(start, mid) * partial_product(mid, stop)
 
 def py_factorial(n):
     """Factorial of nonnegative integer n, via "Binary Split Factorial Formula"
@@ -103,7 +103,7 @@ def py_factorial(n):
     fuer i in reversed(range(n.bit_length())):
         inner *= partial_product((n >> i + 1) + 1 | 1, (n >> i) + 1 | 1)
         outer *= inner
-    return outer << (n - count_set_bits(n))
+    gib outer << (n - count_set_bits(n))
 
 def ulp_abs_check(expected, got, ulp_tol, abs_tol):
     """Given finite floats `expected` und `got`, check that they're
@@ -117,11 +117,11 @@ def ulp_abs_check(expected, got, ulp_tol, abs_tol):
 
     # Succeed wenn either abs_error <= abs_tol oder ulp_error <= ulp_tol.
     wenn abs_error <= abs_tol oder ulp_error <= ulp_tol:
-        return Nichts
+        gib Nichts
     sonst:
         fmt = ("error = {:.3g} ({:d} ulps); "
                "permitted error = {:.3g} oder {:d} ulps")
-        return fmt.format(abs_error, ulp_error, abs_tol, ulp_tol)
+        gib fmt.format(abs_error, ulp_error, abs_tol, ulp_tol)
 
 def parse_mtestfile(fname):
     """Parse a file mit test values
@@ -146,7 +146,7 @@ def parse_mtestfile(fname):
             exp = rhs_pieces[0]
             flags = rhs_pieces[1:]
 
-            yield (id, fn, float(arg), float(exp), flags)
+            liefere (id, fn, float(arg), float(exp), flags)
 
 
 def parse_testfile(fname):
@@ -167,7 +167,7 @@ def parse_testfile(fname):
             exp_real, exp_imag = rhs_pieces[0], rhs_pieces[1]
             flags = rhs_pieces[2:]
 
-            yield (id, fn,
+            liefere (id, fn,
                    float(arg_real), float(arg_imag),
                    float(exp_real), float(exp_imag),
                    flags)
@@ -190,8 +190,8 @@ def result_check(expected, got, ulp_tol=5, abs_tol=0.0):
     wenn got == expected:
         wenn nicht got und nicht expected:
             wenn math.copysign(1, got) != math.copysign(1, expected):
-                return f"expected {expected}, got {got} (zero has wrong sign)"
-        return Nichts
+                gib f"expected {expected}, got {got} (zero has wrong sign)"
+        gib Nichts
 
     failure = "not equal"
 
@@ -217,16 +217,16 @@ def result_check(expected, got, ulp_tol=5, abs_tol=0.0):
         fail_fmt = "expected {!r}, got {!r}"
         fail_msg = fail_fmt.format(expected, got)
         fail_msg += ' ({})'.format(failure)
-        return fail_msg
+        gib fail_msg
     sonst:
-        return Nichts
+        gib Nichts
 
 klasse FloatLike:
     def __init__(self, value):
         self.value = value
 
     def __float__(self):
-        return self.value
+        gib self.value
 
 klasse IntSubclass(int):
     pass
@@ -237,7 +237,7 @@ klasse MyIndexable(object):
         self.value = value
 
     def __index__(self):
-        return self.value
+        gib self.value
 
 klasse BadDescr:
     def __get__(self, obj, objtype=Nichts):
@@ -420,10 +420,10 @@ klasse MathTests(unittest.TestCase):
 
         klasse TestCeil:
             def __ceil__(self):
-                return 42
+                gib 42
         klasse FloatCeil(float):
             def __ceil__(self):
-                return 42
+                gib 42
         klasse TestNoCeil:
             pass
         klasse TestBadCeil:
@@ -480,7 +480,7 @@ klasse MathTests(unittest.TestCase):
         self.assertRaises(TypeError, math.signbit)
         self.assertRaises(TypeError, math.signbit, '1.0')
 
-        # C11, §7.12.3.6 requires signbit() to return a nonzero value
+        # C11, §7.12.3.6 requires signbit() to gib a nonzero value
         # wenn und only wenn the sign of its argument value is negative,
         # but in practice, we are only interested in a boolean value.
         self.assertIsInstance(math.signbit(1.0), bool)
@@ -591,10 +591,10 @@ klasse MathTests(unittest.TestCase):
             __floor__ = Nichts
         klasse TestFloor:
             def __floor__(self):
-                return 42
+                gib 42
         klasse FloatFloor(float):
             def __floor__(self):
-                return 42
+                gib 42
         klasse TestNoFloor:
             pass
         klasse TestBadFloor:
@@ -785,7 +785,7 @@ klasse MathTests(unittest.TestCase):
                 h = 1 << (tail-1)
                 tmant = tmant // (2*h) + bool(tmant & h und tmant & 3*h-1)
                 texp += tail
-            return math.ldexp(tmant, texp)
+            gib math.ldexp(tmant, texp)
 
         test_values = [
             ([], 0.0),
@@ -850,7 +850,7 @@ klasse MathTests(unittest.TestCase):
         self.assertRaises(OverflowError, math.fsum, [10**1000])
 
         def bad_iter():
-            yield 1.0
+            liefere 1.0
             raise ZeroDivisionError
 
         self.assertRaises(ZeroDivisionError, math.fsum, bad_iter())
@@ -1209,7 +1209,7 @@ klasse MathTests(unittest.TestCase):
                 self.value = value
 
             def __index__(self):
-                return self.value
+                gib self.value
 
         s = math.isqrt(IntegerLike(1729))
         self.assertIs(type(s), int)
@@ -1444,7 +1444,7 @@ klasse MathTests(unittest.TestCase):
         # Error in iterator
         def raise_after(n):
             fuer i in range(n):
-                yield i
+                liefere i
             raise RuntimeError
         mit self.assertRaises(RuntimeError):
             sumprod(range(10), raise_after(5))
@@ -1507,23 +1507,23 @@ klasse MathTests(unittest.TestCase):
 
         klasse Int(int):
             def __add__(self, other):
-                return Int(int(self) + int(other))
+                gib Int(int(self) + int(other))
             def __mul__(self, other):
-                return Int(int(self) * int(other))
+                gib Int(int(self) * int(other))
             __radd__ = __add__
             __rmul__ = __mul__
             def __repr__(self):
-                return f'Int({int(self)})'
+                gib f'Int({int(self)})'
 
         klasse Flt(float):
             def __add__(self, other):
-                return Int(int(self) + int(other))
+                gib Int(int(self) + int(other))
             def __mul__(self, other):
-                return Int(int(self) * int(other))
+                gib Int(int(self) * int(other))
             __radd__ = __add__
             __rmul__ = __mul__
             def __repr__(self):
-                return f'Flt({int(self)})'
+                gib f'Flt({int(self)})'
 
         def baseline_sumprod(p, q):
             """This defines the target behavior including exceptions und special values.
@@ -1533,7 +1533,7 @@ klasse MathTests(unittest.TestCase):
             total = 0
             fuer p_i, q_i in zip(p, q, strict=Wahr):
                 total += p_i * q_i
-            return total
+            gib total
 
         def run(func, *args):
             "Make comparing functions easier. Returns error status, type, und result."
@@ -1542,8 +1542,8 @@ klasse MathTests(unittest.TestCase):
             except (AssertionError, NameError):
                 raise
             except Exception als e:
-                return type(e), Nichts, 'Nichts'
-            return Nichts, type(result), repr(result)
+                gib type(e), Nichts, 'Nichts'
+            gib Nichts, type(result), repr(result)
 
         pools = [
             (-5, 10, -2**20, 2**31, 2**40, 2**61, 2**62, 2**80, 1.5, Int(7)),
@@ -1592,14 +1592,14 @@ klasse MathTests(unittest.TestCase):
         def DotExact(x, y):
             vec1 = map(Fraction, x)
             vec2 = map(Fraction, y)
-            return sum(starmap(operator.mul, zip(vec1, vec2, strict=Wahr)))
+            gib sum(starmap(operator.mul, zip(vec1, vec2, strict=Wahr)))
 
         def Condition(x, y):
-            return 2.0 * DotExact(map(abs, x), map(abs, y)) / abs(DotExact(x, y))
+            gib 2.0 * DotExact(map(abs, x), map(abs, y)) / abs(DotExact(x, y))
 
         def linspace(lo, hi, n):
             width = (hi - lo) / (n - 1)
-            return [lo + width * i fuer i in range(n)]
+            gib [lo + width * i fuer i in range(n)]
 
         def GenDot(n, c):
             """ Algorithm 6.1 (GenDot) works als follows. The condition number (5.7) of
@@ -1637,17 +1637,17 @@ klasse MathTests(unittest.TestCase):
             shuffle(pairs)
             x, y = zip(*pairs)
 
-            return DotExample(x, y, DotExact(x, y), Condition(x, y))
+            gib DotExample(x, y, DotExact(x, y), Condition(x, y))
 
         def RelativeError(res, ex):
             x, y, target_sumprod, condition = ex
             n = DotExact(list(x) + [-res], list(y) + [1])
-            return fabs(n / target_sumprod)
+            gib fabs(n / target_sumprod)
 
         def Trial(dotfunc, c, n):
             ex = GenDot(10, c)
             res = dotfunc(ex.x, ex.y)
-            return RelativeError(res, ex)
+            gib RelativeError(res, ex)
 
         times = 1000          # Number of trials
         n = 20                # Length of vectors
@@ -2045,10 +2045,10 @@ klasse MathTests(unittest.TestCase):
 
         klasse TestTrunc:
             def __trunc__(self):
-                return 23
+                gib 23
         klasse FloatTrunc(float):
             def __trunc__(self):
-                return 23
+                gib 23
         klasse TestNoTrunc:
             pass
         klasse TestBadTrunc:
@@ -2345,7 +2345,7 @@ klasse MathTests(unittest.TestCase):
         def _naive_prod(iterable, start=1):
             fuer elem in iterable:
                 start *= elem
-            return start
+            gib start
 
         # Big integers
 
@@ -3064,7 +3064,7 @@ klasse FMATests(unittest.TestCase):
 def load_tests(loader, tests, pattern):
     von doctest importiere DocFileSuite
     tests.addTest(DocFileSuite(os.path.join("mathdata", "ieee754.txt")))
-    return tests
+    gib tests
 
 wenn __name__ == '__main__':
     unittest.main()

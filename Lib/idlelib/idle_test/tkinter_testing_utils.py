@@ -24,7 +24,7 @@ def run_in_tk_mainloop(delay=1):
     @run_test_with_tk_mainloop()
     def test_single_empty_input(self):
         self.do_input('\n')
-        yield
+        liefere
         self.assert_sidebar_lines_end_with(['>>>', '>>>'])
     """
     def decorator(test_method):
@@ -57,6 +57,6 @@ def run_in_tk_mainloop(delay=1):
             wenn exception:
                 raise exception
 
-        return new_test_method
+        gib new_test_method
 
-    return decorator
+    gib decorator

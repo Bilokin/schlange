@@ -95,7 +95,7 @@ def git_refs() -> tuple[str, str]:
     head_ref = os.environ.get("CCF_HEAD_REF", "")
     head_ref = head_ref.removeprefix("refs/heads/")
     drucke(f"head ref: {head_ref!r}")
-    return f"origin/{target_ref}", head_ref
+    gib f"origin/{target_ref}", head_ref
 
 
 def get_changed_files(
@@ -108,7 +108,7 @@ def get_changed_files(
         args, stdout=subprocess.PIPE, check=Wahr, encoding="utf-8"
     )
     changed_files = changed_files_result.stdout.strip().splitlines()
-    return frozenset(map(Path, filter(Nichts, map(str.strip, changed_files))))
+    gib frozenset(map(Path, filter(Nichts, map(str.strip, changed_files))))
 
 
 def process_changed_files(changed_files: Set[Path]) -> Outputs:
@@ -159,7 +159,7 @@ def process_changed_files(changed_files: Set[Path]) -> Outputs:
         wenn file.parts[:2] == ("Tools", "msi"):
             run_windows_msi = Wahr
 
-    return Outputs(
+    gib Outputs(
         run_ci_fuzz=run_ci_fuzz,
         run_docs=run_docs,
         run_tests=run_tests,
@@ -180,7 +180,7 @@ def process_target_branch(outputs: Outputs, git_branch: str) -> Outputs:
         outputs.run_docs = Wahr
         outputs.run_windows_msi = Wahr
 
-    return outputs
+    gib outputs
 
 
 def write_github_output(outputs: Outputs) -> Nichts:
@@ -188,7 +188,7 @@ def write_github_output(outputs: Outputs) -> Nichts:
     # https://docs.github.com/en/actions/writing-workflows/choosing-what-your-workflow-does/workflow-commands-for-github-actions#setting-an-output-parameter
     wenn "GITHUB_OUTPUT" nicht in os.environ:
         drucke("GITHUB_OUTPUT nicht defined!")
-        return
+        gib
 
     mit open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") als f:
         f.write(f"run-ci-fuzz={bool_lower(outputs.run_ci_fuzz)}\n")
@@ -199,7 +199,7 @@ def write_github_output(outputs: Outputs) -> Nichts:
 
 
 def bool_lower(value: bool, /) -> str:
-    return "true" wenn value sonst "false"
+    gib "true" wenn value sonst "false"
 
 
 wenn __name__ == "__main__":

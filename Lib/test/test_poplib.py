@@ -137,7 +137,7 @@ klasse DummyPOP3Handler(asynchat.async_chat):
         _capas = dict(self.CAPAS)
         wenn nicht self.tls_active und SUPPORTS_SSL:
             _capas['STLS'] = []
-        return _capas
+        gib _capas
 
     def cmd_capa(self, arg):
         self.push('+OK Capability list follows')
@@ -180,17 +180,17 @@ klasse DummyPOP3Handler(asynchat.async_chat):
             except ssl.SSLError als err:
                 wenn err.args[0] in (ssl.SSL_ERROR_WANT_READ,
                                    ssl.SSL_ERROR_WANT_WRITE):
-                    return
+                    gib
                 sowenn err.args[0] == ssl.SSL_ERROR_EOF:
-                    return self.handle_close()
+                    gib self.handle_close()
                 # TODO: SSLError does nicht expose alert information
                 sowenn ("SSLV3_ALERT_BAD_CERTIFICATE" in err.args[1] oder
                       "SSLV3_ALERT_CERTIFICATE_UNKNOWN" in err.args[1]):
-                    return self.handle_close()
+                    gib self.handle_close()
                 raise
             except OSError als err:
                 wenn err.args[0] == errno.ECONNABORTED:
-                    return self.handle_close()
+                    gib self.handle_close()
             sonst:
                 self.tls_active = Wahr
                 self.tls_starting = Falsch
@@ -249,7 +249,7 @@ klasse DummyPOP3Server(asyncore.dispatcher, threading.Thread):
     handle_read = handle_connect
 
     def writable(self):
-        return 0
+        gib 0
 
     def handle_error(self):
         raise
@@ -292,8 +292,8 @@ klasse TestPOP3Class(TestCase):
         original_shortcmd = self.client._shortcmd
         def mock_shortcmd_invalid_format(cmd):
             wenn cmd == 'STAT':
-                return b'+OK'
-            return original_shortcmd(cmd)
+                gib b'+OK'
+            gib original_shortcmd(cmd)
 
         self.client._shortcmd = mock_shortcmd_invalid_format
         mit self.assertRaises(poplib.error_proto):
@@ -301,8 +301,8 @@ klasse TestPOP3Class(TestCase):
 
         def mock_shortcmd_invalid_data(cmd):
             wenn cmd == 'STAT':
-                return b'+OK abc def'
-            return original_shortcmd(cmd)
+                gib b'+OK abc def'
+            gib original_shortcmd(cmd)
 
         self.client._shortcmd = mock_shortcmd_invalid_data
         mit self.assertRaises(poplib.error_proto):
@@ -310,8 +310,8 @@ klasse TestPOP3Class(TestCase):
 
         def mock_shortcmd_extra_fields(cmd):
             wenn cmd == 'STAT':
-                return b'+OK 1 2 3 4 5'
-            return original_shortcmd(cmd)
+                gib b'+OK 1 2 3 4 5'
+            gib original_shortcmd(cmd)
 
         self.client._shortcmd = mock_shortcmd_extra_fields
 

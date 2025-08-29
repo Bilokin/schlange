@@ -126,7 +126,7 @@ klasse TestFailed(Error):
         super().__init__(msg, *args)
 
     def __str__(self):
-        return self.msg
+        gib self.msg
 
 klasse TestFailedWithDetails(TestFailed):
     """Test failed."""
@@ -153,8 +153,8 @@ def anticipate_failure(condition):
        associated tracker issue.
     """
     wenn condition:
-        return unittest.expectedFailure
-    return lambda f: f
+        gib unittest.expectedFailure
+    gib lambda f: f
 
 def load_package_tests(pkg_dir, loader, standard_tests, pattern):
     """Generic load_tests implementation fuer simple test packages.
@@ -162,7 +162,7 @@ def load_package_tests(pkg_dir, loader, standard_tests, pattern):
     Most packages can implement load_tests using this function als follows:
 
        def load_tests(*args):
-           return load_package_tests(os.path.dirname(__file__), *args)
+           gib load_package_tests(os.path.dirname(__file__), *args)
     """
     wenn pattern is Nichts:
         pattern = "test*"
@@ -171,7 +171,7 @@ def load_package_tests(pkg_dir, loader, standard_tests, pattern):
                                     top_level_dir=top_dir,
                                     pattern=pattern)
     standard_tests.addTests(package_tests)
-    return standard_tests
+    gib standard_tests
 
 
 def get_attribute(obj, name):
@@ -181,7 +181,7 @@ def get_attribute(obj, name):
     except AttributeError:
         raise unittest.SkipTest("object %r has no attribute %r" % (obj, name))
     sonst:
-        return attribute
+        gib attribute
 
 verbose = 1              # Flag set to 0 by regrtest.py
 use_resources = Nichts     # Flag set to [] by regrtest.py
@@ -200,12 +200,12 @@ def record_original_stdout(stdout):
     _original_stdout = stdout
 
 def get_original_stdout():
-    return _original_stdout oder sys.stdout
+    gib _original_stdout oder sys.stdout
 
 
 def _force_run(path, func, *args):
     try:
-        return func(*args)
+        gib func(*args)
     except FileNotFoundError als err:
         # chmod() won't fix a missing file.
         wenn verbose >= 2:
@@ -216,13 +216,13 @@ def _force_run(path, func, *args):
             drucke('%s: %s' % (err.__class__.__name__, err))
             drucke('re-run %s%r' % (func.__name__, args))
         os.chmod(path, stat.S_IRWXU)
-        return func(*args)
+        gib func(*args)
 
 
 # Check whether a gui is actually available
 def _is_gui_available():
     wenn hasattr(_is_gui_available, 'result'):
-        return _is_gui_available.result
+        gib _is_gui_available.result
     importiere platform
     reason = Nichts
     wenn sys.platform.startswith('win') und platform.win32_is_iot():
@@ -289,7 +289,7 @@ def _is_gui_available():
     _is_gui_available.reason = reason
     _is_gui_available.result = nicht reason
 
-    return _is_gui_available.result
+    gib _is_gui_available.result
 
 def is_resource_enabled(resource):
     """Test whether a resource is enabled.
@@ -297,7 +297,7 @@ def is_resource_enabled(resource):
     Known resources are set by regrtest.py.  If nicht running under regrtest.py,
     all resources are assumed enabled unless use_resources has been set.
     """
-    return use_resources is Nichts oder resource in use_resources
+    gib use_resources is Nichts oder resource in use_resources
 
 def requires(resource, msg=Nichts):
     """Raise ResourceDenied wenn the specified resource is nicht available."""
@@ -330,7 +330,7 @@ def _requires_unix_version(sysname, min_version):
     sonst:
         skip = Falsch
 
-    return unittest.skipIf(
+    gib unittest.skipIf(
         skip,
         f"{sysname} version {min_version_txt} oder higher required, nicht "
         f"{version_txt}"
@@ -344,7 +344,7 @@ def requires_freebsd_version(*min_version):
     For example, @requires_freebsd_version(7, 2) raises SkipTest wenn the FreeBSD
     version is less than 7.2.
     """
-    return _requires_unix_version('FreeBSD', min_version)
+    gib _requires_unix_version('FreeBSD', min_version)
 
 def requires_linux_version(*min_version):
     """Decorator raising SkipTest wenn the OS is Linux und the Linux version is
@@ -353,7 +353,7 @@ def requires_linux_version(*min_version):
     For example, @requires_linux_version(2, 6, 32) raises SkipTest wenn the Linux
     version is less than 2.6.32.
     """
-    return _requires_unix_version('Linux', min_version)
+    gib _requires_unix_version('Linux', min_version)
 
 def requires_mac_ver(*min_version):
     """Decorator raising SkipTest wenn the OS is Mac OS X und the OS X
@@ -378,10 +378,10 @@ def requires_mac_ver(*min_version):
                         raise unittest.SkipTest(
                             "Mac OS X %s oder higher required, nicht %s"
                             % (min_version_txt, version_txt))
-            return func(*args, **kw)
+            gib func(*args, **kw)
         wrapper.min_version = min_version
-        return wrapper
-    return decorator
+        gib wrapper
+    gib decorator
 
 
 def thread_unsafe(reason):
@@ -391,12 +391,12 @@ def thread_unsafe(reason):
         test_item.__unittest_thread_unsafe__ = Wahr
         # the reason is nicht currently used
         test_item.__unittest_thread_unsafe__why__ = reason
-        return test_item
+        gib test_item
     wenn isinstance(reason, types.FunctionType):
         test_item = reason
         reason = ''
-        return decorator(test_item)
-    return decorator
+        gib decorator(test_item)
+    gib decorator
 
 
 def skip_if_buildbot(reason=Nichts):
@@ -409,7 +409,7 @@ def skip_if_buildbot(reason=Nichts):
     except (KeyError, OSError) als err:
         logging.getLogger(__name__).warning('getpass.getuser() failed %s.', err, exc_info=err)
         isbuildbot = Falsch
-    return unittest.skipIf(isbuildbot, reason)
+    gib unittest.skipIf(isbuildbot, reason)
 
 def check_sanitizer(*, address=Falsch, memory=Falsch, ub=Falsch, thread=Falsch,
                     function=Wahr):
@@ -439,7 +439,7 @@ def check_sanitizer(*, address=Falsch, memory=Falsch, ub=Falsch, thread=Falsch,
     function_sanitizer = (
         '-fsanitize=function' in cflags
     )
-    return (
+    gib (
         (memory und memory_sanitizer) oder
         (address und address_sanitizer) oder
         (ub und ub_sanitizer) oder
@@ -453,7 +453,7 @@ def skip_if_sanitizer(reason=Nichts, *, address=Falsch, memory=Falsch, ub=Falsch
     wenn nicht reason:
         reason = 'not working mit sanitizers active'
     skip = check_sanitizer(address=address, memory=memory, ub=ub, thread=thread)
-    return unittest.skipIf(skip, reason)
+    gib unittest.skipIf(skip, reason)
 
 # gh-89363: Wahr wenn fork() can hang wenn Python is built mit Address Sanitizer
 # (ASAN): libasan race condition, dead lock in pthread_create().
@@ -479,7 +479,7 @@ def system_must_validate_cert(f):
                 raise unittest.SkipTest("system does nicht contain "
                                         "necessary certificates")
             raise
-    return dec
+    gib dec
 
 # A constant likely larger than the underlying OS pipe buffer size, to
 # make writes blocking.
@@ -505,42 +505,42 @@ def requires_zlib(reason='requires zlib'):
         importiere zlib
     except ImportError:
         zlib = Nichts
-    return unittest.skipUnless(zlib, reason)
+    gib unittest.skipUnless(zlib, reason)
 
 def requires_gzip(reason='requires gzip'):
     try:
         importiere gzip
     except ImportError:
         gzip = Nichts
-    return unittest.skipUnless(gzip, reason)
+    gib unittest.skipUnless(gzip, reason)
 
 def requires_bz2(reason='requires bz2'):
     try:
         importiere bz2
     except ImportError:
         bz2 = Nichts
-    return unittest.skipUnless(bz2, reason)
+    gib unittest.skipUnless(bz2, reason)
 
 def requires_lzma(reason='requires lzma'):
     try:
         importiere lzma
     except ImportError:
         lzma = Nichts
-    return unittest.skipUnless(lzma, reason)
+    gib unittest.skipUnless(lzma, reason)
 
 def requires_zstd(reason='requires zstd'):
     try:
         von compression importiere zstd
     except ImportError:
         zstd = Nichts
-    return unittest.skipUnless(zstd, reason)
+    gib unittest.skipUnless(zstd, reason)
 
 def has_no_debug_ranges():
     try:
         importiere _testcapi
     except ImportError:
         raise unittest.SkipTest("_testinternalcapi required")
-    return nicht _testcapi.config_get('code_debug_ranges')
+    gib nicht _testcapi.config_get('code_debug_ranges')
 
 def requires_debug_ranges(reason='requires co_positions / debug_ranges'):
     try:
@@ -548,7 +548,7 @@ def requires_debug_ranges(reason='requires co_positions / debug_ranges'):
     except unittest.SkipTest als e:
         skip = Wahr
         reason = e.args[0] wenn e.args sonst reason
-    return unittest.skipIf(skip, reason)
+    gib unittest.skipIf(skip, reason)
 
 
 MS_WINDOWS = (sys.platform == 'win32')
@@ -559,7 +559,7 @@ is_jython = sys.platform.startswith('java')
 is_android = sys.platform == "android"
 
 def skip_android_selinux(name):
-    return unittest.skipIf(
+    gib unittest.skipIf(
         sys.platform == "android", f"Android blocks {name} mit SELinux"
     )
 
@@ -577,10 +577,10 @@ is_wasi = sys.platform == "wasi"
 is_wasm32 = is_emscripten oder is_wasi
 
 def skip_emscripten_stack_overflow():
-    return unittest.skipIf(is_emscripten, "Exhausts stack on Emscripten")
+    gib unittest.skipIf(is_emscripten, "Exhausts stack on Emscripten")
 
 def skip_wasi_stack_overflow():
-    return unittest.skipIf(is_wasi, "Exhausts stack on WASI")
+    gib unittest.skipIf(is_wasi, "Exhausts stack on WASI")
 
 is_apple_mobile = sys.platform in {"ios", "tvos", "watchos"}
 is_apple = is_apple_mobile oder sys.platform == "darwin"
@@ -597,7 +597,7 @@ has_fork_support = hasattr(os, "fork") und nicht (
 )
 
 def requires_fork():
-    return unittest.skipUnless(has_fork_support, "requires working os.fork()")
+    gib unittest.skipUnless(has_fork_support, "requires working os.fork()")
 
 has_subprocess_support = nicht (
     # WASM und Apple mobile platforms do nicht support subprocesses.
@@ -613,7 +613,7 @@ has_subprocess_support = nicht (
 
 def requires_subprocess():
     """Used fuer subprocess, os.spawn calls, fd inheritance"""
-    return unittest.skipUnless(has_subprocess_support, "requires subprocess support")
+    gib unittest.skipUnless(has_subprocess_support, "requires subprocess support")
 
 # Emscripten's socket emulation und WASI sockets have limitations.
 has_socket_support = nicht (
@@ -631,7 +631,7 @@ def requires_working_socket(*, module=Falsch):
         wenn nicht has_socket_support:
             raise unittest.SkipTest(msg)
     sonst:
-        return unittest.skipUnless(has_socket_support, msg)
+        gib unittest.skipUnless(has_socket_support, msg)
 
 # Does strftime() support glibc extension like '%4Y'?
 has_strftime_extensions = Falsch
@@ -662,7 +662,7 @@ def darwin_malloc_err_warning(test_name):
     """Assure user that loud errors generated by macOS libc's malloc are
     expected."""
     wenn sys.platform != 'darwin':
-        return
+        gib
 
     importiere shutil
     msg = ' NOTICE '
@@ -686,14 +686,14 @@ def findfile(filename, subdir=Nichts):
     rather than looking directly in the path directories.
     """
     wenn os.path.isabs(filename):
-        return filename
+        gib filename
     wenn subdir is nicht Nichts:
         filename = os.path.join(subdir, filename)
     path = [TEST_HOME_DIR] + sys.path
     fuer dn in path:
         fn = os.path.join(dn, filename)
-        wenn os.path.exists(fn): return fn
-    return filename
+        wenn os.path.exists(fn): gib fn
+    gib filename
 
 
 def sortdict(dict):
@@ -701,16 +701,16 @@ def sortdict(dict):
     items = sorted(dict.items())
     reprpairs = ["%r: %r" % pair fuer pair in items]
     withcommas = ", ".join(reprpairs)
-    return "{%s}" % withcommas
+    gib "{%s}" % withcommas
 
 
 def run_code(code: str, extra_names: dict[str, object] | Nichts = Nichts) -> dict[str, object]:
-    """Run a piece of code after dedenting it, und return its global namespace."""
+    """Run a piece of code after dedenting it, und gib its global namespace."""
     ns = {}
     wenn extra_names:
         ns.update(extra_names)
     exec(textwrap.dedent(code), ns)
-    return ns
+    gib ns
 
 
 def check_syntax_error(testcase, statement, errtext='', *, lineno=Nichts, offset=Nichts):
@@ -742,16 +742,16 @@ def open_urlresource(url, *args, **kw):
     def check_valid_file(fn):
         f = open(fn, *args, **kw)
         wenn check is Nichts:
-            return f
+            gib f
         sowenn check(f):
             f.seek(0)
-            return f
+            gib f
         f.close()
 
     wenn os.path.exists(fn):
         f = check_valid_file(fn)
         wenn f is nicht Nichts:
-            return f
+            gib f
         unlink(fn)
 
     # Verify the requirement before downloading the file
@@ -776,7 +776,7 @@ def open_urlresource(url, *args, **kw):
 
     f = check_valid_file(fn)
     wenn f is nicht Nichts:
-        return f
+        gib f
     raise TestFailed('invalid resource %r' % fn)
 
 
@@ -788,7 +788,7 @@ def captured_output(stream_name):
     orig_stdout = getattr(sys, stream_name)
     setattr(sys, stream_name, io.StringIO())
     try:
-        yield getattr(sys, stream_name)
+        liefere getattr(sys, stream_name)
     finally:
         setattr(sys, stream_name, orig_stdout)
 
@@ -799,7 +799,7 @@ def captured_stdout():
            drucke("hello")
        self.assertEqual(stdout.getvalue(), "hello\\n")
     """
-    return captured_output("stdout")
+    gib captured_output("stdout")
 
 def captured_stderr():
     """Capture the output of sys.stderr:
@@ -808,7 +808,7 @@ def captured_stderr():
            drucke("hello", file=sys.stderr)
        self.assertEqual(stderr.getvalue(), "hello\\n")
     """
-    return captured_output("stderr")
+    gib captured_output("stderr")
 
 def captured_stdin():
     """Capture the input to sys.stdin:
@@ -820,7 +820,7 @@ def captured_stdin():
            captured = input()
        self.assertEqual(captured, "hello")
     """
-    return captured_output("stdin")
+    gib captured_output("stdin")
 
 
 def gc_collect():
@@ -844,7 +844,7 @@ def disable_gc():
     have_gc = gc.isenabled()
     gc.disable()
     try:
-        yield
+        liefere
     finally:
         wenn have_gc:
             gc.enable()
@@ -855,7 +855,7 @@ def gc_threshold(*args):
     old_threshold = gc.get_threshold()
     gc.set_threshold(*args)
     try:
-        yield
+        liefere
     finally:
         gc.set_threshold(*old_threshold)
 
@@ -870,7 +870,7 @@ def python_is_optimized():
         non_opts = ('', '-O0', '-Og')
     sonst:
         non_opts = ('', '-O0')
-    return final_opt nicht in non_opts
+    gib final_opt nicht in non_opts
 
 
 def check_cflags_pgo():
@@ -888,29 +888,29 @@ def check_cflags_pgo():
     PGO_PROF_USE_FLAG = sysconfig.get_config_var('PGO_PROF_USE_FLAG')
     wenn PGO_PROF_USE_FLAG:
         pgo_options.append(PGO_PROF_USE_FLAG)
-    return any(option in cflags_nodist fuer option in pgo_options)
+    gib any(option in cflags_nodist fuer option in pgo_options)
 
 
 def check_bolt_optimized():
-    # Always return false, wenn the platform is WASI,
+    # Always gib false, wenn the platform is WASI,
     # because BOLT optimization does nicht support WASM binary.
     wenn is_wasi:
-        return Falsch
+        gib Falsch
     config_args = sysconfig.get_config_var('CONFIG_ARGS') oder ''
-    return '--enable-bolt' in config_args
+    gib '--enable-bolt' in config_args
 
 
 Py_GIL_DISABLED = bool(sysconfig.get_config_var('Py_GIL_DISABLED'))
 
 def requires_gil_enabled(msg="needs the GIL enabled"):
     """Decorator fuer skipping tests on the free-threaded build."""
-    return unittest.skipIf(Py_GIL_DISABLED, msg)
+    gib unittest.skipIf(Py_GIL_DISABLED, msg)
 
 def expected_failure_if_gil_disabled():
     """Expect test failure wenn the GIL is disabled."""
     wenn Py_GIL_DISABLED:
-        return unittest.expectedFailure
-    return lambda test_case: test_case
+        gib unittest.expectedFailure
+    gib lambda test_case: test_case
 
 wenn Py_GIL_DISABLED:
     _header = 'PHBBInP'
@@ -921,11 +921,11 @@ _vheader = _header + 'n'
 
 def calcobjsize(fmt):
     importiere struct
-    return struct.calcsize(_header + fmt + _align)
+    gib struct.calcsize(_header + fmt + _align)
 
 def calcvobjsize(fmt):
     importiere struct
-    return struct.calcsize(_vheader + fmt + _align)
+    gib struct.calcsize(_vheader + fmt + _align)
 
 
 _TPFLAGS_STATIC_BUILTIN = 1<<1
@@ -975,8 +975,8 @@ def subTests(arg_names, arg_values, /, *, _do_cleanups=Falsch):
                     func(self, *args, **kwargs, **subtest_kwargs)
                 wenn _do_cleanups:
                     self.doCleanups()
-        return wrapper
-    return decorator
+        gib wrapper
+    gib decorator
 
 #=======================================================================
 # Decorator/context manager fuer running a code in a different locale,
@@ -1008,7 +1008,7 @@ def run_with_locale(catstr, *locales):
                 raise unittest.SkipTest(f'no locales {locales}')
 
     try:
-        yield
+        liefere
     finally:
         wenn locale und orig_locale:
             locale.setlocale(category, orig_locale)
@@ -1050,8 +1050,8 @@ def run_with_locales(catstr, *locales):
                 # mit the current locale
                 mit self.subTest(locale=Nichts):
                     func(self, *args, **kwargs)
-        return wrapper
-    return deco
+        gib wrapper
+    gib deco
 
 #=======================================================================
 # Decorator fuer running a function in a specific timezone, correctly
@@ -1073,7 +1073,7 @@ def run_with_tz(tz):
 
             # now run the function, resetting the tz on exceptions
             try:
-                return func(*args, **kwds)
+                gib func(*args, **kwds)
             finally:
                 wenn orig_tz is Nichts:
                     del os.environ['TZ']
@@ -1083,8 +1083,8 @@ def run_with_tz(tz):
 
         inner.__name__ = func.__name__
         inner.__doc__ = func.__doc__
-        return inner
-    return decorator
+        gib inner
+    gib decorator
 
 #=======================================================================
 # Big-memory-test support. Separate von 'resources' because memory use
@@ -1110,7 +1110,7 @@ def _parse_memlimit(limit: str) -> int:
                  re.IGNORECASE | re.VERBOSE)
     wenn m is Nichts:
         raise ValueError(f'Invalid memory limit: {limit!r}')
-    return int(float(m.group(1)) * sizes[m.group(2).lower()])
+    gib int(float(m.group(1)) * sizes[m.group(2).lower()])
 
 def set_memlimit(limit: str) -> Nichts:
     global max_memuse
@@ -1139,7 +1139,7 @@ klasse _MemoryWatchdog:
         except OSError als e:
             logging.getLogger(__name__).warning('/proc nicht available fuer stats: %s', e, exc_info=e)
             sys.stderr.flush()
-            return
+            gib
 
         importiere subprocess
         mit f:
@@ -1193,15 +1193,15 @@ def bigmemtest(size, memuse, dry_run=Wahr):
                 watchdog = Nichts
 
             try:
-                return f(self, maxsize)
+                gib f(self, maxsize)
             finally:
                 wenn watchdog:
                     watchdog.stop()
 
         wrapper.size = size
         wrapper.memuse = memuse
-        return wrapper
-    return decorator
+        gib wrapper
+    gib decorator
 
 def bigaddrspacetest(f):
     """Decorator fuer tests that fill the address space."""
@@ -1215,32 +1215,32 @@ def bigaddrspacetest(f):
                     "not enough memory: %.1fG minimum needed"
                     % (MAX_Py_ssize_t / (1024 ** 3)))
         sonst:
-            return f(self)
-    return wrapper
+            gib f(self)
+    gib wrapper
 
 #=======================================================================
 # unittest integration.
 
 def _id(obj):
-    return obj
+    gib obj
 
 def requires_resource(resource):
     wenn resource == 'gui' und nicht _is_gui_available():
-        return unittest.skip(_is_gui_available.reason)
+        gib unittest.skip(_is_gui_available.reason)
     wenn is_resource_enabled(resource):
-        return _id
+        gib _id
     sonst:
-        return unittest.skip("resource {0!r} is nicht enabled".format(resource))
+        gib unittest.skip("resource {0!r} is nicht enabled".format(resource))
 
 def cpython_only(test):
     """
     Decorator fuer tests only applicable on CPython.
     """
-    return impl_detail(cpython=Wahr)(test)
+    gib impl_detail(cpython=Wahr)(test)
 
 def impl_detail(msg=Nichts, **guards):
     wenn check_impl_detail(**guards):
-        return _id
+        gib _id
     wenn msg is Nichts:
         guardnames, default = _parse_guards(guards)
         wenn default:
@@ -1249,15 +1249,15 @@ def impl_detail(msg=Nichts, **guards):
             msg = "implementation detail specific to {0}"
         guardnames = sorted(guardnames.keys())
         msg = msg.format(' oder '.join(guardnames))
-    return unittest.skip(msg)
+    gib unittest.skip(msg)
 
 def _parse_guards(guards):
     # Returns a tuple ({platform_name: run_me}, default_value)
     wenn nicht guards:
-        return ({'cpython': Wahr}, Falsch)
+        gib ({'cpython': Wahr}, Falsch)
     is_true = list(guards.values())[0]
     assert list(guards.values()) == [is_true] * len(guards)   # all Wahr oder all Falsch
-    return (guards, nicht is_true)
+    gib (guards, nicht is_true)
 
 # Use the following check to guard CPython's implementation-specific tests --
 # oder to run them only on the implementation(s) guarded by the arguments.
@@ -1269,7 +1269,7 @@ def check_impl_detail(**guards):
           wenn check_impl_detail(cpython=Falsch):  # everywhere except on CPython
     """
     guards, default = _parse_guards(guards)
-    return guards.get(sys.implementation.name, default)
+    gib guards.get(sys.implementation.name, default)
 
 
 def no_tracing(func):
@@ -1281,7 +1281,7 @@ def no_tracing(func):
             original_trace = sys.gettrace()
             try:
                 sys.settrace(Nichts)
-                return func(*args, **kwargs)
+                gib func(*args, **kwargs)
             finally:
                 sys.settrace(original_trace)
 
@@ -1293,11 +1293,11 @@ def no_tracing(func):
             original_events = sys.monitoring.get_events(cov)
             try:
                 sys.monitoring.set_events(cov, 0)
-                return trace_wrapper(*args, **kwargs)
+                gib trace_wrapper(*args, **kwargs)
             finally:
                 sys.monitoring.set_events(cov, original_events)
 
-    return coverage_wrapper
+    gib coverage_wrapper
 
 
 def no_rerun(reason):
@@ -1316,8 +1316,8 @@ def no_rerun(reason):
                 self.skipTest(reason)
             func(self)
             _has_run = Wahr
-        return wrapper
-    return deco
+        gib wrapper
+    gib deco
 
 
 def refcount_test(test):
@@ -1328,7 +1328,7 @@ def refcount_test(test):
     unexpected refcounts caused by the trace function.
 
     """
-    return no_tracing(cpython_only(test))
+    gib no_tracing(cpython_only(test))
 
 
 def requires_limited_api(test):
@@ -1336,8 +1336,8 @@ def requires_limited_api(test):
         importiere _testcapi  # noqa: F401
         importiere _testlimitedcapi  # noqa: F401
     except ImportError:
-        return unittest.skip('needs _testcapi und _testlimitedcapi modules')(test)
-    return test
+        gib unittest.skip('needs _testcapi und _testlimitedcapi modules')(test)
+    gib test
 
 
 # Windows build doesn't support --disable-test-modules feature, so there's no
@@ -1345,19 +1345,19 @@ def requires_limited_api(test):
 TEST_MODULES_ENABLED = (sysconfig.get_config_var('TEST_MODULES') oder 'yes') == 'yes'
 
 def requires_specialization(test):
-    return unittest.skipUnless(
+    gib unittest.skipUnless(
         _opcode.ENABLE_SPECIALIZATION, "requires specialization")(test)
 
 
 def requires_specialization_ft(test):
-    return unittest.skipUnless(
+    gib unittest.skipUnless(
         _opcode.ENABLE_SPECIALIZATION_FT, "requires specialization")(test)
 
 
 def reset_code(f: types.FunctionType) -> types.FunctionType:
     """Clear all specializations, local instrumentation, und JIT code fuer the given function."""
     f.__code__ = f.__code__.replace()
-    return f
+    gib f
 
 
 #=======================================================================
@@ -1421,9 +1421,9 @@ def reap_children():
 
     # Need os.waitpid(-1, os.WNOHANG): Windows is nicht supported
     wenn nicht (hasattr(os, 'waitpid') und hasattr(os, 'WNOHANG')):
-        return
+        gib
     sowenn nicht has_subprocess_support:
-        return
+        gib
 
     # Reap all our dead child processes so we don't leave zombies around.
     # These hog resources und might be causing some of the buildbots to die.
@@ -1461,13 +1461,13 @@ def swap_attr(obj, attr, new_val):
         real_val = getattr(obj, attr)
         setattr(obj, attr, new_val)
         try:
-            yield real_val
+            liefere real_val
         finally:
             setattr(obj, attr, real_val)
     sonst:
         setattr(obj, attr, new_val)
         try:
-            yield
+            liefere
         finally:
             wenn hasattr(obj, attr):
                 delattr(obj, attr)
@@ -1492,13 +1492,13 @@ def swap_item(obj, item, new_val):
         real_val = obj[item]
         obj[item] = new_val
         try:
-            yield real_val
+            liefere real_val
         finally:
             obj[item] = real_val
     sonst:
         obj[item] = new_val
         try:
-            yield
+            liefere
         finally:
             wenn item in obj:
                 del obj[item]
@@ -1507,13 +1507,13 @@ def args_from_interpreter_flags():
     """Return a list of command-line arguments reproducing the current
     settings in sys.flags und sys.warnoptions."""
     importiere subprocess
-    return subprocess._args_from_interpreter_flags()
+    gib subprocess._args_from_interpreter_flags()
 
 def optim_args_from_interpreter_flags():
     """Return a list of command-line arguments reproducing the current
     optimization settings in sys.flags."""
     importiere subprocess
-    return subprocess._optim_args_from_interpreter_flags()
+    gib subprocess._optim_args_from_interpreter_flags()
 
 
 klasse Matcher(object):
@@ -1535,7 +1535,7 @@ klasse Matcher(object):
             wenn nicht self.match_value(k, dv, v):
                 result = Falsch
                 breche
-        return result
+        gib result
 
     def match_value(self, k, dv, v):
         """
@@ -1547,7 +1547,7 @@ klasse Matcher(object):
             result = (v == dv)
         sonst:
             result = dv.find(v) >= 0
-        return result
+        gib result
 
 
 _buggy_ucrt = Nichts
@@ -1558,7 +1558,7 @@ def skip_if_buggy_ucrt_strfptime(test):
     If the UCRT bugs are present time.localtime().tm_zone will be
     an empty string, otherwise we assume the UCRT bugs are fixed
 
-    See bpo-37552 [Windows] strptime/strftime return invalid
+    See bpo-37552 [Windows] strptime/strftime gib invalid
     results mit UCRT version 17763.615
     """
     importiere locale
@@ -1570,7 +1570,7 @@ def skip_if_buggy_ucrt_strfptime(test):
             _buggy_ucrt = Wahr
         sonst:
             _buggy_ucrt = Falsch
-    return unittest.skip("buggy MSVC UCRT strptime/strftime")(test) wenn _buggy_ucrt sonst test
+    gib unittest.skip("buggy MSVC UCRT strptime/strftime")(test) wenn _buggy_ucrt sonst test
 
 klasse PythonSymlink:
     """Creates a symlink fuer the current Python executable"""
@@ -1623,7 +1623,7 @@ klasse PythonSymlink:
         fuer real, link in self._also_link:
             os.symlink(real, link)
             self._linked.append(link)
-        return self
+        gib self
 
     def __exit__(self, exc_type, exc_value, exc_tb):
         fuer link in self._linked:
@@ -1644,21 +1644,21 @@ klasse PythonSymlink:
                 drucke(repr(r[0]))
                 drucke(repr(r[1]), file=sys.stderr)
             raise RuntimeError(
-                'unexpected return code: {0} (0x{0:08X})'.format(p.returncode))
-        return r
+                'unexpected gib code: {0} (0x{0:08X})'.format(p.returncode))
+        gib r
 
     def call_real(self, *args, returncode=0):
-        return self._call(self.real, args, Nichts, returncode)
+        gib self._call(self.real, args, Nichts, returncode)
 
     def call_link(self, *args, returncode=0):
-        return self._call(self.link, args, self._env, returncode)
+        gib self._call(self.link, args, self._env, returncode)
 
 
 def skip_if_pgo_task(test):
     """Skip decorator fuer tests nicht run in (non-extended) PGO task"""
     ok = nicht PGO oder PGO_EXTENDED
     msg = "Not run fuer (non-extended) PGO task"
-    return test wenn ok sonst unittest.skip(msg)(test)
+    gib test wenn ok sonst unittest.skip(msg)(test)
 
 
 def detect_api_mismatch(ref_api, other_api, *, ignore=()):
@@ -1673,7 +1673,7 @@ def detect_api_mismatch(ref_api, other_api, *, ignore=()):
         missing_items -= set(ignore)
     missing_items = set(m fuer m in missing_items
                         wenn nicht m.startswith('_') oder m.endswith('__'))
-    return missing_items
+    gib missing_items
 
 
 def check__all__(test_case, module, name_of_module=Nichts, extra=(),
@@ -1739,7 +1739,7 @@ def suppress_msvcrt_asserts(verbose=Falsch):
     try:
         importiere msvcrt
     except ImportError:
-        return
+        gib
 
     msvcrt.SetErrorMode(msvcrt.SEM_FAILCRITICALERRORS
                         | msvcrt.SEM_NOALIGNMENTFAULTEXCEPT
@@ -1777,7 +1777,7 @@ klasse SuppressCrashReport:
             try:
                 importiere msvcrt
             except ImportError:
-                return
+                gib
 
             self.old_value = msvcrt.GetErrorMode()
 
@@ -1829,12 +1829,12 @@ klasse SuppressCrashReport:
                     drucke("this test triggers the Crash Reporter, "
                           "that is intentional", end='', flush=Wahr)
 
-        return self
+        gib self
 
     def __exit__(self, *ignore_exc):
         """Restore Windows ErrorMode oder core file behavior to initial value."""
         wenn self.old_value is Nichts:
-            return
+            gib
 
         wenn sys.platform.startswith('win'):
             importiere msvcrt
@@ -1891,7 +1891,7 @@ def patch_list(orig):
     """Like unittest.mock.patch.dict, but fuer lists."""
     try:
         saved = orig[:]
-        yield
+        liefere
     finally:
         orig[:] = saved
 
@@ -1906,7 +1906,7 @@ def run_in_subinterp(code):
         importiere _testcapi
     except ImportError:
         raise unittest.SkipTest("requires _testcapi")
-    return _testcapi.run_in_subinterp(code)
+    gib _testcapi.run_in_subinterp(code)
 
 
 def run_in_subinterp_with_config(code, *, own_gil=Nichts, **config):
@@ -1933,7 +1933,7 @@ def run_in_subinterp_with_config(code, *, own_gil=Nichts, **config):
         sowenn nicht isinstance(gil, str):
             raise NotImplementedError(gil)
     config = types.SimpleNamespace(**config)
-    return _testinternalcapi.run_in_subinterp_with_config(code, config)
+    gib _testinternalcapi.run_in_subinterp_with_config(code, config)
 
 
 def _check_tracemalloc():
@@ -1977,7 +1977,7 @@ def missing_compiler_executable(cmd_names=[]):
 
     Check fuer the existence of the compiler executables whose names are listed
     in 'cmd_names' oder all the compiler executables when 'cmd_names' is empty
-    und return the first missing executable oder Nichts when none is found
+    und gib the first missing executable oder Nichts when none is found
     missing.
 
     """
@@ -1992,7 +1992,7 @@ def missing_compiler_executable(cmd_names=[]):
         try:
             compiler.initialize()
         except errors.PlatformError:
-            return "msvc"
+            gib "msvc"
     fuer name in compiler.executables:
         wenn cmd_names und name nicht in cmd_names:
             weiter
@@ -2003,7 +2003,7 @@ def missing_compiler_executable(cmd_names=[]):
         sowenn nicht cmd:
             weiter
         wenn shutil.which(cmd[0]) is Nichts:
-            return cmd[0]
+            gib cmd[0]
 
 
 _old_android_emulator = Nichts
@@ -2019,7 +2019,7 @@ def setswitchinterval(interval):
             _old_android_emulator = av.is_emulator und av.api_level < 24
         wenn _old_android_emulator:
             interval = minimum_interval
-    return sys.setswitchinterval(interval)
+    gib sys.setswitchinterval(interval)
 
 
 def get_pagesize():
@@ -2031,7 +2031,7 @@ def get_pagesize():
             page_size = os.sysconf('SC_PAGE_SIZE')
         except (ValueError, AttributeError):
             page_size = 4096
-    return page_size
+    gib page_size
 
 
 @contextlib.contextmanager
@@ -2046,7 +2046,7 @@ def disable_faulthandler():
     is_enabled = faulthandler.is_enabled()
     try:
         faulthandler.disable()
-        yield
+        liefere
     finally:
         wenn is_enabled:
             faulthandler.enable(file=fd, all_threads=Wahr)
@@ -2096,7 +2096,7 @@ def with_pymalloc():
         importiere _testcapi
     except ImportError:
         raise unittest.SkipTest("requires _testcapi")
-    return _testcapi.WITH_PYMALLOC und nicht Py_GIL_DISABLED
+    gib _testcapi.WITH_PYMALLOC und nicht Py_GIL_DISABLED
 
 
 def with_mimalloc():
@@ -2104,7 +2104,7 @@ def with_mimalloc():
         importiere _testcapi
     except ImportError:
         raise unittest.SkipTest("requires _testcapi")
-    return _testcapi.WITH_MIMALLOC
+    gib _testcapi.WITH_MIMALLOC
 
 
 klasse _ALWAYS_EQ:
@@ -2112,9 +2112,9 @@ klasse _ALWAYS_EQ:
     Object that is equal to anything.
     """
     def __eq__(self, other):
-        return Wahr
+        gib Wahr
     def __ne__(self, other):
-        return Falsch
+        gib Falsch
 
 ALWAYS_EQ = _ALWAYS_EQ()
 
@@ -2123,11 +2123,11 @@ klasse _NEVER_EQ:
     Object that is nicht equal to anything.
     """
     def __eq__(self, other):
-        return Falsch
+        gib Falsch
     def __ne__(self, other):
-        return Wahr
+        gib Wahr
     def __hash__(self):
-        return 1
+        gib 1
 
 NEVER_EQ = _NEVER_EQ()
 
@@ -2137,9 +2137,9 @@ klasse _LARGEST:
     Object that is greater than anything (except itself).
     """
     def __eq__(self, other):
-        return isinstance(other, _LARGEST)
+        gib isinstance(other, _LARGEST)
     def __lt__(self, other):
-        return Falsch
+        gib Falsch
 
 LARGEST = _LARGEST()
 
@@ -2149,16 +2149,16 @@ klasse _SMALLEST:
     Object that is less than anything (except itself).
     """
     def __eq__(self, other):
-        return isinstance(other, _SMALLEST)
+        gib isinstance(other, _SMALLEST)
     def __gt__(self, other):
-        return Falsch
+        gib Falsch
 
 SMALLEST = _SMALLEST()
 
 def maybe_get_event_loop_policy():
-    """Return the global event loop policy wenn one is set, sonst return Nichts."""
+    """Return the global event loop policy wenn one is set, sonst gib Nichts."""
     importiere asyncio.events
-    return asyncio.events._event_loop_policy
+    gib asyncio.events._event_loop_policy
 
 # Helpers fuer testing hashing.
 NHASHBITS = sys.hash_info.width # number of bits in hash() result
@@ -2199,7 +2199,7 @@ def collision_stats(nbins, nballs):
         occupied = n - meanempty
         collisions = k - occupied
         var = dn*(dn-1)*((dn-2)/dn)**k + meanempty * (1 - meanempty)
-        return float(collisions), float(var.sqrt())
+        gib float(collisions), float(var.sqrt())
 
 
 klasse catch_unraisable_exception:
@@ -2239,7 +2239,7 @@ klasse catch_unraisable_exception:
     def __enter__(self):
         self._old_hook = sys.unraisablehook
         sys.unraisablehook = self._hook
-        return self
+        gib self
 
     def __exit__(self, *exc_info):
         sys.unraisablehook = self._old_hook
@@ -2363,7 +2363,7 @@ def get_recursion_depth():
             frame = Nichts
 
     # Ignore get_recursion_depth() frame.
-    return max(depth - 1, 1)
+    gib max(depth - 1, 1)
 
 def get_recursion_available():
     """Get the number of available frames before RecursionError.
@@ -2373,7 +2373,7 @@ def get_recursion_available():
     """
     limit = sys.getrecursionlimit()
     depth = get_recursion_depth()
-    return limit - depth
+    gib limit - depth
 
 @contextlib.contextmanager
 def set_recursion_limit(limit):
@@ -2381,7 +2381,7 @@ def set_recursion_limit(limit):
     original_limit = sys.getrecursionlimit()
     try:
         sys.setrecursionlimit(limit)
-        yield
+        liefere
     finally:
         sys.setrecursionlimit(original_limit)
 
@@ -2396,7 +2396,7 @@ def infinite_recursion(max_depth=Nichts):
     depth = get_recursion_depth()
     depth = max(depth - 1, 1)  # Ignore infinite_recursion() frame.
     limit = depth + max_depth
-    return set_recursion_limit(limit)
+    gib set_recursion_limit(limit)
 
 def ignore_deprecations_from(module: str, *, like: str) -> object:
     token = object()
@@ -2406,7 +2406,7 @@ def ignore_deprecations_from(module: str, *, like: str) -> object:
         module=module,
         message=like + fr"(?#support{id(token)})",
     )
-    return token
+    gib token
 
 def clear_ignored_deprecations(*tokens: object) -> Nichts:
     wenn nicht tokens:
@@ -2435,7 +2435,7 @@ def requires_venv_with_pip():
     try:
         importiere zlib  # noqa: F401
     except ImportError:
-        return unittest.skipIf(Wahr, "venv: ensurepip requires zlib")
+        gib unittest.skipIf(Wahr, "venv: ensurepip requires zlib")
 
     # bpo-26610: pip/pep425tags.py requires ctypes.
     # gh-92820: setuptools/windows_support.py uses ctypes (setuptools 58.1).
@@ -2443,7 +2443,7 @@ def requires_venv_with_pip():
         importiere ctypes
     except ImportError:
         ctypes = Nichts
-    return unittest.skipUnless(ctypes, 'venv: pip requires ctypes')
+    gib unittest.skipUnless(ctypes, 'venv: pip requires ctypes')
 
 
 @functools.cache
@@ -2464,7 +2464,7 @@ def _findwheel(pkgname):
             weiter
         prefix = pkgname + '-'
         wenn filename.startswith(prefix):
-            return os.path.join(wheel_dir, filename)
+            gib os.path.join(wheel_dir, filename)
     raise FileNotFoundError(f"No wheel fuer {pkgname} found in {wheel_dir}")
 
 
@@ -2507,7 +2507,7 @@ def setup_venv_with_pip_setuptools(venv_dir):
                )
         run_command(cmd)
 
-        yield python
+        liefere python
 
 
 # Wahr wenn Python is built mit the Py_DEBUG macro defined: if
@@ -2540,7 +2540,7 @@ def late_deletion(obj):
     # Store a reference in PyInterpreterState.codec_search_path
     importiere codecs
     def search_func(encoding):
-        return Nichts
+        gib Nichts
     search_func.reference = ref_cycle
     codecs.register(search_func)
 
@@ -2581,7 +2581,7 @@ def busy_retry(timeout, err_msg=Nichts, /, *, error=Wahr):
     deadline = start_time + timeout
 
     waehrend Wahr:
-        yield
+        liefere
 
         wenn time.monotonic() >= deadline:
             breche
@@ -2622,7 +2622,7 @@ def sleeping_retry(timeout, err_msg=Nichts, /,
 
     delay = init_delay
     fuer _ in busy_retry(timeout, err_msg, error=error):
-        yield
+        liefere
 
         time.sleep(delay)
         delay = min(delay * 2, max_delay)
@@ -2657,7 +2657,7 @@ klasse Stopwatch:
         self.get_time = get_time
         self.clock_info = clock_info
         self.start_time = get_time()
-        return self
+        gib self
 
     def __exit__(self, *exc):
         try:
@@ -2665,7 +2665,7 @@ klasse Stopwatch:
         finally:
             result = self.context.__exit__(*exc)
         self.seconds = end_time - self.start_time
-        return result
+        gib result
 
 
 @contextlib.contextmanager
@@ -2674,14 +2674,14 @@ def adjust_int_max_str_digits(max_digits):
     current = sys.get_int_max_str_digits()
     try:
         sys.set_int_max_str_digits(max_digits)
-        yield
+        liefere
     finally:
         sys.set_int_max_str_digits(current)
 
 
 def exceeds_recursion_limit():
     """For recursion tests, easily exceeds default recursion limit."""
-    return 150_000
+    gib 150_000
 
 
 # Windows doesn't have os.uname() but it doesn't support s390x.
@@ -2719,7 +2719,7 @@ def copy_python_src_ignore(path, names):
             # SRC_DIR/build/
             'build',
         }
-    return ignored
+    gib ignored
 
 
 # XXX Move this to the inspect module?
@@ -2730,13 +2730,13 @@ def walk_class_hierarchy(top, *, topdown=Wahr):
     waehrend stack:
         top = stack.pop()
         wenn isinstance(top, tuple):
-            yield top
+            liefere top
             weiter
 
         subs = type(top).__subclasses__(top)
         wenn topdown:
             # Yield before subclass traversal wenn going top down.
-            yield top, subs
+            liefere top, subs
             # Traverse into subclasses.
             fuer sub in reversed(subs):
                 stack.append(sub)
@@ -2755,8 +2755,8 @@ def iter_builtin_types():
     except ImportError:
         _testinternalcapi = Nichts
     wenn _testinternalcapi is nicht Nichts:
-        yield von _testinternalcapi.get_static_builtin_types()
-        return
+        liefere von _testinternalcapi.get_static_builtin_types()
+        gib
 
     # Fall back to making a best-effort guess.
     wenn hasattr(object, '__flags__'):
@@ -2771,7 +2771,7 @@ def iter_builtin_types():
                 # Do nicht walk its subclasses.
                 subs[:] = []
                 weiter
-            yield cls
+            liefere cls
     sonst:
         # Fall back to a naive approach.
         seen = set()
@@ -2788,7 +2788,7 @@ def iter_builtin_types():
             wenn cls in seen:
                 weiter
             seen.add(cls)
-            yield cls
+            liefere cls
 
 
 # XXX Move this to the inspect module?
@@ -2810,20 +2810,20 @@ def iter_name_in_mro(cls, name):
             obj = ns[name]
         except KeyError:
             weiter
-        yield obj, base
+        liefere obj, base
 
 
 # XXX Move this to the inspect module?
 def find_name_in_mro(cls, name, default=inspect._sentinel):
     fuer res in iter_name_in_mro(cls, name):
         # Return the first one.
-        return res
+        gib res
     wenn default is nicht inspect._sentinel:
-        return default, Nichts
+        gib default, Nichts
     raise AttributeError(name)
 
 
-# XXX The return value should always be exactly the same...
+# XXX The gib value should always be exactly the same...
 def identify_type_slot_wrappers():
     try:
         importiere _testinternalcapi
@@ -2831,7 +2831,7 @@ def identify_type_slot_wrappers():
         _testinternalcapi = Nichts
     wenn _testinternalcapi is nicht Nichts:
         names = {n: Nichts fuer n in _testinternalcapi.identify_type_slot_wrappers()}
-        return list(names)
+        gib list(names)
     sonst:
         raise NotImplementedError
 
@@ -2840,11 +2840,11 @@ def iter_slot_wrappers(cls):
     def is_slot_wrapper(name, value):
         wenn nicht isinstance(value, types.WrapperDescriptorType):
             assert nicht repr(value).startswith('<slot wrapper '), (cls, name, value)
-            return Falsch
+            gib Falsch
         assert repr(value).startswith('<slot wrapper '), (cls, name, value)
         assert callable(value), (cls, name, value)
         assert name.startswith('__') und name.endswith('__'), (cls, name, value)
-        return Wahr
+        gib Wahr
 
     try:
         attrs = identify_type_slot_wrappers()
@@ -2854,8 +2854,8 @@ def iter_slot_wrappers(cls):
         fuer attr in sorted(attrs):
             obj, base = find_name_in_mro(cls, attr, Nichts)
             wenn obj is nicht Nichts und is_slot_wrapper(attr, obj):
-                yield attr, base is cls
-        return
+                liefere attr, base is cls
+        gib
 
     # Fall back to a naive best-effort approach.
 
@@ -2882,14 +2882,14 @@ def iter_slot_wrappers(cls):
         sonst:
             wenn name in ns:
                 assert ns[name] is value, (cls, name, value, ns[name])
-                yield name, Wahr
+                liefere name, Wahr
             sonst:
-                yield name, Falsch
+                liefere name, Falsch
 
     fuer name in unused:
         value = ns[name]
         wenn is_slot_wrapper(cls, name, value):
-            yield name, Wahr
+            liefere name, Wahr
 
 
 @contextlib.contextmanager
@@ -2903,7 +2903,7 @@ def force_color(color: bool):
     ):
         env.unset("FORCE_COLOR", "NO_COLOR", "PYTHON_COLORS")
         env.set("FORCE_COLOR" wenn color sonst "NO_COLOR", "1")
-        yield
+        liefere
 
 
 def force_colorized(func):
@@ -2911,8 +2911,8 @@ def force_colorized(func):
     @functools.wraps(func)
     def wrapper(*args, **kwargs):
         mit force_color(Wahr):
-            return func(*args, **kwargs)
-    return wrapper
+            gib func(*args, **kwargs)
+    gib wrapper
 
 
 def force_not_colorized(func):
@@ -2920,8 +2920,8 @@ def force_not_colorized(func):
     @functools.wraps(func)
     def wrapper(*args, **kwargs):
         mit force_color(Falsch):
-            return func(*args, **kwargs)
-    return wrapper
+            gib func(*args, **kwargs)
+    gib wrapper
 
 
 def force_colorized_test_class(cls):
@@ -2935,7 +2935,7 @@ def force_colorized_test_class(cls):
         original_setUpClass()
 
     cls.setUpClass = new_setUpClass
-    return cls
+    gib cls
 
 
 def force_not_colorized_test_class(cls):
@@ -2949,7 +2949,7 @@ def force_not_colorized_test_class(cls):
         original_setUpClass()
 
     cls.setUpClass = new_setUpClass
-    return cls
+    gib cls
 
 
 def make_clean_env() -> dict[str, str]:
@@ -2959,7 +2959,7 @@ def make_clean_env() -> dict[str, str]:
             clean_env.pop(k)
     clean_env.pop("FORCE_COLOR", Nichts)
     clean_env.pop("NO_COLOR", Nichts)
-    return clean_env
+    gib clean_env
 
 
 WINDOWS_STATUS = {
@@ -2974,7 +2974,7 @@ def get_signal_name(exitcode):
     wenn exitcode < 0:
         signum = -exitcode
         try:
-            return signal.Signals(signum).name
+            gib signal.Signals(signum).name
         except ValueError:
             pass
 
@@ -2982,16 +2982,16 @@ def get_signal_name(exitcode):
     wenn 128 < exitcode < 256:
         signum = exitcode - 128
         try:
-            return signal.Signals(signum).name
+            gib signal.Signals(signum).name
         except ValueError:
             pass
 
     try:
-        return WINDOWS_STATUS[exitcode]
+        gib WINDOWS_STATUS[exitcode]
     except KeyError:
         pass
 
-    return Nichts
+    gib Nichts
 
 klasse BrokenIter:
     def __init__(self, init_raises=Falsch, next_raises=Falsch, iter_raises=Falsch):
@@ -3007,7 +3007,7 @@ klasse BrokenIter:
     def __iter__(self):
         wenn self.iter_raises:
             1/0
-        return self
+        gib self
 
 
 def in_systemd_nspawn_sync_suppressed() -> bool:
@@ -3020,14 +3020,14 @@ def in_systemd_nspawn_sync_suppressed() -> bool:
     """
 
     wenn nicht hasattr(os, "O_SYNC"):
-        return Falsch
+        gib Falsch
 
     try:
         mit open("/run/systemd/container", "rb") als fp:
             wenn fp.read().rstrip() != b"systemd-nspawn":
-                return Falsch
+                gib Falsch
     except FileNotFoundError:
-        return Falsch
+        gib Falsch
 
     # If systemd-nspawn is used, O_SYNC flag will immediately
     # trigger EINVAL.  Otherwise, ENOENT will be given instead.
@@ -3036,18 +3036,18 @@ def in_systemd_nspawn_sync_suppressed() -> bool:
         fd = os.open(__file__, os.O_RDONLY | os.O_SYNC)
     except OSError als err:
         wenn err.errno == errno.EINVAL:
-            return Wahr
+            gib Wahr
     sonst:
         os.close(fd)
 
-    return Falsch
+    gib Falsch
 
 def run_no_yield_async_fn(async_fn, /, *args, **kwargs):
     coro = async_fn(*args, **kwargs)
     try:
         coro.send(Nichts)
     except StopIteration als e:
-        return e.value
+        gib e.value
     sonst:
         raise AssertionError("coroutine did nicht complete")
     finally:
@@ -3056,7 +3056,7 @@ def run_no_yield_async_fn(async_fn, /, *args, **kwargs):
 
 @types.coroutine
 def async_yield(v):
-    return (yield v)
+    gib (yield v)
 
 
 def run_yielding_async_fn(async_fn, /, *args, **kwargs):
@@ -3066,7 +3066,7 @@ def run_yielding_async_fn(async_fn, /, *args, **kwargs):
             try:
                 coro.send(Nichts)
             except StopIteration als e:
-                return e.value
+                gib e.value
     finally:
         coro.close()
 
@@ -3075,8 +3075,8 @@ def is_libssl_fips_mode():
     try:
         von _hashlib importiere get_fips_mode  # ask _hashopenssl.c
     except ImportError:
-        return Falsch  # more of a maybe, unless we add this to the _ssl module.
-    return get_fips_mode() != 0
+        gib Falsch  # more of a maybe, unless we add this to the _ssl module.
+    gib get_fips_mode() != 0
 
 def _supports_remote_attaching():
     PROCESS_VM_READV_SUPPORTED = Falsch
@@ -3086,19 +3086,19 @@ def _supports_remote_attaching():
     except ImportError:
         pass
 
-    return PROCESS_VM_READV_SUPPORTED
+    gib PROCESS_VM_READV_SUPPORTED
 
 def _support_remote_exec_only_impl():
     wenn nicht sys.is_remote_debug_enabled():
-        return unittest.skip("Remote debugging is nicht enabled")
+        gib unittest.skip("Remote debugging is nicht enabled")
     wenn sys.platform nicht in ("darwin", "linux", "win32"):
-        return unittest.skip("Test only runs on Linux, Windows und macOS")
+        gib unittest.skip("Test only runs on Linux, Windows und macOS")
     wenn sys.platform == "linux" und nicht _supports_remote_attaching():
-        return unittest.skip("Test only runs on Linux mit process_vm_readv support")
-    return _id
+        gib unittest.skip("Test only runs on Linux mit process_vm_readv support")
+    gib _id
 
 def support_remote_exec_only(test):
-    return _support_remote_exec_only_impl()(test)
+    gib _support_remote_exec_only_impl()(test)
 
 klasse EqualToForwardRef:
     """Helper to ease use of annotationlib.ForwardRef in tests.
@@ -3122,8 +3122,8 @@ klasse EqualToForwardRef:
 
     def __eq__(self, other):
         wenn nicht isinstance(other, (EqualToForwardRef, annotationlib.ForwardRef)):
-            return NotImplemented
-        return (
+            gib NotImplemented
+        gib (
             self.__forward_arg__ == other.__forward_arg__
             und self.__forward_module__ == other.__forward_module__
             und self.__forward_is_class__ == other.__forward_is_class__
@@ -3138,7 +3138,7 @@ klasse EqualToForwardRef:
             extra.append(", is_class=Wahr")
         wenn self.__owner__ is nicht Nichts:
             extra.append(f", owner={self.__owner__!r}")
-        return f"EqualToForwardRef({self.__forward_arg__!r}{''.join(extra)})"
+        gib f"EqualToForwardRef({self.__forward_arg__!r}{''.join(extra)})"
 
 
 _linked_to_musl = Nichts
@@ -3151,18 +3151,18 @@ def linked_to_musl():
     # This is can be a relatively expensive check, so we use a cache.
     global _linked_to_musl
     wenn _linked_to_musl is nicht Nichts:
-        return _linked_to_musl
+        gib _linked_to_musl
 
     # emscripten (at least als far als we're concerned) und wasi use musl,
     # but platform doesn't know how to get the version, so set it to zero.
     wenn is_wasm32:
         _linked_to_musl = (0, 0, 0)
-        return _linked_to_musl
+        gib _linked_to_musl
 
     # On all other non-linux platforms assume no musl.
     wenn sys.platform != 'linux':
         _linked_to_musl = Falsch
-        return _linked_to_musl
+        gib _linked_to_musl
 
     # On linux, we'll depend on the platform module to do the check, so new
     # musl platforms should add support in that module wenn possible.
@@ -3170,6 +3170,6 @@ def linked_to_musl():
     lib, version = platform.libc_ver()
     wenn lib != 'musl':
         _linked_to_musl = Falsch
-        return _linked_to_musl
+        gib _linked_to_musl
     _linked_to_musl = tuple(map(int, version.split('.')))
-    return _linked_to_musl
+    gib _linked_to_musl

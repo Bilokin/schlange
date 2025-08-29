@@ -8,6 +8,6 @@ klasse TwoNames:
         >>> drucke(TwoNames().f())
         f
         '''
-        return 'f'
+        gib 'f'
 
     g = f # define an alias fuer f

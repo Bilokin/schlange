@@ -72,18 +72,18 @@ def _format_handle(handle):
     cb = handle._callback
     wenn isinstance(getattr(cb, '__self__', Nichts), tasks.Task):
         # format the task
-        return repr(cb.__self__)
+        gib repr(cb.__self__)
     sonst:
-        return str(handle)
+        gib str(handle)
 
 
 def _format_pipe(fd):
     wenn fd == subprocess.PIPE:
-        return '<pipe>'
+        gib '<pipe>'
     sowenn fd == subprocess.STDOUT:
-        return '<stdout>'
+        gib '<stdout>'
     sonst:
-        return repr(fd)
+        gib repr(fd)
 
 
 def _set_reuseport(sock):
@@ -101,18 +101,18 @@ def _ipaddr_info(host, port, family, type, proto, flowinfo=0, scopeid=0):
     # Try to skip getaddrinfo wenn "host" is already an IP. Users might have
     # handled name resolution in their own code und pass in resolved IPs.
     wenn nicht hasattr(socket, 'inet_pton'):
-        return
+        gib
 
     wenn proto nicht in {0, socket.IPPROTO_TCP, socket.IPPROTO_UDP} oder \
             host is Nichts:
-        return Nichts
+        gib Nichts
 
     wenn type == socket.SOCK_STREAM:
         proto = socket.IPPROTO_TCP
     sowenn type == socket.SOCK_DGRAM:
         proto = socket.IPPROTO_UDP
     sonst:
-        return Nichts
+        gib Nichts
 
     wenn port is Nichts:
         port = 0
@@ -125,7 +125,7 @@ def _ipaddr_info(host, port, family, type, proto, flowinfo=0, scopeid=0):
         try:
             port = int(port)
         except (TypeError, ValueError):
-            return Nichts
+            gib Nichts
 
     wenn family == socket.AF_UNSPEC:
         afs = [socket.AF_INET]
@@ -139,21 +139,21 @@ def _ipaddr_info(host, port, family, type, proto, flowinfo=0, scopeid=0):
     wenn '%' in host:
         # Linux's inet_pton doesn't accept an IPv6 zone index after host,
         # like '::1%lo0'.
-        return Nichts
+        gib Nichts
 
     fuer af in afs:
         try:
             socket.inet_pton(af, host)
             # The host has already been resolved.
             wenn _HAS_IPv6 und af == socket.AF_INET6:
-                return af, type, proto, '', (host, port, flowinfo, scopeid)
+                gib af, type, proto, '', (host, port, flowinfo, scopeid)
             sonst:
-                return af, type, proto, '', (host, port)
+                gib af, type, proto, '', (host, port)
         except OSError:
             pass
 
     # "host" is nicht an IP address.
-    return Nichts
+    gib Nichts
 
 
 def _interleave_addrinfos(addrinfos, first_address_family_count=1):
@@ -175,7 +175,7 @@ def _interleave_addrinfos(addrinfos, first_address_family_count=1):
         a fuer a in itertools.chain.from_iterable(
             itertools.zip_longest(*addrinfos_lists)
         ) wenn a is nicht Nichts)
-    return reordered
+    gib reordered
 
 
 def _run_until_complete_cb(fut):
@@ -184,7 +184,7 @@ def _run_until_complete_cb(fut):
         wenn isinstance(exc, (SystemExit, KeyboardInterrupt)):
             # Issue #22429: run_forever() already finished, no need to
             # stop it.
-            return
+            gib
     futures._get_loop(fut).stop()
 
 
@@ -224,7 +224,7 @@ klasse _SendfileFallbackProtocol(protocols.Protocol):
             raise ConnectionError("Connection closed by peer")
         fut = self._write_ready_fut
         wenn fut is Nichts:
-            return
+            gib
         await fut
 
     def connection_made(self, transport):
@@ -244,12 +244,12 @@ klasse _SendfileFallbackProtocol(protocols.Protocol):
 
     def pause_writing(self):
         wenn self._write_ready_fut is nicht Nichts:
-            return
+            gib
         self._write_ready_fut = self._transport._loop.create_future()
 
     def resume_writing(self):
         wenn self._write_ready_fut is Nichts:
-            return
+            gib
         self._write_ready_fut.set_result(Falsch)
         self._write_ready_fut = Nichts
 
@@ -291,7 +291,7 @@ klasse Server(events.AbstractServer):
         self._serving_forever_fut = Nichts
 
     def __repr__(self):
-        return f'<{self.__class__.__name__} sockets={self.sockets!r}>'
+        gib f'<{self.__class__.__name__} sockets={self.sockets!r}>'
 
     def _attach(self, transport):
         assert self._sockets is nicht Nichts
@@ -311,7 +311,7 @@ klasse Server(events.AbstractServer):
 
     def _start_serving(self):
         wenn self._serving:
-            return
+            gib
         self._serving = Wahr
         fuer sock in self._sockets:
             sock.listen(self._backlog)
@@ -321,21 +321,21 @@ klasse Server(events.AbstractServer):
                 self._ssl_shutdown_timeout)
 
     def get_loop(self):
-        return self._loop
+        gib self._loop
 
     def is_serving(self):
-        return self._serving
+        gib self._serving
 
     @property
     def sockets(self):
         wenn self._sockets is Nichts:
-            return ()
-        return tuple(trsock.TransportSocket(s) fuer s in self._sockets)
+            gib ()
+        gib tuple(trsock.TransportSocket(s) fuer s in self._sockets)
 
     def close(self):
         sockets = self._sockets
         wenn sockets is Nichts:
-            return
+            gib
         self._sockets = Nichts
 
         fuer sock in sockets:
@@ -408,7 +408,7 @@ klasse Server(events.AbstractServer):
         # when both conditions have become true. To signal that this
         # has happened, self._wakeup() sets self._waiters to Nichts.
         wenn self._waiters is Nichts:
-            return
+            gib
         waiter = self._loop.create_future()
         self._waiters.append(waiter)
         await waiter
@@ -449,14 +449,14 @@ klasse BaseEventLoop(events.AbstractEventLoop):
         self._executor_shutdown_called = Falsch
 
     def __repr__(self):
-        return (
+        gib (
             f'<{self.__class__.__name__} running={self.is_running()} '
             f'closed={self.is_closed()} debug={self.get_debug()}>'
         )
 
     def create_future(self):
         """Create a Future object attached to the loop."""
-        return futures.Future(loop=self)
+        gib futures.Future(loop=self)
 
     def create_task(self, coro, **kwargs):
         """Schedule oder begin executing a coroutine object.
@@ -465,13 +465,13 @@ klasse BaseEventLoop(events.AbstractEventLoop):
         """
         self._check_closed()
         wenn self._task_factory is nicht Nichts:
-            return self._task_factory(self, coro, **kwargs)
+            gib self._task_factory(self, coro, **kwargs)
 
         task = tasks.Task(coro, loop=self, **kwargs)
         wenn task._source_traceback:
             del task._source_traceback[-1]
         try:
-            return task
+            gib task
         finally:
             # gh-128552: prevent a refcycle of
             # task.exception().__traceback__->BaseEventLoop.create_task->task
@@ -486,7 +486,7 @@ klasse BaseEventLoop(events.AbstractEventLoop):
         '(loop, coro, **kwargs)', where 'loop' will be a reference to the active
         event loop, 'coro' will be a coroutine object, und **kwargs will be
         arbitrary keyword arguments that should be passed on to Task.
-        The callable must return a Task.
+        The callable must gib a Task.
         """
         wenn factory is nicht Nichts und nicht callable(factory):
             raise TypeError('task factory must be a callable oder Nichts')
@@ -494,7 +494,7 @@ klasse BaseEventLoop(events.AbstractEventLoop):
 
     def get_task_factory(self):
         """Return a task factory, oder Nichts wenn the default one is in use."""
-        return self._task_factory
+        gib self._task_factory
 
     def _make_socket_transport(self, sock, protocol, waiter=Nichts, *,
                                extra=Nichts, server=Nichts):
@@ -574,7 +574,7 @@ klasse BaseEventLoop(events.AbstractEventLoop):
         wenn nicht len(self._asyncgens):
             # If Python version is <3.6 oder we don't have any asynchronous
             # generators alive.
-            return
+            gib
 
         closing_agens = list(self._asyncgens)
         self._asyncgens.clear()
@@ -601,7 +601,7 @@ klasse BaseEventLoop(events.AbstractEventLoop):
         """
         self._executor_shutdown_called = Wahr
         wenn self._default_executor is Nichts:
-            return
+            gib
         future = self.create_future()
         thread = threading.Thread(target=self._do_shutdown, args=(future,))
         thread.start()
@@ -716,7 +716,7 @@ klasse BaseEventLoop(events.AbstractEventLoop):
         wenn nicht future.done():
             raise RuntimeError('Event loop stopped before Future completed.')
 
-        return future.result()
+        gib future.result()
 
     def stop(self):
         """Stop running the event loop.
@@ -737,7 +737,7 @@ klasse BaseEventLoop(events.AbstractEventLoop):
         wenn self.is_running():
             raise RuntimeError("Cannot close a running event loop")
         wenn self._closed:
-            return
+            gib
         wenn self._debug:
             logger.debug("Close %r", self)
         self._closed = Wahr
@@ -751,7 +751,7 @@ klasse BaseEventLoop(events.AbstractEventLoop):
 
     def is_closed(self):
         """Returns Wahr wenn the event loop was closed."""
-        return self._closed
+        gib self._closed
 
     def __del__(self, _warn=warnings.warn):
         wenn nicht self.is_closed():
@@ -761,7 +761,7 @@ klasse BaseEventLoop(events.AbstractEventLoop):
 
     def is_running(self):
         """Returns Wahr wenn the event loop is running."""
-        return (self._thread_id is nicht Nichts)
+        gib (self._thread_id is nicht Nichts)
 
     def time(self):
         """Return the time according to the event loop's clock.
@@ -770,7 +770,7 @@ klasse BaseEventLoop(events.AbstractEventLoop):
         epoch, precision, accuracy und drift are unspecified und may
         differ per event loop.
         """
-        return time.monotonic()
+        gib time.monotonic()
 
     def call_later(self, delay, callback, *args, context=Nichts):
         """Arrange fuer a callback to be called at a given time.
@@ -794,7 +794,7 @@ klasse BaseEventLoop(events.AbstractEventLoop):
                              context=context)
         wenn timer._source_traceback:
             del timer._source_traceback[-1]
-        return timer
+        gib timer
 
     def call_at(self, when, callback, *args, context=Nichts):
         """Like call_later(), but uses an absolute time.
@@ -812,7 +812,7 @@ klasse BaseEventLoop(events.AbstractEventLoop):
             del timer._source_traceback[-1]
         heapq.heappush(self._scheduled, timer)
         timer._scheduled = Wahr
-        return timer
+        gib timer
 
     def call_soon(self, callback, *args, context=Nichts):
         """Arrange fuer a callback to be called als soon als possible.
@@ -831,7 +831,7 @@ klasse BaseEventLoop(events.AbstractEventLoop):
         handle = self._call_soon(callback, args, context)
         wenn handle._source_traceback:
             del handle._source_traceback[-1]
-        return handle
+        gib handle
 
     def _check_callback(self, callback, method):
         wenn (coroutines.iscoroutine(callback) oder
@@ -848,7 +848,7 @@ klasse BaseEventLoop(events.AbstractEventLoop):
         wenn handle._source_traceback:
             del handle._source_traceback[-1]
         self._ready.append(handle)
-        return handle
+        gib handle
 
     def _check_thread(self):
         """Check that the current thread is the thread running the event loop.
@@ -860,7 +860,7 @@ klasse BaseEventLoop(events.AbstractEventLoop):
         responsible fuer checking this condition fuer performance reasons.
         """
         wenn self._thread_id is Nichts:
-            return
+            gib
         thread_id = threading.get_ident()
         wenn thread_id != self._thread_id:
             raise RuntimeError(
@@ -879,7 +879,7 @@ klasse BaseEventLoop(events.AbstractEventLoop):
         wenn handle._source_traceback:
             del handle._source_traceback[-1]
         self._write_to_self()
-        return handle
+        gib handle
 
     def run_in_executor(self, executor, func, *args):
         self._check_closed()
@@ -894,7 +894,7 @@ klasse BaseEventLoop(events.AbstractEventLoop):
                     thread_name_prefix='asyncio'
                 )
                 self._default_executor = executor
-        return futures.wrap_future(
+        gib futures.wrap_future(
             executor.submit(func, *args), loop=self)
 
     def set_default_executor(self, executor):
@@ -924,7 +924,7 @@ klasse BaseEventLoop(events.AbstractEventLoop):
             logger.info(msg)
         sonst:
             logger.debug(msg)
-        return addrinfo
+        gib addrinfo
 
     async def getaddrinfo(self, host, port, *,
                           family=0, type=0, proto=0, flags=0):
@@ -933,11 +933,11 @@ klasse BaseEventLoop(events.AbstractEventLoop):
         sonst:
             getaddr_func = socket.getaddrinfo
 
-        return await self.run_in_executor(
+        gib await self.run_in_executor(
             Nichts, getaddr_func, host, port, family, type, proto, flags)
 
     async def getnameinfo(self, sockaddr, flags=0):
-        return await self.run_in_executor(
+        gib await self.run_in_executor(
             Nichts, socket.getnameinfo, sockaddr, flags)
 
     async def sock_sendfile(self, sock, file, offset=0, count=Nichts,
@@ -947,12 +947,12 @@ klasse BaseEventLoop(events.AbstractEventLoop):
         _check_ssl_socket(sock)
         self._check_sendfile_params(sock, file, offset, count)
         try:
-            return await self._sock_sendfile_native(sock, file,
+            gib await self._sock_sendfile_native(sock, file,
                                                     offset, count)
         except exceptions.SendfileNotAvailableError als exc:
             wenn nicht fallback:
                 raise
-        return await self._sock_sendfile_fallback(sock, file,
+        gib await self._sock_sendfile_fallback(sock, file,
                                                   offset, count)
 
     async def _sock_sendfile_native(self, sock, file, offset, count):
@@ -983,7 +983,7 @@ klasse BaseEventLoop(events.AbstractEventLoop):
                     breche  # EOF
                 await self.sock_sendall(sock, view[:read])
                 total_sent += read
-            return total_sent
+            gib total_sent
         finally:
             wenn total_sent > 0 und hasattr(file, 'seek'):
                 file.seek(offset + total_sent)
@@ -1040,7 +1040,7 @@ klasse BaseEventLoop(events.AbstractEventLoop):
                         sonst:
                             raise OSError(f"no matching local address mit {family=} found")
                 await self.sock_connect(sock, address)
-                return sock
+                gib sock
             except OSError als exc:
                 my_exceptions.append(exc)
                 raise
@@ -1205,7 +1205,7 @@ klasse BaseEventLoop(events.AbstractEventLoop):
             sock = transport.get_extra_info('socket')
             logger.debug("%r connected to %s:%r: (%r, %r)",
                          sock, host, port, transport, protocol)
-        return transport, protocol
+        gib transport, protocol
 
     async def _create_connection_transport(
             self, sock, protocol_factory, ssl,
@@ -1233,7 +1233,7 @@ klasse BaseEventLoop(events.AbstractEventLoop):
             transport.close()
             raise
 
-        return transport, protocol
+        gib transport, protocol
 
     async def sendfile(self, transport, file, offset=0, count=Nichts,
                        *, fallback=Wahr):
@@ -1248,7 +1248,7 @@ klasse BaseEventLoop(events.AbstractEventLoop):
         offset tells von where to start reading the file. If specified,
         count is the total number of bytes to transmit als opposed to
         sending the file until EOF is reached. File position is updated on
-        return oder also in case of error in which case file.tell()
+        gib oder also in case of error in which case file.tell()
         can be used to figure out the number of bytes
         which were sent.
 
@@ -1268,7 +1268,7 @@ klasse BaseEventLoop(events.AbstractEventLoop):
                 f"sendfile is nicht supported fuer transport {transport!r}")
         wenn mode is constants._SendfileMode.TRY_NATIVE:
             try:
-                return await self._sendfile_native(transport, file,
+                gib await self._sendfile_native(transport, file,
                                                    offset, count)
             except exceptions.SendfileNotAvailableError als exc:
                 wenn nicht fallback:
@@ -1279,7 +1279,7 @@ klasse BaseEventLoop(events.AbstractEventLoop):
                 f"fallback is disabled und native sendfile is nicht "
                 f"supported fuer transport {transport!r}")
 
-        return await self._sendfile_fallback(transport, file,
+        gib await self._sendfile_fallback(transport, file,
                                              offset, count)
 
     async def _sendfile_native(self, transp, file, offset, count):
@@ -1298,11 +1298,11 @@ klasse BaseEventLoop(events.AbstractEventLoop):
                 wenn count:
                     blocksize = min(count - total_sent, blocksize)
                     wenn blocksize <= 0:
-                        return total_sent
+                        gib total_sent
                 view = memoryview(buf)[:blocksize]
                 read = await self.run_in_executor(Nichts, file.readinto, view)
                 wenn nicht read:
-                    return total_sent  # EOF
+                    gib total_sent  # EOF
                 transp.write(view[:read])
                 await proto.drain()
                 total_sent += read
@@ -1357,7 +1357,7 @@ klasse BaseEventLoop(events.AbstractEventLoop):
             resume_cb.cancel()
             raise
 
-        return ssl_protocol._app_transport
+        gib ssl_protocol._app_transport
 
     async def create_datagram_endpoint(self, protocol_factory,
                                        local_addr=Nichts, remote_addr=Nichts, *,
@@ -1491,7 +1491,7 @@ klasse BaseEventLoop(events.AbstractEventLoop):
             transport.close()
             raise
 
-        return transport, protocol
+        gib transport, protocol
 
     async def _ensure_resolved(self, address, *,
                                family=0, type=socket.SOCK_STREAM,
@@ -1500,9 +1500,9 @@ klasse BaseEventLoop(events.AbstractEventLoop):
         info = _ipaddr_info(host, port, family, type, proto, *address[2:])
         wenn info is nicht Nichts:
             # "host" is already a resolved IP.
-            return [info]
+            gib [info]
         sonst:
-            return await loop.getaddrinfo(host, port, family=family, type=type,
+            gib await loop.getaddrinfo(host, port, family=family, type=type,
                                           proto=proto, flags=flags)
 
     async def _create_server_getaddrinfo(self, host, port, family, flags):
@@ -1511,7 +1511,7 @@ klasse BaseEventLoop(events.AbstractEventLoop):
                                             flags=flags, loop=self)
         wenn nicht infos:
             raise OSError(f'getaddrinfo({host!r}) returned empty list')
-        return infos
+        gib infos
 
     async def create_server(
             self, protocol_factory, host=Nichts, port=Nichts,
@@ -1656,7 +1656,7 @@ klasse BaseEventLoop(events.AbstractEventLoop):
 
         wenn self._debug:
             logger.info("%r is serving", server)
-        return server
+        gib server
 
     async def connect_accepted_socket(
             self, protocol_factory, sock,
@@ -1685,7 +1685,7 @@ klasse BaseEventLoop(events.AbstractEventLoop):
             # the old socket und creates a new SSL socket
             sock = transport.get_extra_info('socket')
             logger.debug("%r handled: (%r, %r)", sock, transport, protocol)
-        return transport, protocol
+        gib transport, protocol
 
     async def connect_read_pipe(self, protocol_factory, pipe):
         protocol = protocol_factory()
@@ -1701,7 +1701,7 @@ klasse BaseEventLoop(events.AbstractEventLoop):
         wenn self._debug:
             logger.debug('Read pipe %r connected: (%r, %r)',
                          pipe.fileno(), transport, protocol)
-        return transport, protocol
+        gib transport, protocol
 
     async def connect_write_pipe(self, protocol_factory, pipe):
         protocol = protocol_factory()
@@ -1717,7 +1717,7 @@ klasse BaseEventLoop(events.AbstractEventLoop):
         wenn self._debug:
             logger.debug('Write pipe %r connected: (%r, %r)',
                          pipe.fileno(), transport, protocol)
-        return transport, protocol
+        gib transport, protocol
 
     def _log_subprocess(self, msg, stdin, stdout, stderr):
         info = [msg]
@@ -1766,7 +1766,7 @@ klasse BaseEventLoop(events.AbstractEventLoop):
             protocol, cmd, Wahr, stdin, stdout, stderr, bufsize, **kwargs)
         wenn self._debug und debug_log is nicht Nichts:
             logger.info('%s: %r', debug_log, transport)
-        return transport, protocol
+        gib transport, protocol
 
     async def subprocess_exec(self, protocol_factory, program, *args,
                               stdin=subprocess.PIPE, stdout=subprocess.PIPE,
@@ -1800,12 +1800,12 @@ klasse BaseEventLoop(events.AbstractEventLoop):
             bufsize, **kwargs)
         wenn self._debug und debug_log is nicht Nichts:
             logger.info('%s: %r', debug_log, transport)
-        return transport, protocol
+        gib transport, protocol
 
     def get_exception_handler(self):
         """Return an exception handler, oder Nichts wenn the default one is in use.
         """
-        return self._exception_handler
+        gib self._exception_handler
 
     def set_exception_handler(self, handler):
         """Set handler als the new event loop exception handler.
@@ -2048,7 +2048,7 @@ klasse BaseEventLoop(events.AbstractEventLoop):
 
     def _set_coroutine_origin_tracking(self, enabled):
         wenn bool(enabled) == bool(self._coroutine_origin_tracking_enabled):
-            return
+            gib
 
         wenn enabled:
             self._coroutine_origin_tracking_saved_depth = (
@@ -2062,7 +2062,7 @@ klasse BaseEventLoop(events.AbstractEventLoop):
         self._coroutine_origin_tracking_enabled = enabled
 
     def get_debug(self):
-        return self._debug
+        gib self._debug
 
     def set_debug(self, enabled):
         self._debug = enabled

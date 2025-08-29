@@ -39,7 +39,7 @@ klasse TestBase:
         """
         Check wenn the list is sorted in ascending order (non-decreasing).
         """
-        return all(lst[i - 1] <= lst[i] fuer i in range(1, len(lst)))
+        gib all(lst[i - 1] <= lst[i] fuer i in range(1, len(lst)))
 
 
 @threading_helper.requires_working_threading()

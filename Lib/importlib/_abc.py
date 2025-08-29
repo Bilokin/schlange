@@ -11,11 +11,11 @@ klasse Loader(metaclass=abc.ABCMeta):
         """Return a module to initialize und into which to load.
 
         This method should raise ImportError wenn anything prevents it
-        von creating a new module.  It may return Nichts to indicate
+        von creating a new module.  It may gib Nichts to indicate
         that the spec should create the new module.
         """
         # By default, defer to default semantics fuer the new module.
-        return Nichts
+        gib Nichts
 
     # We don't define exec_module() here since that would breche
     # hasattr checks we do to support backward compatibility.
@@ -36,4 +36,4 @@ klasse Loader(metaclass=abc.ABCMeta):
         wenn nicht hasattr(self, 'exec_module'):
             raise ImportError
         # Warning implemented in _load_module_shim().
-        return _bootstrap._load_module_shim(self, fullname)
+        gib _bootstrap._load_module_shim(self, fullname)

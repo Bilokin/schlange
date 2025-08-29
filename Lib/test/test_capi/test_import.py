@@ -233,7 +233,7 @@ klasse ImportTests(unittest.TestCase):
             self.assertEqual(module.attr, 1)
         finally:
             sys.modules.pop(name, Nichts)
-        return module.__spec__.origin
+        gib module.__spec__.origin
 
     def test_executecodemodule(self):
         # Test PyImport_ExecCodeModule()

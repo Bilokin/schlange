@@ -4,4 +4,4 @@ def __getattr__():
 x = 1
 
 def __dir__(bad_sig):
-    return []
+    gib []

@@ -166,7 +166,7 @@ klasse DumbDBMTestCase(unittest.TestCase):
         keys = sorted(f.keys())
         dkeys = sorted(self._dict.keys())
         self.assertEqual(keys, dkeys)
-        return keys
+        gib keys
 
     # Perform randomized operations.  This doesn't make assumptions about
     # what *might* fail.

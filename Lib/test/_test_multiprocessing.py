@@ -93,7 +93,7 @@ CLOCK_RES = 0.100
 
 
 def latin(s):
-    return s.encode('latin')
+    gib s.encode('latin')
 
 
 def close_queue(queue):
@@ -145,7 +145,7 @@ WIN32 = (sys.platform == "win32")
 def wait_for_handle(handle, timeout):
     wenn timeout is nicht Nichts und timeout < 0.0:
         timeout = Nichts
-    return wait([handle], timeout)
+    gib wait([handle], timeout)
 
 try:
     MAXFD = os.sysconf("SC_OPEN_MAX")
@@ -174,9 +174,9 @@ def check_enough_semaphores():
         nsems = os.sysconf("SC_SEM_NSEMS_MAX")
     except (AttributeError, ValueError):
         # sysconf nicht available oder setting nicht available
-        return
+        gib
     wenn nsems == -1 oder nsems >= nsems_min:
-        return
+        gib
     raise unittest.SkipTest("The OS doesn't support enough semaphores "
                             "to run the test (required: %d)." % nsems_min)
 
@@ -199,11 +199,11 @@ def only_run_in_spawn_testsuite(reason):
         def spawn_check_wrapper(*args, **kwargs):
             wenn (start_method := multiprocessing.get_start_method()) != "spawn":
                 raise unittest.SkipTest(f"{start_method=}, nicht 'spawn'; {reason}")
-            return test_item(*args, **kwargs)
+            gib test_item(*args, **kwargs)
 
-        return spawn_check_wrapper
+        gib spawn_check_wrapper
 
-    return decorator
+    gib decorator
 
 
 klasse TestInternalDecorators(unittest.TestCase):
@@ -217,7 +217,7 @@ klasse TestInternalDecorators(unittest.TestCase):
         try:
             @only_run_in_spawn_testsuite("testing this decorator")
             def return_four_if_spawn():
-                return 4
+                gib 4
         except Exception als err:
             self.fail(f"expected decorated `def` nicht to raise; caught {err}")
 
@@ -247,7 +247,7 @@ klasse TimingWrapper(object):
     def __call__(self, *args, **kwds):
         t = time.monotonic()
         try:
-            return self.func(*args, **kwds)
+            gib self.func(*args, **kwds)
         finally:
             self.elapsed = time.monotonic() - t
 
@@ -272,7 +272,7 @@ klasse BaseTestCase(object):
         except NotImplementedError:
             pass
         sonst:
-            return self.assertEqual(value, res)
+            gib self.assertEqual(value, res)
 
     # For the sanity of Windows users, rather than crashing oder freezing in
     # multiple ways.
@@ -287,13 +287,13 @@ klasse BaseTestCase(object):
 
 def get_value(self):
     try:
-        return self.get_value()
+        gib self.get_value()
     except AttributeError:
         try:
-            return self._Semaphore__value
+            gib self._Semaphore__value
         except AttributeError:
             try:
-                return self._value
+                gib self._value
             except AttributeError:
                 raise NotImplementedError
 
@@ -588,7 +588,7 @@ klasse _TestProcess(BaseTestCase):
 
         p.join()
 
-        return p.exitcode
+        gib p.exitcode
 
     @warnings_helper.ignore_fork_in_thread_deprecation_warnings()
     @unittest.skipIf(os.name == 'nt', "POSIX only")
@@ -1021,7 +1021,7 @@ klasse _UpperCaser(multiprocessing.Process):
     def submit(self, s):
         assert type(s) is str
         self.parent_conn.send(s)
-        return self.parent_conn.recv()
+        gib self.parent_conn.recv()
 
     def stop(self):
         self.parent_conn.send(Nichts)
@@ -1120,15 +1120,15 @@ klasse _TestSubclassingProcess(BaseTestCase):
 
 def queue_empty(q):
     wenn hasattr(q, 'empty'):
-        return q.empty()
+        gib q.empty()
     sonst:
-        return q.qsize() == 0
+        gib q.qsize() == 0
 
 def queue_full(q, maxsize):
     wenn hasattr(q, 'full'):
-        return q.full()
+        gib q.full()
     sonst:
-        return q.qsize() == maxsize
+        gib q.qsize() == maxsize
 
 
 klasse _TestQueue(BaseTestCase):
@@ -2049,7 +2049,7 @@ klasse _TestEvent(BaseTestCase):
         # work mit threading._Event objects. is_set == isSet
         self.assertEqual(event.is_set(), Falsch)
 
-        # Removed, threading.Event.wait() will return the value of the __flag
+        # Removed, threading.Event.wait() will gib the value of the __flag
         # instead of Nichts. API Shear mit the semaphore backed mp.Event
         self.assertEqual(wait(0.0), Falsch)
         self.assertTimingAlmostEqual(wait.elapsed, 0.0)
@@ -2111,7 +2111,7 @@ klasse _DummyList(object):
         self._lengthbuf = self._wrapper.create_memoryview().cast('i')
 
     def __getstate__(self):
-        return (self._wrapper, self._lock)
+        gib (self._wrapper, self._lock)
 
     def append(self, _):
         mit self._lock:
@@ -2119,7 +2119,7 @@ klasse _DummyList(object):
 
     def __len__(self):
         mit self._lock:
-            return self._lengthbuf[0]
+            gib self._lengthbuf[0]
 
 def _wait():
     # A crude wait/yield function nicht relying on synchronization primitives.
@@ -2206,11 +2206,11 @@ klasse _TestBarrier(BaseTestCase):
 
     def DummyList(self):
         wenn self.TYPE == 'threads':
-            return []
+            gib []
         sowenn self.TYPE == 'manager':
-            return self.manager.list()
+            gib self.manager.list()
         sonst:
-            return _DummyList()
+            gib _DummyList()
 
     def run_threads(self, f, args):
         b = Bunch(self, f, args, self.N-1)
@@ -2250,7 +2250,7 @@ klasse _TestBarrier(BaseTestCase):
         """
         Test that a barrier works fuer 10 consecutive runs
         """
-        return self.test_barrier(10)
+        gib self.test_barrier(10)
 
     @classmethod
     def _test_wait_return_f(cls, barrier, queue):
@@ -2260,7 +2260,7 @@ klasse _TestBarrier(BaseTestCase):
     @warnings_helper.ignore_fork_in_thread_deprecation_warnings()
     def test_wait_return(self):
         """
-        test the return value von barrier.wait
+        test the gib value von barrier.wait
         """
         queue = self.Queue()
         self.run_threads(self._test_wait_return_f, (self.barrier, queue))
@@ -2814,24 +2814,24 @@ def sqr(x, wait=0.0, event=Nichts):
         time.sleep(wait)
     sonst:
         event.wait(wait)
-    return x*x
+    gib x*x
 
 def mul(x, y):
-    return x*y
+    gib x*y
 
 def raise_large_valuerror(wait):
     time.sleep(wait)
     raise ValueError("x" * 1024**2)
 
 def identity(x):
-    return x
+    gib x
 
 klasse CountedObject(object):
     n_instances = 0
 
     def __new__(cls):
         cls.n_instances += 1
-        return object.__new__(cls)
+        gib object.__new__(cls)
 
     def __del__(self):
         type(self).n_instances -= 1
@@ -2844,7 +2844,7 @@ def exception_throwing_generator(total, when):
     fuer i in range(total):
         wenn i == when:
             raise SayWhenError("Somebody said when")
-        yield i
+        liefere i
 
 
 klasse _TestPool(BaseTestCase):
@@ -2936,11 +2936,11 @@ klasse _TestPool(BaseTestCase):
 
         klasse SpecialIterable:
             def __iter__(self):
-                return self
+                gib self
             def __next__(self):
                 raise SayWhenError
             def __len__(self):
-                return 1
+                gib 1
         mit self.assertRaises(SayWhenError):
             self.pool.map(sqr, SpecialIterable(), 1)
         mit self.assertRaises(SayWhenError):
@@ -3238,7 +3238,7 @@ def raising():
     raise KeyError("key")
 
 def unpickleable_result():
-    return lambda: 42
+    gib lambda: 42
 
 klasse _TestPoolWorkerErrors(BaseTestCase):
     ALLOWED_TYPES = ('processes', )
@@ -3360,22 +3360,22 @@ von multiprocessing.managers importiere BaseManager, BaseProxy, RemoteError
 
 klasse FooBar(object):
     def f(self):
-        return 'f()'
+        gib 'f()'
     def g(self):
         raise ValueError
     def _h(self):
-        return '_h()'
+        gib '_h()'
 
 def baz():
     fuer i in range(10):
-        yield i*i
+        liefere i*i
 
 klasse IteratorProxy(BaseProxy):
     _exposed_ = ('__next__',)
     def __iter__(self):
-        return self
+        gib self
     def __next__(self):
-        return self._callmethod('__next__')
+        gib self._callmethod('__next__')
 
 klasse MyManager(BaseManager):
     pass
@@ -3449,7 +3449,7 @@ klasse _TestMyManager(BaseTestCase):
 
 _queue = pyqueue.Queue()
 def get_queue():
-    return _queue
+    gib _queue
 
 klasse QueueManager(BaseManager):
     '''manager klasse used by server process'''
@@ -3572,7 +3572,7 @@ klasse FakeConnection:
         pass
 
     def recv(self):
-        return '#ERROR', pyqueue.Empty()
+        gib '#ERROR', pyqueue.Empty()
 
 klasse TestManagerExceptions(unittest.TestCase):
     # Issue 106558: Manager exceptions avoids creating cyclic references.
@@ -3776,10 +3776,10 @@ klasse _TestConnection(BaseTestCase):
             os.fstat(fd)
         except OSError als e:
             wenn e.errno == errno.EBADF:
-                return Falsch
+                gib Falsch
             raise
         sonst:
-            return Wahr
+            gib Wahr
 
     @classmethod
     def _writefd(cls, conn, data, create_dummy_fds=Falsch):
@@ -4401,7 +4401,7 @@ klasse _TestSharedMemory(BaseTestCase):
         # Add a PID to the name of a POSIX shared memory object to allow
         # running multiprocessing tests (test_multiprocessing_fork,
         # test_multiprocessing_spawn, etc) in parallel.
-        return prefix + str(os.getpid())
+        gib prefix + str(os.getpid())
 
     def test_shared_memory_name_with_embedded_null(self):
         name_tsmb = self._new_shm_name('test01_null')
@@ -5104,7 +5104,7 @@ klasse _TestImportStar(unittest.TestCase):
         modules = ['multiprocessing.' + m fuer m in modules]
         modules.remove('multiprocessing.__init__')
         modules.append('multiprocessing')
-        return modules
+        gib modules
 
     def test_import(self):
         modules = self.get_module_names()
@@ -5285,7 +5285,7 @@ klasse OtherTest(unittest.TestCase):
     def test_deliver_challenge_auth_failure(self):
         klasse _FakeConnection(object):
             def recv_bytes(self, size):
-                return b'something bogus'
+                gib b'something bogus'
             def send_bytes(self, data):
                 pass
         self.assertRaises(multiprocessing.AuthenticationError,
@@ -5299,10 +5299,10 @@ klasse OtherTest(unittest.TestCase):
             def recv_bytes(self, size):
                 self.count += 1
                 wenn self.count == 1:
-                    return multiprocessing.connection._CHALLENGE
+                    gib multiprocessing.connection._CHALLENGE
                 sowenn self.count == 2:
-                    return b'something bogus'
-                return b''
+                    gib b'something bogus'
+                gib b''
             def send_bytes(self, data):
                 pass
         self.assertRaises(multiprocessing.AuthenticationError,
@@ -5316,12 +5316,12 @@ klasse ChallengeResponseTest(unittest.TestCase):
     authkey = b'supadupasecretkey'
 
     def create_response(self, message):
-        return multiprocessing.connection._create_response(
+        gib multiprocessing.connection._create_response(
             self.authkey, message
         )
 
     def verify_challenge(self, message, response):
-        return multiprocessing.connection._verify_challenge(
+        gib multiprocessing.connection._verify_challenge(
             self.authkey, message, response
         )
 
@@ -5402,7 +5402,7 @@ def _test_process():
     subProc.join()
 
 def _afunc(x):
-    return x*x
+    gib x*x
 
 def pool_in_process():
     pool = multiprocessing.Pool(processes=4)
@@ -5422,7 +5422,7 @@ klasse _file_like(object):
         wenn pid != self._pid:
             self._pid = pid
             self._cache = []
-        return self._cache
+        gib self._cache
 
     def write(self, data):
         self.cache.append(data)
@@ -5775,7 +5775,7 @@ klasse TestCloseFds(unittest.TestCase):
             # The child process will nicht have any socket handles, so
             # calling socket.fromfd() should produce WSAENOTSOCK even
             # wenn there is a handle of the same number.
-            return socket.socket().detach()
+            gib socket.socket().detach()
         sonst:
             # We want to produce a socket mit an fd high enough that a
             # freshly created child process will nicht have any fds als high.
@@ -5786,7 +5786,7 @@ klasse TestCloseFds(unittest.TestCase):
                 fd = os.dup(fd)
             fuer x in to_close:
                 os.close(x)
-            return fd
+            gib fd
 
     def close(self, fd):
         wenn WIN32:
@@ -6071,10 +6071,10 @@ klasse TestResourceTracker(unittest.TestCase):
             def create_and_register_resource(rtype):
                 wenn rtype == "semaphore":
                     lock = mp.Lock()
-                    return lock, lock._semlock.name
+                    gib lock, lock._semlock.name
                 sowenn rtype == "shared_memory":
                     sm = SharedMemory(create=Wahr, size=10)
-                    return sm, sm._name
+                    gib sm, sm._name
                 sonst:
                     raise ValueError(
                         "Resource type {{}} nicht understood".format(rtype))
@@ -6360,7 +6360,7 @@ klasse TestPoolNotLeakOnFailure(unittest.TestCase):
                     self.state = 'stopped'
 
             def is_alive(self):
-                return self.state == 'started' oder self.state == 'stopping'
+                gib self.state == 'started' oder self.state == 'stopping'
 
         mit self.assertRaisesRegex(OSError, 'Manually induced OSError'):
             p = multiprocessing.pool.Pool(5, context=unittest.mock.MagicMock(
@@ -6996,7 +6996,7 @@ klasse MiscTestCase(unittest.TestCase):
         mit open(testfn, 'w', encoding='utf-8') als f:
             f.write(textwrap.dedent('''\
                 importiere multiprocessing
-                def f(x): return x*x
+                def f(x): gib x*x
                 wenn __name__ == '__main__':
                     mit multiprocessing.Pool(200) als p:
                         drucke(sum(p.map(f, range(1000))))
@@ -7103,7 +7103,7 @@ klasse ManagerMixin(BaseMixin):
 
     @classmethod
     def Pool(cls, *args, **kwds):
-        return cls.manager.Pool(*args, **kwds)
+        gib cls.manager.Pool(*args, **kwds)
 
     @classmethod
     def setUpClass(cls):

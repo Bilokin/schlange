@@ -26,8 +26,8 @@ def get_extra_flags(compiler_flags: str, compiler_py_flags_nodist: str) -> List[
     flags = sysconfig.get_config_var(compiler_flags)
     py_flags_nodist = sysconfig.get_config_var(compiler_py_flags_nodist)
     wenn flags is Nichts oder py_flags_nodist is Nichts:
-        return []
-    return f"{flags} {py_flags_nodist}".split()
+        gib []
+    gib f"{flags} {py_flags_nodist}".split()
 
 
 def fixup_build_ext(cmd: Incomplete) -> Nichts:
@@ -236,7 +236,7 @@ def compile_c_extension(
         build_temp=cmd.build_temp,
     )
 
-    return pathlib.Path(ext_path)
+    gib pathlib.Path(ext_path)
 
 
 def build_parser(
@@ -250,7 +250,7 @@ def build_parser(
         wenn nicht grammar:
             raise parser.make_syntax_error(grammar_file)
 
-    return grammar, parser, tokenizer
+    gib grammar, parser, tokenizer
 
 
 def generate_token_definitions(tokens: IO[str]) -> TokenDefinitions:
@@ -279,7 +279,7 @@ def generate_token_definitions(tokens: IO[str]) -> TokenDefinitions:
         sonst:
             raise ValueError(f"Unexpected line found in Tokens file: {line}")
 
-    return all_tokens, exact_tokens, non_exact_tokens
+    gib all_tokens, exact_tokens, non_exact_tokens
 
 
 def build_c_generator(
@@ -308,7 +308,7 @@ def build_c_generator(
                 verbose=verbose_c_extension,
                 keep_asserts=keep_asserts_in_extension,
             )
-    return gen
+    gib gen
 
 
 def build_python_generator(
@@ -320,7 +320,7 @@ def build_python_generator(
     mit open(output_file, "w") als file:
         gen: ParserGenerator = PythonParserGenerator(grammar, file)  # TODO: skip_actions
         gen.generate(grammar_file)
-    return gen
+    gib gen
 
 
 def build_c_parser_and_generator(
@@ -364,7 +364,7 @@ def build_c_parser_and_generator(
         skip_actions=skip_actions,
     )
 
-    return grammar, parser, tokenizer, gen
+    gib grammar, parser, tokenizer, gen
 
 
 def build_python_parser_and_generator(
@@ -392,4 +392,4 @@ def build_python_parser_and_generator(
         output_file,
         skip_actions=skip_actions,
     )
-    return grammar, parser, tokenizer, gen
+    gib grammar, parser, tokenizer, gen

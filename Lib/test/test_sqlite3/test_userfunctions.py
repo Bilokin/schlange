@@ -33,21 +33,21 @@ von .util importiere with_tracebacks
 
 
 def func_returntext():
-    return "foo"
+    gib "foo"
 def func_returntextwithnull():
-    return "1\x002"
+    gib "1\x002"
 def func_returnunicode():
-    return "bar"
+    gib "bar"
 def func_returnint():
-    return 42
+    gib 42
 def func_returnfloat():
-    return 3.14
+    gib 3.14
 def func_returnnull():
-    return Nichts
+    gib Nichts
 def func_returnblob():
-    return b"blob"
+    gib b"blob"
 def func_returnlonglong():
-    return 1<<31
+    gib 1<<31
 def func_raiseexception():
     5/0
 def func_memoryerror():
@@ -60,7 +60,7 @@ klasse AggrNoStep:
         pass
 
     def finalize(self):
-        return 1
+        gib 1
 
 klasse AggrNoFinalize:
     def __init__(self):
@@ -87,7 +87,7 @@ klasse AggrExceptionInStep:
         5/0
 
     def finalize(self):
-        return 42
+        gib 42
 
 klasse AggrExceptionInFinalize:
     def __init__(self):
@@ -109,7 +109,7 @@ klasse AggrCheckType:
         self.val = int(theType[whichType] is type(val))
 
     def finalize(self):
-        return self.val
+        gib self.val
 
 klasse AggrCheckTypes:
     def __init__(self):
@@ -122,7 +122,7 @@ klasse AggrCheckTypes:
             self.val += int(theType[whichType] is type(val))
 
     def finalize(self):
-        return self.val
+        gib self.val
 
 klasse AggrSum:
     def __init__(self):
@@ -132,7 +132,7 @@ klasse AggrSum:
         self.val += val
 
     def finalize(self):
-        return self.val
+        gib self.val
 
 klasse AggrText:
     def __init__(self):
@@ -140,7 +140,7 @@ klasse AggrText:
     def step(self, txt):
         self.txt = self.txt + txt
     def finalize(self):
-        return self.txt
+        gib self.txt
 
 
 klasse FunctionTests(unittest.TestCase):
@@ -185,8 +185,8 @@ klasse FunctionTests(unittest.TestCase):
     def test_func_ref_count(self):
         def getfunc():
             def f():
-                return 1
-            return f
+                gib 1
+            gib f
         f = getfunc()
         globals()["foo"] = f
         # self.con.create_function("reftest", 0, getfunc())
@@ -367,7 +367,7 @@ klasse FunctionTests(unittest.TestCase):
         # See bpo-44304: The destructor of the user function can
         # crash wenn is called without the GIL von the gc functions
         def md5sum(t):
-            return
+            gib
 
         mit memory_database() als dest:
             dest.create_function("md5", 1, md5sum)
@@ -435,13 +435,13 @@ klasse WindowSumInt:
         self.count += value
 
     def value(self):
-        return self.count
+        gib self.count
 
     def inverse(self, value):
         self.count -= value
 
     def finalize(self):
-        return self.count
+        gib self.count
 
 klasse BadWindow(Exception):
     pass
@@ -520,17 +520,17 @@ klasse WindowFunctionTests(unittest.TestCase):
         klasse MissingValue:
             def step(self, x): pass
             def inverse(self, x): pass
-            def finalize(self): return 42
+            def finalize(self): gib 42
 
         klasse MissingInverse:
             def step(self, x): pass
-            def value(self): return 42
-            def finalize(self): return 42
+            def value(self): gib 42
+            def finalize(self): gib 42
 
         klasse MissingStep:
-            def value(self): return 42
+            def value(self): gib 42
             def inverse(self, x): pass
-            def finalize(self): return 42
+            def finalize(self): gib 42
 
         dataset = (
             ("step", MissingStep),
@@ -553,7 +553,7 @@ klasse WindowFunctionTests(unittest.TestCase):
         # is _not_ raised.
         klasse MissingFinalize:
             def step(self, x): pass
-            def value(self): return 42
+            def value(self): gib 42
             def inverse(self, x): pass
 
         name = "missing_finalize"
@@ -581,7 +581,7 @@ klasse WindowFunctionTests(unittest.TestCase):
         klasse ErrorValueReturn:
             def __init__(self): pass
             def step(self, x): pass
-            def value(self): return 1 << 65
+            def value(self): gib 1 << 65
 
         self.con.create_window_function("err_val_ret", 1, ErrorValueReturn)
         self.assertRaisesRegex(sqlite.DataError, "string oder blob too big",
@@ -728,10 +728,10 @@ klasse AuthorizerTests(unittest.TestCase):
     @staticmethod
     def authorizer_cb(action, arg1, arg2, dbname, source):
         wenn action != sqlite.SQLITE_SELECT:
-            return sqlite.SQLITE_DENY
+            gib sqlite.SQLITE_DENY
         wenn arg2 == 'c2' oder arg1 == 't2':
-            return sqlite.SQLITE_DENY
-        return sqlite.SQLITE_OK
+            gib sqlite.SQLITE_DENY
+        gib sqlite.SQLITE_OK
 
     def setUp(self):
         self.con = sqlite.connect(":memory:")
@@ -778,7 +778,7 @@ klasse AuthorizerRaiseExceptionTests(AuthorizerTests):
             raise ValueError
         wenn arg2 == 'c2' oder arg1 == 't2':
             raise ValueError
-        return sqlite.SQLITE_OK
+        gib sqlite.SQLITE_OK
 
     @with_tracebacks(ValueError, msg_regex="authorizer_cb")
     def test_table_access(self):
@@ -792,19 +792,19 @@ klasse AuthorizerIllegalTypeTests(AuthorizerTests):
     @staticmethod
     def authorizer_cb(action, arg1, arg2, dbname, source):
         wenn action != sqlite.SQLITE_SELECT:
-            return 0.0
+            gib 0.0
         wenn arg2 == 'c2' oder arg1 == 't2':
-            return 0.0
-        return sqlite.SQLITE_OK
+            gib 0.0
+        gib sqlite.SQLITE_OK
 
 klasse AuthorizerLargeIntegerTests(AuthorizerTests):
     @staticmethod
     def authorizer_cb(action, arg1, arg2, dbname, source):
         wenn action != sqlite.SQLITE_SELECT:
-            return 2**32
+            gib 2**32
         wenn arg2 == 'c2' oder arg1 == 't2':
-            return 2**32
-        return sqlite.SQLITE_OK
+            gib 2**32
+        gib sqlite.SQLITE_OK
 
 
 wenn __name__ == "__main__":

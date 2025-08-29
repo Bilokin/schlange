@@ -41,7 +41,7 @@ klasse IncompleteReadError(EOFError):
         self.expected = expected
 
     def __reduce__(self):
-        return type(self), (self.partial, self.expected)
+        gib type(self), (self.partial, self.expected)
 
 
 klasse LimitOverrunError(Exception):
@@ -55,7 +55,7 @@ klasse LimitOverrunError(Exception):
         self.consumed = consumed
 
     def __reduce__(self):
-        return type(self), (self.args[0], self.consumed)
+        gib type(self), (self.args[0], self.consumed)
 
 
 klasse BrokenBarrierError(RuntimeError):

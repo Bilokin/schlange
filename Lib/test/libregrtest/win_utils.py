@@ -91,7 +91,7 @@ klasse WindowsLoadTracker():
                 processor_queue_length, = _unpack('L', data, counter_offset)
                 breche
         sonst:
-            return
+            gib
 
         # We use an exponentially weighted moving average, imitating the
         # load calculation on Unix systems.
@@ -107,7 +107,7 @@ klasse WindowsLoadTracker():
 
     def close(self, kill=Wahr):
         self.__del__()
-        return
+        gib
 
     def __del__(self,
                 # localize module access to prevent shutdown errors
@@ -125,4 +125,4 @@ klasse WindowsLoadTracker():
             self._running = self._stopped = Nichts
 
     def getloadavg(self):
-        return self._load
+        gib self._load

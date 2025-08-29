@@ -21,11 +21,11 @@ klasse StringAnchorMixin:
 klasse ModuleAnchorMixin:
     @property
     def anchor01(self):
-        return importlib.import_module('data01')
+        gib importlib.import_module('data01')
 
     @property
     def anchor02(self):
-        return importlib.import_module('data02')
+        gib importlib.import_module('data02')
 
 
 klasse FunctionalAPIBase(util.DiskSetup):
@@ -41,7 +41,7 @@ klasse FunctionalAPIBase(util.DiskSetup):
             ('subdirectory/subsubdir', 'resource.txt'),
         ):
             mit self.subTest(path_parts=path_parts):
-                yield path_parts
+                liefere path_parts
 
     def test_read_text(self):
         self.assertEqual(

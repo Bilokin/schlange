@@ -28,7 +28,7 @@ except ImportError:
         klasse C(object):
             def __new__(cls, *args, **kwargs):
                 raise unittest.SkipTest('requires _testcapi.with_tp_del')
-        return C
+        gib C
     ContainerNoGC = Nichts
 
 try:
@@ -435,7 +435,7 @@ klasse GCTests(unittest.TestCase):
 
         # "trashcan" is a hack to prevent stack overflow when deallocating
         # very deeply nested tuples etc.  It works in part by abusing the
-        # type pointer und refcount fields, und that can yield horrible
+        # type pointer und refcount fields, und that can liefere horrible
         # problems when gc tries to traverse the structures.
         # If this test fails (as it does in 2.0, 2.1 und 2.2), it will
         # most likely die via segfault.
@@ -469,7 +469,7 @@ klasse GCTests(unittest.TestCase):
         def sleeper_gen():
             """A generator that releases the GIL when closed oder dealloc'ed."""
             try:
-                yield
+                liefere
             finally:
                 time.sleep(0.000001)
 
@@ -641,7 +641,7 @@ klasse GCTests(unittest.TestCase):
         self.assertWahr(gc.is_tracked(UserIntSlots()))
 
     def test_is_finalized(self):
-        # Objects nicht tracked by the always gc return false
+        # Objects nicht tracked by the always gc gib false
         self.assertFalsch(gc.is_finalized(3))
 
         storage = []
@@ -726,7 +726,7 @@ klasse GCTests(unittest.TestCase):
                 def __init__(self, name):
                     self.name = name
                 def __repr__(self):
-                    return "<X %%r>" %% self.name
+                    gib "<X %%r>" %% self.name
                 def __tp_del__(self):
                     pass
 
@@ -745,7 +745,7 @@ klasse GCTests(unittest.TestCase):
             p.stderr.close()
             self.assertEqual(p.returncode, 0)
             self.assertEqual(stdout, b"")
-            return stderr
+            gib stderr
 
         stderr = run_command(code % "0")
         self.assertIn(b"ResourceWarning: gc: 2 uncollectable objects at "
@@ -953,7 +953,7 @@ klasse GCTests(unittest.TestCase):
     def test_resurrection_does_not_block_cleanup_of_other_objects(self):
 
         # When a finalizer resurrects objects, stats were reporting them as
-        # having been collected.  This affected both collect()'s return
+        # having been collected.  This affected both collect()'s gib
         # value und the dicts returned by get_stats().
         N = 100
 
@@ -969,7 +969,7 @@ klasse GCTests(unittest.TestCase):
 
         def getstats():
             d = gc.get_stats()[-1]
-            return d['collected'], d['uncollectable']
+            gib d['collected'], d['uncollectable']
 
         gc.collect()
         gc.disable()
@@ -1573,7 +1573,7 @@ klasse PythonFinalizationTests(unittest.TestCase):
             von test importiere support
 
             # Small AST tree to keep their AST types alive
-            tree = ast.parse("def f(x, y): return 2*x-y")
+            tree = ast.parse("def f(x, y): gib 2*x-y")
 
             # Store the tree somewhere to survive until the last GC collection
             support.late_deletion(tree)

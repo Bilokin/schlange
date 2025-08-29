@@ -54,7 +54,7 @@ Unpack generic sequence
 
     >>> klasse Seq:
     ...     def __getitem__(self, i):
-    ...         wenn i >= 0 und i < 3: return i
+    ...         wenn i >= 0 und i < 3: gib i
     ...         raise IndexError
     ...
     >>> a, *b = Seq()
@@ -219,13 +219,13 @@ Make sure the raised errors are right fuer keyword argument unpackings
     ...         fuer x in self.d.__iter__():
     ...             wenn x == 'c':
     ...                 self.d['z'] = 10
-    ...             yield x
+    ...             liefere x
     ...
     ...     def __getitem__(self, k):
-    ...         return self.d[k]
+    ...         gib self.d[k]
     ...
     ...     def __len__(self):
-    ...         return len(self.d)
+    ...         gib len(self.d)
     ...
     ...     def __setitem__(self, k, v):
     ...         self.d[k] = v
@@ -304,7 +304,7 @@ error
     >>> klasse BadSeq:
     ...     def __getitem__(self, i):
     ...         wenn i >= 0 und i < 3:
-    ...             return i
+    ...             gib i
     ...         sowenn i == 3:
     ...             raise BozoError
     ...         sonst:
@@ -404,7 +404,7 @@ __test__ = {'doctests' : doctests}
 
 def load_tests(loader, tests, pattern):
     tests.addTest(doctest.DocTestSuite())
-    return tests
+    gib tests
 
 
 wenn __name__ == "__main__":

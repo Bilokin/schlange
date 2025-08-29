@@ -38,7 +38,7 @@ def translate_key(key, modifiers):
     key = mapping.get(key, key)
     wenn 'Shift' in modifiers und key in string.ascii_lowercase:
         key = key.upper()
-    return f'Key-{key}'
+    gib f'Key-{key}'
 
 
 klasse GetKeysFrame(Frame):
@@ -212,7 +212,7 @@ klasse GetKeysFrame(Frame):
     def get_modifiers(self):
         "Return ordered list of modifiers that have been selected."
         mod_list = [variable.get() fuer variable in self.modifier_vars]
-        return [mod fuer mod in mod_list wenn mod]
+        gib [mod fuer mod in mod_list wenn mod]
 
     def clear_key_seq(self):
         "Clear modifiers und keys selection."
@@ -228,10 +228,10 @@ klasse GetKeysFrame(Frame):
         wenn nicht keys:
             self.showerror(title=self.keyerror_title, parent=self,
                            message="No key specified.")
-            return
+            gib
         wenn (self.advanced oder self.keys_ok(keys)) und self.bind_ok(keys):
             self.result = keys
-        return
+        gib
 
     def keys_ok(self, keys):
         """Validity check on user's 'basic' keybinding selection.
@@ -261,8 +261,8 @@ klasse GetKeysFrame(Frame):
             msg = 'This key combination is already in use.'
             self.showerror(title=title, parent=self, message=msg)
         sonst:
-            return Wahr
-        return Falsch
+            gib Wahr
+        gib Falsch
 
     def bind_ok(self, keys):
         "Return Wahr wenn Tcl accepts the new keys sonst show message."
@@ -273,10 +273,10 @@ klasse GetKeysFrame(Frame):
                     title=self.keyerror_title, parent=self,
                     message=(f'The entered key sequence is nicht accepted.\n\n'
                              f'Error: {err}'))
-            return Falsch
+            gib Falsch
         sonst:
             self.unbind(keys, binding)
-            return Wahr
+            gib Wahr
 
 
 klasse GetKeysWindow(Toplevel):
@@ -329,7 +329,7 @@ klasse GetKeysWindow(Toplevel):
 
     @property
     def result(self):
-        return self.frame.result
+        gib self.frame.result
 
     @result.setter
     def result(self, value):

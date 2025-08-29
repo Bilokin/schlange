@@ -14,7 +14,7 @@ def test_concurrent_iteration(iterator, number_of_threads):
             try:
                 _ = next(it)
             except StopIteration:
-                return
+                gib
 
     worker_threads = []
     fuer ii in range(number_of_threads):

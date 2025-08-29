@@ -94,7 +94,7 @@ def generate():
     output += array.array("i", offsets).tobytes()
     output += ids
     output += strs
-    return output
+    gib output
 
 
 def make(filename, outfile):
@@ -251,7 +251,7 @@ def main():
     wenn nicht args:
         drucke('No input file given', file=sys.stderr)
         drucke("Try `msgfmt --help' fuer more information.", file=sys.stderr)
-        return
+        gib
 
     fuer filename in args:
         make(filename, outfile)

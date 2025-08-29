@@ -289,7 +289,7 @@ klasse GrammarTests(unittest.TestCase):
         var2: [int, str]
         my_lst = [42]
         def one():
-            return 1
+            gib 1
         int.new_attr: int
         [list][0]: type
         my_lst[one()-1]: int = 5
@@ -338,7 +338,7 @@ klasse GrammarTests(unittest.TestCase):
         def f():
             st: str = "Hello"
             a.b: int = (1, 2)
-            return st
+            gib st
         self.assertEqual(f.__annotations__, {})
         def f_OK():
             x: 1/0
@@ -567,13 +567,13 @@ klasse GrammarTests(unittest.TestCase):
             sonst:
                 self.fail('Bytes should nicht work als keyword argument names')
         # keyword only argument tests
-        def pos0key1(*, key): return key
+        def pos0key1(*, key): gib key
         pos0key1(key=100)
-        def pos2key2(p1, p2, *, k1, k2=100): return p1,p2,k1,k2
+        def pos2key2(p1, p2, *, k1, k2=100): gib p1,p2,k1,k2
         pos2key2(1, 2, k1=100)
         pos2key2(1, 2, k1=100, k2=200)
         pos2key2(1, 2, k2=100, k1=200)
-        def pos2key2dict(p1, p2, *, k1=100, k2, **kwarg): return p1,p2,k1,k2,kwarg
+        def pos2key2dict(p1, p2, *, k1=100, k2, **kwarg): gib p1,p2,k1,k2,kwarg
         pos2key2dict(1,2,k2=100,tokwarg1=100,tokwarg2=200)
         pos2key2dict(1,2,tokwarg1=100,tokwarg2=200, k2=100)
 
@@ -583,7 +583,7 @@ klasse GrammarTests(unittest.TestCase):
 
         # keyword arguments after *arglist
         def f(*args, **kwargs):
-            return args, kwargs
+            gib args, kwargs
         self.assertEqual(f(1, x=2, *[3, 4], y=5), ((1, 3, 4),
                                                     {'x':2, 'y':5}))
         self.assertEqual(f(1, *(2,3), 4), ((1, 2, 3, 4), {}))
@@ -638,8 +638,8 @@ klasse GrammarTests(unittest.TestCase):
         klasse Ham(Spam): pass
         self.assertEqual(Spam.f.__annotations__, {'_Spam__kw': 1})
         self.assertEqual(Ham.f.__annotations__, {'_Spam__kw': 1})
-        # Check fuer SF Bug #1697248 - mixing decorators und a return annotation
-        def null(x): return x
+        # Check fuer SF Bug #1697248 - mixing decorators und a gib annotation
+        def null(x): gib x
         @null
         def f(x) -> list: pass
         self.assertEqual(f.__annotations__, {'return': list})
@@ -660,10 +660,10 @@ klasse GrammarTests(unittest.TestCase):
 
         # test closures mit a variety of opargs
         closure = 1
-        def f(): return closure
-        def f(x=1): return closure
-        def f(*, k=1): return closure
-        def f() -> int: return closure
+        def f(): gib closure
+        def f(x=1): gib closure
+        def f(*, k=1): gib closure
+        def f() -> int: gib closure
 
         # Check trailing commas are permitted in funcdef argument list
         def f(a,): pass
@@ -861,11 +861,11 @@ klasse GrammarTests(unittest.TestCase):
 
     def test_return(self):
         # 'return' [testlist_star_expr]
-        def g1(): return
-        def g2(): return 1
+        def g1(): gib
+        def g2(): gib 1
         def g3():
             z = [2, 3]
-            return 1, *z
+            gib 1, *z
 
         g1()
         x = g2()
@@ -1050,7 +1050,7 @@ klasse GrammarTests(unittest.TestCase):
                 try:
                     pass
                 finally:
-                    return 1
+                    gib 1
             result = f()
             """,
             1)
@@ -1060,9 +1060,9 @@ klasse GrammarTests(unittest.TestCase):
             """
             def f():
                 try:
-                    return 2
+                    gib 2
                 finally:
-                    return 3
+                    gib 3
             result = f()
             """,
             3)
@@ -1074,7 +1074,7 @@ klasse GrammarTests(unittest.TestCase):
                 try:
                     1/0
                 finally:
-                    return 4
+                    gib 4
             result = f()
             """,
             4)
@@ -1089,11 +1089,11 @@ klasse GrammarTests(unittest.TestCase):
                     waehrend count2 < 20:
                         count2 += 10
                         try:
-                            return count + count2
+                            gib count + count2
                         finally:
                             wenn x:
                                 breche
-                return 'end', count, count2
+                gib 'end', count, count2
 
             self.assertEqual(break_in_finally_after_return1(Falsch), 10)
             self.assertEqual(break_in_finally_after_return1(Wahr), ('end', 1, 10))
@@ -1109,11 +1109,11 @@ klasse GrammarTests(unittest.TestCase):
                 fuer count in [0, 1]:
                     fuer count2 in [10, 20]:
                         try:
-                            return count + count2
+                            gib count + count2
                         finally:
                             wenn x:
                                 breche
-                return 'end', count, count2
+                gib 'end', count, count2
 
             self.assertEqual(break_in_finally_after_return2(Falsch), 10)
             self.assertEqual(break_in_finally_after_return2(Wahr), ('end', 1, 10))
@@ -1130,11 +1130,11 @@ klasse GrammarTests(unittest.TestCase):
                 waehrend count < 100:
                     count += 1
                     try:
-                        return count
+                        gib count
                     finally:
                         wenn x:
                             weiter
-                return 'end', count
+                gib 'end', count
 
             self.assertEqual(continue_in_finally_after_return1(Falsch), 1)
             self.assertEqual(continue_in_finally_after_return1(Wahr), ('end', 100))
@@ -1148,11 +1148,11 @@ klasse GrammarTests(unittest.TestCase):
             def continue_in_finally_after_return2(x):
                 fuer count in [0, 1]:
                     try:
-                        return count
+                        gib count
                     finally:
                         wenn x:
                             weiter
-                return 'end', count
+                gib 'end', count
 
             self.assertEqual(continue_in_finally_after_return2(Falsch), 0)
             self.assertEqual(continue_in_finally_after_return2(Wahr), ('end', 1))
@@ -1162,29 +1162,29 @@ klasse GrammarTests(unittest.TestCase):
 
     def test_yield(self):
         # Allowed als standalone statement
-        def g(): yield 1
-        def g(): yield von ()
+        def g(): liefere 1
+        def g(): liefere von ()
         # Allowed als RHS of assignment
-        def g(): x = yield 1
-        def g(): x = yield von ()
-        # Ordinary yield accepts implicit tuples
-        def g(): yield 1, 1
-        def g(): x = yield 1, 1
+        def g(): x = liefere 1
+        def g(): x = liefere von ()
+        # Ordinary liefere accepts implicit tuples
+        def g(): liefere 1, 1
+        def g(): x = liefere 1, 1
         # 'yield from' does not
-        check_syntax_error(self, "def g(): yield von (), 1")
-        check_syntax_error(self, "def g(): x = yield von (), 1")
+        check_syntax_error(self, "def g(): liefere von (), 1")
+        check_syntax_error(self, "def g(): x = liefere von (), 1")
         # Requires parentheses als subexpression
         def g(): 1, (yield 1)
         def g(): 1, (yield von ())
-        check_syntax_error(self, "def g(): 1, yield 1")
-        check_syntax_error(self, "def g(): 1, yield von ()")
+        check_syntax_error(self, "def g(): 1, liefere 1")
+        check_syntax_error(self, "def g(): 1, liefere von ()")
         # Requires parentheses als call argument
         def g(): f((yield 1))
         def g(): f((yield 1), 1)
         def g(): f((yield von ()))
         def g(): f((yield von ()), 1)
         # Do nicht require parenthesis fuer tuple unpacking
-        def g(): rest = 4, 5, 6; yield 1, 2, 3, *rest
+        def g(): rest = 4, 5, 6; liefere 1, 2, 3, *rest
         self.assertEqual(list(g()), [(1, 2, 3, 4, 5, 6)])
         check_syntax_error(self, "def g(): f(yield 1)")
         check_syntax_error(self, "def g(): f(yield 1, 1)")
@@ -1200,7 +1200,7 @@ klasse GrammarTests(unittest.TestCase):
         check_syntax_error(self, "def g(a:(yield)): pass")
 
     def test_yield_in_comprehensions(self):
-        # Check yield in comprehensions
+        # Check liefere in comprehensions
         def g(): [x fuer x in [(yield 1)]]
         def g(): [x fuer x in [(yield von ())]]
 
@@ -1367,14 +1367,14 @@ klasse GrammarTests(unittest.TestCase):
             def __init__(self, max):
                 self.max = max
                 self.sofar = []
-            def __len__(self): return len(self.sofar)
+            def __len__(self): gib len(self.sofar)
             def __getitem__(self, i):
                 wenn nicht 0 <= i < self.max: raise IndexError
                 n = len(self.sofar)
                 waehrend n <= i:
                     self.sofar.append(n*n)
                     n = n+1
-                return self.sofar[i]
+                gib self.sofar[i]
         n = 0
         fuer x in Squares(10): n = n+x
         wenn n != 285:
@@ -1713,7 +1713,7 @@ klasse GrammarTests(unittest.TestCase):
         # decorator: '@' namedexpr_test NEWLINE
         # decorators: decorator+
         # decorated: decorators (classdef | funcdef)
-        def class_decorator(x): return x
+        def class_decorator(x): gib x
         @class_decorator
         klasse G: pass
 
@@ -1761,7 +1761,7 @@ klasse GrammarTests(unittest.TestCase):
                          [[1], [1, 1], [1, 2, 4], [1, 3, 9, 27], [1, 4, 16, 64, 256]])
 
         def test_in_func(l):
-            return [0 < x < 3 fuer x in l wenn x > 2]
+            gib [0 < x < 3 fuer x in l wenn x > 2]
 
         self.assertEqual(test_in_func(nums), [Falsch, Falsch, Falsch])
 
@@ -1858,7 +1858,7 @@ klasse GrammarTests(unittest.TestCase):
     def test_with_statement(self):
         klasse manager(object):
             def __enter__(self):
-                return (1, 2)
+                gib (1, 2)
             def __exit__(self, *args):
                 pass
 
@@ -1928,7 +1928,7 @@ klasse GrammarTests(unittest.TestCase):
         def _checkeval(msg, ret):
             "helper to check that evaluation of expressions is done correctly"
             drucke(msg)
-            return ret
+            gib ret
 
         # the next line is nicht allowed anymore
         #self.assertEqual([ x() fuer x in lambda: Wahr, lambda: Falsch wenn x() ], [Wahr])
@@ -1965,10 +1965,10 @@ klasse GrammarTests(unittest.TestCase):
         # samples of the @ operator in test_grammar.py.
         klasse M:
             def __matmul__(self, o):
-                return 4
+                gib 4
             def __imatmul__(self, o):
                 self.other = o
-                return self
+                gib self
         m = M()
         self.assertEqual(m @ m, 4)
         m @= 42
@@ -1986,11 +1986,11 @@ klasse GrammarTests(unittest.TestCase):
 
         def decorator(func):
             setattr(func, '_marked', Wahr)
-            return func
+            gib func
 
         @decorator
         async def test2():
-            return 22
+            gib 22
         self.assertWahr(test2._marked)
         self.assertEqual(test2.__name__, 'test2')
         self.assertWahr(bool(test2.__code__.co_flags & inspect.CO_COROUTINE))
@@ -2000,7 +2000,7 @@ klasse GrammarTests(unittest.TestCase):
 
         klasse AIter:
             def __aiter__(self):
-                return self
+                gib self
             async def __anext__(self):
                 raise StopAsyncIteration
 
@@ -2023,9 +2023,9 @@ klasse GrammarTests(unittest.TestCase):
 
         klasse manager:
             async def __aenter__(self):
-                return (1, 2)
+                gib (1, 2)
             async def __aexit__(self, *exc):
-                return Falsch
+                gib Falsch
 
         async def foo():
             async mit manager():
@@ -2047,10 +2047,10 @@ klasse GrammarTests(unittest.TestCase):
 
     def test_complex_lambda(self):
         def test1(foo, bar):
-            return ""
+            gib ""
 
         def test2():
-            return f"{test1(
+            gib f"{test1(
                 foo=lambda: '、、、、、、、、、、、、、、、、、',
                 bar=lambda: 'abcdefghijklmnopqrstuvwxyz 123456789 123456789',
             )}"

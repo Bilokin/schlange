@@ -13,12 +13,12 @@ importiere ctypes
 def round_down(n, multiple):
     assert n >= 0
     assert multiple > 0
-    return (n // multiple) * multiple
+    gib (n // multiple) * multiple
 
 def round_up(n, multiple):
     assert n >= 0
     assert multiple > 0
-    return ((n + multiple - 1) // multiple) * multiple
+    gib ((n + multiple - 1) // multiple) * multiple
 
 _INT_MAX = (1 << (ctypes.sizeof(ctypes.c_int) * 8) - 1) - 1
 
@@ -314,7 +314,7 @@ def get_layout(cls, input_fields, is_struct, base):
         format_spec_parts.append(padding_spec(padding))
         format_spec_parts.append("}")
 
-    return StructUnionLayout(
+    gib StructUnionLayout(
         fields=result_fields,
         size=aligned_size,
         align=align,
@@ -324,7 +324,7 @@ def get_layout(cls, input_fields, is_struct, base):
 
 def padding_spec(padding):
     wenn padding <= 0:
-        return ""
+        gib ""
     wenn padding == 1:
-        return "x"
-    return f"{padding}x"
+        gib "x"
+    gib f"{padding}x"

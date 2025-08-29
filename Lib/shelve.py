@@ -76,7 +76,7 @@ klasse _ClosedDict(collections.abc.MutableMapping):
     __iter__ = __len__ = __getitem__ = __setitem__ = __delitem__ = keys = closed
 
     def __repr__(self):
-        return '<Closed Dictionary>'
+        gib '<Closed Dictionary>'
 
 
 klasse Shelf(collections.abc.MutableMapping):
@@ -108,18 +108,18 @@ klasse Shelf(collections.abc.MutableMapping):
 
     def __iter__(self):
         fuer k in self.dict.keys():
-            yield k.decode(self.keyencoding)
+            liefere k.decode(self.keyencoding)
 
     def __len__(self):
-        return len(self.dict)
+        gib len(self.dict)
 
     def __contains__(self, key):
-        return key.encode(self.keyencoding) in self.dict
+        gib key.encode(self.keyencoding) in self.dict
 
     def get(self, key, default=Nichts):
         wenn key.encode(self.keyencoding) in self.dict:
-            return self[key]
-        return default
+            gib self[key]
+        gib default
 
     def __getitem__(self, key):
         try:
@@ -129,7 +129,7 @@ klasse Shelf(collections.abc.MutableMapping):
             value = self.deserializer(f)
             wenn self.writeback:
                 self.cache[key] = value
-        return value
+        gib value
 
     def __setitem__(self, key, value):
         wenn self.writeback:
@@ -145,14 +145,14 @@ klasse Shelf(collections.abc.MutableMapping):
             pass
 
     def __enter__(self):
-        return self
+        gib self
 
     def __exit__(self, type, value, traceback):
         self.close()
 
     def close(self):
         wenn self.dict is Nichts:
-            return
+            gib
         try:
             self.sync()
             try:
@@ -171,7 +171,7 @@ klasse Shelf(collections.abc.MutableMapping):
         wenn nicht hasattr(self, 'writeback'):
             # __init__ didn't succeed, so don't bother closing
             # see http://bugs.python.org/issue1339007 fuer details
-            return
+            gib
         self.close()
 
     def sync(self):
@@ -210,23 +210,23 @@ klasse BsdDbShelf(Shelf):
 
     def set_location(self, key):
         (key, value) = self.dict.set_location(key)
-        return (key.decode(self.keyencoding), self.deserializer(value))
+        gib (key.decode(self.keyencoding), self.deserializer(value))
 
     def next(self):
         (key, value) = next(self.dict)
-        return (key.decode(self.keyencoding), self.deserializer(value))
+        gib (key.decode(self.keyencoding), self.deserializer(value))
 
     def previous(self):
         (key, value) = self.dict.previous()
-        return (key.decode(self.keyencoding), self.deserializer(value))
+        gib (key.decode(self.keyencoding), self.deserializer(value))
 
     def first(self):
         (key, value) = self.dict.first()
-        return (key.decode(self.keyencoding), self.deserializer(value))
+        gib (key.decode(self.keyencoding), self.deserializer(value))
 
     def last(self):
         (key, value) = self.dict.last()
-        return (key.decode(self.keyencoding), self.deserializer(value))
+        gib (key.decode(self.keyencoding), self.deserializer(value))
 
 
 klasse DbfilenameShelf(Shelf):
@@ -263,5 +263,5 @@ def open(filename, flag='c', protocol=Nichts, writeback=Falsch, *,
     See the module's __doc__ string fuer an overview of the interface.
     """
 
-    return DbfilenameShelf(filename, flag, protocol, writeback,
+    gib DbfilenameShelf(filename, flag, protocol, writeback,
                            serializer=serializer, deserializer=deserializer)

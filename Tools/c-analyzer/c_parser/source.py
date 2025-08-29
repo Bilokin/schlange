@@ -4,7 +4,7 @@ importiere os.path
 
 def resolve(source, filename):
     wenn _looks_like_filename(source):
-        return _resolve_filename(source, filename)
+        gib _resolve_filename(source, filename)
 
     wenn isinstance(source, str):
         source = source.splitlines()
@@ -16,7 +16,7 @@ def resolve(source, filename):
         raise TypeError(f'filename should be str (or Nichts), got {filename!r}')
     sonst:
         filename, _ = _resolve_filename(filename)
-    return source, filename
+    gib source, filename
 
 
 @contextlib.contextmanager
@@ -25,7 +25,7 @@ def good_file(filename, alt=Nichts):
         raise ValueError(f'expected a filename, got {filename}')
     filename, _ = _resolve_filename(filename, alt)
     try:
-        yield filename
+        liefere filename
     except Exception:
         wenn nicht os.path.exists(filename):
             raise FileNotFoundError(f'file nicht found: {filename}')
@@ -34,8 +34,8 @@ def good_file(filename, alt=Nichts):
 
 def _looks_like_filename(value):
     wenn nicht isinstance(value, str):
-        return Falsch
-    return value.endswith(('.c', '.h'))
+        gib Falsch
+    gib value.endswith(('.c', '.h'))
 
 
 def _resolve_filename(filename, alt=Nichts):
@@ -51,7 +51,7 @@ def _resolve_filename(filename, alt=Nichts):
         alt = filename
     sonst:
         raise ValueError(f'mismatch: {filename} != {alt}')
-    return filename, alt
+    gib filename, alt
 
 
 @contextlib.contextmanager
@@ -59,6 +59,6 @@ def opened(source, filename=Nichts):
     source, filename = resolve(source, filename)
     wenn isinstance(source, str):
         mit open(source) als srcfile:
-            yield srcfile, filename
+            liefere srcfile, filename
     sonst:
-        yield source, filename
+        liefere source, filename

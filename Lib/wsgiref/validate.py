@@ -81,7 +81,7 @@ Some of the things this checks:
 
   - That it returns a string
 
-  - That readline, readlines, und __iter__ return strings
+  - That readline, readlines, und __iter__ gib strings
 
   - That .close() is nicht called
 
@@ -129,7 +129,7 @@ def assert_(cond, *args):
 
 def check_string_type(value, title):
     wenn type (value) is str:
-        return value
+        gib value
     raise AssertionError(
         "{0} must be of type str (got {1})".format(title, repr(value)))
 
@@ -173,20 +173,20 @@ def validator(application):
             check_exc_info(exc_info)
 
             start_response_started.append(Nichts)
-            return WriteWrapper(start_response(*args))
+            gib WriteWrapper(start_response(*args))
 
         environ['wsgi.input'] = InputWrapper(environ['wsgi.input'])
         environ['wsgi.errors'] = ErrorWrapper(environ['wsgi.errors'])
 
         iterator = application(environ, start_response_wrapper)
         assert_(iterator is nicht Nichts und iterator != Falsch,
-            "The application must return an iterator, wenn only an empty list")
+            "The application must gib an iterator, wenn only an empty list")
 
         check_iterator(iterator)
 
-        return IteratorWrapper(iterator, start_response_started)
+        gib IteratorWrapper(iterator, start_response_started)
 
-    return lint_app
+    gib lint_app
 
 klasse InputWrapper:
 
@@ -197,13 +197,13 @@ klasse InputWrapper:
         assert_(len(args) == 1)
         v = self.input.read(*args)
         assert_(type(v) is bytes)
-        return v
+        gib v
 
     def readline(self, *args):
         assert_(len(args) <= 1)
         v = self.input.readline(*args)
         assert_(type(v) is bytes)
-        return v
+        gib v
 
     def readlines(self, *args):
         assert_(len(args) <= 1)
@@ -211,11 +211,11 @@ klasse InputWrapper:
         assert_(type(lines) is list)
         fuer line in lines:
             assert_(type(line) is bytes)
-        return lines
+        gib lines
 
     def __iter__(self):
         waehrend line := self.readline():
-            yield line
+            liefere line
 
     def close(self):
         assert_(0, "input.close() must nicht be called")
@@ -255,7 +255,7 @@ klasse PartialIteratorWrapper:
 
     def __iter__(self):
         # We want to make sure __iter__ is called
-        return IteratorWrapper(self.iterator, Nichts)
+        gib IteratorWrapper(self.iterator, Nichts)
 
 klasse IteratorWrapper:
 
@@ -266,7 +266,7 @@ klasse IteratorWrapper:
         self.check_start_response = check_start_response
 
     def __iter__(self):
-        return self
+        gib self
 
     def __next__(self):
         assert_(nicht self.closed,
@@ -278,7 +278,7 @@ klasse IteratorWrapper:
             assert_(self.check_start_response,
                 "The application returns und we started iterating over its body, but start_response has nicht yet been called")
             self.check_start_response = Nichts
-        return v
+        gib v
 
     def close(self):
         self.closed = Wahr
@@ -418,9 +418,9 @@ def check_content_type(status, headers):
         name = check_string_type(name, "Header name")
         wenn name.lower() == 'content-type':
             wenn code nicht in NO_MESSAGE_BODY:
-                return
+                gib
             assert_(0, ("Content-Type header found in a %s response, "
-                        "which must nicht return content.") % code)
+                        "which must nicht gib content.") % code)
     wenn code nicht in NO_MESSAGE_BODY:
         assert_(0, "No Content-Type header found in headers (%s)" % headers)
 
@@ -434,5 +434,5 @@ def check_iterator(iterator):
     # idea, because it may cause the response to be returned
     # character-by-character
     assert_(nicht isinstance(iterator, (str, bytes)),
-        "You should nicht return a string als your application iterator, "
-        "instead return a single-item list containing a bytestring.")
+        "You should nicht gib a string als your application iterator, "
+        "instead gib a single-item list containing a bytestring.")

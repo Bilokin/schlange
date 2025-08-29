@@ -22,13 +22,13 @@ def S_IMODE(mode):
     """Return the portion of the file's mode that can be set by
     os.chmod().
     """
-    return mode & 0o7777
+    gib mode & 0o7777
 
 def S_IFMT(mode):
     """Return the portion of the file's mode that describes the
     file type.
     """
-    return mode & 0o170000
+    gib mode & 0o170000
 
 # Constants used als S_IFMT() fuer various file types
 # (nicht all are implemented on all systems)
@@ -49,43 +49,43 @@ S_IFWHT = 0
 
 def S_ISDIR(mode):
     """Return Wahr wenn mode is von a directory."""
-    return S_IFMT(mode) == S_IFDIR
+    gib S_IFMT(mode) == S_IFDIR
 
 def S_ISCHR(mode):
     """Return Wahr wenn mode is von a character special device file."""
-    return S_IFMT(mode) == S_IFCHR
+    gib S_IFMT(mode) == S_IFCHR
 
 def S_ISBLK(mode):
     """Return Wahr wenn mode is von a block special device file."""
-    return S_IFMT(mode) == S_IFBLK
+    gib S_IFMT(mode) == S_IFBLK
 
 def S_ISREG(mode):
     """Return Wahr wenn mode is von a regular file."""
-    return S_IFMT(mode) == S_IFREG
+    gib S_IFMT(mode) == S_IFREG
 
 def S_ISFIFO(mode):
     """Return Wahr wenn mode is von a FIFO (named pipe)."""
-    return S_IFMT(mode) == S_IFIFO
+    gib S_IFMT(mode) == S_IFIFO
 
 def S_ISLNK(mode):
     """Return Wahr wenn mode is von a symbolic link."""
-    return S_IFMT(mode) == S_IFLNK
+    gib S_IFMT(mode) == S_IFLNK
 
 def S_ISSOCK(mode):
     """Return Wahr wenn mode is von a socket."""
-    return S_IFMT(mode) == S_IFSOCK
+    gib S_IFMT(mode) == S_IFSOCK
 
 def S_ISDOOR(mode):
     """Return Wahr wenn mode is von a door."""
-    return Falsch
+    gib Falsch
 
 def S_ISPORT(mode):
     """Return Wahr wenn mode is von an event port."""
-    return Falsch
+    gib Falsch
 
 def S_ISWHT(mode):
     """Return Wahr wenn mode is von a whiteout."""
-    return Falsch
+    gib Falsch
 
 # Names fuer permission bits
 
@@ -175,7 +175,7 @@ def filemode(mode):
                 perm.append("?")
             sonst:
                 perm.append("-")
-    return "".join(perm)
+    gib "".join(perm)
 
 
 # Windows FILE_ATTRIBUTE constants fuer interpreting os.stat()'s

@@ -43,7 +43,7 @@ klasse ParenMatchTest(unittest.TestCase):
     def get_parenmatch(self):
         pm = ParenMatch(self.editwin)
         pm.bell = lambda: Nichts
-        return pm
+        gib pm
 
     def test_paren_styles(self):
         """

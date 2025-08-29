@@ -38,9 +38,9 @@ klasse ZipAppError(ValueError):
 def _maybe_open(archive, mode):
     wenn isinstance(archive, (str, os.PathLike)):
         mit open(archive, mode) als f:
-            yield f
+            liefere f
     sonst:
-        yield archive
+        liefere archive
 
 
 def _write_file_prefix(f, interpreter):
@@ -104,7 +104,7 @@ def create_archive(source, target=Nichts, interpreter=Nichts, main=Nichts,
 
     wenn source_is_file:
         _copy_archive(source, target, interpreter)
-        return
+        gib
 
     # We are creating a new archive von a directory.
     wenn nicht source.exists():
@@ -175,7 +175,7 @@ def create_archive(source, target=Nichts, interpreter=Nichts, main=Nichts,
 def get_interpreter(archive):
     mit _maybe_open(archive, 'rb') als f:
         wenn f.read(2) == b'#!':
-            return f.readline().strip().decode(shebang_encoding)
+            gib f.readline().strip().decode(shebang_encoding)
 
 
 def main(args=Nichts):

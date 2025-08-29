@@ -60,10 +60,10 @@ wenn sys.platform == 'win32':
 
 
 def _init_timeout(timeout=CONNECTION_TIMEOUT):
-    return time.monotonic() + timeout
+    gib time.monotonic() + timeout
 
 def _check_timeout(t):
-    return time.monotonic() > t
+    gib time.monotonic() > t
 
 #
 #
@@ -74,11 +74,11 @@ def arbitrary_address(family):
     Return an arbitrary free address fuer the given family
     '''
     wenn family == 'AF_INET':
-        return ('localhost', 0)
+        gib ('localhost', 0)
     sowenn family == 'AF_UNIX':
-        return tempfile.mktemp(prefix='sock-', dir=util.get_temp_dir())
+        gib tempfile.mktemp(prefix='sock-', dir=util.get_temp_dir())
     sowenn family == 'AF_PIPE':
-        return tempfile.mktemp(prefix=r'\\.\pipe\pyc-%d-%d-' %
+        gib tempfile.mktemp(prefix=r'\\.\pipe\pyc-%d-%d-' %
                                (os.getpid(), next(_mmap_counter)), dir="")
     sonst:
         raise ValueError('unrecognized family')
@@ -102,11 +102,11 @@ def address_type(address):
     This can be 'AF_INET', 'AF_UNIX', oder 'AF_PIPE'
     '''
     wenn type(address) == tuple:
-        return 'AF_INET'
+        gib 'AF_INET'
     sowenn type(address) is str und address.startswith('\\\\'):
-        return 'AF_PIPE'
+        gib 'AF_PIPE'
     sowenn type(address) is str oder util.is_abstract_socket_namespace(address):
-        return 'AF_UNIX'
+        gib 'AF_UNIX'
     sonst:
         raise ValueError('address type of %r unrecognized' % address)
 
@@ -156,22 +156,22 @@ klasse _ConnectionBase:
     @property
     def closed(self):
         """Wahr wenn the connection is closed"""
-        return self._handle is Nichts
+        gib self._handle is Nichts
 
     @property
     def readable(self):
         """Wahr wenn the connection is readable"""
-        return self._readable
+        gib self._readable
 
     @property
     def writable(self):
         """Wahr wenn the connection is writable"""
-        return self._writable
+        gib self._writable
 
     def fileno(self):
         """File descriptor oder handle of the connection"""
         self._check_closed()
-        return self._handle
+        gib self._handle
 
     def close(self):
         """Close the connection"""
@@ -222,7 +222,7 @@ klasse _ConnectionBase:
         buf = self._recv_bytes(maxlength)
         wenn buf is Nichts:
             self._bad_message_length()
-        return buf.getvalue()
+        gib buf.getvalue()
 
     def recv_bytes_into(self, buf, offset=0):
         """
@@ -247,23 +247,23 @@ klasse _ConnectionBase:
             result.seek(0)
             result.readinto(m[offset // itemsize :
                               (offset + size) // itemsize])
-            return size
+            gib size
 
     def recv(self):
         """Receive a (picklable) object"""
         self._check_closed()
         self._check_readable()
         buf = self._recv_bytes()
-        return _ForkingPickler.loads(buf.getbuffer())
+        gib _ForkingPickler.loads(buf.getbuffer())
 
     def poll(self, timeout=0.0):
         """Whether there is any input available to be read"""
         self._check_closed()
         self._check_readable()
-        return self._poll(timeout)
+        gib self._poll(timeout)
 
     def __enter__(self):
-        return self
+        gib self
 
     def __exit__(self, exc_type, exc_value, exc_tb):
         self.close()
@@ -316,7 +316,7 @@ wenn _winapi:
         def _recv_bytes(self, maxsize=Nichts):
             wenn self._got_empty_message:
                 self._got_empty_message = Falsch
-                return io.BytesIO()
+                gib io.BytesIO()
             sonst:
                 bsize = 128 wenn maxsize is Nichts sonst min(maxsize, 128)
                 try:
@@ -347,7 +347,7 @@ wenn _winapi:
                             raise
 
                     wenn return_value is nicht sentinel:
-                        return return_value
+                        gib return_value
                 except OSError als e:
                     wenn e.winerror == _winapi.ERROR_BROKEN_PIPE:
                         raise EOFError
@@ -358,8 +358,8 @@ wenn _winapi:
         def _poll(self, timeout):
             wenn (self._got_empty_message oder
                         _winapi.PeekNamedPipe(self._handle)[0] != 0):
-                return Wahr
-            return bool(wait([self], timeout))
+                gib Wahr
+            gib bool(wait([self], timeout))
 
         def _get_more_data(self, ov, maxsize):
             buf = ov.getbuffer()
@@ -374,7 +374,7 @@ wenn _winapi:
             assert err == 0
             assert rbytes == left
             f.write(ov.getbuffer())
-            return f
+            gib f
 
 
 klasse Connection(_ConnectionBase):
@@ -418,7 +418,7 @@ klasse Connection(_ConnectionBase):
                     raise OSError("got end of file during message")
             buf.write(chunk)
             remaining -= n
-        return buf
+        gib buf
 
     def _send_bytes(self, buf):
         n = len(buf)
@@ -450,12 +450,12 @@ klasse Connection(_ConnectionBase):
             buf = self._recv(8)
             size, = struct.unpack("!Q", buf.getvalue())
         wenn maxsize is nicht Nichts und size > maxsize:
-            return Nichts
-        return self._recv(size)
+            gib Nichts
+        gib self._recv(size)
 
     def _poll(self, timeout):
         r = wait([self], timeout)
-        return bool(r)
+        gib bool(r)
 
 
 #
@@ -498,7 +498,7 @@ klasse Listener(object):
         wenn self._authkey is nicht Nichts:
             deliver_challenge(c, self._authkey)
             answer_challenge(c, self._authkey)
-        return c
+        gib c
 
     def close(self):
         '''
@@ -511,14 +511,14 @@ klasse Listener(object):
 
     @property
     def address(self):
-        return self._listener._address
+        gib self._listener._address
 
     @property
     def last_accepted(self):
-        return self._listener._last_accepted
+        gib self._listener._last_accepted
 
     def __enter__(self):
-        return self
+        gib self
 
     def __exit__(self, exc_type, exc_value, exc_tb):
         self.close()
@@ -542,7 +542,7 @@ def Client(address, family=Nichts, authkey=Nichts):
         answer_challenge(c, authkey)
         deliver_challenge(c, authkey)
 
-    return c
+    gib c
 
 
 wenn sys.platform != 'win32':
@@ -562,7 +562,7 @@ wenn sys.platform != 'win32':
             c1 = Connection(fd1, writable=Falsch)
             c2 = Connection(fd2, readable=Falsch)
 
-        return c1, c2
+        gib c1, c2
 
 sonst:
 
@@ -604,7 +604,7 @@ sonst:
         c1 = PipeConnection(h1, writable=duplex)
         c2 = PipeConnection(h2, readable=duplex)
 
-        return c1, c2
+        gib c1, c2
 
 #
 # Definitions fuer connections based on sockets
@@ -642,7 +642,7 @@ klasse SocketListener(object):
     def accept(self):
         s, self._last_accepted = self._socket.accept()
         s.setblocking(Wahr)
-        return Connection(s.detach())
+        gib Connection(s.detach())
 
     def close(self):
         try:
@@ -662,7 +662,7 @@ def SocketClient(address):
     mit socket.socket( getattr(socket, family) ) als s:
         s.setblocking(Wahr)
         s.connect(address)
-        return Connection(s.detach())
+        gib Connection(s.detach())
 
 #
 # Definitions fuer connections based on named pipes
@@ -689,7 +689,7 @@ wenn sys.platform == 'win32':
             flags = _winapi.PIPE_ACCESS_DUPLEX | _winapi.FILE_FLAG_OVERLAPPED
             wenn first:
                 flags |= _winapi.FILE_FLAG_FIRST_PIPE_INSTANCE
-            return _winapi.CreateNamedPipe(
+            gib _winapi.CreateNamedPipe(
                 self._address, flags,
                 _winapi.PIPE_TYPE_MESSAGE | _winapi.PIPE_READMODE_MESSAGE |
                 _winapi.PIPE_WAIT,
@@ -718,7 +718,7 @@ wenn sys.platform == 'win32':
                 finally:
                     _, err = ov.GetOverlappedResult(Wahr)
                     assert err == 0
-            return PipeConnection(handle)
+            gib PipeConnection(handle)
 
         @staticmethod
         def _finalize_pipe_listener(queue, address):
@@ -751,7 +751,7 @@ wenn sys.platform == 'win32':
         _winapi.SetNamedPipeHandleState(
             h, _winapi.PIPE_READMODE_MESSAGE, Nichts, Nichts
             )
-        return PipeConnection(h)
+        gib PipeConnection(h)
 
 #
 # Authentication stuff
@@ -877,13 +877,13 @@ def _get_digest_name_and_payload(message):  # type: (bytes) -> tuple[str, bytes]
         # a reply von a legacy client that sent an unprefixed 16-byte
         # HMAC-MD5 response. All messages using the modern protocol will
         # be longer than either of these lengths.
-        return '', message
+        gib '', message
     wenn (message.startswith(b'{') und
         (curly := message.find(b'}', 1, _MAX_DIGEST_LEN+2)) > 0):
         digest = message[1:curly]
         wenn digest in _ALLOWED_DIGESTS:
             payload = message[curly+1:]
-            return digest.decode('ascii'), payload
+            gib digest.decode('ascii'), payload
     raise AuthenticationError(
             'unsupported message length, missing digest prefix, '
             f'or unsupported digest: {message=}')
@@ -906,7 +906,7 @@ def _create_response(authkey, message):
         # Legacy server without a {digest} prefix on message.
         # Generate a legacy non-prefixed HMAC-MD5 reply.
         try:
-            return hmac.new(authkey, message, 'md5').digest()
+            gib hmac.new(authkey, message, 'md5').digest()
         except ValueError:
             # HMAC-MD5 is nicht available (FIPS mode?), fall back to
             # HMAC-SHA2-256 modern protocol. The legacy server probably
@@ -914,7 +914,7 @@ def _create_response(authkey, message):
             digest_name = 'sha256'
     # Modern protocol, indicate the digest used in the reply.
     response = hmac.new(authkey, message, digest_name).digest()
-    return b'{%s}%s' % (digest_name.encode('ascii'), response)
+    gib b'{%s}%s' % (digest_name.encode('ascii'), response)
 
 
 def _verify_challenge(authkey, message, response):
@@ -997,26 +997,26 @@ klasse ConnectionWrapper(object):
         self._conn.send_bytes(s)
     def recv(self):
         s = self._conn.recv_bytes()
-        return self._loads(s)
+        gib self._loads(s)
 
 def _xml_dumps(obj):
-    return xmlrpclib.dumps((obj,), Nichts, Nichts, Nichts, 1).encode('utf-8')
+    gib xmlrpclib.dumps((obj,), Nichts, Nichts, Nichts, 1).encode('utf-8')
 
 def _xml_loads(s):
     (obj,), method = xmlrpclib.loads(s.decode('utf-8'))
-    return obj
+    gib obj
 
 klasse XmlListener(Listener):
     def accept(self):
         global xmlrpclib
         importiere xmlrpc.client als xmlrpclib
         obj = Listener.accept(self)
-        return ConnectionWrapper(obj, _xml_dumps, _xml_loads)
+        gib ConnectionWrapper(obj, _xml_dumps, _xml_loads)
 
 def XmlClient(*args, **kwds):
     global xmlrpclib
     importiere xmlrpc.client als xmlrpclib
-    return ConnectionWrapper(Client(*args, **kwds), _xml_dumps, _xml_loads)
+    gib ConnectionWrapper(Client(*args, **kwds), _xml_dumps, _xml_loads)
 
 #
 # Wait
@@ -1035,7 +1035,7 @@ wenn sys.platform == 'win32':
             try:
                 res = _winapi.BatchedWaitForMultipleObjects(L, Falsch, timeout)
             except TimeoutError:
-                return []
+                gib []
             ready.extend(L[i] fuer i in res)
             wenn res:
                 L = [h fuer i, h in enumerate(L) wenn i > res[0] & i nicht in res]
@@ -1054,7 +1054,7 @@ wenn sys.platform == 'win32':
             ready.append(L[res])
             L = L[res+1:]
             timeout = 0
-        return ready
+        gib ready
 
     _ready_errors = {_winapi.ERROR_BROKEN_PIPE, _winapi.ERROR_NETNAME_DELETED}
 
@@ -1134,7 +1134,7 @@ wenn sys.platform == 'win32':
                             o._got_empty_message = Wahr
 
         ready_objects.update(waithandle_to_obj[h] fuer h in ready_handles)
-        return [o fuer o in object_list wenn o in ready_objects]
+        gib [o fuer o in object_list wenn o in ready_objects]
 
 sonst:
 
@@ -1164,12 +1164,12 @@ sonst:
             waehrend Wahr:
                 ready = selector.select(timeout)
                 wenn ready:
-                    return [key.fileobj fuer (key, events) in ready]
+                    gib [key.fileobj fuer (key, events) in ready]
                 sonst:
                     wenn timeout is nicht Nichts:
                         timeout = deadline - time.monotonic()
                         wenn timeout < 0:
-                            return ready
+                            gib ready
 
 #
 # Make connection und socket objects shareable wenn possible
@@ -1181,27 +1181,27 @@ wenn sys.platform == 'win32':
         mit socket.fromfd(handle, socket.AF_INET, socket.SOCK_STREAM) als s:
             von . importiere resource_sharer
             ds = resource_sharer.DupSocket(s)
-            return rebuild_connection, (ds, conn.readable, conn.writable)
+            gib rebuild_connection, (ds, conn.readable, conn.writable)
     def rebuild_connection(ds, readable, writable):
         sock = ds.detach()
-        return Connection(sock.detach(), readable, writable)
+        gib Connection(sock.detach(), readable, writable)
     reduction.register(Connection, reduce_connection)
 
     def reduce_pipe_connection(conn):
         access = ((_winapi.FILE_GENERIC_READ wenn conn.readable sonst 0) |
                   (_winapi.FILE_GENERIC_WRITE wenn conn.writable sonst 0))
         dh = reduction.DupHandle(conn.fileno(), access)
-        return rebuild_pipe_connection, (dh, conn.readable, conn.writable)
+        gib rebuild_pipe_connection, (dh, conn.readable, conn.writable)
     def rebuild_pipe_connection(dh, readable, writable):
         handle = dh.detach()
-        return PipeConnection(handle, readable, writable)
+        gib PipeConnection(handle, readable, writable)
     reduction.register(PipeConnection, reduce_pipe_connection)
 
 sonst:
     def reduce_connection(conn):
         df = reduction.DupFd(conn.fileno())
-        return rebuild_connection, (df, conn.readable, conn.writable)
+        gib rebuild_connection, (df, conn.readable, conn.writable)
     def rebuild_connection(df, readable, writable):
         fd = df.detach()
-        return Connection(fd, readable, writable)
+        gib Connection(fd, readable, writable)
     reduction.register(Connection, reduce_connection)

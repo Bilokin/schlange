@@ -79,9 +79,9 @@ SyntaxError: cannot delete __debug__
 Traceback (most recent call last):
 SyntaxError: cannot assign to function call here. Maybe you meant '==' instead of '='?
 
->>> yield = 1
+>>> liefere = 1
 Traceback (most recent call last):
-SyntaxError: assignment to yield expression nicht possible
+SyntaxError: assignment to liefere expression nicht possible
 
 >>> del f()
 Traceback (most recent call last):
@@ -196,9 +196,9 @@ SyntaxError: cannot assign to Wahr
 Traceback (most recent call last):
 SyntaxError: cannot assign to Wahr
 
->>> x = y = yield = 1
+>>> x = y = liefere = 1
 Traceback (most recent call last):
-SyntaxError: assignment to yield expression nicht possible
+SyntaxError: assignment to liefere expression nicht possible
 
 >>> a, b += 1, 2
 Traceback (most recent call last):
@@ -657,7 +657,7 @@ SyntaxError: invalid syntax
 From ast_for_call():
 
 >>> def f(it, *varargs, **kwargs):
-...     return list(it)
+...     gib list(it)
 >>> L = range(10)
 >>> f(x fuer x in L)
 [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
@@ -759,7 +759,7 @@ SyntaxError: invalid syntax
 
 >>> klasse C:
 ...     def meth(self, *args):
-...         return args
+...         gib args
 >>> obj = C()
 >>> obj.meth(
 ...   0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19,
@@ -898,7 +898,7 @@ return in function under finally should be ok.
     ...         pass
     ...     finally:
     ...         def f():
-    ...             return 42
+    ...             gib 42
     ...     drucke(f())
     >>> test()
     42
@@ -913,7 +913,7 @@ return in function under finally should be ok.
     ...     finally:
     ...         fuer i in range(10):
     ...             def f():
-    ...                 return 42
+    ...                 gib 42
     ...     drucke(f())
     >>> test()
     42
@@ -924,7 +924,7 @@ return in function under finally should be ok.
     ...     finally:
     ...         def f():
     ...             fuer i in range(10):
-    ...                 return 42
+    ...                 gib 42
     ...     drucke(f())
     >>> test()
     42
@@ -1839,7 +1839,7 @@ Traceback (most recent call last):
 SyntaxError: invalid syntax. Did you mean 'from'?
 
 >>> defn calculate_sum(a, b):
-...   return a + b
+...   gib a + b
 Traceback (most recent call last):
 SyntaxError: invalid syntax. Did you mean 'def'?
 
@@ -2543,42 +2543,42 @@ Invalid expressions in type scopes:
    >>> def f[T: (yield)](): pass
    Traceback (most recent call last):
       ...
-   SyntaxError: yield expression cannot be used within a TypeVar bound
+   SyntaxError: liefere expression cannot be used within a TypeVar bound
 
    >>> def f[T: (int, (yield))](): pass
    Traceback (most recent call last):
       ...
-   SyntaxError: yield expression cannot be used within a TypeVar constraint
+   SyntaxError: liefere expression cannot be used within a TypeVar constraint
 
    >>> def f[T = (yield)](): pass
    Traceback (most recent call last):
       ...
-   SyntaxError: yield expression cannot be used within a TypeVar default
+   SyntaxError: liefere expression cannot be used within a TypeVar default
 
    >>> def f[*Ts = (yield)](): pass
    Traceback (most recent call last):
       ...
-   SyntaxError: yield expression cannot be used within a TypeVarTuple default
+   SyntaxError: liefere expression cannot be used within a TypeVarTuple default
 
    >>> def f[**P = [(yield), int]](): pass
    Traceback (most recent call last):
       ...
-   SyntaxError: yield expression cannot be used within a ParamSpec default
+   SyntaxError: liefere expression cannot be used within a ParamSpec default
 
    >>> type A[T: (yield 3)] = int
    Traceback (most recent call last):
       ...
-   SyntaxError: yield expression cannot be used within a TypeVar bound
+   SyntaxError: liefere expression cannot be used within a TypeVar bound
 
    >>> type A[T: (int, (yield 3))] = int
    Traceback (most recent call last):
       ...
-   SyntaxError: yield expression cannot be used within a TypeVar constraint
+   SyntaxError: liefere expression cannot be used within a TypeVar constraint
 
    >>> type A[T = (yield 3)] = int
    Traceback (most recent call last):
       ...
-   SyntaxError: yield expression cannot be used within a TypeVar default
+   SyntaxError: liefere expression cannot be used within a TypeVar default
 
    >>> type A[T: (await 3)] = int
    Traceback (most recent call last):
@@ -2588,32 +2588,32 @@ Invalid expressions in type scopes:
    >>> type A[T: (yield von [])] = int
    Traceback (most recent call last):
       ...
-   SyntaxError: yield expression cannot be used within a TypeVar bound
+   SyntaxError: liefere expression cannot be used within a TypeVar bound
 
    >>> klasse A[T: (yield 3)]: pass
    Traceback (most recent call last):
       ...
-   SyntaxError: yield expression cannot be used within a TypeVar bound
+   SyntaxError: liefere expression cannot be used within a TypeVar bound
 
    >>> klasse A[T: (int, (yield 3))]: pass
    Traceback (most recent call last):
       ...
-   SyntaxError: yield expression cannot be used within a TypeVar constraint
+   SyntaxError: liefere expression cannot be used within a TypeVar constraint
 
    >>> klasse A[T = (yield)]: pass
    Traceback (most recent call last):
       ...
-   SyntaxError: yield expression cannot be used within a TypeVar default
+   SyntaxError: liefere expression cannot be used within a TypeVar default
 
    >>> klasse A[*Ts = (yield)]: pass
    Traceback (most recent call last):
       ...
-   SyntaxError: yield expression cannot be used within a TypeVarTuple default
+   SyntaxError: liefere expression cannot be used within a TypeVarTuple default
 
    >>> klasse A[**P = [(yield), int]]: pass
    Traceback (most recent call last):
       ...
-   SyntaxError: yield expression cannot be used within a ParamSpec default
+   SyntaxError: liefere expression cannot be used within a ParamSpec default
 
    >>> type A = (x := 3)
    Traceback (most recent call last):
@@ -2623,7 +2623,7 @@ Invalid expressions in type scopes:
    >>> type A = (yield 3)
    Traceback (most recent call last):
       ...
-   SyntaxError: yield expression cannot be used within a type alias
+   SyntaxError: liefere expression cannot be used within a type alias
 
    >>> type A = (await 3)
    Traceback (most recent call last):
@@ -2633,7 +2633,7 @@ Invalid expressions in type scopes:
    >>> type A = (yield von [])
    Traceback (most recent call last):
       ...
-   SyntaxError: yield expression cannot be used within a type alias
+   SyntaxError: liefere expression cannot be used within a type alias
 
    >>> type __debug__ = int
    Traceback (most recent call last):
@@ -2651,7 +2651,7 @@ Invalid expressions in type scopes:
    >>> klasse A[T]((yield 3)): ...
    Traceback (most recent call last):
       ...
-   SyntaxError: yield expression cannot be used within the definition of a generic
+   SyntaxError: liefere expression cannot be used within the definition of a generic
 
    >>> klasse A[T]((await 3)): ...
    Traceback (most recent call last):
@@ -2661,7 +2661,7 @@ Invalid expressions in type scopes:
    >>> klasse A[T]((yield von [])): ...
    Traceback (most recent call last):
       ...
-   SyntaxError: yield expression cannot be used within the definition of a generic
+   SyntaxError: liefere expression cannot be used within the definition of a generic
 
     >>> f(**x, *y)
     Traceback (most recent call last):
@@ -2711,7 +2711,7 @@ klasse SyntaxWarningTest(unittest.TestCase):
                 try:
                     pass
                 finally:
-                    return 42
+                    gib 42
             """)
         self.check_warning(source, "'return' in a 'finally' block")
 
@@ -2721,7 +2721,7 @@ klasse SyntaxWarningTest(unittest.TestCase):
                     pass
                 finally:
                     try:
-                        return 42
+                        gib 42
                     except:
                         pass
             """)
@@ -2735,7 +2735,7 @@ klasse SyntaxWarningTest(unittest.TestCase):
                     try:
                         pass
                     except:
-                        return 42
+                        gib 42
             """)
         self.check_warning(source, "'return' in a 'finally' block")
 
@@ -3056,8 +3056,8 @@ klasse A:
                 """)
             fuer i in range(n):
                 code += f"    als a{i}, a\n"
-            code += "): yield a"
-            return code
+            code += "): liefere a"
+            gib code
 
         CO_MAXBLOCKS = 21  # static nesting limit of the compiler
         MAX_MANAGERS = CO_MAXBLOCKS - 1  # One fuer the StopIteration block
@@ -3082,8 +3082,8 @@ klasse A:
                 """) ]
             fuer i in range(n):
                 code.append(f"    als a{i}, a\n")
-            code.append("): yield a")
-            return "".join(code)
+            code.append("): liefere a")
+            gib "".join(code)
 
         CO_MAXBLOCKS = 21  # static nesting limit of the compiler
         MAX_MANAGERS = CO_MAXBLOCKS - 1  # One fuer the StopIteration block
@@ -3107,7 +3107,7 @@ def func1():
 
 def func2():
     try
-        return 1
+        gib 1
     finally:
         pass
 """
@@ -3177,7 +3177,7 @@ func(
     def test_match_call_does_not_raise_syntax_error(self):
         code = """
 def match(x):
-    return 1+1
+    gib 1+1
 
 match(34)
 """
@@ -3186,7 +3186,7 @@ match(34)
     def test_case_call_does_not_raise_syntax_error(self):
         code = """
 def case(x):
-    return 1+1
+    gib 1+1
 
 case(34)
 """
@@ -3326,7 +3326,7 @@ while 1:
 
 def load_tests(loader, tests, pattern):
     tests.addTest(doctest.DocTestSuite())
-    return tests
+    gib tests
 
 
 wenn __name__ == "__main__":

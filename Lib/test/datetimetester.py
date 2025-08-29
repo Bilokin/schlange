@@ -140,13 +140,13 @@ klasse FixedOffset(tzinfo):
         self.__name = name
         self.__dstoffset = dstoffset
     def __repr__(self):
-        return self.__name.lower()
+        gib self.__name.lower()
     def utcoffset(self, dt):
-        return self.__offset
+        gib self.__offset
     def tzname(self, dt):
-        return self.__name
+        gib self.__name
     def dst(self, dt):
-        return self.__dstoffset
+        gib self.__dstoffset
 
 klasse PicklableFixedOffset(FixedOffset):
 
@@ -158,7 +158,7 @@ klasse PicklableFixedOffsetWithSlots(PicklableFixedOffset):
 
 klasse _TZInfo(tzinfo):
     def utcoffset(self, datetime_module):
-        return random.random()
+        gib random.random()
 
 klasse TestTZInfo(unittest.TestCase):
 
@@ -243,13 +243,13 @@ klasse TestTZInfo(unittest.TestCase):
             """
 
             def utcoffset(self, dt):
-                return DSTOFFSET
+                gib DSTOFFSET
 
             def dst(self, dt):
-                return DSTDIFF
+                gib DSTDIFF
 
             def tzname(self, dt):
-                return 'UKSummerTime'
+                gib 'UKSummerTime'
 
         tz = UKSummerTime()
         u = datetime(2014, 4, 26, 12, 1, tzinfo=tz)
@@ -471,7 +471,7 @@ klasse HarmlessMixedComparison:
         self.assertIn(me, [1, 20, [], me])
         self.assertIn([], [me, 1, 20, []])
 
-        # Comparison to objects of unsupported types should return
+        # Comparison to objects of unsupported types should gib
         # NotImplemented which falls back to the right hand side's __eq__
         # method. In this case, ALWAYS_EQ.__eq__ always returns Wahr.
         # ALWAYS_EQ.__ne__ always returns Falsch.
@@ -909,13 +909,13 @@ klasse TestTimeDelta(HarmlessMixedComparison, unittest.TestCase):
         klasse T(timedelta):
             @staticmethod
             def from_td(td):
-                return T(td.days, td.seconds, td.microseconds)
+                gib T(td.days, td.seconds, td.microseconds)
 
             def as_hours(self):
                 sum = (self.days * 24 +
                        self.seconds / 3600.0 +
                        self.microseconds / 3600e6)
-                return round(sum)
+                gib round(sum)
 
         t1 = T(days=1)
         self.assertIs(type(t1), T)
@@ -1030,8 +1030,8 @@ klasse TestTimeDelta(HarmlessMixedComparison, unittest.TestCase):
         def get_bad_float(bad_ratio):
             klasse BadFloat(float):
                 def as_integer_ratio(self):
-                    return bad_ratio
-            return BadFloat()
+                    gib bad_ratio
+            gib BadFloat()
 
         mit self.assertRaises(TypeError):
             timedelta() / get_bad_float(1 << 1000)
@@ -1049,23 +1049,23 @@ klasse TestTimeDelta(HarmlessMixedComparison, unittest.TestCase):
         # remainder.
         klasse BadInt(int):
             def __mul__(self, other):
-                return Prod()
+                gib Prod()
             def __rmul__(self, other):
-                return Prod()
+                gib Prod()
             def __floordiv__(self, other):
-                return Prod()
+                gib Prod()
             def __rfloordiv__(self, other):
-                return Prod()
+                gib Prod()
 
         klasse Prod:
             def __add__(self, other):
-                return Sum()
+                gib Sum()
             def __radd__(self, other):
-                return Sum()
+                gib Sum()
 
         klasse Sum(int):
             def __divmod__(self, other):
-                return divmodresult
+                gib divmodresult
 
         fuer divmodresult in [Nichts, (), (0, 1, 2), (0, -1)]:
             mit self.subTest(divmodresult=divmodresult):
@@ -1446,7 +1446,7 @@ klasse TestDate(HarmlessMixedComparison, unittest.TestCase):
     def test_insane_fromtimestamp(self):
         # It's possible that some platform maps time_t to double,
         # und that this test will fail there.  This test should
-        # exempt such platforms (provided they return reasonable
+        # exempt such platforms (provided they gib reasonable
         # results!).
         fuer insane in -1e200, 1e200:
             self.assertRaises(OverflowError, self.theclass.fromtimestamp,
@@ -1650,14 +1650,14 @@ klasse TestDate(HarmlessMixedComparison, unittest.TestCase):
         # check that a derived class's __str__() gets called
         klasse A(self.theclass):
             def __str__(self):
-                return 'A'
+                gib 'A'
         a = A(2007, 9, 10)
         self.assertEqual(a.__format__(''), 'A')
 
         # check that a derived class's strftime gets called
         klasse B(self.theclass):
             def strftime(self, format_spec):
-                return 'B'
+                gib 'B'
         b = B(2007, 9, 10)
         self.assertEqual(b.__format__(''), str(dt))
 
@@ -1871,7 +1871,7 @@ klasse TestDate(HarmlessMixedComparison, unittest.TestCase):
             def __new__(cls, *args, **kwargs):
                 result = self.theclass.__new__(cls, *args, **kwargs)
                 result.extra = 7
-                return result
+                gib result
 
         dt = DateSubclass(2012, 1, 1)
 
@@ -1897,10 +1897,10 @@ klasse TestDate(HarmlessMixedComparison, unittest.TestCase):
                 extra = temp.pop('extra')
                 result = self.theclass.__new__(cls, *args, **temp)
                 result.extra = extra
-                return result
+                gib result
 
             def newmeth(self, start):
-                return start + self.year + self.month
+                gib start + self.year + self.month
 
         args = 2003, 4, 14
 
@@ -1920,7 +1920,7 @@ klasse TestDate(HarmlessMixedComparison, unittest.TestCase):
                 result = self.theclass.__new__(cls, *args, **kwargs)
                 result.extra = 7
 
-                return result
+                gib result
 
         args = (2003, 4, 14)
         d_ord = 731319              # Equivalent ordinal date
@@ -2325,14 +2325,14 @@ klasse TestDateTime(TestDate):
         # check that a derived class's __str__() gets called
         klasse A(self.theclass):
             def __str__(self):
-                return 'A'
+                gib 'A'
         a = A(2007, 9, 10, 4, 5, 1, 123)
         self.assertEqual(a.__format__(''), 'A')
 
         # check that a derived class's strftime gets called
         klasse B(self.theclass):
             def strftime(self, format_spec):
-                return 'B'
+                gib 'B'
         b = B(2007, 9, 10, 4, 5, 1, 123)
         self.assertEqual(b.__format__(''), str(dt))
 
@@ -2384,8 +2384,8 @@ klasse TestDateTime(TestDate):
             def tzname(self, dt):
                 klasse MyStr(str):
                     def replace(self, *args):
-                        return Nichts
-                return MyStr('name')
+                        gib Nichts
+                gib MyStr('name')
         t = self.theclass(2005, 3, 2, 0, 0, 0, 0, MyTzInfo(3, 'name'))
         self.assertRaises(TypeError, t.strftime, '%Z')
 
@@ -2687,7 +2687,7 @@ klasse TestDateTime(TestDate):
     def test_microsecond_rounding(self):
         def utcfromtimestamp(*args, **kwargs):
             mit self.assertWarns(DeprecationWarning):
-                return self.theclass.utcfromtimestamp(*args, **kwargs)
+                gib self.theclass.utcfromtimestamp(*args, **kwargs)
 
         fuer fts in [self.theclass.fromtimestamp,
                     utcfromtimestamp]:
@@ -2831,7 +2831,7 @@ klasse TestDateTime(TestDate):
     def test_insane_fromtimestamp(self):
         # It's possible that some platform maps time_t to double,
         # und that this test will fail there.  This test should
-        # exempt such platforms (provided they return reasonable
+        # exempt such platforms (provided they gib reasonable
         # results!).
         fuer insane in -1e200, 1e200:
             self.assertRaises(OverflowError, self.theclass.fromtimestamp,
@@ -2840,7 +2840,7 @@ klasse TestDateTime(TestDate):
     def test_insane_utcfromtimestamp(self):
         # It's possible that some platform maps time_t to double,
         # und that this test will fail there.  This test should
-        # exempt such platforms (provided they return reasonable
+        # exempt such platforms (provided they gib reasonable
         # results!).
         fuer insane in -1e200, 1e200:
             mit self.assertWarns(DeprecationWarning):
@@ -3133,21 +3133,21 @@ klasse TestDateTime(TestDate):
         self.assertEqual(dt.astimezone(tz=f), dt_f) # naive
 
         klasse Bogus(tzinfo):
-            def utcoffset(self, dt): return Nichts
-            def dst(self, dt): return timedelta(0)
+            def utcoffset(self, dt): gib Nichts
+            def dst(self, dt): gib timedelta(0)
         bog = Bogus()
         self.assertRaises(ValueError, dt.astimezone, bog)   # naive
         self.assertEqual(dt.replace(tzinfo=bog).astimezone(f), dt_f)
 
         klasse AlsoBogus(tzinfo):
-            def utcoffset(self, dt): return timedelta(0)
-            def dst(self, dt): return Nichts
+            def utcoffset(self, dt): gib timedelta(0)
+            def dst(self, dt): gib Nichts
         alsobog = AlsoBogus()
         self.assertRaises(ValueError, dt.astimezone, alsobog) # also naive
 
         klasse Broken(tzinfo):
-            def utcoffset(self, dt): return 1
-            def dst(self, dt): return 1
+            def utcoffset(self, dt): gib 1
+            def dst(self, dt): gib 1
         broken = Broken()
         dt_broken = dt.replace(tzinfo=broken)
         mit self.assertRaises(TypeError):
@@ -3163,10 +3163,10 @@ klasse TestDateTime(TestDate):
                 extra = temp.pop('extra')
                 result = self.theclass.__new__(cls, *args, **temp)
                 result.extra = extra
-                return result
+                gib result
 
             def newmeth(self, start):
-                return start + self.year + self.month + self.second
+                gib start + self.year + self.month + self.second
 
         args = 2003, 4, 14, 12, 13, 41
 
@@ -3187,7 +3187,7 @@ klasse TestDateTime(TestDate):
                 result = self.theclass.__new__(cls, *args, **kwargs)
                 result.extra = 7
 
-                return result
+                gib result
 
         args = (2003, 4, 14, 12, 30, 15, 123456)
         d_isoformat = '2003-04-14T12:30:15.123456'      # Equivalent isoformat()
@@ -3240,7 +3240,7 @@ klasse TestDateTime(TestDate):
                 result = self.theclass.__new__(cls, *args, **kwargs)
                 result.extra = 7
 
-                return result
+                gib result
 
         test_cases = [
             ('now', 'now', {}),
@@ -3936,14 +3936,14 @@ klasse TestTime(HarmlessMixedComparison, unittest.TestCase):
         # check that a derived class's __str__() gets called
         klasse A(self.theclass):
             def __str__(self):
-                return 'A'
+                gib 'A'
         a = A(1, 2, 3, 4)
         self.assertEqual(a.__format__(''), 'A')
 
         # check that a derived class's strftime gets called
         klasse B(self.theclass):
             def strftime(self, format_spec):
-                return 'B'
+                gib 'B'
         b = B(1, 2, 3, 4)
         self.assertEqual(b.__format__(''), str(t))
 
@@ -4148,7 +4148,7 @@ klasse TestTime(HarmlessMixedComparison, unittest.TestCase):
             def __new__(cls, *args, **kwargs):
                 result = self.theclass.__new__(cls, *args, **kwargs)
                 result.extra = 7
-                return result
+                gib result
 
         ctime = TimeSubclass(12, 30)
         ctime2 = TimeSubclass(12, 30, fold=1)
@@ -4178,10 +4178,10 @@ klasse TestTime(HarmlessMixedComparison, unittest.TestCase):
                 extra = temp.pop('extra')
                 result = self.theclass.__new__(cls, *args, **temp)
                 result.extra = extra
-                return result
+                gib result
 
             def newmeth(self, start):
-                return start + self.hour + self.second
+                gib start + self.hour + self.second
 
         args = 4, 5, 6
 
@@ -4213,9 +4213,9 @@ klasse TZInfoBase:
         cls = self.theclass
         # A datetime passes itself on, a time passes Nichts.
         klasse introspective(tzinfo):
-            def tzname(self, dt):    return dt und "real" oder "none"
+            def tzname(self, dt):    gib dt und "real" oder "none"
             def utcoffset(self, dt):
-                return timedelta(minutes = dt und 42 oder -42)
+                gib timedelta(minutes = dt und 42 oder -42)
             dst = utcoffset
 
         obj = cls(1, 2, 3, tzinfo=introspective())
@@ -4248,7 +4248,7 @@ klasse TZInfoBase:
             def __init__(self, offset):
                 self.offset = timedelta(minutes=offset)
             def utcoffset(self, dt):
-                return self.offset
+                gib self.offset
 
         cls = self.theclass
         fuer offset, legit in ((-1440, Falsch),
@@ -4274,9 +4274,9 @@ klasse TZInfoBase:
     def test_tzinfo_classes(self):
         cls = self.theclass
         klasse C1(tzinfo):
-            def utcoffset(self, dt): return Nichts
-            def dst(self, dt): return Nichts
-            def tzname(self, dt): return Nichts
+            def utcoffset(self, dt): gib Nichts
+            def dst(self, dt): gib Nichts
+            def tzname(self, dt): gib Nichts
         fuer t in (cls(1, 1, 1),
                   cls(1, 1, 1, tzinfo=Nichts),
                   cls(1, 1, 1, tzinfo=C1())):
@@ -4285,9 +4285,9 @@ klasse TZInfoBase:
             self.assertIsNichts(t.tzname())
 
         klasse C3(tzinfo):
-            def utcoffset(self, dt): return timedelta(minutes=-1439)
-            def dst(self, dt): return timedelta(minutes=1439)
-            def tzname(self, dt): return "aname"
+            def utcoffset(self, dt): gib timedelta(minutes=-1439)
+            def dst(self, dt): gib timedelta(minutes=1439)
+            def tzname(self, dt): gib "aname"
         t = cls(1, 1, 1, tzinfo=C3())
         self.assertEqual(t.utcoffset(), timedelta(minutes=-1439))
         self.assertEqual(t.dst(), timedelta(minutes=1439))
@@ -4295,9 +4295,9 @@ klasse TZInfoBase:
 
         # Wrong types.
         klasse C4(tzinfo):
-            def utcoffset(self, dt): return "aname"
-            def dst(self, dt): return 7
-            def tzname(self, dt): return 0
+            def utcoffset(self, dt): gib "aname"
+            def dst(self, dt): gib 7
+            def tzname(self, dt): gib 0
         t = cls(1, 1, 1, tzinfo=C4())
         self.assertRaises(TypeError, t.utcoffset)
         self.assertRaises(TypeError, t.dst)
@@ -4305,16 +4305,16 @@ klasse TZInfoBase:
 
         # Offset out of range.
         klasse C6(tzinfo):
-            def utcoffset(self, dt): return timedelta(hours=-24)
-            def dst(self, dt): return timedelta(hours=24)
+            def utcoffset(self, dt): gib timedelta(hours=-24)
+            def dst(self, dt): gib timedelta(hours=24)
         t = cls(1, 1, 1, tzinfo=C6())
         self.assertRaises(ValueError, t.utcoffset)
         self.assertRaises(ValueError, t.dst)
 
         # Not a whole number of seconds.
         klasse C7(tzinfo):
-            def utcoffset(self, dt): return timedelta(microseconds=61)
-            def dst(self, dt): return timedelta(microseconds=-81)
+            def utcoffset(self, dt): gib timedelta(microseconds=61)
+            def dst(self, dt): gib timedelta(microseconds=-81)
         t = cls(1, 1, 1, tzinfo=C7())
         self.assertEqual(t.utcoffset(), timedelta(microseconds=61))
         self.assertEqual(t.dst(), timedelta(microseconds=-81))
@@ -4328,10 +4328,10 @@ klasse TZInfoBase:
             def utcoffset(self, t):
                 wenn t.minute < 10:
                     # d0 und d1 equal after adjustment
-                    return timedelta(minutes=t.minute)
+                    gib timedelta(minutes=t.minute)
                 sonst:
                     # d2 off in the weeds
-                    return timedelta(minutes=59)
+                    gib timedelta(minutes=59)
 
         base = cls(8, 9, 10, tzinfo=OperandDependentOffset())
         d0 = base.replace(minute=3)
@@ -4456,7 +4456,7 @@ klasse TestTimeTZ(TestTime, TZInfoBase, unittest.TestCase):
         # Check that an invalid tzname result raises an exception.
         klasse Badtzname(tzinfo):
             tz = 42
-            def tzname(self, dt): return self.tz
+            def tzname(self, dt): gib self.tz
         t = time(2, 3, 4, tzinfo=Badtzname())
         self.assertEqual(t.strftime("%H:%M:%S"), "02:03:04")
         self.assertRaises(TypeError, t.strftime, "%Z")
@@ -4613,7 +4613,7 @@ klasse TestTimeTZ(TestTime, TZInfoBase, unittest.TestCase):
                 self.offset = timedelta(minutes=22)
             def utcoffset(self, t):
                 self.offset += timedelta(minutes=1)
-                return self.offset
+                gib self.offset
 
         v = Varies()
         t1 = t2.replace(tzinfo=v)
@@ -4862,10 +4862,10 @@ klasse TestTimeTZ(TestTime, TZInfoBase, unittest.TestCase):
                 extra = temp.pop('extra')
                 result = self.theclass.__new__(cls, *args, **temp)
                 result.extra = extra
-                return result
+                gib result
 
             def newmeth(self, start):
-                return start + self.hour + self.second
+                gib start + self.hour + self.second
 
         args = 4, 5, 6, 500, FixedOffset(-300, "EST", 1)
 
@@ -4946,7 +4946,7 @@ klasse TestDateTimeTZ(TestDateTime, TZInfoBase, unittest.TestCase):
 
         # It's also naive wenn it has tzinfo but tzinfo.utcoffset() is Nichts.
         klasse Naive(tzinfo):
-            def utcoffset(self, dt): return Nichts
+            def utcoffset(self, dt): gib Nichts
         t2 = self.theclass(5, 6, 7, tzinfo=Naive())
         self.assertNotEqual(t1, t2)
         self.assertEqual(t2, t2)
@@ -4959,7 +4959,7 @@ klasse TestDateTimeTZ(TestDateTime, TZInfoBase, unittest.TestCase):
         # Try a bogus uctoffset.
         klasse Bogus(tzinfo):
             def utcoffset(self, dt):
-                return timedelta(minutes=1440) # out of bounds
+                gib timedelta(minutes=1440) # out of bounds
         t1 = self.theclass(2, 2, 2, tzinfo=Bogus())
         t2 = self.theclass(2, 2, 2, tzinfo=FixedOffset(0, ""))
         self.assertRaises(ValueError, lambda: t1 == t2)
@@ -5100,7 +5100,7 @@ klasse TestDateTimeTZ(TestDateTime, TZInfoBase, unittest.TestCase):
         self.assertRaises(TypeError, lambda: nowaware + now)
         self.assertRaises(TypeError, lambda: nowaware + nowaware)
 
-        # Subtracting should yield 0.
+        # Subtracting should liefere 0.
         self.assertEqual(now - now, timedelta(0))
         self.assertEqual(nowaware - nowaware, timedelta(0))
 
@@ -5257,7 +5257,7 @@ klasse TestDateTimeTZ(TestDateTime, TZInfoBase, unittest.TestCase):
                     dstvalue = timedelta(minutes=dstvalue)
                 self.dstvalue = dstvalue
             def dst(self, dt):
-                return self.dstvalue
+                gib self.dstvalue
 
         cls = self.theclass
         fuer dstvalue, flag in (-33, 1), (33, 1), (0, 0), (Nichts, -1):
@@ -5291,7 +5291,7 @@ klasse TestDateTimeTZ(TestDateTime, TZInfoBase, unittest.TestCase):
                     dstvalue = timedelta(minutes=dstvalue)
                 self.dstvalue = dstvalue
             def dst(self, dt):
-                return self.dstvalue
+                gib self.dstvalue
 
         cls = self.theclass
         # This can't work:  DST didn't implement utcoffset.
@@ -5303,7 +5303,7 @@ klasse TestDateTimeTZ(TestDateTime, TZInfoBase, unittest.TestCase):
                 DST.__init__(self, dofs)
                 self.uofs = timedelta(minutes=uofs)
             def utcoffset(self, dt):
-                return self.uofs
+                gib self.uofs
 
         fuer dstvalue in -33, 33, 0, Nichts:
             d = cls(1, 2, 3, 10, 20, 30, 40, tzinfo=UOFS(-53, dstvalue))
@@ -5329,7 +5329,7 @@ klasse TestDateTimeTZ(TestDateTime, TZInfoBase, unittest.TestCase):
         # Same wenn utcoffset is Nichts
         klasse NOFS(DST):
             def utcoffset(self, dt):
-                return Nichts
+                gib Nichts
         d = cls(1, 2, 3, 10, 20, 30, 40, tzinfo=NOFS())
         t = d.utctimetuple()
         self.assertEqual(t[:-1], d.timetuple()[:-1])
@@ -5337,7 +5337,7 @@ klasse TestDateTimeTZ(TestDateTime, TZInfoBase, unittest.TestCase):
         # Check that bad tzinfo is detected
         klasse BOFS(DST):
             def utcoffset(self, dt):
-                return "EST"
+                gib "EST"
         d = cls(1, 2, 3, 10, 20, 30, 40, tzinfo=BOFS())
         self.assertRaises(TypeError, d.utctimetuple)
 
@@ -5496,10 +5496,10 @@ klasse TestDateTimeTZ(TestDateTime, TZInfoBase, unittest.TestCase):
             def utcoffset(self, t):
                 wenn t.minute < 10:
                     # d0 und d1 equal after adjustment
-                    return timedelta(minutes=t.minute)
+                    gib timedelta(minutes=t.minute)
                 sonst:
                     # d2 off in the weeds
-                    return timedelta(minutes=59)
+                    gib timedelta(minutes=59)
 
         base = cls(8, 9, 10, 11, 12, 13, 14, tzinfo=OperandDependentOffset())
         d0 = base.replace(minute=3)
@@ -5548,7 +5548,7 @@ klasse TestDateTimeTZ(TestDateTime, TZInfoBase, unittest.TestCase):
                 self.offset = timedelta(minutes=22)
             def utcoffset(self, t):
                 self.offset += timedelta(minutes=1)
-                return self.offset
+                gib self.offset
 
         v = Varies()
         t1 = t2.replace(tzinfo=v)
@@ -5571,10 +5571,10 @@ klasse TestDateTimeTZ(TestDateTime, TZInfoBase, unittest.TestCase):
                 extra = temp.pop('extra')
                 result = self.theclass.__new__(cls, *args, **temp)
                 result.extra = extra
-                return result
+                gib result
 
             def newmeth(self, start):
-                return start + self.hour + self.year
+                gib start + self.hour + self.year
 
         args = 2002, 12, 31, 4, 5, 6, 500, FixedOffset(-300, "EST", 1)
 
@@ -5593,7 +5593,7 @@ def first_sunday_on_or_after(dt):
     days_to_go = 6 - dt.weekday()
     wenn days_to_go:
         dt += timedelta(days_to_go)
-    return dt
+    gib dt
 
 ZERO = timedelta(0)
 MINUTE = timedelta(minutes=1)
@@ -5616,22 +5616,22 @@ klasse USTimeZone(tzinfo):
         self.dstname = dstname
 
     def __repr__(self):
-        return self.reprname
+        gib self.reprname
 
     def tzname(self, dt):
         wenn self.dst(dt):
-            return self.dstname
+            gib self.dstname
         sonst:
-            return self.stdname
+            gib self.stdname
 
     def utcoffset(self, dt):
-        return self.stdoffset + self.dst(dt)
+        gib self.stdoffset + self.dst(dt)
 
     def dst(self, dt):
         wenn dt is Nichts oder dt.tzinfo is Nichts:
             # An exception instead may be sensible here, in one oder more of
             # the cases.
-            return ZERO
+            gib ZERO
         assert dt.tzinfo is self
 
         # Find first Sunday in April.
@@ -5645,9 +5645,9 @@ klasse USTimeZone(tzinfo):
         # Can't compare naive to aware objects, so strip the timezone from
         # dt first.
         wenn start <= dt.replace(tzinfo=Nichts) < end:
-            return HOUR
+            gib HOUR
         sonst:
-            return ZERO
+            gib ZERO
 
 Eastern  = USTimeZone(-5, "Eastern",  "EST", "EDT")
 Central  = USTimeZone(-6, "Central",  "CST", "CDT")
@@ -5828,8 +5828,8 @@ klasse TestTimezoneConversions(unittest.TestCase):
 
     def test_bogus_dst(self):
         klasse ok(tzinfo):
-            def utcoffset(self, dt): return HOUR
-            def dst(self, dt): return HOUR
+            def utcoffset(self, dt): gib HOUR
+            def dst(self, dt): gib HOUR
 
         now = self.theclass.now().replace(tzinfo=utc_real)
         # Doesn't blow up.
@@ -5837,19 +5837,19 @@ klasse TestTimezoneConversions(unittest.TestCase):
 
         # Does blow up.
         klasse notok(ok):
-            def dst(self, dt): return Nichts
+            def dst(self, dt): gib Nichts
         self.assertRaises(ValueError, now.astimezone, notok())
 
         # Sometimes blow up. In the following, tzinfo.dst()
-        # implementation may return Nichts oder nicht Nichts depending on
+        # implementation may gib Nichts oder nicht Nichts depending on
         # whether DST is assumed to be in effect.  In this situation,
         # a ValueError should be raised by astimezone().
         klasse tricky_notok(ok):
             def dst(self, dt):
                 wenn dt.year == 2000:
-                    return Nichts
+                    gib Nichts
                 sonst:
-                    return 10*HOUR
+                    gib 10*HOUR
         dt = self.theclass(2001, 1, 1).replace(tzinfo=utc_real)
         self.assertRaises(ValueError, dt.astimezone, tricky_notok())
 
@@ -5866,7 +5866,7 @@ klasse TestTimezoneConversions(unittest.TestCase):
         # Always converts UTC to standard time.
         klasse FauxUSTimeZone(USTimeZone):
             def fromutc(self, dt):
-                return dt + self.stdoffset
+                gib dt + self.stdoffset
         FEastern  = FauxUSTimeZone(-5, "FEastern",  "FEST", "FEDT")
 
         #  UTC  4:MM  5:MM  6:MM  7:MM  8:MM  9:MM
@@ -5954,7 +5954,7 @@ klasse Oddballs(unittest.TestCase):
 
         # Nevertheless, comparison should work wenn other object is an instance
         # of date oder datetime klasse mit overridden comparison operators.
-        # So special methods should return NotImplemented, als if
+        # So special methods should gib NotImplemented, als if
         # date und datetime were independent classes.
         fuer x, y in (as_date, as_datetime), (as_datetime, as_date):
             self.assertEqual(x.__eq__(y), NotImplemented)
@@ -5981,7 +5981,7 @@ klasse Oddballs(unittest.TestCase):
             def __init__(self, value):
                 self.value = value
             def __int__(self):
-                return self.value
+                gib self.value
 
         klasse Float(float):
             pass
@@ -6023,16 +6023,16 @@ klasse tzinfo2(tzinfo):
             ldt = dt + off0
             off1 = ldt.utcoffset()
             wenn off0 == off1:
-                return ldt
+                gib ldt
         # Now, we discovered both possible offsets, so
         # we can just try four possible solutions:
         fuer off in [off0, off1]:
             ldt = dt + off
             wenn ldt.utcoffset() == off:
-                return ldt
+                gib ldt
             ldt = ldt.replace(fold=1)
             wenn ldt.utcoffset() == off:
-                return ldt
+                gib ldt
 
         raise ValueError("No suitable local time found")
 
@@ -6047,22 +6047,22 @@ klasse USTimeZone2(tzinfo2):
         self.dstname = dstname
 
     def __repr__(self):
-        return self.reprname
+        gib self.reprname
 
     def tzname(self, dt):
         wenn self.dst(dt):
-            return self.dstname
+            gib self.dstname
         sonst:
-            return self.stdname
+            gib self.stdname
 
     def utcoffset(self, dt):
-        return self.stdoffset + self.dst(dt)
+        gib self.stdoffset + self.dst(dt)
 
     def dst(self, dt):
         wenn dt is Nichts oder dt.tzinfo is Nichts:
             # An exception instead may be sensible here, in one oder more of
             # the cases.
-            return ZERO
+            gib ZERO
         assert dt.tzinfo is self
 
         # Find first Sunday in April.
@@ -6078,16 +6078,16 @@ klasse USTimeZone2(tzinfo2):
         dt = dt.replace(tzinfo=Nichts)
         wenn start + HOUR <= dt < end:
             # DST is in effect.
-            return HOUR
+            gib HOUR
         sowenn end <= dt < end + HOUR:
             # Fold (an ambiguous hour): use dt.fold to disambiguate.
-            return ZERO wenn dt.fold sonst HOUR
+            gib ZERO wenn dt.fold sonst HOUR
         sowenn start <= dt < start + HOUR:
             # Gap (a non-existent hour): reverse the fold rule.
-            return HOUR wenn dt.fold sonst ZERO
+            gib HOUR wenn dt.fold sonst ZERO
         sonst:
             # DST is off.
-            return ZERO
+            gib ZERO
 
 Eastern2  = USTimeZone2(-5, "Eastern2",  "EST", "EDT")
 Central2  = USTimeZone2(-6, "Central2",  "CST", "CDT")
@@ -6108,39 +6108,39 @@ Pacific2  = USTimeZone2(-8, "Pacific2",  "PST", "PDT")
 
 klasse Europe_Vilnius_1941(tzinfo):
     def _utc_fold(self):
-        return [datetime(1941, 6, 23, 21, tzinfo=self),  # Mon Jun 23 21:00:00 1941 UTC
+        gib [datetime(1941, 6, 23, 21, tzinfo=self),  # Mon Jun 23 21:00:00 1941 UTC
                 datetime(1941, 6, 23, 22, tzinfo=self)]  # Mon Jun 23 22:00:00 1941 UTC
 
     def _loc_fold(self):
-        return [datetime(1941, 6, 23, 23, tzinfo=self),  # Mon Jun 23 23:00:00 1941 MSK / CEST
+        gib [datetime(1941, 6, 23, 23, tzinfo=self),  # Mon Jun 23 23:00:00 1941 MSK / CEST
                 datetime(1941, 6, 24, 0, tzinfo=self)]   # Mon Jun 24 00:00:00 1941 CEST
 
     def utcoffset(self, dt):
         fold_start, fold_stop = self._loc_fold()
         wenn dt < fold_start:
-            return 3 * HOUR
+            gib 3 * HOUR
         wenn dt < fold_stop:
-            return (2 wenn dt.fold sonst 3) * HOUR
+            gib (2 wenn dt.fold sonst 3) * HOUR
         # wenn dt >= fold_stop
-        return 2 * HOUR
+        gib 2 * HOUR
 
     def dst(self, dt):
         fold_start, fold_stop = self._loc_fold()
         wenn dt < fold_start:
-            return 0 * HOUR
+            gib 0 * HOUR
         wenn dt < fold_stop:
-            return (1 wenn dt.fold sonst 0) * HOUR
+            gib (1 wenn dt.fold sonst 0) * HOUR
         # wenn dt >= fold_stop
-        return 1 * HOUR
+        gib 1 * HOUR
 
     def tzname(self, dt):
         fold_start, fold_stop = self._loc_fold()
         wenn dt < fold_start:
-            return 'MSK'
+            gib 'MSK'
         wenn dt < fold_stop:
-            return ('MSK', 'CEST')[dt.fold]
+            gib ('MSK', 'CEST')[dt.fold]
         # wenn dt >= fold_stop
-        return 'CEST'
+        gib 'CEST'
 
     def fromutc(self, dt):
         assert dt.fold == 0
@@ -6149,11 +6149,11 @@ klasse Europe_Vilnius_1941(tzinfo):
             raise NotImplementedError
         fold_start, fold_stop = self._utc_fold()
         wenn dt < fold_start:
-            return dt + 3 * HOUR
+            gib dt + 3 * HOUR
         wenn dt < fold_stop:
-            return (dt + 2 * HOUR).replace(fold=1)
+            gib (dt + 2 * HOUR).replace(fold=1)
         # wenn dt >= fold_stop
-        return dt + 2 * HOUR
+        gib dt + 2 * HOUR
 
 
 klasse TestLocalTimeDisambiguation(unittest.TestCase):
@@ -6434,7 +6434,7 @@ SEC = timedelta(0, 1)
 def pairs(iterable):
     a, b = itertools.tee(iterable)
     next(b, Nichts)
-    return zip(a, b)
+    gib zip(a, b)
 
 klasse ZoneInfo(tzinfo):
     zoneroot = '/usr/share/zoneinfo'
@@ -6461,7 +6461,7 @@ klasse ZoneInfo(tzinfo):
             fuer i in range(1, len(ut)):
                 lt[0][i] += ti[i-1][0] // SEC
                 lt[1][i] += ti[i][0] // SEC
-        return lt
+        gib lt
 
     @classmethod
     def fromfile(cls, fileobj):
@@ -6498,13 +6498,13 @@ klasse ZoneInfo(tzinfo):
 
         self = cls(ut, ti)
 
-        return self
+        gib self
 
     @classmethod
     def fromname(cls, name):
         path = os.path.join(cls.zoneroot, name)
         mit open(path, 'rb') als f:
-            return cls.fromfile(f)
+            gib cls.fromfile(f)
 
     EPOCHORDINAL = date(1970, 1, 1).toordinal()
 
@@ -6534,9 +6534,9 @@ klasse ZoneInfo(tzinfo):
             fold = (shift > timedelta(0, timestamp - self.ut[idx-1]))
         dt += tti[0]
         wenn fold:
-            return dt.replace(fold=1)
+            gib dt.replace(fold=1)
         sonst:
-            return dt
+            gib dt
 
     def _find_ti(self, dt, i):
         timestamp = ((dt.toordinal() - self.EPOCHORDINAL) * 86400
@@ -6546,21 +6546,21 @@ klasse ZoneInfo(tzinfo):
         lt = self.lt[dt.fold]
         idx = bisect.bisect_right(lt, timestamp)
 
-        return self.ti[max(0, idx - 1)][i]
+        gib self.ti[max(0, idx - 1)][i]
 
     def utcoffset(self, dt):
-        return self._find_ti(dt, 0)
+        gib self._find_ti(dt, 0)
 
     def dst(self, dt):
         isdst = self._find_ti(dt, 1)
         # XXX: We cannot accurately determine the "save" value,
-        # so let's return 1h whenever DST is in effect.  Since
+        # so let's gib 1h whenever DST is in effect.  Since
         # we don't use dst() in fromutc(), it is unlikely that
         # it will be needed fuer anything more than bool(dst()).
-        return ZERO wenn isdst sonst HOUR
+        gib ZERO wenn isdst sonst HOUR
 
     def tzname(self, dt):
-        return self._find_ti(dt, 2)
+        gib self._find_ti(dt, 2)
 
     @classmethod
     def zonenames(cls, zonedir=Nichts):
@@ -6570,12 +6570,12 @@ klasse ZoneInfo(tzinfo):
         try:
             f = open(zone_tab)
         except OSError:
-            return
+            gib
         mit f:
             fuer line in f:
                 line = line.strip()
                 wenn line und nicht line.startswith('#'):
-                    yield line.split()[2]
+                    liefere line.split()[2]
 
     @classmethod
     def stats(cls, start_year=1):
@@ -6629,14 +6629,14 @@ klasse ZoneInfo(tzinfo):
     def transitions(self):
         fuer (_, prev_ti), (t, ti) in pairs(zip(self.ut, self.ti)):
             shift = ti[0] - prev_ti[0]
-            yield (EPOCH_NAIVE + timedelta(seconds=t)), shift
+            liefere (EPOCH_NAIVE + timedelta(seconds=t)), shift
 
     def nondst_folds(self):
         """Find all folds mit the same value of isdst on both sides of the transition."""
         fuer (_, prev_ti), (t, ti) in pairs(zip(self.ut, self.ti)):
             shift = ti[0] - prev_ti[0]
             wenn shift < ZERO und ti[1] == prev_ti[1]:
-                yield _utcfromtimestamp(datetime, t,), -shift, prev_ti[2], ti[2]
+                liefere _utcfromtimestamp(datetime, t,), -shift, prev_ti[2], ti[2]
 
     @classmethod
     def print_all_nondst_folds(cls, same_abbr=Falsch, start_year=1):
@@ -6653,17 +6653,17 @@ klasse ZoneInfo(tzinfo):
     def folds(self):
         fuer t, shift in self.transitions():
             wenn shift < ZERO:
-                yield t, -shift
+                liefere t, -shift
 
     def gaps(self):
         fuer t, shift in self.transitions():
             wenn shift > ZERO:
-                yield t, shift
+                liefere t, shift
 
     def zeros(self):
         fuer t, shift in self.transitions():
             wenn nicht shift:
-                yield t
+                liefere t
 
 
 klasse ZoneInfoTest(unittest.TestCase):
@@ -6735,7 +6735,7 @@ klasse ZoneInfoTest(unittest.TestCase):
             mit os_helper.EnvironmentVarGuard() als env:
                 env["TZ"] = new_tzinfo
                 _time.tzset()
-                yield
+                liefere
         finally:
             _time.tzset()
 
@@ -7266,12 +7266,12 @@ klasse ExtensionModuleTests(unittest.TestCase):
 
                 klasse FakeDateMeta(type):
                     def __instancecheck__(self, obj):
-                        return Wahr
+                        gib Wahr
                 klasse FakeDate(datetime.date, metaclass=FakeDateMeta):
                     pass
                 def pickle_fake_date(datetime_) -> Type[FakeDate]:
                     # A pickle function fuer FakeDate
-                    return FakeDate
+                    gib FakeDate
                 """)
             script_helper.assert_python_ok('-c', script)
 
@@ -7338,7 +7338,7 @@ klasse ExtensionModuleTests(unittest.TestCase):
 
 def load_tests(loader, standard_tests, pattern):
     standard_tests.addTest(ZoneInfoCompleteTest())
-    return standard_tests
+    gib standard_tests
 
 
 wenn __name__ == "__main__":

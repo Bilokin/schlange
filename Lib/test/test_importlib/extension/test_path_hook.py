@@ -14,7 +14,7 @@ klasse PathHookTests:
     # XXX Should it only work fuer directories containing an extension module?
 
     def hook(self, entry):
-        return self.machinery.FileFinder.path_hook(
+        gib self.machinery.FileFinder.path_hook(
                 (self.machinery.ExtensionFileLoader,
                  self.machinery.EXTENSION_SUFFIXES))(entry)
 

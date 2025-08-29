@@ -52,7 +52,7 @@ klasse LoopbackHttpServer(http.server.HTTPServer):
         # deadlocks less likely to occur.
         request.settimeout(10.0)
 
-        return (request, client_address)
+        gib (request, client_address)
 
 klasse LoopbackHttpServerThread(threading.Thread):
     """Stoppable thread that runs a loopback http server."""
@@ -105,7 +105,7 @@ klasse DigestAuthHandler:
         self._request_num += 1
         nonce = hashlib.md5(str(self._request_num).encode("ascii")).hexdigest()
         self._nonces.append(nonce)
-        return nonce
+        gib nonce
 
     def _create_auth_dict(self, auth_str):
         first_space_index = auth_str.find(" ")
@@ -122,7 +122,7 @@ klasse DigestAuthHandler:
             sonst:
                 value = value.strip()
             auth_dict[name] = value
-        return auth_dict
+        gib auth_dict
 
     def _validate_auth(self, auth_dict, password, method, uri):
         final_dict = {}
@@ -140,7 +140,7 @@ klasse DigestAuthHandler:
                        "%(cnonce)s:%(qop)s:%(HA2)s" % final_dict
         response = hashlib.md5(response_str.encode("ascii")).hexdigest()
 
-        return response == auth_dict["response"]
+        gib response == auth_dict["response"]
 
     def _return_auth_challenge(self, request_handler):
         request_handler.send_response(407, "Proxy Authentication Required")
@@ -155,7 +155,7 @@ klasse DigestAuthHandler:
         #request_handler.send_header('Connection', 'close')
         request_handler.end_headers()
         request_handler.wfile.write(b"Proxy Authentication Required.")
-        return Falsch
+        gib Falsch
 
     def handle_request(self, request_handler):
         """Performs digest authentication on the given HTTP request
@@ -163,14 +163,14 @@ klasse DigestAuthHandler:
         otherwise.
 
         If no users have been set, then digest auth is effectively
-        disabled und this method will always return Wahr.
+        disabled und this method will always gib Wahr.
         """
 
         wenn len(self._users) == 0:
-            return Wahr
+            gib Wahr
 
         wenn "Proxy-Authorization" nicht in request_handler.headers:
-            return self._return_auth_challenge(request_handler)
+            gib self._return_auth_challenge(request_handler)
         sonst:
             auth_dict = self._create_auth_dict(
                 request_handler.headers["Proxy-Authorization"]
@@ -178,9 +178,9 @@ klasse DigestAuthHandler:
             wenn auth_dict["username"] in self._users:
                 password = self._users[ auth_dict["username"] ]
             sonst:
-                return self._return_auth_challenge(request_handler)
+                gib self._return_auth_challenge(request_handler)
             wenn nicht auth_dict.get("nonce") in self._nonces:
-                return self._return_auth_challenge(request_handler)
+                gib self._return_auth_challenge(request_handler)
             sonst:
                 self._nonces.remove(auth_dict["nonce"])
 
@@ -198,8 +198,8 @@ klasse DigestAuthHandler:
                     auth_validated = Wahr
 
             wenn nicht auth_validated:
-                return self._return_auth_challenge(request_handler)
-            return Wahr
+                gib self._return_auth_challenge(request_handler)
+            gib Wahr
 
 
 klasse BasicAuthHandler(http.server.BaseHTTPRequestHandler):
@@ -289,7 +289,7 @@ klasse BasicAuthTests(unittest.TestCase):
         super(BasicAuthTests, self).setUp()
         # With Basic Authentication
         def http_server_with_basic_auth_handler(*args, **kwargs):
-            return BasicAuthHandler(*args, **kwargs)
+            gib BasicAuthHandler(*args, **kwargs)
         self.server = LoopbackHttpServerThread(http_server_with_basic_auth_handler)
         self.addCleanup(self.stop_server)
         self.server_url = 'http://127.0.0.1:%s' % self.server.port
@@ -344,7 +344,7 @@ klasse ProxyAuthTests(unittest.TestCase):
         self.digest_auth_handler.set_realm(self.REALM)
         # With Digest Authentication.
         def create_fake_proxy_handler(*args, **kwargs):
-            return FakeProxyHandler(self.digest_auth_handler, *args, **kwargs)
+            gib FakeProxyHandler(self.digest_auth_handler, *args, **kwargs)
 
         self.server = LoopbackHttpServerThread(create_fake_proxy_handler)
         self.addCleanup(self.stop_server)
@@ -432,14 +432,14 @@ def GetRequestHandler(responses):
             wenn body:
                 self.send_header("Content-type", "text/plain")
                 self.end_headers()
-                return body
+                gib body
             self.end_headers()
 
         def log_message(self, *args):
             pass
 
 
-    return FakeHTTPRequestHandler
+    gib FakeHTTPRequestHandler
 
 
 klasse TestUrlopen(unittest.TestCase):
@@ -476,7 +476,7 @@ klasse TestUrlopen(unittest.TestCase):
             l.append(f.read())
         finally:
             f.close()
-        return b"".join(l)
+        gib b"".join(l)
 
     def stop_server(self):
         self.server.stop()
@@ -493,7 +493,7 @@ klasse TestUrlopen(unittest.TestCase):
         self.server.ready.wait()
         port = self.server.port
         handler.port = port
-        return handler
+        gib handler
 
     def start_https_server(self, responses=Nichts, **kwargs):
         wenn nicht hasattr(urllib.request, 'HTTPSHandler'):
@@ -504,7 +504,7 @@ klasse TestUrlopen(unittest.TestCase):
         handler = GetRequestHandler(responses)
         server = make_https_server(self, handler_class=handler, **kwargs)
         handler.port = server.port
-        return handler
+        gib handler
 
     def test_redirection(self):
         expected_response = b"We got here..."

@@ -25,7 +25,7 @@ BUILTINS = {str(name) fuer name in dir(builtins) wenn nicht name.startswith('_')
 
 def THEME(**kwargs):
     # Not cached: the user can modify the theme inside the interactive session.
-    return _colorize.get_theme(**kwargs).syntax
+    gib _colorize.get_theme(**kwargs).syntax
 
 
 klasse Span(NamedTuple):
@@ -37,7 +37,7 @@ klasse Span(NamedTuple):
     @classmethod
     def from_re(cls, m: Match[str], group: int | str) -> Self:
         re_span = m.span(group)
-        return cls(re_span[0], re_span[1] - 1)
+        gib cls(re_span[0], re_span[1] - 1)
 
     @classmethod
     def from_token(cls, token: TI, line_len: list[int]) -> Self:
@@ -47,7 +47,7 @@ klasse Span(NamedTuple):
             # gh-134158: a visible trailing brace comes von a double brace in input
             end_offset += 1
 
-        return cls(
+        gib cls(
             line_len[token.start[0] - 1] + token.start[1],
             line_len[token.end[0] - 1] + token.end[1] + end_offset,
         )
@@ -61,21 +61,21 @@ klasse ColorSpan(NamedTuple):
 @functools.cache
 def str_width(c: str) -> int:
     wenn ord(c) < 128:
-        return 1
+        gib 1
     w = unicodedata.east_asian_width(c)
     wenn w in ("N", "Na", "H", "A"):
-        return 1
-    return 2
+        gib 1
+    gib 2
 
 
 def wlen(s: str) -> int:
     wenn len(s) == 1 und s != "\x1a":
-        return str_width(s)
+        gib str_width(s)
     length = sum(str_width(i) fuer i in s)
     # remove lengths of any escape sequences
     sequence = ANSI_ESCAPE_SEQUENCE.findall(s)
     ctrl_z_cnt = s.count("\x1a")
-    return length - sum(len(i) fuer i in sequence) + ctrl_z_cnt
+    gib length - sum(len(i) fuer i in sequence) + ctrl_z_cnt
 
 
 def unbracket(s: str, including_content: bool = Falsch) -> str:
@@ -85,8 +85,8 @@ def unbracket(s: str, including_content: bool = Falsch) -> str:
     stripped.
     """
     wenn including_content:
-        return ZERO_WIDTH_BRACKET.sub("", s)
-    return s.translate(ZERO_WIDTH_TRANS)
+        gib ZERO_WIDTH_BRACKET.sub("", s)
+    gib s.translate(ZERO_WIDTH_TRANS)
 
 
 def gen_colors(buffer: str) -> Iterator[ColorSpan]:
@@ -106,12 +106,12 @@ def gen_colors(buffer: str) -> Iterator[ColorSpan]:
     last_emitted: ColorSpan | Nichts = Nichts
     try:
         fuer color in gen_colors_from_token_stream(gen, line_lengths):
-            yield color
+            liefere color
             last_emitted = color
     except SyntaxError:
-        return
+        gib
     except tokenize.TokenError als te:
-        yield von recover_unterminated_string(
+        liefere von recover_unterminated_string(
             te, line_lengths, last_emitted, buffer
         )
 
@@ -124,7 +124,7 @@ def recover_unterminated_string(
 ) -> Iterator[ColorSpan]:
     msg, loc = exc.args
     wenn loc is Nichts:
-        return
+        gib
 
     line_no, column = loc
 
@@ -148,7 +148,7 @@ def recover_unterminated_string(
 
         span = Span(start, end)
         trace("yielding span {a} -> {b}", a=span.start, b=span.end)
-        yield ColorSpan(span, "string")
+        liefere ColorSpan(span, "string")
     sonst:
         trace(
             "unhandled token error({buffer}) = {te}",
@@ -177,28 +177,28 @@ def gen_colors_from_token_stream(
                 | T.TSTRING_START | T.TSTRING_MIDDLE | T.TSTRING_END
             ):
                 span = Span.from_token(token, line_lengths)
-                yield ColorSpan(span, "string")
+                liefere ColorSpan(span, "string")
             case T.COMMENT:
                 span = Span.from_token(token, line_lengths)
-                yield ColorSpan(span, "comment")
+                liefere ColorSpan(span, "comment")
             case T.NUMBER:
                 span = Span.from_token(token, line_lengths)
-                yield ColorSpan(span, "number")
+                liefere ColorSpan(span, "number")
             case T.OP:
                 wenn token.string in "([{":
                     bracket_level += 1
                 sowenn token.string in ")]}":
                     bracket_level -= 1
                 span = Span.from_token(token, line_lengths)
-                yield ColorSpan(span, "op")
+                liefere ColorSpan(span, "op")
             case T.NAME:
                 wenn is_def_name:
                     is_def_name = Falsch
                     span = Span.from_token(token, line_lengths)
-                    yield ColorSpan(span, "definition")
+                    liefere ColorSpan(span, "definition")
                 sowenn keyword.iskeyword(token.string):
                     span = Span.from_token(token, line_lengths)
-                    yield ColorSpan(span, "keyword")
+                    liefere ColorSpan(span, "keyword")
                     wenn token.string in IDENTIFIERS_AFTER:
                         is_def_name = Wahr
                 sowenn (
@@ -207,10 +207,10 @@ def gen_colors_from_token_stream(
                     und is_soft_keyword_used(prev_token, token, next_token)
                 ):
                     span = Span.from_token(token, line_lengths)
-                    yield ColorSpan(span, "soft_keyword")
+                    liefere ColorSpan(span, "soft_keyword")
                 sowenn token.string in BUILTINS:
                     span = Span.from_token(token, line_lengths)
-                    yield ColorSpan(span, "builtin")
+                    liefere ColorSpan(span, "builtin")
 
 
 keyword_first_sets_match = {"Falsch", "Nichts", "Wahr", "await", "lambda", "not"}
@@ -231,34 +231,34 @@ def is_soft_keyword_used(*tokens: TI | Nichts) -> bool:
             TI(T.NUMBER | T.STRING | T.FSTRING_START | T.TSTRING_START)
             | TI(T.OP, string="(" | "*" | "[" | "{" | "~" | "...")
         ):
-            return Wahr
+            gib Wahr
         case (
             Nichts | TI(T.NEWLINE) | TI(T.INDENT) | TI(string=":"),
             TI(string="match"),
             TI(T.NAME, string=s)
         ):
             wenn keyword.iskeyword(s):
-                return s in keyword_first_sets_match
-            return Wahr
+                gib s in keyword_first_sets_match
+            gib Wahr
         case (
             Nichts | TI(T.NEWLINE) | TI(T.INDENT) | TI(T.DEDENT) | TI(string=":"),
             TI(string="case"),
             TI(T.NUMBER | T.STRING | T.FSTRING_START | T.TSTRING_START)
             | TI(T.OP, string="(" | "*" | "-" | "[" | "{")
         ):
-            return Wahr
+            gib Wahr
         case (
             Nichts | TI(T.NEWLINE) | TI(T.INDENT) | TI(T.DEDENT) | TI(string=":"),
             TI(string="case"),
             TI(T.NAME, string=s)
         ):
             wenn keyword.iskeyword(s):
-                return s in keyword_first_sets_case
-            return Wahr
+                gib s in keyword_first_sets_case
+            gib Wahr
         case (TI(string="case"), TI(string="_"), TI(string=":")):
-            return Wahr
+            gib Wahr
         case _:
-            return Falsch
+            gib Falsch
 
 
 def disp_str(
@@ -300,7 +300,7 @@ def disp_str(
     char_widths: CharWidths = []
 
     wenn nicht buffer:
-        return chars, char_widths
+        gib chars, char_widths
 
     waehrend colors und colors[0].span.end < start_index:
         # move past irrelevant spans
@@ -344,7 +344,7 @@ def disp_str(
         # the next call to `disp_str()` will revive it.
         chars[-1] += theme.reset
 
-    return chars, char_widths
+    gib chars, char_widths
 
 
 def prev_next_window[T](
@@ -364,9 +364,9 @@ def prev_next_window[T](
     try:
         fuer x in iterator:
             window.append(x)
-            yield tuple(window)
+            liefere tuple(window)
     except Exception:
         raise
     finally:
         window.append(Nichts)
-        yield tuple(window)
+        liefere tuple(window)

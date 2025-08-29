@@ -73,8 +73,8 @@ klasse MessageOutFilter(logging.Filter):
 
     def filter(self, record):
         wenn self.msg in record.msg:
-            return Falsch
-        return Wahr
+            gib Falsch
+        gib Wahr
 
 
 @unittest.skipIf(ssl is Nichts, 'No ssl module')
@@ -127,7 +127,7 @@ klasse TestSSL(test_utils.TestCase):
             sock.close()
             raise ex
 
-        return TestThreadedServer(
+        gib TestThreadedServer(
             self, sock, server_prog, timeout, max_clients)
 
     def tcp_client(self, client_prog,
@@ -142,27 +142,27 @@ klasse TestSSL(test_utils.TestCase):
             raise RuntimeError('only blocking sockets are supported')
         sock.settimeout(timeout)
 
-        return TestThreadedClient(
+        gib TestThreadedClient(
             self, sock, client_prog, timeout)
 
     def unix_server(self, *args, **kwargs):
-        return self.tcp_server(*args, family=socket.AF_UNIX, **kwargs)
+        gib self.tcp_server(*args, family=socket.AF_UNIX, **kwargs)
 
     def unix_client(self, *args, **kwargs):
-        return self.tcp_client(*args, family=socket.AF_UNIX, **kwargs)
+        gib self.tcp_client(*args, family=socket.AF_UNIX, **kwargs)
 
     def _create_server_ssl_context(self, certfile, keyfile=Nichts):
         sslcontext = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
         sslcontext.options |= ssl.OP_NO_SSLv2
         sslcontext.load_cert_chain(certfile, keyfile)
-        return sslcontext
+        gib sslcontext
 
     def _create_client_ssl_context(self, *, disable_verify=Wahr):
         sslcontext = ssl.create_default_context()
         sslcontext.check_hostname = Falsch
         wenn disable_verify:
             sslcontext.verify_mode = ssl.CERT_NONE
-        return sslcontext
+        gib sslcontext
 
     @contextlib.contextmanager
     def _silence_eof_received_warning(self):
@@ -171,7 +171,7 @@ klasse TestSSL(test_utils.TestCase):
         filter = MessageOutFilter('has no effect when using ssl')
         logger.addFilter(filter)
         try:
-            yield
+            liefere
         finally:
             logger.removeFilter(filter)
 
@@ -182,14 +182,14 @@ klasse TestSSL(test_utils.TestCase):
             self.fail(ex)
 
     def new_loop(self):
-        return asyncio.new_event_loop()
+        gib asyncio.new_event_loop()
 
     def new_policy(self):
-        return asyncio.DefaultEventLoopPolicy()
+        gib asyncio.DefaultEventLoopPolicy()
 
     async def wait_closed(self, obj):
         wenn nicht isinstance(obj, asyncio.StreamWriter):
-            return
+            gib
         try:
             await obj.wait_closed()
         except (BrokenPipeError, ConnectionError):
@@ -370,7 +370,7 @@ klasse TestSSL(test_utils.TestCase):
 
             async def _gather(*tasks):
                 # trampoline
-                return await asyncio.gather(*tasks)
+                gib await asyncio.gather(*tasks)
 
             mit self.tcp_server(server,
                                  max_clients=TOTAL_CNT,
@@ -670,7 +670,7 @@ klasse TestSSL(test_utils.TestCase):
                 await self.wait_closed(writer)
             except ssl.SSLError:
                 pass
-            return 'OK'
+            gib 'OK'
 
         mit self.tcp_server(server,
                              max_clients=1,
@@ -842,7 +842,7 @@ klasse TestSSL(test_utils.TestCase):
                 client_con_made_calls += 1
 
             def get_buffer(self, sizehint):
-                return self.buf
+                gib self.buf
 
             def buffer_updated(self, nsize):
                 assert nsize == 1
@@ -1092,7 +1092,7 @@ klasse TestSSL(test_utils.TestCase):
         def server_protocol_factory():
             reader = asyncio.StreamReader()
             protocol = ServerProtocol(reader, handle_client)
-            return protocol
+            gib protocol
 
         async def test_client(addr):
             fut = asyncio.Future()
@@ -1119,7 +1119,7 @@ klasse TestSSL(test_utils.TestCase):
                                 incoming.write(sock.recv(65536))
                         wenn outgoing.pending:
                             sock.send(outgoing.read())
-                        return rv
+                        gib rv
 
                     do(sslobj.do_handshake)
 
@@ -1234,7 +1234,7 @@ klasse TestSSL(test_utils.TestCase):
             CNT = 0
 
             async def _gather(*tasks):
-                return await asyncio.gather(*tasks)
+                gib await asyncio.gather(*tasks)
 
             mit self.tcp_server(server,
                                  max_clients=TOTAL_CNT,
@@ -1278,7 +1278,7 @@ klasse TestSSL(test_utils.TestCase):
                     self.loop.call_soon_threadsafe(future.set_exception, ex)
                 sonst:
                     self.loop.call_soon_threadsafe(future.set_result, Nichts)
-            return wrapper
+            gib wrapper
 
         async def client(addr):
             nonlocal future
@@ -1426,7 +1426,7 @@ klasse TestSSL(test_utils.TestCase):
                     self.loop.call_soon_threadsafe(future.set_exception, ex)
                 sonst:
                     self.loop.call_soon_threadsafe(future.set_result, Nichts)
-            return wrapper
+            gib wrapper
 
         mit self.tcp_server(run(server)) als srv:
             self.loop.run_until_complete(client(srv.addr))
@@ -1556,17 +1556,17 @@ klasse TestSSL(test_utils.TestCase):
                     self.sock = sock
 
                 def __getattr__(self, name):
-                    return getattr(self.sock, name)
+                    gib getattr(self.sock, name)
 
                 def send(self, data):
                     # Fake that our write buffer is full, send only half
                     to_send = len(data)//2
-                    return self.sock.send(data[:to_send])
+                    gib self.sock.send(data[:to_send])
 
             def _fake_full_write_buffer(data):
                 wenn socket_transport._read_ready_cb is Nichts und nicht isinstance(socket_transport._sock, SocketWrapper):
                     socket_transport._sock = SocketWrapper(socket_transport._sock)
-                return unittest.mock.DEFAULT
+                gib unittest.mock.DEFAULT
 
             mit unittest.mock.patch.object(
                 socket_transport, "write",
@@ -1586,7 +1586,7 @@ klasse TestSSL(test_utils.TestCase):
                     self.loop.call_soon_threadsafe(future.set_exception, ex)
                 sonst:
                     self.loop.call_soon_threadsafe(future.set_result, Nichts)
-            return wrapper
+            gib wrapper
 
         mit self.tcp_server(run(server)) als srv:
             self.loop.run_until_complete(client(srv.addr))
@@ -1760,7 +1760,7 @@ klasse TestSocketWrapper:
             wenn data == b'':
                 raise ConnectionAbortedError
             buf += data
-        return buf
+        gib buf
 
     def starttls(self, ssl_context, *,
                  server_side=Falsch,
@@ -1781,10 +1781,10 @@ klasse TestSocketWrapper:
         self.__sock = ssl_sock
 
     def __getattr__(self, name):
-        return getattr(self.__sock, name)
+        gib getattr(self.__sock, name)
 
     def __repr__(self):
-        return '<{} {!r}>'.format(type(self).__name__, self.__sock)
+        gib '<{} {!r}>'.format(type(self).__name__, self.__sock)
 
 
 klasse SocketThread(threading.Thread):
@@ -1795,7 +1795,7 @@ klasse SocketThread(threading.Thread):
 
     def __enter__(self):
         self.start()
-        return self
+        gib self
 
     def __exit__(self, *exc):
         self.stop()
@@ -1862,13 +1862,13 @@ klasse TestThreadedServer(SocketThread):
     def _run(self):
         waehrend self._active:
             wenn self._clients >= self._max_clients:
-                return
+                gib
 
             r, w, x = select.select(
                 [self._sock, self._s1], [], [], self._timeout)
 
             wenn self._s1 in r:
-                return
+                gib
 
             wenn self._sock in r:
                 try:
@@ -1877,7 +1877,7 @@ klasse TestThreadedServer(SocketThread):
                     weiter
                 except socket.timeout:
                     wenn nicht self._active:
-                        return
+                        gib
                     sonst:
                         raise
                 sonst:
@@ -1900,4 +1900,4 @@ klasse TestThreadedServer(SocketThread):
 
     @property
     def addr(self):
-        return self._sock.getsockname()
+        gib self._sock.getsockname()

@@ -131,7 +131,7 @@ klasse SendfileBase:
         super().tearDown()
 
     def run_loop(self, coro):
-        return self.loop.run_until_complete(coro)
+        gib self.loop.run_until_complete(coro)
 
 
 klasse SockSendfileMixin(SendfileBase):
@@ -152,7 +152,7 @@ klasse SockSendfileMixin(SendfileBase):
         sock.setblocking(Falsch)
         wenn cleanup:
             self.addCleanup(sock.close)
-        return sock
+        gib sock
 
     def reduce_receive_buffer_size(self, sock):
         # Reduce receive socket buffer size to test on relative
@@ -194,7 +194,7 @@ klasse SockSendfileMixin(SendfileBase):
 
         self.addCleanup(cleanup)
 
-        return sock, proto
+        gib sock, proto
 
     def test_sock_sendfile_success(self):
         sock, proto = self.prepare_socksendfile()
@@ -288,7 +288,7 @@ klasse SendfileMixin(SendfileBase):
             self.run_loop(server.wait_closed())
 
         self.addCleanup(cleanup)
-        return srv_proto, cli_proto
+        gib srv_proto, cli_proto
 
     @unittest.skipIf(sys.platform == 'win32', "UDP sockets are nicht supported")
     def test_sendfile_not_supported(self):
@@ -321,7 +321,7 @@ klasse SendfileMixin(SendfileBase):
 
         def sendfile_native(transp, file, offset, count):
             # to raise SendfileNotAvailableError
-            return base_events.BaseEventLoop._sendfile_native(
+            gib base_events.BaseEventLoop._sendfile_native(
                 self.loop, transp, file, offset, count)
 
         self.loop._sendfile_native = sendfile_native
@@ -343,7 +343,7 @@ klasse SendfileMixin(SendfileBase):
 
         def sendfile_native(transp, file, offset, count):
             # to raise SendfileNotAvailableError
-            return base_events.BaseEventLoop._sendfile_native(
+            gib base_events.BaseEventLoop._sendfile_native(
                 self.loop, transp, file, offset, count)
 
         self.loop._sendfile_native = sendfile_native
@@ -478,7 +478,7 @@ klasse SendfileMixin(SendfileBase):
 
         def sendfile_native(transp, file, offset, count):
             # to raise SendfileNotAvailableError
-            return base_events.BaseEventLoop._sendfile_native(
+            gib base_events.BaseEventLoop._sendfile_native(
                 self.loop, transp, file, offset, count)
 
         self.loop._sendfile_native = sendfile_native
@@ -511,7 +511,7 @@ klasse SendfileMixin(SendfileBase):
 
         async def coro():
             fut.set_result(Nichts)
-            return await self.loop.sendfile(cli_proto.transport, self.file)
+            gib await self.loop.sendfile(cli_proto.transport, self.file)
 
         t = self.loop.create_task(coro())
         self.run_loop(fut)
@@ -540,13 +540,13 @@ wenn sys.platform == 'win32':
                                test_utils.TestCase):
 
         def create_event_loop(self):
-            return asyncio.SelectorEventLoop()
+            gib asyncio.SelectorEventLoop()
 
     klasse ProactorEventLoopTests(SendfileTestsBase,
                                  test_utils.TestCase):
 
         def create_event_loop(self):
-            return asyncio.ProactorEventLoop()
+            gib asyncio.ProactorEventLoop()
 
 sonst:
     importiere selectors
@@ -556,7 +556,7 @@ sonst:
                                    test_utils.TestCase):
 
             def create_event_loop(self):
-                return asyncio.SelectorEventLoop(
+                gib asyncio.SelectorEventLoop(
                     selectors.KqueueSelector())
 
     wenn hasattr(selectors, 'EpollSelector'):
@@ -564,21 +564,21 @@ sonst:
                                   test_utils.TestCase):
 
             def create_event_loop(self):
-                return asyncio.SelectorEventLoop(selectors.EpollSelector())
+                gib asyncio.SelectorEventLoop(selectors.EpollSelector())
 
     wenn hasattr(selectors, 'PollSelector'):
         klasse PollEventLoopTests(SendfileTestsBase,
                                  test_utils.TestCase):
 
             def create_event_loop(self):
-                return asyncio.SelectorEventLoop(selectors.PollSelector())
+                gib asyncio.SelectorEventLoop(selectors.PollSelector())
 
     # Should always exist.
     klasse SelectEventLoopTests(SendfileTestsBase,
                                test_utils.TestCase):
 
         def create_event_loop(self):
-            return asyncio.SelectorEventLoop(selectors.SelectSelector())
+            gib asyncio.SelectorEventLoop(selectors.SelectSelector())
 
 
 wenn __name__ == '__main__':

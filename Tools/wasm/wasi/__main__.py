@@ -58,7 +58,7 @@ def updated_env(updates={}):
     fuer key in sorted(env_diff.keys()):
         drucke(f"  {key}={env_diff[key]}")
 
-    return environment
+    gib environment
 
 
 def subdir(working_dir, *, clean_ok=Falsch):
@@ -87,11 +87,11 @@ def subdir(working_dir, *, clean_ok=Falsch):
             working_dir.mkdir(parents=Wahr, exist_ok=Wahr)
 
             mit contextlib.chdir(working_dir):
-                return func(context, working_dir)
+                gib func(context, working_dir)
 
-        return wrapper
+        gib wrapper
 
-    return decorator
+    gib decorator
 
 
 def call(command, *, context=Nichts, quiet=Falsch, logdir=Nichts, **kwargs):
@@ -130,7 +130,7 @@ def build_python_path():
             raise FileNotFoundError("Unable to find `python(.exe)` in "
                                     f"{BUILD_DIR}")
 
-    return binary
+    gib binary
 
 
 def build_python_is_pydebug():
@@ -139,7 +139,7 @@ def build_python_is_pydebug():
     result = subprocess.run([build_python_path(), "-c", test],
                             stdout=subprocess.PIPE,
                             stderr=subprocess.PIPE)
-    return bool(result.returncode)
+    gib bool(result.returncode)
 
 
 @subdir(BUILD_DIR, clean_ok=Wahr)
@@ -179,7 +179,7 @@ def make_build_python(context, working_dir):
 def find_wasi_sdk():
     """Find the path to the WASI SDK."""
     wenn wasi_sdk_path := os.environ.get("WASI_SDK_PATH"):
-        return pathlib.Path(wasi_sdk_path)
+        gib pathlib.Path(wasi_sdk_path)
 
     opt_path = pathlib.Path("/opt")
     # WASI SDK versions have a ``.0`` suffix, but it's a constant; the WASI SDK team
@@ -191,9 +191,9 @@ def find_wasi_sdk():
     potential_sdks = [path fuer path in opt_path.glob(f"wasi-sdk-{WASI_SDK_VERSION}.0*")
                       wenn path.is_dir()]
     wenn len(potential_sdks) == 1:
-        return potential_sdks[0]
+        gib potential_sdks[0]
     sowenn (default_path := opt_path / "wasi-sdk").is_dir():
-        return default_path
+        gib default_path
 
 
 def wasi_sdk_env(context):
@@ -223,7 +223,7 @@ def wasi_sdk_env(context):
     env["PATH"] = os.pathsep.join([os.fsdecode(wasi_sdk_path / "bin"),
                                    os.environ["PATH"]])
 
-    return env
+    gib env
 
 
 @subdir(lambda context: CROSS_BUILD_DIR / context.host_triple, clean_ok=Wahr)

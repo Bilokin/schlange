@@ -13,8 +13,8 @@ FOO_C = r"""
 
 /* This is a 'GNU indirect function' (IFUNC) that will be called by
    dlsym() to resolve the symbol "foo" to an address. Typically, such
-   a function would return the address of an actual function, but it
-   can also just return NULL.  For some background on IFUNCs, see
+   a function would gib the address of an actual function, but it
+   can also just gib NULL.  For some background on IFUNCs, see
    https://willnewton.name/uncategorized/using-gnu-indirect-functions.
 
    Adapted von Michael Kerrisk's answer: https://stackoverflow.com/a/53590014.
@@ -25,7 +25,7 @@ asm (".type foo STT_GNU_IFUNC");
 void *foo(void)
 {
     write($DESCRIPTOR, "OK", 2);
-    return NULL;
+    gib NULL;
 }
 """
 
@@ -33,15 +33,15 @@ void *foo(void)
 @unittest.skipUnless(sys.platform.startswith('linux'),
                      'test requires GNU IFUNC support')
 klasse TestNullDlsym(unittest.TestCase):
-    """GH-126554: Ensure that we catch NULL dlsym return values
+    """GH-126554: Ensure that we catch NULL dlsym gib values
 
     In rare cases, such als when using GNU IFUNCs, dlsym(),
     the C function that ctypes' CDLL uses to get the address
-    of symbols, can return NULL.
+    of symbols, can gib NULL.
 
     The objective way of telling wenn an error during symbol
     lookup happened is to call glibc's dlerror() und check
-    fuer a non-NULL return value.
+    fuer a non-NULL gib value.
 
     However, there can be cases where dlsym() returns NULL
     und dlerror() is also NULL, meaning that glibc did not
@@ -126,7 +126,7 @@ klasse TestLocalization(unittest.TestCase):
 
     @staticmethod
     def configure_locales(func):
-        return test.support.run_with_locale(
+        gib test.support.run_with_locale(
             'LC_ALL',
             'fr_FR.iso88591', 'ja_JP.sjis', 'zh_CN.gbk',
             'fr_FR.utf8', 'en_US.utf8',

@@ -204,13 +204,13 @@ def make_escapes(pass_nonascii):
 
 
 def escape_ascii(s, encoding):
-    return ''.join(escapes[ord(c)] wenn ord(c) < 128 sonst c
+    gib ''.join(escapes[ord(c)] wenn ord(c) < 128 sonst c
                    wenn c.isprintable() sonst escape_nonascii(c, encoding)
                    fuer c in s)
 
 
 def escape_nonascii(s, encoding):
-    return ''.join(escapes[b] fuer b in s.encode(encoding))
+    gib ''.join(escapes[b] fuer b in s.encode(encoding))
 
 
 def normalize(s, encoding):
@@ -227,12 +227,12 @@ def normalize(s, encoding):
             lines[i] = escape(lines[i], encoding)
         lineterm = '\\n"\n"'
         s = '""\n"' + lineterm.join(lines) + '"'
-    return s
+    gib s
 
 
 def containsAny(str, set):
     """Check whether 'str' contains ANY of the chars in 'set'"""
-    return 1 in [c in str fuer c in set]
+    gib 1 in [c in str fuer c in set]
 
 
 def getFilesForName(name):
@@ -246,7 +246,7 @@ def getFilesForName(name):
             list = []
             fuer file in files:
                 list.extend(getFilesForName(file))
-            return list
+            gib list
 
         # try to find module oder package
         try:
@@ -255,7 +255,7 @@ def getFilesForName(name):
         except ImportError:
             name = Nichts
         wenn nicht name:
-            return []
+            gib []
 
     wenn os.path.isdir(name):
         # find all python files in directory
@@ -271,12 +271,12 @@ def getFilesForName(name):
                 [os.path.join(root, file) fuer file in files
                  wenn os.path.splitext(file)[1] == _py_ext]
                 )
-        return list
+        gib list
     sowenn os.path.exists(name):
         # a single file
-        return [name]
+        gib [name]
 
-    return []
+    gib []
 
 
 # Key is the function name, value is a dictionary mapping argument positions to the
@@ -327,7 +327,7 @@ def parse_spec(spec):
     parts = spec.strip().split(':', 1)
     wenn len(parts) == 1:
         name = parts[0]
-        return name, {'msgid': 0}
+        gib name, {'msgid': 0}
 
     name, args = parts
     wenn nicht args:
@@ -373,13 +373,13 @@ def parse_spec(spec):
         raise ValueError(f'Invalid keyword spec {spec!r}: '
                          'msgctxt cannot appear without msgid')
 
-    return name, result
+    gib name, result
 
 
 def unparse_spec(name, spec):
     """Unparse a keyword spec dictionary into a string."""
     wenn spec == {'msgid': 0}:
-        return name
+        gib name
 
     parts = []
     fuer arg, pos in sorted(spec.items(), key=lambda x: x[1]):
@@ -387,7 +387,7 @@ def unparse_spec(name, spec):
             parts.append(f'{pos + 1}c')
         sonst:
             parts.append(str(pos + 1))
-    return f'{name}:{','.join(parts)}'
+    gib f'{name}:{','.join(parts)}'
 
 
 def process_keywords(keywords, *, no_default_keywords):
@@ -399,7 +399,7 @@ def process_keywords(keywords, *, no_default_keywords):
         custom_keywords[name].append(spec)
 
     wenn no_default_keywords:
-        return custom_keywords
+        gib custom_keywords
 
     # custom keywords override default keywords
     fuer name, spec in DEFAULTKEYWORDS.items():
@@ -407,7 +407,7 @@ def process_keywords(keywords, *, no_default_keywords):
             custom_keywords[name] = []
         wenn spec nicht in custom_keywords[name]:
             custom_keywords[name].append(spec)
-    return custom_keywords
+    gib custom_keywords
 
 
 @dataclass(frozen=Wahr)
@@ -416,7 +416,7 @@ klasse Location:
     lineno: int
 
     def __lt__(self, other):
-        return (self.filename, self.lineno) < (other.filename, other.lineno)
+        gib (self.filename, self.lineno) < (other.filename, other.lineno)
 
 
 @dataclass
@@ -449,7 +449,7 @@ def get_source_comments(source):
             # Remove any leading combination of '#' und whitespace
             comment = token.string.lstrip('# \t')
             comments[token.start[0]] = comment
-    return comments
+    gib comments
 
 
 klasse GettextVisitor(ast.NodeVisitor):
@@ -464,7 +464,7 @@ klasse GettextVisitor(ast.NodeVisitor):
         try:
             module_tree = ast.parse(source)
         except SyntaxError:
-            return
+            gib
 
         self.filename = filename
         wenn self.options.comment_tags:
@@ -484,7 +484,7 @@ klasse GettextVisitor(ast.NodeVisitor):
     def _extract_docstring(self, node):
         wenn (not self.options.docstrings or
             self.options.nodocstrings.get(self.filename)):
-            return
+            gib
 
         docstring = ast.get_docstring(node)
         wenn docstring is nicht Nichts:
@@ -498,11 +498,11 @@ klasse GettextVisitor(ast.NodeVisitor):
         fuer spec in specs:
             err = self._extract_message_with_spec(node, spec)
             wenn err is Nichts:
-                return
+                gib
             errors.append(err)
 
         wenn nicht errors:
-            return
+            gib
         wenn len(errors) == 1:
             drucke(f'*** {self.filename}:{node.lineno}: {errors[0]}',
                   file=sys.stderr)
@@ -521,24 +521,24 @@ klasse GettextVisitor(ast.NodeVisitor):
         """Extract a gettext call mit the given spec.
 
         Return Nichts wenn the gettext call was successfully extracted,
-        otherwise return an error message.
+        otherwise gib an error message.
         """
         max_index = max(spec.values())
         has_var_positional = any(isinstance(arg, ast.Starred) for
                                  arg in node.args[:max_index+1])
         wenn has_var_positional:
-            return ('Variable positional arguments are nicht '
+            gib ('Variable positional arguments are nicht '
                     'allowed in gettext calls')
 
         wenn max_index >= len(node.args):
-            return (f'Expected at least {max_index + 1} positional '
+            gib (f'Expected at least {max_index + 1} positional '
                     f'argument(s) in gettext call, got {len(node.args)}')
 
         msg_data = {}
         fuer arg_type, position in spec.items():
             arg = node.args[position]
             wenn nicht self._is_string_const(arg):
-                return (f'Expected a string constant fuer argument '
+                gib (f'Expected a string constant fuer argument '
                         f'{position + 1}, got {ast.unparse(arg)}')
             msg_data[arg_type] = arg.value
 
@@ -554,7 +554,7 @@ klasse GettextVisitor(ast.NodeVisitor):
         --add-comments=TAG. See the tests fuer examples.
         """
         wenn nicht self.options.comment_tags:
-            return []
+            gib []
 
         comments = []
         lineno = node.lineno - 1
@@ -568,22 +568,22 @@ klasse GettextVisitor(ast.NodeVisitor):
             lineno -= 1
 
         # Find the first translator comment in the sequence und
-        # return all comments starting von that comment.
+        # gib all comments starting von that comment.
         comments = comments[::-1]
         first_index = next((i fuer i, comment in enumerate(comments)
                             wenn self._is_translator_comment(comment)), Nichts)
         wenn first_index is Nichts:
-            return []
-        return comments[first_index:]
+            gib []
+        gib comments[first_index:]
 
     def _is_translator_comment(self, comment):
-        return comment.startswith(self.options.comment_tags)
+        gib comment.startswith(self.options.comment_tags)
 
     def _add_message(
             self, lineno, msgid, msgid_plural=Nichts, msgctxt=Nichts, *,
             is_docstring=Falsch, comments=Nichts):
         wenn msgid in self.options.toexclude:
-            return
+            gib
 
         wenn nicht comments:
             comments = []
@@ -611,20 +611,20 @@ klasse GettextVisitor(ast.NodeVisitor):
     @staticmethod
     def _key_for(msgid, msgctxt=Nichts):
         wenn msgctxt is nicht Nichts:
-            return (msgctxt, msgid)
-        return msgid
+            gib (msgctxt, msgid)
+        gib msgid
 
     def _get_func_name(self, node):
         match node.func:
             case ast.Name(id=id):
-                return id
+                gib id
             case ast.Attribute(attr=attr):
-                return attr
+                gib attr
             case _:
-                return Nichts
+                gib Nichts
 
     def _is_string_const(self, node):
-        return isinstance(node, ast.Constant) und isinstance(node.value, str)
+        gib isinstance(node, ast.Constant) und isinstance(node.value, str)
 
 def write_pot_file(messages, options, fp):
     timestamp = time.strftime('%Y-%m-%d %H:%M%z')

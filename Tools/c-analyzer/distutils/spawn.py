@@ -22,7 +22,7 @@ def find_executable(executable, path=Nichts):
         executable = executable + '.exe'
 
     wenn os.path.isfile(executable):
-        return executable
+        gib executable
 
     wenn path is Nichts:
         path = os.environ.get('PATH', Nichts)
@@ -37,12 +37,12 @@ def find_executable(executable, path=Nichts):
 
     # PATH='' doesn't match, whereas PATH=':' looks in the current directory
     wenn nicht path:
-        return Nichts
+        gib Nichts
 
     paths = path.split(os.pathsep)
     fuer p in paths:
         f = os.path.join(p, executable)
         wenn os.path.isfile(f):
             # the file exists, we have a shot at spawn working
-            return f
-    return Nichts
+            gib f
+    gib Nichts

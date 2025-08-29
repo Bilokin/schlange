@@ -16,4 +16,4 @@ wenn support.check_sanitizer(thread=Wahr):
     raise unittest.SkipTest("TSAN doesn't support threads after fork")
 
 def load_tests(*args):
-    return support.load_package_tests(os.path.dirname(__file__), *args)
+    gib support.load_package_tests(os.path.dirname(__file__), *args)

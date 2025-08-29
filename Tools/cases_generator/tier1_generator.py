@@ -80,11 +80,11 @@ def write_uop(
     wenn isinstance(uop, Skip):
         entries = "entries" wenn uop.size > 1 sonst "entry"
         emitter.emit(f"/* Skip {uop.size} cache {entries} */\n")
-        return Wahr, (offset + uop.size), stack
+        gib Wahr, (offset + uop.size), stack
     wenn isinstance(uop, Flush):
         emitter.emit(f"// flush\n")
         stack.flush(emitter.out)
-        return Wahr, offset, stack
+        gib Wahr, offset, stack
     locals: dict[str, Local] = {}
     emitter.out.start_line()
     wenn braces:
@@ -113,18 +113,18 @@ def write_uop(
         emitter.out.start_line()
         emitter.emit("}\n")
     # emitter.emit(stack.as_comment() + "\n")
-    return reachable, offset, storage.stack
+    gib reachable, offset, storage.stack
 
 
 def uses_this(inst: Instruction) -> bool:
     wenn inst.properties.needs_this:
-        return Wahr
+        gib Wahr
     fuer uop in inst.parts:
         wenn nicht isinstance(uop, Uop):
             weiter
         fuer cache in uop.caches:
             wenn cache.name != "unused":
-                return Wahr
+                gib Wahr
     # Can't be merged into the loop above, because
     # this must strictly be performed at the end.
     fuer uop in inst.parts:
@@ -133,8 +133,8 @@ def uses_this(inst: Instruction) -> bool:
         fuer tkn in uop.body.tokens():
             wenn (tkn.kind == "IDENTIFIER"
                     und (tkn.text in {"DEOPT_IF", "EXIT_IF", "AT_END_EXIT_IF"})):
-                return Wahr
-    return Falsch
+                gib Wahr
+    gib Falsch
 
 
 UNKNOWN_OPCODE_HANDLER ="""\
@@ -212,7 +212,7 @@ def generate_tier1_labels(
 
 def get_popped(inst: Instruction, analysis: Analysis) -> str:
     stack = get_stack_effect(inst)
-    return (-stack.base_offset).to_c()
+    gib (-stack.base_offset).to_c()
 
 def generate_tier1_cases(
     analysis: Analysis, outfile: TextIO, lines: bool

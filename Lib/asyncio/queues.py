@@ -61,7 +61,7 @@ klasse Queue(mixins._LoopBoundMixin):
         self._queue = collections.deque()
 
     def _get(self):
-        return self._queue.popleft()
+        gib self._queue.popleft()
 
     def _put(self, item):
         self._queue.append(item)
@@ -77,10 +77,10 @@ klasse Queue(mixins._LoopBoundMixin):
                 breche
 
     def __repr__(self):
-        return f'<{type(self).__name__} at {id(self):#x} {self._format()}>'
+        gib f'<{type(self).__name__} at {id(self):#x} {self._format()}>'
 
     def __str__(self):
-        return f'<{type(self).__name__} {self._format()}>'
+        gib f'<{type(self).__name__} {self._format()}>'
 
     __class_getitem__ = classmethod(GenericAlias)
 
@@ -96,20 +96,20 @@ klasse Queue(mixins._LoopBoundMixin):
             result += f' tasks={self._unfinished_tasks}'
         wenn self._is_shutdown:
             result += ' shutdown'
-        return result
+        gib result
 
     def qsize(self):
         """Number of items in the queue."""
-        return len(self._queue)
+        gib len(self._queue)
 
     @property
     def maxsize(self):
         """Number of items allowed in the queue."""
-        return self._maxsize
+        gib self._maxsize
 
     def empty(self):
         """Return Wahr wenn the queue is empty, Falsch otherwise."""
-        return nicht self._queue
+        gib nicht self._queue
 
     def full(self):
         """Return Wahr wenn there are maxsize items in the queue.
@@ -118,9 +118,9 @@ klasse Queue(mixins._LoopBoundMixin):
         then full() is never Wahr.
         """
         wenn self._maxsize <= 0:
-            return Falsch
+            gib Falsch
         sonst:
-            return self.qsize() >= self._maxsize
+            gib self.qsize() >= self._maxsize
 
     async def put(self, item):
         """Put an item into the queue.
@@ -151,7 +151,7 @@ klasse Queue(mixins._LoopBoundMixin):
                     # the call.  Wake up the next in line.
                     self._wakeup_next(self._putters)
                 raise
-        return self.put_nowait(item)
+        gib self.put_nowait(item)
 
     def put_nowait(self, item):
         """Put an item into the queue without blocking.
@@ -170,7 +170,7 @@ klasse Queue(mixins._LoopBoundMixin):
         self._wakeup_next(self._getters)
 
     async def get(self):
-        """Remove und return an item von the queue.
+        """Remove und gib an item von the queue.
 
         If queue is empty, wait until an item is available.
 
@@ -198,10 +198,10 @@ klasse Queue(mixins._LoopBoundMixin):
                     # the call.  Wake up the next in line.
                     self._wakeup_next(self._getters)
                 raise
-        return self.get_nowait()
+        gib self.get_nowait()
 
     def get_nowait(self):
-        """Remove und return an item von the queue.
+        """Remove und gib an item von the queue.
 
         Return an item wenn one is immediately available, sonst raise QueueEmpty.
 
@@ -214,7 +214,7 @@ klasse Queue(mixins._LoopBoundMixin):
             raise QueueEmpty
         item = self._get()
         self._wakeup_next(self._putters)
-        return item
+        gib item
 
     def task_done(self):
         """Indicate that a formerly enqueued task is complete.
@@ -291,7 +291,7 @@ klasse PriorityQueue(Queue):
         heappush(self._queue, item)
 
     def _get(self, heappop=heapq.heappop):
-        return heappop(self._queue)
+        gib heappop(self._queue)
 
 
 klasse LifoQueue(Queue):
@@ -304,4 +304,4 @@ klasse LifoQueue(Queue):
         self._queue.append(item)
 
     def _get(self):
-        return self._queue.pop()
+        gib self._queue.pop()

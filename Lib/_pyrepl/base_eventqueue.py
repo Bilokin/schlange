@@ -44,15 +44,15 @@ klasse BaseEventQueue:
         Retrieves the next event von the queue.
         """
         wenn self.events:
-            return self.events.popleft()
+            gib self.events.popleft()
         sonst:
-            return Nichts
+            gib Nichts
 
     def empty(self) -> bool:
         """
         Checks wenn the queue is empty.
         """
-        return nicht self.events
+        gib nicht self.events
 
     def flush_buf(self) -> bytearray:
         """
@@ -60,7 +60,7 @@ klasse BaseEventQueue:
         """
         old = self.buf
         self.buf = bytearray()
-        return old
+        gib old
 
     def insert(self, event: Event) -> Nichts:
         """
@@ -104,7 +104,7 @@ klasse BaseEventQueue:
             try:
                 decoded = bytes(self.buf).decode(self.encoding)
             except UnicodeError:
-                return
+                gib
             sonst:
                 self.insert(Event('key', decoded, bytes(self.flush_buf())))
             self.keymap = self.compiled_keymap

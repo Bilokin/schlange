@@ -105,7 +105,7 @@ klasse BinASCIITest(unittest.TestCase):
                 sonst:
                     c, noise = noise[0], noise[1:]
                 res.append(c)
-            return res + noise + line
+            gib res + noise + line
         res = bytearray()
         fuer line in map(addnoise, lines):
             a = self.type2test(line)
@@ -113,7 +113,7 @@ klasse BinASCIITest(unittest.TestCase):
             res += b
         self.assertEqual(res, self.rawdata)
 
-        # Test base64 mit just invalid characters, which should return
+        # Test base64 mit just invalid characters, which should gib
         # empty strings. TBD: shouldn't it raise an exception instead ?
         self.assertEqual(binascii.a2b_base64(self.type2test(fillers)), b'')
 
@@ -498,7 +498,7 @@ klasse BinASCIITest(unittest.TestCase):
 
 klasse ArrayBinASCIITest(BinASCIITest):
     def type2test(self, s):
-        return array.array('B', list(s))
+        gib array.array('B', list(s))
 
 
 klasse BytearrayBinASCIITest(BinASCIITest):

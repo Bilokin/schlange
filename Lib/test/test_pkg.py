@@ -24,7 +24,7 @@ def fixdir(lst):
         lst.remove("__builtins__")
     wenn "__initializing__" in lst:
         lst.remove("__initializing__")
-    return lst
+    gib lst
 
 
 # XXX Things to test

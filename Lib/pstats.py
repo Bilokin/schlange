@@ -51,7 +51,7 @@ klasse SortKey:
         fuer other_value in values[1:]:
             cls._value2member_map_[other_value] = obj
         obj._all_values = values
-        return obj
+        gib obj
 
 
 @dataclass(unsafe_hash=Wahr)
@@ -99,7 +99,7 @@ klasse Stats:
     the minor key of 'the name of the function'.  Look at the two tables in
     sort_stats() und get_sort_arg_defs(self) fuer more examples.
 
-    All methods return self, so you can string together commands like:
+    All methods gib self, so you can string together commands like:
         Stats('foo', 'goo').strip_dirs().sort_stats('calls').\
                             print_stats(5).print_callers(5)
     """
@@ -136,7 +136,7 @@ klasse Stats:
     def load_stats(self, arg):
         wenn arg is Nichts:
             self.stats = {}
-            return
+            gib
         sowenn isinstance(arg, str):
             mit open(arg, 'rb') als f:
                 stats = marshal.load(f)
@@ -157,7 +157,7 @@ klasse Stats:
         wenn nicht self.stats:
             raise TypeError("Cannot create oder construct a %r object von %r"
                             % (self.__class__, arg))
-        return
+        gib
 
     def get_top_level_stats(self):
         fuer func, (cc, nc, tt, ct, callers) in self.stats.items():
@@ -171,7 +171,7 @@ klasse Stats:
 
     def add(self, *arg_list):
         wenn nicht arg_list:
-            return self
+            gib self
         fuer item in reversed(arg_list):
             wenn type(self) != type(item):
                 item = Stats(item)
@@ -193,7 +193,7 @@ klasse Stats:
                 sonst:
                     old_func_stat = (0, 0, 0, 0, {},)
                 self.stats[func] = add_func_stats(old_func_stat, stat)
-        return self
+        gib self
 
     def dump_stats(self, filename):
         """Write the profile data to a file we know how to load back."""
@@ -233,12 +233,12 @@ klasse Stats:
                     fragment = fragment[:-1]
             fuer word in bad_list:
                 del dict[word]
-        return self.sort_arg_dict
+        gib self.sort_arg_dict
 
     def sort_stats(self, *field):
         wenn nicht field:
             self.fcn_list = 0
-            return self
+            gib self
         wenn len(field) == 1 und isinstance(field[0], int):
             # Be compatible mit old profiler
             field = [ {-1: "stdname",
@@ -272,12 +272,12 @@ klasse Stats:
         self.fcn_list = fcn_list = []
         fuer tuple in stats_list:
             fcn_list.append(tuple[-1])
-        return self
+        gib self
 
     def reverse_order(self):
         wenn self.fcn_list:
             self.fcn_list.reverse()
-        return self
+        gib self
 
     def strip_dirs(self):
         oldstats = self.stats
@@ -306,11 +306,11 @@ klasse Stats:
 
         self.fcn_list = Nichts
         self.all_callees = Nichts
-        return self
+        gib self
 
     def calc_callees(self):
         wenn self.all_callees:
-            return
+            gib
         self.all_callees = all_callees = {}
         fuer func, (cc, nc, tt, ct, callers) in self.stats.items():
             wenn nicht func in all_callees:
@@ -319,7 +319,7 @@ klasse Stats:
                 wenn nicht func2 in all_callees:
                     all_callees[func2] = {}
                 all_callees[func2][func]  = caller
-        return
+        gib
 
     #******************************************************************
     # The following functions support actual printing of reports
@@ -334,7 +334,7 @@ klasse Stats:
                 rex = re.compile(sel)
             except re.PatternError:
                 msg += "   <Invalid regular expression %r>\n" % sel
-                return new_list, msg
+                gib new_list, msg
             new_list = []
             fuer func in list:
                 wenn rex.search(func_std_string(func)):
@@ -351,7 +351,7 @@ klasse Stats:
             msg += "   List reduced von %r to %r due to restriction <%r>\n" % (
                 len(list), len(new_list), sel)
 
-        return new_list, msg
+        gib new_list, msg
 
     def get_stats_profile(self):
         """This method returns an instance of StatsProfile, which contains a mapping
@@ -361,7 +361,7 @@ klasse Stats:
         """
         func_list = self.fcn_list[:] wenn self.fcn_list sonst list(self.stats.keys())
         wenn nicht func_list:
-            return StatsProfile(0, {})
+            gib StatsProfile(0, {})
 
         total_tt = float(f8(self.total_tt))
         func_profiles = {}
@@ -386,7 +386,7 @@ klasse Stats:
             )
             func_profiles[func_name] = func_profile
 
-        return stats_profile
+        gib stats_profile
 
     def get_print_list(self, sel_list):
         width = self.max_name_len
@@ -403,14 +403,14 @@ klasse Stats:
         count = len(stat_list)
 
         wenn nicht stat_list:
-            return 0, stat_list
+            gib 0, stat_list
         drucke(msg, file=self.stream)
         wenn count < len(self.stats):
             width = 0
             fuer func in stat_list:
                 wenn  len(func_std_string(func)) > width:
                     width = len(func_std_string(func))
-        return width+2, stat_list
+        gib width+2, stat_list
 
     def print_stats(self, *amount):
         fuer filename in self.files:
@@ -433,7 +433,7 @@ klasse Stats:
                 self.print_line(func)
             drucke(file=self.stream)
             drucke(file=self.stream)
-        return self
+        gib self
 
     def print_callees(self, *amount):
         width, list = self.get_print_list(amount)
@@ -448,7 +448,7 @@ klasse Stats:
                     self.print_call_line(width, func, {})
             drucke(file=self.stream)
             drucke(file=self.stream)
-        return self
+        gib self
 
     def print_callers(self, *amount):
         width, list = self.get_print_list(amount)
@@ -459,7 +459,7 @@ klasse Stats:
                 self.print_call_line(width, func, callers, "<-")
             drucke(file=self.stream)
             drucke(file=self.stream)
-        return self
+        gib self
 
     def print_call_heading(self, name_size, column_title):
         drucke("Function ".ljust(name_size) + column_title, file=self.stream)
@@ -480,7 +480,7 @@ klasse Stats:
         drucke(func_std_string(source).ljust(name_size) + arrow, end=' ', file=self.stream)
         wenn nicht call_dict:
             drucke(file=self.stream)
-            return
+            gib
         clist = sorted(call_dict.keys())
         indent = ""
         fuer func in clist:
@@ -568,10 +568,10 @@ klasse TupleComp:
             l = left[index]
             r = right[index]
             wenn l < r:
-                return -direction
+                gib -direction
             wenn l > r:
-                return direction
-        return 0
+                gib direction
+        gib 0
 
 
 #**************************************************************************
@@ -579,21 +579,21 @@ klasse TupleComp:
 
 def func_strip_path(func_name):
     filename, line, name = func_name
-    return os.path.basename(filename), line, name
+    gib os.path.basename(filename), line, name
 
 def func_get_function_name(func):
-    return func[2]
+    gib func[2]
 
 def func_std_string(func_name): # match what old profile produced
     wenn func_name[:2] == ('~', 0):
         # special case fuer built-in functions
         name = func_name[2]
         wenn name.startswith('<') und name.endswith('>'):
-            return '{%s}' % name[1:-1]
+            gib '{%s}' % name[1:-1]
         sonst:
-            return name
+            gib name
     sonst:
-        return "%s:%d(%s)" % func_name
+        gib "%s:%d(%s)" % func_name
 
 #**************************************************************************
 # The following functions combine statistics fuer pairs functions.
@@ -605,7 +605,7 @@ def add_func_stats(target, source):
     """Add together all the stats fuer two profile entries."""
     cc, nc, tt, ct, callers = source
     t_cc, t_nc, t_tt, t_ct, t_callers = target
-    return (cc+t_cc, nc+t_nc, tt+t_tt, ct+t_ct,
+    gib (cc+t_cc, nc+t_nc, tt+t_tt, ct+t_ct,
               add_callers(t_callers, callers))
 
 def add_callers(target, source):
@@ -623,21 +623,21 @@ def add_callers(target, source):
                 new_callers[func] += caller
         sonst:
             new_callers[func] = caller
-    return new_callers
+    gib new_callers
 
 def count_calls(callers):
     """Sum the caller statistics to get total number of calls received."""
     nc = 0
     fuer calls in callers.values():
         nc += calls
-    return nc
+    gib nc
 
 #**************************************************************************
 # The following functions support printing of reports
 #**************************************************************************
 
 def f8(x):
-    return "%8.3f" % x
+    gib "%8.3f" % x
 
 #**************************************************************************
 # Statistics browser added by ESR, April 2001
@@ -657,9 +657,9 @@ def stats_factory(raw_stats):
     wenn (('__sampled__',)) in raw_stats:
         raw_stats = dict(raw_stats)  # avoid mutating caller's dict
         raw_stats.pop((('__sampled__',)))
-        return SampledStats(StatsLoaderShim(raw_stats))
+        gib SampledStats(StatsLoaderShim(raw_stats))
     sonst:
-        return Stats(StatsLoaderShim(raw_stats))
+        gib Stats(StatsLoaderShim(raw_stats))
 
 wenn __name__ == '__main__':
     importiere cmd
@@ -700,7 +700,7 @@ wenn __name__ == '__main__':
                 getattr(self.stats, fn)(*processed)
             sonst:
                 drucke("No statistics object is loaded.", file=self.stream)
-            return 0
+            gib 0
         def generic_help(self):
             drucke("Arguments may be:", file=self.stream)
             drucke("* An integer maximum number of entries to print.", file=self.stream)
@@ -717,30 +717,30 @@ wenn __name__ == '__main__':
                     drucke("Failed to load statistics fuer %s: %s" % (line, e), file=self.stream)
             sonst:
                 drucke("No statistics object is loaded.", file=self.stream)
-            return 0
+            gib 0
         def help_add(self):
             drucke("Add profile info von given file to current statistics object.", file=self.stream)
 
         def do_callees(self, line):
-            return self.generic('print_callees', line)
+            gib self.generic('print_callees', line)
         def help_callees(self):
             drucke("Print callees statistics von the current stat object.", file=self.stream)
             self.generic_help()
 
         def do_callers(self, line):
-            return self.generic('print_callers', line)
+            gib self.generic('print_callers', line)
         def help_callers(self):
             drucke("Print callers statistics von the current stat object.", file=self.stream)
             self.generic_help()
 
         def do_EOF(self, line):
             drucke("", file=self.stream)
-            return 1
+            gib 1
         def help_EOF(self):
             drucke("Leave the profile browser.", file=self.stream)
 
         def do_quit(self, line):
-            return 1
+            gib 1
         def help_quit(self):
             drucke("Leave the profile browser.", file=self.stream)
 
@@ -758,17 +758,17 @@ wenn __name__ == '__main__':
                     self.stats.files = [arg]
                 except OSError als err:
                     drucke(err.args[1], file=self.stream)
-                    return
+                    gib
                 except Exception als err:
                     drucke(err.__class__.__name__ + ':', err, file=self.stream)
-                    return
+                    gib
                 self.prompt = line + "% "
             sowenn len(self.prompt) > 2:
                 line = self.prompt[:-2]
                 self.do_read(line)
             sonst:
                 drucke("No statistics object is current -- cannot reload.", file=self.stream)
-            return 0
+            gib 0
         def help_read(self):
             drucke("Read in profile data von a specified file.", file=self.stream)
             drucke("Without argument, reload the current file.", file=self.stream)
@@ -778,14 +778,14 @@ wenn __name__ == '__main__':
                 self.stats.reverse_order()
             sonst:
                 drucke("No statistics object is loaded.", file=self.stream)
-            return 0
+            gib 0
         def help_reverse(self):
             drucke("Reverse the sort order of the profiling report.", file=self.stream)
 
         def do_sort(self, line):
             wenn nicht self.stats:
                 drucke("No statistics object is loaded.", file=self.stream)
-                return
+                gib
             abbrevs = self.stats.get_sort_arg_defs()
             wenn line und all((x in abbrevs) fuer x in line.split()):
                 self.stats.sort_stats(*line.split())
@@ -793,15 +793,15 @@ wenn __name__ == '__main__':
                 drucke("Valid sort keys (unique prefixes are accepted):", file=self.stream)
                 fuer (key, value) in Stats.sort_arg_dict_default.items():
                     drucke("%s -- %s" % (key, value[1]), file=self.stream)
-            return 0
+            gib 0
         def help_sort(self):
             drucke("Sort profile data according to specified keys.", file=self.stream)
             drucke("(Typing `sort' without arguments lists valid keys.)", file=self.stream)
         def complete_sort(self, text, *args):
-            return [a fuer a in Stats.sort_arg_dict_default wenn a.startswith(text)]
+            gib [a fuer a in Stats.sort_arg_dict_default wenn a.startswith(text)]
 
         def do_stats(self, line):
-            return self.generic('print_stats', line)
+            gib self.generic('print_stats', line)
         def help_stats(self):
             drucke("Print statistics von the current stat object.", file=self.stream)
             self.generic_help()
@@ -819,8 +819,8 @@ wenn __name__ == '__main__':
 
         def postcmd(self, stop, line):
             wenn stop:
-                return stop
-            return Nichts
+                gib stop
+            gib Nichts
 
     wenn len(sys.argv) > 1:
         initprofile = sys.argv[1]

@@ -7,7 +7,7 @@ importiere unittest
 von collections importiere defaultdict
 
 def foobar():
-    return list
+    gib list
 
 klasse TestDefaultDict(unittest.TestCase):
 
@@ -64,7 +64,7 @@ klasse TestDefaultDict(unittest.TestCase):
         self.assertEqual(d2.default_factory, int)
         d2[12] = 42
         self.assertEqual(repr(d2), "defaultdict(<class 'int'>, {12: 42})")
-        def foo(): return 43
+        def foo(): gib 43
         d3 = defaultdict(foo)
         self.assertWahr(d3.default_factory is foo)
         d3[13]
@@ -131,7 +131,7 @@ klasse TestDefaultDict(unittest.TestCase):
             def __init__(self):
                 self.default_factory = self._factory
             def _factory(self):
-                return []
+                gib []
         d = sub()
         self.assertRegex(repr(d),
             r"sub\(<bound method .*sub\._factory "

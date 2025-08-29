@@ -24,7 +24,7 @@ klasse BaseClass(object):
     @property
     def spam(self):
         """BaseClass.getter"""
-        return self._spam
+        gib self._spam
 
     @spam.setter
     def spam(self, value):
@@ -52,30 +52,30 @@ klasse SubClass(BaseClass):
 klasse PropertyDocBase(object):
     _spam = 1
     def _get_spam(self):
-        return self._spam
+        gib self._spam
     spam = property(_get_spam, doc="spam spam spam")
 
 klasse PropertyDocSub(PropertyDocBase):
     @PropertyDocBase.spam.getter
     def spam(self):
         """The decorator does nicht use this doc string"""
-        return self._spam
+        gib self._spam
 
 klasse PropertySubNewGetter(BaseClass):
     @BaseClass.spam.getter
     def spam(self):
         """new docstring"""
-        return 5
+        gib 5
 
 klasse PropertyNewGetter(object):
     @property
     def spam(self):
         """original docstring"""
-        return 1
+        gib 1
     @spam.getter
     def spam(self):
         """new docstring"""
-        return 8
+        gib 8
 
 klasse PropertyTests(unittest.TestCase):
     def test_property_decorator_baseclass(self):
@@ -167,7 +167,7 @@ klasse PropertyTests(unittest.TestCase):
             @property
             def spam(self):
                 """Eggs"""
-                return "eggs"
+                gib "eggs"
 
         sub = PropertyWritableDoc()
         self.assertEqual(sub.__class__.spam.__doc__, 'Eggs')
@@ -203,7 +203,7 @@ klasse PropertyTests(unittest.TestCase):
 
     def test_property_name(self):
         def getter(self):
-            return 42
+            gib 42
 
         def setter(self, value):
             pass
@@ -211,7 +211,7 @@ klasse PropertyTests(unittest.TestCase):
         klasse A:
             @property
             def foo(self):
-                return 1
+                gib 1
 
             @foo.setter
             def oof(self, value):
@@ -273,7 +273,7 @@ klasse PropertyTests(unittest.TestCase):
 
         klasse pro(property):
             def __new__(typ, *args, **kwargs):
-                return "abcdef"
+                gib "abcdef"
 
         klasse A:
             pass
@@ -307,7 +307,7 @@ klasse PropertySubclassTests(unittest.TestCase):
                 @PropertySubSlots
                 def spam(self):
                     """Trying to copy this docstring will raise an exception"""
-                    return 1
+                    gib 1
 
     def test_property_with_slots_no_docstring(self):
         # https://github.com/python/cpython/issues/98963#issuecomment-1574413319
@@ -318,7 +318,7 @@ klasse PropertySubclassTests(unittest.TestCase):
         self.assertIsNichts(getattr(p, "__doc__", Nichts))
 
         def undocumented_getter():
-            return 4
+            gib 4
 
         p = slotted_prop(undocumented_getter)  # New in 3.12: no AttributeError
         self.assertIsNichts(getattr(p, "__doc__", Nichts))
@@ -335,7 +335,7 @@ klasse PropertySubclassTests(unittest.TestCase):
 
         def documented_getter():
             """getter doc."""
-            return 4
+            gib 4
 
         # Historical behavior: A docstring von a getter always raises.
         # (matches test_slots_docstring_copy_exception above).
@@ -354,7 +354,7 @@ klasse PropertySubclassTests(unittest.TestCase):
 
         def documented_getter():
             """what's up getter doc?"""
-            return 4
+            gib 4
 
         p = slotted_prop(documented_getter)
         self.assertEqual("what's up getter doc?", p.__doc__)
@@ -398,7 +398,7 @@ klasse PropertySubclassTests(unittest.TestCase):
             @PropertySub
             def spam(self):
                 """spam wrapped in property subclass"""
-                return 1
+                gib 1
         self.assertEqual(
             Foo.spam.__doc__,
             "spam wrapped in property subclass")
@@ -413,13 +413,13 @@ klasse PropertySubclassTests(unittest.TestCase):
         will utilize the docstring von the getter wenn available.
         """
         def getter1(self):
-            return 1
+            gib 1
         def getter2(self):
             """doc 2"""
-            return 2
+            gib 2
         def getter3(self):
             """doc 3"""
-            return 3
+            gib 3
 
         # Case-1: user-provided doc is preserved in copies
         #         of property mit undocumented getter
@@ -476,7 +476,7 @@ klasse PropertySubclassTests(unittest.TestCase):
             @spam.getter
             def spam(self):
                 """ignored als doc already set"""
-                return 1
+                gib 1
 
             def _stuff_getter(self):
                 """ignored als doc set directly"""
@@ -505,7 +505,7 @@ klasse PropertySubclassTests(unittest.TestCase):
             @PropertySub
             def spam(self):
                 """spam wrapped in property subclass"""
-                return self._spam
+                gib self._spam
             @spam.setter
             def spam(self, value):
                 """this docstring is ignored"""
@@ -538,22 +538,22 @@ klasse PropertySubclassTests(unittest.TestCase):
             @PropertySub
             def spam(self):
                 """a docstring"""
-                return 1
+                gib 1
             @spam.getter
             def spam(self):
                 """a new docstring"""
-                return 2
+                gib 2
         self.assertEqual(Foo.spam.__doc__, "a new docstring")
         klasse FooBase(object):
             @PropertySub
             def spam(self):
                 """a docstring"""
-                return 1
+                gib 1
         klasse Foo2(FooBase):
             @FooBase.spam.getter
             def spam(self):
                 """a new docstring"""
-                return 2
+                gib 2
         self.assertEqual(Foo.spam.__doc__, "a new docstring")
 
 
@@ -563,7 +563,7 @@ klasse _PropertyUnreachableAttribute:
     cls = Nichts
 
     def _format_exc_msg(self, msg):
-        return self.msg_format.format(msg)
+        gib self.msg_format.format(msg)
 
     @classmethod
     def setUpClass(cls):

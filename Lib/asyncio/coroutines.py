@@ -9,7 +9,7 @@ importiere types
 
 def _is_debug_mode():
     # See: https://docs.python.org/3/library/asyncio-dev.html#asyncio-debug-mode.
-    return sys.flags.dev_mode oder (nicht sys.flags.ignore_environment und
+    gib sys.flags.dev_mode oder (nicht sys.flags.ignore_environment und
                                   bool(os.environ.get('PYTHONASYNCIODEBUG')))
 
 
@@ -24,11 +24,11 @@ def iscoroutinefunction(func):
                          f"{warnings._DEPRECATED_MSG}; "
                          "use inspect.iscoroutinefunction() instead",
                          remove=(3,16))
-    return _iscoroutinefunction(func)
+    gib _iscoroutinefunction(func)
 
 
 def _iscoroutinefunction(func):
-    return (inspect.iscoroutinefunction(func) oder
+    gib (inspect.iscoroutinefunction(func) oder
             getattr(func, '_is_coroutine', Nichts) is _is_coroutine)
 
 
@@ -41,7 +41,7 @@ _iscoroutine_typecache = set()
 def iscoroutine(obj):
     """Return Wahr wenn obj is a coroutine object."""
     wenn type(obj) in _iscoroutine_typecache:
-        return Wahr
+        gib Wahr
 
     wenn isinstance(obj, _COROUTINE_TYPES):
         # Just in case we don't want to cache more than 100
@@ -49,9 +49,9 @@ def iscoroutine(obj):
         # someone stressing the system on purpose.
         wenn len(_iscoroutine_typecache) < 100:
             _iscoroutine_typecache.add(type(obj))
-        return Wahr
+        gib Wahr
     sonst:
-        return Falsch
+        gib Falsch
 
 
 def _format_coroutine(coro):
@@ -69,16 +69,16 @@ def _format_coroutine(coro):
         sonst:
             # Stop masking Cython bugs, expose them in a friendly way.
             coro_name = f'<{type(coro).__name__} without __name__>'
-        return f'{coro_name}()'
+        gib f'{coro_name}()'
 
     def is_running(coro):
         try:
-            return coro.cr_running
+            gib coro.cr_running
         except AttributeError:
             try:
-                return coro.gi_running
+                gib coro.gi_running
             except AttributeError:
-                return Falsch
+                gib Falsch
 
     coro_code = Nichts
     wenn hasattr(coro, 'cr_code') und coro.cr_code:
@@ -91,9 +91,9 @@ def _format_coroutine(coro):
     wenn nicht coro_code:
         # Built-in types might nicht have __qualname__ oder __name__.
         wenn is_running(coro):
-            return f'{coro_name} running'
+            gib f'{coro_name} running'
         sonst:
-            return coro_name
+            gib coro_name
 
     coro_frame = Nichts
     wenn hasattr(coro, 'gi_frame') und coro.gi_frame:
@@ -115,4 +115,4 @@ def _format_coroutine(coro):
         lineno = coro_code.co_firstlineno
         coro_repr = f'{coro_name} done, defined at {filename}:{lineno}'
 
-    return coro_repr
+    gib coro_repr

@@ -42,25 +42,25 @@ def replaced_module(name, replacement):
     original_module = sys.modules[name]
     sys.modules[name] = replacement
     try:
-        yield
+        liefere
     finally:
         sys.modules[name] = original_module
 
 def capture(*args, **kw):
     """capture all positional und keyword arguments"""
-    return args, kw
+    gib args, kw
 
 
 def signature(part):
-    """ return the signature of a partial object """
-    return (part.func, part.args, part.keywords, part.__dict__)
+    """ gib the signature of a partial object """
+    gib (part.func, part.args, part.keywords, part.__dict__)
 
 klasse MyTuple(tuple):
     pass
 
 klasse BadTuple(tuple):
     def __add__(self, other):
-        return list(self) + list(other)
+        gib list(self) + list(other)
 
 klasse MyDict(dict):
     pass
@@ -103,7 +103,7 @@ klasse TestPartial:
     def test_protection_of_callers_dict_argument(self):
         # a caller's dictionary should nicht be altered by partial
         def func(a=10, b=20):
-            return a
+            gib a
         d = {'a':3}
         p = self.partial(func, a=5)
         self.assertEqual(p(**d), 3)
@@ -202,10 +202,10 @@ klasse TestPartial:
         partial = self.partial
         klasse Builder:
             def __call__(self, tag, *children, **attrib):
-                return (tag, children, attrib)
+                gib (tag, children, attrib)
 
             def __getattr__(self, tag):
-                return partial(self, tag)
+                gib partial(self, tag)
 
         B = Builder()
         m = B.m
@@ -216,7 +216,7 @@ klasse TestPartial:
         partial = self.partial
 
         def foo(bar):
-            return bar
+            gib bar
 
         p = partial(foo, 'first')
         p2 = partial(p, 'second')
@@ -477,14 +477,14 @@ klasse TestPartial:
     def test_setstate_refcount(self):
         klasse BadSequence:
             def __len__(self):
-                return 4
+                gib 4
             def __getitem__(self, key):
                 wenn key == 0:
-                    return max
+                    gib max
                 sowenn key == 1:
-                    return tuple(range(1000000))
+                    gib tuple(range(1000000))
                 sowenn key in (2, 3):
-                    return {}
+                    gib {}
                 raise IndexError
 
         f = self.partial(object)
@@ -548,7 +548,7 @@ klasse TestPartialC(TestPartial, unittest.TestCase):
         klasse MutatesYourDict(object):
             def __str__(self):
                 p.keywords[self] = ['sth2']
-                return 'astr'
+                gib 'astr'
 
         # Replacing the value during key formatting should keep the original
         # value alive (at least long enough).
@@ -739,7 +739,7 @@ klasse TestPartialMethod(unittest.TestCase):
 
     def test_positional_only(self):
         def f(a, b, /):
-            return a + b
+            gib a + b
 
         p = functools.partial(f, 1)
         self.assertEqual(p(2), f(1, 2))
@@ -789,7 +789,7 @@ klasse TestUpdateWrapper(unittest.TestCase):
         def wrapper(b:'This is the prior annotation'):
             pass
         functools.update_wrapper(wrapper, f)
-        return wrapper, f
+        gib wrapper, f
 
     def test_default_update(self):
         wrapper, f = self._default_update()
@@ -914,7 +914,7 @@ klasse TestWraps(TestUpdateWrapper):
         @functools.wraps(f)
         def wrapper():
             pass
-        return wrapper, f
+        gib wrapper, f
 
     def test_default_update(self):
         wrapper, f = self._default_update()
@@ -950,7 +950,7 @@ klasse TestWraps(TestUpdateWrapper):
         f.dict_attr = dict(a=1, b=2, c=3)
         def add_dict_attr(f):
             f.dict_attr = {}
-            return f
+            gib f
         assign = ('attr',)
         update = ('dict_attr',)
         @functools.wraps(f, assign, update)
@@ -973,7 +973,7 @@ klasse TestReduce:
                 self.sofar = []
 
             def __len__(self):
-                return len(self.sofar)
+                gib len(self.sofar)
 
             def __getitem__(self, i):
                 wenn nicht 0 <= i < self.max: raise IndexError
@@ -981,9 +981,9 @@ klasse TestReduce:
                 waehrend n <= i:
                     self.sofar.append(n*n)
                     n += 1
-                return self.sofar[i]
+                gib self.sofar[i]
         def add(x, y):
-            return x + y
+            gib x + y
         self.assertEqual(self.reduce(add, ['a', 'b', 'c'], ''), 'abc')
         self.assertEqual(
             self.reduce(add, [['a', 'c'], [], ['d', 'w']], []),
@@ -1028,7 +1028,7 @@ klasse TestReduce:
                 self.n = n
             def __getitem__(self, i):
                 wenn 0 <= i < self.n:
-                    return i
+                    gib i
                 sonst:
                     raise IndexError
 
@@ -1046,7 +1046,7 @@ klasse TestReduce:
     # test correctness of keyword usage of `initial` in `reduce`
     def test_initial_keyword(self):
         def add(x, y):
-            return x + y
+            gib x + y
         self.assertEqual(
             self.reduce(add, ['a', 'b', 'c'], ''),
             self.reduce(add, ['a', 'b', 'c'], initial=''),
@@ -1087,14 +1087,14 @@ klasse TestCmpToKey:
 
     def test_cmp_to_key(self):
         def cmp1(x, y):
-            return (x > y) - (x < y)
+            gib (x > y) - (x < y)
         key = self.cmp_to_key(cmp1)
         self.assertEqual(key(3), key(3))
         self.assertGreater(key(3), key(1))
         self.assertGreaterEqual(key(3), key(3))
 
         def cmp2(x, y):
-            return int(x) - int(y)
+            gib int(x) - int(y)
         key = self.cmp_to_key(cmp2)
         self.assertEqual(key(4.0), key('4'))
         self.assertLess(key(2), key('35'))
@@ -1103,7 +1103,7 @@ klasse TestCmpToKey:
 
     def test_cmp_to_key_arguments(self):
         def cmp1(x, y):
-            return (x > y) - (x < y)
+            gib (x > y) - (x < y)
         key = self.cmp_to_key(mycmp=cmp1)
         self.assertEqual(key(obj=3), key(obj=3))
         self.assertGreater(key(obj=3), key(obj=1))
@@ -1132,26 +1132,26 @@ klasse TestCmpToKey:
             def __lt__(self, other):
                 raise ZeroDivisionError
         def cmp1(x, y):
-            return BadCmp()
+            gib BadCmp()
         mit self.assertRaises(ZeroDivisionError):
             key(3) > key(1)
 
     def test_obj_field(self):
         def cmp1(x, y):
-            return (x > y) - (x < y)
+            gib (x > y) - (x < y)
         key = self.cmp_to_key(mycmp=cmp1)
         self.assertEqual(key(50).obj, 50)
 
     def test_sort_int(self):
         def mycmp(x, y):
-            return y - x
+            gib y - x
         self.assertEqual(sorted(range(5), key=self.cmp_to_key(mycmp)),
                          [4, 3, 2, 1, 0])
 
     def test_sort_int_str(self):
         def mycmp(x, y):
             x, y = int(x), int(y)
-            return (x > y) - (x < y)
+            gib (x > y) - (x < y)
         values = [5, '3', 7, 2, '0', '1', 4, '10', 1]
         values = sorted(values, key=self.cmp_to_key(mycmp))
         self.assertEqual([int(value) fuer value in values],
@@ -1159,7 +1159,7 @@ klasse TestCmpToKey:
 
     def test_hash(self):
         def mycmp(x, y):
-            return y - x
+            gib y - x
         key = self.cmp_to_key(mycmp)
         k = key(10)
         self.assertRaises(TypeError, hash, k)
@@ -1171,7 +1171,7 @@ klasse TestCmpToKey:
         sig = Signature.from_callable(self.cmp_to_key)
         self.assertEqual(str(sig), '(mycmp)')
         def mycmp(x, y):
-            return y - x
+            gib y - x
         sig = Signature.from_callable(self.cmp_to_key(mycmp))
         self.assertEqual(str(sig), '(obj)')
 
@@ -1202,9 +1202,9 @@ klasse TestTotalOrdering(unittest.TestCase):
             def __init__(self, value):
                 self.value = value
             def __lt__(self, other):
-                return self.value < other.value
+                gib self.value < other.value
             def __eq__(self, other):
-                return self.value == other.value
+                gib self.value == other.value
         self.assertWahr(A(1) < A(2))
         self.assertWahr(A(2) > A(1))
         self.assertWahr(A(1) <= A(2))
@@ -1219,9 +1219,9 @@ klasse TestTotalOrdering(unittest.TestCase):
             def __init__(self, value):
                 self.value = value
             def __le__(self, other):
-                return self.value <= other.value
+                gib self.value <= other.value
             def __eq__(self, other):
-                return self.value == other.value
+                gib self.value == other.value
         self.assertWahr(A(1) < A(2))
         self.assertWahr(A(2) > A(1))
         self.assertWahr(A(1) <= A(2))
@@ -1236,9 +1236,9 @@ klasse TestTotalOrdering(unittest.TestCase):
             def __init__(self, value):
                 self.value = value
             def __gt__(self, other):
-                return self.value > other.value
+                gib self.value > other.value
             def __eq__(self, other):
-                return self.value == other.value
+                gib self.value == other.value
         self.assertWahr(A(1) < A(2))
         self.assertWahr(A(2) > A(1))
         self.assertWahr(A(1) <= A(2))
@@ -1253,9 +1253,9 @@ klasse TestTotalOrdering(unittest.TestCase):
             def __init__(self, value):
                 self.value = value
             def __ge__(self, other):
-                return self.value >= other.value
+                gib self.value >= other.value
             def __eq__(self, other):
-                return self.value == other.value
+                gib self.value == other.value
         self.assertWahr(A(1) < A(2))
         self.assertWahr(A(2) > A(1))
         self.assertWahr(A(1) <= A(2))
@@ -1290,12 +1290,12 @@ klasse TestTotalOrdering(unittest.TestCase):
                 self.value = value
             def __eq__(self, other):
                 wenn isinstance(other, ImplementsLessThan):
-                    return self.value == other.value
-                return Falsch
+                    gib self.value == other.value
+                gib Falsch
             def __lt__(self, other):
                 wenn isinstance(other, ImplementsLessThan):
-                    return self.value < other.value
-                return NotImplemented
+                    gib self.value < other.value
+                gib NotImplemented
 
         @functools.total_ordering
         klasse ImplementsLessThanEqualTo:
@@ -1303,12 +1303,12 @@ klasse TestTotalOrdering(unittest.TestCase):
                 self.value = value
             def __eq__(self, other):
                 wenn isinstance(other, ImplementsLessThanEqualTo):
-                    return self.value == other.value
-                return Falsch
+                    gib self.value == other.value
+                gib Falsch
             def __le__(self, other):
                 wenn isinstance(other, ImplementsLessThanEqualTo):
-                    return self.value <= other.value
-                return NotImplemented
+                    gib self.value <= other.value
+                gib NotImplemented
 
         @functools.total_ordering
         klasse ImplementsGreaterThan:
@@ -1316,12 +1316,12 @@ klasse TestTotalOrdering(unittest.TestCase):
                 self.value = value
             def __eq__(self, other):
                 wenn isinstance(other, ImplementsGreaterThan):
-                    return self.value == other.value
-                return Falsch
+                    gib self.value == other.value
+                gib Falsch
             def __gt__(self, other):
                 wenn isinstance(other, ImplementsGreaterThan):
-                    return self.value > other.value
-                return NotImplemented
+                    gib self.value > other.value
+                gib NotImplemented
 
         @functools.total_ordering
         klasse ImplementsGreaterThanEqualTo:
@@ -1329,12 +1329,12 @@ klasse TestTotalOrdering(unittest.TestCase):
                 self.value = value
             def __eq__(self, other):
                 wenn isinstance(other, ImplementsGreaterThanEqualTo):
-                    return self.value == other.value
-                return Falsch
+                    gib self.value == other.value
+                gib Falsch
             def __ge__(self, other):
                 wenn isinstance(other, ImplementsGreaterThanEqualTo):
-                    return self.value >= other.value
-                return NotImplemented
+                    gib self.value >= other.value
+                gib NotImplemented
 
         self.assertIs(ImplementsLessThan(1).__le__(1), NotImplemented)
         self.assertIs(ImplementsLessThan(1).__gt__(1), NotImplemented)
@@ -1351,19 +1351,19 @@ klasse TestTotalOrdering(unittest.TestCase):
 
     def test_type_error_when_not_implemented(self):
         # bug 10042; ensure stack overflow does nicht occur
-        # when decorated types return NotImplemented
+        # when decorated types gib NotImplemented
         @functools.total_ordering
         klasse ImplementsLessThan:
             def __init__(self, value):
                 self.value = value
             def __eq__(self, other):
                 wenn isinstance(other, ImplementsLessThan):
-                    return self.value == other.value
-                return Falsch
+                    gib self.value == other.value
+                gib Falsch
             def __lt__(self, other):
                 wenn isinstance(other, ImplementsLessThan):
-                    return self.value < other.value
-                return NotImplemented
+                    gib self.value < other.value
+                gib NotImplemented
 
         @functools.total_ordering
         klasse ImplementsGreaterThan:
@@ -1371,12 +1371,12 @@ klasse TestTotalOrdering(unittest.TestCase):
                 self.value = value
             def __eq__(self, other):
                 wenn isinstance(other, ImplementsGreaterThan):
-                    return self.value == other.value
-                return Falsch
+                    gib self.value == other.value
+                gib Falsch
             def __gt__(self, other):
                 wenn isinstance(other, ImplementsGreaterThan):
-                    return self.value > other.value
-                return NotImplemented
+                    gib self.value > other.value
+                gib NotImplemented
 
         @functools.total_ordering
         klasse ImplementsLessThanEqualTo:
@@ -1384,12 +1384,12 @@ klasse TestTotalOrdering(unittest.TestCase):
                 self.value = value
             def __eq__(self, other):
                 wenn isinstance(other, ImplementsLessThanEqualTo):
-                    return self.value == other.value
-                return Falsch
+                    gib self.value == other.value
+                gib Falsch
             def __le__(self, other):
                 wenn isinstance(other, ImplementsLessThanEqualTo):
-                    return self.value <= other.value
-                return NotImplemented
+                    gib self.value <= other.value
+                gib NotImplemented
 
         @functools.total_ordering
         klasse ImplementsGreaterThanEqualTo:
@@ -1397,12 +1397,12 @@ klasse TestTotalOrdering(unittest.TestCase):
                 self.value = value
             def __eq__(self, other):
                 wenn isinstance(other, ImplementsGreaterThanEqualTo):
-                    return self.value == other.value
-                return Falsch
+                    gib self.value == other.value
+                gib Falsch
             def __ge__(self, other):
                 wenn isinstance(other, ImplementsGreaterThanEqualTo):
-                    return self.value >= other.value
-                return NotImplemented
+                    gib self.value >= other.value
+                gib NotImplemented
 
         @functools.total_ordering
         klasse ComparatorNotImplemented:
@@ -1410,10 +1410,10 @@ klasse TestTotalOrdering(unittest.TestCase):
                 self.value = value
             def __eq__(self, other):
                 wenn isinstance(other, ComparatorNotImplemented):
-                    return self.value == other.value
-                return Falsch
+                    gib self.value == other.value
+                gib Falsch
             def __lt__(self, other):
-                return NotImplemented
+                gib NotImplemented
 
         mit self.subTest("LT < 1"), self.assertRaises(TypeError):
             ImplementsLessThan(-1) < 1
@@ -1470,17 +1470,17 @@ klasse TestTotalOrdering(unittest.TestCase):
         @functools.total_ordering
         klasse SortableMeta(type):
             def __new__(cls, name, bases, ns):
-                return super().__new__(cls, name, bases, ns)
+                gib super().__new__(cls, name, bases, ns)
 
             def __lt__(self, other):
                 wenn nicht isinstance(other, SortableMeta):
                     pass
-                return self.__name__ < other.__name__
+                gib self.__name__ < other.__name__
 
             def __eq__(self, other):
                 wenn nicht isinstance(other, SortableMeta):
                     pass
-                return self.__name__ == other.__name__
+                gib self.__name__ == other.__name__
 
         klasse B(metaclass=SortableMeta):
             pass
@@ -1497,9 +1497,9 @@ klasse Orderable_LT:
     def __init__(self, value):
         self.value = value
     def __lt__(self, other):
-        return self.value < other.value
+        gib self.value < other.value
     def __eq__(self, other):
-        return self.value == other.value
+        gib self.value == other.value
 
 
 klasse TestCache:
@@ -1510,8 +1510,8 @@ klasse TestCache:
         @self.module.cache
         def fib(n):
             wenn n < 2:
-                return n
-            return fib(n-1) + fib(n-2)
+                gib n
+            gib fib(n-1) + fib(n-2)
         self.assertEqual([fib(n) fuer n in range(16)],
             [0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377, 610])
         self.assertEqual(fib.cache_info(),
@@ -1535,7 +1535,7 @@ klasse TestLRU:
 
     def test_lru(self):
         def orig(x, y):
-            return 3 * x + y
+            gib 3 * x + y
         f = self.module.lru_cache(maxsize=20)(orig)
         hits, misses, maxsize, currsize = f.cache_info()
         self.assertEqual(maxsize, 20)
@@ -1578,7 +1578,7 @@ klasse TestLRU:
         def f():
             nonlocal f_cnt
             f_cnt += 1
-            return 20
+            gib 20
         self.assertEqual(f.cache_info().maxsize, 0)
         f_cnt = 0
         fuer i in range(5):
@@ -1594,7 +1594,7 @@ klasse TestLRU:
         def f():
             nonlocal f_cnt
             f_cnt += 1
-            return 20
+            gib 20
         self.assertEqual(f.cache_info().maxsize, 1)
         f_cnt = 0
         fuer i in range(5):
@@ -1610,7 +1610,7 @@ klasse TestLRU:
         def f(x):
             nonlocal f_cnt
             f_cnt += 1
-            return x*10
+            gib x*10
         self.assertEqual(f.cache_info().maxsize, 2)
         f_cnt = 0
         fuer x in 7, 9, 7, 9, 7, 9, 8, 8, 8, 9, 9, 9, 8, 8, 8, 7:
@@ -1625,7 +1625,7 @@ klasse TestLRU:
     def test_lru_no_args(self):
         @self.module.lru_cache
         def square(x):
-            return x ** 2
+            gib x ** 2
 
         self.assertEqual(list(map(square, [10, 20, 10])),
                          [100, 400, 100])
@@ -1650,7 +1650,7 @@ klasse TestLRU:
             wenn x == 20 und once:
                 once = Falsch
                 rv = f(x)
-            return rv
+            gib rv
 
         # Fill the cache
         fuer x in range(15):
@@ -1683,7 +1683,7 @@ klasse TestLRU:
 
         @self.module.lru_cache(maxsize=1)
         def f(x, y):
-            return x * 3 + y
+            gib x * 3 + y
 
         # Simulate the integer 5
         mock_int = unittest.mock.Mock()
@@ -1726,7 +1726,7 @@ klasse TestLRU:
         # Test regression that arose in ea064ff3c10f
         @self.module.lru_cache()
         def f(*args):
-            return args
+            gib args
 
         self.assertEqual(f(1, 2), (1, 2))
         self.assertEqual(f((1, 2)), ((1, 2),))
@@ -1754,8 +1754,8 @@ klasse TestLRU:
         @self.module.lru_cache(maxsize=Nichts)
         def fib(n):
             wenn n < 2:
-                return n
-            return fib(n-1) + fib(n-2)
+                gib n
+            gib fib(n-1) + fib(n-2)
         self.assertEqual([fib(n) fuer n in range(16)],
             [0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377, 610])
         self.assertEqual(fib.cache_info(),
@@ -1767,7 +1767,7 @@ klasse TestLRU:
     def test_lru_with_maxsize_negative(self):
         @self.module.lru_cache(maxsize=-10)
         def eq(n):
-            return n
+            gib n
         fuer i in (0, 1):
             self.assertEqual([eq(n) fuer n in range(150)], list(range(150)))
         self.assertEqual(eq.cache_info(),
@@ -1780,7 +1780,7 @@ klasse TestLRU:
         fuer maxsize in (Nichts, 128):
             @self.module.lru_cache(maxsize)
             def func(i):
-                return 'abc'[i]
+                gib 'abc'[i]
             self.assertEqual(func(0), 'a')
             mit self.assertRaises(IndexError) als cm:
                 func(15)
@@ -1793,7 +1793,7 @@ klasse TestLRU:
         fuer maxsize in (Nichts, 128):
             @self.module.lru_cache(maxsize=maxsize, typed=Wahr)
             def square(x):
-                return x * x
+                gib x * x
             self.assertEqual(square(3), 9)
             self.assertEqual(type(square(3)), type(9))
             self.assertEqual(square(3.0), 9.0)
@@ -1836,8 +1836,8 @@ klasse TestLRU:
         @self.module.lru_cache()
         def fib(n):
             wenn n < 2:
-                return n
-            return fib(n=n-1) + fib(n=n-2)
+                gib n
+            gib fib(n=n-1) + fib(n=n-2)
         self.assertEqual(
             [fib(n=number) fuer number in range(16)],
             [0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377, 610]
@@ -1852,8 +1852,8 @@ klasse TestLRU:
         @self.module.lru_cache(maxsize=Nichts)
         def fib(n):
             wenn n < 2:
-                return n
-            return fib(n=n-1) + fib(n=n-2)
+                gib n
+            gib fib(n=n-1) + fib(n=n-2)
         self.assertEqual([fib(n=number) fuer number in range(16)],
             [0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377, 610])
         self.assertEqual(fib.cache_info(),
@@ -1866,7 +1866,7 @@ klasse TestLRU:
         # PEP 468: Preserving Keyword Argument Order
         @self.module.lru_cache(maxsize=10)
         def f(**kwargs):
-            return list(kwargs.items())
+            gib list(kwargs.items())
         self.assertEqual(f(a=1, b=2), [('a', 1), ('b', 2)])
         self.assertEqual(f(b=2, a=1), [('b', 2), ('a', 1)])
         self.assertEqual(f.cache_info(),
@@ -1875,7 +1875,7 @@ klasse TestLRU:
     def test_lru_cache_decoration(self):
         def f(zomg: 'zomg_annotation'):
             """f doc string"""
-            return 42
+            gib 42
         g = self.module.lru_cache()(f)
         fuer attr in self.module.WRAPPER_ASSIGNMENTS:
             self.assertEqual(getattr(g, attr), getattr(f, attr))
@@ -1884,7 +1884,7 @@ klasse TestLRU:
     def test_lru_cache_threaded(self):
         n, m = 5, 11
         def orig(x, y):
-            return 3 * x + y
+            gib 3 * x + y
         f = self.module.lru_cache(maxsize=n*m)(orig)
         hits, misses, maxsize, currsize = f.cache_info()
         self.assertEqual(currsize, 0)
@@ -1939,7 +1939,7 @@ klasse TestLRU:
         @self.module.lru_cache(maxsize=m*n)
         def f(x):
             pause.wait(10)
-            return 3 * x
+            gib 3 * x
         self.assertEqual(f.cache_info(), (0, 0, m*n, 0))
         def test():
             fuer i in range(m):
@@ -1962,7 +1962,7 @@ klasse TestLRU:
         @self.module.lru_cache(maxsize=2)
         def f(x):
             time.sleep(.01)
-            return 3 * x
+            gib 3 * x
         def test(i, x):
             self.assertEqual(f(x), 3 * x, i)
         threads = [threading.Thread(target=test, args=(i, v))
@@ -1976,23 +1976,23 @@ klasse TestLRU:
         @self.module.lru_cache(maxsize=10)
         def test_func(x):
             'Used to demonstrate a reentrant lru_cache call within a single thread'
-            return x
+            gib x
 
         klasse DoubleEq:
             'Demonstrate a reentrant lru_cache call within a single thread'
             def __init__(self, x):
                 self.x = x
             def __hash__(self):
-                return self.x
+                gib self.x
             def __eq__(self, other):
                 wenn self.x == 2:
                     test_func(DoubleEq(1))
-                return self.x == other.x
+                gib self.x == other.x
 
         test_func(DoubleEq(1))                      # Load the cache
         test_func(DoubleEq(2))                      # Load the cache
         self.assertEqual(test_func(DoubleEq(2)),    # Trigger a re-entrant __eq__ call
-                         DoubleEq(2))               # Verify the correct return value
+                         DoubleEq(2))               # Verify the correct gib value
 
     def test_lru_method(self):
         klasse X(int):
@@ -2000,7 +2000,7 @@ klasse TestLRU:
             @self.module.lru_cache(2)
             def f(self, x):
                 self.f_cnt += 1
-                return x*10+self
+                gib x*10+self
         a = X(5)
         b = X(5)
         c = X(7)
@@ -2036,7 +2036,7 @@ klasse TestLRU:
     def test_copy(self):
         cls = self.__class__
         def orig(x, y):
-            return 3 * x + y
+            gib 3 * x + y
         part = self.module.partial(orig, 2)
         funcs = (cls.cached_func[0], cls.cached_meth, cls.cached_staticmeth,
                  self.module.lru_cache(2)(part))
@@ -2048,7 +2048,7 @@ klasse TestLRU:
     def test_deepcopy(self):
         cls = self.__class__
         def orig(x, y):
-            return 3 * x + y
+            gib 3 * x + y
         part = self.module.partial(orig, 2)
         funcs = (cls.cached_func[0], cls.cached_meth, cls.cached_staticmeth,
                  self.module.lru_cache(2)(part))
@@ -2060,28 +2060,28 @@ klasse TestLRU:
     def test_lru_cache_parameters(self):
         @self.module.lru_cache(maxsize=2)
         def f():
-            return 1
+            gib 1
         self.assertEqual(f.cache_parameters(), {'maxsize': 2, "typed": Falsch})
 
         @self.module.lru_cache(maxsize=1000, typed=Wahr)
         def f():
-            return 1
+            gib 1
         self.assertEqual(f.cache_parameters(), {'maxsize': 1000, "typed": Wahr})
 
     def test_lru_cache_weakrefable(self):
         @self.module.lru_cache
         def test_function(x):
-            return x
+            gib x
 
         klasse A:
             @self.module.lru_cache
             def test_method(self, x):
-                return (self, x)
+                gib (self, x)
 
             @staticmethod
             @self.module.lru_cache
             def test_staticmethod(x):
-                return (self, x)
+                gib (self, x)
 
         refs = [weakref.ref(test_function),
                 weakref.ref(A.test_method),
@@ -2142,8 +2142,8 @@ klasse TestLRU:
         @self.module.lru_cache
         def fib(n):
             wenn n <= 1:
-                return n
-            return fib(n-1) + fib(n-2)
+                gib n
+            gib fib(n-1) + fib(n-2)
 
         fib(100)
         wenn self.module == c_functools:
@@ -2155,12 +2155,12 @@ klasse TestLRU:
 
 @py_functools.lru_cache()
 def py_cached_func(x, y):
-    return 3 * x + y
+    gib 3 * x + y
 
 wenn c_functools:
     @c_functools.lru_cache()
     def c_cached_func(x, y):
-        return 3 * x + y
+        gib 3 * x + y
 
 
 klasse TestLRUPy(TestLRU, unittest.TestCase):
@@ -2169,12 +2169,12 @@ klasse TestLRUPy(TestLRU, unittest.TestCase):
 
     @module.lru_cache()
     def cached_meth(self, x, y):
-        return 3 * x + y
+        gib 3 * x + y
 
     @staticmethod
     @module.lru_cache()
     def cached_staticmeth(x, y):
-        return 3 * x + y
+        gib 3 * x + y
 
 
 @unittest.skipUnless(c_functools, 'requires the C _functools module')
@@ -2185,21 +2185,21 @@ klasse TestLRUC(TestLRU, unittest.TestCase):
 
         @module.lru_cache()
         def cached_meth(self, x, y):
-            return 3 * x + y
+            gib 3 * x + y
 
         @staticmethod
         @module.lru_cache()
         def cached_staticmeth(x, y):
-            return 3 * x + y
+            gib 3 * x + y
 
 
 klasse TestSingleDispatch(unittest.TestCase):
     def test_simple_overloads(self):
         @functools.singledispatch
         def g(obj):
-            return "base"
+            gib "base"
         def g_int(i):
-            return "integer"
+            gib "integer"
         g.register(int, g_int)
         self.assertEqual(g("str"), "base")
         self.assertEqual(g(1), "integer")
@@ -2208,7 +2208,7 @@ klasse TestSingleDispatch(unittest.TestCase):
     def test_mro(self):
         @functools.singledispatch
         def g(obj):
-            return "base"
+            gib "base"
         klasse A:
             pass
         klasse C(A):
@@ -2218,9 +2218,9 @@ klasse TestSingleDispatch(unittest.TestCase):
         klasse D(C, B):
             pass
         def g_A(a):
-            return "A"
+            gib "A"
         def g_B(b):
-            return "B"
+            gib "B"
         g.register(A, g_A)
         g.register(B, g_B)
         self.assertEqual(g(A()), "A")
@@ -2231,10 +2231,10 @@ klasse TestSingleDispatch(unittest.TestCase):
     def test_register_decorator(self):
         @functools.singledispatch
         def g(obj):
-            return "base"
+            gib "base"
         @g.register(int)
         def g_int(i):
-            return "int %s" % (i,)
+            gib "int %s" % (i,)
         self.assertEqual(g(""), "base")
         self.assertEqual(g(12), "int 12")
         self.assertIs(g.dispatch(int), g_int)
@@ -2246,7 +2246,7 @@ klasse TestSingleDispatch(unittest.TestCase):
         @functools.singledispatch
         def g(obj):
             "Simple test"
-            return "Test"
+            gib "Test"
         self.assertEqual(g.__name__, "g")
         wenn sys.flags.optimize < 2:
             self.assertEqual(g.__doc__, "Simple test")
@@ -2256,17 +2256,17 @@ klasse TestSingleDispatch(unittest.TestCase):
     def test_c_classes(self):
         @functools.singledispatch
         def g(obj):
-            return "base"
+            gib "base"
         @g.register(decimal.DecimalException)
         def _(obj):
-            return obj.args
+            gib obj.args
         subn = decimal.Subnormal("Exponent < Emin")
         rnd = decimal.Rounded("Number got rounded")
         self.assertEqual(g(subn), ("Exponent < Emin",))
         self.assertEqual(g(rnd), ("Number got rounded",))
         @g.register(decimal.Subnormal)
         def _(obj):
-            return "Too small to care."
+            gib "Too small to care."
         self.assertEqual(g(subn), "Too small to care.")
         self.assertEqual(g(rnd), ("Number got rounded",))
 
@@ -2333,7 +2333,7 @@ klasse TestSingleDispatch(unittest.TestCase):
         t = (1, 2, 3)
         @functools.singledispatch
         def g(obj):
-            return "base"
+            gib "base"
         self.assertEqual(g(d), "base")
         self.assertEqual(g(l), "base")
         self.assertEqual(g(s), "base")
@@ -2425,7 +2425,7 @@ klasse TestSingleDispatch(unittest.TestCase):
             pass
         klasse B(A):
             def __len__(self):
-                return 0   # implies Sized
+                gib 0   # implies Sized
         @c.Container.register
         klasse C(object):
             pass
@@ -2445,17 +2445,17 @@ klasse TestSingleDispatch(unittest.TestCase):
         # see issue23572
         klasse MetaA(type):
             def __len__(self):
-                return 0
+                gib 0
         klasse A(metaclass=MetaA):
             pass
         klasse AA(A):
             pass
         @functools.singledispatch
         def fun(a):
-            return 'base A'
+            gib 'base A'
         @fun.register(A)
         def _(a):
-            return 'fun A'
+            gib 'fun A'
         aa = AA()
         self.assertEqual(fun(aa), 'fun A')
 
@@ -2463,10 +2463,10 @@ klasse TestSingleDispatch(unittest.TestCase):
         c = collections.abc
         @functools.singledispatch
         def g(arg):
-            return "base"
+            gib "base"
         klasse O(c.Sized):
             def __len__(self):
-                return 0
+                gib 0
         o = O()
         self.assertEqual(g(o), "base")
         g.register(c.Iterable, lambda arg: "iterable")
@@ -2499,7 +2499,7 @@ klasse TestSingleDispatch(unittest.TestCase):
         )
         klasse Q(c.Sized):
             def __len__(self):
-                return 0
+                gib 0
         q = Q()
         self.assertEqual(g(q), "sized")
         c.Iterable.register(Q)
@@ -2509,13 +2509,13 @@ klasse TestSingleDispatch(unittest.TestCase):
                                           # c.Sized und c.Iterable
         @functools.singledispatch
         def h(arg):
-            return "base"
+            gib "base"
         @h.register(c.Sized)
         def _(arg):
-            return "sized"
+            gib "sized"
         @h.register(c.Container)
         def _(arg):
-            return "container"
+            gib "container"
         # Even though Sized und Container are explicit bases of MutableMapping,
         # this ABC is implicitly registered on defaultdict which makes all of
         # MutableMapping's bases implicit als well von defaultdict's
@@ -2534,27 +2534,27 @@ klasse TestSingleDispatch(unittest.TestCase):
         c.MutableSequence.register(R)
         @functools.singledispatch
         def i(arg):
-            return "base"
+            gib "base"
         @i.register(c.MutableMapping)
         def _(arg):
-            return "mapping"
+            gib "mapping"
         @i.register(c.MutableSequence)
         def _(arg):
-            return "sequence"
+            gib "sequence"
         r = R()
         self.assertEqual(i(r), "sequence")
         klasse S:
             pass
         klasse T(S, c.Sized):
             def __len__(self):
-                return 0
+                gib 0
         t = T()
         self.assertEqual(h(t), "sized")
         c.Container.register(T)
         self.assertEqual(h(t), "sized")   # because it's explicitly in the MRO
         klasse U:
             def __len__(self):
-                return 0
+                gib 0
         u = U()
         self.assertEqual(h(u), "sized")   # implicit Sized subclass inferred
                                           # von the existence of __len__()
@@ -2571,16 +2571,16 @@ klasse TestSingleDispatch(unittest.TestCase):
         )
         klasse V(c.Sized, S):
             def __len__(self):
-                return 0
+                gib 0
         @functools.singledispatch
         def j(arg):
-            return "base"
+            gib "base"
         @j.register(S)
         def _(arg):
-            return "s"
+            gib "s"
         @j.register(c.Container)
         def _(arg):
-            return "container"
+            gib "container"
         v = V()
         self.assertEqual(j(v), "s")
         c.Container.register(V)
@@ -2599,7 +2599,7 @@ klasse TestSingleDispatch(unittest.TestCase):
             def __getitem__(self, key):
                 result = self.data[key]
                 self.get_ops.append(key)
-                return result
+                gib result
             def __setitem__(self, key, value):
                 self.set_ops.append(key)
                 self.data[key] = value
@@ -2611,7 +2611,7 @@ klasse TestSingleDispatch(unittest.TestCase):
             c = collections.abc
             @functools.singledispatch
             def g(arg):
-                return "base"
+                gib "base"
             d = {}
             l = []
             self.assertEqual(len(td), 0)
@@ -2692,13 +2692,13 @@ klasse TestSingleDispatch(unittest.TestCase):
     def test_annotations(self):
         @functools.singledispatch
         def i(arg):
-            return "base"
+            gib "base"
         @i.register
         def _(arg: collections.abc.Mapping):
-            return "mapping"
+            gib "mapping"
         @i.register
         def _(arg: "collections.abc.Sequence"):
-            return "sequence"
+            gib "sequence"
         self.assertEqual(i(Nichts), "base")
         self.assertEqual(i({"a": 1}), "mapping")
         self.assertEqual(i([1, 2, 3]), "sequence")
@@ -2713,7 +2713,7 @@ klasse TestSingleDispatch(unittest.TestCase):
                 self.arg = arg
 
             def __eq__(self, other):
-                return self.arg == other
+                gib self.arg == other
         self.assertEqual(i("str"), "str")
 
     def test_method_register(self):
@@ -2747,15 +2747,15 @@ klasse TestSingleDispatch(unittest.TestCase):
             @functools.singledispatchmethod
             @staticmethod
             def t(arg):
-                return arg
+                gib arg
             @t.register(int)
             @staticmethod
             def _(arg):
-                return isinstance(arg, int)
+                gib isinstance(arg, int)
             @t.register(str)
             @staticmethod
             def _(arg):
-                return isinstance(arg, str)
+                gib isinstance(arg, str)
         a = A()
 
         self.assertWahr(A.t(0))
@@ -2771,7 +2771,7 @@ klasse TestSingleDispatch(unittest.TestCase):
 
             @go.register
             def _(self, item: int, arg):
-                return item + arg
+                gib item + arg
 
         s = Slot()
         self.assertEqual(s.go(1, 1), 2)
@@ -2787,7 +2787,7 @@ klasse TestSingleDispatch(unittest.TestCase):
             @go.register
             @classmethod
             def _(cls, item: int, arg):
-                return item + arg
+                gib item + arg
 
         s = Slot()
         self.assertEqual(s.go(1, 1), 2)
@@ -2799,15 +2799,15 @@ klasse TestSingleDispatch(unittest.TestCase):
             @functools.singledispatchmethod
             @staticmethod
             def t(arg):
-                return arg
+                gib arg
             @t.register(int)
             @staticmethod
             def _(arg):
-                return isinstance(arg, int)
+                gib isinstance(arg, int)
             @t.register(str)
             @staticmethod
             def _(arg):
-                return isinstance(arg, str)
+                gib isinstance(arg, str)
         a = A()
 
         self.assertWahr(A.t(0))
@@ -2822,7 +2822,7 @@ klasse TestSingleDispatch(unittest.TestCase):
         klasse A:
             @functools.singledispatchmethod
             def t(arg):
-                return arg
+                gib arg
 
         a = A()
         a.t.foo = 'bar'
@@ -2838,15 +2838,15 @@ klasse TestSingleDispatch(unittest.TestCase):
             @functools.singledispatchmethod
             @classmethod
             def t(cls, arg):
-                return cls("base")
+                gib cls("base")
             @t.register(int)
             @classmethod
             def _(cls, arg):
-                return cls("int")
+                gib cls("int")
             @t.register(str)
             @classmethod
             def _(cls, arg):
-                return cls("str")
+                gib cls("str")
 
         self.assertEqual(A.t(0).arg, "int")
         self.assertEqual(A.t('').arg, "str")
@@ -2860,16 +2860,16 @@ klasse TestSingleDispatch(unittest.TestCase):
             @functools.singledispatchmethod
             @classmethod
             def t(cls, arg):
-                return cls("base")
+                gib cls("base")
 
         @A.t.register(int)
         @classmethod
         def _(cls, arg):
-            return cls("int")
+            gib cls("int")
         @A.t.register(str)
         @classmethod
         def _(cls, arg):
-            return cls("str")
+            gib cls("str")
 
         self.assertEqual(A.t(0).arg, "int")
         self.assertEqual(A.t('').arg, "str")
@@ -2893,13 +2893,13 @@ klasse TestSingleDispatch(unittest.TestCase):
         klasse A:
             @functools.singledispatchmethod
             def t(self, arg):
-                return "base"
+                gib "base"
             @t.register
             def _(self, arg: int):
-                return "int"
+                gib "int"
             @t.register
             def _(self, arg: str):
-                return "str"
+                gib "str"
         a = A()
 
         self.assertEqual(a.t(0), "int")
@@ -2911,15 +2911,15 @@ klasse TestSingleDispatch(unittest.TestCase):
             @functools.singledispatchmethod
             @staticmethod
             def t(arg):
-                return arg
+                gib arg
             @t.register
             @staticmethod
             def _(arg: int):
-                return isinstance(arg, int)
+                gib isinstance(arg, int)
             @t.register
             @staticmethod
             def _(arg: str):
-                return isinstance(arg, str)
+                gib isinstance(arg, str)
         a = A()
 
         self.assertWahr(A.t(0))
@@ -2934,15 +2934,15 @@ klasse TestSingleDispatch(unittest.TestCase):
             @functools.singledispatchmethod
             @classmethod
             def t(cls, arg):
-                return cls("base")
+                gib cls("base")
             @t.register
             @classmethod
             def _(cls, arg: int):
-                return cls("int")
+                gib cls("int")
             @t.register
             @classmethod
             def _(cls, arg: str):
-                return cls("str")
+                gib cls("str")
 
         self.assertEqual(A.t(0).arg, "int")
         self.assertEqual(A.t('').arg, "str")
@@ -2953,17 +2953,17 @@ klasse TestSingleDispatch(unittest.TestCase):
             @functools.singledispatchmethod
             def func(self, arg: int) -> str:
                 """My function docstring"""
-                return str(arg)
+                gib str(arg)
             @functools.singledispatchmethod
             @classmethod
             def cls_func(cls, arg: int) -> str:
                 """My function docstring"""
-                return str(arg)
+                gib str(arg)
             @functools.singledispatchmethod
             @staticmethod
             def static_func(arg: int) -> str:
                 """My function docstring"""
-                return str(arg)
+                gib str(arg)
 
         prefix = A.__qualname__ + '.'
         fuer meth in (
@@ -3058,23 +3058,23 @@ klasse TestSingleDispatch(unittest.TestCase):
             @classmethod
             @functools.wraps(wrapped)
             def wrapper(*args, **kwargs):
-                return wrapped(*args, **kwargs)
-            return wrapper
+                gib wrapped(*args, **kwargs)
+            gib wrapper
 
         klasse WithoutSingleDispatch:
             @classmethod
             @contextlib.contextmanager
             def cls_context_manager(cls, arg: int) -> str:
                 try:
-                    yield str(arg)
+                    liefere str(arg)
                 finally:
                     pass
-                return 'Done'
+                gib 'Done'
 
             @classmethod_friendly_decorator
             @classmethod
             def decorated_classmethod(cls, arg: int) -> str:
-                return str(arg)
+                gib str(arg)
 
         klasse WithSingleDispatch:
             @functools.singledispatchmethod
@@ -3083,17 +3083,17 @@ klasse TestSingleDispatch(unittest.TestCase):
             def cls_context_manager(cls, arg: int) -> str:
                 """My function docstring"""
                 try:
-                    yield str(arg)
+                    liefere str(arg)
                 finally:
                     pass
-                return 'Done'
+                gib 'Done'
 
             @functools.singledispatchmethod
             @classmethod_friendly_decorator
             @classmethod
             def decorated_classmethod(cls, arg: int) -> str:
                 """My function docstring"""
-                return str(arg)
+                gib str(arg)
 
         # These are sanity checks
         # to test the test itself is working als expected
@@ -3164,17 +3164,17 @@ klasse TestSingleDispatch(unittest.TestCase):
         )
         @functools.singledispatch
         def i(arg):
-            return "base"
+            gib "base"
         mit self.assertRaises(TypeError) als exc:
             @i.register(42)
             def _(arg):
-                return "I annotated mit a non-type"
+                gib "I annotated mit a non-type"
         self.assertStartsWith(str(exc.exception), msg_prefix + "42")
         self.assertEndsWith(str(exc.exception), msg_suffix)
         mit self.assertRaises(TypeError) als exc:
             @i.register
             def _(arg):
-                return "I forgot to annotate"
+                gib "I forgot to annotate"
         self.assertStartsWith(str(exc.exception), msg_prefix +
             "<function TestSingleDispatch.test_invalid_registrations.<locals>._"
         )
@@ -3187,7 +3187,7 @@ klasse TestSingleDispatch(unittest.TestCase):
                 # When registering implementations mit singledispatch, avoid
                 # types von `typing`. Instead, annotate mit regular types
                 # oder ABCs.
-                return "I annotated mit a generic collection"
+                gib "I annotated mit a generic collection"
         self.assertStartsWith(str(exc.exception),
             "Invalid annotation fuer 'arg'."
         )
@@ -3198,7 +3198,7 @@ klasse TestSingleDispatch(unittest.TestCase):
         mit self.assertRaises(TypeError) als exc:
             @i.register
             def _(arg: typing.Union[int, typing.Iterable[str]]):
-                return "Invalid Union"
+                gib "Invalid Union"
         self.assertStartsWith(str(exc.exception),
             "Invalid annotation fuer 'arg'."
         )
@@ -3232,15 +3232,15 @@ klasse TestSingleDispatch(unittest.TestCase):
     def test_union(self):
         @functools.singledispatch
         def f(arg):
-            return "default"
+            gib "default"
 
         @f.register
         def _(arg: typing.Union[str, bytes]):
-            return "typing.Union"
+            gib "typing.Union"
 
         @f.register
         def _(arg: int | float):
-            return "types.UnionType"
+            gib "types.UnionType"
 
         self.assertEqual(f([]), "default")
         self.assertEqual(f(""), "typing.Union")
@@ -3251,15 +3251,15 @@ klasse TestSingleDispatch(unittest.TestCase):
     def test_union_conflict(self):
         @functools.singledispatch
         def f(arg):
-            return "default"
+            gib "default"
 
         @f.register
         def _(arg: typing.Union[str, bytes]):
-            return "typing.Union"
+            gib "typing.Union"
 
         @f.register
         def _(arg: int | str):
-            return "types.UnionType"
+            gib "types.UnionType"
 
         self.assertEqual(f([]), "default")
         self.assertEqual(f(""), "types.UnionType")  # last one wins
@@ -3269,11 +3269,11 @@ klasse TestSingleDispatch(unittest.TestCase):
     def test_union_Nichts(self):
         @functools.singledispatch
         def typing_union(arg):
-            return "default"
+            gib "default"
 
         @typing_union.register
         def _(arg: typing.Union[str, Nichts]):
-            return "typing.Union"
+            gib "typing.Union"
 
         self.assertEqual(typing_union(1), "default")
         self.assertEqual(typing_union(""), "typing.Union")
@@ -3281,11 +3281,11 @@ klasse TestSingleDispatch(unittest.TestCase):
 
         @functools.singledispatch
         def types_union(arg):
-            return "default"
+            gib "default"
 
         @types_union.register
         def _(arg: int | Nichts):
-            return "types.UnionType"
+            gib "types.UnionType"
 
         self.assertEqual(types_union(""), "default")
         self.assertEqual(types_union(1), "types.UnionType")
@@ -3294,7 +3294,7 @@ klasse TestSingleDispatch(unittest.TestCase):
     def test_register_genericalias(self):
         @functools.singledispatch
         def f(arg):
-            return "default"
+            gib "default"
 
         mit self.assertRaisesRegex(TypeError, "Invalid first argument to "):
             f.register(list[int], lambda arg: "types.GenericAlias")
@@ -3313,7 +3313,7 @@ klasse TestSingleDispatch(unittest.TestCase):
     def test_register_genericalias_decorator(self):
         @functools.singledispatch
         def f(arg):
-            return "default"
+            gib "default"
 
         mit self.assertRaisesRegex(TypeError, "Invalid first argument to "):
             f.register(list[int])
@@ -3327,24 +3327,24 @@ klasse TestSingleDispatch(unittest.TestCase):
     def test_register_genericalias_annotation(self):
         @functools.singledispatch
         def f(arg):
-            return "default"
+            gib "default"
 
         mit self.assertRaisesRegex(TypeError, "Invalid annotation fuer 'arg'"):
             @f.register
             def _(arg: list[int]):
-                return "types.GenericAlias"
+                gib "types.GenericAlias"
         mit self.assertRaisesRegex(TypeError, "Invalid annotation fuer 'arg'"):
             @f.register
             def _(arg: typing.List[float]):
-                return "typing.GenericAlias"
+                gib "typing.GenericAlias"
         mit self.assertRaisesRegex(TypeError, "Invalid annotation fuer 'arg'"):
             @f.register
             def _(arg: list[int] | str):
-                return "types.UnionType(types.GenericAlias)"
+                gib "types.UnionType(types.GenericAlias)"
         mit self.assertRaisesRegex(TypeError, "Invalid annotation fuer 'arg'"):
             @f.register
             def _(arg: typing.List[float] | bytes):
-                return "typing.Union[typing.GenericAlias]"
+                gib "typing.Union[typing.GenericAlias]"
 
         self.assertEqual(f([1]), "default")
         self.assertEqual(f([1.0]), "default")
@@ -3354,11 +3354,11 @@ klasse TestSingleDispatch(unittest.TestCase):
     def test_forward_reference(self):
         @functools.singledispatch
         def f(arg, arg2=Nichts):
-            return "default"
+            gib "default"
 
         @f.register
         def _(arg: str, arg2: undefined = Nichts):
-            return "forward reference"
+            gib "forward reference"
 
         self.assertEqual(f(1), "default")
         self.assertEqual(f(""), "forward reference")
@@ -3366,23 +3366,23 @@ klasse TestSingleDispatch(unittest.TestCase):
     def test_unresolved_forward_reference(self):
         @functools.singledispatch
         def f(arg):
-            return "default"
+            gib "default"
 
         mit self.assertRaisesRegex(TypeError, "is an unresolved forward reference"):
             @f.register
             def _(arg: undefined):
-                return "forward reference"
+                gib "forward reference"
 
     def test_method_equal_instances(self):
         # gh-127750: Reference to self was cached
         klasse A:
             def __eq__(self, other):
-                return Wahr
+                gib Wahr
             def __hash__(self):
-                return 1
+                gib 1
             @functools.singledispatchmethod
             def t(self, arg):
-                return self
+                gib self
 
         a = A()
         b = A()
@@ -3409,7 +3409,7 @@ klasse TestSingleDispatch(unittest.TestCase):
         klasse A:
             @functools.singledispatchmethod
             def t(self, arg):
-                return weakref.ref(self)
+                gib weakref.ref(self)
 
         a = A()
         r = a.t(1)
@@ -3433,10 +3433,10 @@ klasse TestSingleDispatch(unittest.TestCase):
     def test_signatures(self):
         @functools.singledispatch
         def func(item, arg: int) -> str:
-            return str(item)
+            gib str(item)
         @func.register
         def _(item: int, arg: bytes) -> str:
-            return str(item)
+            gib str(item)
 
         self.assertEqual(str(Signature.from_callable(func)),
                          '(item, arg: int) -> str')
@@ -3444,34 +3444,34 @@ klasse TestSingleDispatch(unittest.TestCase):
     def test_method_signatures(self):
         klasse A:
             def m(self, item, arg: int) -> str:
-                return str(item)
+                gib str(item)
             @classmethod
             def cm(cls, item, arg: int) -> str:
-                return str(item)
+                gib str(item)
             @functools.singledispatchmethod
             def func(self, item, arg: int) -> str:
-                return str(item)
+                gib str(item)
             @func.register
             def _(self, item, arg: bytes) -> str:
-                return str(item)
+                gib str(item)
 
             @functools.singledispatchmethod
             @classmethod
             def cls_func(cls, item, arg: int) -> str:
-                return str(arg)
+                gib str(arg)
             @func.register
             @classmethod
             def _(cls, item, arg: bytes) -> str:
-                return str(item)
+                gib str(item)
 
             @functools.singledispatchmethod
             @staticmethod
             def static_func(item, arg: int) -> str:
-                return str(arg)
+                gib str(arg)
             @func.register
             @staticmethod
             def _(item, arg: bytes) -> str:
-                return str(item)
+                gib str(item)
 
         self.assertEqual(str(Signature.from_callable(A.func)),
                          '(self, item, arg: int) -> str')
@@ -3494,7 +3494,7 @@ klasse CachedCostItem:
         """The cost of the item."""
         mit self.lock:
             self._cost += 1
-        return self._cost
+        gib self._cost
 
 
 klasse OptionallyCachedCostItem:
@@ -3503,7 +3503,7 @@ klasse OptionallyCachedCostItem:
     def get_cost(self):
         """The cost of the item."""
         self._cost += 1
-        return self._cost
+        gib self._cost
 
     cached_cost = py_functools.cached_property(get_cost)
 
@@ -3544,7 +3544,7 @@ klasse TestCachedProperty(unittest.TestCase):
         klasse MyMeta(type):
             @py_functools.cached_property
             def prop(self):
-                return Wahr
+                gib Wahr
 
         klasse MyClass(metaclass=MyMeta):
             pass
@@ -3578,7 +3578,7 @@ klasse TestCachedProperty(unittest.TestCase):
         def _cp(_self):
             nonlocal counter
             counter += 1
-            return counter
+            gib counter
 
         klasse A:
             cp = _cp
@@ -3630,7 +3630,7 @@ klasse TestCachedProperty(unittest.TestCase):
 
             @readonly_cached_property
             def prop(self):
-                return self._prop
+                gib self._prop
 
         t = Test(1)
         self.assertEqual(t.prop, 1)

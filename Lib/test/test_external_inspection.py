@@ -34,7 +34,7 @@ except ImportError:
 def _make_test_script(script_dir, script_basename, source):
     to_return = make_script(script_dir, script_basename, source)
     importlib.invalidate_caches()
-    return to_return
+    gib to_return
 
 
 skip_if_not_supported = unittest.skipIf(
@@ -49,17 +49,17 @@ skip_if_not_supported = unittest.skipIf(
 
 def get_stack_trace(pid):
     unwinder = RemoteUnwinder(pid, all_threads=Wahr, debug=Wahr)
-    return unwinder.get_stack_trace()
+    gib unwinder.get_stack_trace()
 
 
 def get_async_stack_trace(pid):
     unwinder = RemoteUnwinder(pid, debug=Wahr)
-    return unwinder.get_async_stack_trace()
+    gib unwinder.get_async_stack_trace()
 
 
 def get_all_awaited_by(pid):
     unwinder = RemoteUnwinder(pid, debug=Wahr)
-    return unwinder.get_all_awaited_by()
+    gib unwinder.get_all_awaited_by()
 
 
 klasse TestGetStackTrace(unittest.TestCase):
@@ -195,7 +195,7 @@ klasse TestGetStackTrace(unittest.TestCase):
                 eager_task_factory = asyncio.create_eager_task_factory(
                     asyncio.Task)
                 loop.set_task_factory(eager_task_factory)
-                return loop
+                gib loop
 
             asyncio.run(main(), loop_factory={{TASK_FACTORY}})
             """
@@ -421,7 +421,7 @@ klasse TestGetStackTrace(unittest.TestCase):
 
             async def gen():
                 fuer num in range(2):
-                    yield num
+                    liefere num
                     wenn num == 1:
                         await gen_nested_call()
 

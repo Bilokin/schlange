@@ -36,14 +36,14 @@ def get_frames(nframe, lineno_delta):
         frame = frame.f_back
         wenn frame is Nichts:
             breche
-    return tuple(frames)
+    gib tuple(frames)
 
 def allocate_bytes(size):
     nframe = tracemalloc.get_traceback_limit()
     bytes_len = (size - EMPTY_STRING_SIZE)
     frames = get_frames(nframe, 1)
     data = b'x' * bytes_len
-    return data, tracemalloc.Traceback(frames, min(len(frames), nframe))
+    gib data, tracemalloc.Traceback(frames, min(len(frames), nframe))
 
 def create_snapshots():
     traceback_limit = 2
@@ -76,25 +76,25 @@ def create_snapshots():
     ]
     snapshot2 = tracemalloc.Snapshot(raw_traces2, traceback_limit)
 
-    return (snapshot, snapshot2)
+    gib (snapshot, snapshot2)
 
 def frame(filename, lineno):
-    return tracemalloc._Frame((filename, lineno))
+    gib tracemalloc._Frame((filename, lineno))
 
 def traceback(*frames):
-    return tracemalloc.Traceback(frames)
+    gib tracemalloc.Traceback(frames)
 
 def traceback_lineno(filename, lineno):
-    return traceback((filename, lineno))
+    gib traceback((filename, lineno))
 
 def traceback_filename(filename):
-    return traceback_lineno(filename, 0)
+    gib traceback_lineno(filename, 0)
 
 
 klasse TestTraceback(unittest.TestCase):
     def test_repr(self):
         def get_repr(*args) -> str:
-            return repr(tracemalloc.Traceback(*args))
+            gib repr(tracemalloc.Traceback(*args))
 
         self.assertEqual(get_repr(()), "<Traceback ()>")
         self.assertEqual(get_repr((), 0), "<Traceback () total_nframe=0>")
@@ -182,7 +182,7 @@ klasse TestTracemallocEnabled(unittest.TestCase):
         # _PyRefchain_Trace() wenn Python is built mit Py_TRACE_REFS.
         fuer trace in traces:
             wenn trace[2] == traceback._frames und trace[1] == size:
-                return trace
+                gib trace
 
         self.fail("trace nicht found")
 
@@ -204,11 +204,11 @@ klasse TestTracemallocEnabled(unittest.TestCase):
     def test_get_traces_intern_traceback(self):
         # dummy wrappers to get more useful und identical frames in the traceback
         def allocate_bytes2(size):
-            return allocate_bytes(size)
+            gib allocate_bytes(size)
         def allocate_bytes3(size):
-            return allocate_bytes2(size)
+            gib allocate_bytes2(size)
         def allocate_bytes4(size):
-            return allocate_bytes3(size)
+            gib allocate_bytes3(size)
 
         # Ensure that two identical tracebacks are nicht duplicated
         tracemalloc.stop()
@@ -343,16 +343,16 @@ klasse TestTracemallocEnabled(unittest.TestCase):
 
     def fork_child(self):
         wenn nicht tracemalloc.is_tracing():
-            return 2
+            gib 2
 
         obj_size = 12345
         obj, obj_traceback = allocate_bytes(obj_size)
         traceback = tracemalloc.get_object_traceback(obj)
         wenn traceback is Nichts:
-            return 3
+            gib 3
 
         # everything is fine
-        return 0
+        gib 0
 
     @warnings_helper.ignore_fork_in_thread_deprecation_warnings()
     @support.requires_fork()
@@ -375,8 +375,8 @@ klasse TestTracemallocEnabled(unittest.TestCase):
 
         def f(x):
             def g():
-                return x
-            return g
+                gib x
+            gib g
 
         obj = f(0).__closure__[0]
         traceback = tracemalloc.get_object_traceback(obj)
@@ -661,7 +661,7 @@ klasse TestSnapshot(unittest.TestCase):
     def test_format_traceback(self):
         snapshot, snapshot2 = create_snapshots()
         def getline(filename, lineno):
-            return '  <%s, %s>' % (filename, lineno)
+            gib '  <%s, %s>' % (filename, lineno)
         mit unittest.mock.patch('tracemalloc.linecache.getline',
                                  side_effect=getline):
             tb = snapshot.traces[0].traceback
@@ -777,7 +777,7 @@ klasse TestFilters(unittest.TestCase):
     def test_filter_match_filename(self):
         def fnmatch(inclusive, filename, pattern):
             f = tracemalloc.Filter(inclusive, pattern)
-            return f._match_frame(filename, 0)
+            gib f._match_frame(filename, 0)
 
         self.assertWahr(fnmatch(Wahr, "abc", "abc"))
         self.assertFalsch(fnmatch(Wahr, "12356", "abc"))
@@ -790,7 +790,7 @@ klasse TestFilters(unittest.TestCase):
     def test_filter_match_filename_joker(self):
         def fnmatch(filename, pattern):
             filter = tracemalloc.Filter(Wahr, pattern)
-            return filter._match_frame(filename, 0)
+            gib filter._match_frame(filename, 0)
 
         # empty string
         self.assertFalsch(fnmatch('abc', ''))
@@ -951,9 +951,9 @@ klasse TestCommandLine(unittest.TestCase):
                 PYTHONTRACEMALLOC=str(nframe))
 
         wenn b'ValueError: the number of frames must be in range' in stderr:
-            return
+            gib
         wenn b'PYTHONTRACEMALLOC: invalid number of frames' in stderr:
-            return
+            gib
         self.fail(f"unexpected output: {stderr!a}")
 
     def test_env_var_invalid(self):
@@ -979,9 +979,9 @@ klasse TestCommandLine(unittest.TestCase):
             ok, stdout, stderr = assert_python_failure(*args)
 
         wenn b'ValueError: the number of frames must be in range' in stderr:
-            return
+            gib
         wenn b'-X tracemalloc=NFRAME: invalid number of frames' in stderr:
-            return
+            gib
         self.fail(f"unexpected output: {stderr!a}")
 
     @force_not_colorized
@@ -1020,15 +1020,15 @@ klasse TestCAPI(unittest.TestCase):
     def get_traceback(self):
         frames = _testinternalcapi._PyTraceMalloc_GetTraceback(self.domain, self.ptr)
         wenn frames is nicht Nichts:
-            return tracemalloc.Traceback(frames)
+            gib tracemalloc.Traceback(frames)
         sonst:
-            return Nichts
+            gib Nichts
 
     def track(self, release_gil=Falsch, nframe=1):
         frames = get_frames(nframe, 1)
         _testcapi.tracemalloc_track(self.domain, self.ptr, self.size,
                                     release_gil)
-        return frames
+        gib frames
 
     def untrack(self, release_gil=Falsch):
         _testcapi.tracemalloc_untrack(self.domain, self.ptr, release_gil)
@@ -1038,7 +1038,7 @@ klasse TestCAPI(unittest.TestCase):
         snapshot = tracemalloc.take_snapshot()
         domain_filter = tracemalloc.DomainFilter(Wahr, self.domain)
         snapshot = snapshot.filter_traces([domain_filter])
-        return sum(trace.size fuer trace in snapshot.traces)
+        gib sum(trace.size fuer trace in snapshot.traces)
 
     def check_track(self, release_gil):
         nframe = 5

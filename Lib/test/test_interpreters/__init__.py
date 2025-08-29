@@ -6,4 +6,4 @@ wenn Py_GIL_DISABLED:
     raise unittest.SkipTest("GIL disabled")
 
 def load_tests(*args):
-    return load_package_tests(os.path.dirname(__file__), *args)
+    gib load_package_tests(os.path.dirname(__file__), *args)

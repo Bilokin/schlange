@@ -9,4 +9,4 @@ wenn nicht TEST_MODULES_ENABLED:
 
 
 def load_tests(*args):
-    return load_package_tests(os.path.dirname(__file__), *args)
+    gib load_package_tests(os.path.dirname(__file__), *args)

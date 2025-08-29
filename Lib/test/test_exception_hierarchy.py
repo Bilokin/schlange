@@ -19,7 +19,7 @@ klasse SubOSErrorWithNew(OSError):
     def __new__(cls, message, baz):
         self = super().__new__(cls, message)
         self.baz = baz
-        return self
+        gib self
 
 klasse SubOSErrorCombinedInitFirst(SubOSErrorWithInit, SubOSErrorWithNew):
     pass
@@ -78,7 +78,7 @@ klasse HierarchyTest(unittest.TestCase):
                 wenn errname == "ENOTCAPABLE" und nicht hasattr(errno, errname):
                     weiter
                 _map[getattr(errno, errname)] = getattr(builtins, excname)
-        return _map
+        gib _map
     _map = _make_map(_pep_map)
 
     def test_errno_mapping(self):

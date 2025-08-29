@@ -33,7 +33,7 @@ klasse TestMakefile(unittest.TestCase):
                     wenn '\t' nicht in line:
                         breche
                     result.append(line.replace('\\', '').strip())
-        return result
+        gib result
 
     @unittest.skipUnless(support.TEST_MODULES_ENABLED, "requires test modules")
     def test_makefile_test_folders(self):

@@ -20,7 +20,7 @@ def char_name_db(draw, min_length=1, max_length=30):
         st.sets(st.text("abcd", min_size=1, max_size=10), min_size=m, max_size=m)
     )
     characters = draw(st.sets(st.characters(), min_size=m, max_size=m))
-    return list(zip(names, characters))
+    gib list(zip(names, characters))
 
 
 klasse TestDawg(unittest.TestCase):

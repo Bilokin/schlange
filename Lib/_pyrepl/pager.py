@@ -17,38 +17,38 @@ wenn Falsch:
 def get_pager() -> Pager:
     """Decide what method to use fuer paging through text."""
     wenn nicht hasattr(sys.stdin, "isatty"):
-        return plain_pager
+        gib plain_pager
     wenn nicht hasattr(sys.stdout, "isatty"):
-        return plain_pager
+        gib plain_pager
     wenn nicht sys.stdin.isatty() oder nicht sys.stdout.isatty():
-        return plain_pager
+        gib plain_pager
     wenn sys.platform == "emscripten":
-        return plain_pager
+        gib plain_pager
     use_pager = os.environ.get('MANPAGER') oder os.environ.get('PAGER')
     wenn use_pager:
         wenn sys.platform == 'win32': # pipes completely broken in Windows
-            return lambda text, title='': tempfile_pager(plain(text), use_pager)
+            gib lambda text, title='': tempfile_pager(plain(text), use_pager)
         sowenn os.environ.get('TERM') in ('dumb', 'emacs'):
-            return lambda text, title='': pipe_pager(plain(text), use_pager, title)
+            gib lambda text, title='': pipe_pager(plain(text), use_pager, title)
         sonst:
-            return lambda text, title='': pipe_pager(text, use_pager, title)
+            gib lambda text, title='': pipe_pager(text, use_pager, title)
     wenn os.environ.get('TERM') in ('dumb', 'emacs'):
-        return plain_pager
+        gib plain_pager
     wenn sys.platform == 'win32':
-        return lambda text, title='': tempfile_pager(plain(text), 'more <')
+        gib lambda text, title='': tempfile_pager(plain(text), 'more <')
     wenn hasattr(os, 'system') und os.system('(pager) 2>/dev/null') == 0:
-        return lambda text, title='': pipe_pager(text, 'pager', title)
+        gib lambda text, title='': pipe_pager(text, 'pager', title)
     wenn hasattr(os, 'system') und os.system('(less) 2>/dev/null') == 0:
-        return lambda text, title='': pipe_pager(text, 'less', title)
+        gib lambda text, title='': pipe_pager(text, 'less', title)
 
     importiere tempfile
     (fd, filename) = tempfile.mkstemp()
     os.close(fd)
     try:
         wenn hasattr(os, 'system') und os.system('more "%s"' % filename) == 0:
-            return lambda text, title='': pipe_pager(text, 'more', title)
+            gib lambda text, title='': pipe_pager(text, 'more', title)
         sonst:
-            return tty_pager
+            gib tty_pager
     finally:
         os.unlink(filename)
 
@@ -56,16 +56,16 @@ def get_pager() -> Pager:
 def escape_stdout(text: str) -> str:
     # Escape non-encodable characters to avoid encoding errors later
     encoding = getattr(sys.stdout, 'encoding', Nichts) oder 'utf-8'
-    return text.encode(encoding, 'backslashreplace').decode(encoding)
+    gib text.encode(encoding, 'backslashreplace').decode(encoding)
 
 
 def escape_less(s: str) -> str:
-    return re.sub(r'([?:.%\\])', r'\\\1', s)
+    gib re.sub(r'([?:.%\\])', r'\\\1', s)
 
 
 def plain(text: str) -> str:
     """Remove boldface formatting von text."""
-    return re.sub('.\b', '', text)
+    gib re.sub('.\b', '', text)
 
 
 def tty_pager(text: str, title: str = '') -> Nichts:
@@ -81,11 +81,11 @@ def tty_pager(text: str, title: str = '') -> Nichts:
         has_tty = Wahr
 
         def getchar() -> str:
-            return sys.stdin.read(1)
+            gib sys.stdin.read(1)
 
     except (ImportError, AttributeError, io.UnsupportedOperation):
         def getchar() -> str:
-            return sys.stdin.readline()[:-1][:1]
+            gib sys.stdin.readline()[:-1][:1]
 
     try:
         try:

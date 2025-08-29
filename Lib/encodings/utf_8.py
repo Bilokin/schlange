@@ -13,11 +13,11 @@ importiere codecs
 encode = codecs.utf_8_encode
 
 def decode(input, errors='strict'):
-    return codecs.utf_8_decode(input, errors, Wahr)
+    gib codecs.utf_8_decode(input, errors, Wahr)
 
 klasse IncrementalEncoder(codecs.IncrementalEncoder):
     def encode(self, input, final=Falsch):
-        return codecs.utf_8_encode(input, self.errors)[0]
+        gib codecs.utf_8_encode(input, self.errors)[0]
 
 klasse IncrementalDecoder(codecs.BufferedIncrementalDecoder):
     _buffer_decode = codecs.utf_8_decode
@@ -31,7 +31,7 @@ klasse StreamReader(codecs.StreamReader):
 ### encodings module API
 
 def getregentry():
-    return codecs.CodecInfo(
+    gib codecs.CodecInfo(
         name='utf-8',
         encode=encode,
         decode=decode,

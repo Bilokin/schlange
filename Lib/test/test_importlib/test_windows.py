@@ -26,22 +26,22 @@ def get_platform():
         }
     wenn ('VSCMD_ARG_TGT_ARCH' in os.environ und
         os.environ['VSCMD_ARG_TGT_ARCH'] in TARGET_TO_PLAT):
-        return TARGET_TO_PLAT[os.environ['VSCMD_ARG_TGT_ARCH']]
+        gib TARGET_TO_PLAT[os.environ['VSCMD_ARG_TGT_ARCH']]
     sowenn 'amd64' in sys.version.lower():
-        return 'win-amd64'
+        gib 'win-amd64'
     sowenn '(arm)' in sys.version.lower():
-        return 'win-arm32'
+        gib 'win-arm32'
     sowenn '(arm64)' in sys.version.lower():
-        return 'win-arm64'
+        gib 'win-arm64'
     sonst:
-        return sys.platform
+        gib sys.platform
 
 def delete_registry_tree(root, subkey):
     try:
         hkey = OpenKey(root, subkey, access=KEY_ALL_ACCESS)
     except OSError:
         # subkey does nicht exist
-        return
+        gib
     waehrend Wahr:
         try:
             subsubkey = EnumKey(hkey, 0)
@@ -78,7 +78,7 @@ def setup_module(machinery, name, path=Nichts):
             wenn path is Nichts:
                 path = location + ".py"
             SetValue(subkey, "", REG_SZ, path)
-            yield
+            liefere
     finally:
         wenn delete_key:
             delete_registry_tree(HKEY_CURRENT_USER, delete_key)
@@ -168,7 +168,7 @@ klasse WindowsBootstrapPathTests(unittest.TestCase):
         von importlib._bootstrap_external importiere _path_join
         actual = _path_join(*inputs)
         wenn expected.casefold() == actual.casefold():
-            return
+            gib
         self.assertEqual(expected, actual)
 
     def test_path_join(self):

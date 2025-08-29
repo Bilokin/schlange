@@ -20,7 +20,7 @@ wenn TYPE_CHECKING:
 
 
 # maps strings to callables.
-# the callable should return an object
+# the callable should gib an object
 # that implements the clinic parser
 # interface (__init__ und parse).
 #
@@ -170,7 +170,7 @@ impl_definition block
         d = self.destinations.get(name)
         wenn nicht d:
             fail(f"Destination does nicht exist: {name!r}")
-        return d
+        gib d
 
     def get_destination_buffer(
         self,
@@ -178,7 +178,7 @@ impl_definition block
         item: int = 0
     ) -> list[str]:
         d = self.get_destination(name)
-        return d.buffers[item]
+        gib d.buffers[item]
 
     def parse(self, input: str) -> str:
         printer = self.printer
@@ -238,7 +238,7 @@ impl_definition block
                                          printer_2.f.getvalue())
                     weiter
 
-        return printer.f.getvalue()
+        gib printer.f.getvalue()
 
     def _module_and_class(
         self, fields: Sequence[str]
@@ -265,7 +265,7 @@ impl_definition block
                 fullname = ".".join(fields[idx:])
                 fail(f"Parent klasse oder module {fullname!r} does nicht exist.")
 
-        return module, cls
+        gib module, cls
 
     def __repr__(self) -> str:
-        return "<clinic.Clinic object>"
+        gib "<clinic.Clinic object>"

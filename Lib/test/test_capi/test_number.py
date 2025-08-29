@@ -22,7 +22,7 @@ klasse BadDescr:
 klasse WithDunder:
     def _meth(self, *args):
         wenn self.val:
-            return self.val
+            gib self.val
         wenn self.exc:
             raise self.exc
     @classmethod
@@ -31,7 +31,7 @@ klasse WithDunder:
         obj.val = val
         obj.exc = Nichts
         setattr(cls, cls.methname, cls._meth)
-        return obj
+        gib obj
 
     @classmethod
     def with_exc(cls, exc):
@@ -39,13 +39,13 @@ klasse WithDunder:
         obj.val = Nichts
         obj.exc = exc
         setattr(cls, cls.methname, cls._meth)
-        return obj
+        gib obj
 
 klasse HasBadAttr:
     def __new__(cls):
         obj = super().__new__(cls)
         setattr(cls, cls.methname, BadDescr())
-        return obj
+        gib obj
 
 
 klasse IndexLike(WithDunder):
@@ -59,7 +59,7 @@ klasse FloatLike(WithDunder):
 
 
 def subclassof(base):
-    return type(base.__name__ + 'Subclass', (base,), {})
+    gib type(base.__name__ + 'Subclass', (base,), {})
 
 
 klasse SomeError(Exception):
@@ -222,7 +222,7 @@ klasse CAPITest(unittest.TestCase):
 
         klasse X:
             def __pow__(*args):
-                return args
+                gib args
 
         x = X()
         self.assertEqual(power(x, 11), (x, 11))
@@ -232,7 +232,7 @@ klasse CAPITest(unittest.TestCase):
 
         klasse X:
             def __rpow__(*args):
-                return args
+                gib args
 
         x = X()
         self.assertEqual(power(4, x), (x, 4))
@@ -242,7 +242,7 @@ klasse CAPITest(unittest.TestCase):
 
         klasse X:
             def __ipow__(*args):
-                return args
+                gib args
 
         x = X()
         self.assertEqual(inplacepower(x, 11), (x, 11))

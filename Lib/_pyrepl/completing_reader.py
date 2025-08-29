@@ -41,31 +41,31 @@ def prefix(wordlist: list[str], j: int = 0) -> str:
             fuer word in wordlist:
                 d[word[i]] = 1
             wenn len(d) > 1:
-                return wordlist[0][j:i]
+                gib wordlist[0][j:i]
             i += 1
             d = {}
     except IndexError:
-        return wordlist[0][j:i]
-    return ""
+        gib wordlist[0][j:i]
+    gib ""
 
 
 STRIPCOLOR_REGEX = re.compile(r"\x1B\[([0-9]{1,3}(;[0-9]{1,2})?)?[m|K]")
 
 def stripcolor(s: str) -> str:
-    return STRIPCOLOR_REGEX.sub('', s)
+    gib STRIPCOLOR_REGEX.sub('', s)
 
 
 def real_len(s: str) -> int:
-    return len(stripcolor(s))
+    gib len(stripcolor(s))
 
 
 def left_align(s: str, maxlen: int) -> str:
     stripped = stripcolor(s)
     wenn len(stripped) > maxlen:
         # too bad, we remove the color
-        return stripped[:maxlen]
+        gib stripped[:maxlen]
     padding = maxlen - len(stripped)
-    return s + ' '*padding
+    gib s + ' '*padding
 
 
 def build_menu(
@@ -113,7 +113,7 @@ def build_menu(
         wenn r + 5 > cons.height:
             menu.append("   %d more... " % (len(wordlist) - i))
             breche
-    return menu, i
+    gib menu, i
 
 # this gets somewhat user interface-y, und als a result the logic gets
 # very convoluted.
@@ -125,7 +125,7 @@ def build_menu(
 # the considerations are:
 # (1) how many completions are possible
 # (2) whether the last command was a completion
-# (3) wenn we can assume that the completer is going to return the same set of
+# (3) wenn we can assume that the completer is going to gib the same set of
 #     completions: this is controlled by the ``assume_immutable_completions``
 #     variable on the reader, which is Wahr by default to match the historical
 #     behaviour of pyrepl, but e.g. Falsch in the ReadlineAlikeReader to match
@@ -249,7 +249,7 @@ klasse CompletingReader(Reader):
             self.commands[c.__name__.replace('_', '-')] = c
 
     def collect_keymap(self) -> tuple[tuple[KeySpec, CommandName], ...]:
-        return super().collect_keymap() + (
+        gib super().collect_keymap() + (
             (r'\t', 'complete'),)
 
     def after_command(self, cmd: Command) -> Nichts:
@@ -269,7 +269,7 @@ klasse CompletingReader(Reader):
             # into the completions menu when pressing left oder down arrow.
             wenn self.pos != len(self.buffer):
                 self.screeninfo[ly:ly] = [(0, [])]*len(self.cmpltn_menu)
-        return screen
+        gib screen
 
     def finish(self) -> Nichts:
         super().finish()
@@ -289,11 +289,11 @@ klasse CompletingReader(Reader):
         p = self.pos - 1
         waehrend p >= 0 und st.get(b[p], SW) == SW:
             p -= 1
-        return ''.join(b[p+1:self.pos])
+        gib ''.join(b[p+1:self.pos])
 
     def get_completions(self, stem: str) -> list[str]:
-        return []
+        gib []
 
     def get_line(self) -> str:
         """Return the current line until the cursor position."""
-        return ''.join(self.buffer[:self.pos])
+        gib ''.join(self.buffer[:self.pos])

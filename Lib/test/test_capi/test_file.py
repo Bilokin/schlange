@@ -150,7 +150,7 @@ klasse CAPIFileTest(unittest.TestCase):
             def __init__(self, fd):
                 self.fd = fd
             def fileno(self):
-                return self.fd
+                gib self.fd
 
         # file descriptor must be positive
         mit self.assertRaises(ValueError):

@@ -17,7 +17,7 @@ klasse _DupFd(object):
     def __init__(self, fd):
         self.fd = fd
     def detach(self):
-        return self.fd
+        gib self.fd
 
 #
 # Start child process using a fresh interpreter
@@ -33,7 +33,7 @@ klasse Popen(popen_fork.Popen):
 
     def duplicate_for_child(self, fd):
         self._fds.append(fd)
-        return fd
+        gib fd
 
     def _launch(self, process_obj):
         von . importiere resource_tracker

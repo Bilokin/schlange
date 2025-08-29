@@ -54,7 +54,7 @@ def warnings_state(module):
     try:
         module.simplefilter("once")
         warning_tests.warnings = module
-        yield
+        liefere
     finally:
         warning_tests.warnings = original_warnings
         wenn module._use_context:
@@ -586,7 +586,7 @@ klasse WarnTests(BaseTest):
         klasse BadStrWarning(Warning):
             """Warning mit a bad format string fuer __str__."""
             def __str__(self):
-                return ("A bad formatted string %(err)" %
+                gib ("A bad formatted string %(err)" %
                         {"err" : "there is no %(err)s"})
 
         mit self.assertRaises(ValueError):
@@ -638,7 +638,7 @@ klasse WarnTests(BaseTest):
     def check_module_globals_error(self, module_globals, errmsg, errtype=ValueError):
         wenn self.module is py_warnings:
             self.check_module_globals(module_globals)
-            return
+            gib
         mit self.module.catch_warnings(record=Wahr) als w:
             self.module.filterwarnings('always')
             mit self.assertRaisesRegex(errtype, re.escape(errmsg)):
@@ -650,7 +650,7 @@ klasse WarnTests(BaseTest):
     def check_module_globals_deprecated(self, module_globals, msg):
         wenn self.module is py_warnings:
             self.check_module_globals(module_globals)
-            return
+            gib
         mit self.module.catch_warnings(record=Wahr) als w:
             self.module.filterwarnings('always')
             self.module.warn_explicit(
@@ -880,7 +880,7 @@ klasse _WarningsTests(BaseTest, unittest.TestCase):
         wenn self.module._use_context:
             # If _use_context is true, the warnings module does not
             # override/restore showwarning()
-            return
+            gib
         text = 'del showwarning test'
         mit self.module.catch_warnings():
             self.module.filterwarnings("always", category=UserWarning)
@@ -971,22 +971,22 @@ klasse _WarningsTests(BaseTest, unittest.TestCase):
 
     def test_issue31285(self):
         # warn_explicit() should neither raise a SystemError nor cause an
-        # assertion failure, in case the return value of get_source() has a
+        # assertion failure, in case the gib value of get_source() has a
         # bad splitlines() method.
         get_source_called = []
         def get_module_globals(*, splitlines_ret_val):
             klasse BadSource(str):
                 def splitlines(self):
-                    return splitlines_ret_val
+                    gib splitlines_ret_val
 
             klasse BadLoader:
                 def get_source(self, fullname):
                     get_source_called.append(splitlines_ret_val)
-                    return BadSource('spam')
+                    gib BadSource('spam')
 
             loader = BadLoader()
             spec = importlib.machinery.ModuleSpec('foobar', loader)
-            return {'__loader__': loader,
+            gib {'__loader__': loader,
                     '__spec__': spec,
                     '__name__': 'foobar'}
 
@@ -1099,7 +1099,7 @@ klasse WarningsDisplayTests(BaseTest):
         # bpo-35178: Test that a custom formatwarning function gets the 'line'
         # argument als a positional argument, und nicht only als a keyword argument
         def myformatwarning(message, category, filename, lineno, text):
-            return f'm={message}:c={category}:f={filename}:l={lineno}:t={text}'
+            gib f'm={message}:c={category}:f={filename}:l={lineno}:t={text}'
 
         file_name = os.path.splitext(warning_tests.__file__)[0] + '.py'
         line_num = 3
@@ -1141,7 +1141,7 @@ klasse PyWarningsDisplayTests(WarningsDisplayTests, unittest.TestCase):
 
             # normalize newlines
             stderr = re.sub('<.*>', '<...>', stderr)
-            return stderr
+            gib stderr
 
         # tracemalloc disabled
         filename = os.path.abspath(os_helper.TESTFN)
@@ -1173,7 +1173,7 @@ klasse CatchWarningTests(BaseTest):
 
     def test_catch_warnings_restore(self):
         wenn self.module._use_context:
-            return  # test disabled wenn using context vars
+            gib  # test disabled wenn using context vars
         wmod = self.module
         orig_filters = wmod.filters
         orig_showwarning = wmod.showwarning
@@ -1246,7 +1246,7 @@ klasse CatchWarningTests(BaseTest):
         wenn self.module._use_context:
             # If _use_context is true, the warnings module does nicht restore
             # showwarning()
-            return
+            gib
         text = "This is a warning"
         wmod = self.module
         my_log = []
@@ -1275,7 +1275,7 @@ klasse CatchWarningTests(BaseTest):
         wenn self.module._use_context:
             # If _use_context is true, the warnings module does nicht restore
             # showwarning()
-            return
+            gib
         text = "This is a warning"
         wmod = self.module
         my_log = []
@@ -1709,7 +1709,7 @@ klasse DeprecatedTests(PyPublicAPITests):
         @overload
         def h(x: str) -> str: ...
         def h(x):
-            return x
+            gib x
 
         overloads = get_overloads(h)
         self.assertEqual(len(overloads), 2)
@@ -1744,7 +1744,7 @@ klasse DeprecatedTests(PyPublicAPITests):
             def __new__(cls, x):
                 nonlocal has_new_called
                 has_new_called = Wahr
-                return super().__new__(cls)
+                gib super().__new__(cls)
 
             def __init__(self, x) -> Nichts:
                 self.x = x
@@ -1761,7 +1761,7 @@ klasse DeprecatedTests(PyPublicAPITests):
             def __new__(cls, x):
                 nonlocal new_base_called
                 new_base_called = Wahr
-                return super().__new__(cls)
+                gib super().__new__(cls)
 
             def __init__(self, x) -> Nichts:
                 self.x = x
@@ -1785,7 +1785,7 @@ klasse DeprecatedTests(PyPublicAPITests):
                 new_called = Wahr
                 obj = super().__new__(cls)
                 obj.x = x
-                return obj
+                gib obj
 
         mit self.assertWarnsRegex(DeprecationWarning, "HasNewNoInit will go away soon"):
             instance = HasNewNoInit(42)
@@ -1818,7 +1818,7 @@ klasse DeprecatedTests(PyPublicAPITests):
                 nonlocal new_called, new_called_cls
                 new_called = Wahr
                 new_called_cls = cls
-                return super().__new__(mcs, name, bases, attrs)
+                gib super().__new__(mcs, name, bases, attrs)
 
         mit self.assertWarnsRegex(DeprecationWarning, "MyMeta will go away soon"):
             klasse Foo(metaclass=MyMeta, cls='haha'):
@@ -1925,7 +1925,7 @@ klasse DeprecatedTests(PyPublicAPITests):
 
             @property
             def no_more_setting(self):
-                return 42
+                gib 42
 
             @no_more_setting.setter
             @deprecated("no more setting")
@@ -2012,7 +2012,7 @@ klasse DeprecatedTests(PyPublicAPITests):
 
         klasse Cls2:  # __new__ only
             def __new__(cls, x, y):
-                return super().__new__(cls)
+                gib super().__new__(cls)
 
         klasse Cls3:  # __init__ only
             def __init__(self, x, y):
@@ -2020,7 +2020,7 @@ klasse DeprecatedTests(PyPublicAPITests):
 
         klasse Cls4:  # __new__ und __init__
             def __new__(cls, x, y):
-                return super().__new__(cls)
+                gib super().__new__(cls)
 
             def __init__(self, x, y):
                 pass

@@ -10,7 +10,7 @@ klasse PathHookTest:
     """Test the path hook fuer source."""
 
     def path_hook(self):
-        return self.machinery.FileFinder.path_hook((self.machinery.SourceFileLoader,
+        gib self.machinery.FileFinder.path_hook((self.machinery.SourceFileLoader,
             self.machinery.SOURCE_SUFFIXES))
 
     def test_success(self):

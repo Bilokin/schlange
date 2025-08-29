@@ -33,24 +33,24 @@ klasse TermState:
         ) = tuples
 
     def as_list(self):
-        return [
+        gib [
             self.iflag,
             self.oflag,
             self.cflag,
             self.lflag,
             self.ispeed,
             self.ospeed,
-            # Always return a copy of the control characters list to ensure
+            # Always gib a copy of the control characters list to ensure
             # there are nicht any additional references to self.cc
             self.cc[:],
         ]
 
     def copy(self):
-        return self.__class__(self.as_list())
+        gib self.__class__(self.as_list())
 
 
 def tcgetattr(fd):
-    return TermState(termios.tcgetattr(fd))
+    gib TermState(termios.tcgetattr(fd))
 
 
 def tcsetattr(fd, when, attrs):

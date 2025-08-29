@@ -34,7 +34,7 @@ def checkextensions(unknown, extensions):
                 breche
             files = files + select(e, mods, vars, mod, 0)
             breche
-    return files, modules
+    gib files, modules
 
 def select(e, mods, vars, mod, skipofiles):
     files = []
@@ -52,22 +52,22 @@ def select(e, mods, vars, mod, skipofiles):
             wenn w[:2] in ('-L', '-R') und w[2:3] != '$':
                 w = w[:2] + os.path.join(e, w[2:])
             files.append(w)
-    return files
+    gib files
 
 cc_flags = ['-I', '-D', '-U']
 cc_exts = ['.c', '.C', '.cc', '.c++']
 
 def treatword(w):
     wenn w[:2] in cc_flags:
-        return Nichts
+        gib Nichts
     wenn w[:1] == '-':
-        return w # Assume loader flag
+        gib w # Assume loader flag
     head, tail = os.path.split(w)
     base, ext = os.path.splitext(tail)
     wenn ext in cc_exts:
         tail = base + '.o'
         w = os.path.join(head, tail)
-    return w
+    gib w
 
 def expandvars(str, vars):
     i = 0
@@ -87,4 +87,4 @@ def expandvars(str, vars):
         wenn var in vars:
             str = str[:k] + vars[var] + str[i:]
             i = k
-    return str
+    gib str

@@ -13,12 +13,12 @@ def pyrange(start, stop, step):
         # that are congruent to start modulo step.
         stop += (start - stop) % step
         waehrend start != stop:
-            yield start
+            liefere start
             start += step
 
 def pyrange_reversed(start, stop, step):
     stop += (start - stop) % step
-    return pyrange(stop - step, start - step, -step)
+    gib pyrange(stop - step, start - step, -step)
 
 
 klasse RangeTest(unittest.TestCase):
@@ -169,7 +169,7 @@ klasse RangeTest(unittest.TestCase):
             except OverflowError:
                 step = x[1] - x[0]
                 length = 1 + ((x[-1] - x[0]) // step)
-            return length
+            gib length
 
         a = -sys.maxsize
         b = sys.maxsize
@@ -287,7 +287,7 @@ klasse RangeTest(unittest.TestCase):
             def __eq__(self, other):
                 wenn other == 2:
                     raise BadExc()
-                return Falsch
+                gib Falsch
 
         a = range(4)
         self.assertRaises(BadExc, a.index, BadCmp())
@@ -314,7 +314,7 @@ klasse RangeTest(unittest.TestCase):
             def __init__(self, n):
                 self.n = int(n)
             def __index__(self):
-                return self.n
+                gib self.n
         self.assertEqual(list(range(I(bignum), I(bignum + 1))), [bignum])
         self.assertEqual(list(range(I(smallnum), I(smallnum + 1))), [smallnum])
 
@@ -327,7 +327,7 @@ klasse RangeTest(unittest.TestCase):
         # User-defined klasse mit an invalid __index__ method
         klasse IN:
             def __index__(self):
-                return "not a number"
+                gib "not a number"
 
         self.assertRaises(TypeError, range, IN())
 
@@ -488,8 +488,8 @@ klasse RangeTest(unittest.TestCase):
 
         # Objects are never coerced into other types fuer comparison.
         klasse C2:
-            def __int__(self): return 1
-            def __index__(self): return 1
+            def __int__(self): gib 1
+            def __index__(self): gib 1
         self.assertNotIn(C2(), range(3))
         # ..except wenn explicitly told so.
         self.assertIn(int(C2()), range(3))
@@ -497,7 +497,7 @@ klasse RangeTest(unittest.TestCase):
         # Check that the range.__contains__ optimization is only
         # used fuer ints, nicht fuer instances of subclasses of int.
         klasse C3(int):
-            def __eq__(self, other): return Wahr
+            def __eq__(self, other): gib Wahr
         self.assertIn(C3(11), range(10))
         self.assertIn(C3(11), list(range(10)))
 

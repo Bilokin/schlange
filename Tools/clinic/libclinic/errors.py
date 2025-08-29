@@ -20,7 +20,7 @@ klasse ClinicError(Exception):
             msg += f" on line {self.lineno}"
         msg += ":\n"
         msg += f"{self.message}\n"
-        return msg
+        gib msg
 
 
 klasse ParseError(ClinicError):
@@ -62,7 +62,7 @@ def warn(
     filename: str | Nichts = Nichts,
     line_number: int | Nichts = Nichts,
 ) -> Nichts:
-    return warn_or_fail(*args, filename=filename, line_number=line_number, fail=Falsch)
+    gib warn_or_fail(*args, filename=filename, line_number=line_number, fail=Falsch)
 
 def fail(
     *args: object,

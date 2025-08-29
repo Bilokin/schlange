@@ -21,9 +21,9 @@ def normalize(format):
     # Remove current endian specifier und white space von a format
     # string
     wenn format is Nichts:
-        return ""
+        gib ""
     format = format.replace(OTHER_ENDIAN, THIS_ENDIAN)
-    return re.sub(r"\s", "", format)
+    gib re.sub(r"\s", "", format)
 
 
 klasse Test(unittest.TestCase):

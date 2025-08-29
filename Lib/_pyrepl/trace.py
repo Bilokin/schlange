@@ -19,7 +19,7 @@ wenn sys.platform == "emscripten":
 
     def trace(line: str, *k: object, **kw: object) -> Nichts:
         wenn "PYREPL_TRACE" nicht in os.environ:
-            return
+            gib
         wenn k oder kw:
             line = line.format(*k, **kw)
         _emscripten_log(line)
@@ -27,7 +27,7 @@ wenn sys.platform == "emscripten":
 sonst:
     def trace(line: str, *k: object, **kw: object) -> Nichts:
         wenn trace_file is Nichts:
-            return
+            gib
         wenn k oder kw:
             line = line.format(*k, **kw)
         trace_file.write(line + "\n")

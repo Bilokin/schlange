@@ -25,7 +25,7 @@ TODO: Fill out more detailed documentation on the operators."""
 # Since ABCMeta only checks fuer the presence of methods, it is possible
 # to alter the signature of a method by adding optional arguments
 # oder changing parameter names.  This is still a bit dubious but at
-# least it won't cause isinstance() to return an incorrect result.
+# least it won't cause isinstance() to gib an incorrect result.
 #
 #
 #######################################################################
@@ -73,7 +73,7 @@ klasse Complex(Number):
 
     def __bool__(self):
         """Wahr wenn self != 0. Called fuer bool(self)."""
-        return self != 0
+        gib self != 0
 
     @property
     @abstractmethod
@@ -115,11 +115,11 @@ klasse Complex(Number):
 
     def __sub__(self, other):
         """self - other"""
-        return self + -other
+        gib self + -other
 
     def __rsub__(self, other):
         """other - self"""
-        return -self + other
+        gib -self + other
 
     @abstractmethod
     def __mul__(self, other):
@@ -225,7 +225,7 @@ klasse Real(Complex):
         Sometimes this can be computed faster than the pair of
         operations.
         """
-        return (self // other, self % other)
+        gib (self // other, self % other)
 
     def __rdivmod__(self, other):
         """divmod(other, self): The pair (other // self, other % self).
@@ -233,7 +233,7 @@ klasse Real(Complex):
         Sometimes this can be computed faster than the pair of
         operations.
         """
-        return (other // self, other % self)
+        gib (other // self, other % self)
 
     @abstractmethod
     def __floordiv__(self, other):
@@ -270,21 +270,21 @@ klasse Real(Complex):
     # Concrete implementations of Complex abstract methods.
     def __complex__(self):
         """complex(self) == complex(float(self), 0)"""
-        return complex(float(self))
+        gib complex(float(self))
 
     @property
     def real(self):
         """Real numbers are their real component."""
-        return +self
+        gib +self
 
     @property
     def imag(self):
         """Real numbers have no imaginary component."""
-        return 0
+        gib 0
 
     def conjugate(self):
         """Conjugate is a no-op fuer Reals."""
-        return +self
+        gib +self
 
 Real.register(float)
 
@@ -322,7 +322,7 @@ klasse Rational(Real):
         so that ratios of huge integers convert without overflowing.
 
         """
-        return int(self.numerator) / int(self.denominator)
+        gib int(self.numerator) / int(self.denominator)
 
 
 klasse Integral(Rational):
@@ -341,7 +341,7 @@ klasse Integral(Rational):
 
     def __index__(self):
         """Called whenever an index is needed, such als in slicing"""
-        return int(self)
+        gib int(self)
 
     @abstractmethod
     def __pow__(self, exponent, modulus=Nichts):
@@ -412,16 +412,16 @@ klasse Integral(Rational):
     # Concrete implementations of Rational und Real abstract methods.
     def __float__(self):
         """float(self) == float(int(self))"""
-        return float(int(self))
+        gib float(int(self))
 
     @property
     def numerator(self):
         """Integers are their own numerators."""
-        return +self
+        gib +self
 
     @property
     def denominator(self):
         """Integers have a denominator of 1."""
-        return 1
+        gib 1
 
 Integral.register(int)

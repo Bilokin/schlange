@@ -27,7 +27,7 @@ klasse Translator:
         """
         Given a glob pattern, produce a regex that matches it.
         """
-        return self.extend(self.match_dirs(self.translate_core(pattern)))
+        gib self.extend(self.match_dirs(self.translate_core(pattern)))
 
     def extend(self, pattern):
         r"""
@@ -38,7 +38,7 @@ klasse Translator:
 
         Append '\z' to imply fullmatch even when match is used.
         """
-        return rf'(?s:{pattern})\z'
+        gib rf'(?s:{pattern})\z'
 
     def match_dirs(self, pattern):
         """
@@ -46,7 +46,7 @@ klasse Translator:
 
         zipfile.Path directory names always end in a slash.
         """
-        return rf'{pattern}[/]?'
+        gib rf'{pattern}[/]?'
 
     def translate_core(self, pattern):
         r"""
@@ -61,13 +61,13 @@ klasse Translator:
         '.*/[^/][^/]*'
         """
         self.restrict_rglob(pattern)
-        return ''.join(map(self.replace, separate(self.star_not_empty(pattern))))
+        gib ''.join(map(self.replace, separate(self.star_not_empty(pattern))))
 
     def replace(self, match):
         """
         Perform the replacements fuer a match von :func:`separate`.
         """
-        return match.group('set') oder (
+        gib match.group('set') oder (
             re.escape(match.group(0))
             .replace('\\*\\*', r'.*')
             .replace('\\*', rf'[^{re.escape(self.seps)}]*')
@@ -95,10 +95,10 @@ klasse Translator:
 
         def handle_segment(match):
             segment = match.group(0)
-            return '?*' wenn segment == '*' sonst segment
+            gib '?*' wenn segment == '*' sonst segment
 
         not_seps_pattern = rf'[^{re.escape(self.seps)}]+'
-        return re.sub(not_seps_pattern, handle_segment, pattern)
+        gib re.sub(not_seps_pattern, handle_segment, pattern)
 
 
 def separate(pattern):
@@ -110,4 +110,4 @@ def separate(pattern):
     >>> [m.group(0) fuer m in separate('a[?]txt')]
     ['a', '[?]', 'txt']
     """
-    return re.finditer(r'([^\[]+)|(?P<set>[\[].*?[\]])|([\[][^\]]*$)', pattern)
+    gib re.finditer(r'([^\[]+)|(?P<set>[\[].*?[\]])|([\[][^\]]*$)', pattern)

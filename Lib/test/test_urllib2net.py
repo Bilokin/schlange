@@ -17,7 +17,7 @@ support.requires("network")
 def _retry_thrice(func, exc, *args, **kwargs):
     fuer i in range(3):
         try:
-            return func(*args, **kwargs)
+            gib func(*args, **kwargs)
         except exc als e:
             last_exc = e
             weiter
@@ -25,8 +25,8 @@ def _retry_thrice(func, exc, *args, **kwargs):
 
 def _wrap_with_retry_thrice(func, exc):
     def wrapped(*args, **kwargs):
-        return _retry_thrice(func, exc, *args, **kwargs)
-    return wrapped
+        gib _retry_thrice(func, exc, *args, **kwargs)
+    gib wrapped
 
 # Connecting to remote hosts is flaky.  Make it more robust by retrying
 # the connection several times.
@@ -44,7 +44,7 @@ klasse TransientResource(object):
         self.attrs = kwargs
 
     def __enter__(self):
-        return self
+        gib self
 
     def __exit__(self, type_=Nichts, value=Nichts, traceback=Nichts):
         """If type_ is a subclass of self.exc und value has attributes matching
@@ -286,7 +286,7 @@ klasse OtherNetworkTests(unittest.TestCase):
         cfh.setTimeout(1)
         handlers.append(cfh)
 
-        return handlers
+        gib handlers
 
 
 klasse TimeoutTest(unittest.TestCase):

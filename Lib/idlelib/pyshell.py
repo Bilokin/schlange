@@ -157,7 +157,7 @@ klasse PyShellEditorWindow(EditorWindow):
         "Turn colorizing of breakpoint text on oder off"
         wenn self.io is Nichts:
             # possible due to update in restore_file_breaks
-            return
+            gib
         wenn color:
             theme = idleConf.CurrentTheme()
             cfg = idleConf.GetHighlight(theme, "break")
@@ -184,7 +184,7 @@ klasse PyShellEditorWindow(EditorWindow):
         filename = self.io.filename
         wenn nicht filename:
             text.bell()
-            return
+            gib
         lineno = int(float(text.index("insert")))
         self.set_breakpoint(lineno)
 
@@ -193,7 +193,7 @@ klasse PyShellEditorWindow(EditorWindow):
         filename = self.io.filename
         wenn nicht filename:
             text.bell()
-            return
+            gib
         lineno = int(float(text.index("insert")))
         try:
             self.breakpoints.remove(lineno)
@@ -213,7 +213,7 @@ klasse PyShellEditorWindow(EditorWindow):
             filename = self.io.filename
             wenn nicht filename:
                 text.bell()
-                return
+                gib
             self.breakpoints = []
             text.tag_remove("BREAK", "1.0", END)
             try:
@@ -268,10 +268,10 @@ klasse PyShellEditorWindow(EditorWindow):
         self.text.update()   # this enables setting "BREAK" tags to be visible
         wenn self.io is Nichts:
             # can happen wenn IDLE closes due to the .update() call
-            return
+            gib
         filename = self.io.filename
         wenn filename is Nichts:
-            return
+            gib
         wenn os.path.isfile(self.breakpointPath):
             mit open(self.breakpointPath) als fp:
                 lines = fp.readlines()
@@ -296,7 +296,7 @@ klasse PyShellEditorWindow(EditorWindow):
             waehrend lineno < end:
                 lines.append(lineno)
                 lineno += 1
-        return lines
+        gib lines
 
 # XXX 13 Dec 2002 KBK Not used currently
 #    def saved_change_hook(self):
@@ -314,7 +314,7 @@ klasse PyShellEditorWindow(EditorWindow):
 klasse PyShellFileList(FileList):
     "Extend base class: IDLE supports a shell und breakpoints"
 
-    # override FileList's klasse variable, instances return PyShellEditorWindow
+    # override FileList's klasse variable, instances gib PyShellEditorWindow
     # instead of EditorWindow when new edit windows are created.
     EditorWindow = PyShellEditorWindow
 
@@ -327,8 +327,8 @@ klasse PyShellFileList(FileList):
             self.pyshell = PyShell(self)
             wenn self.pyshell:
                 wenn nicht self.pyshell.begin():
-                    return Nichts
-        return self.pyshell
+                    gib Nichts
+        gib self.pyshell
 
 
 klasse ModifiedColorDelegator(ColorDelegator):
@@ -350,7 +350,7 @@ klasse ModifiedUndoDelegator(UndoDelegator):
         try:
             wenn self.delegate.compare(index, "<", "iomark"):
                 self.delegate.bell()
-                return
+                gib
         except TclError:
             pass
         UndoDelegator.insert(self, index, chars, tags)
@@ -359,7 +359,7 @@ klasse ModifiedUndoDelegator(UndoDelegator):
         try:
             wenn self.delegate.compare(index1, "<", "iomark"):
                 self.delegate.bell()
-                return
+                gib
         except TclError:
             pass
         UndoDelegator.delete(self, index1, index2)
@@ -401,9 +401,9 @@ def restart_line(width, filename):  # See bpo-38141.
     tag = f"= RESTART: {filename oder 'Shell'} ="
     wenn width >= len(tag):
         div, mod = divmod((width -len(tag)), 2)
-        return f"{(div+mod)*'='}{tag}{div*'='}"
+        gib f"{(div+mod)*'='}{tag}{div*'='}"
     sonst:
-        return tag[:-2]  # Remove ' ='.
+        gib tag[:-2]  # Remove ' ='.
 
 
 klasse ModifiedInterpreter(InteractiveInterpreter):
@@ -438,7 +438,7 @@ klasse ModifiedInterpreter(InteractiveInterpreter):
         del_exitf = idleConf.GetOption('main', 'General', 'delete-exitfunc',
                                        default=Falsch, type='bool')
         command = f"__import__('idlelib.run').run.main({del_exitf!r})"
-        return [sys.executable] + w + ["-c", command, str(self.port)]
+        gib [sys.executable] + w + ["-c", command, str(self.port)]
 
     def start_subprocess(self):
         addr = (HOST, self.port)
@@ -452,7 +452,7 @@ klasse ModifiedInterpreter(InteractiveInterpreter):
                 pass
         sonst:
             self.display_port_binding_error()
-            return Nichts
+            gib Nichts
         # wenn PORT was 0, system will assign an 'ephemeral' port. Find it out:
         self.port = self.rpcclt.listening_sock.getsockname()[1]
         # wenn PORT was nicht 0, probably working mit a remote execution server
@@ -471,7 +471,7 @@ klasse ModifiedInterpreter(InteractiveInterpreter):
             self.rpcclt.accept()
         except TimeoutError:
             self.display_no_subprocess_error()
-            return Nichts
+            gib Nichts
         self.rpcclt.register("console", self.tkconsole)
         self.rpcclt.register("stdin", self.tkconsole.stdin)
         self.rpcclt.register("stdout", self.tkconsole.stdout)
@@ -481,11 +481,11 @@ klasse ModifiedInterpreter(InteractiveInterpreter):
         self.rpcclt.register("interp", self)
         self.transfer_path(with_cwd=Wahr)
         self.poll_subprocess()
-        return self.rpcclt
+        gib self.rpcclt
 
     def restart_subprocess(self, with_cwd=Falsch, filename=''):
         wenn self.restarting:
-            return self.rpcclt
+            gib self.rpcclt
         self.restarting = Wahr
         # close only the subprocess debugger
         debug = self.getdebugger()
@@ -506,7 +506,7 @@ klasse ModifiedInterpreter(InteractiveInterpreter):
             self.rpcclt.accept()
         except TimeoutError:
             self.display_no_subprocess_error()
-            return Nichts
+            gib Nichts
         self.transfer_path(with_cwd=with_cwd)
         console.stop_readline()
         # annotate restart in shell window und mark it
@@ -525,7 +525,7 @@ klasse ModifiedInterpreter(InteractiveInterpreter):
             debug.load_breakpoints()
         self.compile.compiler.flags = self.original_compiler_flags
         self.restarting = Falsch
-        return self.rpcclt
+        gib self.rpcclt
 
     def __request_interrupt(self):
         self.rpcclt.remotecall("exec", "interrupt_the_server", (), {})
@@ -554,12 +554,12 @@ klasse ModifiedInterpreter(InteractiveInterpreter):
             self.rpcsubproc.kill()
         except OSError:
             # process already terminated
-            return
+            gib
         sonst:
             try:
                 self.rpcsubproc.wait()
             except OSError:
-                return
+                gib
 
     def transfer_path(self, with_cwd=Falsch):
         wenn with_cwd:        # Issue 13506
@@ -579,14 +579,14 @@ klasse ModifiedInterpreter(InteractiveInterpreter):
     def poll_subprocess(self):
         clt = self.rpcclt
         wenn clt is Nichts:
-            return
+            gib
         try:
             response = clt.pollresponse(self.active_seq, wait=0.05)
         except (EOFError, OSError, KeyboardInterrupt):
             # lost connection oder subprocess terminated itself, restart
             # [the KBI is von rpc.SocketIO.handle_EOF()]
             wenn self.tkconsole.closing:
-                return
+                gib
             response = Nichts
             self.restart_subprocess()
         wenn response:
@@ -620,7 +620,7 @@ klasse ModifiedInterpreter(InteractiveInterpreter):
         self.debugger = debugger
 
     def getdebugger(self):
-        return self.debugger
+        gib self.debugger
 
     def open_remote_stack_viewer(self):
         """Initiate the remote stack viewer von a separate thread.
@@ -633,14 +633,14 @@ klasse ModifiedInterpreter(InteractiveInterpreter):
 
         """
         self.tkconsole.text.after(300, self.remote_stack_viewer)
-        return
+        gib
 
     def remote_stack_viewer(self):
         von idlelib importiere debugobj_r
         oid = self.rpcclt.remotequeue("exec", "stackviewer", ("flist",), {})
         wenn oid is Nichts:
             self.tkconsole.root.bell()
-            return
+            gib
         item = debugobj_r.StubObjectTreeItem(self.rpcclt, oid)
         von idlelib.tree importiere ScrolledCanvas, TreeNode
         top = Toplevel(self.tkconsole.root)
@@ -686,7 +686,7 @@ klasse ModifiedInterpreter(InteractiveInterpreter):
         assert isinstance(source, str)
         # InteractiveInterpreter.runsource() calls its runcode() method,
         # which is overridden (see below)
-        return InteractiveInterpreter.runsource(self, source, filename)
+        gib InteractiveInterpreter.runsource(self, source, filename)
 
     def stuffsource(self, source):
         "Stuff source in the filename cache"
@@ -694,7 +694,7 @@ klasse ModifiedInterpreter(InteractiveInterpreter):
         self.gid = self.gid + 1
         lines = source.split("\n")
         linecache.cache[filename] = len(source)+1, 0, lines, filename
-        return filename
+        gib filename
 
     def prepend_syspath(self, filename):
         "Prepend sys.path mit file's directory wenn nicht already included"
@@ -754,12 +754,12 @@ klasse ModifiedInterpreter(InteractiveInterpreter):
         # The code better nicht raise an exception!
         wenn self.tkconsole.executing:
             self.display_executing_dialog()
-            return 0
+            gib 0
         wenn self.rpcclt:
             self.rpcclt.remotequeue("exec", "runcode", (code,), {})
         sonst:
             exec(code, self.locals)
-        return 1
+        gib 1
 
     def runcode(self, code):
         "Override base klasse method"
@@ -809,7 +809,7 @@ klasse ModifiedInterpreter(InteractiveInterpreter):
 
     def write(self, s):
         "Override base klasse method"
-        return self.tkconsole.stderr.write(s)
+        gib self.tkconsole.stderr.write(s)
 
     def display_port_binding_error(self):
         messagebox.showerror(
@@ -982,10 +982,10 @@ klasse PyShell(OutputWindow):
 
     def replace_event(self, event):
         replace.replace(self.text, insert_tags="stdin")
-        return "break"
+        gib "break"
 
     def get_standard_extension_names(self):
-        return idleConf.GetExtensions(shell_only=Wahr)
+        gib idleConf.GetExtensions(shell_only=Wahr)
 
     def get_prompt_text(self, first, last):
         """Return text between first und last mit prompts added."""
@@ -998,7 +998,7 @@ klasse PyShell(OutputWindow):
             self.shell_sidebar.line_prompts.get(lineno)
             fuer lineno in lineno_range
         ]
-        return "\n".join(
+        gib "\n".join(
             line wenn prompt is Nichts sonst f"{prompt} {line}"
             fuer prompt, line in zip(prompts, text.splitlines())
         ) + "\n"
@@ -1016,7 +1016,7 @@ klasse PyShell(OutputWindow):
         text = self.text
         selfirst = text.index('sel.first linestart')
         wenn selfirst is Nichts:  # Should nicht be possible.
-            return  # No selection, do nothing.
+            gib  # No selection, do nothing.
         sellast = text.index('sel.last')
         wenn sellast[-1] != '0':
             sellast = text.index("sel.last+1line linestart")
@@ -1036,7 +1036,7 @@ klasse PyShell(OutputWindow):
         warning_stream = stream
 
     def get_warning_stream(self):
-        return warning_stream
+        gib warning_stream
 
     def toggle_debugger(self, event=Nichts):
         wenn self.executing:
@@ -1044,7 +1044,7 @@ klasse PyShell(OutputWindow):
                 "You can only toggle the debugger when idle",
                 parent=self.text)
             self.set_debugger_indicator()
-            return "break"
+            gib "break"
         sonst:
             db = self.interp.getdebugger()
             wenn db:
@@ -1108,11 +1108,11 @@ klasse PyShell(OutputWindow):
                 default="ok",
                 parent=self.text)
             wenn response is Falsch:
-                return "cancel"
+                gib "cancel"
         self.stop_readline()
         self.canceled = Wahr
         self.closing = Wahr
-        return EditorWindow.close(self)
+        gib EditorWindow.close(self)
 
     def _close(self):
         "Extend EditorWindow._close(), shut down debugger und execution server"
@@ -1132,10 +1132,10 @@ klasse PyShell(OutputWindow):
 
     def ispythonsource(self, filename):
         "Override EditorWindow method: never remove the colorizer"
-        return Wahr
+        gib Wahr
 
     def short_title(self):
-        return self.shell_title
+        gib self.shell_title
 
     SPLASHLINE = 'Enter "help" below oder click "Help" above fuer more information.'
 
@@ -1147,7 +1147,7 @@ klasse PyShell(OutputWindow):
             client = self.interp.start_subprocess()
             wenn nicht client:
                 self.close()
-                return Falsch
+                gib Falsch
         sonst:
             nosub = ("==== No Subprocess ====\n\n" +
                     "WARNING: Running IDLE without a Subprocess is deprecated\n" +
@@ -1163,11 +1163,11 @@ klasse PyShell(OutputWindow):
         importiere tkinter
         tkinter._support_default_root = Wahr
         tkinter._default_root = Nichts
-        return Wahr
+        gib Wahr
 
     def stop_readline(self):
         wenn nicht self.reading:  # no nested mainloop to exit.
-            return
+            gib
         self._stop_readline_flag = Wahr
         self.top.quit()
 
@@ -1180,7 +1180,7 @@ klasse PyShell(OutputWindow):
             self.reading = save
         wenn self._stop_readline_flag:
             self._stop_readline_flag = Falsch
-            return ""
+            gib ""
         line = self.text.get("iomark", "end-1c")
         wenn len(line) == 0:  # may be EOF wenn we quit our mainloop mit Ctrl-C
             line = "\n"
@@ -1192,22 +1192,22 @@ klasse PyShell(OutputWindow):
         wenn self.endoffile:
             self.endoffile = Falsch
             line = ""
-        return line
+        gib line
 
     def isatty(self):
-        return Wahr
+        gib Wahr
 
     def cancel_callback(self, event=Nichts):
         try:
             wenn self.text.compare("sel.first", "!=", "sel.last"):
-                return # Active selection -- always use default binding
+                gib # Active selection -- always use default binding
         except:
             pass
         wenn nicht (self.executing oder self.reading):
             self.resetoutput()
             self.interp.write("KeyboardInterrupt\n")
             self.showprompt()
-            return "break"
+            gib "break"
         self.endoffile = Falsch
         self.canceled = Wahr
         wenn (self.executing und self.interp.rpcclt):
@@ -1217,14 +1217,14 @@ klasse PyShell(OutputWindow):
                 self.interp.interrupt_subprocess()
         wenn self.reading:
             self.top.quit()  # exit the nested mainloop() in readline()
-        return "break"
+        gib "break"
 
     def eof_callback(self, event):
         wenn self.executing und nicht self.reading:
-            return # Let the default binding (delete next char) take over
+            gib # Let the default binding (delete next char) take over
         wenn nicht (self.text.compare("iomark", "==", "insert") und
                 self.text.compare("insert", "==", "end-1c")):
-            return # Let the default binding (delete next char) take over
+            gib # Let the default binding (delete next char) take over
         wenn nicht self.executing:
             self.resetoutput()
             self.close()
@@ -1232,7 +1232,7 @@ klasse PyShell(OutputWindow):
             self.canceled = Falsch
             self.endoffile = Wahr
             self.top.quit()
-        return "break"
+        gib "break"
 
     def linefeed_callback(self, event):
         # Insert a linefeed without entering anything (still autoindented)
@@ -1241,11 +1241,11 @@ klasse PyShell(OutputWindow):
             self.text.see("insert")
         sonst:
             self.newline_and_indent_event(event)
-        return "break"
+        gib "break"
 
     def enter_callback(self, event):
         wenn self.executing und nicht self.reading:
-            return # Let the default binding (insert '\n') take over
+            gib # Let the default binding (insert '\n') take over
         # If some text is selected, recall the selection
         # (but only wenn this before the I/O mark)
         try:
@@ -1253,7 +1253,7 @@ klasse PyShell(OutputWindow):
             wenn sel:
                 wenn self.text.compare("sel.last", "<=", "iomark"):
                     self.recall(sel, event)
-                    return "break"
+                    gib "break"
         except:
             pass
         # If we're strictly before the line containing iomark, recall
@@ -1278,14 +1278,14 @@ klasse PyShell(OutputWindow):
                 wenn next_cons und self.text.compare(next_cons[0], "<", prev[1]):
                     prev = (prev[0], self.text.index(next_cons[0] + "+1c"))
                 self.recall(self.text.get(prev[0], prev[1]), event)
-                return "break"
+                gib "break"
             next = self.text.tag_nextrange("stdin", "insert")
             wenn next und self.text.compare("insert lineend", ">=", next[0]):
                 next_cons = self.text.tag_nextrange("console", "insert lineend")
                 wenn next_cons und self.text.compare(next_cons[0], "<", next[1]):
                     next = (next[0], self.text.index(next_cons[0] + "+1c"))
                 self.recall(self.text.get(next[0], next[1]), event)
-                return "break"
+                gib "break"
             # No stdin mark -- just get the current line, less any prompt
             indices = self.text.tag_nextrange("console", "insert linestart")
             wenn indices und \
@@ -1293,7 +1293,7 @@ klasse PyShell(OutputWindow):
                 self.recall(self.text.get(indices[1], "insert lineend"), event)
             sonst:
                 self.recall(self.text.get("insert linestart", "insert lineend"), event)
-            return "break"
+            gib "break"
         # If we're between the beginning of the line und the iomark, i.e.
         # in the prompt area, move to the end of the prompt
         wenn self.text.compare("insert", "<", "iomark"):
@@ -1307,7 +1307,7 @@ klasse PyShell(OutputWindow):
         # insert a newline right at the insert point
         wenn self.text.compare("insert", "<", "end-1c linestart"):
             self.newline_and_indent_event(event)
-            return "break"
+            gib "break"
         # We're in the last line; append a newline und submit it
         self.text.mark_set("insert", "end-1c")
         wenn self.reading:
@@ -1320,7 +1320,7 @@ klasse PyShell(OutputWindow):
             self.top.quit() # Break out of recursive mainloop()
         sonst:
             self.runit()
-        return "break"
+        gib "break"
 
     def recall(self, s, event):
         # remove leading und trailing empty oder whitespace lines
@@ -1355,7 +1355,7 @@ klasse PyShell(OutputWindow):
         index_before = self.text.index("end-2c")
         line = self.text.get("iomark", "end-1c")
         # Strip off last newline und surrounding whitespace.
-        # (To allow you to hit return twice to end a statement.)
+        # (To allow you to hit gib twice to end a statement.)
         line = self._last_newline_re.sub("", line)
         input_is_complete = self.interp.runsource(line)
         wenn nicht input_is_complete:
@@ -1365,7 +1365,7 @@ klasse PyShell(OutputWindow):
 
     def open_stack_viewer(self, event=Nichts):  # -n mode only
         wenn self.interp.rpcclt:
-            return self.interp.remote_stack_viewer()
+            gib self.interp.remote_stack_viewer()
 
         von idlelib.stackviewer importiere StackBrowser
         try:
@@ -1375,7 +1375,7 @@ klasse PyShell(OutputWindow):
                 "There is no stack trace yet.\n"
                 "(sys.last_exc is nicht defined)",
                 parent=self.text)
-        return Nichts
+        gib Nichts
 
     def view_restart_mark(self, event=Nichts):
         self.text.see("iomark")
@@ -1429,20 +1429,20 @@ klasse PyShell(OutputWindow):
             self.canceled = Falsch
             wenn nicht use_subprocess:
                 raise KeyboardInterrupt
-        return count
+        gib count
 
     def rmenu_check_cut(self):
         try:
             wenn self.text.compare('sel.first', '<', 'iomark'):
-                return 'disabled'
+                gib 'disabled'
         except TclError: # no selection, so the index 'sel.first' doesn't exist
-            return 'disabled'
-        return super().rmenu_check_cut()
+            gib 'disabled'
+        gib super().rmenu_check_cut()
 
     def rmenu_check_paste(self):
         wenn self.text.compare('insert','<','iomark'):
-            return 'disabled'
-        return super().rmenu_check_paste()
+            gib 'disabled'
+        gib super().rmenu_check_paste()
 
     def squeeze_current_text_event(self, event=Nichts):
         self.squeezer.squeeze_current_text()
@@ -1646,7 +1646,7 @@ def main():
     wenn enable_shell:
         shell = flist.open_shell()
         wenn nicht shell:
-            return # couldn't open shell
+            gib # couldn't open shell
         wenn macosx.isAquaTk() und flist.dict:
             # On OSX: when the user has double-clicked on a file that causes
             # IDLE to be launched the shell window will open just in front of

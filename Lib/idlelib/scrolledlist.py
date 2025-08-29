@@ -51,20 +51,20 @@ klasse ScrolledList:
         self.listbox.insert("end", str(item))
 
     def get(self, index):
-        return self.listbox.get(index)
+        gib self.listbox.get(index)
 
     def click_event(self, event):
         self.listbox.activate("@%d,%d" % (event.x, event.y))
         index = self.listbox.index("active")
         self.select(index)
         self.on_select(index)
-        return "break"
+        gib "break"
 
     def double_click_event(self, event):
         index = self.listbox.index("active")
         self.select(index)
         self.on_double(index)
-        return "break"
+        gib "break"
 
     menu = Nichts
 
@@ -76,7 +76,7 @@ klasse ScrolledList:
         index = self.listbox.index("active")
         self.select(index)
         menu.tk_popup(event.x_root, event.y_root)
-        return "break"
+        gib "break"
 
     def make_menu(self):
         menu = Menu(self.listbox, tearoff=0)
@@ -94,7 +94,7 @@ klasse ScrolledList:
         sonst:
             self.select(index)
             self.on_select(index)
-        return "break"
+        gib "break"
 
     def down_event(self, event):
         index = self.listbox.index("active")
@@ -107,7 +107,7 @@ klasse ScrolledList:
         sonst:
             self.select(index)
             self.on_select(index)
-        return "break"
+        gib "break"
 
     def select(self, index):
         self.listbox.focus_set()

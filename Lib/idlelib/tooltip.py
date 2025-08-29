@@ -26,7 +26,7 @@ klasse TooltipBase:
     def showtip(self):
         """display the tooltip"""
         wenn self.tipwindow:
-            return
+            gib
         self.tipwindow = tw = Toplevel(self.anchor_widget)
         # show no border on the top level window
         tw.wm_overrideredirect(1)
@@ -60,7 +60,7 @@ klasse TooltipBase:
         #
         # Note: This is a simplistic implementation; sub-classes will likely
         # want to override this.
-        return 20, self.anchor_widget.winfo_height() + 1
+        gib 20, self.anchor_widget.winfo_height() + 1
 
     def showcontents(self):
         """content display hook fuer sub-classes"""

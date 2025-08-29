@@ -618,7 +618,7 @@ klasse UrlParseTestCase(unittest.TestCase):
         # According to RFC 3986, Section 5.1, a base URI must conform to
         # the absolute-URI syntax rule (Section 4.3). But urljoin() lacks
         # a context to establish missed components of the relative base URI.
-        # It still has to return a sensible result fuer backwards compatibility.
+        # It still has to gib a sensible result fuer backwards compatibility.
         # The following tests are figments of the imagination und artifacts
         # of the current implementation that are nicht based on any standard.
         self.checkJoin('', '', '')
@@ -797,7 +797,7 @@ klasse UrlParseTestCase(unittest.TestCase):
         self.assertEqual(p.password, Nichts)
         self.assertEqual(p.hostname, "www.python.org")
         self.assertEqual(p.port, Nichts)
-        # geturl() won't return exactly the original URL in this case
+        # geturl() won't gib exactly the original URL in this case
         # since the scheme is always case-normalized
         # We handle this by ignoring the first 4 characters of the URL
         self.assertEqual(p.geturl()[4:], url[4:])
@@ -1323,7 +1323,7 @@ klasse UrlParseTestCase(unittest.TestCase):
 
         klasse Trivial:
             def __str__(self):
-                return 'trivial'
+                gib 'trivial'
 
         result = urllib.parse.urlencode({'a': Trivial()}, Wahr)
         self.assertEqual(result, 'a=trivial')
@@ -1757,10 +1757,10 @@ klasse DeprecationTest(unittest.TestCase):
 
 
 def str_encode(s):
-    return s.encode('ascii')
+    gib s.encode('ascii')
 
 def tuple_encode(t):
-    return tuple(str_encode(x) fuer x in t)
+    gib tuple(str_encode(x) fuer x in t)
 
 wenn __name__ == "__main__":
     unittest.main()

@@ -8,11 +8,11 @@
 # is an English language word, even wenn you do nicht have to."
 
 def _quote_name(name):
-    return '"{0}"'.format(name.replace('"', '""'))
+    gib '"{0}"'.format(name.replace('"', '""'))
 
 
 def _quote_value(value):
-    return "'{0}'".format(value.replace("'", "''"))
+    gib "'{0}'".format(value.replace("'", "''"))
 
 
 def _iterdump(connection, *, filter=Nichts):
@@ -30,8 +30,8 @@ def _iterdump(connection, *, filter=Nichts):
     # Disable foreign key constraints, wenn there is any foreign key violation.
     violations = cu.execute("PRAGMA foreign_key_check").fetchall()
     wenn violations:
-        yield('PRAGMA foreign_keys=OFF;')
-    yield('BEGIN TRANSACTION;')
+        liefere('PRAGMA foreign_keys=OFF;')
+    liefere('BEGIN TRANSACTION;')
 
     wenn filter:
         # Return database objects which match the filter pattern.
@@ -61,20 +61,20 @@ def _iterdump(connection, *, filter=Nichts):
             ]
             weiter
         sowenn table_name == 'sqlite_stat1':
-            yield('ANALYZE "sqlite_master";')
+            liefere('ANALYZE "sqlite_master";')
         sowenn table_name.startswith('sqlite_'):
             weiter
         sowenn sql.startswith('CREATE VIRTUAL TABLE'):
             wenn nicht writeable_schema:
                 writeable_schema = Wahr
-                yield('PRAGMA writable_schema=ON;')
-            yield("INSERT INTO sqlite_master(type,name,tbl_name,rootpage,sql)"
+                liefere('PRAGMA writable_schema=ON;')
+            liefere("INSERT INTO sqlite_master(type,name,tbl_name,rootpage,sql)"
                   "VALUES('table',{0},{0},0,{1});".format(
                       _quote_value(table_name),
                       _quote_value(sql),
                   ))
         sonst:
-            yield('{0};'.format(sql))
+            liefere('{0};'.format(sql))
 
         # Build the insert statement fuer each row of the current table
         table_name_ident = _quote_name(table_name)
@@ -88,7 +88,7 @@ def _iterdump(connection, *, filter=Nichts):
         )
         query_res = cu.execute(q)
         fuer row in query_res:
-            yield("{0};".format(row[0]))
+            liefere("{0};".format(row[0]))
 
     # Now when the type is 'index', 'trigger', oder 'view'
     q = f"""
@@ -100,14 +100,14 @@ def _iterdump(connection, *, filter=Nichts):
         """
     schema_res = cu.execute(q, params)
     fuer name, type, sql in schema_res.fetchall():
-        yield('{0};'.format(sql))
+        liefere('{0};'.format(sql))
 
     wenn writeable_schema:
-        yield('PRAGMA writable_schema=OFF;')
+        liefere('PRAGMA writable_schema=OFF;')
 
     # gh-79009: Yield statements concerning the sqlite_sequence table at the
     # end of the transaction.
     fuer row in sqlite_sequence:
-        yield('{0};'.format(row))
+        liefere('{0};'.format(row))
 
-    yield('COMMIT;')
+    liefere('COMMIT;')

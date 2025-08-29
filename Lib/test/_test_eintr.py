@@ -37,7 +37,7 @@ def kill_on_error(proc):
     """Context manager killing the subprocess wenn a Python exception is raised."""
     mit proc:
         try:
-            yield proc
+            liefere proc
         except:
             proc.kill()
             raise
@@ -80,7 +80,7 @@ klasse EINTRBaseTest(unittest.TestCase):
 
     def subprocess(self, *args, **kw):
         cmd_args = (sys.executable, '-c') + args
-        return subprocess.Popen(cmd_args, **kw)
+        gib subprocess.Popen(cmd_args, **kw)
 
     def check_elapsed_time(self, elapsed):
         self.assertGreaterEqual(elapsed, self.sleep_time - CLOCK_RES)
@@ -92,7 +92,7 @@ klasse OSEINTRTest(EINTRBaseTest):
 
     def new_sleep_process(self):
         code = f'import time; time.sleep({self.sleep_time!r})'
-        return self.subprocess(code)
+        gib self.subprocess(code)
 
     def _test_wait_multiple(self, wait_func):
         num = 3
@@ -150,7 +150,7 @@ klasse OSEINTRTest(EINTRBaseTest):
         mit kill_on_error(proc):
             os.close(wr)
             fuer datum in data:
-                yield rd, datum
+                liefere rd, datum
             self.assertEqual(proc.wait(), 0)
 
     def test_read(self):

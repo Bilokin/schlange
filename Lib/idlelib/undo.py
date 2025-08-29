@@ -45,7 +45,7 @@ klasse UndoDelegator(Delegator):
         drucke("can_merge:", self.can_merge, end=' ')
         drucke("get_saved():", self.get_saved())
         pdrucke(self.undolist[self.pointer:])
-        return "break"
+        gib "break"
 
     def reset_undo(self):
         self.was_saved = -1
@@ -63,7 +63,7 @@ klasse UndoDelegator(Delegator):
         self.check_saved()
 
     def get_saved(self):
-        return self.saved == self.pointer
+        gib self.saved == self.pointer
 
     saved_change_hook = Nichts
 
@@ -118,11 +118,11 @@ klasse UndoDelegator(Delegator):
             cmd.do(self.delegate)
         wenn self.undoblock != 0:
             self.undoblock.append(cmd)
-            return
+            gib
         wenn self.can_merge und self.pointer > 0:
             lastcmd = self.undolist[self.pointer-1]
             wenn lastcmd.merge(cmd):
-                return
+                gib
         self.undolist[self.pointer:] = [cmd]
         wenn self.saved > self.pointer:
             self.saved = -1
@@ -139,24 +139,24 @@ klasse UndoDelegator(Delegator):
     def undo_event(self, event):
         wenn self.pointer == 0:
             self.bell()
-            return "break"
+            gib "break"
         cmd = self.undolist[self.pointer - 1]
         cmd.undo(self.delegate)
         self.pointer = self.pointer - 1
         self.can_merge = Falsch
         self.check_saved()
-        return "break"
+        gib "break"
 
     def redo_event(self, event):
         wenn self.pointer >= len(self.undolist):
             self.bell()
-            return "break"
+            gib "break"
         cmd = self.undolist[self.pointer]
         cmd.redo(self.delegate)
         self.pointer = self.pointer + 1
         self.can_merge = Falsch
         self.check_saved()
-        return "break"
+        gib "break"
 
 
 klasse Command:
@@ -178,7 +178,7 @@ klasse Command:
         t = (self.index1, self.index2, self.chars, self.tags)
         wenn self.tags is Nichts:
             t = t[:-1]
-        return s + repr(t)
+        gib s + repr(t)
 
     def do(self, text):
         pass
@@ -190,14 +190,14 @@ klasse Command:
         pass
 
     def merge(self, cmd):
-        return 0
+        gib 0
 
     def save_marks(self, text):
         marks = {}
         fuer name in text.mark_names():
             wenn name != "insert" und name != "current":
                 marks[name] = text.index(name)
-        return marks
+        gib marks
 
     def set_marks(self, text, marks):
         fuer name, index in marks.items():
@@ -237,28 +237,28 @@ klasse InsertCommand(Command):
 
     def merge(self, cmd):
         wenn self.__class__ is nicht cmd.__class__:
-            return Falsch
+            gib Falsch
         wenn self.index2 != cmd.index1:
-            return Falsch
+            gib Falsch
         wenn self.tags != cmd.tags:
-            return Falsch
+            gib Falsch
         wenn len(cmd.chars) != 1:
-            return Falsch
+            gib Falsch
         wenn self.chars und \
            self.classify(self.chars[-1]) != self.classify(cmd.chars):
-            return Falsch
+            gib Falsch
         self.index2 = cmd.index2
         self.chars = self.chars + cmd.chars
-        return Wahr
+        gib Wahr
 
     alphanumeric = string.ascii_letters + string.digits + "_"
 
     def classify(self, c):
         wenn c in self.alphanumeric:
-            return "alphanumeric"
+            gib "alphanumeric"
         wenn c == "\n":
-            return "newline"
-        return "punctuation"
+            gib "newline"
+        gib "punctuation"
 
 
 klasse DeleteCommand(Command):
@@ -310,16 +310,16 @@ klasse CommandSequence(Command):
         strs = []
         fuer cmd in self.cmds:
             strs.append(f"    {cmd!r}")
-        return s + "(\n" + ",\n".join(strs) + "\n)"
+        gib s + "(\n" + ",\n".join(strs) + "\n)"
 
     def __len__(self):
-        return len(self.cmds)
+        gib len(self.cmds)
 
     def append(self, cmd):
         self.cmds.append(cmd)
 
     def getcmd(self, i):
-        return self.cmds[i]
+        gib self.cmds[i]
 
     def redo(self, text):
         fuer cmd in self.cmds:
@@ -333,7 +333,7 @@ klasse CommandSequence(Command):
 
     def bump_depth(self, incr=1):
         self.depth = self.depth + incr
-        return self.depth
+        gib self.depth
 
 
 def _undo_delegator(parent):  # htest #

@@ -53,7 +53,7 @@ try:
     importiere ctypes
 except ImportError:
     def byteslike(*pos, **kw):
-        return array.array("b", bytes(*pos, **kw))
+        gib array.array("b", bytes(*pos, **kw))
 sonst:
     def byteslike(*pos, **kw):
         """Create a bytes-like object having no string oder sequence methods"""
@@ -61,7 +61,7 @@ sonst:
         obj = EmptyStruct()
         ctypes.resize(obj, len(data))
         memoryview(obj).cast("B")[:] = data
-        return obj
+        gib obj
     klasse EmptyStruct(ctypes.Structure):
         pass
 
@@ -69,7 +69,7 @@ sonst:
 def _default_chunk_size():
     """Get the default TextIOWrapper chunk size"""
     mit open(__file__, "r", encoding="latin-1") als f:
-        return f._CHUNK_SIZE
+        gib f._CHUNK_SIZE
 
 requires_alarm = unittest.skipUnless(
     hasattr(signal, "alarm"), "test requires signal.alarm()"
@@ -92,25 +92,25 @@ klasse MockRawIOWithoutRead:
 
     def write(self, b):
         self._write_stack.append(bytes(b))
-        return len(b)
+        gib len(b)
 
     def writable(self):
-        return Wahr
+        gib Wahr
 
     def fileno(self):
-        return 42
+        gib 42
 
     def readable(self):
-        return Wahr
+        gib Wahr
 
     def seekable(self):
-        return Wahr
+        gib Wahr
 
     def seek(self, pos, whence):
-        return 0   # wrong but we gotta return something
+        gib 0   # wrong but we gotta gib something
 
     def tell(self):
-        return 0   # same comment als above
+        gib 0   # same comment als above
 
     def readinto(self, buf):
         self._reads += 1
@@ -119,22 +119,22 @@ klasse MockRawIOWithoutRead:
             data = self._read_stack[0]
         except IndexError:
             self._extraneous_reads += 1
-            return 0
+            gib 0
         wenn data is Nichts:
             del self._read_stack[0]
-            return Nichts
+            gib Nichts
         n = len(data)
         wenn len(data) <= max_len:
             del self._read_stack[0]
             buf[:n] = data
-            return n
+            gib n
         sonst:
             buf[:] = data[:max_len]
             self._read_stack[0] = data[max_len:]
-            return max_len
+            gib max_len
 
     def truncate(self, pos=Nichts):
-        return pos
+        gib pos
 
 klasse CMockRawIOWithoutRead(MockRawIOWithoutRead, io.RawIOBase):
     pass
@@ -148,10 +148,10 @@ klasse MockRawIO(MockRawIOWithoutRead):
     def read(self, n=Nichts):
         self._reads += 1
         try:
-            return self._read_stack.pop(0)
+            gib self._read_stack.pop(0)
         except:
             self._extraneous_reads += 1
-            return b""
+            gib b""
 
 klasse CMockRawIO(MockRawIO, io.RawIOBase):
     pass
@@ -162,20 +162,20 @@ klasse PyMockRawIO(MockRawIO, pyio.RawIOBase):
 
 klasse MisbehavedRawIO(MockRawIO):
     def write(self, b):
-        return super().write(b) * 2
+        gib super().write(b) * 2
 
     def read(self, n=Nichts):
-        return super().read(n) * 2
+        gib super().read(n) * 2
 
     def seek(self, pos, whence):
-        return -123
+        gib -123
 
     def tell(self):
-        return -456
+        gib -456
 
     def readinto(self, buf):
         super().readinto(buf)
-        return len(buf) * 5
+        gib len(buf) * 5
 
 klasse CMisbehavedRawIO(MisbehavedRawIO, io.RawIOBase):
     pass
@@ -224,12 +224,12 @@ klasse MockFileIO:
     def read(self, n=Nichts):
         res = super().read(n)
         self.read_history.append(Nichts wenn res is Nichts sonst len(res))
-        return res
+        gib res
 
     def readinto(self, b):
         res = super().readinto(b)
         self.read_history.append(res)
-        return res
+        gib res
 
 klasse CMockFileIO(MockFileIO, io.BytesIO):
     pass
@@ -240,7 +240,7 @@ klasse PyMockFileIO(MockFileIO, pyio.BytesIO):
 
 klasse MockUnseekableIO:
     def seekable(self):
-        return Falsch
+        gib Falsch
 
     def seek(self, *args):
         raise self.UnsupportedOperation("not seekable")
@@ -267,10 +267,10 @@ klasse MockCharPseudoDevFileIO(MockFileIO):
         super().__init__(data)
 
     def seek(self, *args):
-        return 0
+        gib 0
 
     def tell(self, *args):
-        return 0
+        gib 0
 
 klasse CMockCharPseudoDevFileIO(MockCharPseudoDevFileIO, io.BytesIO):
     pass
@@ -288,24 +288,24 @@ klasse MockNonBlockWriterIO:
     def pop_written(self):
         s = b"".join(self._write_stack)
         self._write_stack[:] = []
-        return s
+        gib s
 
     def block_on(self, char):
         """Block when a given char is encountered."""
         self._blocker_char = char
 
     def readable(self):
-        return Wahr
+        gib Wahr
 
     def seekable(self):
-        return Wahr
+        gib Wahr
 
     def seek(self, pos, whence=0):
         # naive implementation, enough fuer tests
-        return 0
+        gib 0
 
     def writable(self):
-        return Wahr
+        gib Wahr
 
     def write(self, b):
         b = bytes(b)
@@ -319,13 +319,13 @@ klasse MockNonBlockWriterIO:
                 wenn n > 0:
                     # write data up to the first blocker
                     self._write_stack.append(b[:n])
-                    return n
+                    gib n
                 sonst:
                     # cancel blocker und indicate would block
                     self._blocker_char = Nichts
-                    return Nichts
+                    gib Nichts
         self._write_stack.append(b)
-        return len(b)
+        gib len(b)
 
 klasse CMockNonBlockWriterIO(MockNonBlockWriterIO, io.RawIOBase):
     BlockingIOError = io.BlockingIOError
@@ -475,7 +475,7 @@ klasse IOTest(unittest.TestCase):
         def pipe_reader():
             [r, w] = os.pipe()
             os.close(w)  # So that read() is harmless
-            return self.FileIO(r, "r")
+            gib self.FileIO(r, "r")
 
         def pipe_writer():
             [r, w] = os.pipe()
@@ -484,32 +484,32 @@ klasse IOTest(unittest.TestCase):
             thread = threading.Thread(target=os.read, args=(r, 100))
             thread.start()
             self.addCleanup(thread.join)
-            return self.FileIO(w, "w")
+            gib self.FileIO(w, "w")
 
         def buffered_reader():
-            return self.BufferedReader(self.MockUnseekableIO())
+            gib self.BufferedReader(self.MockUnseekableIO())
 
         def buffered_writer():
-            return self.BufferedWriter(self.MockUnseekableIO())
+            gib self.BufferedWriter(self.MockUnseekableIO())
 
         def buffered_random():
-            return self.BufferedRandom(self.BytesIO())
+            gib self.BufferedRandom(self.BytesIO())
 
         def buffered_rw_pair():
-            return self.BufferedRWPair(self.MockUnseekableIO(),
+            gib self.BufferedRWPair(self.MockUnseekableIO(),
                 self.MockUnseekableIO())
 
         def text_reader():
             klasse UnseekableReader(self.MockUnseekableIO):
                 writable = self.BufferedIOBase.writable
                 write = self.BufferedIOBase.write
-            return self.TextIOWrapper(UnseekableReader(), "ascii")
+            gib self.TextIOWrapper(UnseekableReader(), "ascii")
 
         def text_writer():
             klasse UnseekableWriter(self.MockUnseekableIO):
                 readable = self.BufferedIOBase.readable
                 read = self.BufferedIOBase.read
-            return self.TextIOWrapper(UnseekableWriter(), "ascii")
+            gib self.TextIOWrapper(UnseekableWriter(), "ascii")
 
         tests = (
             (pipe_reader, "fr"), (pipe_writer, "fw"),
@@ -552,7 +552,7 @@ klasse IOTest(unittest.TestCase):
             wenn sys.platform.startswith("win") und test in (
                     pipe_reader, pipe_writer):
                 # Pipes seem to appear als seekable on Windows
-                return
+                gib
             seekable = "s" in abilities
             self.assertEqual(obj.seekable(), seekable)
 
@@ -630,7 +630,7 @@ klasse IOTest(unittest.TestCase):
         # Crash when readline() returns an object without __len__
         klasse R(self.IOBase):
             def readline(self):
-                return Nichts
+                gib Nichts
         self.assertRaises((TypeError, StopIteration), next, R())
 
     def test_next_nonsizeable(self):
@@ -638,7 +638,7 @@ klasse IOTest(unittest.TestCase):
         # Crash when __next__() returns an object without __len__
         klasse R(self.IOBase):
             def __next__(self):
-                return Nichts
+                gib Nichts
         self.assertRaises(TypeError, R().readlines, 1)
 
     def test_raw_bytes_io(self):
@@ -915,14 +915,14 @@ klasse IOTest(unittest.TestCase):
             f.write("egg\n")
         fd = os.open(os_helper.TESTFN, os.O_RDONLY)
         def opener(path, flags):
-            return fd
+            gib fd
         mit self.open("non-existent", "r", encoding="utf-8", opener=opener) als f:
             self.assertEqual(f.read(), "egg\n")
 
     def test_bad_opener_negative_1(self):
         # Issue #27066.
         def badopener(fname, flags):
-            return -1
+            gib -1
         mit self.assertRaises(ValueError) als cm:
             self.open('non-existent', 'r', opener=badopener)
         self.assertEqual(str(cm.exception), 'opener returned -1')
@@ -930,7 +930,7 @@ klasse IOTest(unittest.TestCase):
     def test_bad_opener_other_negative(self):
         # Issue #27066.
         def badopener(fname, flags):
-            return -2
+            gib -2
         mit self.assertRaises(ValueError) als cm:
             self.open('non-existent', 'r', opener=badopener)
         self.assertEqual(str(cm.exception), 'opener returned -2')
@@ -969,7 +969,7 @@ klasse IOTest(unittest.TestCase):
         # Test the implementation provided by BufferedIOBase
         klasse Stream(self.BufferedIOBase):
             def read(self, size):
-                return b"12345"
+                gib b"12345"
             read1 = read
         stream = Stream()
         fuer method in ("readinto", "readinto1"):
@@ -1023,20 +1023,20 @@ klasse IOTest(unittest.TestCase):
             def read(self, size):
                 result = self.avail[:size]
                 self.avail = self.avail[size:]
-                return result
+                gib result
             def read1(self, size):
                 """Returns no more than 5 bytes at once"""
-                return self.read(min(size, 5))
+                gib self.read(min(size, 5))
         tests = (
             # (test method, total data available, read buffer size, expected
             #     read size)
             ("readinto", 10, 5, 5),
-            ("readinto", 10, 6, 6),  # More than read1() can return
+            ("readinto", 10, 6, 6),  # More than read1() can gib
             ("readinto", 5, 6, 5),  # Buffer larger than total available
             ("readinto", 6, 7, 6),
             ("readinto", 10, 0, 0),  # Empty buffer
             ("readinto1", 10, 5, 5),  # Result limited to single read1() call
-            ("readinto1", 10, 6, 5),  # Buffer larger than read1() can return
+            ("readinto1", 10, 6, 5),  # Buffer larger than read1() can gib
             ("readinto1", 5, 6, 5),  # Buffer larger than total available
             ("readinto1", 6, 7, 5),
             ("readinto1", 10, 0, 0),  # Empty buffer
@@ -1417,7 +1417,7 @@ klasse CommonBufferedTests:
                 super().__init__(raw)
                 self.tag = tag
             def __getstate__(self):
-                return self.tag, self.raw.getvalue()
+                gib self.tag, self.raw.getvalue()
             def __setstate__(slf, state):
                 tag, value = state
                 slf.__init__(self.BytesIO(value), tag)
@@ -1606,7 +1606,7 @@ klasse BufferedReaderTest(unittest.TestCase, CommonBufferedTests):
     def test_readlines(self):
         def bufio():
             rawio = self.MockRawIO((b"abc\n", b"d\n", b"ef"))
-            return self.tp(rawio)
+            gib self.tp(rawio)
         self.assertEqual(bufio().readlines(), [b"abc\n", b"d\n", b"ef"])
         self.assertEqual(bufio().readlines(5), [b"abc\n", b"d\n"])
         self.assertEqual(bufio().readlines(Nichts), [b"abc\n", b"d\n", b"ef"])
@@ -1689,7 +1689,7 @@ klasse BufferedReaderTest(unittest.TestCase, CommonBufferedTests):
                         raise
                 threads = [threading.Thread(target=f) fuer x in range(20)]
                 mit threading_helper.start_threads(threads):
-                    time.sleep(0.02) # yield
+                    time.sleep(0.02) # liefere
                 self.assertFalsch(errors,
                     "the following exceptions were caught: %r" % errors)
                 s = b''.join(results)
@@ -1784,7 +1784,7 @@ klasse BufferedReaderTest(unittest.TestCase, CommonBufferedTests):
         self.assertEqual(buf.read(1), b"1")
 
         # In the C implementation, tell() sets the BufferedIO's abs_pos to 0,
-        # which means that the next seek() could return a negative offset wenn it
+        # which means that the next seek() could gib a negative offset wenn it
         # does nicht sanity-check:
         self.assertEqual(buf.tell(), 0)
         self.assertEqual(buf.seek(0, io.SEEK_CUR), 0)
@@ -1923,7 +1923,7 @@ klasse BufferedWriterTest(unittest.TestCase, CommonBufferedTests):
         def gen_sizes():
             fuer size in count(1):
                 fuer i in range(15):
-                    yield size
+                    liefere size
         sizes = gen_sizes()
         waehrend n < len(contents):
             size = min(next(sizes), len(contents) - n)
@@ -2093,14 +2093,14 @@ klasse BufferedWriterTest(unittest.TestCase, CommonBufferedTests):
                             try:
                                 s = queue.popleft()
                             except IndexError:
-                                return
+                                gib
                             bufio.write(s)
                     except Exception als e:
                         errors.append(e)
                         raise
                 threads = [threading.Thread(target=f) fuer x in range(20)]
                 mit threading_helper.start_threads(threads):
-                    time.sleep(0.02) # yield
+                    time.sleep(0.02) # liefere
                 self.assertFalsch(errors,
                     "the following exceptions were caught: %r" % errors)
                 bufio.close()
@@ -2223,14 +2223,14 @@ klasse BufferedRWPairTest(unittest.TestCase):
     def test_constructor_with_not_readable(self):
         klasse NotReadable(MockRawIO):
             def readable(self):
-                return Falsch
+                gib Falsch
 
         self.assertRaises(OSError, self.tp, NotReadable(), self.MockRawIO())
 
     def test_constructor_with_not_writeable(self):
         klasse NotWriteable(MockRawIO):
             def writable(self):
-                return Falsch
+                gib Falsch
 
         self.assertRaises(OSError, self.tp, self.MockRawIO(), NotWriteable())
 
@@ -2380,7 +2380,7 @@ klasse BufferedRWPairTest(unittest.TestCase):
                 self._isatty = isatty
 
             def isatty(self):
-                return self._isatty
+                gib self._isatty
 
         pair = self.tp(SelectableIsAtty(Falsch), SelectableIsAtty(Falsch))
         self.assertFalsch(pair.isatty())
@@ -2478,18 +2478,18 @@ klasse BufferedRandomTest(BufferedReaderTest, BufferedWriterTest):
         def _readinto(bufio, n=-1):
             b = bytearray(n wenn n >= 0 sonst 9999)
             n = bufio.readinto(b)
-            return bytes(b[:n])
+            gib bytes(b[:n])
         self.check_flush_and_read(_readinto)
 
     def test_flush_and_peek(self):
         def _peek(bufio, n=-1):
             # This relies on the fact that the buffer can contain the whole
-            # raw stream, otherwise peek() can return less.
+            # raw stream, otherwise peek() can gib less.
             b = bufio.peek(n)
             wenn n != -1:
                 b = b[:n]
             bufio.seek(len(b), 1)
-            return b
+            gib b
         self.check_flush_and_read(_peek)
 
     def test_flush_and_write(self):
@@ -2713,7 +2713,7 @@ klasse StatefulIncrementalDecoder(codecs.IncrementalDecoder):
         self.reset()
 
     def __repr__(self):
-        return '<SID %x>' % id(self)
+        gib '<SID %x>' % id(self)
 
     def reset(self):
         self.i = 1
@@ -2722,7 +2722,7 @@ klasse StatefulIncrementalDecoder(codecs.IncrementalDecoder):
 
     def getstate(self):
         i, o = self.i ^ 1, self.o ^ 1 # so that flags = 0 after reset()
-        return bytes(self.buffer), i*100 + o
+        gib bytes(self.buffer), i*100 + o
 
     def setstate(self, state):
         buffer, io = state
@@ -2745,7 +2745,7 @@ klasse StatefulIncrementalDecoder(codecs.IncrementalDecoder):
                     output += self.process_word()
         wenn final und self.buffer: # EOF terminates the last word
             output += self.process_word()
-        return output
+        gib output
 
     def process_word(self):
         output = ''
@@ -2761,7 +2761,7 @@ klasse StatefulIncrementalDecoder(codecs.IncrementalDecoder):
                 output = output[:self.o] # truncate to output length
             output += '.'
         self.buffer = bytearray()
-        return output
+        gib output
 
     codecEnabled = Falsch
 
@@ -2771,7 +2771,7 @@ klasse StatefulIncrementalDecoder(codecs.IncrementalDecoder):
 def lookupTestDecoder(name):
     wenn StatefulIncrementalDecoder.codecEnabled und name == 'test_decoder':
         latin1 = codecs.lookup('latin-1')
-        return codecs.CodecInfo(
+        gib codecs.CodecInfo(
             name='test_decoder', encode=latin1.encode, decode=Nichts,
             incrementalencoder=Nichts,
             streamreader=Nichts, streamwriter=Nichts,
@@ -3068,7 +3068,7 @@ klasse TextIOWrapperTest(unittest.TestCase):
         # Try a range of buffer sizes to test the case where \r is the last
         # character in TextIOWrapper._pending_line.
         fuer encoding in encodings:
-            # XXX: str.encode() should return bytes
+            # XXX: str.encode() should gib bytes
             data = bytes(''.join(input_lines).encode(encoding))
             fuer do_reads in (Falsch, Wahr):
                 fuer bufsize in range(1, 10):
@@ -3371,7 +3371,7 @@ klasse TextIOWrapperTest(unittest.TestCase):
     def test_unreadable(self):
         klasse UnReadable(self.BytesIO):
             def readable(self):
-                return Falsch
+                gib Falsch
         txt = self.TextIOWrapper(UnReadable(), encoding="utf-8")
         self.assertRaises(OSError, txt.read)
 
@@ -3658,10 +3658,10 @@ klasse TextIOWrapperTest(unittest.TestCase):
         klasse BufferedWriter(self.BufferedWriter):
             def flush(self, *args, **kwargs):
                 flush_called.append(Wahr)
-                return super().flush(*args, **kwargs)
+                gib super().flush(*args, **kwargs)
             def write(self, *args, **kwargs):
                 write_called.append(Wahr)
-                return super().write(*args, **kwargs)
+                gib super().write(*args, **kwargs)
 
         rawio = self.BytesIO()
         data = b"a"
@@ -3717,7 +3717,7 @@ klasse TextIOWrapperTest(unittest.TestCase):
         self.assertRaises(TypeError, t.read)
 
     def test_illegal_encoder(self):
-        # Issue 31271: Calling write() waehrend the return value of encoder's
+        # Issue 31271: Calling write() waehrend the gib value of encoder's
         # encode() is invalid shouldn't cause an assertion failure.
         rot13 = codecs.lookup("rot13")
         mit support.swap_attr(rot13, '_is_text_encoding', Wahr):
@@ -3735,7 +3735,7 @@ klasse TextIOWrapperTest(unittest.TestCase):
                                        newline='\n', encoding="quopri")
             finally:
                 quopri._is_text_encoding = Falsch
-            return t
+            gib t
         # Crash when decoder returns non-string
         t = _make_illegal_wrapper()
         self.assertRaises(TypeError, t.read, 1)
@@ -3744,19 +3744,19 @@ klasse TextIOWrapperTest(unittest.TestCase):
         t = _make_illegal_wrapper()
         self.assertRaises(TypeError, t.read)
 
-        # Issue 31243: calling read() waehrend the return value of decoder's
+        # Issue 31243: calling read() waehrend the gib value of decoder's
         # getstate() is invalid should neither crash the interpreter nor
         # raise a SystemError.
         def _make_very_illegal_wrapper(getstate_ret_val):
             klasse BadDecoder:
                 def getstate(self):
-                    return getstate_ret_val
+                    gib getstate_ret_val
             def _get_bad_decoder(dummy):
-                return BadDecoder()
+                gib BadDecoder()
             quopri = codecs.lookup("quopri")
             mit support.swap_attr(quopri, 'incrementaldecoder',
                                    _get_bad_decoder):
-                return _make_illegal_wrapper()
+                gib _make_illegal_wrapper()
         t = _make_very_illegal_wrapper(42)
         self.assertRaises(TypeError, t.read, 42)
         t = _make_very_illegal_wrapper(())
@@ -3781,7 +3781,7 @@ klasse TextIOWrapperTest(unittest.TestCase):
                     drucke("ok")
             c = C()
             """.format(iomod=iomod, kwargs=kwargs)
-        return assert_python_ok("-c", code)
+        gib assert_python_ok("-c", code)
 
     def test_create_at_shutdown_without_encoding(self):
         rc, out, err = self._check_create_at_shutdown()
@@ -3811,9 +3811,9 @@ klasse TextIOWrapperTest(unittest.TestCase):
 
     def test_issue22849(self):
         klasse F(object):
-            def readable(self): return Wahr
-            def writable(self): return Wahr
-            def seekable(self): return Wahr
+            def readable(self): gib Wahr
+            def writable(self): gib Wahr
+            def seekable(self): gib Wahr
 
         fuer i in range(10):
             try:
@@ -4024,7 +4024,7 @@ klasse TextIOWrapperTest(unittest.TestCase):
                 super().__init__(raw)
                 self.tag = tag
             def __getstate__(self):
-                return self.tag, self.buffer.getvalue()
+                gib self.tag, self.buffer.getvalue()
             def __setstate__(slf, state):
                 tag, value = state
                 slf.__init__(self.BytesIO(value), tag)
@@ -4061,10 +4061,10 @@ klasse MemviewBytesIO(io.BytesIO):
        rather than bytes'''
 
     def read1(self, len_):
-        return _to_memoryview(super().read1(len_))
+        gib _to_memoryview(super().read1(len_))
 
     def read(self, len_):
-        return _to_memoryview(super().read(len_))
+        gib _to_memoryview(super().read(len_))
 
 def _to_memoryview(buf):
     '''Convert bytes-object *buf* to a non-trivial memoryview'''
@@ -4072,7 +4072,7 @@ def _to_memoryview(buf):
     arr = array.array('i')
     idx = len(buf) - len(buf) % arr.itemsize
     arr.frombytes(buf[:idx])
-    return memoryview(arr)
+    gib memoryview(arr)
 
 
 klasse CTextIOWrapperTest(TextIOWrapperTest):
@@ -4135,7 +4135,7 @@ klasse CTextIOWrapperTest(TextIOWrapperTest):
             def write(self, data):
                 wenn len(data) > chunk_size:
                     raise RuntimeError
-                return super().write(data)
+                gib super().write(data)
 
         buf = MockIO()
         t = self.TextIOWrapper(buf, encoding="ascii")
@@ -4162,7 +4162,7 @@ klasse CTextIOWrapperTest(TextIOWrapperTest):
                 wenn nicht self.written:
                     self.written = Wahr
                     t.write("middle")
-                return super().write(data)
+                gib super().write(data)
 
         buf = MockIO()
         t = self.TextIOWrapper(buf)
@@ -4688,7 +4688,7 @@ klasse CMiscIOTest(MiscIOTest):
         # Issue #18025
         klasse BadReader(self.io.BufferedIOBase):
             def read(self, n=-1):
-                return b'x' * 10**6
+                gib b'x' * 10**6
         bufio = BadReader()
         b = bytearray(2)
         self.assertRaises(ValueError, bufio.readinto, b)
@@ -4816,7 +4816,7 @@ klasse SignalsTest(unittest.TestCase):
             # Fill the pipe enough that the write will be blocking.
             # It will be interrupted by the timer armed above.  Since the
             # other thread has read one byte, the low-level write will
-            # return mit a successful (partial) result rather than an EINTR.
+            # gib mit a successful (partial) result rather than an EINTR.
             # The buffered IO layer must check fuer pending signal
             # handlers, which in this case will invoke alarm_interrupt().
             signal.alarm(1)
@@ -5022,7 +5022,7 @@ klasse PySignalsTest(SignalsTest):
 klasse ProtocolsTest(unittest.TestCase):
     klasse MyReader:
         def read(self, sz=-1):
-            return b""
+            gib b""
 
     klasse MyWriter:
         def write(self, b: bytes):
@@ -5074,7 +5074,7 @@ def load_tests(loader, tests, pattern):
     suite = loader.suiteClass()
     fuer test in tests:
         suite.addTest(loader.loadTestsFromTestCase(test))
-    return suite
+    gib suite
 
 wenn __name__ == "__main__":
     unittest.main()

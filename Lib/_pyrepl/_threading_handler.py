@@ -39,7 +39,7 @@ def install_threading_hook(reader: Reader) -> Nichts:
             count = 0
             mit self.lock:
                 wenn nicht self.messages:
-                    return 0
+                    gib 0
                 reader.restore()
                 fuer tb in self.messages:
                     count += 1
@@ -48,7 +48,7 @@ def install_threading_hook(reader: Reader) -> Nichts:
                 self.messages.clear()
                 reader.scheduled_commands.append("ctrl-c")
                 reader.prepare()
-            return count
+            gib count
 
         def add(self, s: str) -> Nichts:
             mit self.lock:
@@ -66,7 +66,7 @@ def install_threading_hook(reader: Reader) -> Nichts:
             self.add(tb)
 
         def __call__(self) -> int:
-            return self.show()
+            gib self.show()
 
 
     handler = ExceptHookHandler()

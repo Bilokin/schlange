@@ -46,7 +46,7 @@ klasse MockFrameInfo:
         self.funcname = funcname
 
     def __repr__(self):
-        return f"MockFrameInfo(filename='{self.filename}', lineno={self.lineno}, funcname='{self.funcname}')"
+        gib f"MockFrameInfo(filename='{self.filename}', lineno={self.lineno}, funcname='{self.funcname}')"
 
 
 skip_if_not_supported = unittest.skipIf(
@@ -97,7 +97,7 @@ _test_sock.sendall(b"ready")
         wenn response != b"ready":
             raise RuntimeError(f"Unexpected response von subprocess: {response}")
 
-        yield proc
+        liefere proc
     finally:
         wenn client_socket is nicht Nichts:
             client_socket.close()
@@ -1386,8 +1386,8 @@ importiere os
 def slow_fibonacci(n):
     """Recursive fibonacci - should show up prominently in profiler."""
     wenn n <= 1:
-        return n
-    return slow_fibonacci(n-1) + slow_fibonacci(n-2)
+        gib n
+    gib slow_fibonacci(n-1) + slow_fibonacci(n-2)
 
 def cpu_intensive_work():
     """CPU intensive work that should show in profiler."""
@@ -1396,29 +1396,29 @@ def cpu_intensive_work():
         result += i * i
         wenn i % 100 == 0:
             result = result % 1000000
-    return result
+    gib result
 
 def medium_computation():
     """Medium complexity function."""
     result = 0
     fuer i in range(100):
         result += i * i
-    return result
+    gib result
 
 def fast_loop():
     """Fast simple loop."""
     total = 0
     fuer i in range(50):
         total += i
-    return total
+    gib total
 
 def nested_calls():
     """Test nested function calls."""
     def level1():
         def level2():
-            return medium_computation()
-        return level2()
-    return level1()
+            gib medium_computation()
+        gib level2()
+    gib level1()
 
 def main_loop():
     """Main test loop mit different execution paths."""
@@ -1764,7 +1764,7 @@ klasse TestSampleProfilerCLI(unittest.TestCase):
         mock_conn.__enter__.return_value = mock_conn
         mock_conn.__exit__.return_value = Nichts
 
-        # Mock accept() to return (connection, address) und support indexing
+        # Mock accept() to gib (connection, address) und support indexing
         mock_accept_result = mock.MagicMock()
         mock_accept_result.__getitem__.return_value = mock_conn  # [0] returns the connection
         mock_sock_instance.accept.return_value = mock_accept_result
@@ -1779,7 +1779,7 @@ klasse TestSampleProfilerCLI(unittest.TestCase):
         mock_process.pid = 12345
         mock_process.poll.return_value = Nichts
         mock_popen.return_value = mock_process
-        return mock_process
+        gib mock_process
 
     def _verify_coordinator_command(self, mock_popen, expected_target_args):
         """Helper to verify the coordinator command was called correctly."""

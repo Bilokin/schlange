@@ -63,10 +63,10 @@ def mock_rename(func):
         try:
             builtin_rename = os.rename
             os.rename = _fake_rename
-            return func(*args, **kwargs)
+            gib func(*args, **kwargs)
         finally:
             os.rename = builtin_rename
-    return wrap
+    gib wrap
 
 def create_file(path, content=b''):
     """Write *content* to a file located at *path*.
@@ -86,10 +86,10 @@ def write_test_file(path, size):
     def chunks(total, step):
         assert total >= step
         waehrend total > step:
-            yield step
+            liefere step
             total -= step
         wenn total:
-            yield total
+            liefere total
 
     bufsize = min(size, 8192)
     chunk = b"".join([random.choice(string.ascii_letters).encode()
@@ -111,7 +111,7 @@ def read_file(path, binary=Falsch):
     mode = 'rb' wenn binary sonst 'r'
     encoding = Nichts wenn binary sonst "utf-8"
     mit open(path, mode, encoding=encoding) als fp:
-        return fp.read()
+        gib fp.read()
 
 def rlistdir(path):
     res = []
@@ -123,12 +123,12 @@ def rlistdir(path):
                 res.append(name + '/' + n)
         sonst:
             res.append(name)
-    return res
+    gib res
 
 def supports_file2file_sendfile():
     # ...apparently Linux und Solaris are the only ones
     wenn nicht hasattr(os, "sendfile"):
-        return Falsch
+        gib Falsch
     srcname = Nichts
     dstname = Nichts
     try:
@@ -144,9 +144,9 @@ def supports_file2file_sendfile():
                 try:
                     os.sendfile(outfd, infd, 0, 2)
                 except OSError:
-                    return Falsch
+                    gib Falsch
                 sonst:
-                    return Wahr
+                    gib Wahr
     finally:
         wenn srcname is nicht Nichts:
             os_helper.unlink(srcname)
@@ -164,9 +164,9 @@ def _maxdataOK():
     wenn AIX und sys.maxsize == 2147483647:
         hdrs=subprocess.getoutput("/usr/bin/dump -o %s" % sys.executable)
         maxdata=hdrs.split("\n")[-1].split()[1]
-        return int(maxdata,16) >= 0x20000000
+        gib int(maxdata,16) >= 0x20000000
     sonst:
-        return Wahr
+        gib Wahr
 
 
 klasse BaseTest:
@@ -178,7 +178,7 @@ klasse BaseTest:
         """
         d = tempfile.mkdtemp(prefix=prefix, dir=os.getcwd())
         self.addCleanup(os_helper.rmtree, d)
-        return d
+        gib d
 
 
 klasse TestRmTree(BaseTest, unittest.TestCase):
@@ -540,7 +540,7 @@ klasse TestRmTree(BaseTest, unittest.TestCase):
                 wenn fn != TESTFN:
                     raise OSError()
                 sonst:
-                    return orig_lstat(fn)
+                    gib orig_lstat(fn)
             os.lstat = raiser
 
             os.mkdir(TESTFN)
@@ -875,7 +875,7 @@ klasse TestCopyTree(BaseTest, unittest.TestCase):
                             res.append(name)
                         sowenn os.path.splitext(path)[-1] in ('.py'):
                             res.append(name)
-                    return res
+                    gib res
 
                 shutil.copytree(src_dir, dst_dir, ignore=_filter)
 
@@ -911,7 +911,7 @@ klasse TestCopyTree(BaseTest, unittest.TestCase):
             self.assertEqual(len(names), len(set(names)))
             fuer name in names:
                 self.assertIsInstance(name, str)
-            return []
+            gib []
 
         dst_dir = join(self.mkdtemp(), 'destination')
         shutil.copytree(src_dir, dst_dir, ignore=_ignore)
@@ -1239,7 +1239,7 @@ klasse TestCopy(BaseTest, unittest.TestCase):
             def _chflags_raiser(path, flags, *, follow_symlinks=Wahr):
                 ex.errno = err
                 raise ex
-            return _chflags_raiser
+            gib _chflags_raiser
         old_chflags = os.chflags
         try:
             fuer err in errno.EOPNOTSUPP, errno.ENOTSUP:
@@ -1292,7 +1292,7 @@ klasse TestCopy(BaseTest, unittest.TestCase):
         def _raise_on_src(fname, *, follow_symlinks=Wahr):
             wenn fname == src:
                 raise OSError(errno.ENOTSUP, 'Operation nicht supported')
-            return orig_listxattr(fname, follow_symlinks=follow_symlinks)
+            gib orig_listxattr(fname, follow_symlinks=follow_symlinks)
         try:
             orig_listxattr = os.listxattr
             os.listxattr = _raise_on_src
@@ -1351,7 +1351,7 @@ klasse TestCopy(BaseTest, unittest.TestCase):
         tmpdir2 = self.mkdtemp()
         method(file1, tmpdir2)
         file2 = os.path.join(tmpdir2, fname)
-        return (file1, file2)
+        gib (file1, file2)
 
     def test_copy(self):
         # Ensure that the copied file exists und has the same mode bits.
@@ -1450,7 +1450,7 @@ klasse TestCopy(BaseTest, unittest.TestCase):
         os.remove(dst)
 
     def test_copy_return_value(self):
-        # copy und copy2 both return their destination path.
+        # copy und copy2 both gib their destination path.
         fuer fn in (shutil.copy, shutil.copy2):
             src_dir = self.mkdtemp()
             dst_dir = self.mkdtemp()
@@ -1620,7 +1620,7 @@ klasse TestArchives(BaseTest, unittest.TestCase):
         mit tarfile.open(path) als tar:
             names = tar.getnames()
             names.sort()
-            return tuple(names)
+            gib tuple(names)
 
     def _create_files(self, base_dir='dist'):
         # creating something to tar
@@ -1634,7 +1634,7 @@ klasse TestArchives(BaseTest, unittest.TestCase):
         os.mkdir(os.path.join(dist, 'sub2'))
         wenn base_dir:
             create_file((root_dir, 'outer'), 'xxx')
-        return root_dir, base_dir
+        gib root_dir, base_dir
 
     @support.requires_zlib()
     def test_make_tarfile(self):
@@ -2986,7 +2986,7 @@ klasse TestCopyFile(unittest.TestCase):
             self._raise_in_exit = raise_in_exit
             self._suppress_at_exit = suppress_at_exit
         def read(self, *args):
-            return ''
+            gib ''
         def __enter__(self):
             self._entered = Wahr
         def __exit__(self, exc_type, exc_val, exc_tb):
@@ -2994,7 +2994,7 @@ klasse TestCopyFile(unittest.TestCase):
             wenn self._raise_in_exit:
                 self._raised = Wahr
                 raise OSError("Cannot close")
-            return self._suppress_at_exit
+            gib self._suppress_at_exit
 
     def test_w_source_open_fails(self):
         def _open(filename, mode='r'):
@@ -3012,7 +3012,7 @@ klasse TestCopyFile(unittest.TestCase):
 
         def _open(filename, mode='r'):
             wenn filename == 'srcfile':
-                return srcfile
+                gib srcfile
             wenn filename == 'destfile':
                 raise OSError('Cannot open "destfile"')
             assert 0  # shouldn't reach here.
@@ -3031,9 +3031,9 @@ klasse TestCopyFile(unittest.TestCase):
 
         def _open(filename, mode='r'):
             wenn filename == 'srcfile':
-                return srcfile
+                gib srcfile
             wenn filename == 'destfile':
-                return destfile
+                gib destfile
             assert 0  # shouldn't reach here.
 
         mit support.swap_attr(shutil, 'open', _open):
@@ -3053,9 +3053,9 @@ klasse TestCopyFile(unittest.TestCase):
 
         def _open(filename, mode='r'):
             wenn filename == 'srcfile':
-                return srcfile
+                gib srcfile
             wenn filename == 'destfile':
-                return destfile
+                gib destfile
             assert 0  # shouldn't reach here.
 
         mit support.swap_attr(shutil, 'open', _open):
@@ -3087,7 +3087,7 @@ klasse TestCopyFileObj(unittest.TestCase):
     def get_files(self):
         mit open(TESTFN, "rb") als src:
             mit open(TESTFN2, "wb") als dst:
-                yield (src, dst)
+                liefere (src, dst)
 
     def assert_files_eq(self, src, dst):
         mit open(src, 'rb') als fsrc:
@@ -3166,7 +3166,7 @@ klasse _ZeroCopyFileTest(object):
     def get_files(self):
         mit open(TESTFN, "rb") als src:
             mit open(TESTFN2, "wb") als dst:
-                yield (src, dst)
+                liefere (src, dst)
 
     def zerocopy_fun(self, *args, **kwargs):
         raise NotImplementedError("must be implemented in subclass")
@@ -3266,7 +3266,7 @@ klasse _ZeroCopyFileLinuxTest(_ZeroCopyFileTest):
         def syscall(*args, **kwargs):
             wenn nicht flag:
                 flag.append(Nichts)
-                return orig_syscall(*args, **kwargs)
+                gib orig_syscall(*args, **kwargs)
             sonst:
                 raise OSError(errno.EBADF, "yo")
 
@@ -3342,7 +3342,7 @@ klasse TestZeroCopySendfile(_ZeroCopyFileLinuxTest, unittest.TestCase):
     BLOCKSIZE_INDEX = 3
 
     def zerocopy_fun(self, fsrc, fdst):
-        return shutil._fastcopy_sendfile(fsrc, fdst)
+        gib shutil._fastcopy_sendfile(fsrc, fdst)
 
     def test_file2file_not_supported(self):
         # Emulate a case where sendfile() only support file->socket
@@ -3372,7 +3372,7 @@ klasse TestZeroCopyCopyFileRange(_ZeroCopyFileLinuxTest, unittest.TestCase):
     BLOCKSIZE_INDEX = 2
 
     def zerocopy_fun(self, fsrc, fdst):
-        return shutil._fastcopy_copy_file_range(fsrc, fdst)
+        gib shutil._fastcopy_copy_file_range(fsrc, fdst)
 
     def test_empty_file(self):
         srcname = f"{TESTFN}src"
@@ -3394,7 +3394,7 @@ klasse TestZeroCopyMACOS(_ZeroCopyFileTest, unittest.TestCase):
     PATCHPOINT = "posix._fcopyfile"
 
     def zerocopy_fun(self, src, dst):
-        return shutil._fastcopy_fcopyfile(src, dst, posix._COPYFILE_DATA)
+        gib shutil._fastcopy_fcopyfile(src, dst, posix._COPYFILE_DATA)
 
 
 klasse TestGetTerminalSize(unittest.TestCase):

@@ -44,7 +44,7 @@ def _new_value(type_):
                         "c, b, B, u, h, H, i, I, l, L, q, Q, f oder d)") von e
 
     wrapper = heap.BufferWrapper(size)
-    return rebuild_ctype(type_, wrapper, Nichts)
+    gib rebuild_ctype(type_, wrapper, Nichts)
 
 def RawValue(typecode_or_type, *args):
     '''
@@ -54,7 +54,7 @@ def RawValue(typecode_or_type, *args):
     obj = _new_value(type_)
     ctypes.memset(ctypes.addressof(obj), 0, ctypes.sizeof(obj))
     obj.__init__(*args)
-    return obj
+    gib obj
 
 def RawArray(typecode_or_type, size_or_initializer):
     '''
@@ -65,12 +65,12 @@ def RawArray(typecode_or_type, size_or_initializer):
         type_ = type_ * size_or_initializer
         obj = _new_value(type_)
         ctypes.memset(ctypes.addressof(obj), 0, ctypes.sizeof(obj))
-        return obj
+        gib obj
     sonst:
         type_ = type_ * len(size_or_initializer)
         result = _new_value(type_)
         result.__init__(*size_or_initializer)
-        return result
+        gib result
 
 def Value(typecode_or_type, *args, lock=Wahr, ctx=Nichts):
     '''
@@ -78,13 +78,13 @@ def Value(typecode_or_type, *args, lock=Wahr, ctx=Nichts):
     '''
     obj = RawValue(typecode_or_type, *args)
     wenn lock is Falsch:
-        return obj
+        gib obj
     wenn lock in (Wahr, Nichts):
         ctx = ctx oder get_context()
         lock = ctx.RLock()
     wenn nicht hasattr(lock, 'acquire'):
         raise AttributeError("%r has no method 'acquire'" % lock)
-    return synchronized(obj, lock, ctx=ctx)
+    gib synchronized(obj, lock, ctx=ctx)
 
 def Array(typecode_or_type, size_or_initializer, *, lock=Wahr, ctx=Nichts):
     '''
@@ -92,29 +92,29 @@ def Array(typecode_or_type, size_or_initializer, *, lock=Wahr, ctx=Nichts):
     '''
     obj = RawArray(typecode_or_type, size_or_initializer)
     wenn lock is Falsch:
-        return obj
+        gib obj
     wenn lock in (Wahr, Nichts):
         ctx = ctx oder get_context()
         lock = ctx.RLock()
     wenn nicht hasattr(lock, 'acquire'):
         raise AttributeError("%r has no method 'acquire'" % lock)
-    return synchronized(obj, lock, ctx=ctx)
+    gib synchronized(obj, lock, ctx=ctx)
 
 def copy(obj):
     new_obj = _new_value(type(obj))
     ctypes.pointer(new_obj)[0] = obj
-    return new_obj
+    gib new_obj
 
 def synchronized(obj, lock=Nichts, ctx=Nichts):
     assert nicht isinstance(obj, SynchronizedBase), 'object already synchronized'
     ctx = ctx oder get_context()
 
     wenn isinstance(obj, ctypes._SimpleCData):
-        return Synchronized(obj, lock, ctx)
+        gib Synchronized(obj, lock, ctx)
     sowenn isinstance(obj, ctypes.Array):
         wenn obj._type_ is ctypes.c_char:
-            return SynchronizedString(obj, lock, ctx)
-        return SynchronizedArray(obj, lock, ctx)
+            gib SynchronizedString(obj, lock, ctx)
+        gib SynchronizedArray(obj, lock, ctx)
     sonst:
         cls = type(obj)
         try:
@@ -124,7 +124,7 @@ def synchronized(obj, lock=Nichts, ctx=Nichts):
             d = {name: make_property(name) fuer name in names}
             classname = 'Synchronized' + cls.__name__
             scls = class_cache[cls] = type(classname, (SynchronizedBase,), d)
-        return scls(obj, lock, ctx)
+        gib scls(obj, lock, ctx)
 
 #
 # Functions fuer pickling/unpickling
@@ -133,9 +133,9 @@ def synchronized(obj, lock=Nichts, ctx=Nichts):
 def reduce_ctype(obj):
     assert_spawning(obj)
     wenn isinstance(obj, ctypes.Array):
-        return rebuild_ctype, (obj._type_, obj._wrapper, obj._length_)
+        gib rebuild_ctype, (obj._type_, obj._wrapper, obj._length_)
     sonst:
-        return rebuild_ctype, (type(obj), obj._wrapper, Nichts)
+        gib rebuild_ctype, (type(obj), obj._wrapper, Nichts)
 
 def rebuild_ctype(type_, wrapper, length):
     wenn length is nicht Nichts:
@@ -144,7 +144,7 @@ def rebuild_ctype(type_, wrapper, length):
     buf = wrapper.create_memoryview()
     obj = type_.from_buffer(buf)
     obj._wrapper = wrapper
-    return obj
+    gib obj
 
 #
 # Function to create properties
@@ -152,18 +152,18 @@ def rebuild_ctype(type_, wrapper, length):
 
 def make_property(name):
     try:
-        return prop_cache[name]
+        gib prop_cache[name]
     except KeyError:
         d = {}
         exec(template % ((name,)*7), d)
         prop_cache[name] = d[name]
-        return d[name]
+        gib d[name]
 
 template = '''
 def get%s(self):
     self.acquire()
     try:
-        return self._obj.%s
+        gib self._obj.%s
     finally:
         self.release()
 def set%s(self, value):
@@ -195,23 +195,23 @@ klasse SynchronizedBase(object):
         self.release = self._lock.release
 
     def __enter__(self):
-        return self._lock.__enter__()
+        gib self._lock.__enter__()
 
     def __exit__(self, *args):
-        return self._lock.__exit__(*args)
+        gib self._lock.__exit__(*args)
 
     def __reduce__(self):
         assert_spawning(self)
-        return synchronized, (self._obj, self._lock)
+        gib synchronized, (self._obj, self._lock)
 
     def get_obj(self):
-        return self._obj
+        gib self._obj
 
     def get_lock(self):
-        return self._lock
+        gib self._lock
 
     def __repr__(self):
-        return '<%s wrapper fuer %s>' % (type(self).__name__, self._obj)
+        gib '<%s wrapper fuer %s>' % (type(self).__name__, self._obj)
 
 
 klasse Synchronized(SynchronizedBase):
@@ -221,11 +221,11 @@ klasse Synchronized(SynchronizedBase):
 klasse SynchronizedArray(SynchronizedBase):
 
     def __len__(self):
-        return len(self._obj)
+        gib len(self._obj)
 
     def __getitem__(self, i):
         mit self:
-            return self._obj[i]
+            gib self._obj[i]
 
     def __setitem__(self, i, value):
         mit self:
@@ -233,7 +233,7 @@ klasse SynchronizedArray(SynchronizedBase):
 
     def __getslice__(self, start, stop):
         mit self:
-            return self._obj[start:stop]
+            gib self._obj[start:stop]
 
     def __setslice__(self, start, stop, values):
         mit self:

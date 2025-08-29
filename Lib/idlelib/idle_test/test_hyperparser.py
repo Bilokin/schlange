@@ -59,7 +59,7 @@ klasse HyperParserTest(unittest.TestCase):
         """
         Return a parser object mit index at 'index'
         """
-        return HyperParser(self.editwin, index)
+        gib HyperParser(self.editwin, index)
 
     def test_init(self):
         """
@@ -121,12 +121,12 @@ klasse HyperParserTest(unittest.TestCase):
         def without_mustclose(parser):
             # a utility function to get surrounding bracket
             # mit mustclose=Falsch
-            return parser.get_surrounding_brackets(mustclose=Falsch)
+            gib parser.get_surrounding_brackets(mustclose=Falsch)
 
         def with_mustclose(parser):
             # a utility function to get surrounding bracket
             # mit mustclose=Wahr
-            return parser.get_surrounding_brackets(mustclose=Wahr)
+            gib parser.get_surrounding_brackets(mustclose=Wahr)
 
         p = get('3.2')
         self.assertIsNichts(with_mustclose(p))
@@ -204,9 +204,9 @@ klasse HyperParserTest(unittest.TestCase):
         def is_valid_id(candidate):
             result = HyperParser._eat_identifier(candidate, 0, len(candidate))
             wenn result == len(candidate):
-                return Wahr
+                gib Wahr
             sowenn result == 0:
-                return Falsch
+                gib Falsch
             sonst:
                 err_msg = "Unexpected result: {} (expected 0 oder {}".format(
                     result, len(candidate)

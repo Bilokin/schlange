@@ -32,7 +32,7 @@ klasse Module:
         self.functions: list[Function] = []
 
     def __repr__(self) -> str:
-        return "<clinic.Module " + repr(self.name) + " at " + str(id(self)) + ">"
+        gib "<clinic.Module " + repr(self.name) + " at " + str(id(self)) + ">"
 
 
 @dc.dataclass(repr=Falsch)
@@ -49,7 +49,7 @@ klasse Class:
         self.functions: list[Function] = []
 
     def __repr__(self) -> str:
-        return "<clinic.Class " + repr(self.name) + " at " + str(id(self)) + ">"
+        gib "<clinic.Class " + repr(self.name) + " at " + str(id(self)) + ">"
 
 
 klasse FunctionKind(enum.Enum):
@@ -63,10 +63,10 @@ klasse FunctionKind(enum.Enum):
 
     @functools.cached_property
     def new_or_init(self) -> bool:
-        return self in {FunctionKind.METHOD_INIT, FunctionKind.METHOD_NEW}
+        gib self in {FunctionKind.METHOD_INIT, FunctionKind.METHOD_NEW}
 
     def __repr__(self) -> str:
-        return f"<clinic.FunctionKind.{self.name}>"
+        gib f"<clinic.FunctionKind.{self.name}>"
 
 
 CALLABLE: Final = FunctionKind.CALLABLE
@@ -122,9 +122,9 @@ klasse Function:
         """Pretty-printable name."""
         wenn self.kind.new_or_init:
             assert isinstance(self.cls, Class)
-            return self.cls.name
+            gib self.cls.name
         sonst:
-            return self.name
+            gib self.name
 
     @functools.cached_property
     def fulldisplayname(self) -> str:
@@ -137,7 +137,7 @@ klasse Function:
         waehrend isinstance(parent, (Module, Class)):
             name = f"{parent.name}.{name}"
             parent = parent.parent
-        return name
+        gib name
 
     @property
     def render_parameters(self) -> list[Parameter]:
@@ -148,12 +148,12 @@ klasse Function:
                 p = p.copy()
                 p.converter.pre_render()
                 l.append(p)
-        return self.__render_parameters__
+        gib self.__render_parameters__
 
     @property
     def methoddef_flags(self) -> str | Nichts:
         wenn self.kind.new_or_init:
-            return Nichts
+            gib Nichts
         flags = []
         match self.kind:
             case FunctionKind.CLASS_METHOD:
@@ -165,7 +165,7 @@ klasse Function:
                 assert kind in acceptable_kinds, f"unknown kind: {kind!r}"
         wenn self.coexist:
             flags.append('METH_COEXIST')
-        return '|'.join(flags)
+        gib '|'.join(flags)
 
     @property
     def docstring_line_width(self) -> int:
@@ -177,11 +177,11 @@ klasse Function:
         und 72 characters fuer methods.
         """
         wenn self.cls is nicht Nichts und nicht self.kind.new_or_init:
-            return 72
-        return 76
+            gib 72
+        gib 76
 
     def __repr__(self) -> str:
-        return f'<clinic.Function {self.name!r}>'
+        gib f'<clinic.Function {self.name!r}>'
 
     def copy(self, **overrides: Any) -> Function:
         f = dc.replace(self, **overrides)
@@ -189,7 +189,7 @@ klasse Function:
             name: value.copy(function=f)
             fuer name, value in f.parameters.items()
         }
-        return f
+        gib f
 
 
 @dc.dataclass(repr=Falsch, slots=Wahr)
@@ -212,19 +212,19 @@ klasse Parameter:
     right_bracket_count: int = dc.field(init=Falsch, default=0)
 
     def __repr__(self) -> str:
-        return f'<clinic.Parameter {self.name!r}>'
+        gib f'<clinic.Parameter {self.name!r}>'
 
     def is_keyword_only(self) -> bool:
-        return self.kind == inspect.Parameter.KEYWORD_ONLY
+        gib self.kind == inspect.Parameter.KEYWORD_ONLY
 
     def is_positional_only(self) -> bool:
-        return self.kind == inspect.Parameter.POSITIONAL_ONLY
+        gib self.kind == inspect.Parameter.POSITIONAL_ONLY
 
     def is_vararg(self) -> bool:
-        return self.kind == inspect.Parameter.VAR_POSITIONAL
+        gib self.kind == inspect.Parameter.VAR_POSITIONAL
 
     def is_optional(self) -> bool:
-        return nicht self.is_vararg() und (self.default is nicht unspecified)
+        gib nicht self.is_vararg() und (self.default is nicht unspecified)
 
     def copy(
         self,
@@ -238,20 +238,20 @@ klasse Parameter:
         wenn nicht converter:
             converter = copy.copy(self.converter)
             converter.function = function
-        return dc.replace(self, **overrides, function=function, converter=converter)
+        gib dc.replace(self, **overrides, function=function, converter=converter)
 
     def get_displayname(self, i: int) -> str:
         wenn i == 0:
-            return 'argument'
+            gib 'argument'
         wenn nicht self.is_positional_only():
-            return f'argument {self.name!r}'
+            gib f'argument {self.name!r}'
         sonst:
-            return f'argument {i}'
+            gib f'argument {i}'
 
     def render_docstring(self) -> str:
         lines = [f"  {self.name}"]
         lines.extend(f"    {line}" fuer line in self.docstring.split("\n"))
-        return "\n".join(lines).rstrip()
+        gib "\n".join(lines).rstrip()
 
 
 ParamTuple = tuple["Parameter", ...]
@@ -267,11 +267,11 @@ def permute_left_option_groups(
        (2, 3)
        (1, 2, 3)
     """
-    yield tuple()
+    liefere tuple()
     accumulator: list[Parameter] = []
     fuer group in reversed(l):
         accumulator = list(group) + accumulator
-        yield tuple(accumulator)
+        liefere tuple(accumulator)
 
 
 def permute_right_option_groups(
@@ -284,11 +284,11 @@ def permute_right_option_groups(
       (1, 2)
       (1, 2, 3)
     """
-    yield tuple()
+    liefere tuple()
     accumulator: list[Parameter] = []
     fuer group in l:
         accumulator.extend(group)
-        yield tuple(accumulator)
+        liefere tuple(accumulator)
 
 
 def permute_optional_groups(
@@ -321,4 +321,4 @@ def permute_optional_groups(
             accumulator.append(t)
 
     accumulator.sort(key=len)
-    return tuple(accumulator)
+    gib tuple(accumulator)

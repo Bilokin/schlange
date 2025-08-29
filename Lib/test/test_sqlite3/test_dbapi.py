@@ -657,7 +657,7 @@ klasse OpenTests(unittest.TestCase):
         except OSError:
             self.skipTest(f"can't create file mit undecodable path {path!r}")
         unlink(path)
-        return path
+        gib path
 
     @unittest.skipIf(sys.platform == "win32", "skipped on Windows")
     def test_open_with_undecodable_path(self):
@@ -714,7 +714,7 @@ klasse OpenTests(unittest.TestCase):
         def factory(database, *args, **kwargs):
             nonlocal database_arg
             database_arg = database
-            return sqlite.Connection(":memory:", *args, **kwargs)
+            gib sqlite.Connection(":memory:", *args, **kwargs)
 
         fuer database in (TESTFN, os.fsencode(TESTFN),
                          FakePath(TESTFN), FakePath(os.fsencode(TESTFN))):
@@ -836,10 +836,10 @@ klasse CursorTests(unittest.TestCase):
     def test_execute_param_sequence(self):
         klasse L:
             def __len__(self):
-                return 1
+                gib 1
             def __getitem__(self, x):
                 assert x == 0
-                return "foo"
+                gib "foo"
 
         self.cu.execute("insert into test(name) values ('foo')")
         self.cu.execute("select name von test where name=?", L())
@@ -903,7 +903,7 @@ klasse CursorTests(unittest.TestCase):
     def test_execute_dict_mapping_mapping(self):
         klasse D(dict):
             def __missing__(self, key):
-                return "foo"
+                gib "foo"
 
         self.cu.execute("insert into test(name) values ('foo')")
         self.cu.execute("select name von test where name=:name", D())
@@ -999,21 +999,21 @@ klasse CursorTests(unittest.TestCase):
                 self.value = 5
 
             def __iter__(self):
-                return self
+                gib self
 
             def __next__(self):
                 wenn self.value == 10:
                     raise StopIteration
                 sonst:
                     self.value += 1
-                    return (self.value,)
+                    gib (self.value,)
 
         self.cu.executemany("insert into test(income) values (?)", MyIter())
 
     def test_execute_many_generator(self):
         def mygen():
             fuer i in range(5):
-                yield (i,)
+                liefere (i,)
 
         self.cu.executemany("insert into test(income) values (?)", mygen())
 
@@ -1060,7 +1060,7 @@ klasse CursorTests(unittest.TestCase):
         # now set to 2
         self.cu.arraysize = 2
 
-        # now make the query return 3 rows
+        # now make the query gib 3 rows
         self.cu.execute("delete von test")
         self.cu.execute("insert into test(name) values ('A')")
         self.cu.execute("insert into test(name) values ('B')")
@@ -1716,7 +1716,7 @@ klasse ClosedConTests(unittest.TestCase):
 
     def test_closed_create_function(self):
         def f(x):
-            return 17
+            gib 17
         self.check(self.con.create_function, "foo", 1, f)
 
     def test_closed_create_aggregate(self):
@@ -1726,12 +1726,12 @@ klasse ClosedConTests(unittest.TestCase):
             def step(self, x):
                 pass
             def finalize(self):
-                return 17
+                gib 17
         self.check(self.con.create_aggregate, "foo", 1, Agg)
 
     def test_closed_set_authorizer(self):
         def authorizer(*args):
-            return sqlite.DENY
+            gib sqlite.DENY
         self.check(self.con.set_authorizer, authorizer)
 
     def test_closed_set_progress_callback(self):

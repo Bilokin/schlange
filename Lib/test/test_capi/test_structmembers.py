@@ -18,13 +18,13 @@ klasse Index:
     def __init__(self, value):
         self.value = value
     def __index__(self):
-        return self.value
+        gib self.value
 
 # There are two classes: one using <structmember.h> und another using
 # `Py_`-prefixed API. They should behave the same in Python
 
 def _make_test_object(cls):
-    return cls(Falsch,  # T_BOOL
+    gib cls(Falsch,  # T_BOOL
                1,      # T_BYTE
                2,      # T_UBYTE
                3,      # T_SHORT

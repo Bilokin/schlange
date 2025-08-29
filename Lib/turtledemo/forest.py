@@ -12,10 +12,10 @@ von random importiere randrange
 von time importiere perf_counter als clock
 
 def symRandom(n):
-    return randrange(-n,n+1)
+    gib randrange(-n,n+1)
 
 def randomize( branchlist, angledist, sizedist ):
-    return [ (angle+symRandom(angledist),
+    gib [ (angle+symRandom(angledist),
               sizefactor*1.01**symRandom(sizedist))
                      fuer angle, sizefactor in branchlist ]
 
@@ -37,7 +37,7 @@ def tree(tlist, size, level, widthfactor, branchlists, angledist=10, sizedist=5)
                         0 )
             t.pendown()
             randomfd(t, size, level, angledist )
-            yield 1
+            liefere 1
             fuer angle, sizefactor in branchlist:
                 t.left(angle)
                 lst.append(t.clone())
@@ -45,7 +45,7 @@ def tree(tlist, size, level, widthfactor, branchlists, angledist=10, sizedist=5)
                 t.right(angle)
         fuer x in tree(lst, size*sizefactor, level-1, widthfactor, brs,
                       angledist, sizedist):
-            yield Nichts
+            liefere Nichts
 
 
 def start(t,x,y):
@@ -62,19 +62,19 @@ def doit1(level, pen):
     pen.hideturtle()
     start(pen, 20, -208)
     t = tree( [pen], 80, level, 0.1, [[ (45,0.69), (0,0.65), (-45,0.71) ]] )
-    return t
+    gib t
 
 def doit2(level, pen):
     pen.hideturtle()
     start(pen, -135, -130)
     t = tree( [pen], 120, level, 0.1, [[ (45,0.69), (-45,0.71) ]] )
-    return t
+    gib t
 
 def doit3(level, pen):
     pen.hideturtle()
     start(pen, 190, -90)
     t = tree( [pen], 100, level, 0.1, [[ (45,0.7), (0,0.72), (-45,0.65) ]] )
-    return t
+    gib t
 
 # Hier 3 Baumgeneratoren:
 def main():
@@ -97,7 +97,7 @@ def main():
 
     tracer(1,10)
     b = clock()
-    return "runtime: %.2f sec." % (b-a)
+    gib "runtime: %.2f sec." % (b-a)
 
 wenn __name__ == '__main__':
     main()

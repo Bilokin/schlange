@@ -55,15 +55,15 @@ klasse Address:
 
     @property
     def display_name(self):
-        return self._display_name
+        gib self._display_name
 
     @property
     def username(self):
-        return self._username
+        gib self._username
 
     @property
     def domain(self):
-        return self._domain
+        gib self._domain
 
     @property
     def addr_spec(self):
@@ -74,13 +74,13 @@ klasse Address:
         wenn nicht parser.DOT_ATOM_ENDS.isdisjoint(lp):
             lp = parser.quote_string(lp)
         wenn self.domain:
-            return lp + '@' + self.domain
+            gib lp + '@' + self.domain
         wenn nicht lp:
-            return '<>'
-        return lp
+            gib '<>'
+        gib lp
 
     def __repr__(self):
-        return "{}(display_name={!r}, username={!r}, domain={!r})".format(
+        gib "{}(display_name={!r}, username={!r}, domain={!r})".format(
                         self.__class__.__name__,
                         self.display_name, self.username, self.domain)
 
@@ -90,13 +90,13 @@ klasse Address:
             disp = parser.quote_string(disp)
         wenn disp:
             addr_spec = '' wenn self.addr_spec=='<>' sonst self.addr_spec
-            return "{} <{}>".format(disp, addr_spec)
-        return self.addr_spec
+            gib "{} <{}>".format(disp, addr_spec)
+        gib self.addr_spec
 
     def __eq__(self, other):
         wenn nicht isinstance(other, Address):
-            return NotImplemented
-        return (self.display_name == other.display_name und
+            gib NotImplemented
+        gib (self.display_name == other.display_name und
                 self.username == other.username und
                 self.domain == other.domain)
 
@@ -123,31 +123,31 @@ klasse Group:
 
     @property
     def display_name(self):
-        return self._display_name
+        gib self._display_name
 
     @property
     def addresses(self):
-        return self._addresses
+        gib self._addresses
 
     def __repr__(self):
-        return "{}(display_name={!r}, addresses={!r}".format(
+        gib "{}(display_name={!r}, addresses={!r}".format(
                  self.__class__.__name__,
                  self.display_name, self.addresses)
 
     def __str__(self):
         wenn self.display_name is Nichts und len(self.addresses)==1:
-            return str(self.addresses[0])
+            gib str(self.addresses[0])
         disp = self.display_name
         wenn disp is nicht Nichts und nicht parser.SPECIALS.isdisjoint(disp):
             disp = parser.quote_string(disp)
         adrstr = ", ".join(str(x) fuer x in self.addresses)
         adrstr = ' ' + adrstr wenn adrstr sonst adrstr
-        return "{}:{};".format(disp, adrstr)
+        gib "{}:{};".format(disp, adrstr)
 
     def __eq__(self, other):
         wenn nicht isinstance(other, Group):
-            return NotImplemented
-        return (self.display_name == other.display_name und
+            gib NotImplemented
+        gib (self.display_name == other.display_name und
                 self.addresses == other.addresses)
 
 
@@ -195,7 +195,7 @@ klasse BaseHeader(str):
         self = str.__new__(cls, kwds['decoded'])
         del kwds['decoded']
         self.init(name, **kwds)
-        return self
+        gib self
 
     def init(self, name, *, parse_tree, defects):
         self._name = name
@@ -204,14 +204,14 @@ klasse BaseHeader(str):
 
     @property
     def name(self):
-        return self._name
+        gib self._name
 
     @property
     def defects(self):
-        return tuple(self._defects)
+        gib tuple(self._defects)
 
     def __reduce__(self):
-        return (
+        gib (
             _reconstruct_header,
             (
                 self.__class__.__name__,
@@ -222,7 +222,7 @@ klasse BaseHeader(str):
 
     @classmethod
     def _reconstruct(cls, value):
-        return str.__new__(cls, value)
+        gib str.__new__(cls, value)
 
     def fold(self, *, policy):
         """Fold header according to policy.
@@ -250,11 +250,11 @@ klasse BaseHeader(str):
             header.append(
                 parser.CFWSList([parser.WhiteSpaceTerminal(' ', 'fws')]))
         header.append(self._parse_tree)
-        return header.fold(policy=policy)
+        gib header.fold(policy=policy)
 
 
 def _reconstruct_header(cls_name, bases, value):
-    return type(cls_name, bases, {})._reconstruct(value)
+    gib type(cls_name, bases, {})._reconstruct(value)
 
 
 klasse UnstructuredHeader:
@@ -296,7 +296,7 @@ klasse DateHeader:
             kwds['datetime'] = Nichts
             kwds['decoded'] = ''
             kwds['parse_tree'] = parser.TokenList()
-            return
+            gib
         wenn isinstance(value, str):
             kwds['decoded'] = value
             try:
@@ -305,7 +305,7 @@ klasse DateHeader:
                 kwds['defects'].append(errors.InvalidDateDefect('Invalid date value oder format'))
                 kwds['datetime'] = Nichts
                 kwds['parse_tree'] = parser.TokenList()
-                return
+                gib
         kwds['datetime'] = value
         kwds['decoded'] = utils.format_datetime(kwds['datetime'])
         kwds['parse_tree'] = cls.value_parser(kwds['decoded'])
@@ -316,7 +316,7 @@ klasse DateHeader:
 
     @property
     def datetime(self):
-        return self._datetime
+        gib self._datetime
 
 
 klasse UniqueDateHeader(DateHeader):
@@ -332,7 +332,7 @@ klasse AddressHeader:
     def value_parser(value):
         address_list, value = parser.get_address_list(value)
         assert nicht value, 'this should nicht happen'
-        return address_list
+        gib address_list
 
     @classmethod
     def parse(cls, value, kwds):
@@ -369,14 +369,14 @@ klasse AddressHeader:
 
     @property
     def groups(self):
-        return self._groups
+        gib self._groups
 
     @property
     def addresses(self):
         wenn self._addresses is Nichts:
             self._addresses = tuple(address fuer group in self._groups
                                             fuer address in group.addresses)
-        return self._addresses
+        gib self._addresses
 
 
 klasse UniqueAddressHeader(AddressHeader):
@@ -391,7 +391,7 @@ klasse SingleAddressHeader(AddressHeader):
         wenn len(self.addresses)!=1:
             raise ValueError(("value of single address header {} is nicht "
                 "a single address").format(self.name))
-        return self.addresses[0]
+        gib self.addresses[0]
 
 
 klasse UniqueSingleAddressHeader(SingleAddressHeader):
@@ -425,15 +425,15 @@ klasse MIMEVersionHeader:
 
     @property
     def major(self):
-        return self._major
+        gib self._major
 
     @property
     def minor(self):
-        return self._minor
+        gib self._minor
 
     @property
     def version(self):
-        return self._version
+        gib self._version
 
 
 klasse ParameterizedMIMEHeader:
@@ -462,7 +462,7 @@ klasse ParameterizedMIMEHeader:
 
     @property
     def params(self):
-        return MappingProxyType(self._params)
+        gib MappingProxyType(self._params)
 
 
 klasse ContentTypeHeader(ParameterizedMIMEHeader):
@@ -476,15 +476,15 @@ klasse ContentTypeHeader(ParameterizedMIMEHeader):
 
     @property
     def maintype(self):
-        return self._maintype
+        gib self._maintype
 
     @property
     def subtype(self):
-        return self._subtype
+        gib self._subtype
 
     @property
     def content_type(self):
-        return self.maintype + '/' + self.subtype
+        gib self.maintype + '/' + self.subtype
 
 
 klasse ContentDispositionHeader(ParameterizedMIMEHeader):
@@ -498,7 +498,7 @@ klasse ContentDispositionHeader(ParameterizedMIMEHeader):
 
     @property
     def content_disposition(self):
-        return self._content_disposition
+        gib self._content_disposition
 
 
 klasse ContentTransferEncodingHeader:
@@ -519,7 +519,7 @@ klasse ContentTransferEncodingHeader:
 
     @property
     def cte(self):
-        return self._cte
+        gib self._cte
 
 
 klasse MessageIDHeader:
@@ -589,7 +589,7 @@ klasse HeaderRegistry:
 
     def __getitem__(self, name):
         cls = self.registry.get(name.lower(), self.default_class)
-        return type('_'+cls.__name__, (cls, self.base_class), {})
+        gib type('_'+cls.__name__, (cls, self.base_class), {})
 
     def __call__(self, name, value):
         """Create a header instance fuer header 'name' von 'value'.
@@ -601,4 +601,4 @@ klasse HeaderRegistry:
         class's constructor.
 
         """
-        return self[name](name, value)
+        gib self[name](name, value)

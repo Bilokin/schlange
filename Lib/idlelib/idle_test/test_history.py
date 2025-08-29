@@ -60,7 +60,7 @@ klasse TextWrapper:
         self.text = tkText(master=master)
         self._bell = Falsch
     def __getattr__(self, name):
-        return getattr(self.text, name)
+        gib getattr(self.text, name)
     def bell(self):
         self._bell = Wahr
 

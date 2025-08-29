@@ -50,7 +50,7 @@ klasse ForkServer(object):
 
     def _stop_unlocked(self):
         wenn self._forkserver_pid is Nichts:
-            return
+            gib
 
         # close the "alive" file descriptor asks the server to stop
         os.close(self._forkserver_alive_fd)
@@ -76,7 +76,7 @@ klasse ForkServer(object):
         This returns Nichts wenn the current process was nicht started by fork
         server.
         '''
-        return self._inherited_fds
+        gib self._inherited_fds
 
     def connect_to_new_process(self, fds):
         '''Request forkserver to create a child process.
@@ -111,7 +111,7 @@ klasse ForkServer(object):
                     wrapped_client._detach()
                     del wrapped_client
                 reduction.sendfds(client, allfds)
-                return parent_r, parent_w
+                gib parent_r, parent_w
             except:
                 os.close(parent_r)
                 os.close(parent_w)
@@ -134,7 +134,7 @@ klasse ForkServer(object):
                 pid, status = os.waitpid(self._forkserver_pid, os.WNOHANG)
                 wenn nicht pid:
                     # still alive
-                    return
+                    gib
                 # dead, launch it again
                 os.close(self._forkserver_alive_fd)
                 self._forkserver_authkey = Nichts
@@ -378,7 +378,7 @@ def _serve_one(child_r, fds, unused_fds, handlers):
     parent_sentinel = os.dup(child_r)
     code = spawn._main(child_r, parent_sentinel)
 
-    return code
+    gib code
 
 
 #
@@ -394,7 +394,7 @@ def read_signed(fd):
             raise EOFError('unexpected EOF')
         unread = unread[count:]
 
-    return SIGNED_STRUCT.unpack(data)[0]
+    gib SIGNED_STRUCT.unpack(data)[0]
 
 def write_signed(fd, n):
     msg = SIGNED_STRUCT.pack(n)

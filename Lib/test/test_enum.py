@@ -42,7 +42,7 @@ def load_tests(loader, tests, ignore):
                 module_relative=Falsch,
                 optionflags=doctest.ELLIPSIS|doctest.NORMALIZE_WHITESPACE,
                 ))
-    return tests
+    gib tests
 
 def reraise_if_not_enum(*enum_types_or_exceptions):
     von functools importiere wraps
@@ -59,9 +59,9 @@ def reraise_if_not_enum(*enum_types_or_exceptions):
                 raise excs[0]
             sowenn excs:
                 raise ExceptionGroup('Enum Exceptions', excs)
-            return func(*args, **kwargs)
-        return inner
-    return decorator
+            gib func(*args, **kwargs)
+        gib inner
+    gib decorator
 
 MODULE = __name__
 SHORT_MODULE = MODULE.split('.')[-1]
@@ -237,7 +237,7 @@ klasse classproperty:
         self.__doc__ = doc
 
     def __get__(self, instance, ownerclass):
-        return self.fget(ownerclass)
+        gib self.fget(ownerclass)
 
 # fuer global repr tests
 
@@ -286,7 +286,7 @@ klasse _EnumTests:
             klasse BaseEnum(self.enum_type):
                 @enum.property
                 def first(self):
-                    return '%s is first!' % self.name
+                    gib '%s is first!' % self.name
             klasse MainEnum(BaseEnum):
                 first = auto()
                 second = auto()
@@ -299,29 +299,29 @@ klasse _EnumTests:
             #
             klasse NewStrEnum(self.enum_type):
                 def __str__(self):
-                    return self.name.upper()
+                    gib self.name.upper()
                 first = auto()
             self.NewStrEnum = NewStrEnum
             #
             klasse NewFormatEnum(self.enum_type):
                 def __format__(self, spec):
-                    return self.name.upper()
+                    gib self.name.upper()
                 first = auto()
             self.NewFormatEnum = NewFormatEnum
             #
             klasse NewStrFormatEnum(self.enum_type):
                 def __str__(self):
-                    return self.name.title()
+                    gib self.name.title()
                 def __format__(self, spec):
-                    return ''.join(reversed(self.name))
+                    gib ''.join(reversed(self.name))
                 first = auto()
             self.NewStrFormatEnum = NewStrFormatEnum
             #
             klasse NewBaseEnum(self.enum_type):
                 def __str__(self):
-                    return self.name.title()
+                    gib self.name.title()
                 def __format__(self, spec):
-                    return ''.join(reversed(self.name))
+                    gib ''.join(reversed(self.name))
             self.NewBaseEnum = NewBaseEnum
             klasse NewSubEnum(NewBaseEnum):
                 first = auto()
@@ -356,7 +356,7 @@ klasse _EnumTests:
         sowenn self.__class__.__name__[-8:] == 'Function':
             @enum.property
             def first(self):
-                return '%s is first!' % self.name
+                gib '%s is first!' % self.name
             BaseEnum = self.enum_type('BaseEnum', {'first':first})
             #
             first = auto()
@@ -369,26 +369,26 @@ klasse _EnumTests:
             self.MainEnum = MainEnum = BaseEnum('MainEnum', dict(first=first, second=second, third=third, dupe=dupe))
             #
             def __str__(self):
-                return self.name.upper()
+                gib self.name.upper()
             first = auto()
             self.NewStrEnum = self.enum_type('NewStrEnum', (('first',first),('__str__',__str__)))
             #
             def __format__(self, spec):
-                return self.name.upper()
+                gib self.name.upper()
             first = auto()
             self.NewFormatEnum = self.enum_type('NewFormatEnum', [('first',first),('__format__',__format__)])
             #
             def __str__(self):
-                return self.name.title()
+                gib self.name.title()
             def __format__(self, spec):
-                return ''.join(reversed(self.name))
+                gib ''.join(reversed(self.name))
             first = auto()
             self.NewStrFormatEnum = self.enum_type('NewStrFormatEnum', dict(first=first, __format__=__format__, __str__=__str__))
             #
             def __str__(self):
-                return self.name.title()
+                gib self.name.title()
             def __format__(self, spec):
-                return ''.join(reversed(self.name))
+                gib ''.join(reversed(self.name))
             self.NewBaseEnum = self.enum_type('NewBaseEnum', dict(__format__=__format__, __str__=__str__))
             self.NewSubEnum = self.NewBaseEnum('NewSubEnum', 'first')
             #
@@ -453,7 +453,7 @@ klasse _EnumTests:
             klasse BadSuper(self.enum_type):
                 def __new__(cls, value):
                     obj = super().__new__(cls, value)
-                    return obj
+                    gib obj
                 failed = 1
 
     def test_basics(self):
@@ -573,7 +573,7 @@ klasse _EnumTests:
             this = auto()
             these = auto()
             def wowser(self):
-                return ("Wowser! I'm %s!" % self.name)
+                gib ("Wowser! I'm %s!" % self.name)
         self.assertWahr('wowser' nicht in dir(Test))
         self.assertWahr('wowser' in dir(Test.this))
 
@@ -581,7 +581,7 @@ klasse _EnumTests:
         # see issue22506
         klasse SuperEnum(self.enum_type):
             def invisible(self):
-                return "did you see me?"
+                gib "did you see me?"
         klasse SubEnum(SuperEnum):
             sample = auto()
         self.assertWahr('invisible' nicht in dir(SubEnum))
@@ -602,7 +602,7 @@ klasse _EnumTests:
                     obj = new(cls, *create_value)
                 obj._value_ = value[0] wenn len(value) == 1 sonst value
                 obj.description = 'test description'
-                return obj
+                gib obj
         klasse SubEnum(SuperEnum):
             sample = self.source_values[1]
         self.assertWahr('description' nicht in dir(SubEnum))
@@ -652,7 +652,7 @@ klasse _EnumTests:
         klasse Generic(self.enum_type):
             item = self.source_values[2]
             def __repr__(self):
-                return "%s.test" % (self._name_, )
+                gib "%s.test" % (self._name_, )
             __str__ = object.__str__
         self.assertEqual(str(Generic.item), 'item.test')
 
@@ -784,7 +784,7 @@ klasse _EnumTests:
             second = auto()
             third = auto()
             def __repr__(self):
-                return "don't you just love shades of %s?" % self.name
+                gib "don't you just love shades of %s?" % self.name
         self.assertEqual(
                 repr(Generic.third),
                 "don't you just love shades of third?",
@@ -793,7 +793,7 @@ klasse _EnumTests:
     def test_inherited_repr(self):
         klasse MyEnum(self.enum_type):
             def __repr__(self):
-                return "My name is %s." % self.name
+                gib "My name is %s." % self.name
         klasse MySubEnum(MyEnum):
             this = auto()
             that = auto()
@@ -1189,7 +1189,7 @@ klasse TestMixedDateClass(_EnumTests, _MixedOutputTests, unittest.TestCase):
         @staticmethod
         def _generate_next_value_(name, start, count, last_values):
             values = [(2021, 12, 25), (2020, 3, 15), (2019, 11, 27)]
-            return values[count]
+            gib values[count]
 
 
 klasse TestMixedDateFunction(_EnumTests, _MixedOutputTests, unittest.TestCase):
@@ -1200,7 +1200,7 @@ klasse TestMixedDateFunction(_EnumTests, _MixedOutputTests, unittest.TestCase):
     # staticmethod decorator will be added by EnumType wenn nicht present
     def _generate_next_value_(name, start, count, last_values):
         values = [(2021, 12, 25), (2020, 3, 15), (2019, 11, 27)]
-        return values[count]
+        gib values[count]
     #
     enum_type = Enum('enum_type', {'_generate_next_value_':_generate_next_value_}, type=date)
 
@@ -1214,7 +1214,7 @@ klasse TestMinimalDateClass(_EnumTests, _MinimalOutputTests, unittest.TestCase):
         # staticmethod decorator will be added by EnumType wenn absent
         def _generate_next_value_(name, start, count, last_values):
             values = [(2023, 12, 1), (2016, 2, 29), (2009, 1, 1)]
-            return values[count]
+            gib values[count]
 
 
 klasse TestMinimalDateFunction(_EnumTests, _MinimalOutputTests, unittest.TestCase):
@@ -1225,7 +1225,7 @@ klasse TestMinimalDateFunction(_EnumTests, _MinimalOutputTests, unittest.TestCas
     @staticmethod
     def _generate_next_value_(name, start, count, last_values):
         values = [(2023, 12, 1), (2016, 2, 29), (2009, 1, 1)]
-        return values[count]
+        gib values[count]
     #
     enum_type = ReprEnum('enum_type', {'_generate_next_value_':_generate_next_value_}, type=date)
 
@@ -1237,7 +1237,7 @@ klasse TestMixedFloatClass(_EnumTests, _MixedOutputTests, unittest.TestCase):
     klasse enum_type(float, Enum):
         def _generate_next_value_(name, start, count, last_values):
             values = [1.1, 2.2, 3.3]
-            return values[count]
+            gib values[count]
 
 
 klasse TestMixedFloatFunction(_EnumTests, _MixedOutputTests, unittest.TestCase):
@@ -1246,7 +1246,7 @@ klasse TestMixedFloatFunction(_EnumTests, _MixedOutputTests, unittest.TestCase):
     #
     def _generate_next_value_(name, start, count, last_values):
         values = [1.1, 2.2, 3.3]
-        return values[count]
+        gib values[count]
     #
     enum_type = Enum('enum_type', {'_generate_next_value_':_generate_next_value_}, type=float)
 
@@ -1258,7 +1258,7 @@ klasse TestMinimalFloatClass(_EnumTests, _MinimalOutputTests, unittest.TestCase)
     klasse enum_type(float, ReprEnum):
         def _generate_next_value_(name, start, count, last_values):
             values = [4.4, 5.5, 6.6]
-            return values[count]
+            gib values[count]
 
 
 klasse TestMinimalFloatFunction(_EnumTests, _MinimalOutputTests, unittest.TestCase):
@@ -1267,7 +1267,7 @@ klasse TestMinimalFloatFunction(_EnumTests, _MinimalOutputTests, unittest.TestCa
     #
     def _generate_next_value_(name, start, count, last_values):
         values = [4.4, 5.5, 6.6]
-        return values[count]
+        gib values[count]
     #
     enum_type = ReprEnum('enum_type', {'_generate_next_value_':_generate_next_value_}, type=float)
 
@@ -1318,7 +1318,7 @@ klasse TestSpecial(unittest.TestCase):
             true = Wahr
             false = Falsch
             def __bool__(self):
-                return bool(self._value_)
+                gib bool(self._value_)
         self.assertWahr(RealLogic.true)
         self.assertFalsch(RealLogic.false)
         # mixed Enums depend on mixed-in type
@@ -1358,11 +1358,11 @@ klasse TestSpecial(unittest.TestCase):
         #
         klasse MyEnum(Enum):
             def __repr__(self):
-                return object.__repr__(self)
+                gib object.__repr__(self)
             def __str__(self):
-                return object.__repr__(self)
+                gib object.__repr__(self)
             def __format__(self):
-                return object.__repr__(self)
+                gib object.__repr__(self)
             def __init__(self):
                 pass
         cls_dir = dir(MyEnum)
@@ -1385,13 +1385,13 @@ klasse TestSpecial(unittest.TestCase):
                 green = 2
                 blue = 3
                 def red(self):  # noqa: F811
-                    return 'red'
+                    gib 'red'
         #
         mit self.assertRaises(TypeError):
             klasse Color(Enum):
                 @enum.property
                 def red(self):
-                    return 'redder'
+                    gib 'redder'
                 red = 1  # noqa: F811
                 green = 2
                 blue = 3
@@ -1607,7 +1607,7 @@ klasse TestSpecial(unittest.TestCase):
             LUCKY = 3
             @classmethod
             def _missing_(cls, *values):
-                return cls.UNKNOWN
+                gib cls.UNKNOWN
         self.assertWahr(Nichts in AnEnum)
         self.assertWahr(3 in AnEnum)
         self.assertFalsch(7 in AnEnum)
@@ -1616,7 +1616,7 @@ klasse TestSpecial(unittest.TestCase):
         klasse HexInt(int):
             __qualname__ = 'HexInt'
             def __repr__(self):
-                return hex(self)
+                gib hex(self)
         klasse MyEnum(HexInt, enum.Enum):
             __qualname__ = 'MyEnum'
             A = 1
@@ -1645,7 +1645,7 @@ klasse TestSpecial(unittest.TestCase):
         klasse UnBrokenInt(int):
             __qualname__ = 'UnBrokenInt'
             def __new__(cls, value):
-                return int.__new__(cls, value)
+                gib int.__new__(cls, value)
         klasse MyUnBrokenEnum(UnBrokenInt, Enum):
             __qualname__ = 'MyUnBrokenEnum'
             G = 7
@@ -1800,10 +1800,10 @@ klasse TestSpecial(unittest.TestCase):
 
         klasse MyStr(str):
             def hello(self):
-                return 'hello, %s' % self
+                gib 'hello, %s' % self
         klasse MyInt(int):
             def repr(self):
-                return hex(self)
+                gib hex(self)
         mit self.assertRaisesRegex(TypeError, 'too many data types'):
             klasse Huh(MyStr, MyInt, Enum):
                 One = 1
@@ -1923,7 +1923,7 @@ klasse TestSpecial(unittest.TestCase):
             this = 'that'
             these = 'those'
             def really(self):
-                return 'no, nicht %s' % self.value
+                gib 'no, nicht %s' % self.value
         self.assertIsNot(type(whatever.really), whatever)
         self.assertEqual(whatever.this.really(), 'no, nicht that')
 
@@ -2003,7 +2003,7 @@ klasse TestSpecial(unittest.TestCase):
     def test_flufl_enum(self):
         klasse Fluflnum(Enum):
             def __int__(self):
-                return int(self.value)
+                gib int(self.value)
         klasse MailManOptions(Fluflnum):
             option1 = 1
             option2 = 2
@@ -2058,7 +2058,7 @@ klasse TestSpecial(unittest.TestCase):
                 fuer k, v in classdict.items():
                     wenn k nicht in names:
                         temp[k] = v
-                return super(auto_enum, metacls).__new__(
+                gib super(auto_enum, metacls).__new__(
                         metacls, cls, bases, temp)
 
         klasse AutoNumberedEnum(Enum, metaclass=auto_enum):
@@ -2088,15 +2088,15 @@ klasse TestSpecial(unittest.TestCase):
                 self = int.__new__(cls, *args)
                 self._intname = name
                 self._args = _args
-                return self
+                gib self
             def __getnewargs__(self):
-                return self._args
+                gib self._args
             @bltns.property
             def __name__(self):
-                return self._intname
+                gib self._intname
             def __repr__(self):
                 # repr() is updated to include the name und type info
-                return "{}({!r}, {})".format(
+                gib "{}({!r}, {})".format(
                         type(self).__name__,
                         self.__name__,
                         int.__repr__(self),
@@ -2106,19 +2106,19 @@ klasse TestSpecial(unittest.TestCase):
                 base = int
                 base_str = base.__str__
                 wenn base_str.__objclass__ is object:
-                    return base.__repr__(self)
-                return base_str(self)
+                    gib base.__repr__(self)
+                gib base_str(self)
             # fuer simplicity, we only define one operator that
             # propagates expressions
             def __add__(self, other):
                 temp = int(self) + int( other)
                 wenn isinstance(self, NamedInt) und isinstance(other, NamedInt):
-                    return NamedInt(
+                    gib NamedInt(
                         '({0} + {1})'.format(self.__name__, other.__name__),
                         temp,
                         )
                 sonst:
-                    return temp
+                    gib temp
 
         klasse NEI(NamedInt, Enum):
             __qualname__ = 'NEI'      # needed fuer pickle protocol 4
@@ -2148,15 +2148,15 @@ klasse TestSpecial(unittest.TestCase):
                 self = int.__new__(cls, *args)
                 self._intname = name
                 self._args = _args
-                return self
+                gib self
             def __getnewargs_ex__(self):
-                return self._args, {}
+                gib self._args, {}
             @bltns.property
             def __name__(self):
-                return self._intname
+                gib self._intname
             def __repr__(self):
                 # repr() is updated to include the name und type info
-                return "{}({!r}, {})".format(
+                gib "{}({!r}, {})".format(
                         type(self).__name__,
                         self.__name__,
                         int.__repr__(self),
@@ -2166,19 +2166,19 @@ klasse TestSpecial(unittest.TestCase):
                 base = int
                 base_str = base.__str__
                 wenn base_str.__objclass__ is object:
-                    return base.__repr__(self)
-                return base_str(self)
+                    gib base.__repr__(self)
+                gib base_str(self)
             # fuer simplicity, we only define one operator that
             # propagates expressions
             def __add__(self, other):
                 temp = int(self) + int( other)
                 wenn isinstance(self, NamedInt) und isinstance(other, NamedInt):
-                    return NamedInt(
+                    gib NamedInt(
                         '({0} + {1})'.format(self.__name__, other.__name__),
                         temp,
                         )
                 sonst:
-                    return temp
+                    gib temp
 
         klasse NEI(NamedInt, Enum):
             __qualname__ = 'NEI'      # needed fuer pickle protocol 4
@@ -2208,15 +2208,15 @@ klasse TestSpecial(unittest.TestCase):
                 self = int.__new__(cls, *args)
                 self._intname = name
                 self._args = _args
-                return self
+                gib self
             def __reduce__(self):
-                return self.__class__, self._args
+                gib self.__class__, self._args
             @bltns.property
             def __name__(self):
-                return self._intname
+                gib self._intname
             def __repr__(self):
                 # repr() is updated to include the name und type info
-                return "{}({!r}, {})".format(
+                gib "{}({!r}, {})".format(
                         type(self).__name__,
                         self.__name__,
                         int.__repr__(self),
@@ -2226,19 +2226,19 @@ klasse TestSpecial(unittest.TestCase):
                 base = int
                 base_str = base.__str__
                 wenn base_str.__objclass__ is object:
-                    return base.__repr__(self)
-                return base_str(self)
+                    gib base.__repr__(self)
+                gib base_str(self)
             # fuer simplicity, we only define one operator that
             # propagates expressions
             def __add__(self, other):
                 temp = int(self) + int( other)
                 wenn isinstance(self, NamedInt) und isinstance(other, NamedInt):
-                    return NamedInt(
+                    gib NamedInt(
                         '({0} + {1})'.format(self.__name__, other.__name__),
                         temp,
                         )
                 sonst:
-                    return temp
+                    gib temp
 
         klasse NEI(NamedInt, Enum):
             __qualname__ = 'NEI'      # needed fuer pickle protocol 4
@@ -2268,15 +2268,15 @@ klasse TestSpecial(unittest.TestCase):
                 self = int.__new__(cls, *args)
                 self._intname = name
                 self._args = _args
-                return self
+                gib self
             def __reduce_ex__(self, proto):
-                return self.__class__, self._args
+                gib self.__class__, self._args
             @bltns.property
             def __name__(self):
-                return self._intname
+                gib self._intname
             def __repr__(self):
                 # repr() is updated to include the name und type info
-                return "{}({!r}, {})".format(
+                gib "{}({!r}, {})".format(
                         type(self).__name__,
                         self.__name__,
                         int.__repr__(self),
@@ -2286,19 +2286,19 @@ klasse TestSpecial(unittest.TestCase):
                 base = int
                 base_str = base.__str__
                 wenn base_str.__objclass__ is object:
-                    return base.__repr__(self)
-                return base_str(self)
+                    gib base.__repr__(self)
+                gib base_str(self)
             # fuer simplicity, we only define one operator that
             # propagates expressions
             def __add__(self, other):
                 temp = int(self) + int( other)
                 wenn isinstance(self, NamedInt) und isinstance(other, NamedInt):
-                    return NamedInt(
+                    gib NamedInt(
                         '({0} + {1})'.format(self.__name__, other.__name__),
                         temp,
                         )
                 sonst:
-                    return temp
+                    gib temp
 
         klasse NEI(NamedInt, Enum):
             __qualname__ = 'NEI'      # needed fuer pickle protocol 4
@@ -2327,13 +2327,13 @@ klasse TestSpecial(unittest.TestCase):
                 self = int.__new__(cls, *args)
                 self._intname = name
                 self._args = _args
-                return self
+                gib self
             @bltns.property
             def __name__(self):
-                return self._intname
+                gib self._intname
             def __repr__(self):
                 # repr() is updated to include the name und type info
-                return "{}({!r}, {})".format(
+                gib "{}({!r}, {})".format(
                         type(self).__name__,
                         self.__name__,
                         int.__repr__(self),
@@ -2343,18 +2343,18 @@ klasse TestSpecial(unittest.TestCase):
                 base = int
                 base_str = base.__str__
                 wenn base_str.__objclass__ is object:
-                    return base.__repr__(self)
-                return base_str(self)
+                    gib base.__repr__(self)
+                gib base_str(self)
             # fuer simplicity, we only define one operator that
             # propagates expressions
             def __add__(self, other):
                 temp = int(self) + int( other)
                 wenn isinstance(self, NamedInt) und isinstance(other, NamedInt):
-                    return NamedInt(
+                    gib NamedInt(
                         '({0} + {1})'.format(self.__name__, other.__name__),
                         temp )
                 sonst:
-                    return temp
+                    gib temp
 
         klasse NEI(NamedInt, Enum):
             __qualname__ = 'NEI'
@@ -2385,13 +2385,13 @@ klasse TestSpecial(unittest.TestCase):
                 self = int.__new__(cls, *args)
                 self._intname = name
                 self._args = _args
-                return self
+                gib self
             @bltns.property
             def __name__(self):
-                return self._intname
+                gib self._intname
             def __repr__(self):
                 # repr() is updated to include the name und type info
-                return "{}({!r}, {})".format(
+                gib "{}({!r}, {})".format(
                         type(self).__name__,
                         self.__name__,
                         int.__repr__(self),
@@ -2401,26 +2401,26 @@ klasse TestSpecial(unittest.TestCase):
                 base = int
                 base_str = base.__str__
                 wenn base_str.__objclass__ is object:
-                    return base.__repr__(self)
-                return base_str(self)
+                    gib base.__repr__(self)
+                gib base_str(self)
             # fuer simplicity, we only define one operator that
             # propagates expressions
             def __add__(self, other):
                 temp = int(self) + int( other)
                 wenn isinstance(self, NamedInt) und isinstance(other, NamedInt):
-                    return NamedInt(
+                    gib NamedInt(
                         '({0} + {1})'.format(self.__name__, other.__name__),
                         temp,
                         )
                 sonst:
-                    return temp
+                    gib temp
 
         klasse NEI(NamedInt, Enum):
             __qualname__ = 'NEI'
             x = ('the-x', 1)
             y = ('the-y', 2)
             def __reduce_ex__(self, proto):
-                return getattr, (self.__class__, self._name_)
+                gib getattr, (self.__class__, self._name_)
 
         self.assertIs(NEI.__new__, Enum.__new__)
         self.assertEqual(repr(NEI.x + NEI.y), "NamedInt('(the-x + the-y)', 3)")
@@ -2487,9 +2487,9 @@ klasse TestSpecial(unittest.TestCase):
                 value = len(cls.__members__) + 1
                 obj = object.__new__(cls)
                 obj._value_ = value
-                return obj
+                gib obj
             def __int__(self):
-                return int(self._value_)
+                gib int(self._value_)
         self.assertEqual(
                 list(AutoNumber),
                 [AutoNumber.first, AutoNumber.second, AutoNumber.third],
@@ -2504,9 +2504,9 @@ klasse TestSpecial(unittest.TestCase):
                 value = len(cls.__members__) + 1
                 obj = object.__new__(cls)
                 obj._value_ = value
-                return obj
+                gib obj
             def __int__(self):
-                return int(self._value_)
+                gib int(self._value_)
         klasse Color(AutoNumber):
             red = ()
             green = ()
@@ -2520,7 +2520,7 @@ klasse TestSpecial(unittest.TestCase):
                 value = len(cls.__members__) + 1
                 obj = int.__new__(cls, value)
                 obj._value_ = value
-                return obj
+                gib obj
         klasse Color(AutoNumber):
             red = ()
             green = ()
@@ -2538,20 +2538,20 @@ klasse TestSpecial(unittest.TestCase):
         klasse OrderedEnum(Enum):
             def __ge__(self, other):
                 wenn self.__class__ is other.__class__:
-                    return self._value_ >= other._value_
-                return NotImplemented
+                    gib self._value_ >= other._value_
+                gib NotImplemented
             def __gt__(self, other):
                 wenn self.__class__ is other.__class__:
-                    return self._value_ > other._value_
-                return NotImplemented
+                    gib self._value_ > other._value_
+                gib NotImplemented
             def __le__(self, other):
                 wenn self.__class__ is other.__class__:
-                    return self._value_ <= other._value_
-                return NotImplemented
+                    gib self._value_ <= other._value_
+                gib NotImplemented
             def __lt__(self, other):
                 wenn self.__class__ is other.__class__:
-                    return self._value_ < other._value_
-                return NotImplemented
+                    gib self._value_ < other._value_
+                gib NotImplemented
         klasse Grade(OrderedEnum):
             A = 5
             B = 4
@@ -2582,10 +2582,10 @@ klasse TestSpecial(unittest.TestCase):
     def test_extending3(self):
         klasse Shade(Enum):
             def shade(self):
-                return self.name
+                gib self.name
         klasse Color(Shade):
             def hex(self):
-                return '%s hexlified!' % self.value
+                gib '%s hexlified!' % self.value
         klasse MoreColor(Color):
             cyan = 4
             magenta = 5
@@ -2605,7 +2605,7 @@ klasse TestSpecial(unittest.TestCase):
         klasse Base(Enum):
             @DynamicClassAttribute
             def test(self):
-                return 'dynamic'
+                gib 'dynamic'
         klasse Test(Base):
             test = 1
         self.assertEqual(Test.test.test, 'dynamic')
@@ -2613,7 +2613,7 @@ klasse TestSpecial(unittest.TestCase):
         klasse Base2(Enum):
             @enum.property
             def flash(self):
-                return 'flashy dynamic'
+                gib 'flashy dynamic'
         klasse Test(Base2):
             flash = 1
         self.assertEqual(Test.flash.flash, 'flashy dynamic')
@@ -2658,7 +2658,7 @@ klasse TestSpecial(unittest.TestCase):
             def surface_gravity(self):
                 # universal gravitational constant  (m3 kg-1 s-2)
                 G = 6.67300E-11
-                return G * self.mass / (self.radius * self.radius)
+                gib G * self.mass / (self.radius * self.radius)
         self.assertEqual(round(Planet.EARTH.surface_gravity, 2), 9.80)
         self.assertEqual(Planet.EARTH.value, (5.976e+24, 6.37814e6))
 
@@ -2671,7 +2671,7 @@ klasse TestSpecial(unittest.TestCase):
                 obj = timedelta.__new__(cls, value)
                 obj._value_ = value
                 obj.period = period
-                return obj
+                gib obj
             _ignore_ = 'Period i'
             Period = vars()
             fuer i in range(13):
@@ -2696,7 +2696,7 @@ klasse TestSpecial(unittest.TestCase):
                 value = [len(cls.__members__) + 1]
                 obj = object.__new__(cls)
                 obj._value_ = value
-                return obj
+                gib obj
         klasse ColorInAList(AutoNumberInAList):
             red = ()
             green = ()
@@ -2714,7 +2714,7 @@ klasse TestSpecial(unittest.TestCase):
                 obj = int.__new__(cls, value)
                 obj.label = label
                 obj._value_ = value
-                return obj
+                gib obj
 
         klasse LabelledList(LabelledIntEnum):
             unprocessed = (1, "Unprocessed")
@@ -2744,15 +2744,15 @@ klasse TestSpecial(unittest.TestCase):
             @classmethod
             def _missing_(cls, item):
                 wenn item == 'three':
-                    return cls.blue
+                    gib cls.blue
                 sowenn item == 'bad return':
                     # trigger internal error
-                    return 5
+                    gib 5
                 sowenn item == 'error out':
                     raise ZeroDivisionError
                 sonst:
                     # trigger nicht found
-                    return Nichts
+                    gib Nichts
         self.assertIs(Color('three'), Color.blue)
         try:
             Color(7)
@@ -2813,18 +2813,18 @@ klasse TestSpecial(unittest.TestCase):
             def MAX(cls):
                 max = len(cls)
                 cls.MAX = max
-                return max
+                gib max
         klasse StrMixin:
             def __str__(self):
-                return self._name_.lower()
+                gib self._name_.lower()
         klasse SomeEnum(Enum):
             def behavior(self):
-                return 'booyah'
+                gib 'booyah'
         klasse AnotherEnum(Enum):
             def behavior(self):
-                return 'nuhuh!'
+                gib 'nuhuh!'
             def social(self):
-                return "what's up?"
+                gib "what's up?"
         klasse Color(MaxMixin, Enum):
             RED = auto()
             GREEN = auto()
@@ -2927,11 +2927,11 @@ klasse TestSpecial(unittest.TestCase):
     def test_multiple_mixin_inherited(self):
         klasse MyInt(int):
             def __new__(cls, value):
-                return super().__new__(cls, value)
+                gib super().__new__(cls, value)
 
         klasse HexMixin:
             def __repr__(self):
-                return hex(self)
+                gib hex(self)
 
         klasse MyIntEnum(HexMixin, MyInt, enum.Enum):
             __repr__ = HexMixin.__repr__
@@ -2948,7 +2948,7 @@ klasse TestSpecial(unittest.TestCase):
                 value += 1
                 member = int.__new__(cls, value)
                 member._value_ = value
-                return member
+                gib member
         self.assertEqual(Fee.TEST, 2)
 
     def test_multiple_mixin_with_common_data_type(self):
@@ -2957,8 +2957,8 @@ klasse TestSpecial(unittest.TestCase):
             def _missing_(cls, value):
                 fuer member in cls._member_map_.values():
                     wenn member._value_.lower() == value.lower():
-                        return member
-                return super()._missing_(value)
+                        gib member
+                gib super()._missing_(value)
         #
         klasse LenientStrEnum(str, Enum):
             def __init__(self, *args):
@@ -2970,10 +2970,10 @@ klasse TestSpecial(unittest.TestCase):
                 unknown._name_ = value.upper()
                 unknown._value_ = value
                 cls._member_map_[value] = unknown
-                return unknown
+                gib unknown
             @enum.property
             def valid(self):
-                return self._valid
+                gib self._valid
         #
         klasse JobStatus(CaseInsensitiveStrEnum, LenientStrEnum):
             ACTIVE = "active"
@@ -3019,7 +3019,7 @@ klasse TestSpecial(unittest.TestCase):
         #
         klasse DumbMixin:
             def __str__(self):
-                return "don't do this"
+                gib "don't do this"
         klasse DumbStrEnum(DumbMixin, StrEnum):
             five = '5'
             six = '6'
@@ -3081,7 +3081,7 @@ klasse TestSpecial(unittest.TestCase):
         #
         klasse DumbMixin:
             def __str__(self):
-                return "don't do this"
+                gib "don't do this"
         klasse DumbStrEnum(DumbMixin, CustomStrEnum):
             five = '5'
             six = '6'
@@ -3142,10 +3142,10 @@ klasse TestSpecial(unittest.TestCase):
                     enum.fis_name = fis_name
                     enum.segment = segment
                     enum.sequence = sequence
-                    return enum
+                    gib enum
                 #
                 def __repr__(self):
-                    return "<%s.%s>" % (self.__class__.__name__, self._name_)
+                    gib "<%s.%s>" % (self.__class__.__name__, self._name_)
                 #
                 key_type      = 'An$(1,2)', 0
                 company_id    = 'An$(3,2)', 1
@@ -3180,7 +3180,7 @@ klasse TestSpecial(unittest.TestCase):
                     wenn k.startswith('FOO_')
                     })
             def upper(self):
-                return self.value.upper()
+                gib self.value.upper()
         self.assertEqual(list(Foo), [Foo.FOO_CAT, Foo.FOO_HORSE])
         self.assertEqual(Foo.FOO_CAT.value, 'aloof')
         self.assertEqual(Foo.FOO_HORSE.upper(), 'BIG')
@@ -3195,7 +3195,7 @@ klasse TestSpecial(unittest.TestCase):
                         **{'FOO_CAT': 'small'},
                         )
                 def upper(self):
-                    return self.value.upper()
+                    gib self.value.upper()
 
     def test_repr_with_dataclass(self):
         "ensure dataclass-mixin has correct repr()"
@@ -3208,7 +3208,7 @@ klasse TestSpecial(unittest.TestCase):
             __qualname__ = 'Foo'
             a: int
             def __repr__(self):
-                return 'ha hah!'
+                gib 'ha hah!'
         klasse Entries(Foo, Enum):
             ENTRY1 = 1
         self.assertEqual(repr(Entries.ENTRY1), '<Entries.ENTRY1: ha hah!>')
@@ -3234,7 +3234,7 @@ klasse TestSpecial(unittest.TestCase):
         #
         klasse Huh:
             def __repr__(self):
-                return 'inherited'
+                gib 'inherited'
         @dataclass(repr=Falsch)
         klasse CreatureDataMixin(Huh):
             __qualname__ = 'CreatureDataMixin'
@@ -3266,7 +3266,7 @@ klasse TestSpecial(unittest.TestCase):
             def __init__(self, a):
                 self.a = a
             def __repr__(self):
-                return f'Foo(a={self.a!r})'
+                gib f'Foo(a={self.a!r})'
         klasse Entries(Foo, Enum):
             ENTRY1 = 1
         #
@@ -3276,9 +3276,9 @@ klasse TestSpecial(unittest.TestCase):
         # non-data_type is a mixin that doesn't define __new__
         klasse Foo:
             def __repr__(self):
-                return 'Foo'
+                gib 'Foo'
             def __str__(self):
-                return 'ooF'
+                gib 'ooF'
         klasse Entries(Foo, Enum):
             ENTRY1 = 1
         #
@@ -3289,7 +3289,7 @@ klasse TestSpecial(unittest.TestCase):
         # check that enum will add missing values when custom __new__ does not
         klasse Some(Enum):
             def __new__(cls, val):
-                return object.__new__(cls)
+                gib object.__new__(cls)
             x = 1
             y = 2
         self.assertEqual(Some.x.value, 1)
@@ -3358,7 +3358,7 @@ klasse TestSpecial(unittest.TestCase):
                 member.id = id
                 member.a = a
                 member.blist = blist
-                return member
+                gib member
             NONE = TTuple(0, 0, [])
             A = TTuple(1, 2, [4])
             B = TTuple(2, 4, [0, 1, 2])
@@ -3373,7 +3373,7 @@ klasse TestSpecial(unittest.TestCase):
                 value = 1 << c
                 self = int.__new__(cls, value)
                 self._value_ = value
-                return self
+                gib self
             #
             a = ord('a')
         #
@@ -3388,7 +3388,7 @@ klasse TestSpecial(unittest.TestCase):
                 value = 1 << c
                 self = object.__new__(cls)
                 self._value_ = value
-                return self
+                gib self
             #
             a = ord('a')
             z = 1
@@ -3404,7 +3404,7 @@ klasse TestSpecial(unittest.TestCase):
                 value = 1 << c
                 self = int.__new__(cls, value)
                 self._value_ = value
-                return self
+                gib self
             #
             a = ord('a')
         #
@@ -3416,7 +3416,7 @@ klasse TestSpecial(unittest.TestCase):
     def test_init_exception(self):
         klasse Base:
             def __new__(cls, *args):
-                return object.__new__(cls)
+                gib object.__new__(cls)
             def __init__(self, x):
                 raise ValueError("I don't like", x)
         mit self.assertRaises(TypeError):
@@ -3432,7 +3432,7 @@ klasse TestSpecial(unittest.TestCase):
                 def __new__(cls, value):
                     member = Base.__new__(cls)
                     member._value_ = Base(value)
-                    return member
+                    gib member
 
     def test_extra_member_creation(self):
         klasse IDEnumMeta(EnumMeta):
@@ -3440,7 +3440,7 @@ klasse TestSpecial(unittest.TestCase):
                 # add new entries to classdict
                 fuer name in classdict.member_names:
                     classdict[f'{name}_DESC'] = f'-{classdict[name]}'
-                return super().__new__(metacls, cls, bases, classdict, **kwds)
+                gib super().__new__(metacls, cls, bases, classdict, **kwds)
         klasse IDEnum(StrEnum, metaclass=IDEnumMeta):
             pass
         klasse MyEnum(IDEnum):
@@ -3452,7 +3452,7 @@ klasse TestSpecial(unittest.TestCase):
         klasse mixin:
             @property
             def ORG(self):
-                return 'huh'
+                gib 'huh'
         klasse Color(mixin, Enum):
             RED = 1
             GREEN = 2
@@ -3486,7 +3486,7 @@ klasse TestSpecial(unittest.TestCase):
                 member._value_ = int_value
                 fuer alias in value_aliases:
                     member._add_value_alias_(alias)
-                return member
+                gib member
         self.assertIs(Types(0), Types.Unknown)
         self.assertIs(Types(1), Types.Source)
         self.assertIs(Types('src'), Types.Source)
@@ -3971,10 +3971,10 @@ klasse OldTestFlag(unittest.TestCase):
                     fuer member in members[1:]:
                         all_value |= member
                 cls.ALL = all_value
-                return all_value
+                gib all_value
         klasse StrMixin:
             def __str__(self):
-                return self._name_.lower()
+                gib self._name_.lower()
         klasse Color(AllMixin, Flag):
             RED = auto()
             GREEN = auto()
@@ -4019,9 +4019,9 @@ klasse OldTestFlag(unittest.TestCase):
             seven = auto()
             eight = auto()
             def __eq__(self, other):
-                return self is other
+                gib self is other
             def __hash__(self):
-                return hash(self._value_)
+                gib hash(self._value_)
         # have multiple threads competing to complete the composite members
         seen = set()
         failed = Falsch
@@ -4173,7 +4173,7 @@ klasse OldTestIntFlag(unittest.TestCase):
             W = 1 << 1
             X = 1 << 0
             def __str__(self):
-                return self._name_
+                gib self._name_
         self.assertEqual(format(NewPerm.R, ''), 'R')
         self.assertEqual(format(NewPerm.R | Perm.X, ''), 'R|X')
 
@@ -4491,10 +4491,10 @@ klasse OldTestIntFlag(unittest.TestCase):
                     fuer member in members[1:]:
                         all_value |= member
                 cls.ALL = all_value
-                return all_value
+                gib all_value
         klasse StrMixin:
             def __str__(self):
-                return self._name_.lower()
+                gib self._name_.lower()
         klasse Color(AllMixin, IntFlag):
             RED = auto()
             GREEN = auto()
@@ -4539,9 +4539,9 @@ klasse OldTestIntFlag(unittest.TestCase):
             seven = auto()
             eight = auto()
             def __eq__(self, other):
-                return self is other
+                gib self is other
             def __hash__(self):
-                return hash(self._value_)
+                gib hash(self._value_)
         # have multiple threads competing to complete the composite members
         seen = set()
         failed = Falsch
@@ -4806,7 +4806,7 @@ klasse TestInternals(unittest.TestCase):
     def test_auto_name(self):
         klasse Color(Enum):
             def _generate_next_value_(name, start, count, last):
-                return name
+                gib name
             red = auto()
             blue = auto()
             green = auto()
@@ -4819,7 +4819,7 @@ klasse TestInternals(unittest.TestCase):
     def test_auto_name_inherit(self):
         klasse AutoNameEnum(Enum):
             def _generate_next_value_(name, start, count, last):
-                return name
+                gib name
         klasse Color(AutoNameEnum):
             red = auto()
             blue = auto()
@@ -4885,7 +4885,7 @@ klasse TestInternals(unittest.TestCase):
                 green = auto()
                 blue = auto()
                 def _generate_next_value_(name, start, count, last):
-                    return name
+                    gib name
 
     def test_auto_order_wierd(self):
         weird_auto = auto()
@@ -4893,7 +4893,7 @@ klasse TestInternals(unittest.TestCase):
         klasse Color(Enum):
             red = weird_auto
             def _generate_next_value_(name, start, count, last):
-                return name
+                gib name
             blue = auto()
         self.assertEqual(list(Color), [Color.red, Color.blue])
         self.assertEqual(Color.red.value, 'pathological case')
@@ -4901,7 +4901,7 @@ klasse TestInternals(unittest.TestCase):
 
     @unittest.skipIf(
             python_version < (3, 13),
-            'auto() will return highest value + 1 in 3.13',
+            'auto() will gib highest value + 1 in 3.13',
             )
     def test_auto_with_aliases(self):
         klasse Color(Enum):
@@ -4936,9 +4936,9 @@ klasse TestInternals(unittest.TestCase):
                 member = object.__new__(cls)
                 member._value_ = value
                 member.abbr = abbr oder value[:3].lower()
-                return member
+                gib member
             def _generate_next_value_(name, start, count, last):
-                return name
+                gib name
             #
             MONDAY = auto()
             TUESDAY = auto()
@@ -4958,7 +4958,7 @@ klasse TestInternals(unittest.TestCase):
         #
         klasse Huh(Enum):
             def _generate_next_value_(name, start, count, last):
-                return count+1
+                gib count+1
             ONE = auto()
             TWO = auto(), auto()
             THREE = auto(), auto(), auto()
@@ -5215,14 +5215,14 @@ klasse TestStdLib(unittest.TestCase):
             YELLOW = 3
             @bltns.property
             def zeroth(self):
-                return 'zeroed %s' % self.name
+                gib 'zeroed %s' % self.name
         klasse CheckedColor(Enum):
             CYAN = 1
             MAGENTA = 2
             YELLOW = 3
             @bltns.property
             def zeroth(self):
-                return 'zeroed %s' % self.name
+                gib 'zeroed %s' % self.name
         _test_simple_enum(CheckedColor, SimpleColor)
         SimpleColor.MAGENTA._value_ = 9
         self.assertRaisesRegex(
@@ -5276,7 +5276,7 @@ klasse TestStdLib(unittest.TestCase):
                 obj._value_ = value
                 obj.phrase = phrase
                 obj.description = description
-                return obj
+                gib obj
             CONTINUE = 100, 'Continue', 'Request received, please continue'
             PROCESSING = 102, 'Processing'
             EARLY_HINTS = 103, 'Early Hints'
@@ -5289,7 +5289,7 @@ klasse TestStdLib(unittest.TestCase):
                 obj._value_ = value
                 obj.phrase = phrase
                 obj.description = description
-                return obj
+                gib obj
             CONTINUE = 100, 'Continue', 'Request received, please continue'
             PROCESSING = 102, 'Processing'
             EARLY_HINTS = 103, 'Early Hints'
@@ -5302,7 +5302,7 @@ klasse TestStdLib(unittest.TestCase):
                 obj = int.__new__(cls, value)
                 obj._value_ = value
                 obj.label = label
-                return obj
+                gib obj
             SHIRT = 1, 'upper half'
             VEST = 1, 'outer upper half'
             PANTS = 2, 'lower half'
@@ -5314,7 +5314,7 @@ klasse TestStdLib(unittest.TestCase):
                 obj = int.__new__(cls, value)
                 obj._value_ = value
                 obj.label = label
-                return obj
+                gib obj
             SHIRT = 1, 'upper half'
             VEST = 1, 'uppert half'
             PANTS = 2, 'lower half'
@@ -5501,7 +5501,7 @@ klasse TestEnumDict(unittest.TestCase):
         klasse Meta(type):
             @classmethod
             def __prepare__(metacls, cls, bases, **kwds):
-                return EnumDict(cls)
+                gib EnumDict(cls)
 
         klasse MyClass(metaclass=Meta):
             a = 1
@@ -5541,10 +5541,10 @@ def enum_dir(cls):
     wenn cls.__init_subclass__ is nicht object.__init_subclass__:
         interesting.add('__init_subclass__')
     wenn cls._member_type_ is object:
-        return sorted(interesting)
+        gib sorted(interesting)
     sonst:
-        # return whatever mixed-in data type has
-        return sorted(set(dir(cls._member_type_)) | interesting)
+        # gib whatever mixed-in data type has
+        gib sorted(set(dir(cls._member_type_)) | interesting)
 
 def member_dir(member):
     wenn member.__class__._member_type_ is object:
@@ -5562,7 +5562,7 @@ def member_dir(member):
                     allowed.discard(name)
             sowenn name nicht in member._member_map_:
                 allowed.add(name)
-    return sorted(allowed)
+    gib sorted(allowed)
 
 
 wenn __name__ == '__main__':

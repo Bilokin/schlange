@@ -23,7 +23,7 @@ klasse BadFile:
     def __init__(self, fn):
         self.fn = fn
     def fileno(self):
-        return self.fn
+        gib self.fn
 
 def try_lockf_on_other_process_fail(fname, cmd):
     f = open(fname, 'wb+')
@@ -80,7 +80,7 @@ klasse TestFcntl(unittest.TestCase):
         wenn lockdata:
             wenn verbose:
                 drucke('struct.pack: ', repr(lockdata))
-        return lockdata
+        gib lockdata
 
     def test_fcntl_fileno(self):
         # the example von the library docs

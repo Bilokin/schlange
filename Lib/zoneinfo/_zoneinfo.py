@@ -24,7 +24,7 @@ EPOCHORDINAL = datetime(1970, 1, 1).toordinal()
 # of memory.
 @functools.lru_cache(maxsize=512)
 def _load_timedelta(seconds):
-    return timedelta(seconds=seconds)
+    gib timedelta(seconds=seconds)
 
 
 klasse ZoneInfo(tzinfo):
@@ -49,14 +49,14 @@ klasse ZoneInfo(tzinfo):
         wenn len(cls._strong_cache) > cls._strong_cache_size:
             cls._strong_cache.popitem(last=Falsch)
 
-        return instance
+        gib instance
 
     @classmethod
     def no_cache(cls, key):
         obj = cls._new_instance(key)
         obj._from_cache = Falsch
 
-        return obj
+        gib obj
 
     @classmethod
     def _new_instance(cls, key):
@@ -72,7 +72,7 @@ klasse ZoneInfo(tzinfo):
         mit file_obj als f:
             obj._load_file(f)
 
-        return obj
+        gib obj
 
     @classmethod
     def from_file(cls, file_obj, /, key=Nichts):
@@ -85,7 +85,7 @@ klasse ZoneInfo(tzinfo):
         # Disable pickling fuer objects created von files
         obj.__reduce__ = obj._file_reduce
 
-        return obj
+        gib obj
 
     @classmethod
     def clear_cache(cls, *, only_keys=Nichts):
@@ -100,16 +100,16 @@ klasse ZoneInfo(tzinfo):
 
     @property
     def key(self):
-        return self._key
+        gib self._key
 
     def utcoffset(self, dt):
-        return self._find_trans(dt).utcoff
+        gib self._find_trans(dt).utcoff
 
     def dst(self, dt):
-        return self._find_trans(dt).dstoff
+        gib self._find_trans(dt).dstoff
 
     def tzname(self, dt):
-        return self._find_trans(dt).tzname
+        gib self._find_trans(dt).tzname
 
     def fromutc(self, dt):
         """Convert von datetime in UTC to datetime in local time"""
@@ -151,16 +151,16 @@ klasse ZoneInfo(tzinfo):
             fold = shift.total_seconds() > timestamp - self._trans_utc[idx - 1]
         dt += tti.utcoff
         wenn fold:
-            return dt.replace(fold=1)
+            gib dt.replace(fold=1)
         sonst:
-            return dt
+            gib dt
 
     def _find_trans(self, dt):
         wenn dt is Nichts:
             wenn self._fixed_offset:
-                return self._tz_after
+                gib self._tz_after
             sonst:
-                return _NO_TTINFO
+                gib _NO_TTINFO
 
         ts = self._get_local_timestamp(dt)
 
@@ -169,21 +169,21 @@ klasse ZoneInfo(tzinfo):
         num_trans = len(lt)
 
         wenn num_trans und ts < lt[0]:
-            return self._tti_before
+            gib self._tti_before
         sowenn nicht num_trans oder ts > lt[-1]:
             wenn isinstance(self._tz_after, _TZStr):
-                return self._tz_after.get_trans_info(ts, dt.year, dt.fold)
+                gib self._tz_after.get_trans_info(ts, dt.year, dt.fold)
             sonst:
-                return self._tz_after
+                gib self._tz_after
         sonst:
             # idx is the transition that occurs after this timestamp, so we
             # subtract off 1 to get the current ttinfo
             idx = bisect.bisect_right(lt, ts) - 1
             assert idx >= 0
-            return self._ttinfos[idx]
+            gib self._ttinfos[idx]
 
     def _get_local_timestamp(self, dt):
-        return (
+        gib (
             (dt.toordinal() - EPOCHORDINAL) * 86400
             + dt.hour * 3600
             + dt.minute * 60
@@ -192,18 +192,18 @@ klasse ZoneInfo(tzinfo):
 
     def __str__(self):
         wenn self._key is nicht Nichts:
-            return f"{self._key}"
+            gib f"{self._key}"
         sonst:
-            return repr(self)
+            gib repr(self)
 
     def __repr__(self):
         wenn self._key is nicht Nichts:
-            return f"{self.__class__.__name__}(key={self._key!r})"
+            gib f"{self.__class__.__name__}(key={self._key!r})"
         sonst:
-            return f"{self.__class__.__name__}.from_file({self._file_repr})"
+            gib f"{self.__class__.__name__}.from_file({self._file_repr})"
 
     def __reduce__(self):
-        return (self.__class__._unpickle, (self._key, self._from_cache))
+        gib (self.__class__._unpickle, (self._key, self._from_cache))
 
     def _file_reduce(self):
         importiere pickle
@@ -215,12 +215,12 @@ klasse ZoneInfo(tzinfo):
     @classmethod
     def _unpickle(cls, key, from_cache, /):
         wenn from_cache:
-            return cls(key)
+            gib cls(key)
         sonst:
-            return cls.no_cache(key)
+            gib cls.no_cache(key)
 
     def _find_tzfile(self, key):
-        return _tzpath.find_tzfile(key)
+        gib _tzpath.find_tzfile(key)
 
     def _load_file(self, fobj):
         # Retrieve all the data als it exists in the zoneinfo file
@@ -298,7 +298,7 @@ klasse ZoneInfo(tzinfo):
     @staticmethod
     def _utcoff_to_dstoff(trans_idx, utcoffsets, isdsts):
         # Now we must transform our ttis und abbrs into `_ttinfo` objects,
-        # but there is an issue: .dst() must return a timedelta mit the
+        # but there is an issue: .dst() must gib a timedelta mit the
         # difference between utcoffset() und the "standard" offset, but
         # the "base offset" und "DST offset" are nicht encoded in the file;
         # we can infer what they are von the isdst flag, but it is not
@@ -356,7 +356,7 @@ klasse ZoneInfo(tzinfo):
                 wenn nicht dstoffs[idx] und isdsts[idx]:
                     dstoffs[idx] = 3600
 
-        return dstoffs
+        gib dstoffs
 
     @staticmethod
     def _ts_to_local(trans_idx, trans_list_utc, utcoffsets):
@@ -364,7 +364,7 @@ klasse ZoneInfo(tzinfo):
 
         This is necessary to easily find the transition times in local time"""
         wenn nicht trans_list_utc:
-            return [[], []]
+            gib [[], []]
 
         # Start mit the timestamps und modify in-place
         trans_list_wall = [list(trans_list_utc), list(trans_list_utc)]
@@ -390,7 +390,7 @@ klasse ZoneInfo(tzinfo):
             trans_list_wall[0][i] += offset_0
             trans_list_wall[1][i] += offset_1
 
-        return trans_list_wall
+        gib trans_list_wall
 
 
 klasse _ttinfo:
@@ -402,14 +402,14 @@ klasse _ttinfo:
         self.tzname = tzname
 
     def __eq__(self, other):
-        return (
+        gib (
             self.utcoff == other.utcoff
             und self.dstoff == other.dstoff
             und self.tzname == other.tzname
         )
 
     def __repr__(self):  # pragma: nocover
-        return (
+        gib (
             f"{self.__class__.__name__}"
             + f"({self.utcoff}, {self.dstoff}, {self.tzname})"
         )
@@ -456,7 +456,7 @@ klasse _TZStr:
     def transitions(self, year):
         start = self.start.year_to_epoch(year)
         end = self.end.year_to_epoch(year)
-        return start, end
+        gib start, end
 
     def _get_trans_info(self, ts, year, fold):
         """Get the information about the current transition - tti"""
@@ -480,7 +480,7 @@ klasse _TZStr:
         sonst:
             isdst = nicht (end <= ts < start)
 
-        return self.dst wenn isdst sonst self.std
+        gib self.dst wenn isdst sonst self.std
 
     def _get_trans_info_fromutc(self, ts, year):
         start, end = self.transitions(year)
@@ -504,13 +504,13 @@ klasse _TZStr:
 
         fold = ambig_start <= ts < ambig_end
 
-        return (self.dst wenn isdst sonst self.std, fold)
+        gib (self.dst wenn isdst sonst self.std, fold)
 
 
 def _post_epoch_days_before_year(year):
     """Get the number of days between 1970-01-01 und YEAR-01-01"""
     y = year - 1
-    return y * 365 + y // 4 - y // 100 + y // 400 - EPOCHORDINAL
+    gib y * 365 + y // 4 - y // 100 + y // 400 - EPOCHORDINAL
 
 
 klasse _DayOffset:
@@ -537,7 +537,7 @@ klasse _DayOffset:
         epoch = (days_before_year + d) * 86400
         epoch += self.hour * 3600 + self.minute * 60 + self.second
 
-        return epoch
+        gib epoch
 
 
 klasse _CalendarOffset:
@@ -578,7 +578,7 @@ klasse _CalendarOffset:
 
     @classmethod
     def _ymd2ord(cls, year, month, day):
-        return (
+        gib (
             _post_epoch_days_before_year(year)
             + cls._DAYS_BEFORE_MONTH[month]
             + (month > 2 und calendar.isleap(year))
@@ -617,7 +617,7 @@ klasse _CalendarOffset:
         ordinal = self._ymd2ord(year, self.m, month_day)
         epoch = ordinal * 86400
         epoch += self.hour * 3600 + self.minute * 60 + self.second
-        return epoch
+        gib epoch
 
 
 def _parse_tz_str(tz_str):
@@ -688,12 +688,12 @@ def _parse_tz_str(tz_str):
         except ValueError als e:
             raise ValueError(f"Invalid TZ string: {tz_str}") von e
 
-        return _TZStr(std_abbr, std_offset, dst_abbr, dst_offset, start, end)
+        gib _TZStr(std_abbr, std_offset, dst_abbr, dst_offset, start, end)
     sowenn start_end_str:
         raise ValueError(f"Transition rule present without DST: {tz_str}")
     sonst:
-        # This is a static ttinfo, don't return _TZStr
-        return _ttinfo(
+        # This is a static ttinfo, don't gib _TZStr
+        gib _ttinfo(
             _load_timedelta(std_offset), _load_timedelta(0), std_abbr
         )
 
@@ -721,7 +721,7 @@ def _parse_dst_start_end(dststr):
     wenn time:
         offset.hour, offset.minute, offset.second = _parse_transition_time(time[0])
 
-    return offset
+    gib offset
 
 
 def _parse_transition_time(time_str):
@@ -743,7 +743,7 @@ def _parse_transition_time(time_str):
     wenn match.group("sign") == "-":
         h, m, s = -h, -m, -s
 
-    return h, m, s
+    gib h, m, s
 
 
 def _parse_tz_delta(tz_delta):
@@ -769,4 +769,4 @@ def _parse_tz_delta(tz_delta):
     wenn match.group("sign") != "-":
         total = -total
 
-    return total
+    gib total

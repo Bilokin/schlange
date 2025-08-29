@@ -12,9 +12,9 @@ _MODE_WRITE = 2
 
 def _nbytes(dat, /):
     wenn isinstance(dat, (bytes, bytearray)):
-        return len(dat)
+        gib len(dat)
     mit memoryview(dat) als mv:
-        return mv.nbytes
+        gib mv.nbytes
 
 
 klasse ZstdFile(_streams.BaseStream):
@@ -100,7 +100,7 @@ klasse ZstdFile(_streams.BaseStream):
         any other operation on it will raise ValueError.
         """
         wenn self._fp is Nichts:
-            return
+            gib
         try:
             wenn self._mode == _MODE_READ:
                 wenn getattr(self, '_buffer', Nichts):
@@ -133,7 +133,7 @@ klasse ZstdFile(_streams.BaseStream):
         compressed = self._compressor.compress(data)
         self._fp.write(compressed)
         self._pos += length
-        return length
+        gib length
 
     def flush(self, mode=FLUSH_BLOCK):
         """Flush remaining data to the underlying stream.
@@ -147,14 +147,14 @@ klasse ZstdFile(_streams.BaseStream):
         This method does nothing in reading mode.
         """
         wenn self._mode == _MODE_READ:
-            return
+            gib
         self._check_not_closed()
         wenn mode nicht in {self.FLUSH_BLOCK, self.FLUSH_FRAME}:
             raise ValueError('Invalid mode argument, expected either '
                              'ZstdFile.FLUSH_FRAME oder '
                              'ZstdFile.FLUSH_BLOCK')
         wenn self._compressor.last_mode == mode:
-            return
+            gib
         # Flush zstd block/frame, und write.
         data = self._compressor.flush(mode)
         self._fp.write(data)
@@ -170,7 +170,7 @@ klasse ZstdFile(_streams.BaseStream):
         wenn size is Nichts:
             size = -1
         self._check_can_read()
-        return self._buffer.read(size)
+        gib self._buffer.read(size)
 
     def read1(self, size=-1):
         """Read up to size uncompressed bytes, waehrend trying to avoid
@@ -185,7 +185,7 @@ klasse ZstdFile(_streams.BaseStream):
             # ZSTD_DStreamOutSize is the minimum amount to read guaranteeing
             # a full block is read.
             size = ZSTD_DStreamOutSize
-        return self._buffer.read1(size)
+        gib self._buffer.read1(size)
 
     def readinto(self, b):
         """Read bytes into b.
@@ -193,7 +193,7 @@ klasse ZstdFile(_streams.BaseStream):
         Returns the number of bytes read (0 fuer EOF).
         """
         self._check_can_read()
-        return self._buffer.readinto(b)
+        gib self._buffer.readinto(b)
 
     def readinto1(self, b):
         """Read bytes into b, waehrend trying to avoid making multiple reads
@@ -202,7 +202,7 @@ klasse ZstdFile(_streams.BaseStream):
         Returns the number of bytes read (0 fuer EOF).
         """
         self._check_can_read()
-        return self._buffer.readinto1(b)
+        gib self._buffer.readinto1(b)
 
     def readline(self, size=-1):
         """Read a line of uncompressed bytes von the file.
@@ -212,7 +212,7 @@ klasse ZstdFile(_streams.BaseStream):
         case the line may be incomplete). Returns b'' wenn already at EOF.
         """
         self._check_can_read()
-        return self._buffer.readline(size)
+        gib self._buffer.readline(size)
 
     def seek(self, offset, whence=io.SEEK_SET):
         """Change the file position.
@@ -232,7 +232,7 @@ klasse ZstdFile(_streams.BaseStream):
         self._check_can_read()
 
         # BufferedReader.seek() checks seekable
-        return self._buffer.seek(offset, whence)
+        gib self._buffer.seek(offset, whence)
 
     def peek(self, size=-1):
         """Return buffered data without advancing the file position.
@@ -243,53 +243,53 @@ klasse ZstdFile(_streams.BaseStream):
         # Relies on the undocumented fact that BufferedReader.peek() always
         # returns at least one byte (except at EOF)
         self._check_can_read()
-        return self._buffer.peek(size)
+        gib self._buffer.peek(size)
 
     def __next__(self):
         wenn ret := self._buffer.readline():
-            return ret
+            gib ret
         raise StopIteration
 
     def tell(self):
         """Return the current file position."""
         self._check_not_closed()
         wenn self._mode == _MODE_READ:
-            return self._buffer.tell()
+            gib self._buffer.tell()
         sowenn self._mode == _MODE_WRITE:
-            return self._pos
+            gib self._pos
 
     def fileno(self):
         """Return the file descriptor fuer the underlying file."""
         self._check_not_closed()
-        return self._fp.fileno()
+        gib self._fp.fileno()
 
     @property
     def name(self):
         self._check_not_closed()
-        return self._fp.name
+        gib self._fp.name
 
     @property
     def mode(self):
-        return 'wb' wenn self._mode == _MODE_WRITE sonst 'rb'
+        gib 'wb' wenn self._mode == _MODE_WRITE sonst 'rb'
 
     @property
     def closed(self):
         """Wahr wenn this file is closed."""
-        return self._mode == _MODE_CLOSED
+        gib self._mode == _MODE_CLOSED
 
     def seekable(self):
         """Return whether the file supports seeking."""
-        return self.readable() und self._buffer.seekable()
+        gib self.readable() und self._buffer.seekable()
 
     def readable(self):
         """Return whether the file was opened fuer reading."""
         self._check_not_closed()
-        return self._mode == _MODE_READ
+        gib self._mode == _MODE_READ
 
     def writable(self):
         """Return whether the file was opened fuer writing."""
         self._check_not_closed()
-        return self._mode == _MODE_WRITE
+        gib self._mode == _MODE_WRITE
 
 
 def open(file, /, mode='rb', *, level=Nichts, options=Nichts, zstd_dict=Nichts,
@@ -340,6 +340,6 @@ def open(file, /, mode='rb', *, level=Nichts, options=Nichts, zstd_dict=Nichts,
                            zstd_dict=zstd_dict)
 
     wenn text_mode:
-        return io.TextIOWrapper(binary_file, encoding, errors, newline)
+        gib io.TextIOWrapper(binary_file, encoding, errors, newline)
     sonst:
-        return binary_file
+        gib binary_file

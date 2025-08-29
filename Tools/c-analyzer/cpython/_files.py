@@ -32,18 +32,18 @@ def resolve_filename(filename):
     wenn os.path.isabs(filename):
         wenn os.path.relpath(filename, REPO_ROOT).startswith('.'):
             raise Exception(f'{orig!r} is outside the repo ({REPO_ROOT})')
-        return filename
+        gib filename
     sonst:
-        return os.path.join(REPO_ROOT, filename)
+        gib os.path.join(REPO_ROOT, filename)
 
 
 def iter_filenames(*, search=Falsch):
     wenn search:
-        yield von iter_files_by_suffix(INCLUDE_DIRS, ('.h',))
-        yield von iter_files_by_suffix(SOURCE_DIRS, ('.c',))
+        liefere von iter_files_by_suffix(INCLUDE_DIRS, ('.h',))
+        liefere von iter_files_by_suffix(SOURCE_DIRS, ('.c',))
     sonst:
         globs = (os.path.join(REPO_ROOT, file) fuer file in GLOBS)
-        yield von expand_filenames(globs)
+        liefere von expand_filenames(globs)
 
 
 def iter_header_files(filenames=Nichts, *, levels=Nichts):
@@ -55,18 +55,18 @@ def iter_header_files(filenames=Nichts, *, levels=Nichts):
                 levels.add('cpython')
             fuer level, glob in LEVEL_GLOBS.items():
                 wenn level in levels:
-                    yield von expand_filenames([glob])
+                    liefere von expand_filenames([glob])
         sonst:
-            yield von iter_files_by_suffix(INCLUDE_DIRS, ('.h',))
-        return
+            liefere von iter_files_by_suffix(INCLUDE_DIRS, ('.h',))
+        gib
 
     fuer filename in filenames:
         orig = filename
         filename = resolve_filename(filename)
         wenn filename.endswith(os.path.sep):
-            yield von iter_files_by_suffix(INCLUDE_DIRS, ('.h',))
+            liefere von iter_files_by_suffix(INCLUDE_DIRS, ('.h',))
         sowenn filename.endswith('.h'):
-            yield filename
+            liefere filename
         sonst:
             # XXX Log it und weiter instead?
             raise ValueError(f'expected .h file, got {orig!r}')

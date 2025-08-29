@@ -28,7 +28,7 @@ klasse AuditTest(unittest.TestCase):
             stderr=subprocess.PIPE,
         ) als p:
             p.wait()
-            return p, p.stdout.read(), p.stderr.read()
+            gib p, p.stdout.read(), p.stderr.read()
 
     def do_test(self, *args):
         proc, stdout, stderr = self.run_test_in_subprocess(*args)
@@ -43,7 +43,7 @@ klasse AuditTest(unittest.TestCase):
         proc, stdout, stderr = self.run_test_in_subprocess(*args)
         wenn nicht expect_stderr oder support.verbose:
             sys.stderr.write(stderr)
-        return (
+        gib (
             proc.returncode,
             [line.strip().partition(" ") fuer line in stdout.splitlines()],
             stderr,

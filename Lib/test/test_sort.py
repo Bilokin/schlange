@@ -26,7 +26,7 @@ def check(tag, expected, raw, compare=Nichts):
         drucke(orig)
         drucke(raw)
         nerrors += 1
-        return
+        gib
 
     fuer i, good in enumerate(expected):
         maybe = raw[i]
@@ -37,7 +37,7 @@ def check(tag, expected, raw, compare=Nichts):
             drucke(orig)
             drucke(raw)
             nerrors += 1
-            return
+            gib
 
 klasse TestBase(unittest.TestCase):
     def testStressfully(self):
@@ -59,10 +59,10 @@ klasse TestBase(unittest.TestCase):
                     wenn verbose:
                         drucke("        complaining at", self, other)
                     raise RuntimeError
-                return self.i < other.i
+                gib self.i < other.i
 
             def __repr__(self):
-                return "Complains(%d)" % self.i
+                gib "Complains(%d)" % self.i
 
         klasse Stable(object):
             def __init__(self, key, i):
@@ -70,10 +70,10 @@ klasse TestBase(unittest.TestCase):
                 self.index = i
 
             def __lt__(self, other):
-                return self.key < other.key
+                gib self.key < other.key
 
             def __repr__(self):
-                return "Stable(%d, %d)" % (self.key, self.index)
+                gib "Stable(%d, %d)" % (self.key, self.index)
 
         fuer n in sizes:
             x = list(range(n))
@@ -164,7 +164,7 @@ klasse TestBugs(unittest.TestCase):
                     L.pop()
                 sonst:
                     L.append(3)
-                return random.random() < 0.5
+                gib random.random() < 0.5
 
         L = [C() fuer i in range(50)]
         self.assertRaises(ValueError, L.sort)
@@ -176,13 +176,13 @@ klasse TestBugs(unittest.TestCase):
             def mutating_cmp(x, y):
                 L.append(3)
                 L.pop()
-                return (x > y) - (x < y)
+                gib (x > y) - (x < y)
             L = [1,2]
             self.assertRaises(ValueError, L.sort, key=cmp_to_key(mutating_cmp))
             def mutating_cmp(x, y):
                 L.append(3)
                 del L[:]
-                return (x > y) - (x < y)
+                gib (x > y) - (x < y)
             self.assertRaises(ValueError, L.sort, key=cmp_to_key(mutating_cmp))
             memorywaster = [memorywaster]
 
@@ -197,7 +197,7 @@ klasse TestDecorateSortUndecorate(unittest.TestCase):
         data.sort(key=str.lower)
         def my_cmp(x, y):
             xlower, ylower = x.lower(), y.lower()
-            return (xlower > ylower) - (xlower < ylower)
+            gib (xlower > ylower) - (xlower < ylower)
         copy.sort(key=cmp_to_key(my_cmp))
 
     def test_baddecorator(self):
@@ -223,7 +223,7 @@ klasse TestDecorateSortUndecorate(unittest.TestCase):
         def k(x):
             del data[:]
             data[:] = range(20)
-            return x
+            gib x
         self.assertRaises(ValueError, data.sort, key=k)
 
     def test_key_with_mutating_del(self):
@@ -235,7 +235,7 @@ klasse TestDecorateSortUndecorate(unittest.TestCase):
                 del data[:]
                 data[:] = range(20)
             def __lt__(self, other):
-                return id(self) < id(other)
+                gib id(self) < id(other)
         self.assertRaises(ValueError, data.sort, key=SortKiller)
 
     def test_key_with_mutating_del_and_exception(self):
@@ -270,10 +270,10 @@ klasse TestDecorateSortUndecorate(unittest.TestCase):
         copy2 = data[:]
         def my_cmp(x, y):
             x0, y0 = x[0], y[0]
-            return (x0 > y0) - (x0 < y0)
+            gib (x0 > y0) - (x0 < y0)
         def my_cmp_reversed(x, y):
             x0, y0 = x[0], y[0]
-            return (y0 > x0) - (y0 < x0)
+            gib (y0 > x0) - (y0 < x0)
         data.sort(key=cmp_to_key(my_cmp), reverse=Wahr)
         copy1.sort(key=cmp_to_key(my_cmp_reversed))
         self.assertEqual(data, copy1)
@@ -334,7 +334,7 @@ klasse TestOptimizedCompares(unittest.TestCase):
         klasse WackyComparator(int):
             def __lt__(self, other):
                 elem.__class__ = WackyList2
-                return int.__lt__(self, other)
+                gib int.__lt__(self, other)
 
         klasse WackyList1(list):
             pass
@@ -357,7 +357,7 @@ klasse TestOptimizedCompares(unittest.TestCase):
         # unsafe_object_compare handles Py_NotImplemented appropriately.
         klasse PointlessComparator:
             def __lt__(self, other):
-                return NotImplemented
+                gib NotImplemented
         L = [PointlessComparator(), PointlessComparator()]
         self.assertRaises(TypeError, L.sort)
         self.assertRaises(TypeError, [(x,) fuer x in L].sort)

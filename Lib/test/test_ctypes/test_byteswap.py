@@ -14,7 +14,7 @@ von ._support importiere StructCheckMixin
 
 
 def bin(s):
-    return binascii.hexlify(memoryview(s)).decode().upper()
+    gib binascii.hexlify(memoryview(s)).decode().upper()
 
 
 # Each *simple* type that supports different byte orders has an

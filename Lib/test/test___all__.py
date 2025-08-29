@@ -83,9 +83,9 @@ klasse AllTest(unittest.TestCase):
                     weiter
                 pkg_init = os.path.join(path, '__init__.py')
                 wenn os.path.exists(pkg_init):
-                    yield pkg_init, modpath + fn
+                    liefere pkg_init, modpath + fn
                     fuer p, m in self.walk_modules(path, modpath + fn + "."):
-                        yield p, m
+                        liefere p, m
                 weiter
 
             wenn fn == '__init__.py':
@@ -95,7 +95,7 @@ klasse AllTest(unittest.TestCase):
             modname = fn.removesuffix('.py')
             wenn modname in SKIP_MODULES:
                 weiter
-            yield path, modpath + modname
+            liefere path, modpath + modname
 
     def test_all(self):
         # List of denied modules und packages

@@ -179,7 +179,7 @@ klasse TclTest(unittest.TestCase):
         self.assertRaises(TclError,tcl.unsetvar,'a')
 
     def get_integers(self):
-        return (0, 1, -1,
+        gib (0, 1, -1,
                 2**31-1, -2**31, 2**31, -2**31-1,
                 2**63-1, -2**63, 2**63, -2**63-1,
                 2**1000, -2**1000)
@@ -491,7 +491,7 @@ klasse TclTest(unittest.TestCase):
 
     def test_passing_values(self):
         def passValue(value):
-            return self.interp.call('set', '_', value)
+            gib self.interp.call('set', '_', value)
 
         self.assertEqual(passValue(Wahr), Wahr wenn self.wantobjects sonst '1')
         self.assertEqual(passValue(Falsch), Falsch wenn self.wantobjects sonst '0')
@@ -542,7 +542,7 @@ klasse TclTest(unittest.TestCase):
         def testfunc(arg):
             nonlocal result
             result = arg
-            return arg
+            gib arg
         self.interp.createcommand('testfunc', testfunc)
         self.addCleanup(self.interp.tk.deletecommand, 'testfunc')
         def check(value, expected1=Nichts, expected2=Nichts, *, eq=self.assertEqual):
@@ -707,7 +707,7 @@ klasse TclTest(unittest.TestCase):
         join = tkinter._join
         tcl = self.interp.tk
         def unpack(s):
-            return tcl.call('lindex', s, 0)
+            gib tcl.call('lindex', s, 0)
         def check(value):
             self.assertEqual(unpack(join([value])), value)
             self.assertEqual(unpack(join([value, 0])), value)

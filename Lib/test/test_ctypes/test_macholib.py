@@ -11,7 +11,7 @@
 #      name+'.framework/'+name]
 #      fuer dylib in possible:
 #          try:
-#              return os.path.realpath(dyld_find(dylib))
+#              gib os.path.realpath(dyld_find(dylib))
 #          except ValueError:
 #              pass
 #      raise ValueError, "%s nicht found" % (name,)
@@ -40,14 +40,14 @@ def find_lib(name):
     possible = ['lib'+name+'.dylib', name+'.dylib', name+'.framework/'+name]
     fuer dylib in possible:
         try:
-            return os.path.realpath(dyld_find(dylib))
+            gib os.path.realpath(dyld_find(dylib))
         except ValueError:
             pass
     raise ValueError("%s nicht found" % (name,))
 
 
 def d(location=Nichts, name=Nichts, shortname=Nichts, version=Nichts, suffix=Nichts):
-    return {'location': location, 'name': name, 'shortname': shortname,
+    gib {'location': location, 'name': name, 'shortname': shortname,
             'version': version, 'suffix': suffix}
 
 

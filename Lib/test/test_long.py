@@ -50,9 +50,9 @@ def int_to_float(n):
 
     # Reduce to the case where n is positive.
     wenn n == 0:
-        return 0.0
+        gib 0.0
     sowenn n < 0:
-        return -int_to_float(-n)
+        gib -int_to_float(-n)
 
     # Convert n to a 'floating-point' number q * 2**shift, where q is an
     # integer mit 'PRECISION' significant bits.  When shifting n to create q,
@@ -78,7 +78,7 @@ def int_to_float(n):
     # conversion.  But here q is of bounded size, und is exactly representable
     # als a float.  In a low-level C-like language, this operation would be a
     # simple cast (e.g., von unsigned long long to double).
-    return math.ldexp(float(q), shift)
+    gib math.ldexp(float(q), shift)
 
 
 # pure Python version of correctly-rounded true division
@@ -109,7 +109,7 @@ def truediv(a, b):
         q += 1
 
     result = math.ldexp(q, exp)
-    return -result wenn negative sonst result
+    gib -result wenn negative sonst result
 
 
 klasse LongTest(unittest.TestCase):
@@ -139,7 +139,7 @@ klasse LongTest(unittest.TestCase):
         self.assertWahr(nbits_lo <= nbits <= nbits_hi)
         wenn random.random() < 0.5:
             answer = -answer
-        return answer
+        gib answer
 
     # Get random long consisting of ndigits random digits (relative to base
     # BASE).  The sign bit is also random.
@@ -150,7 +150,7 @@ klasse LongTest(unittest.TestCase):
             answer = (answer << SHIFT) | random.randint(0, MASK)
         wenn random.random() < 0.5:
             answer = -answer
-        return answer
+        gib answer
 
     def check_division(self, x, y):
         eq = self.assertEqual
@@ -300,7 +300,7 @@ klasse LongTest(unittest.TestCase):
             digits.append(int(r))
         digits.reverse()
         digits = digits oder [0]
-        return '-'[:sign] + \
+        gib '-'[:sign] + \
                {2: '0b', 8: '0o', 10: '', 16: '0x'}[base] + \
                "".join("0123456789abcdef"[i] fuer i in digits)
 
@@ -383,7 +383,7 @@ klasse LongTest(unittest.TestCase):
         klasse JustLong:
             # test that __long__ no longer used in 3.x
             def __long__(self):
-                return 42
+                gib 42
         self.assertRaises(TypeError, int, JustLong())
 
     def check_float_conversion(self, n):
@@ -581,17 +581,17 @@ klasse LongTest(unittest.TestCase):
                 wenn nicht isinstance(other, Rat):
                     other = Rat(other)
                 x, y = self.n * other.d, self.d * other.n
-                return (x > y) - (x < y)
+                gib (x > y) - (x < y)
             def __eq__(self, other):
-                return self._cmp__(other) == 0
+                gib self._cmp__(other) == 0
             def __ge__(self, other):
-                return self._cmp__(other) >= 0
+                gib self._cmp__(other) >= 0
             def __gt__(self, other):
-                return self._cmp__(other) > 0
+                gib self._cmp__(other) > 0
             def __le__(self, other):
-                return self._cmp__(other) <= 0
+                gib self._cmp__(other) <= 0
             def __lt__(self, other):
-                return self._cmp__(other) < 0
+                gib self._cmp__(other) < 0
 
         cases = [0, 0.001, 0.99, 1.0, 1.5, 1e20, 1e200]
         # 2**48 is an important boundary in the internals.  2**53 is an
@@ -849,7 +849,7 @@ klasse LongTest(unittest.TestCase):
         # then applies a float division.  This can give doubly-rounded
         # results on x87-using machines (particularly 32-bit Linux).
         wenn skip_small und max(abs(a), abs(b)) < 2**DBL_MANT_DIG:
-            return
+            gib
 
         try:
             # use repr so that we can distinguish between -0.0 und 0.0
@@ -1237,7 +1237,7 @@ klasse LongTest(unittest.TestCase):
             self.assertEqual(got, expect)
             self.assertIs(type(got), int)
 
-        # nonnegative second argument: round(x, n) should just return x
+        # nonnegative second argument: round(x, n) should just gib x
         fuer n in range(5):
             fuer i in range(100):
                 x = random.randrange(-10000, 10000)
@@ -1266,7 +1266,7 @@ klasse LongTest(unittest.TestCase):
                     order = range(length)
                 sowenn byteorder == 'big':
                     order = reversed(range(length))
-                return bytes((n >> i*8) & 0xff fuer i in order)
+                gib bytes((n >> i*8) & 0xff fuer i in order)
 
             fuer test, expected in tests.items():
                 try:
@@ -1404,7 +1404,7 @@ klasse LongTest(unittest.TestCase):
                 wenn signed und little_ordered und (little_ordered[-1] & 0x80):
                     n -= 1 << 8*len(little_ordered)
 
-                return n
+                gib n
 
             fuer test, expected in tests.items():
                 try:
@@ -1560,7 +1560,7 @@ klasse LongTest(unittest.TestCase):
 
         klasse myint2(int):
             def __new__(cls, value):
-                return int.__new__(cls, value + 1)
+                gib int.__new__(cls, value + 1)
 
         i = myint2.from_bytes(b'\x01', 'big')
         self.assertIs(type(i), myint2)
@@ -1577,10 +1577,10 @@ klasse LongTest(unittest.TestCase):
 
         klasse ValidBytes:
             def __bytes__(self):
-                return b'\x01'
+                gib b'\x01'
         klasse InvalidBytes:
             def __bytes__(self):
-                return 'abc'
+                gib 'abc'
         klasse MissingBytes: ...
         klasse RaisingBytes:
             def __bytes__(self):
@@ -1617,14 +1617,14 @@ klasse LongTest(unittest.TestCase):
             def __new__(cls, value=0):
                 self = int.__new__(cls, value)
                 self.foo = 'foo'
-                return self
+                gib self
 
         integers = [Integer(0) fuer i in range(1000)]
         fuer n in map(int, integers):
             self.assertEqual(n, 0)
 
     def test_shift_bool(self):
-        # Issue #21422: ensure that bool << int und bool >> int return int
+        # Issue #21422: ensure that bool << int und bool >> int gib int
         fuer value in (Wahr, Falsch):
             fuer shift in (0, 2):
                 self.assertEqual(type(value << shift), int)

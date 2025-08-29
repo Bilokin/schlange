@@ -58,7 +58,7 @@ klasse PyParseTest(unittest.TestCase):
         p = self.parser
         setcode = p.set_code
         start = p.find_good_parse_start
-        def char_in_string_false(index): return Falsch
+        def char_in_string_false(index): gib Falsch
 
         # First line starts mit 'def' und ends mit ':', then 0 is the pos.
         setcode('def spam():\n')

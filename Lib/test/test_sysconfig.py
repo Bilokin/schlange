@@ -102,7 +102,7 @@ klasse TestSysConfig(unittest.TestCase, VirtualEnvironmentMixin):
         self._uname = os.uname_result(uname)
 
     def _get_uname(self):
-        return self._uname
+        gib self._uname
 
     def _cleanup_testfn(self):
         path = TESTFN
@@ -773,9 +773,9 @@ klasse MakefileTests(unittest.TestCase):
 klasse DeprecationTests(unittest.TestCase):
     def deprecated(self, removal_version, deprecation_msg=Nichts, error=Exception, error_msg=Nichts):
         wenn sys.version_info >= removal_version:
-            return self.assertRaises(error, msg=error_msg)
+            gib self.assertRaises(error, msg=error_msg)
         sonst:
-            return self.assertWarns(DeprecationWarning, msg=deprecation_msg)
+            gib self.assertWarns(DeprecationWarning, msg=deprecation_msg)
 
     def test_expand_makefile_vars(self):
         mit self.deprecated(

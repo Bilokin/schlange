@@ -18,7 +18,7 @@ klasse TestDictWatchers(unittest.TestCase):
     SECOND = 2   # always appends "second" to global event list
 
     def add_watcher(self, kind=EVENTS):
-        return _testcapi.add_dict_watcher(kind)
+        gib _testcapi.add_dict_watcher(kind)
 
     def clear_watcher(self, watcher_id):
         _testcapi.clear_dict_watcher(watcher_id)
@@ -27,7 +27,7 @@ klasse TestDictWatchers(unittest.TestCase):
     def watcher(self, kind=EVENTS):
         wid = self.add_watcher(kind)
         try:
-            yield wid
+            liefere wid
         finally:
             self.clear_watcher(wid)
 
@@ -212,7 +212,7 @@ klasse TestTypeWatchers(unittest.TestCase):
     TYPE_MAX_WATCHERS = 8
 
     def add_watcher(self, kind=TYPES):
-        return _testcapi.add_type_watcher(kind)
+        gib _testcapi.add_type_watcher(kind)
 
     def clear_watcher(self, watcher_id):
         _testcapi.clear_type_watcher(watcher_id)
@@ -221,7 +221,7 @@ klasse TestTypeWatchers(unittest.TestCase):
     def watcher(self, kind=TYPES):
         wid = self.add_watcher(kind)
         try:
-            yield wid
+            liefere wid
         finally:
             self.clear_watcher(wid)
 
@@ -388,7 +388,7 @@ klasse TestCodeObjectWatchers(unittest.TestCase):
     def code_watcher(self, which_watcher):
         wid = _testcapi.add_code_watcher(which_watcher)
         try:
-            yield wid
+            liefere wid
         finally:
             _testcapi.clear_code_watcher(wid)
 
@@ -479,7 +479,7 @@ klasse TestFuncWatchers(unittest.TestCase):
     def add_watcher(self, func):
         wid = _testcapi.add_func_watcher(func)
         try:
-            yield
+            liefere
         finally:
             _testcapi.clear_func_watcher(wid)
 
@@ -596,7 +596,7 @@ klasse TestContextObjectWatchers(unittest.TestCase):
         except ValueError:
             switches = Nichts
         try:
-            yield switches
+            liefere switches
         finally:
             _testcapi.clear_context_watcher(wid)
 

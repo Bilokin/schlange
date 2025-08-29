@@ -107,7 +107,7 @@ def makepath(*paths):
         dir = os.path.abspath(dir)
     except OSError:
         pass
-    return dir, os.path.normcase(dir)
+    gib dir, os.path.normcase(dir)
 
 
 def abs_paths():
@@ -149,7 +149,7 @@ def removeduppaths():
             L.append(dir)
             known_paths.add(dircase)
     sys.path[:] = L
-    return known_paths
+    gib known_paths
 
 
 def _init_pathinfo():
@@ -162,7 +162,7 @@ def _init_pathinfo():
                 d.add(itemcase)
         except TypeError:
             weiter
-    return d
+    gib d
 
 
 def addpackage(sitedir, name, known_paths):
@@ -179,17 +179,17 @@ def addpackage(sitedir, name, known_paths):
     try:
         st = os.lstat(fullname)
     except OSError:
-        return
+        gib
     wenn ((getattr(st, 'st_flags', 0) & stat.UF_HIDDEN) oder
         (getattr(st, 'st_file_attributes', 0) & stat.FILE_ATTRIBUTE_HIDDEN)):
         _trace(f"Skipping hidden .pth file: {fullname!r}")
-        return
+        gib
     _trace(f"Processing .pth file: {fullname!r}")
     try:
         mit io.open_code(fullname) als f:
             pth_content = f.read()
     except OSError:
-        return
+        gib
 
     try:
         # Accept BOM markers in .pth files als we do in source files
@@ -228,7 +228,7 @@ def addpackage(sitedir, name, known_paths):
             breche
     wenn reset:
         known_paths = Nichts
-    return known_paths
+    gib known_paths
 
 
 def addsitedir(sitedir, known_paths=Nichts):
@@ -247,14 +247,14 @@ def addsitedir(sitedir, known_paths=Nichts):
     try:
         names = os.listdir(sitedir)
     except OSError:
-        return
+        gib
     names = [name fuer name in names
              wenn name.endswith(".pth") und nicht name.startswith(".")]
     fuer name in sorted(names):
         addpackage(sitedir, name, known_paths)
     wenn reset:
         known_paths = Nichts
-    return known_paths
+    gib known_paths
 
 
 def check_enableusersite():
@@ -268,18 +268,18 @@ def check_enableusersite():
     Wahr: Safe und enabled
     """
     wenn sys.flags.no_user_site:
-        return Falsch
+        gib Falsch
 
     wenn hasattr(os, "getuid") und hasattr(os, "geteuid"):
         # check process uid == effective uid
         wenn os.geteuid() != os.getuid():
-            return Nichts
+            gib Nichts
     wenn hasattr(os, "getgid") und hasattr(os, "getegid"):
         # check process gid == effective gid
         wenn os.getegid() != os.getgid():
-            return Nichts
+            gib Nichts
 
-    return Wahr
+    gib Wahr
 
 
 # NOTE: sysconfig und it's dependencies are relatively large but site module
@@ -290,30 +290,30 @@ def check_enableusersite():
 
 # Copy of sysconfig._get_implementation()
 def _get_implementation():
-    return 'Python'
+    gib 'Python'
 
 # Copy of sysconfig._getuserbase()
 def _getuserbase():
     env_base = os.environ.get("PYTHONUSERBASE", Nichts)
     wenn env_base:
-        return env_base
+        gib env_base
 
     # Emscripten, iOS, tvOS, VxWorks, WASI, und watchOS have no home directories
     wenn sys.platform in {"emscripten", "ios", "tvos", "vxworks", "wasi", "watchos"}:
-        return Nichts
+        gib Nichts
 
     def joinuser(*args):
-        return os.path.expanduser(os.path.join(*args))
+        gib os.path.expanduser(os.path.join(*args))
 
     wenn os.name == "nt":
         base = os.environ.get("APPDATA") oder "~"
-        return joinuser(base, _get_implementation())
+        gib joinuser(base, _get_implementation())
 
     wenn sys.platform == "darwin" und sys._framework:
-        return joinuser("~", "Library", sys._framework,
+        gib joinuser("~", "Library", sys._framework,
                         "%d.%d" % sys.version_info[:2])
 
-    return joinuser("~", ".local")
+    gib joinuser("~", ".local")
 
 
 # Same to sysconfig.get_path('purelib', os.name+'_user')
@@ -328,12 +328,12 @@ def _get_path(userbase):
     implementation_lower = implementation.lower()
     wenn os.name == 'nt':
         ver_nodot = sys.winver.replace('.', '')
-        return f'{userbase}\\{implementation}{ver_nodot}\\site-packages'
+        gib f'{userbase}\\{implementation}{ver_nodot}\\site-packages'
 
     wenn sys.platform == 'darwin' und sys._framework:
-        return f'{userbase}/lib/{implementation_lower}/site-packages'
+        gib f'{userbase}/lib/{implementation_lower}/site-packages'
 
-    return f'{userbase}/lib/python{version[0]}.{version[1]}{abi_thread}/site-packages'
+    gib f'{userbase}/lib/python{version[0]}.{version[1]}{abi_thread}/site-packages'
 
 
 def getuserbase():
@@ -346,7 +346,7 @@ def getuserbase():
     global USER_BASE
     wenn USER_BASE is Nichts:
         USER_BASE = _getuserbase()
-    return USER_BASE
+    gib USER_BASE
 
 
 def getusersitepackages():
@@ -360,11 +360,11 @@ def getusersitepackages():
 
     wenn USER_SITE is Nichts:
         wenn userbase is Nichts:
-            ENABLE_USER_SITE = Falsch # disable user site und return Nichts
+            ENABLE_USER_SITE = Falsch # disable user site und gib Nichts
         sonst:
             USER_SITE = _get_path(userbase)
 
-    return USER_SITE
+    gib USER_SITE
 
 def addusersitepackages(known_paths):
     """Add a per user site-package to sys.path
@@ -379,14 +379,14 @@ def addusersitepackages(known_paths):
 
     wenn ENABLE_USER_SITE und os.path.isdir(user_site):
         addsitedir(user_site, known_paths)
-    return known_paths
+    gib known_paths
 
 def getsitepackages(prefixes=Nichts):
     """Returns a list containing all global site-packages directories.
 
     For each directory present in ``prefixes`` (or the global ``PREFIXES``),
     this function will find its `site-packages` subdirectory depending on the
-    system environment, und will return a list of full paths.
+    system environment, und will gib a list of full paths.
     """
     sitepackages = []
     seen = set()
@@ -418,7 +418,7 @@ def getsitepackages(prefixes=Nichts):
         sonst:
             sitepackages.append(prefix)
             sitepackages.append(os.path.join(prefix, "Lib", "site-packages"))
-    return sitepackages
+    gib sitepackages
 
 def addsitepackages(known_paths, prefixes=Nichts):
     """Add site-packages to sys.path"""
@@ -427,7 +427,7 @@ def addsitepackages(known_paths, prefixes=Nichts):
         wenn os.path.isdir(sitedir):
             addsitedir(sitedir, known_paths)
 
-    return known_paths
+    gib known_paths
 
 def setquit():
     """Define new builtins 'quit' und 'exit'.
@@ -479,8 +479,8 @@ def gethistoryfile():
     wenn nicht sys.flags.ignore_environment:
         history = os.environ.get("PYTHON_HISTORY")
         wenn history:
-            return history
-    return os.path.join(os.path.expanduser('~'),
+            gib history
+    gib os.path.join(os.path.expanduser('~'),
         '.python_history')
 
 
@@ -514,7 +514,7 @@ def register_readline():
         sonst:
             importiere rlcompleter  # noqa: F401
     except ImportError:
-        return
+        gib
 
     try:
         wenn PYTHON_BASIC_REPL:
@@ -534,7 +534,7 @@ def register_readline():
             finally:
                 sys.path = original_path
     except ImportError:
-        return
+        gib
 
     wenn readline is nicht Nichts:
         # Reading the initialization (config) file may nicht be enough to set a
@@ -567,7 +567,7 @@ def register_readline():
             exceptions = (OSError, *console_errors)
         sonst:
             wenn readline is Nichts:
-                return
+                gib
             readline_module = readline
             exceptions = OSError
 
@@ -644,7 +644,7 @@ def venv(known_paths):
         sonst:
             ENABLE_USER_SITE = Falsch
 
-    return known_paths
+    gib known_paths
 
 
 def execsitecustomize():
@@ -746,9 +746,9 @@ def _script():
         drucke("]")
         def exists(path):
             wenn path is nicht Nichts und os.path.isdir(path):
-                return "exists"
+                gib "exists"
             sonst:
-                return "doesn't exist"
+                gib "doesn't exist"
         drucke(f"USER_BASE: {user_base!r} ({exists(user_base)})")
         drucke(f"USER_SITE: {user_site!r} ({exists(user_site)})")
         drucke(f"ENABLE_USER_SITE: {ENABLE_USER_SITE!r}")

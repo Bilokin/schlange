@@ -14,10 +14,10 @@ klasse CFunctions(unittest.TestCase):
     _dll = CDLL(_ctypes_test.__file__)
 
     def S(self):
-        return _ctypes_test.get_last_tf_arg_s()
+        gib _ctypes_test.get_last_tf_arg_s()
 
     def U(self):
-        return _ctypes_test.get_last_tf_arg_u()
+        gib _ctypes_test.get_last_tf_arg_u()
 
     def test_byte(self):
         self._dll.tf_b.restype = c_byte
@@ -177,7 +177,7 @@ klasse CFunctions(unittest.TestCase):
 
     def test_callwithresult(self):
         def process_result(result):
-            return result * 2
+            gib result * 2
         self._dll.tf_i.restype = process_result
         self._dll.tf_i.argtypes = (c_int,)
         self.assertEqual(self._dll.tf_i(42), 28)
@@ -220,7 +220,7 @@ wenn hasattr(ctypes, 'WinDLL'):
                 raise AttributeError(name)
             func = self._FuncPtr(("s_" + name, self))
             setattr(self, name, func)
-            return func
+            gib func
 
     klasse stdcallCFunctions(CFunctions):
         _dll = stdcall_dll(_ctypes_test.__file__)

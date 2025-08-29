@@ -17,7 +17,7 @@ klasse Test(object):
         def runTest(self): pass
 
 def _mk_TestSuite(*names):
-    return unittest.TestSuite(Test.Foo(n) fuer n in names)
+    gib unittest.TestSuite(Test.Foo(n) fuer n in names)
 
 ################################################################
 
@@ -78,8 +78,8 @@ klasse Test_TestSuite(unittest.TestCase, TestEquality):
     # TestSuite should allow any iterable to provide tests
     def test_init__tests_from_any_iterable(self):
         def tests():
-            yield unittest.FunctionTestCase(lambda: Nichts)
-            yield unittest.FunctionTestCase(lambda: Nichts)
+            liefere unittest.FunctionTestCase(lambda: Nichts)
+            liefere unittest.FunctionTestCase(lambda: Nichts)
 
         suite_1 = unittest.TestSuite(tests())
         self.assertEqual(suite_1.countTestCases(), 2)
@@ -108,8 +108,8 @@ klasse Test_TestSuite(unittest.TestCase, TestEquality):
     def test_init__TestSuite_instances_in_tests(self):
         def tests():
             ftc = unittest.FunctionTestCase(lambda: Nichts)
-            yield unittest.TestSuite([ftc])
-            yield unittest.FunctionTestCase(lambda: Nichts)
+            liefere unittest.TestSuite([ftc])
+            liefere unittest.FunctionTestCase(lambda: Nichts)
 
         suite = unittest.TestSuite(tests())
         self.assertEqual(suite.countTestCases(), 2)
@@ -130,7 +130,7 @@ klasse Test_TestSuite(unittest.TestCase, TestEquality):
 
     # "Return the number of tests represented by the this test object.
     # ...this method is also implemented by the TestSuite class, which can
-    # return larger [greater than 1] values"
+    # gib larger [greater than 1] values"
     #
     # Presumably an empty TestSuite returns 0?
     def test_countTestCases_zero_simple(self):
@@ -140,7 +140,7 @@ klasse Test_TestSuite(unittest.TestCase, TestEquality):
 
     # "Return the number of tests represented by the this test object.
     # ...this method is also implemented by the TestSuite class, which can
-    # return larger [greater than 1] values"
+    # gib larger [greater than 1] values"
     #
     # Presumably an empty TestSuite (even wenn it contains other empty
     # TestSuite instances) returns 0?
@@ -155,7 +155,7 @@ klasse Test_TestSuite(unittest.TestCase, TestEquality):
 
     # "Return the number of tests represented by the this test object.
     # ...this method is also implemented by the TestSuite class, which can
-    # return larger [greater than 1] values"
+    # gib larger [greater than 1] values"
     def test_countTestCases_simple(self):
         test1 = unittest.FunctionTestCase(lambda: Nichts)
         test2 = unittest.FunctionTestCase(lambda: Nichts)
@@ -168,7 +168,7 @@ klasse Test_TestSuite(unittest.TestCase, TestEquality):
 
     # "Return the number of tests represented by the this test object.
     # ...this method is also implemented by the TestSuite class, which can
-    # return larger [greater than 1] values"
+    # gib larger [greater than 1] values"
     #
     # Make sure this holds fuer nested TestSuite instances, too
     def test_countTestCases_nested(self):
@@ -279,9 +279,9 @@ klasse Test_TestSuite(unittest.TestCase, TestEquality):
         inner_suite = unittest.TestSuite([test_2])
 
         def gen():
-            yield test_1
-            yield test_2
-            yield inner_suite
+            liefere test_1
+            liefere test_2
+            liefere inner_suite
 
         suite_1 = unittest.TestSuite()
         suite_1.addTests(gen())

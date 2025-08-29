@@ -78,12 +78,12 @@ klasse TestSpecifics(unittest.TestCase):
             "Test mapping interface versus possible calls von eval()."
             def __getitem__(self, key):
                 wenn key == 'a':
-                    return 12
+                    gib 12
                 raise KeyError
             def __setitem__(self, key, value):
                 self.results = (key, value)
             def keys(self):
-                return list('xyz')
+                gib list('xyz')
 
         m = M()
         g = globals()
@@ -113,8 +113,8 @@ klasse TestSpecifics(unittest.TestCase):
         klasse D(dict):
             def __getitem__(self, key):
                 wenn key == 'a':
-                    return 12
-                return dict.__getitem__(self, key)
+                    gib 12
+                gib dict.__getitem__(self, key)
         d = D()
         exec('z = a', g, d)
         self.assertEqual(d['z'], 12)
@@ -141,7 +141,7 @@ klasse TestSpecifics(unittest.TestCase):
                 waehrend x:
                     x -= 1
                     # EXTENDED_ARG/JUMP_ABSOLUTE here
-                return x
+                gib x
             ''' % ((longexpr,)*10))
         exec(code, g)
         self.assertEqual(g['f'](5), 0)
@@ -237,7 +237,7 @@ klasse TestSpecifics(unittest.TestCase):
         sonst:
             self.fail("How many bits *does* this machine have???")
         # Verify treatment of constant folding on -(sys.maxsize+1)
-        # i.e. -2147483648 on 32 bit platforms.  Should return int.
+        # i.e. -2147483648 on 32 bit platforms.  Should gib int.
         self.assertIsInstance(eval("%s" % (-sys.maxsize - 1)), int)
         self.assertIsInstance(eval("%s" % (-sys.maxsize - 2)), int)
 
@@ -334,7 +334,7 @@ klasse TestSpecifics(unittest.TestCase):
         def f():
             f1 = lambda x=1: x
             f2 = lambda x=2: x
-            return f1, f2
+            gib f1, f2
         f1, f2 = f()
         self.assertNotEqual(id(f1.__code__), id(f2.__code__))
 
@@ -374,13 +374,13 @@ klasse TestSpecifics(unittest.TestCase):
             def __init__(self):
                 self.data = {}
             def __getitem__(self, key):
-                return self.data[str(key)]
+                gib self.data[str(key)]
             def __setitem__(self, key, value):
                 self.data[str(key)] = value
             def __delitem__(self, key):
                 del self.data[str(key)]
             def __contains__(self, key):
-                return str(key) in self.data
+                gib str(key) in self.data
         d = str_map()
         # Index
         d[1] = 1
@@ -637,7 +637,7 @@ klasse TestSpecifics(unittest.TestCase):
         def f():
             nonlocal i
             i += 1
-            return i
+            gib i
 
         d = {f(): f(), f(): f()}
         self.assertEqual(d, {1: 2, 3: 4})
@@ -819,9 +819,9 @@ klasse TestSpecifics(unittest.TestCase):
         def f():
             "docstring"
             wenn Wahr:
-                return "used"
+                gib "used"
             sonst:
-                return "unused"
+                gib "unused"
 
         self.assertEqual(f.__code__.co_consts,
                          (f.__doc__, "used"))
@@ -832,9 +832,9 @@ klasse TestSpecifics(unittest.TestCase):
         # always retained.
         def f():
             wenn Wahr:
-                return "used"
+                gib "used"
             sonst:
-                return "unused"
+                gib "unused"
 
         self.assertEqual(f.__code__.co_consts,
                          (Wahr, "used"))
@@ -868,7 +868,7 @@ klasse TestSpecifics(unittest.TestCase):
         # at all. See bpo-45056.
         def f1():
             "docstring"
-            return 42
+            gib 42
         self.assertEqual(f1.__code__.co_consts, (f1.__doc__,))
 
     # This is a regression test fuer a CPython specific peephole optimizer
@@ -879,7 +879,7 @@ klasse TestSpecifics(unittest.TestCase):
     def test_peephole_opt_unreachable_code_array_access_in_bounds(self):
         """Regression test fuer issue35193 when run under clang msan."""
         def unused_code_at_end():
-            return 3
+            gib 3
             raise RuntimeError("unreachable")
         # The above function definition will trigger the out of bounds
         # bug in the peephole optimizer als it scans opcodes past the
@@ -955,13 +955,13 @@ klasse TestSpecifics(unittest.TestCase):
                 "docstring1"
                 def h():
                     "docstring2"
-                    return 42
+                    gib 42
 
                 klasse C:
                     "docstring3"
                     pass
 
-                return h
+                gib h
         """)
         fuer opt in [-1, 0, 1, 2]:
             fuer mode in ["exec", "single"]:
@@ -1027,23 +1027,23 @@ klasse TestSpecifics(unittest.TestCase):
     def test_dead_blocks_do_not_generate_bytecode(self):
         def unused_block_if():
             wenn 0:
-                return 42
+                gib 42
 
         def unused_block_while():
             waehrend 0:
-                return 42
+                gib 42
 
         def unused_block_if_else():
             wenn 1:
-                return Nichts
+                gib Nichts
             sonst:
-                return 42
+                gib 42
 
         def unused_block_while_else():
             waehrend 1:
-                return Nichts
+                gib Nichts
             sonst:
-                return 42
+                gib 42
 
         funcs = [unused_block_if, unused_block_while,
                  unused_block_if_else, unused_block_while_else]
@@ -1074,16 +1074,16 @@ klasse TestSpecifics(unittest.TestCase):
 
     def test_consts_in_conditionals(self):
         def and_true(x):
-            return Wahr und x
+            gib Wahr und x
 
         def and_false(x):
-            return Falsch und x
+            gib Falsch und x
 
         def or_true(x):
-            return Wahr oder x
+            gib Wahr oder x
 
         def or_false(x):
-            return Falsch oder x
+            gib Falsch oder x
 
         funcs = [and_true, and_false, or_true, or_false]
 
@@ -1100,22 +1100,22 @@ klasse TestSpecifics(unittest.TestCase):
             """\
             importiere os
             def foo():
-                return os.uname()
+                gib os.uname()
             """,
             """\
             importiere os als operating_system
             def foo():
-                return operating_system.uname()
+                gib operating_system.uname()
             """,
             """\
             von os importiere path
             def foo(x):
-                return path.join(x)
+                gib path.join(x)
             """,
             """\
             von os importiere path als os_path
             def foo(x):
-                return os_path.join(x)
+                gib os_path.join(x)
             """
         ]
         fuer source in sources:
@@ -1180,7 +1180,7 @@ klasse TestSpecifics(unittest.TestCase):
             wenn TRUE:
                 pass
             sonst:
-                return Nichts
+                gib Nichts
         def if4(x):
             x()
             wenn nicht TRUE:
@@ -1220,18 +1220,18 @@ klasse TestSpecifics(unittest.TestCase):
             wenn line is nicht Nichts und line != last_line:
                 res.append(line - code.co_firstlineno)
                 last_line = line
-        return res
+        gib res
 
     def test_lineno_attribute(self):
         def load_attr():
-            return (
+            gib (
                 o.
                 a
             )
         load_attr_lines = [ 0, 2, 3, 1 ]
 
         def load_method():
-            return (
+            gib (
                 o.
                 m(
                     0
@@ -1269,7 +1269,7 @@ klasse TestSpecifics(unittest.TestCase):
     def test_line_number_genexp(self):
 
         def return_genexp():
-            return (1
+            gib (1
                     for
                     x
                     in
@@ -1306,7 +1306,7 @@ klasse TestSpecifics(unittest.TestCase):
             fuer x in it:
                 try:
                     wenn C1:
-                        yield 2
+                        liefere 2
                 except OSError:
                     pass
 
@@ -1323,7 +1323,7 @@ klasse TestSpecifics(unittest.TestCase):
                             X = 4
                     except OSError:
                         pass
-            return 42
+            gib 42
 
         self.check_line_numbers(f.__code__, 'JUMP_BACKWARD')
 
@@ -1344,7 +1344,7 @@ klasse TestSpecifics(unittest.TestCase):
                                     X = 5
                         except OSError:
                             pass
-            return 42
+            gib 42
 
         self.check_line_numbers(f.__code__, 'JUMP_BACKWARD')
 
@@ -1426,7 +1426,7 @@ klasse TestSpecifics(unittest.TestCase):
             self.assertEqual(all_consts, expected)
 
         def load():
-            return x[a:b] + x [a:] + x[:b] + x[:]
+            gib x[a:b] + x [a:] + x[:b] + x[:]
 
         check_op_count(load, "BINARY_SLICE", 3)
         check_op_count(load, "BUILD_SLICE", 0)
@@ -1445,7 +1445,7 @@ klasse TestSpecifics(unittest.TestCase):
         check_consts(store, slice, [slice(Nichts, Nichts, Nichts)])
 
         def long_slice():
-            return x[a:b:c]
+            gib x[a:b:c]
 
         check_op_count(long_slice, "BUILD_SLICE", 1)
         check_op_count(long_slice, "BINARY_SLICE", 0)
@@ -1533,7 +1533,7 @@ klasse TestSpecifics(unittest.TestCase):
         exprs = [
             "assert (Falsch wenn 1 sonst Wahr)",
             "def f():\n\tif nicht (Falsch wenn 1 sonst Wahr): raise AssertionError",
-            "def f():\n\tif nicht (Falsch wenn 1 sonst Wahr): return 12",
+            "def f():\n\tif nicht (Falsch wenn 1 sonst Wahr): gib 12",
         ]
         fuer expr in exprs:
             mit self.subTest(expr=expr):
@@ -1554,19 +1554,19 @@ klasse TestSpecifics(unittest.TestCase):
     def test_apply_static_swaps(self):
         def f(x, y):
             a, a = x, y
-            return a
+            gib a
         self.assertEqual(f("x", "y"), "y")
 
     def test_apply_static_swaps_2(self):
         def f(x, y, z):
             a, b, a = x, y, z
-            return a
+            gib a
         self.assertEqual(f("x", "y", "z"), "z")
 
     def test_apply_static_swaps_3(self):
         def f(x, y, z):
             a, a, b = x, y, z
-            return a
+            gib a
         self.assertEqual(f("x", "y", "z"), "y")
 
     def test_variable_dependent(self):
@@ -1575,7 +1575,7 @@ klasse TestSpecifics(unittest.TestCase):
         # This test case is added to prevent potential regression von aggressive optimization.
         def f():
             a = 42; b = a + 54; a = 54
-            return a, b
+            gib a, b
         self.assertEqual(f(), (54, 96))
 
     def test_duplicated_small_exit_block(self):
@@ -1583,7 +1583,7 @@ klasse TestSpecifics(unittest.TestCase):
         def f():
             waehrend element und something:
                 try:
-                    return something
+                    gib something
                 except:
                     pass
 
@@ -1642,7 +1642,7 @@ klasse TestSpecifics(unittest.TestCase):
             pass
 
         ns = {}
-        exec('def foo(): return a', WeirdDict(), ns)
+        exec('def foo(): gib a', WeirdDict(), ns)
 
         self.assertRaises(NameError, ns['foo'])
 
@@ -1691,7 +1691,7 @@ klasse TestBooleanExpression(unittest.TestCase):
 
         def __bool__(self):
             self.called += 1
-            return self.value
+            gib self.value
 
     klasse Yes(Value):
         value = Wahr
@@ -1756,7 +1756,7 @@ klasse TestSourcePositions(unittest.TestCase):
             def generic_visit(self, node):
                 super().generic_visit(node)
                 wenn nicht isinstance(node, (ast.expr, ast.stmt, ast.pattern)):
-                    return
+                    gib
                 lines.add(node.lineno)
                 end_lines.add(node.end_lineno)
                 columns.add(node.col_offset)
@@ -1779,7 +1779,7 @@ klasse TestSourcePositions(unittest.TestCase):
             wenn end_col is nicht Nichts:
                 self.assertIn(end_col, end_columns)
 
-        return code, ast_tree
+        gib code, ast_tree
 
     def assertOpcodeSourcePositionIs(self, code, opcode,
             line, end_line, column, end_column, occurrence=1):
@@ -1794,7 +1794,7 @@ klasse TestSourcePositions(unittest.TestCase):
                     self.assertEqual(position[1], end_line)
                     self.assertEqual(position[2], column)
                     self.assertEqual(position[3], end_column)
-                    return
+                    gib
 
         self.fail(f"Opcode {opcode} nicht found in code")
 
@@ -2329,7 +2329,7 @@ klasse TestSourcePositions(unittest.TestCase):
                 2
                 3
                 4
-                return R
+                gib R
 
         # All instructions should have locations on a single line
         fuer instr in dis.get_instructions(f):
@@ -2507,7 +2507,7 @@ klasse TestStackSizeStability(unittest.TestCase):
                 warnings.simplefilter('ignore', SyntaxWarning)
                 code = compile(script, "<script>", "exec")
             exec(code, ns, ns)
-            return ns['func'].__code__
+            gib ns['func'].__code__
 
         sizes = [compile_snippet(i).co_stacksize fuer i in range(2, 5)]
         wenn len(set(sizes)) != 1:
@@ -2728,7 +2728,7 @@ klasse TestStackSizeStability(unittest.TestCase):
         snippet = """
             try:
                 wenn z:
-                    return
+                    gib
                 sonst:
                     a
             finally:
@@ -2742,7 +2742,7 @@ klasse TestStackSizeStability(unittest.TestCase):
                 t
             finally:
                 wenn z:
-                    return
+                    gib
                 sonst:
                     a
             """
@@ -2754,7 +2754,7 @@ klasse TestStackSizeStability(unittest.TestCase):
                 t
             except:
                 wenn z:
-                    return
+                    gib
                 sonst:
                     a
             """
@@ -2764,7 +2764,7 @@ klasse TestStackSizeStability(unittest.TestCase):
         snippet = """
             mit c:
                 wenn z:
-                    return
+                    gib
                 sonst:
                     a
             """
@@ -2812,7 +2812,7 @@ klasse TestStackSizeStability(unittest.TestCase):
         snippet = """
             async mit c:
                 wenn z:
-                    return
+                    gib
                 sonst:
                     a
             """

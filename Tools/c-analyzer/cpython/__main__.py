@@ -63,7 +63,7 @@ def _resolve_filenames(filenames):
         resolved = (_files.resolve_filename(f) fuer f in filenames)
     sonst:
         resolved = _files.iter_filenames()
-    return resolved
+    gib resolved
 
 
 #######################################
@@ -84,27 +84,27 @@ def fmt_summary(analysis):
         nonlocal total
         items, render = c_analyzer.build_section(name, groupitems,
                                                  relroot=REPO_ROOT)
-        yield von render()
+        liefere von render()
         total += len(items)
 
-    yield ''
-    yield '===================='
-    yield 'supported'
-    yield '===================='
+    liefere ''
+    liefere '===================='
+    liefere 'supported'
+    liefere '===================='
 
-    yield von section('types', supported)
-    yield von section('variables', supported)
+    liefere von section('types', supported)
+    liefere von section('variables', supported)
 
-    yield ''
-    yield '===================='
-    yield 'unsupported'
-    yield '===================='
+    liefere ''
+    liefere '===================='
+    liefere 'unsupported'
+    liefere '===================='
 
-    yield von section('types', unsupported)
-    yield von section('variables', unsupported)
+    liefere von section('types', unsupported)
+    liefere von section('variables', unsupported)
 
-    yield ''
-    yield f'grand total: {total}'
+    liefere ''
+    liefere f'grand total: {total}'
 
 
 #######################################
@@ -128,7 +128,7 @@ def _cli_parse(parser):
         get_preprocessor=_parser.get_preprocessor,
     )
     process_files = add_files_cli(parser, **FILES_KWARGS)
-    return [
+    gib [
         process_output,
         process_kind,
         process_preprocessor,
@@ -149,7 +149,7 @@ def cmd_parse(filenames=Nichts, **kwargs):
 
 
 def _cli_check(parser, **kwargs):
-    return c_analyzer._cli_check(parser, CHECKS, **kwargs, **FILES_KWARGS)
+    gib c_analyzer._cli_check(parser, CHECKS, **kwargs, **FILES_KWARGS)
 
 
 def cmd_check(filenames=Nichts, **kwargs):
@@ -195,7 +195,7 @@ def cmd_analyze(filenames=Nichts, **kwargs):
 def _cli_data(parser):
     filenames = Falsch
     known = Wahr
-    return c_analyzer._cli_data(parser, filenames, known)
+    gib c_analyzer._cli_data(parser, filenames, known)
 
 
 def cmd_data(datacmd, **kwargs):
@@ -236,11 +236,11 @@ def cmd_data(datacmd, **kwargs):
                 known={},
                 analyze_resolved=_analyzer.analyze_resolved,
             )
-            return _analyzer.Analysis.from_results(results)
+            gib _analyzer.Analysis.from_results(results)
     sonst:  # check
         known = _analyzer.read_known()
         def analyze(files, **kwargs):
-            return _analyzer.iter_decls(files, **kwargs)
+            gib _analyzer.iter_decls(files, **kwargs)
     extracolumns = Nichts
     c_analyzer.cmd_data(
         datacmd,
@@ -322,7 +322,7 @@ def _cli_capi(parser):
     parser.add_argument('filenames', nargs='*', metavar='FILENAME')
     process_progress = add_progress_cli(parser)
 
-    return [
+    gib [
         process_levels,
         process_kinds,
         process_format,
@@ -385,7 +385,7 @@ def _cli_builtin_types(parser):
     def process_modules(args, *, argv=Nichts):
         pass
 
-    return [
+    gib [
         process_format,
         process_modules,
     ]
@@ -487,7 +487,7 @@ def parse_args(argv=sys.argv[1:], prog=Nichts, *, subset=Nichts):
         # "verbosity" is sent to the commands, so we put it back.
         args.verbosity = verbosity
 
-    return cmd, ns, verbosity, traceback_cm
+    gib cmd, ns, verbosity, traceback_cm
 
 
 def main(cmd, cmd_kwargs):

@@ -22,7 +22,7 @@ klasse TestCM:
 
     async def __aenter__(self):
         self.ordering.append('enter')
-        return self.enter_result
+        gib self.enter_result
 
     async def __aexit__(self, *exc_info):
         self.ordering.append('exit')
@@ -297,35 +297,35 @@ klasse TestAsyncCase(unittest.TestCase):
         self.assertEqual(events, ['asyncSetUp', 'test', 'asyncTearDown', 'cleanup2', 'cleanup1'])
 
     def test_deprecation_of_return_val_from_test(self):
-        # Issue 41322 - deprecate return of value that is nicht Nichts von a test
+        # Issue 41322 - deprecate gib of value that is nicht Nichts von a test
         klasse Nothing:
             def __eq__(self, o):
-                return o is Nichts
+                gib o is Nichts
         klasse Test(unittest.IsolatedAsyncioTestCase):
             async def test1(self):
-                return 1
+                gib 1
             async def test2(self):
-                yield 1
+                liefere 1
             async def test3(self):
-                return Nothing()
+                gib Nothing()
 
         mit self.assertWarns(DeprecationWarning) als w:
             Test('test1').run()
-        self.assertIn('It is deprecated to return a value that is nicht Nichts', str(w.warning))
+        self.assertIn('It is deprecated to gib a value that is nicht Nichts', str(w.warning))
         self.assertIn('test1', str(w.warning))
         self.assertEqual(w.filename, __file__)
         self.assertIn("returned 'int'", str(w.warning))
 
         mit self.assertWarns(DeprecationWarning) als w:
             Test('test2').run()
-        self.assertIn('It is deprecated to return a value that is nicht Nichts', str(w.warning))
+        self.assertIn('It is deprecated to gib a value that is nicht Nichts', str(w.warning))
         self.assertIn('test2', str(w.warning))
         self.assertEqual(w.filename, __file__)
         self.assertIn("returned 'async_generator'", str(w.warning))
 
         mit self.assertWarns(DeprecationWarning) als w:
             Test('test3').run()
-        self.assertIn('It is deprecated to return a value that is nicht Nichts', str(w.warning))
+        self.assertIn('It is deprecated to gib a value that is nicht Nichts', str(w.warning))
         self.assertIn('test3', str(w.warning))
         self.assertEqual(w.filename, __file__)
         self.assertIn(f'returned {Nothing.__name__!r}', str(w.warning))

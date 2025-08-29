@@ -30,9 +30,9 @@ except ImportError:
 
 test_src = """\
 def get_name():
-    return __name__
+    gib __name__
 def get_file():
-    return __file__
+    gib __file__
 """
 test_co = compile(test_src, "<???>", "exec")
 raise_src = 'def do_raise(): raise TypeError\n'
@@ -42,10 +42,10 @@ def make_pyc(co, mtime, size):
     pyc = (importlib.util.MAGIC_NUMBER +
         struct.pack("<iLL", 0,
                     int(mtime) & 0xFFFF_FFFF, size & 0xFFFF_FFFF) + data)
-    return pyc
+    gib pyc
 
 def module_path_to_dotted_name(path):
-    return path.replace(os.sep, '.')
+    gib path.replace(os.sep, '.')
 
 NOW = time.time()
 test_pyc = make_pyc(test_co, NOW, len(test_src))
@@ -152,7 +152,7 @@ klasse UncompressedZipImportTestCase(ImportHooksBaseTestCase):
 
     def getZip64Files(self):
         # This is the simplest way to make zipfile generate the zip64 EOCD block
-        return {f"f{n}.py": test_src fuer n in range(65537)}
+        gib {f"f{n}.py": test_src fuer n in range(65537)}
 
     def doTest(self, expected_ext, files, *modules, **kw):
         wenn 'prefix' nicht in kw:
@@ -746,7 +746,7 @@ klasse UncompressedZipImportTestCase(ImportHooksBaseTestCase):
     def testImporterAttr(self):
         src = """if 1:  # indent hack
         def get_file():
-            return __file__
+            gib __file__
         wenn __loader__.get_data("some.data") != b"some data":
             raise AssertionError("bad data")\n"""
         pyc = make_pyc(compile(src, "<???>", "exec"), NOW, len(src))
@@ -759,7 +759,7 @@ klasse UncompressedZipImportTestCase(ImportHooksBaseTestCase):
         src = """if 1:  # indent hack
         def test(val):
             assert(val)
-            return val\n"""
+            gib val\n"""
         files = {TESTMOD + '.py': src}
         self.makeZip(files)
         sys.path.insert(0, TEMP_ZIP)
@@ -980,7 +980,7 @@ klasse UncompressedZipImportTestCase(ImportHooksBaseTestCase):
         sonst:
             def extract_offset(name):
                 wenn m := re.search(r"-(0x[0-9a-f]{9})\.part$", name):
-                    return int(m.group(1), base=16)
+                    gib int(m.group(1), base=16)
                 raise ValueError(f"{name=} does nicht fit expected pattern.")
             offset_parts = [(extract_offset(n), n) fuer n in pre_built_zip_parts]
             mit open(TEMP_ZIP, "wb") als f:

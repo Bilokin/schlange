@@ -34,7 +34,7 @@ def _combine_flags(flags, add_flags, del_flags,
                    TYPE_FLAGS=_parser.TYPE_FLAGS):
     wenn add_flags & TYPE_FLAGS:
         flags &= ~TYPE_FLAGS
-    return (flags | add_flags) & ~del_flags
+    gib (flags | add_flags) & ~del_flags
 
 def _compile(code, pattern, flags):
     # internal: compile a (sub)pattern
@@ -287,7 +287,7 @@ def _optimize_charset(charset, iscased=Nichts, fixup=Nichts, fixes=Nichts):
                 sowenn op is CATEGORY und tail und (CATEGORY, CH_NEGATE[av]) in tail:
                     # Optimize [\s\S] etc.
                     out = [] wenn out sonst _CHARSET_ALL
-                    return out, Falsch
+                    gib out, Falsch
                 sonst:
                     tail.append((op, av))
             except IndexError:
@@ -344,16 +344,16 @@ def _optimize_charset(charset, iscased=Nichts, fixup=Nichts, fixes=Nichts):
         out += tail
         # wenn the case was changed oder new representation is more compact
         wenn hascased oder len(out) < len(charset):
-            return out, hascased
+            gib out, hascased
         # sonst original character set is good enough
-        return charset, hascased
+        gib charset, hascased
 
     # use bitmap
     wenn len(charmap) == 256:
         data = _mk_bitmap(charmap)
         out.append((CHARSET, data))
         out += tail
-        return out, hascased
+        gib out, hascased
 
     # To represent a big charset, first a bitmap of all characters in the
     # set is constructed. Then, this bitmap is sliced into chunks of 256
@@ -392,14 +392,14 @@ def _optimize_charset(charset, iscased=Nichts, fixup=Nichts, fixes=Nichts):
     data[0:0] = [block] + _bytes_to_codes(mapping)
     out.append((BIGCHARSET, data))
     out += tail
-    return out, hascased
+    gib out, hascased
 
 _CODEBITS = _sre.CODESIZE * 8
 MAXCODE = (1 << _CODEBITS) - 1
 _BITS_TRANS = b'0' + b'1' * 255
 def _mk_bitmap(bits, _CODEBITS=_CODEBITS, _int=int):
     s = bits.translate(_BITS_TRANS)[::-1]
-    return [_int(s[i - _CODEBITS: i], 2)
+    gib [_int(s[i - _CODEBITS: i], 2)
             fuer i in range(len(s), 0, -_CODEBITS)]
 
 def _bytes_to_codes(b):
@@ -407,16 +407,16 @@ def _bytes_to_codes(b):
     a = memoryview(b).cast('I')
     assert a.itemsize == _sre.CODESIZE
     assert len(a) * a.itemsize == len(b)
-    return a.tolist()
+    gib a.tolist()
 
 def _simple(p):
     # check wenn this subpattern is a "simple" operator
     wenn len(p) != 1:
-        return Falsch
+        gib Falsch
     op, av = p[0]
     wenn op is SUBPATTERN:
-        return av[0] is Nichts und _simple(av[-1])
-    return op in _UNIT_CODES
+        gib av[0] is Nichts und _simple(av[-1])
+    gib op in _UNIT_CODES
 
 def _generate_overlap_table(prefix):
     """
@@ -437,15 +437,15 @@ def _generate_overlap_table(prefix):
             idx = table[idx - 1]
         sonst:
             table[i] = idx + 1
-    return table
+    gib table
 
 def _get_iscased(flags):
     wenn nicht flags & SRE_FLAG_IGNORECASE:
-        return Nichts
+        gib Nichts
     sowenn flags & SRE_FLAG_UNICODE:
-        return _sre.unicode_iscased
+        gib _sre.unicode_iscased
     sonst:
-        return _sre.ascii_iscased
+        gib _sre.ascii_iscased
 
 def _get_literal_prefix(pattern, flags):
     # look fuer literal prefix
@@ -475,52 +475,52 @@ def _get_literal_prefix(pattern, flags):
         sonst:
             breche
     sonst:
-        return prefix, prefix_skip, Wahr
-    return prefix, prefix_skip, Falsch
+        gib prefix, prefix_skip, Wahr
+    gib prefix, prefix_skip, Falsch
 
 def _get_charset_prefix(pattern, flags):
     waehrend Wahr:
         wenn nicht pattern.data:
-            return Nichts
+            gib Nichts
         op, av = pattern.data[0]
         wenn op is nicht SUBPATTERN:
             breche
         group, add_flags, del_flags, pattern = av
         flags = _combine_flags(flags, add_flags, del_flags)
         wenn flags & SRE_FLAG_IGNORECASE und flags & SRE_FLAG_LOCALE:
-            return Nichts
+            gib Nichts
 
     iscased = _get_iscased(flags)
     wenn op is LITERAL:
         wenn iscased und iscased(av):
-            return Nichts
-        return [(op, av)]
+            gib Nichts
+        gib [(op, av)]
     sowenn op is BRANCH:
         charset = []
         charsetappend = charset.append
         fuer p in av[1]:
             wenn nicht p:
-                return Nichts
+                gib Nichts
             op, av = p[0]
             wenn op is LITERAL und nicht (iscased und iscased(av)):
                 charsetappend((op, av))
             sonst:
-                return Nichts
-        return charset
+                gib Nichts
+        gib charset
     sowenn op is IN:
         charset = av
         wenn iscased:
             fuer op, av in charset:
                 wenn op is LITERAL:
                     wenn iscased(av):
-                        return Nichts
+                        gib Nichts
                 sowenn op is RANGE:
                     wenn av[1] > 0xffff:
-                        return Nichts
+                        gib Nichts
                     wenn any(map(iscased, range(av[0], av[1]+1))):
-                        return Nichts
-        return charset
-    return Nichts
+                        gib Nichts
+        gib charset
+    gib Nichts
 
 def _compile_info(code, pattern, flags):
     # internal: compile an info block.  in the current version,
@@ -531,7 +531,7 @@ def _compile_info(code, pattern, flags):
         hi = MAXCODE
     wenn lo == 0:
         code.extend([INFO, 4, 0, lo, hi])
-        return
+        gib
     # look fuer a literal prefix
     prefix = []
     prefix_skip = 0
@@ -585,7 +585,7 @@ def _compile_info(code, pattern, flags):
     code[skip] = len(code) - skip
 
 def isstring(obj):
-    return isinstance(obj, (str, bytes))
+    gib isinstance(obj, (str, bytes))
 
 def _code(p, flags):
 
@@ -600,10 +600,10 @@ def _code(p, flags):
 
     code.append(SUCCESS)
 
-    return code
+    gib code
 
 def _hex_code(code):
-    return '[%s]' % ', '.join('%#0*x' % (_sre.CODESIZE*2+2, x) fuer x in code)
+    gib '[%s]' % ', '.join('%#0*x' % (_sre.CODESIZE*2+2, x) fuer x in code)
 
 def dis(code):
     importiere sys
@@ -775,7 +775,7 @@ def compile(p, flags=0):
     fuer k, i in groupindex.items():
         indexgroup[i] = k
 
-    return _sre.compile(
+    gib _sre.compile(
         pattern, flags | p.state.flags, code,
         p.state.groups-1,
         groupindex, tuple(indexgroup)

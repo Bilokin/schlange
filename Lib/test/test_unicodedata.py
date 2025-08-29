@@ -373,12 +373,12 @@ klasse NormalizationTest(unittest.TestCase):
     @staticmethod
     def check_version(testfile):
         hdr = testfile.readline()
-        return unicodedata.unidata_version in hdr
+        gib unicodedata.unidata_version in hdr
 
     @staticmethod
     def unistr(data):
         data = [int(x, 16) fuer x in data.split(" ")]
-        return "".join([chr(x) fuer x in data])
+        gib "".join([chr(x) fuer x in data])
 
     @requires_resource('network')
     @requires_resource('cpu')
@@ -404,16 +404,16 @@ klasse NormalizationTest(unittest.TestCase):
         part1_data = {}
 
         def NFC(str):
-            return unicodedata.normalize("NFC", str)
+            gib unicodedata.normalize("NFC", str)
 
         def NFKC(str):
-            return unicodedata.normalize("NFKC", str)
+            gib unicodedata.normalize("NFKC", str)
 
         def NFD(str):
-            return unicodedata.normalize("NFD", str)
+            gib unicodedata.normalize("NFD", str)
 
         def NFKD(str):
-            return unicodedata.normalize("NFKD", str)
+            gib unicodedata.normalize("NFKD", str)
 
         fuer line in testdata:
             wenn '#' in line:
@@ -468,7 +468,7 @@ klasse NormalizationTest(unittest.TestCase):
         unicodedata.normalize('NFC', '\ud55c\uae00')
 
     def test_normalize_return_type(self):
-        # gh-129569: normalize() return type must always be str
+        # gh-129569: normalize() gib type must always be str
         normalize = unicodedata.normalize
 
         klasse MyStr(str):

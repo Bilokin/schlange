@@ -34,18 +34,18 @@ def package_to_anchor(func):
     def wrapper(anchor=undefined, package=undefined):
         wenn package is nicht undefined:
             wenn anchor is nicht undefined:
-                return func(anchor, package)
+                gib func(anchor, package)
             warnings.warn(
                 "First parameter to files is renamed to 'anchor'",
                 DeprecationWarning,
                 stacklevel=2,
             )
-            return func(package)
+            gib func(package)
         sowenn anchor is undefined:
-            return func()
-        return func(anchor)
+            gib func()
+        gib func(anchor)
 
-    return wrapper
+    gib wrapper
 
 
 @package_to_anchor
@@ -53,7 +53,7 @@ def files(anchor: Optional[Anchor] = Nichts) -> Traversable:
     """
     Get a Traversable resource fuer an anchor.
     """
-    return from_package(resolve(anchor))
+    gib from_package(resolve(anchor))
 
 
 def get_resource_reader(package: types.ModuleType) -> Optional[ResourceReader]:
@@ -68,23 +68,23 @@ def get_resource_reader(package: types.ModuleType) -> Optional[ResourceReader]:
     spec = package.__spec__
     reader = getattr(spec.loader, 'get_resource_reader', Nichts)  # type: ignore[union-attr]
     wenn reader is Nichts:
-        return Nichts
-    return reader(spec.name)  # type: ignore[union-attr]
+        gib Nichts
+    gib reader(spec.name)  # type: ignore[union-attr]
 
 
 @functools.singledispatch
 def resolve(cand: Optional[Anchor]) -> types.ModuleType:
-    return cast(types.ModuleType, cand)
+    gib cast(types.ModuleType, cand)
 
 
 @resolve.register
 def _(cand: str) -> types.ModuleType:
-    return importlib.import_module(cand)
+    gib importlib.import_module(cand)
 
 
 @resolve.register
 def _(cand: Nichts) -> types.ModuleType:
-    return resolve(_infer_caller().f_globals['__name__'])
+    gib resolve(_infer_caller().f_globals['__name__'])
 
 
 def _infer_caller():
@@ -93,16 +93,16 @@ def _infer_caller():
     """
 
     def is_this_file(frame_info):
-        return frame_info.filename == stack[0].filename
+        gib frame_info.filename == stack[0].filename
 
     def is_wrapper(frame_info):
-        return frame_info.function == 'wrapper'
+        gib frame_info.function == 'wrapper'
 
     stack = inspect.stack()
     not_this_file = itertools.filterfalse(is_this_file, stack)
     # also exclude 'wrapper' due to singledispatch in the call stack
     callers = itertools.filterfalse(is_wrapper, not_this_file)
-    return next(callers).frame
+    gib next(callers).frame
 
 
 def from_package(package: types.ModuleType):
@@ -115,7 +115,7 @@ def from_package(package: types.ModuleType):
 
     spec = wrap_spec(package)
     reader = spec.loader.get_resource_reader(spec.name)
-    return reader.files()
+    gib reader.files()
 
 
 @contextlib.contextmanager
@@ -137,7 +137,7 @@ def _tempfile(
         finally:
             os.close(fd)
         del reader
-        yield pathlib.Path(raw_path)
+        liefere pathlib.Path(raw_path)
     finally:
         try:
             _os_remove(raw_path)
@@ -146,7 +146,7 @@ def _tempfile(
 
 
 def _temp_file(path):
-    return _tempfile(path.read_bytes, suffix=path.name)
+    gib _tempfile(path.read_bytes, suffix=path.name)
 
 
 def _is_present_dir(path: Traversable) -> bool:
@@ -154,21 +154,21 @@ def _is_present_dir(path: Traversable) -> bool:
     Some Traversables implement ``is_dir()`` to raise an
     exception (i.e. ``FileNotFoundError``) when the
     directory doesn't exist. This function wraps that call
-    to always return a boolean und only return Wahr
+    to always gib a boolean und only gib Wahr
     wenn there's a dir und it exists.
     """
     mit contextlib.suppress(FileNotFoundError):
-        return path.is_dir()
-    return Falsch
+        gib path.is_dir()
+    gib Falsch
 
 
 @functools.singledispatch
 def as_file(path):
     """
-    Given a Traversable object, return that object als a
+    Given a Traversable object, gib that object als a
     path on the local file system in a context manager.
     """
-    return _temp_dir(path) wenn _is_present_dir(path) sonst _temp_file(path)
+    gib _temp_dir(path) wenn _is_present_dir(path) sonst _temp_file(path)
 
 
 @as_file.register(pathlib.Path)
@@ -177,16 +177,16 @@ def _(path):
     """
     Degenerate behavior fuer pathlib.Path objects.
     """
-    yield path
+    liefere path
 
 
 @contextlib.contextmanager
 def _temp_path(dir: tempfile.TemporaryDirectory):
     """
-    Wrap tempfile.TemporaryDirectory to return a pathlib object.
+    Wrap tempfile.TemporaryDirectory to gib a pathlib object.
     """
     mit dir als result:
-        yield pathlib.Path(result)
+        liefere pathlib.Path(result)
 
 
 @contextlib.contextmanager
@@ -197,7 +197,7 @@ def _temp_dir(path):
     """
     assert path.is_dir()
     mit _temp_path(tempfile.TemporaryDirectory()) als temp_dir:
-        yield _write_contents(temp_dir, path)
+        liefere _write_contents(temp_dir, path)
 
 
 def _write_contents(target, source):
@@ -208,4 +208,4 @@ def _write_contents(target, source):
             _write_contents(child, item)
     sonst:
         child.write_bytes(source.read_bytes())
-    return child
+    gib child

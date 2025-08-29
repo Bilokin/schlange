@@ -33,11 +33,11 @@ def skip_if_missing(tool=Nichts):
 def imports_under_tool(name, *subdirs):
     tooldir = os.path.join(toolsdir, name, *subdirs)
     mit import_helper.DirsOnSysPath(tooldir) als cm:
-        yield cm
+        liefere cm
 
 def import_tool(toolname):
     mit import_helper.DirsOnSysPath(scriptsdir):
-        return importlib.import_module(toolname)
+        gib importlib.import_module(toolname)
 
 def load_tests(*args):
-    return support.load_package_tests(os.path.dirname(__file__), *args)
+    gib support.load_package_tests(os.path.dirname(__file__), *args)

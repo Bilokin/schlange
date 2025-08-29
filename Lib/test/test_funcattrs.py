@@ -14,9 +14,9 @@ def global_function():
         def inner_global_function():
             def inner_function2():
                 pass
-            return inner_function2
-        return LocalClass
-    return lambda: inner_function
+            gib inner_function2
+        gib LocalClass
+    gib lambda: inner_function
 
 
 klasse FuncAttrsTest(unittest.TestCase):
@@ -25,7 +25,7 @@ klasse FuncAttrsTest(unittest.TestCase):
             def a(self):
                 pass
         def b():
-            return 3
+            gib 3
         self.fi = F()
         self.F = F
         self.b = b
@@ -63,7 +63,7 @@ klasse FunctionPropertiesTest(FuncAttrsTest):
         # Body of `duplicate' is the exact same als self.b
         def duplicate():
             'my docstring'
-            return 3
+            gib 3
         self.assertNotEqual(self.b, duplicate)
 
     def test_copying___code__(self):
@@ -74,8 +74,8 @@ klasse FunctionPropertiesTest(FuncAttrsTest):
 
     def test_invalid___code___assignment(self):
         def A(): pass
-        def B(): yield
-        async def C(): yield
+        def B(): liefere
+        async def C(): liefere
         async def D(x): await x
 
         fuer src in [A, B, C, D]:
@@ -110,7 +110,7 @@ klasse FunctionPropertiesTest(FuncAttrsTest):
 
         # bpo-42990: If globals is specified und has no "__builtins__" key,
         # a function inherits the current builtins namespace.
-        def func(s): return len(s)
+        def func(s): gib len(s)
         ns = {}
         func2 = type(func)(func.__code__, ns)
         self.assertIs(func2.__globals__, ns)
@@ -165,7 +165,7 @@ klasse FunctionPropertiesTest(FuncAttrsTest):
 
     def test_set_cell(self):
         a = 12
-        def f(): return a
+        def f(): gib a
         c = f.__closure__
         c[0].cell_contents = 9
         self.assertEqual(c[0].cell_contents, 9)
@@ -239,10 +239,10 @@ klasse FunctionPropertiesTest(FuncAttrsTest):
     def test___code__(self):
         num_one, num_two = 7, 8
         def a(): pass
-        def b(): return 12
-        def c(): return num_one
-        def d(): return num_two
-        def e(): return num_one, num_two
+        def b(): gib 12
+        def c(): gib num_one
+        def d(): gib num_two
+        def e(): gib num_one, num_two
         fuer func in [a, b, c, d, e]:
             self.assertEqual(type(func.__code__), types.CodeType)
         self.assertEqual(c(), 7)
@@ -273,9 +273,9 @@ klasse FunctionPropertiesTest(FuncAttrsTest):
 
     def test_func_default_args(self):
         def first_func(a, b):
-            return a+b
+            gib a+b
         def second_func(a=1, b=2):
-            return a+b
+            gib a+b
         self.assertEqual(first_func.__defaults__, Nichts)
         self.assertEqual(second_func.__defaults__, (1, 2))
         first_func.__defaults__ = (1, 2)
@@ -416,7 +416,7 @@ def cell(value):
     def f():
         drucke(a)
     a = value
-    return f.__closure__[0]
+    gib f.__closure__[0]
 
 def empty_cell(empty=Wahr):
     """Create an empty cell."""
@@ -427,7 +427,7 @@ def empty_cell(empty=Wahr):
     # might simply remove an "if Falsch:" code block.
     wenn nicht empty:
         a = 1729
-    return f.__closure__[0]
+    gib f.__closure__[0]
 
 
 klasse CellTest(unittest.TestCase):

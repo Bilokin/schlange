@@ -79,7 +79,7 @@ def reset_Breakpoint():
 def info_breakpoints():
     bp_list = [bp fuer  bp in _bdb.Breakpoint.bpbynumber wenn bp]
     wenn nicht bp_list:
-        return ''
+        gib ''
 
     header_added = Falsch
     fuer bp in bp_list:
@@ -95,14 +95,14 @@ def info_breakpoints():
         wenn bp.cond:
             info += '\n\tstop only wenn %s' % (bp.cond,)
         info += '\n'
-    return info
+    gib info
 
 klasse Bdb(_bdb.Bdb):
     """Extend Bdb to enhance test coverage."""
 
     def trace_dispatch(self, frame, event, arg):
         self.currentbp = Nichts
-        return super().trace_dispatch(frame, event, arg)
+        gib super().trace_dispatch(frame, event, arg)
 
     def set_break(self, filename, lineno, temporary=Falsch, cond=Nichts,
                   funcname=Nichts):
@@ -122,12 +122,12 @@ klasse Bdb(_bdb.Bdb):
                                  cond=cond, funcname=funcname)
         wenn isinstance(res, str):
             raise BdbError(res)
-        return res
+        gib res
 
     def get_stack(self, f, t):
         self.stack, self.index = super().get_stack(f, t)
         self.frame = self.stack[self.index][0]
-        return self.stack, self.index
+        gib self.stack, self.index
 
     def set_ignore(self, bpnum):
         """Increment the ignore count of Breakpoint number 'bpnum'."""
@@ -190,19 +190,19 @@ klasse Tracer(Bdb):
         wenn event == 'exception':
             try:
                 res = super().trace_dispatch(frame, event, arg)
-                return res
+                gib res
             except BdbException als e:
                 self.cur_except = e
-                return self.trace_dispatch
+                gib self.trace_dispatch
         sonst:
-            return super().trace_dispatch(frame, event, arg)
+            gib super().trace_dispatch(frame, event, arg)
 
     def user_call(self, frame, argument_list):
         # Adopt the same behavior als pdb and, als a side effect, skip also the
         # first 'call' event when the Tracer is started mit Tracer.runcall()
         # which may be possibly considered als a bug.
         wenn nicht self.stop_here(frame):
-            return
+            gib
         self.process_event('call', frame, argument_list)
         self.next_set_method()
 
@@ -270,7 +270,7 @@ klasse Tracer(Bdb):
         self.pop_next()
         wenn self.dry_run:
             self.print_state(self.header)
-            return
+            gib
 
         # Validate the expected results.
         wenn self.expect:
@@ -304,7 +304,7 @@ klasse Tracer(Bdb):
 
     def check_equal(self, expected, result, msg):
         wenn expected == result:
-            return
+            gib
         self.raise_not_expected("%s at expect_set item %d, got '%s'" %
                                 (msg, self.expect_set_no, result))
 
@@ -326,11 +326,11 @@ klasse Tracer(Bdb):
     def lno_abs2rel(self):
         fname = self.canonic(self.frame.f_code.co_filename)
         lineno = self.frame.f_lineno
-        return ((lineno - self.frame.f_code.co_firstlineno + 1)
+        gib ((lineno - self.frame.f_code.co_firstlineno + 1)
             wenn fname == self.canonic(__file__) sonst lineno)
 
     def lno_rel2abs(self, fname, lineno):
-        return (self.frame.f_code.co_firstlineno + lineno - 1
+        gib (self.frame.f_code.co_firstlineno + lineno - 1
             wenn (lineno und self.canonic(fname) == self.canonic(__file__))
             sonst lineno)
 
@@ -350,7 +350,7 @@ klasse Tracer(Bdb):
         sowenn self.event == 'exception':
             state += ', ' + self.exc_info[0].__name__
         state += '), '
-        return state.ljust(32) + str(self.set_tuple) + ','
+        gib state.ljust(32) + str(self.set_tuple) + ','
 
     def print_state(self, header=Nichts):
         wenn header is nicht Nichts und self.expect_set_no == 1:
@@ -372,17 +372,17 @@ klasse Tracer(Bdb):
         # The following set methods give back control to the tracer.
         wenn set_type in ('step', 'stepinstr', 'continue', 'quit'):
             set_method()
-            return
+            gib
         sowenn set_type in ('next', 'return'):
             set_method(self.frame)
-            return
+            gib
         sowenn set_type == 'until':
             lineno = Nichts
             wenn args:
                 lineno = self.lno_rel2abs(self.frame.f_code.co_filename,
                                           args[0])
             set_method(self.frame, lineno)
-            return
+            gib
 
         # The following set methods do nicht give back control to the tracer und
         # next_set_method() is called recursively.
@@ -428,7 +428,7 @@ klasse TracerRun():
         # test_pdb does nicht reset Breakpoint klasse attributes on exit :-(
         reset_Breakpoint()
         self._original_tracer = sys.gettrace()
-        return self.tracer
+        gib self.tracer
 
     def __exit__(self, type_=Nichts, value=Nichts, traceback=Nichts):
         reset_Breakpoint()
@@ -449,7 +449,7 @@ klasse TracerRun():
                     err_msg += '\n' + not_empty
                 wenn self.dry_run:
                     drucke(err_msg)
-                    return Wahr
+                    gib Wahr
                 sonst:
                     self.test_case.fail(err_msg)
             sonst:
@@ -517,10 +517,10 @@ def run_test(modules, set_list, skip=Nichts):
             waehrend 1:
                 x = next(a)
                 y = next(b)
-                yield x
-                yield y
+                liefere x
+                liefere y
         except StopIteration:
-            return
+            gib
 
     # Step over the importiere statement in tfunc_import using 'next' und step
     # into main() in test_module.
@@ -546,14 +546,14 @@ def create_modules(modules):
                     f.write(textwrap.dedent(modules[m]))
                 linecache.checkcache(fname)
             importlib.invalidate_caches()
-            yield
+            liefere
         finally:
             fuer m in modules:
                 import_helper.forget(m)
             sys.path.pop()
 
 def break_in_func(funcname, fname=__file__, temporary=Falsch, cond=Nichts):
-    return 'break', (fname, Nichts, temporary, cond, funcname)
+    gib 'break', (fname, Nichts, temporary, cond, funcname)
 
 TEST_MODULE = 'test_module_for_bdb'
 TEST_MODULE_FNAME = TEST_MODULE + '.py'
@@ -1090,9 +1090,9 @@ klasse IssuesTestCase(BaseTestCase):
         # instead in the current frame.
         code = """
             def test_gen():
-                yield 0
+                liefere 0
                 lno = 4
-                return 123
+                gib 123
 
             def main():
                 it = test_gen()
@@ -1128,10 +1128,10 @@ klasse IssuesTestCase(BaseTestCase):
         # Issue #16596.
         code = """
             def test_gen():
-                yield 0
+                liefere 0
                 lno = 4
-                yield 1
-                return 123
+                liefere 1
+                gib 123
 
             def main():
                 fuer i in test_gen():
@@ -1159,12 +1159,12 @@ klasse IssuesTestCase(BaseTestCase):
         # Issue #16596.
         code = """
             def test_subgen():
-                yield 0
-                return 123
+                liefere 0
+                gib 123
 
             def test_gen():
-                x = yield von test_subgen()
-                return 456
+                x = liefere von test_subgen()
+                gib 456
 
             def main():
                 fuer i in test_gen():
@@ -1190,12 +1190,12 @@ klasse IssuesTestCase(BaseTestCase):
         # Issue #16596.
         code = """
             def test_subgen():
-                yield 0
-                return 123
+                liefere 0
+                gib 123
 
             def test_gen():
-                x = yield von test_subgen()
-                return 456
+                x = liefere von test_subgen()
+                gib 456
 
             def main():
                 fuer i in test_gen():

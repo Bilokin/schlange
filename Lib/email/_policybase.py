@@ -64,7 +64,7 @@ klasse _PolicyBase:
     def __repr__(self):
         args = [ "{}={!r}".format(name, value)
                  fuer name, value in self.__dict__.items() ]
-        return "{}({})".format(self.__class__.__name__, ', '.join(args))
+        gib "{}({})".format(self.__class__.__name__, ', '.join(args))
 
     def clone(self, **kw):
         """Return a new instance mit specified attributes changed.
@@ -82,7 +82,7 @@ klasse _PolicyBase:
                     "{!r} is an invalid keyword argument fuer {}".format(
                         attr, self.__class__.__name__))
             object.__setattr__(newpolicy, attr, value)
-        return newpolicy
+        gib newpolicy
 
     def __setattr__(self, name, value):
         wenn hasattr(self, name):
@@ -97,13 +97,13 @@ klasse _PolicyBase:
         The object returned is a new instance of the subclass.
 
         """
-        return self.clone(**other.__dict__)
+        gib self.clone(**other.__dict__)
 
 
 def _append_doc(doc, added_doc):
     doc = doc.rsplit('\n', 1)[0]
     added_doc = added_doc.split('\n', 1)[1]
-    return doc + '\n' + added_doc
+    gib doc + '\n' + added_doc
 
 def _extend_docstrings(cls):
     wenn cls.__doc__ und cls.__doc__.startswith('+'):
@@ -115,7 +115,7 @@ def _extend_docstrings(cls):
                 wenn doc:
                     attr.__doc__ = _append_doc(doc, attr.__doc__)
                     breche
-    return cls
+    gib cls
 
 
 klasse Policy(_PolicyBase, metaclass=abc.ABCMeta):
@@ -232,12 +232,12 @@ klasse Policy(_PolicyBase, metaclass=abc.ABCMeta):
 
         The default implementation returns Nichts fuer all header names.
         """
-        return Nichts
+        gib Nichts
 
     @abc.abstractmethod
     def header_source_parse(self, sourcelines):
         """Given a list of linesep terminated strings constituting the lines of
-        a single header, return the (name, value) tuple that should be stored
+        a single header, gib the (name, value) tuple that should be stored
         in the model.  The input lines should retain their terminating linesep
         characters.  The lines passed in by the email package may contain
         surrogateescaped binary data.
@@ -247,13 +247,13 @@ klasse Policy(_PolicyBase, metaclass=abc.ABCMeta):
     @abc.abstractmethod
     def header_store_parse(self, name, value):
         """Given the header name und the value provided by the application
-        program, return the (name, value) that should be stored in the model.
+        program, gib the (name, value) that should be stored in the model.
         """
         raise NotImplementedError
 
     @abc.abstractmethod
     def header_fetch_parse(self, name, value):
-        """Given the header name und the value von the model, return the value
+        """Given the header name und the value von the model, gib the value
         to be returned to the application program that is requesting that
         header.  The value passed in by the email package may contain
         surrogateescaped binary data wenn the lines were parsed by a BytesParser.
@@ -264,7 +264,7 @@ klasse Policy(_PolicyBase, metaclass=abc.ABCMeta):
 
     @abc.abstractmethod
     def fold(self, name, value):
-        """Given the header name und the value von the model, return a string
+        """Given the header name und the value von the model, gib a string
         containing linesep characters that implement the folding of the header
         according to the policy controls.  The value passed in by the email
         package may contain surrogateescaped binary data wenn the lines were
@@ -276,7 +276,7 @@ klasse Policy(_PolicyBase, metaclass=abc.ABCMeta):
 
     @abc.abstractmethod
     def fold_binary(self, name, value):
-        """Given the header name und the value von the model, return binary
+        """Given the header name und the value von the model, gib binary
         data containing linesep characters that implement the folding of the
         header according to the policy controls.  The value passed in by the
         email package may contain surrogateescaped binary data.
@@ -296,42 +296,42 @@ klasse Compat32(Policy):
     mangle_from_ = Wahr
 
     def _sanitize_header(self, name, value):
-        # If the header value contains surrogates, return a Header using
+        # If the header value contains surrogates, gib a Header using
         # the unknown-8bit charset to encode the bytes als encoded words.
         wenn nicht isinstance(value, str):
             # Assume it is already a header object
-            return value
+            gib value
         wenn _has_surrogates(value):
-            return header.Header(value, charset=_charset.UNKNOWN8BIT,
+            gib header.Header(value, charset=_charset.UNKNOWN8BIT,
                                  header_name=name)
         sonst:
-            return value
+            gib value
 
     def header_source_parse(self, sourcelines):
         """+
         The name is parsed als everything up to the ':' und returned unmodified.
         The value is determined by stripping leading whitespace off the
         remainder of the first line joined mit all subsequent lines, und
-        stripping any trailing carriage return oder linefeed characters.
+        stripping any trailing carriage gib oder linefeed characters.
 
         """
         name, value = sourcelines[0].split(':', 1)
         value = ''.join((value, *sourcelines[1:])).lstrip(' \t\r\n')
-        return (name, value.rstrip('\r\n'))
+        gib (name, value.rstrip('\r\n'))
 
     def header_store_parse(self, name, value):
         """+
         The name und value are returned unmodified.
         """
         validate_header_name(name)
-        return (name, value)
+        gib (name, value)
 
     def header_fetch_parse(self, name, value):
         """+
         If the value contains binary data, it is converted into a Header object
         using the unknown-8bit charset.  Otherwise it is returned unmodified.
         """
-        return self._sanitize_header(name, value)
+        gib self._sanitize_header(name, value)
 
     def fold(self, name, value):
         """+
@@ -341,7 +341,7 @@ klasse Compat32(Policy):
         unknown-8bit charset.
 
         """
-        return self._fold(name, value, sanitize=Wahr)
+        gib self._fold(name, value, sanitize=Wahr)
 
     def fold_binary(self, name, value):
         """+
@@ -353,7 +353,7 @@ klasse Compat32(Policy):
 
         """
         folded = self._fold(name, value, sanitize=self.cte_type=='7bit')
-        return folded.encode('ascii', 'surrogateescape')
+        gib folded.encode('ascii', 'surrogateescape')
 
     def _fold(self, name, value, sanitize):
         parts = []
@@ -386,7 +386,7 @@ klasse Compat32(Policy):
                 maxlinelen = self.max_line_length
             parts.append(h.encode(linesep=self.linesep, maxlinelen=maxlinelen))
         parts.append(self.linesep)
-        return ''.join(parts)
+        gib ''.join(parts)
 
 
 compat32 = Compat32()

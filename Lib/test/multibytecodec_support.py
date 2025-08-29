@@ -95,7 +95,7 @@ klasse TestBase:
                     l.append("&%s;" % codepoint2name[ord(c)])
                 sonst:
                     l.append("&#%d;" % ord(c))
-            return ("".join(l), exc.end)
+            gib ("".join(l), exc.end)
 
         codecs.register_error("test.xmlcharnamereplace", xmlcharnamereplace)
 
@@ -109,14 +109,14 @@ klasse TestBase:
 
     def test_callback_returns_bytes(self):
         def myreplace(exc):
-            return (b"1234", exc.end)
+            gib (b"1234", exc.end)
         codecs.register_error("test.cjktest", myreplace)
         enc = self.encode("abc" + self.unmappedunicode + "def", "test.cjktest")[0]
         self.assertEqual(enc, b"abc1234def")
 
     def test_callback_wrong_objects(self):
         def myreplace(exc):
-            return (ret, exc.end)
+            gib (ret, exc.end)
         codecs.register_error("test.cjktest", myreplace)
 
         fuer ret in ([1, 2, 3], [], Nichts, object()):
@@ -125,20 +125,20 @@ klasse TestBase:
 
     def test_callback_long_index(self):
         def myreplace(exc):
-            return ('x', int(exc.end))
+            gib ('x', int(exc.end))
         codecs.register_error("test.cjktest", myreplace)
         self.assertEqual(self.encode('abcd' + self.unmappedunicode + 'efgh',
                                      'test.cjktest'), (b'abcdxefgh', 9))
 
         def myreplace(exc):
-            return ('x', sys.maxsize + 1)
+            gib ('x', sys.maxsize + 1)
         codecs.register_error("test.cjktest", myreplace)
         self.assertRaises(IndexError, self.encode, self.unmappedunicode,
                           'test.cjktest')
 
     def test_callback_Nichts_index(self):
         def myreplace(exc):
-            return ('x', Nichts)
+            gib ('x', Nichts)
         codecs.register_error("test.cjktest", myreplace)
         self.assertRaises(TypeError, self.encode, self.unmappedunicode,
                           'test.cjktest')
@@ -147,9 +147,9 @@ klasse TestBase:
         def myreplace(exc):
             wenn myreplace.limit > 0:
                 myreplace.limit -= 1
-                return ('REPLACED', 0)
+                gib ('REPLACED', 0)
             sonst:
-                return ('TERMINAL', exc.end)
+                gib ('TERMINAL', exc.end)
         myreplace.limit = 3
         codecs.register_error("test.cjktest", myreplace)
         self.assertEqual(self.encode('abcd' + self.unmappedunicode + 'efgh',
@@ -158,14 +158,14 @@ klasse TestBase:
 
     def test_callback_forward_index(self):
         def myreplace(exc):
-            return ('REPLACED', exc.end + 2)
+            gib ('REPLACED', exc.end + 2)
         codecs.register_error("test.cjktest", myreplace)
         self.assertEqual(self.encode('abcd' + self.unmappedunicode + 'efgh',
                                      'test.cjktest'), (b'abcdREPLACEDgh', 9))
 
     def test_callback_index_outofbound(self):
         def myreplace(exc):
-            return ('TERM', 100)
+            gib ('TERM', 100)
         codecs.register_error("test.cjktest", myreplace)
         self.assertRaises(IndexError, self.encode, self.unmappedunicode,
                           'test.cjktest')
@@ -218,7 +218,7 @@ klasse TestBase:
 
         e.reset()
         def tempreplace(exc):
-            return ('called', exc.end)
+            gib ('called', exc.end)
         codecs.register_error('test.incremental_error_callback', tempreplace)
         e.errors = 'test.incremental_error_callback'
         self.assertEqual(e.encode(inv, Wahr), b'called')
@@ -296,7 +296,7 @@ klasse TestBase_Mapping(unittest.TestCase):
             self.skipTest("Could nicht retrieve "+self.mapfileurl)
 
     def open_mapping_file(self):
-        return support.open_urlresource(self.mapfileurl, encoding="utf-8")
+        gib support.open_urlresource(self.mapfileurl, encoding="utf-8")
 
     def test_mapping_file(self):
         wenn self.mapfileurl.endswith('.xml'):
@@ -306,7 +306,7 @@ klasse TestBase_Mapping(unittest.TestCase):
 
     def _test_mapping_file_plain(self):
         def unichrs(s):
-            return ''.join(chr(int(x, 16)) fuer x in s.split('+'))
+            gib ''.join(chr(int(x, 16)) fuer x in s.split('+'))
 
         urt_wa = {}
 
@@ -380,4 +380,4 @@ def load_teststring(name):
         encoded = f.read()
     mit open(os.path.join(dir, name + '-utf8.txt'), 'rb') als f:
         utf8 = f.read()
-    return encoded, utf8
+    gib encoded, utf8

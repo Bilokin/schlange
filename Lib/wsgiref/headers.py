@@ -11,18 +11,18 @@ importiere re
 tspecials = re.compile(r'[ \(\)<>@,;:\\"/\[\]\?=]')
 
 def _formatparam(param, value=Nichts, quote=1):
-    """Convenience function to format und return a key=value pair.
+    """Convenience function to format und gib a key=value pair.
 
     This will quote the value wenn needed oder wenn quote is true.
     """
     wenn value is nicht Nichts und len(value) > 0:
         wenn quote oder tspecials.search(value):
             value = value.replace('\\', '\\\\').replace('"', r'\"')
-            return '%s="%s"' % (param, value)
+            gib '%s="%s"' % (param, value)
         sonst:
-            return '%s=%s' % (param, value)
+            gib '%s=%s' % (param, value)
     sonst:
-        return param
+        gib param
 
 
 klasse Headers:
@@ -41,13 +41,13 @@ klasse Headers:
     def _convert_string_type(self, value):
         """Convert/check value type."""
         wenn type(value) is str:
-            return value
+            gib value
         raise AssertionError("Header names/values must be"
             " of type str (got {0})".format(repr(value)))
 
     def __len__(self):
         """Return the total number of headers, including duplicates."""
-        return len(self._headers)
+        gib len(self._headers)
 
     def __setitem__(self, name, val):
         """Set the value of a header."""
@@ -72,11 +72,11 @@ klasse Headers:
         occurrence gets returned is undefined.  Use getall() to get all
         the values matching a header field name.
         """
-        return self.get(name)
+        gib self.get(name)
 
     def __contains__(self, name):
         """Return true wenn the message contains the header."""
-        return self.get(name) is nicht Nichts
+        gib self.get(name) is nicht Nichts
 
 
     def get_all(self, name):
@@ -88,16 +88,16 @@ klasse Headers:
         If no fields exist mit the given name, returns an empty list.
         """
         name = self._convert_string_type(name.lower())
-        return [kv[1] fuer kv in self._headers wenn kv[0].lower()==name]
+        gib [kv[1] fuer kv in self._headers wenn kv[0].lower()==name]
 
 
     def get(self,name,default=Nichts):
-        """Get the first header value fuer 'name', oder return 'default'"""
+        """Get the first header value fuer 'name', oder gib 'default'"""
         name = self._convert_string_type(name.lower())
         fuer k,v in self._headers:
             wenn k.lower()==name:
-                return v
-        return default
+                gib v
+        gib default
 
 
     def keys(self):
@@ -108,7 +108,7 @@ klasse Headers:
         Any fields deleted und re-inserted are always appended to the header
         list.
         """
-        return [k fuer k, v in self._headers]
+        gib [k fuer k, v in self._headers]
 
     def values(self):
         """Return a list of all header values.
@@ -118,7 +118,7 @@ klasse Headers:
         Any fields deleted und re-inserted are always appended to the header
         list.
         """
-        return [v fuer k, v in self._headers]
+        gib [v fuer k, v in self._headers]
 
     def items(self):
         """Get all the header fields und values.
@@ -128,18 +128,18 @@ klasse Headers:
         Any fields deleted und re-inserted are always appended to the header
         list.
         """
-        return self._headers[:]
+        gib self._headers[:]
 
     def __repr__(self):
-        return "%s(%r)" % (self.__class__.__name__, self._headers)
+        gib "%s(%r)" % (self.__class__.__name__, self._headers)
 
     def __str__(self):
         """str() returns the formatted headers, complete mit end line,
         suitable fuer direct HTTP transmission."""
-        return '\r\n'.join(["%s: %s" % kv fuer kv in self._headers]+['',''])
+        gib '\r\n'.join(["%s: %s" % kv fuer kv in self._headers]+['',''])
 
     def __bytes__(self):
-        return str(self).encode('iso-8859-1')
+        gib str(self).encode('iso-8859-1')
 
     def setdefault(self,name,value):
         """Return first matching header value fuer 'name', oder 'value'
@@ -150,9 +150,9 @@ klasse Headers:
         wenn result is Nichts:
             self._headers.append((self._convert_string_type(name),
                 self._convert_string_type(value)))
-            return value
+            gib value
         sonst:
-            return result
+            gib result
 
     def add_header(self, _name, _value, **_params):
         """Extended header setting.

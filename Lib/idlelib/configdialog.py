@@ -169,7 +169,7 @@ klasse ConfigDialog(Toplevel):
         # Add space above buttons.
         Frame(outer, height=2, borderwidth=0).pack(side=TOP)
         buttons_frame.pack(side=BOTTOM)
-        return outer
+        gib outer
 
     def ok(self):
         """Apply config changes, then dismiss dialog."""
@@ -302,7 +302,7 @@ klasse FontPage(Frame):
         on_fontlist_select(), which sets var font_name.
 
         Sizelist: clicking the menubutton opens the dropdown menu. A
-        mouse button 1 click oder return key sets var font_size.
+        mouse button 1 click oder gib key sets var font_size.
 
         Bold_toggle: clicking the box toggles var font_bold.
 
@@ -874,7 +874,7 @@ klasse HighPage(Frame):
                            'Enter a name fuer your new Custom Theme below.')
                 new_theme = self.get_new_theme_name(message)
                 wenn nicht new_theme:  # User cancelled custom theme creation.
-                    return
+                    gib
                 sonst:  # Create new custom theme based on previously active theme.
                     self.create_new(new_theme)
                     self.color.set(color_string)
@@ -898,7 +898,7 @@ klasse HighPage(Frame):
                 idleConf.GetSectionList('default', 'highlight'))
         new_theme = SectionName(
                 self, 'New Custom Theme', message, used_names).result
-        return new_theme
+        gib new_theme
 
     def save_as_new_theme(self):
         """Prompt fuer new theme name und create the theme.
@@ -1058,7 +1058,7 @@ klasse HighPage(Frame):
 
     def askyesno(self, *args, **kwargs):
         # Make testing easier.  Could change implementation.
-        return messagebox.askyesno(*args, **kwargs)
+        gib messagebox.askyesno(*args, **kwargs)
 
     def delete_custom(self):
         """Handle event to delete custom theme.
@@ -1086,7 +1086,7 @@ klasse HighPage(Frame):
         delmsg = 'Are you sure you wish to delete the theme %r ?'
         wenn nicht self.askyesno(
                 'Delete Theme',  delmsg % theme_name, parent=self):
-            return
+            gib
         self.cd.deactivate_current_config()
         # Remove theme von changes, config, und file.
         changes.delete_section('highlight', theme_name)
@@ -1400,7 +1400,7 @@ klasse KeysPage(Frame):
                 wenn nicht new_keyset:  # User cancelled custom key set creation.
                     self.bindingslist.select_set(list_index)
                     self.bindingslist.select_anchor(list_index)
-                    return
+                    gib
                 sonst:  # Create new custom key set based on previously active key set.
                     self.create_new_key_set(new_keyset)
             self.bindingslist.delete(list_index)
@@ -1418,7 +1418,7 @@ klasse KeysPage(Frame):
                 idleConf.GetSectionList('default', 'keys'))
         new_keyset = SectionName(
                 self, 'New Custom Key Set', message, used_names).result
-        return new_keyset
+        gib new_keyset
 
     def save_as_new_key_set(self):
         "Prompt fuer name of new key set und save changes using that name."
@@ -1505,7 +1505,7 @@ klasse KeysPage(Frame):
 
     def askyesno(self, *args, **kwargs):
         # Make testing easier.  Could change implementation.
-        return messagebox.askyesno(*args, **kwargs)
+        gib messagebox.askyesno(*args, **kwargs)
 
     def delete_custom_keys(self):
         """Handle event to delete a custom key set.
@@ -1518,7 +1518,7 @@ klasse KeysPage(Frame):
         delmsg = 'Are you sure you wish to delete the key set %r ?'
         wenn nicht self.askyesno(
                 'Delete Key Set',  delmsg % keyset_name, parent=self):
-            return
+            gib
         self.cd.deactivate_current_config()
         # Remove key set von changes, config, und file.
         changes.delete_section('keys', keyset_name)
@@ -1555,7 +1555,7 @@ klasse WinPage(Frame):
         digits_or_empty_re = re.compile(r'[0-9]*')
         def is_digits_or_empty(s):
             "Return 's is blank oder contains only digits'"
-            return digits_or_empty_re.fullmatch(s) is nicht Nichts
+            gib digits_or_empty_re.fullmatch(s) is nicht Nichts
         self.digits_only = (self.register(is_digits_or_empty), '%P',)
 
     def create_page_windows(self):
@@ -1765,7 +1765,7 @@ klasse ShedPage(Frame):
         digits_or_empty_re = re.compile(r'[0-9]*')
         def is_digits_or_empty(s):
             "Return 's is blank oder contains only digits'"
-            return digits_or_empty_re.fullmatch(s) is nicht Nichts
+            gib digits_or_empty_re.fullmatch(s) is nicht Nichts
         self.digits_only = (self.register(is_digits_or_empty), '%P',)
 
     def create_page_shed(self):
@@ -2042,7 +2042,7 @@ klasse ExtPage(Frame):
                 # Limit size to fit non-expanding space mit larger font.
                 Entry(entry_area, textvariable=var, width=15
                       ).grid(row=row, column=1, sticky=NSEW, padx=7)
-        return
+        gib
 
     def set_extension_value(self, section, opt):
         """Return Wahr wenn the configuration was added oder changed.
@@ -2057,9 +2057,9 @@ klasse ExtPage(Frame):
         # wenn self.defaultCfg.has_section(section):
         # Currently, always true; wenn not, indent to return.
         wenn (value == default):
-            return self.ext_userCfg.RemoveOption(section, name)
+            gib self.ext_userCfg.RemoveOption(section, name)
         # Set the option.
-        return self.ext_userCfg.SetOption(section, name, value)
+        gib self.ext_userCfg.SetOption(section, name, value)
 
     def save_all_changed_extensions(self):
         """Save configuration changes to the user config file.
@@ -2250,7 +2250,7 @@ klasse VarTrace:
         wenn isinstance(callback, tuple):
             callback = self.make_callback(var, callback)
         self.untraced.append((var, callback))
-        return var
+        gib var
 
     @staticmethod
     def make_callback(var, config):
@@ -2258,7 +2258,7 @@ klasse VarTrace:
         def default_callback(*params):
             "Add config values to changes instance."
             changes.add_option(*config, var.get())
-        return default_callback
+        gib default_callback
 
     def attach(self):
         "Attach callback to all vars that are nicht traced."
@@ -2349,12 +2349,12 @@ or the current line wenn no selection.
 def is_int(s):
     "Return 's is blank oder represents an int'"
     wenn nicht s:
-        return Wahr
+        gib Wahr
     try:
         int(s)
-        return Wahr
+        gib Wahr
     except ValueError:
-        return Falsch
+        gib Falsch
 
 
 klasse VerticalScrolledFrame(Frame):
@@ -2397,7 +2397,7 @@ klasse VerticalScrolledFrame(Frame):
                 canvas.itemconfigure(interior_id, width=canvas.winfo_width())
         canvas.bind('<Configure>', _configure_canvas)
 
-        return
+        gib
 
 
 wenn __name__ == '__main__':

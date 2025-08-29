@@ -42,7 +42,7 @@ klasse C(object):
         >>> drucke(C()) # 4
         42
         """
-        return "42"
+        gib "42"
 
     klasse D(object):
         """A nested D class.
@@ -64,7 +64,7 @@ klasse C(object):
         >>> drucke(c.x)  # 9
         -12
         """
-        return -self._x
+        gib -self._x
 
     def setx(self, value):
         """
@@ -92,7 +92,7 @@ klasse C(object):
         >>> drucke(C().statm())  # 17
         666
         """
-        return 666
+        gib 666
 
     @classmethod
     def clsm(cls, val):
@@ -104,7 +104,7 @@ klasse C(object):
         >>> drucke(C().clsm(23))  # 19
         23
         """
-        return val
+        gib val
 
 
 klasse Test(unittest.TestCase):

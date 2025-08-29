@@ -34,10 +34,10 @@ def add_c_converter(
     wenn nicht name:
         name = f.__name__
         wenn nicht name.endswith('_converter'):
-            return f
+            gib f
         name = name.removesuffix('_converter')
     converters[name] = f
-    return f
+    gib f
 
 
 def add_default_legacy_c_converter(cls: CConverterClassT) -> CConverterClassT:
@@ -47,7 +47,7 @@ def add_default_legacy_c_converter(cls: CConverterClassT) -> CConverterClassT:
     wenn ((cls.format_unit nicht in ('O&', '')) und
         (cls.format_unit nicht in legacy_converters)):
         legacy_converters[cls.format_unit] = cls
-    return cls
+    gib cls
 
 
 klasse CConverterAutoRegister(type):
@@ -225,7 +225,7 @@ klasse CConverter(metaclass=CConverterAutoRegister):
                     f"{self.__class__.__name__!r} object has no attribute 'function'.\n"
                     f"Note: accessing self.function inside converter_init is disallowed!"
                 )
-            return super().__getattr__(attr)
+            gib super().__getattr__(attr)
     # this branch is just here fuer coverage reporting
     sonst:  # pragma: no cover
         pass
@@ -234,7 +234,7 @@ klasse CConverter(metaclass=CConverterAutoRegister):
         pass
 
     def is_optional(self) -> bool:
-        return (self.default is nicht unspecified)
+        gib (self.default is nicht unspecified)
 
     def _render_self(self, parameter: Parameter, data: CRenderData) -> Nichts:
         self.parameter = parameter
@@ -312,7 +312,7 @@ klasse CConverter(metaclass=CConverterAutoRegister):
     def length_name(self) -> str:
         """Computes the name of the associated "length" variable."""
         assert self.length is nicht Nichts
-        return self.name + "_length"
+        gib self.name + "_length"
 
     # Why is this one broken out separately?
     # For "positional-only" function parsing,
@@ -362,7 +362,7 @@ klasse CConverter(metaclass=CConverterAutoRegister):
             wenn self.unused:
                 name = f"Py_UNUSED({name})"
         prototype.append(name)
-        return "".join(prototype)
+        gib "".join(prototype)
 
     def declaration(self, *, in_parser: bool = Falsch) -> str:
         """
@@ -379,7 +379,7 @@ klasse CConverter(metaclass=CConverterAutoRegister):
         wenn self.length:
             declaration.append('\n')
             declaration.append(f"Py_ssize_t {self.length_name};")
-        return "".join(declaration)
+        gib "".join(declaration)
 
     def initialize(self) -> str:
         """
@@ -387,7 +387,7 @@ klasse CConverter(metaclass=CConverterAutoRegister):
         Returns a string containing this code indented at column 0.
         If no initialization is necessary, returns an empty string.
         """
-        return ""
+        gib ""
 
     def modify(self) -> str:
         """
@@ -395,15 +395,15 @@ klasse CConverter(metaclass=CConverterAutoRegister):
         Returns a string containing this code indented at column 0.
         If no modification is necessary, returns an empty string.
         """
-        return ""
+        gib ""
 
     def post_parsing(self) -> str:
         """
         The C statements required to do some operations after the end of parsing but before cleaning up.
         Return a string containing this code indented at column 0.
-        If no operation is necessary, return an empty string.
+        If no operation is necessary, gib an empty string.
         """
-        return ""
+        gib ""
 
     def cleanup(self) -> str:
         """
@@ -411,7 +411,7 @@ klasse CConverter(metaclass=CConverterAutoRegister):
         Returns a string containing this code indented at column 0.
         If no cleanup is necessary, returns an empty string.
         """
-        return ""
+        gib ""
 
     def pre_render(self) -> Nichts:
         """
@@ -425,18 +425,18 @@ klasse CConverter(metaclass=CConverterAutoRegister):
         assert '"' nicht in expected
         wenn limited_capi:
             wenn expected_literal:
-                return (f'PyErr_Format(PyExc_TypeError, '
+                gib (f'PyErr_Format(PyExc_TypeError, '
                         f'"{{{{name}}}}() {displayname} must be {expected}, nicht %T", '
                         f'{{argname}});')
             sonst:
-                return (f'PyErr_Format(PyExc_TypeError, '
+                gib (f'PyErr_Format(PyExc_TypeError, '
                         f'"{{{{name}}}}() {displayname} must be %s, nicht %T", '
                         f'"{expected}", {{argname}});')
         sonst:
             wenn expected_literal:
                 expected = f'"{expected}"'
             self.add_include('pycore_modsupport.h', '_PyArg_BadArgument()')
-            return f'_PyArg_BadArgument("{{{{name}}}}", "{displayname}", {expected}, {{argname}});'
+            gib f'_PyArg_BadArgument("{{{{name}}}}", "{displayname}", {expected}, {{argname}});'
 
     def format_code(self, fmt: str, *,
                     argname: str,
@@ -451,7 +451,7 @@ klasse CConverter(metaclass=CConverterAutoRegister):
             wenn nicht bad_argument2:
                 raise TypeError("required 'bad_argument2' argument")
             fmt = fmt.replace('{bad_argument2}', bad_argument2)
-        return fmt.format(argname=argname, paramname=self.parser_name, **kwargs)
+        gib fmt.format(argname=argname, paramname=self.parser_name, **kwargs)
 
     def use_converter(self) -> Nichts:
         """Method called when self.converter is used to parse an argument."""
@@ -460,7 +460,7 @@ klasse CConverter(metaclass=CConverterAutoRegister):
     def parse_arg(self, argname: str, displayname: str, *, limited_capi: bool) -> str | Nichts:
         wenn self.format_unit == 'O&':
             self.use_converter()
-            return self.format_code("""
+            gib self.format_code("""
                 wenn (!{converter}({argname}, &{paramname})) {{{{
                     goto exit;
                 }}}}
@@ -471,7 +471,7 @@ klasse CConverter(metaclass=CConverterAutoRegister):
             cast = '(%s)' % self.type wenn self.type != 'PyObject *' sonst ''
             wenn self.subclass_of in type_checks:
                 typecheck, typename = type_checks[self.subclass_of]
-                return self.format_code("""
+                gib self.format_code("""
                     wenn (!{typecheck}({argname})) {{{{
                         {bad_argument}
                         goto exit;
@@ -481,7 +481,7 @@ klasse CConverter(metaclass=CConverterAutoRegister):
                     argname=argname,
                     bad_argument=self.bad_argument(displayname, typename, limited_capi=limited_capi),
                     typecheck=typecheck, typename=typename, cast=cast)
-            return self.format_code("""
+            gib self.format_code("""
                 wenn (!PyObject_TypeCheck({argname}, {subclass_of})) {{{{
                     {bad_argument}
                     goto exit;
@@ -494,11 +494,11 @@ klasse CConverter(metaclass=CConverterAutoRegister):
                 subclass_of=self.subclass_of, cast=cast)
         wenn self.format_unit == 'O':
             cast = '(%s)' % self.type wenn self.type != 'PyObject *' sonst ''
-            return self.format_code("""
+            gib self.format_code("""
                 {paramname} = {cast}{argname};
                 """,
                 argname=argname, cast=cast)
-        return Nichts
+        gib Nichts
 
     def set_template_dict(self, template_dict: TemplateDict) -> Nichts:
         pass
@@ -506,9 +506,9 @@ klasse CConverter(metaclass=CConverterAutoRegister):
     @property
     def parser_name(self) -> str:
         wenn self.name in libclinic.CLINIC_PREFIXED_ARGS: # bpo-39741
-            return libclinic.CLINIC_PREFIX + self.name
+            gib libclinic.CLINIC_PREFIX + self.name
         sonst:
-            return self.name
+            gib self.name
 
     def add_include(self, name: str, reason: str,
                     *, condition: str | Nichts = Nichts) -> Nichts:
@@ -516,7 +516,7 @@ klasse CConverter(metaclass=CConverterAutoRegister):
         self._includes.append(include)
 
     def get_includes(self) -> list[Include]:
-        return self._includes
+        gib self._includes
 
 
 ConverterType = Callable[..., CConverter]
@@ -526,7 +526,7 @@ ConverterDict = dict[str, ConverterType]
 # these callables must be of the form:
 #   def foo(name, default, *, ...)
 # The callable may have any number of keyword-only parameters.
-# The callable must return a CConverter object.
+# The callable must gib a CConverter object.
 # The callable should nicht call builtins.print.
 converters: ConverterDict = {}
 
@@ -548,5 +548,5 @@ def add_legacy_c_converter(
             added_f = functools.partial(f, **kwargs)
         wenn format_unit:
             legacy_converters[format_unit] = added_f
-        return f
-    return closure
+        gib f
+    gib closure

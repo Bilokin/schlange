@@ -19,19 +19,19 @@ klasse WithStr:
     def __init__(self, value):
         self.value = value
     def __str__(self):
-        return self.value
+        gib self.value
 
 klasse WithRepr:
     def __init__(self, value):
         self.value = value
     def __repr__(self):
-        return self.value
+        gib self.value
 
 klasse WithBytes:
     def __init__(self, value):
         self.value = value
     def __bytes__(self):
-        return self.value
+        gib self.value
 
 klasse TestObject:
     @property
@@ -48,7 +48,7 @@ klasse ProxyGetItem:
     def __init__(self, obj):
         self.obj = obj
     def __getitem__(self, key):
-        return self.obj[key]
+        gib self.obj[key]
 
 klasse ProxySetItem:
     def __init__(self, obj):
@@ -63,9 +63,9 @@ klasse ProxyDelItem:
         del self.obj[key]
 
 def gen():
-    yield 'a'
-    yield 'b'
-    yield 'c'
+    liefere 'a'
+    liefere 'b'
+    liefere 'c'
 
 
 klasse CAPITest(unittest.TestCase):
@@ -662,18 +662,18 @@ klasse CAPITest(unittest.TestCase):
     def test_mapping_keys_valuesitems(self):
         klasse Mapping1(dict):
             def keys(self):
-                return list(super().keys())
+                gib list(super().keys())
             def values(self):
-                return list(super().values())
+                gib list(super().values())
             def items(self):
-                return list(super().items())
+                gib list(super().items())
         klasse Mapping2(dict):
             def keys(self):
-                return tuple(super().keys())
+                gib tuple(super().keys())
             def values(self):
-                return tuple(super().values())
+                gib tuple(super().values())
             def items(self):
-                return tuple(super().items())
+                gib tuple(super().items())
         dict_obj = {'foo': 1, 'bar': 2, 'spam': 3}
 
         fuer mapping in [{}, OrderedDict(), Mapping1(), Mapping2(),
@@ -699,11 +699,11 @@ klasse CAPITest(unittest.TestCase):
 
         klasse BadMapping:
             def keys(self):
-                return Nichts
+                gib Nichts
             def values(self):
-                return Nichts
+                gib Nichts
             def items(self):
-                return Nichts
+                gib Nichts
         bad_mapping = BadMapping()
         self.assertRaises(TypeError, _testlimitedcapi.mapping_keys, bad_mapping)
         self.assertRaises(TypeError, _testlimitedcapi.mapping_values, bad_mapping)
@@ -1053,7 +1053,7 @@ klasse CAPITest(unittest.TestCase):
             def __next__(self):
                 wenn self.count < 3:
                     self.count += 1
-                    return self.count
+                    gib self.count
                 sonst:
                     raise TypeError('bad type')
 

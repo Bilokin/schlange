@@ -74,7 +74,7 @@ def main():
             shapesize(cs)
             cs *= 1.005
         update()
-    return "DONE!"
+    gib "DONE!"
 
 wenn __name__=='__main__':
     drucke(main())

@@ -291,7 +291,7 @@ klasse StructUnionTestBase:
     def test_str_name(self):
         klasse WeirdString(str):
             def __str__(self):
-                return "unwanted value"
+                gib "unwanted value"
         klasse S(self.cls):
             _fields_ = [(WeirdString("f"), c_int)]
         self.assertEqual(S.f.name, "f")

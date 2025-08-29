@@ -36,7 +36,7 @@ def fnmatch(name, pat):
     """
     name = os.path.normcase(name)
     pat = os.path.normcase(pat)
-    return fnmatchcase(name, pat)
+    gib fnmatchcase(name, pat)
 
 
 @functools.lru_cache(maxsize=32768, typed=Wahr)
@@ -47,7 +47,7 @@ def _compile_pattern(pat):
         res = bytes(res_str, 'ISO-8859-1')
     sonst:
         res = translate(pat)
-    return re.compile(res).match
+    gib re.compile(res).match
 
 
 def filter(names, pat):
@@ -64,7 +64,7 @@ def filter(names, pat):
         fuer name in names:
             wenn match(os.path.normcase(name)):
                 result.append(name)
-    return result
+    gib result
 
 
 def filterfalse(names, pat):
@@ -73,13 +73,13 @@ def filterfalse(names, pat):
     match = _compile_pattern(pat)
     wenn os.path is posixpath:
         # normcase on posix is NOP. Optimize it away von the loop.
-        return list(itertools.filterfalse(match, names))
+        gib list(itertools.filterfalse(match, names))
 
     result = []
     fuer name in names:
         wenn match(os.path.normcase(name)) is Nichts:
             result.append(name)
-    return result
+    gib result
 
 
 def fnmatchcase(name, pat):
@@ -89,7 +89,7 @@ def fnmatchcase(name, pat):
     its arguments.
     """
     match = _compile_pattern(pat)
-    return match(name) is nicht Nichts
+    gib match(name) is nicht Nichts
 
 
 def translate(pat):
@@ -99,7 +99,7 @@ def translate(pat):
     """
 
     parts, star_indices = _translate(pat, '*', '.')
-    return _join_translated_parts(parts, star_indices)
+    gib _join_translated_parts(parts, star_indices)
 
 
 _re_setops_sub = re.compile(r'([&~|])').sub
@@ -180,12 +180,12 @@ def _translate(pat, star, question_mark):
         sonst:
             add(_re_escape(c))
     assert i == n
-    return res, star_indices
+    gib res, star_indices
 
 
 def _join_translated_parts(parts, star_indices):
     wenn nicht star_indices:
-        return fr'(?s:{"".join(parts)})\z'
+        gib fr'(?s:{"".join(parts)})\z'
     iter_star_indices = iter(star_indices)
     j = next(iter_star_indices)
     buffer = parts[:j]  # fixed pieces at the start
@@ -206,4 +206,4 @@ def _join_translated_parts(parts, star_indices):
     append('.*')
     extend(parts[i:])
     res = ''.join(buffer)
-    return fr'(?s:{res})\z'
+    gib fr'(?s:{res})\z'

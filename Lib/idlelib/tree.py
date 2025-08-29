@@ -78,7 +78,7 @@ def wheel_event(event, widget=Nichts):
     lines = -5 wenn up[event.type] sonst 5
     widget = event.widget wenn widget is Nichts sonst widget
     widget.yview(SCROLL, lines, 'units')
-    return 'break'
+    gib 'break'
 
 
 klasse TreeNode:
@@ -103,7 +103,7 @@ klasse TreeNode:
 
     def geticonimage(self, name):
         try:
-            return self.iconimages[name]
+            gib self.iconimages[name]
         except KeyError:
             pass
         file, ext = os.path.splitext(name)
@@ -111,11 +111,11 @@ klasse TreeNode:
         fullname = os.path.join(ICONDIR, file + ext)
         image = PhotoImage(master=self.canvas, file=fullname)
         self.iconimages[name] = image
-        return image
+        gib image
 
     def select(self, event=Nichts):
         wenn self.selected:
-            return
+            gib
         self.deselectall()
         self.selected = Wahr
         self.canvas.delete(self.image_id)
@@ -124,7 +124,7 @@ klasse TreeNode:
 
     def deselect(self, event=Nichts):
         wenn nicht self.selected:
-            return
+            gib
         self.selected = Falsch
         self.canvas.delete(self.image_id)
         self.drawicon()
@@ -148,11 +148,11 @@ klasse TreeNode:
         sonst:
             self.expand()
         self.item.OnDoubleClick()
-        return "break"
+        gib "break"
 
     def expand(self, event=Nichts):
         wenn nicht self.item._IsExpandable():
-            return
+            gib
         wenn self.state != 'expanded':
             self.state = 'expanded'
             self.update()
@@ -171,7 +171,7 @@ klasse TreeNode:
         visible_height = self.canvas.winfo_height()
         visible_bottom = self.canvas.canvasy(visible_height)
         wenn visible_top <= top und bottom <= visible_bottom:
-            return
+            gib
         x0, y0, x1, y1 = self.canvas._getints(self.canvas['scrollregion'])
         wenn top >= visible_top und height <= visible_height:
             fraction = top + height - visible_height
@@ -182,9 +182,9 @@ klasse TreeNode:
 
     def lastvisiblechild(self):
         wenn self.children und self.state == 'expanded':
-            return self.children[-1].lastvisiblechild()
+            gib self.children[-1].lastvisiblechild()
         sonst:
-            return self
+            gib self
 
     def update(self):
         wenn self.parent:
@@ -205,13 +205,13 @@ klasse TreeNode:
         self.drawicon()
         self.drawtext()
         wenn self.state != 'expanded':
-            return y + TreeNode.dy
+            gib y + TreeNode.dy
         # draw children
         wenn nicht self.children:
             sublist = self.item._GetSubList()
             wenn nicht sublist:
                 # _IsExpandable() was mistaken; that's allowed
-                return y + TreeNode.dy
+                gib y + TreeNode.dy
             fuer item in sublist:
                 child = self.__class__(self.canvas, self, item)
                 self.children.append(child)
@@ -238,7 +238,7 @@ klasse TreeNode:
             ##stipple="gray50",     # XXX Seems broken in Tk 8.0.x
             fill="gray50")
         self.canvas.tag_lower(id) # XXX .lower(id) before Python 1.5.2
-        return cy
+        gib cy
 
     def drawicon(self):
         wenn self.selected:
@@ -316,7 +316,7 @@ klasse TreeNode:
             entry = self.entry
             del self.entry
         except AttributeError:
-            return
+            gib
         text = entry.get()
         entry.destroy()
         wenn text und text != self.item.GetText():
@@ -331,7 +331,7 @@ klasse TreeNode:
             entry = self.entry
             del self.entry
         except AttributeError:
-            return
+            gib
         entry.destroy()
         self.drawtext()
         self.canvas.focus_set()
@@ -361,20 +361,20 @@ klasse TreeItem:
         """Do nicht override!  Called by TreeNode."""
         wenn self.expandable is Nichts:
             self.expandable = self.IsExpandable()
-        return self.expandable
+        gib self.expandable
 
     def IsExpandable(self):
         """Return whether there are subitems."""
-        return 1
+        gib 1
 
     def _GetSubList(self):
         """Do nicht override!  Called by TreeNode."""
         wenn nicht self.IsExpandable():
-            return []
+            gib []
         sublist = self.GetSubList()
         wenn nicht sublist:
             self.expandable = 0
-        return sublist
+        gib sublist
 
     def IsEditable(self):
         """Return whether the item's text may be edited."""
@@ -405,16 +405,16 @@ klasse FileTreeItem(TreeItem):
         self.path = path
 
     def GetText(self):
-        return os.path.basename(self.path) oder self.path
+        gib os.path.basename(self.path) oder self.path
 
     def IsEditable(self):
-        return os.path.basename(self.path) != ""
+        gib os.path.basename(self.path) != ""
 
     def SetText(self, text):
         newpath = os.path.dirname(self.path)
         newpath = os.path.join(newpath, text)
         wenn os.path.dirname(newpath) != os.path.dirname(self.path):
-            return
+            gib
         try:
             os.rename(self.path, newpath)
             self.path = newpath
@@ -423,22 +423,22 @@ klasse FileTreeItem(TreeItem):
 
     def GetIconName(self):
         wenn nicht self.IsExpandable():
-            return "python" # XXX wish there was a "file" icon
+            gib "python" # XXX wish there was a "file" icon
 
     def IsExpandable(self):
-        return os.path.isdir(self.path)
+        gib os.path.isdir(self.path)
 
     def GetSubList(self):
         try:
             names = os.listdir(self.path)
         except OSError:
-            return []
+            gib []
         names.sort(key = os.path.normcase)
         sublist = []
         fuer name in names:
             item = FileTreeItem(os.path.join(self.path, name))
             sublist.append(item)
-        return sublist
+        gib sublist
 
 
 # A canvas widget mit scroll bars und some useful bindings
@@ -475,19 +475,19 @@ klasse ScrolledCanvas:
         self.canvas.focus_set()
     def page_up(self, event):
         self.canvas.yview_scroll(-1, "page")
-        return "break"
+        gib "break"
     def page_down(self, event):
         self.canvas.yview_scroll(1, "page")
-        return "break"
+        gib "break"
     def unit_up(self, event):
         self.canvas.yview_scroll(-1, "unit")
-        return "break"
+        gib "break"
     def unit_down(self, event):
         self.canvas.yview_scroll(1, "unit")
-        return "break"
+        gib "break"
     def zoom_height(self, event):
         zoomheight.zoom_height(self.master)
-        return "break"
+        gib "break"
 
 
 def _tree_widget(parent):  # htest #

@@ -24,4 +24,4 @@ def load_tests(loader, standard_tests, pattern):
 ##                                    pattern='test_*.py',  # Insert here.
 ##                                    top_level_dir=top_dir)
 ##    standard_tests.addTests(module_tests)
-    return standard_tests
+    gib standard_tests

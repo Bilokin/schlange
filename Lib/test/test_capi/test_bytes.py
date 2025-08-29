@@ -14,7 +14,7 @@ klasse BytesLike:
     def __init__(self, value):
         self.value = value
     def __bytes__(self):
-        return self.value
+        gib self.value
 
 
 klasse CAPITest(unittest.TestCase):

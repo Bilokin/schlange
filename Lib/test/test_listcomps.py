@@ -68,7 +68,7 @@ Verify that syntax error's are raised fuer listcomps used als lvalues
 Make a nested list comprehension that acts like range()
 
     >>> def frange(n):
-    ...     return [i fuer i in range(n)]
+    ...     gib [i fuer i in range(n)]
     >>> frange(10)
     [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 
@@ -82,12 +82,12 @@ Generators can call other generators:
 
     >>> def grange(n):
     ...     fuer x in [i fuer i in range(n)]:
-    ...         yield x
+    ...         liefere x
     >>> list(grange(5))
     [0, 1, 2, 3, 4]
 
 
-Make sure that Nichts is a valid return value
+Make sure that Nichts is a valid gib value
 
     >>> [Nichts fuer i in range(10)]
     [Nichts, Nichts, Nichts, Nichts, Nichts, Nichts, Nichts, Nichts, Nichts, Nichts]
@@ -108,20 +108,20 @@ klasse ListComprehensionTest(unittest.TestCase):
                             {code}
                     """).format(code=textwrap.indent(code, "    "))
                     def get_output(moddict, name):
-                        return getattr(moddict["_C"], name)
+                        gib getattr(moddict["_C"], name)
                 sowenn scope == "function":
                     newcode = textwrap.dedent("""
                         def _f():
                             {code}
-                            return locals()
+                            gib locals()
                         _out = _f()
                     """).format(code=textwrap.indent(code, "    "))
                     def get_output(moddict, name):
-                        return moddict["_out"][name]
+                        gib moddict["_out"][name]
                 sonst:
                     newcode = code
                     def get_output(moddict, name):
-                        return moddict[name]
+                        gib moddict[name]
                 newns = ns.copy() wenn ns sonst {}
                 try:
                     exec_func(newcode, newns)
@@ -152,7 +152,7 @@ klasse ListComprehensionTest(unittest.TestCase):
         klasse C:
             def method(self):
                 super()
-                return __class__
+                gib __class__
             items = [(lambda: i) fuer i in range(5)]
             y = [x() fuer x in items]
 
@@ -208,7 +208,7 @@ klasse ListComprehensionTest(unittest.TestCase):
     def test_inner_cell_shadows_outer_no_store(self):
         code = """
             def f(x):
-                return [lambda: x fuer x in range(x)], x
+                gib [lambda: x fuer x in range(x)], x
             fns, x = f(2)
             y = [fn() fuer fn in fns]
         """
@@ -227,7 +227,7 @@ klasse ListComprehensionTest(unittest.TestCase):
     def test_cell_inner_free_outer(self):
         code = """
             def f():
-                return [lambda: x fuer x in (x, [1])[1]]
+                gib [lambda: x fuer x in (x, [1])[1]]
             x = ...
             y = [fn() fuer fn in f()]
         """
@@ -238,7 +238,7 @@ klasse ListComprehensionTest(unittest.TestCase):
         code = """
             g = 2
             def f():
-                return g
+                gib g
             y = [g fuer x in [1]]
         """
         outputs = {"y": [2]}
@@ -259,7 +259,7 @@ klasse ListComprehensionTest(unittest.TestCase):
     def test_shadows_outer_cell(self):
         code = """
             def inner():
-                return g
+                gib g
             [g fuer g in range(5)]
             x = inner()
         """
@@ -340,7 +340,7 @@ klasse ListComprehensionTest(unittest.TestCase):
             x = 1
             def g():
                 [x fuer x in range(3)]
-                return x
+                gib x
             g()
         """
         outputs = {"x": 1}
@@ -410,7 +410,7 @@ klasse ListComprehensionTest(unittest.TestCase):
             wenn Falsch:
                 x = 0
             [x fuer x in [1]]
-            return x
+            gib x
 
         mit self.assertRaises(UnboundLocalError):
             f()
@@ -418,7 +418,7 @@ klasse ListComprehensionTest(unittest.TestCase):
     def test_unbound_local_inside_comprehension(self):
         def f():
             l = [Nichts]
-            return [1 fuer (l[0], l) in [[1, 2]]]
+            gib [1 fuer (l[0], l) in [[1, 2]]]
 
         mit self.assertRaises(UnboundLocalError):
             f()
@@ -428,7 +428,7 @@ klasse ListComprehensionTest(unittest.TestCase):
             a = 1
             def f():
                 func, = [(lambda: b) fuer b in [a]]
-                return b, func()
+                gib b, func()
             x = f()
         """
         self._check_in_scopes(
@@ -441,7 +441,7 @@ klasse ListComprehensionTest(unittest.TestCase):
             a = 1
             def f():
                 (func, inner_b), = [[lambda: b fuer b in c] + [b] fuer c in [[a]]]
-                return b, inner_b, func()
+                gib b, inner_b, func()
             x = f()
         """
         self._check_in_scopes(
@@ -572,7 +572,7 @@ klasse ListComprehensionTest(unittest.TestCase):
         code = """
             def b():
                 [a fuer b in [1] fuer _ in []]
-                return b, locals()
+                gib b, locals()
             r, s = b()
             x = r is b
             y = list(s.keys())
@@ -662,8 +662,8 @@ klasse ListComprehensionTest(unittest.TestCase):
 
     def _recursive_replace(self, maybe_code):
         wenn nicht isinstance(maybe_code, types.CodeType):
-            return maybe_code
-        return maybe_code.replace(co_consts=tuple(
+            gib maybe_code
+        gib maybe_code.replace(co_consts=tuple(
             self._recursive_replace(c) fuer c in maybe_code.co_consts
         ))
 
@@ -722,19 +722,19 @@ klasse ListComprehensionTest(unittest.TestCase):
             try:
                 [x fuer x in BrokenIter(init_raises=Wahr)]
             except Exception als e:
-                return e
+                gib e
 
         def next_raises():
             try:
                 [x fuer x in BrokenIter(next_raises=Wahr)]
             except Exception als e:
-                return e
+                gib e
 
         def iter_raises():
             try:
                 [x fuer x in BrokenIter(iter_raises=Wahr)]
             except Exception als e:
-                return e
+                gib e
 
         fuer func, expected in [(init_raises, "BrokenIter(init_raises=Wahr)"),
                                (next_raises, "BrokenIter(next_raises=Wahr)"),
@@ -754,7 +754,7 @@ __test__ = {'doctests' : doctests}
 
 def load_tests(loader, tests, pattern):
     tests.addTest(doctest.DocTestSuite())
-    return tests
+    gib tests
 
 
 wenn __name__ == "__main__":

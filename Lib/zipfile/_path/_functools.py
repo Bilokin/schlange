@@ -15,6 +15,6 @@ def save_method_args(method):
         attr_name = '_saved_' + method.__name__
         attr = args_and_kwargs(args, kwargs)
         setattr(self, attr_name, attr)
-        return method(self, *args, **kwargs)
+        gib method(self, *args, **kwargs)
 
-    return wrapper
+    gib wrapper

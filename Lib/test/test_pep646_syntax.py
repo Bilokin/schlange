@@ -16,11 +16,11 @@ Setup
     ...        self._setitem_val = val
     ...    def __repr__(self):
     ...        wenn self._setitem_name is nicht Nichts:
-    ...            return f"A[{self._setitem_name}]={self._setitem_val}"
+    ...            gib f"A[{self._setitem_name}]={self._setitem_val}"
     ...        sowenn self._delitem_name is nicht Nichts:
-    ...            return f"delA[{self._delitem_name}]"
+    ...            gib f"delA[{self._delitem_name}]"
     ...    def __getitem__(self, name):
-    ...        return ParameterisedA(name)
+    ...        gib ParameterisedA(name)
     ...    def __delitem__(self, name):
     ...        self._setitem_name = Nichts
     ...        self._delitem_name = name
@@ -29,18 +29,18 @@ Setup
     ...    def __init__(self, name):
     ...        self._name = name
     ...    def __repr__(self):
-    ...        return f"A[{self._name}]"
+    ...        gib f"A[{self._name}]"
     ...    def __iter__(self):
     ...        fuer p in self._name:
-    ...            yield p
+    ...            liefere p
     >>> klasse B:
     ...    def __iter__(self):
-    ...        yield StarredB()
+    ...        liefere StarredB()
     ...    def __repr__(self):
-    ...        return "B"
+    ...        gib "B"
     >>> klasse StarredB:
     ...    def __repr__(self):
-    ...        return "StarredB"
+    ...        gib "StarredB"
     >>> A = AClass()
     >>> b = B()
 
@@ -210,7 +210,7 @@ Slices that are supposed to work, starring a tuple
 Starring an expression (rather than a name) in a slice
 
     >>> def returns_list():
-    ...     return [1, 2, 3]
+    ...     gib [1, 2, 3]
 
     >>> A[returns_list()]
     A[[1, 2, 3]]
@@ -322,7 +322,7 @@ __test__ = {'doctests' : doctests}
 
 def load_tests(loader, tests, pattern):
     tests.addTest(doctest.DocTestSuite())
-    return tests
+    gib tests
 
 
 wenn __name__ == "__main__":

@@ -24,7 +24,7 @@ klasse BaseTestCase(unittest.TestCase):
             result = "\n".join(result) wenn result sonst "  no lines"
         sowenn isinstance(textin, str):
             result = "  %s\n" % repr(textin)
-        return result
+        gib result
 
 
     def check(self, result, expect):
@@ -864,12 +864,12 @@ klasse DedentTestCase(unittest.TestCase):
         text = '''\
         def foo():
             waehrend 1:
-                return foo
+                gib foo
         '''
         expect = '''\
 def foo():
     waehrend 1:
-        return foo
+        gib foo
 '''
         self.assertEqual(expect, dedent(text))
 

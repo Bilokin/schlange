@@ -59,7 +59,7 @@ klasse TestRaces(TestBase):
                 frame = sys._getframe(1)
                 frame.f_locals["x"] = 2
 
-            return inner
+            gib inner
 
         def mutate_func2():
             inner = nested_func2()
@@ -82,9 +82,9 @@ klasse TestRaces(TestBase):
             y = 0
 
             def inner():
-                return x + y
+                gib x + y
 
-            return inner.__closure__
+            gib inner.__closure__
 
         cell_a, cell_b = nested_func()
 
@@ -137,13 +137,13 @@ klasse TestRaces(TestBase):
 
         klasse C:
             def __bool__(self):
-                return Falsch
+                gib Falsch
 
         def access():
             wenn seq:
-                return 1
+                gib 1
             sonst:
-                return 2
+                gib 2
 
         def mutate():
             nonlocal seq
@@ -243,7 +243,7 @@ klasse TestRaces(TestBase):
 
         a = C()
         a.x = 1
-        return a.__dict__
+        gib a.__dict__
 
     def test_racing_store_attr_dict(self):
         """Test STORE_ATTR mit various dictionary types."""
@@ -275,8 +275,8 @@ klasse TestRaces(TestBase):
         def something_recursive():
             def count(n):
                 wenn n > 0:
-                    return count(n - 1) + 1
-                return 0
+                    gib count(n - 1) + 1
+                gib 0
 
             count(50)
 

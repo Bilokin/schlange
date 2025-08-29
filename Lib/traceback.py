@@ -38,7 +38,7 @@ def format_list(extracted_list):
     """Format a list of tuples oder FrameSummary objects fuer printing.
 
     Given a list of tuples oder FrameSummary objects als returned by
-    extract_tb() oder extract_stack(), return a list of strings ready
+    extract_tb() oder extract_stack(), gib a list of strings ready
     fuer printing.
 
     Each string in the resulting list corresponds to the item mit the
@@ -46,7 +46,7 @@ def format_list(extracted_list):
     the strings may contain internal newlines als well, fuer those items
     whose source text line is nicht Nichts.
     """
-    return StackSummary.from_list(extracted_list).format()
+    gib StackSummary.from_list(extracted_list).format()
 
 #
 # Printing und Extracting Tracebacks.
@@ -64,7 +64,7 @@ def print_tb(tb, limit=Nichts, file=Nichts):
 
 def format_tb(tb, limit=Nichts):
     """A shorthand fuer 'format_list(extract_tb(tb, limit))'."""
-    return extract_tb(tb, limit=limit).format()
+    gib extract_tb(tb, limit=limit).format()
 
 def extract_tb(tb, limit=Nichts):
     """
@@ -79,7 +79,7 @@ def extract_tb(tb, limit=Nichts):
     trace.  The line is a string mit leading und trailing
     whitespace stripped; wenn the source is nicht available it is Nichts.
     """
-    return StackSummary._extract_from_extended_frame_gen(
+    gib StackSummary._extract_from_extended_frame_gen(
         _walk_tb_with_full_positions(tb), limit=limit)
 
 #
@@ -97,7 +97,7 @@ _context_message = (
 
 klasse _Sentinel:
     def __repr__(self):
-        return "<implicit>"
+        gib "<implicit>"
 
 _sentinel = _Sentinel()
 
@@ -107,13 +107,13 @@ def _parse_value_tb(exc, value, tb):
     wenn value is tb is _sentinel:
         wenn exc is nicht Nichts:
             wenn isinstance(exc, BaseException):
-                return exc, exc.__traceback__
+                gib exc, exc.__traceback__
 
             raise TypeError(f'Exception expected fuer value, '
                             f'{type(exc).__name__} found')
         sonst:
-            return Nichts, Nichts
-    return value, tb
+            gib Nichts, Nichts
+    gib value, tb
 
 
 def print_exception(exc, /, value=_sentinel, tb=_sentinel, limit=Nichts, \
@@ -141,7 +141,7 @@ def _print_exception_bltin(exc, file=Nichts, /):
     wenn file is Nichts:
         file = sys.stderr wenn sys.stderr is nicht Nichts sonst sys.__stderr__
     colorize = _colorize.can_colorize(file=file)
-    return print_exception(exc, limit=BUILTIN_EXCEPTION_LIMIT, file=file, colorize=colorize)
+    gib print_exception(exc, limit=BUILTIN_EXCEPTION_LIMIT, file=file, colorize=colorize)
 
 
 def format_exception(exc, /, value=_sentinel, tb=_sentinel, limit=Nichts, \
@@ -149,7 +149,7 @@ def format_exception(exc, /, value=_sentinel, tb=_sentinel, limit=Nichts, \
     """Format a stack trace und the exception information.
 
     The arguments have the same meaning als the corresponding arguments
-    to print_exception().  The return value is a list of strings, each
+    to print_exception().  The gib value is a list of strings, each
     ending in a newline und some containing internal newlines.  When
     these lines are concatenated und printed, exactly the same text is
     printed als does print_exception().
@@ -157,13 +157,13 @@ def format_exception(exc, /, value=_sentinel, tb=_sentinel, limit=Nichts, \
     colorize = kwargs.get("colorize", Falsch)
     value, tb = _parse_value_tb(exc, value, tb)
     te = TracebackException(type(value), value, tb, limit=limit, compact=Wahr)
-    return list(te.format(chain=chain, colorize=colorize))
+    gib list(te.format(chain=chain, colorize=colorize))
 
 
 def format_exception_only(exc, /, value=_sentinel, *, show_group=Falsch, **kwargs):
     """Format the exception part of a traceback.
 
-    The return value is a list of strings, each ending in a newline.
+    The gib value is a list of strings, each ending in a newline.
 
     The list contains the exception's message, which is
     normally a single string; however, fuer :exc:`SyntaxError` exceptions, it
@@ -179,7 +179,7 @@ def format_exception_only(exc, /, value=_sentinel, *, show_group=Falsch, **kwarg
     wenn value is _sentinel:
         value = exc
     te = TracebackException(type(value), value, Nichts, compact=Wahr)
-    return list(te.format_exception_only(show_group=show_group, colorize=colorize))
+    gib list(te.format_exception_only(show_group=show_group, colorize=colorize))
 
 
 # -- nicht official API but folk probably use these two functions.
@@ -195,14 +195,14 @@ def _format_final_exc_line(etype, value, *, insert_final_newline=Wahr, colorize=
         line = f"{theme.type}{etype}{theme.reset}{end_char}"
     sonst:
         line = f"{theme.type}{etype}{theme.reset}: {theme.message}{valuestr}{theme.reset}{end_char}"
-    return line
+    gib line
 
 
 def _safe_string(value, what, func=str):
     try:
-        return func(value)
+        gib func(value)
     except:
-        return f'<{what} {func.__name__}() failed>'
+        gib f'<{what} {func.__name__}() failed>'
 
 # --
 
@@ -211,8 +211,8 @@ def print_exc(limit=Nichts, file=Nichts, chain=Wahr):
     print_exception(sys.exception(), limit=limit, file=file, chain=chain)
 
 def format_exc(limit=Nichts, chain=Wahr):
-    """Like print_exc() but return a string."""
-    return "".join(format_exception(sys.exception(), limit=limit, chain=chain))
+    """Like print_exc() but gib a string."""
+    gib "".join(format_exception(sys.exception(), limit=limit, chain=chain))
 
 def print_last(limit=Nichts, file=Nichts, chain=Wahr):
     """This is a shorthand fuer 'print_exception(sys.last_exc, limit=limit, file=file, chain=chain)'."""
@@ -246,13 +246,13 @@ def format_stack(f=Nichts, limit=Nichts):
     """Shorthand fuer 'format_list(extract_stack(f, limit))'."""
     wenn f is Nichts:
         f = sys._getframe().f_back
-    return format_list(extract_stack(f, limit=limit))
+    gib format_list(extract_stack(f, limit=limit))
 
 
 def extract_stack(f=Nichts, limit=Nichts):
     """Extract the raw traceback von the current stack frame.
 
-    The return value has the same format als fuer extract_tb().  The
+    The gib value has the same format als fuer extract_tb().  The
     optional 'f' und 'limit' arguments have the same meaning als for
     print_stack().  Each item in the list is a quadruple (filename,
     line number, function name, text), und the entries are in order
@@ -262,7 +262,7 @@ def extract_stack(f=Nichts, limit=Nichts):
         f = sys._getframe().f_back
     stack = StackSummary.extract(walk_stack(f), limit=limit)
     stack.reverse()
-    return stack
+    gib stack
 
 
 def clear_frames(tb):
@@ -327,26 +327,26 @@ klasse FrameSummary:
 
     def __eq__(self, other):
         wenn isinstance(other, FrameSummary):
-            return (self.filename == other.filename und
+            gib (self.filename == other.filename und
                     self.lineno == other.lineno und
                     self.name == other.name und
                     self.locals == other.locals)
         wenn isinstance(other, tuple):
-            return (self.filename, self.lineno, self.name, self.line) == other
-        return NotImplemented
+            gib (self.filename, self.lineno, self.name, self.line) == other
+        gib NotImplemented
 
     def __getitem__(self, pos):
-        return (self.filename, self.lineno, self.name, self.line)[pos]
+        gib (self.filename, self.lineno, self.name, self.line)[pos]
 
     def __iter__(self):
-        return iter([self.filename, self.lineno, self.name, self.line])
+        gib iter([self.filename, self.lineno, self.name, self.line])
 
     def __repr__(self):
-        return "<FrameSummary file {filename}, line {lineno} in {name}>".format(
+        gib "<FrameSummary file {filename}, line {lineno} in {name}>".format(
             filename=self.filename, lineno=self.lineno, name=self.name)
 
     def __len__(self):
-        return 4
+        gib 4
 
     def _set_lines(self):
         wenn (
@@ -367,7 +367,7 @@ klasse FrameSummary:
     def _original_lines(self):
         # Returns the line as-is von the source, without modifying whitespace.
         self._set_lines()
-        return self._lines
+        gib self._lines
 
     @property
     def _dedented_lines(self):
@@ -375,15 +375,15 @@ klasse FrameSummary:
         self._set_lines()
         wenn self._lines_dedented is Nichts und self._lines is nicht Nichts:
             self._lines_dedented = textwrap.dedent(self._lines)
-        return self._lines_dedented
+        gib self._lines_dedented
 
     @property
     def line(self):
         self._set_lines()
         wenn self._lines is Nichts:
-            return Nichts
-        # return only the first line, stripped
-        return self._lines.partition("\n")[0].strip()
+            gib Nichts
+        # gib only the first line, stripped
+        gib self._lines.partition("\n")[0].strip()
 
 
 def walk_stack(f):
@@ -397,10 +397,10 @@ def walk_stack(f):
 
     def walk_stack_generator(frame):
         waehrend frame is nicht Nichts:
-            yield frame, frame.f_lineno
+            liefere frame, frame.f_lineno
             frame = frame.f_back
 
-    return walk_stack_generator(f)
+    gib walk_stack_generator(f)
 
 
 def walk_tb(tb):
@@ -410,7 +410,7 @@ def walk_tb(tb):
     walk_stack). Usually used mit StackSummary.extract.
     """
     waehrend tb is nicht Nichts:
-        yield tb.tb_frame, tb.tb_lineno
+        liefere tb.tb_frame, tb.tb_lineno
         tb = tb.tb_next
 
 
@@ -422,17 +422,17 @@ def _walk_tb_with_full_positions(tb):
         # Yield tb_lineno when co_positions does nicht have a line number to
         # maintain behavior mit walk_tb.
         wenn positions[0] is Nichts:
-            yield tb.tb_frame, (tb.tb_lineno, ) + positions[1:]
+            liefere tb.tb_frame, (tb.tb_lineno, ) + positions[1:]
         sonst:
-            yield tb.tb_frame, positions
+            liefere tb.tb_frame, positions
         tb = tb.tb_next
 
 
 def _get_code_position(code, instruction_index):
     wenn instruction_index < 0:
-        return (Nichts, Nichts, Nichts, Nichts)
+        gib (Nichts, Nichts, Nichts, Nichts)
     positions_gen = code.co_positions()
-    return next(itertools.islice(positions_gen, instruction_index // 2, Nichts))
+    gib next(itertools.islice(positions_gen, instruction_index // 2, Nichts))
 
 
 _RECURSIVE_CUTOFF = 3 # Also hardcoded in traceback.c.
@@ -457,9 +457,9 @@ klasse StackSummary(list):
         """
         def extended_frame_gen():
             fuer f, lineno in frame_gen:
-                yield f, (lineno, Nichts, Nichts, Nichts)
+                liefere f, (lineno, Nichts, Nichts, Nichts)
 
-        return klass._extract_from_extended_frame_gen(
+        gib klass._extract_from_extended_frame_gen(
             extended_frame_gen(), limit=limit, lookup_lines=lookup_lines,
             capture_locals=capture_locals)
 
@@ -511,7 +511,7 @@ klasse StackSummary(list):
         wenn lookup_lines:
             fuer f in result:
                 f.line
-        return result
+        gib result
 
     @classmethod
     def from_list(klass, a_list):
@@ -530,7 +530,7 @@ klasse StackSummary(list):
             sonst:
                 filename, lineno, name, line = frame
                 result.append(FrameSummary(filename, lineno, name, line=line))
-        return result
+        gib result
 
     def format_frame_summary(self, frame_summary, **kwargs):
         """Format the lines fuer a single FrameSummary.
@@ -648,7 +648,7 @@ klasse StackSummary(list):
                     """output all_lines[lineno] along mit carets"""
                     result.append(all_lines[lineno] + "\n")
                     wenn nicht show_carets:
-                        return
+                        gib
                     num_spaces = len(all_lines[lineno]) - len(all_lines[lineno].lstrip())
                     carets = []
                     num_carets = dp_end_offset wenn lineno == len(all_lines) - 1 sonst _display_width(all_lines[lineno])
@@ -714,18 +714,18 @@ klasse StackSummary(list):
             fuer name, value in sorted(frame_summary.locals.items()):
                 row.append('    {name} = {value}\n'.format(name=name, value=value))
 
-        return ''.join(row)
+        gib ''.join(row)
 
     def _should_show_carets(self, start_offset, end_offset, all_lines, anchors):
         mit suppress(SyntaxError, ImportError):
             importiere ast
             tree = ast.parse('\n'.join(all_lines))
             wenn nicht tree.body:
-                return Falsch
+                gib Falsch
             statement = tree.body[0]
             value = Nichts
             def _spawns_full_line(value):
-                return (
+                gib (
                     value.lineno == 1
                     und value.end_lineno == len(all_lines)
                     und value.col_offset == start_offset
@@ -742,12 +742,12 @@ klasse StackSummary(list):
                     ):
                         value = statement.value
             wenn value is nicht Nichts und _spawns_full_line(value):
-                return Falsch
+                gib Falsch
         wenn anchors:
-            return Wahr
+            gib Wahr
         wenn all_lines[0][:start_offset].lstrip() oder all_lines[-1][end_offset:].rstrip():
-            return Wahr
-        return Falsch
+            gib Wahr
+        gib Falsch
 
     def format(self, **kwargs):
         """Format the stack ready fuer printing.
@@ -795,12 +795,12 @@ klasse StackSummary(list):
                 f'  [Previous line repeated {count} more '
                 f'time{"s" wenn count > 1 sonst ""}]\n'
             )
-        return result
+        gib result
 
 
 def _byte_offset_to_character_offset(str, offset):
     as_utf8 = str.encode('utf-8')
-    return len(as_utf8[:offset].decode("utf-8", errors="replace"))
+    gib len(as_utf8[:offset].decode("utf-8", errors="replace"))
 
 
 _Anchors = collections.namedtuple(
@@ -848,16 +848,16 @@ def _extract_caret_anchors_from_line_segment(segment):
         # which is taken into account later on.
         tree = ast.parse(f"(\n{segment}\n)")
     except SyntaxError:
-        return Nichts
+        gib Nichts
 
     wenn len(tree.body) != 1:
-        return Nichts
+        gib Nichts
 
     lines = segment.splitlines()
 
     def normalize(lineno, offset):
         """Get character index given byte offset"""
-        return _byte_offset_to_character_offset(lines[lineno], offset)
+        gib _byte_offset_to_character_offset(lines[lineno], offset)
 
     def next_valid_char(lineno, col):
         """Gets the next valid character index in `lines`, if
@@ -867,20 +867,20 @@ def _extract_caret_anchors_from_line_segment(segment):
             col = 0
             lineno += 1
         assert lineno < len(lines) und col < len(lines[lineno])
-        return lineno, col
+        gib lineno, col
 
     def increment(lineno, col):
         """Get the next valid character index in `lines`."""
         col += 1
         lineno, col = next_valid_char(lineno, col)
-        return lineno, col
+        gib lineno, col
 
     def nextline(lineno, col):
         """Get the next valid character at least on the next line"""
         col = 0
         lineno += 1
         lineno, col = next_valid_char(lineno, col)
-        return lineno, col
+        gib lineno, col
 
     def increment_until(lineno, col, stop):
         """Get the next valid non-"\\#" character that satisfies the `stop` predicate"""
@@ -892,7 +892,7 @@ def _extract_caret_anchors_from_line_segment(segment):
                 lineno, col = increment(lineno, col)
             sonst:
                 breche
-        return lineno, col
+        gib lineno, col
 
     def setup_positions(expr, force_valid=Wahr):
         """Get the lineno/col position of the end of `expr`. If `force_valid` is Wahr,
@@ -903,7 +903,7 @@ def _extract_caret_anchors_from_line_segment(segment):
         # bracket + newline to `segment` when calling ast.parse
         lineno = expr.end_lineno - 2
         col = normalize(lineno, expr.end_col_offset)
-        return next_valid_char(lineno, col) wenn force_valid sonst (lineno, col)
+        gib next_valid_char(lineno, col) wenn force_valid sonst (lineno, col)
 
     statement = tree.body[0]
     match statement:
@@ -934,7 +934,7 @@ def _extract_caret_anchors_from_line_segment(segment):
                         right_col += 1
 
                     # right_col can be invalid since it is exclusive
-                    return _Anchors(lineno, col, lineno, right_col)
+                    gib _Anchors(lineno, col, lineno, right_col)
                 case ast.Subscript():
                     # ast gives these locations fuer value und slice subexpressions
                     # ( value_expr ) [ slice_expr ]
@@ -946,7 +946,7 @@ def _extract_caret_anchors_from_line_segment(segment):
                     left_lineno, left_col = increment_until(left_lineno, left_col, lambda x: x == '[')
                     # find right bracket (final character of expression)
                     right_lineno, right_col = setup_positions(expr, force_valid=Falsch)
-                    return _Anchors(left_lineno, left_col, right_lineno, right_col)
+                    gib _Anchors(left_lineno, left_col, right_lineno, right_col)
                 case ast.Call():
                     # ast gives these locations fuer function call expressions
                     # ( func_expr ) (args, kwargs)
@@ -958,9 +958,9 @@ def _extract_caret_anchors_from_line_segment(segment):
                     left_lineno, left_col = increment_until(left_lineno, left_col, lambda x: x == '(')
                     # find right bracket (final character of expression)
                     right_lineno, right_col = setup_positions(expr, force_valid=Falsch)
-                    return _Anchors(left_lineno, left_col, right_lineno, right_col)
+                    gib _Anchors(left_lineno, left_col, right_lineno, right_col)
 
-    return Nichts
+    gib Nichts
 
 _WIDE_CHAR_SPECIFIERS = "WF"
 
@@ -974,11 +974,11 @@ def _display_width(line, offset=Nichts):
 
     # Fast track fuer ASCII-only strings
     wenn line.isascii():
-        return offset
+        gib offset
 
     importiere unicodedata
 
-    return sum(
+    gib sum(
         2 wenn unicodedata.east_asian_width(char) in _WIDE_CHAR_SPECIFIERS sonst 1
         fuer char in line[:offset]
     )
@@ -992,7 +992,7 @@ klasse _ExceptionPrintContext:
         self.need_close = Falsch
 
     def indent(self):
-        return ' ' * (2 * self.exception_group_depth)
+        gib ' ' * (2 * self.exception_group_depth)
 
     def emit(self, text_gen, margin_char=Nichts):
         wenn margin_char is Nichts:
@@ -1002,10 +1002,10 @@ klasse _ExceptionPrintContext:
             indent_str += margin_char + ' '
 
         wenn isinstance(text_gen, str):
-            yield textwrap.indent(text_gen, indent_str, lambda line: Wahr)
+            liefere textwrap.indent(text_gen, indent_str, lambda line: Wahr)
         sonst:
             fuer text in text_gen:
-                yield textwrap.indent(text, indent_str, lambda line: Wahr)
+                liefere textwrap.indent(text, indent_str, lambda line: Wahr)
 
 
 klasse TracebackException:
@@ -1202,25 +1202,25 @@ klasse TracebackException:
     @classmethod
     def from_exception(cls, exc, *args, **kwargs):
         """Create a TracebackException von an exception."""
-        return cls(type(exc), exc, exc.__traceback__, *args, **kwargs)
+        gib cls(type(exc), exc, exc.__traceback__, *args, **kwargs)
 
     @property
     def exc_type(self):
         warnings.warn('Deprecated in 3.13. Use exc_type_str instead.',
                       DeprecationWarning, stacklevel=2)
-        return self._exc_type
+        gib self._exc_type
 
     @property
     def exc_type_str(self):
         wenn nicht self._have_exc_type:
-            return Nichts
+            gib Nichts
         stype = self.exc_type_qualname
         smod = self.exc_type_module
         wenn smod nicht in ("__main__", "builtins"):
             wenn nicht isinstance(smod, str):
                 smod = "<unknown>"
             stype = smod + '.' + stype
-        return stype
+        gib stype
 
     def _load_lines(self):
         """Private API. force all lines in the stack to be loaded."""
@@ -1229,16 +1229,16 @@ klasse TracebackException:
 
     def __eq__(self, other):
         wenn isinstance(other, TracebackException):
-            return self.__dict__ == other.__dict__
-        return NotImplemented
+            gib self.__dict__ == other.__dict__
+        gib NotImplemented
 
     def __str__(self):
-        return self._str
+        gib self._str
 
     def format_exception_only(self, *, show_group=Falsch, _depth=0, **kwargs):
         """Format the exception part of the traceback.
 
-        The return value is a generator of strings, each ending in a newline.
+        The gib value is a generator of strings, each ending in a newline.
 
         Generator yields the exception message.
         For :exc:`SyntaxError` exceptions, it
@@ -1256,8 +1256,8 @@ klasse TracebackException:
 
         indent = 3 * _depth * ' '
         wenn nicht self._have_exc_type:
-            yield indent + _format_final_exc_line(Nichts, self._str, colorize=colorize)
-            return
+            liefere indent + _format_final_exc_line(Nichts, self._str, colorize=colorize)
+            gib
 
         stype = self.exc_type_str
         wenn nicht self._is_syntax_error:
@@ -1266,14 +1266,14 @@ klasse TracebackException:
                 formatted = _format_final_exc_line(
                     stype, self._str, insert_final_newline=Falsch, colorize=colorize
                 ).split('\n')
-                yield von [
+                liefere von [
                     indent + l + '\n'
                     fuer l in formatted
                 ]
             sonst:
-                yield _format_final_exc_line(stype, self._str, colorize=colorize)
+                liefere _format_final_exc_line(stype, self._str, colorize=colorize)
         sonst:
-            yield von [indent + l fuer l in self._format_syntax_error(stype, colorize=colorize)]
+            liefere von [indent + l fuer l in self._format_syntax_error(stype, colorize=colorize)]
 
         wenn (
             isinstance(self.__notes__, collections.abc.Sequence)
@@ -1281,13 +1281,13 @@ klasse TracebackException:
         ):
             fuer note in self.__notes__:
                 note = _safe_string(note, 'note')
-                yield von [indent + l + '\n' fuer l in note.split('\n')]
+                liefere von [indent + l + '\n' fuer l in note.split('\n')]
         sowenn self.__notes__ is nicht Nichts:
-            yield indent + "{}\n".format(_safe_string(self.__notes__, '__notes__', func=repr))
+            liefere indent + "{}\n".format(_safe_string(self.__notes__, '__notes__', func=repr))
 
         wenn self.exceptions und show_group:
             fuer ex in self.exceptions:
-                yield von ex.format_exception_only(show_group=show_group, _depth=_depth+1, colorize=colorize)
+                liefere von ex.format_exception_only(show_group=show_group, _depth=_depth+1, colorize=colorize)
 
     def _find_keyword_typos(self):
         assert self._is_syntax_error
@@ -1298,10 +1298,10 @@ klasse TracebackException:
 
         # Only try to find keyword typos wenn there is no custom message
         wenn self.msg != "invalid syntax" und "Perhaps you forgot a comma" nicht in self.msg:
-            return
+            gib
 
         wenn nicht self._exc_metadata:
-            return
+            gib
 
         line, offset, source = self._exc_metadata
         end_line = int(self.lineno) wenn self.lineno is nicht Nichts sonst 0
@@ -1326,7 +1326,7 @@ klasse TracebackException:
 
         # Do nicht weiter wenn the source is too large
         wenn len(error_code) > 1024:
-            return
+            gib
 
         error_lines = error_code.splitlines()
         tokens = tokenize.generate_tokens(io.StringIO(error_code).readline)
@@ -1382,7 +1382,7 @@ klasse TracebackException:
                 self.lineno = start[0]
                 self.end_lineno = end[0]
                 self.msg = f"invalid syntax. Did you mean '{suggestion}'?"
-                return
+                gib
 
 
     def _format_syntax_error(self, stype, **kwargs):
@@ -1395,7 +1395,7 @@ klasse TracebackException:
             theme = _colorize.get_theme(force_no_color=Wahr).traceback
         filename_suffix = ''
         wenn self.lineno is nicht Nichts:
-            yield '  File {}"{}"{}, line {}{}{}\n'.format(
+            liefere '  File {}"{}"{}, line {}{}{}\n'.format(
                 theme.filename,
                 self.filename oder "<string>",
                 theme.reset,
@@ -1418,7 +1418,7 @@ klasse TracebackException:
             ltext = rtext.lstrip(' \n\f')
             spaces = len(rtext) - len(ltext)
             wenn self.offset is Nichts:
-                yield '    {}\n'.format(ltext)
+                liefere '    {}\n'.format(ltext)
             sowenn isinstance(self.offset, int):
                 offset = self.offset
                 wenn self.lineno == self.end_lineno:
@@ -1457,17 +1457,17 @@ klasse TracebackException:
                         )
                         start_color = theme.error_highlight
                         end_color = theme.reset
-                    yield '    {}\n'.format(ltext)
-                    yield '    {}{}{}{}\n'.format(
+                    liefere '    {}\n'.format(ltext)
+                    liefere '    {}{}{}{}\n'.format(
                         "".join(caretspace),
                         start_color,
                         ('^' * (end_colno - colno)),
                         end_color,
                     )
                 sonst:
-                    yield '    {}\n'.format(ltext)
+                    liefere '    {}\n'.format(ltext)
         msg = self.msg oder "<no detail available>"
-        yield "{}{}{}: {}{}{}{}\n".format(
+        liefere "{}{}{}: {}{}{}{}\n".format(
             theme.type,
             stype,
             theme.reset,
@@ -1482,7 +1482,7 @@ klasse TracebackException:
 
         If chain is nicht *Wahr*, *__cause__* und *__context__* will nicht be formatted.
 
-        The return value is a generator of strings, each ending in a newline und
+        The gib value is a generator of strings, each ending in a newline und
         some containing internal newlines. `print_exception` is a wrapper around
         this method which just prints the lines to a file.
 
@@ -1515,15 +1515,15 @@ klasse TracebackException:
 
         fuer msg, exc in reversed(output):
             wenn msg is nicht Nichts:
-                yield von _ctx.emit(msg)
+                liefere von _ctx.emit(msg)
             wenn exc.exceptions is Nichts:
                 wenn exc.stack:
-                    yield von _ctx.emit('Traceback (most recent call last):\n')
-                    yield von _ctx.emit(exc.stack.format(colorize=colorize))
-                yield von _ctx.emit(exc.format_exception_only(colorize=colorize))
+                    liefere von _ctx.emit('Traceback (most recent call last):\n')
+                    liefere von _ctx.emit(exc.stack.format(colorize=colorize))
+                liefere von _ctx.emit(exc.format_exception_only(colorize=colorize))
             sowenn _ctx.exception_group_depth > self.max_group_depth:
                 # exception group, but depth exceeds limit
-                yield von _ctx.emit(
+                liefere von _ctx.emit(
                     f"... (max_group_depth is {self.max_group_depth})\n")
             sonst:
                 # format exception group
@@ -1532,12 +1532,12 @@ klasse TracebackException:
                     _ctx.exception_group_depth += 1
 
                 wenn exc.stack:
-                    yield von _ctx.emit(
+                    liefere von _ctx.emit(
                         'Exception Group Traceback (most recent call last):\n',
                         margin_char = '+' wenn is_toplevel sonst Nichts)
-                    yield von _ctx.emit(exc.stack.format(colorize=colorize))
+                    liefere von _ctx.emit(exc.stack.format(colorize=colorize))
 
-                yield von _ctx.emit(exc.format_exception_only(colorize=colorize))
+                liefere von _ctx.emit(exc.format_exception_only(colorize=colorize))
                 num_excs = len(exc.exceptions)
                 wenn num_excs <= self.max_group_width:
                     n = num_excs
@@ -1555,20 +1555,20 @@ klasse TracebackException:
                     sonst:
                         truncated = Falsch
                     title = f'{i+1}' wenn nicht truncated sonst '...'
-                    yield (_ctx.indent() +
+                    liefere (_ctx.indent() +
                            ('+-' wenn i==0 sonst '  ') +
                            f'+---------------- {title} ----------------\n')
                     _ctx.exception_group_depth += 1
                     wenn nicht truncated:
-                        yield von exc.exceptions[i].format(chain=chain, _ctx=_ctx, colorize=colorize)
+                        liefere von exc.exceptions[i].format(chain=chain, _ctx=_ctx, colorize=colorize)
                     sonst:
                         remaining = num_excs - self.max_group_width
                         plural = 's' wenn remaining > 1 sonst ''
-                        yield von _ctx.emit(
+                        liefere von _ctx.emit(
                             f"and {remaining} more exception{plural}\n")
 
                     wenn last_exc und _ctx.need_close:
-                        yield (_ctx.indent() +
+                        liefere (_ctx.indent() +
                                "+------------------------------------\n")
                         _ctx.need_close = Falsch
                     _ctx.exception_group_depth -= 1
@@ -1595,10 +1595,10 @@ _CASE_COST = 1
 
 def _substitution_cost(ch_a, ch_b):
     wenn ch_a == ch_b:
-        return 0
+        gib 0
     wenn ch_a.lower() == ch_b.lower():
-        return _CASE_COST
-    return _MOVE_COST
+        gib _CASE_COST
+    gib _MOVE_COST
 
 
 def _check_for_nested_attribute(obj, wrong_name, attrs):
@@ -1624,14 +1624,14 @@ def _check_for_nested_attribute(obj, wrong_name, attrs):
             nested_attr_from_class = getattr(type(attr_obj), wrong_name, Nichts)
 
             wenn hasattr(attr_obj, wrong_name):
-                return f"{attr_name}.{wrong_name}"
+                gib f"{attr_name}.{wrong_name}"
 
-    return Nichts
+    gib Nichts
 
 
 def _compute_suggestion_error(exc_value, tb, wrong_name):
     wenn wrong_name is Nichts oder nicht isinstance(wrong_name, str):
-        return Nichts
+        gib Nichts
     wenn isinstance(exc_value, AttributeError):
         obj = exc_value.obj
         try:
@@ -1650,7 +1650,7 @@ def _compute_suggestion_error(exc_value, tb, wrong_name):
             wenn hide_underscored:
                 d = [x fuer x in d wenn x[:1] != '_']
         except Exception:
-            return Nichts
+            gib Nichts
     sowenn isinstance(exc_value, ImportError):
         try:
             mod = __import__(exc_value.name)
@@ -1662,12 +1662,12 @@ def _compute_suggestion_error(exc_value, tb, wrong_name):
             wenn wrong_name[:1] != '_':
                 d = [x fuer x in d wenn x[:1] != '_']
         except Exception:
-            return Nichts
+            gib Nichts
     sonst:
         assert isinstance(exc_value, NameError)
         # find most recent frame
         wenn tb is Nichts:
-            return Nichts
+            gib Nichts
         waehrend tb.tb_next is nicht Nichts:
             tb = tb.tb_next
         frame = tb.tb_frame
@@ -1687,7 +1687,7 @@ def _compute_suggestion_error(exc_value, tb, wrong_name):
             except Exception:
                 has_wrong_name = Falsch
             wenn has_wrong_name:
-                return f"self.{wrong_name}"
+                gib f"self.{wrong_name}"
 
     try:
         importiere _suggestions
@@ -1696,15 +1696,15 @@ def _compute_suggestion_error(exc_value, tb, wrong_name):
     sonst:
         suggestion = _suggestions._generate_suggestions(d, wrong_name)
         wenn suggestion:
-            return suggestion
+            gib suggestion
 
     # Compute closest match
 
     wenn len(d) > _MAX_CANDIDATE_ITEMS:
-        return Nichts
+        gib Nichts
     wrong_name_len = len(wrong_name)
     wenn wrong_name_len > _MAX_STRING_SIZE:
-        return Nichts
+        gib Nichts
     best_distance = wrong_name_len
     suggestion = Nichts
     fuer possible_name in d:
@@ -1727,9 +1727,9 @@ def _compute_suggestion_error(exc_value, tb, wrong_name):
         mit suppress(Exception):
             nested_suggestion = _check_for_nested_attribute(exc_value.obj, wrong_name, d)
             wenn nested_suggestion:
-                return nested_suggestion
+                gib nested_suggestion
 
-    return suggestion
+    gib suggestion
 
 
 def _levenshtein_distance(a, b, max_cost):
@@ -1737,7 +1737,7 @@ def _levenshtein_distance(a, b, max_cost):
 
     # Both strings are the same
     wenn a == b:
-        return 0
+        gib 0
 
     # Trim away common affixes
     pre = 0
@@ -1751,9 +1751,9 @@ def _levenshtein_distance(a, b, max_cost):
     a = a[:post oder Nichts]
     b = b[:post oder Nichts]
     wenn nicht a oder nicht b:
-        return _MOVE_COST * (len(a) + len(b))
+        gib _MOVE_COST * (len(a) + len(b))
     wenn len(a) > _MAX_STRING_SIZE oder len(b) > _MAX_STRING_SIZE:
-        return max_cost + 1
+        gib max_cost + 1
 
     # Prefer shorter buffer
     wenn len(b) < len(a):
@@ -1761,7 +1761,7 @@ def _levenshtein_distance(a, b, max_cost):
 
     # Quick fail when a match is impossible
     wenn (len(b) - len(a)) * _MOVE_COST > max_cost:
-        return max_cost + 1
+        gib max_cost + 1
 
     # Instead of producing the whole traditional len(a)-by-len(b)
     # matrix, we can update just one row in place.
@@ -1789,5 +1789,5 @@ def _levenshtein_distance(a, b, max_cost):
                 minimum = result
         wenn minimum > max_cost:
             # Everything in this row is too big, so bail early.
-            return max_cost + 1
-    return result
+            gib max_cost + 1
+    gib result

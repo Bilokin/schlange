@@ -1,14 +1,14 @@
 # line 1
 def wrap(foo=Nichts):
     def wrapper(func):
-        return func
-    return wrapper
+        gib func
+    gib wrapper
 
 # line 7
 def replace(func):
     def insteadfunc():
         drucke('hello')
-    return insteadfunc
+    gib insteadfunc
 
 # line 13
 @wrap()
@@ -41,7 +41,7 @@ def manyargs(arg1, arg2,
 arg3, arg4): pass
 
 # line 43
-def twolinefunc(m): return m und \
+def twolinefunc(m): gib m und \
 m
 
 # line 47
@@ -70,7 +70,7 @@ def func69():
     klasse cls70:
         def func71():
             pass
-    return cls70
+    gib cls70
 extra74 = 74
 
 # line 76
@@ -87,15 +87,15 @@ extra85 = 'stop'
 # line 87
 def func88():
     # comment
-    return 90
+    gib 90
 
 # line 92
 def f():
     klasse X:
         def g():
             "doc"
-            return 42
-    return X
+            gib 42
+    gib X
 method_in_dynamic_class = f().g
 
 #line 101
@@ -112,7 +112,7 @@ def keyword_only_arg(*, arg):
 
 @wrap(lambda: Nichts)
 def func114():
-    return 115
+    gib 115
 
 klasse ClassWithMethod:
     def method(self):
@@ -123,13 +123,13 @@ von functools importiere wraps
 def decorator(func):
     @wraps(func)
     def fake():
-        return 42
-    return fake
+        gib 42
+    gib fake
 
 #line 129
 @decorator
 def real():
-    return 20
+    gib 20
 
 #line 134
 klasse cls135:
@@ -188,7 +188,7 @@ klasse cls183:
             pass
 
 def class_decorator(cls):
-    return cls
+    gib cls
 
 # line 193
 @class_decorator
@@ -212,27 +212,27 @@ klasse cls203:
 def func212():
     klasse cls213:
         pass
-    return cls213
+    gib cls213
 
 # line 217
 klasse cls213:
     def func219(self):
         klasse cls220:
             pass
-        return cls220
+        gib cls220
 
 # line 224
 async def func225():
     klasse cls226:
         pass
-    return cls226
+    gib cls226
 
 # line 230
 klasse cls226:
     async def func232(self):
         klasse cls233:
             pass
-        return cls233
+        gib cls233
 
 wenn Wahr:
     klasse cls238:
@@ -266,13 +266,13 @@ def deco_factory(**kwargs):
         @wraps(f)
         def wrapper(*a, **kwd):
             kwd.update(kwargs)
-            return f(*a, **kwd)
-        return wrapper
-    return deco
+            gib f(*a, **kwd)
+        gib wrapper
+    gib deco
 
 @deco_factory(foo=(1 + 2), bar=lambda: 1)
 def complex_decorated(foo=0, bar=lambda: 0):
-    return foo + bar()
+    gib foo + bar()
 
 # line 276
 parenthesized_lambda = (
@@ -386,6 +386,6 @@ def func383():
         inspect.currentframe()
         fuer i in itertools.count()
     )
-    return ge385
+    gib ge385
 
 pass # end of file

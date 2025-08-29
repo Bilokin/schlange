@@ -46,11 +46,11 @@ def mock_socket_module():
     m_socket.socket = mock.MagicMock()
     m_socket.socket.return_value = test_utils.mock_nonblocking_socket()
 
-    return m_socket
+    gib m_socket
 
 
 def patch_socket(f):
-    return mock.patch('asyncio.base_events.socket',
+    gib mock.patch('asyncio.base_events.socket',
                       new_callable=mock_socket_module)(f)
 
 
@@ -656,7 +656,7 @@ klasse BaseEventLoopTests(test_utils.TestCase):
         def run_loop():
             handle = self.loop.call_soon(zero_error)
             self.loop._run_once()
-            return handle
+            gib handle
 
         self.loop.set_debug(Wahr)
         self.loop._process_events = mock.Mock()
@@ -828,7 +828,7 @@ klasse BaseEventLoopTests(test_utils.TestCase):
 
         klasse EventLoop(base_events.BaseEventLoop):
             def create_task(self, coro):
-                return MyTask(coro, loop=loop)
+                gib MyTask(coro, loop=loop)
 
         loop = EventLoop()
         self.set_event_loop(loop)
@@ -866,7 +866,7 @@ klasse BaseEventLoopTests(test_utils.TestCase):
 
     def test_create_named_task_with_custom_factory(self):
         def task_factory(loop, coro, **kwargs):
-            return asyncio.Task(coro, loop=loop, **kwargs)
+            gib asyncio.Task(coro, loop=loop, **kwargs)
 
         async def test():
             pass
@@ -1022,7 +1022,7 @@ klasse BaseEventLoopTests(test_utils.TestCase):
             status['started'] = Wahr
             try:
                 fuer item in ['ZERO', 'ONE', 'TWO', 'THREE', 'FOUR']:
-                    yield item
+                    liefere item
             finally:
                 status['finalized'] = Wahr
 
@@ -1033,14 +1033,14 @@ klasse BaseEventLoopTests(test_utils.TestCase):
             try:
                 item = await ai.__anext__()
             except StopAsyncIteration:
-                return
+                gib
             wenn item == 'THREE':
                 status['stopped'] = Wahr
-                return
+                gib
             asyncio.create_task(iter_one())
 
         asyncio.create_task(iter_one())
-        return status
+        gib status
 
     def test_asyncgen_finalization_by_gc(self):
         # Async generators should be finalized when garbage collected.
@@ -1084,7 +1084,7 @@ klasse BaseEventLoopTests(test_utils.TestCase):
             pass
 
         async def getaddrinfo(*args, **kw):
-            return [(socket.AF_INET6, 0, 0, '', ('2001:db8::1', 1)),
+            gib [(socket.AF_INET6, 0, 0, '', ('2001:db8::1', 1)),
                     (socket.AF_INET, 0, 0, '', ('192.0.2.1', 5))]
 
         async def sock_connect(sock, address):
@@ -1116,7 +1116,7 @@ klasse BaseEventLoopTests(test_utils.TestCase):
             pass
 
         async def getaddrinfo(*args, **kw):
-            return [(socket.AF_INET, 0, 0, '', ('192.0.2.1', 5)),
+            gib [(socket.AF_INET, 0, 0, '', ('192.0.2.1', 5)),
                     (socket.AF_INET, 0, 0, '', ('192.0.2.2', 6))]
 
         async def sock_connect(sock, address):
@@ -1228,11 +1228,11 @@ klasse BaseEventLoopWithSelectorTests(test_utils.TestCase):
             pass
 
         async def getaddrinfo(*args, **kw):
-            return [(2, 1, 6, '', ('107.6.106.82', 80)),
+            gib [(2, 1, 6, '', ('107.6.106.82', 80)),
                     (2, 1, 6, '', ('107.6.106.82', 80))]
 
         def getaddrinfo_task(*args, **kwds):
-            return self.loop.create_task(getaddrinfo(*args, **kwds))
+            gib self.loop.create_task(getaddrinfo(*args, **kwds))
 
         idx = -1
         errors = ['err1', 'err2']
@@ -1272,7 +1272,7 @@ klasse BaseEventLoopWithSelectorTests(test_utils.TestCase):
             addr = (socket.AF_INET, socket.SOCK_STREAM, 0, '',
                     ('127.0.0.1', 80))
             fut.set_result([addr])
-            return fut
+            gib fut
         self.loop.getaddrinfo = getaddrinfo
 
         mit mock.patch.object(self.loop, 'sock_connect',
@@ -1288,21 +1288,21 @@ klasse BaseEventLoopWithSelectorTests(test_utils.TestCase):
         # results in empty exceptions list
 
         async def getaddrinfo(*args, **kw):
-            return [(socket.AF_INET, socket.SOCK_STREAM, 0, '', ('127.0.0.1', 80)),
+            gib [(socket.AF_INET, socket.SOCK_STREAM, 0, '', ('127.0.0.1', 80)),
                     (socket.AF_INET6, socket.SOCK_STREAM, 0, '', ('::1', 80))]
 
         def getaddrinfo_task(*args, **kwds):
-            return self.loop.create_task(getaddrinfo(*args, **kwds))
+            gib self.loop.create_task(getaddrinfo(*args, **kwds))
 
         self.loop.getaddrinfo = getaddrinfo_task
 
-        # Mock staggered_race to return empty exceptions list
+        # Mock staggered_race to gib empty exceptions list
         # This simulates the scenario where Happy Eyeballs algorithm
         # cancels all attempts but doesn't properly collect exceptions
         mit mock.patch('asyncio.staggered.staggered_race') als mock_staggered:
             # Return (Nichts, []) - no winner, empty exceptions list
             async def mock_race(coro_fns, delay, loop):
-                return Nichts, []
+                gib Nichts, []
             mock_staggered.side_effect = mock_race
 
             coro = self.loop.create_connection(
@@ -1385,10 +1385,10 @@ klasse BaseEventLoopWithSelectorTests(test_utils.TestCase):
 
     def test_create_connection_no_getaddrinfo(self):
         async def getaddrinfo(*args, **kw):
-            return []
+            gib []
 
         def getaddrinfo_task(*args, **kwds):
-            return self.loop.create_task(getaddrinfo(*args, **kwds))
+            gib self.loop.create_task(getaddrinfo(*args, **kwds))
 
         self.loop.getaddrinfo = getaddrinfo_task
         coro = self.loop.create_connection(MyProto, 'example.com', 80)
@@ -1397,10 +1397,10 @@ klasse BaseEventLoopWithSelectorTests(test_utils.TestCase):
 
     def test_create_connection_connect_err(self):
         async def getaddrinfo(*args, **kw):
-            return [(2, 1, 6, '', ('107.6.106.82', 80))]
+            gib [(2, 1, 6, '', ('107.6.106.82', 80))]
 
         def getaddrinfo_task(*args, **kwds):
-            return self.loop.create_task(getaddrinfo(*args, **kwds))
+            gib self.loop.create_task(getaddrinfo(*args, **kwds))
 
         self.loop.getaddrinfo = getaddrinfo_task
         self.loop.sock_connect = mock.Mock()
@@ -1423,10 +1423,10 @@ klasse BaseEventLoopWithSelectorTests(test_utils.TestCase):
         # Test the case when sock_connect() raises non-OSError exception
         # und sock.close() raises OSError.
         async def getaddrinfo(*args, **kw):
-            return [(2, 1, 6, '', ('107.6.106.82', 80))]
+            gib [(2, 1, 6, '', ('107.6.106.82', 80))]
 
         def getaddrinfo_task(*args, **kwds):
-            return self.loop.create_task(getaddrinfo(*args, **kwds))
+            gib self.loop.create_task(getaddrinfo(*args, **kwds))
 
         self.loop.getaddrinfo = getaddrinfo_task
         self.loop.sock_connect = mock.Mock()
@@ -1445,11 +1445,11 @@ klasse BaseEventLoopWithSelectorTests(test_utils.TestCase):
 
     def test_create_connection_multiple(self):
         async def getaddrinfo(*args, **kw):
-            return [(2, 1, 6, '', ('0.0.0.1', 80)),
+            gib [(2, 1, 6, '', ('0.0.0.1', 80)),
                     (2, 1, 6, '', ('0.0.0.2', 80))]
 
         def getaddrinfo_task(*args, **kwds):
-            return self.loop.create_task(getaddrinfo(*args, **kwds))
+            gib self.loop.create_task(getaddrinfo(*args, **kwds))
 
         self.loop.getaddrinfo = getaddrinfo_task
         self.loop.sock_connect = mock.Mock()
@@ -1481,11 +1481,11 @@ klasse BaseEventLoopWithSelectorTests(test_utils.TestCase):
         m_socket.socket.return_value.bind = bind
 
         async def getaddrinfo(*args, **kw):
-            return [(2, 1, 6, '', ('0.0.0.1', 80)),
+            gib [(2, 1, 6, '', ('0.0.0.1', 80)),
                     (2, 1, 6, '', ('0.0.0.2', 80))]
 
         def getaddrinfo_task(*args, **kwds):
-            return self.loop.create_task(getaddrinfo(*args, **kwds))
+            gib self.loop.create_task(getaddrinfo(*args, **kwds))
 
         self.loop.getaddrinfo = getaddrinfo_task
         self.loop.sock_connect = mock.Mock()
@@ -1618,13 +1618,13 @@ klasse BaseEventLoopWithSelectorTests(test_utils.TestCase):
     def test_create_connection_no_local_addr(self):
         async def getaddrinfo(host, *args, **kw):
             wenn host == 'example.com':
-                return [(2, 1, 6, '', ('107.6.106.82', 80)),
+                gib [(2, 1, 6, '', ('107.6.106.82', 80)),
                         (2, 1, 6, '', ('107.6.106.82', 80))]
             sonst:
-                return []
+                gib []
 
         def getaddrinfo_task(*args, **kwds):
-            return self.loop.create_task(getaddrinfo(*args, **kwds))
+            gib self.loop.create_task(getaddrinfo(*args, **kwds))
         self.loop.getaddrinfo = getaddrinfo_task
 
         coro = self.loop.create_connection(
@@ -1641,7 +1641,7 @@ klasse BaseEventLoopWithSelectorTests(test_utils.TestCase):
 
         def getaddrinfo(host, port, *args, **kw):
             self.assertEqual((host, port), addr)
-            return [(999, 1, 999, '', (addr, 1))]
+            gib [(999, 1, 999, '', (addr, 1))]
 
         m_socket.getaddrinfo = getaddrinfo
         sock = m_socket.socket()
@@ -1655,7 +1655,7 @@ klasse BaseEventLoopWithSelectorTests(test_utils.TestCase):
             f = self.loop.create_future()
             f.set_result([(socket.AF_INET, socket.SOCK_STREAM,
                            socket.SOL_TCP, '', ('1.2.3.4', 80))])
-            return f
+            gib f
 
         self.loop.getaddrinfo.side_effect = mock_getaddrinfo
         self.loop.sock_connect = mock.Mock()
@@ -1667,7 +1667,7 @@ klasse BaseEventLoopWithSelectorTests(test_utils.TestCase):
             _sock = Nichts
 
             def get_extra_info(self, key):
-                return mock.Mock()
+                gib mock.Mock()
 
             def close(self):
                 self._sock.close()
@@ -1677,7 +1677,7 @@ klasse BaseEventLoopWithSelectorTests(test_utils.TestCase):
             waiter.set_result(Nichts)
             transport = _SelectorTransportMock()
             transport._sock = sock
-            return transport
+            gib transport
 
         self.loop._make_ssl_transport.side_effect = mock_make_ssl_transport
         ANY = mock.ANY
@@ -1764,10 +1764,10 @@ klasse BaseEventLoopWithSelectorTests(test_utils.TestCase):
         async def getaddrinfo(*args, **kw):
             nonlocal host
             host = args[0]
-            return []
+            gib []
 
         def getaddrinfo_task(*args, **kwds):
-            return self.loop.create_task(getaddrinfo(*args, **kwds))
+            gib self.loop.create_task(getaddrinfo(*args, **kwds))
 
         self.loop.getaddrinfo = getaddrinfo_task
         fut = self.loop.create_server(MyProto, '', 0)
@@ -2228,10 +2228,10 @@ klasse BaseLoopSockSendfileTests(test_utils.TestCase):
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         sock.setblocking(blocking)
         self.addCleanup(sock.close)
-        return sock
+        gib sock
 
     def run_loop(self, coro):
-        return self.loop.run_until_complete(coro)
+        gib self.loop.run_until_complete(coro)
 
     def prepare(self):
         sock = self.make_socket()
@@ -2262,7 +2262,7 @@ klasse BaseLoopSockSendfileTests(test_utils.TestCase):
 
         self.addCleanup(cleanup)
 
-        return sock, proto
+        gib sock, proto
 
     def test__sock_sendfile_native_failure(self):
         sock, proto = self.prepare()

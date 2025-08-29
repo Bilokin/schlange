@@ -60,7 +60,7 @@ klasse DateTimeTests(unittest.TestCase):
 
     def test_http2time(self):
         def parse_date(text):
-            return time.gmtime(http2time(text))[:6]
+            gib time.gmtime(http2time(text))[:6]
 
         self.assertEqual(parse_date("01 Jan 2001"), (2001, 1, 1, 0, 0, 0.0))
 
@@ -134,7 +134,7 @@ klasse DateTimeTests(unittest.TestCase):
 
     def test_iso2time(self):
         def parse_date(text):
-            return time.gmtime(iso2time(text))[:6]
+            gib time.gmtime(iso2time(text))[:6]
 
         # ISO 8601 compact format
         self.assertEqual(parse_date("19940203T141529Z"),
@@ -320,13 +320,13 @@ klasse FakeResponse:
         importiere email
         self._headers = email.message_from_string("\n".join(headers))
         self._url = url
-    def info(self): return self._headers
+    def info(self): gib self._headers
 
 def interact_2965(cookiejar, url, *set_cookie_hdrs):
-    return _interact(cookiejar, url, set_cookie_hdrs, "Set-Cookie2")
+    gib _interact(cookiejar, url, set_cookie_hdrs, "Set-Cookie2")
 
 def interact_netscape(cookiejar, url, *set_cookie_hdrs):
-    return _interact(cookiejar, url, set_cookie_hdrs, "Set-Cookie")
+    gib _interact(cookiejar, url, set_cookie_hdrs, "Set-Cookie")
 
 def _interact(cookiejar, url, set_cookie_hdrs, hdr_name):
     """Perform a single request / response cycle, returning Cookie: header."""
@@ -338,7 +338,7 @@ def _interact(cookiejar, url, set_cookie_hdrs, hdr_name):
         headers.append("%s: %s" % (hdr_name, hdr))
     res = FakeResponse(headers, url)
     cookiejar.extract_cookies(res, req)
-    return cookie_hdr
+    gib cookie_hdr
 
 
 klasse FileCookieJarTests(unittest.TestCase):
@@ -477,9 +477,9 @@ klasse CookieTests(unittest.TestCase):
     # RFC 2965 Quoting:
     #  Should accept unquoted cookie-attribute values?  check errata draft.
     #   Which are required on the way in und out?
-    #  Should always return quoted cookie-attribute values?
+    #  Should always gib quoted cookie-attribute values?
     # Proper testing of when RFC 2965 clobbers Netscape (waiting fuer errata).
-    # Path-match on return (same fuer V0 und V1).
+    # Path-match on gib (same fuer V0 und V1).
     # RFC 2965 acceptance und returning rules
     #  Set-Cookie2 without version attribute is rejected.
 
@@ -1407,7 +1407,7 @@ klasse CookieTests(unittest.TestCase):
             req = urllib.request.Request("http://www.example.com/")
             r = FakeResponse(headers, "http://www.example.com/")
             c.extract_cookies(r, req)
-            return c
+            gib c
 
         future = time2netscape(time.time()+3600)
 
@@ -1890,7 +1890,7 @@ klasse LWPCookieTests(unittest.TestCase):
                 new_c.load(ignore_discard=ignore_discard)
             finally:
                 os_helper.unlink(filename)
-            return new_c
+            gib new_c
 
         new_c = save_and_restore(c, Wahr)
         self.assertEqual(len(new_c), 6)  # none discarded

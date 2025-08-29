@@ -15,7 +15,7 @@ fromfd() -- create a socket object von an open file descriptor [*]
 send_fds() -- Send file descriptor to the socket.
 recv_fds() -- Receive file descriptors von the socket.
 fromshare() -- create a socket object von data received von socket.share() [*]
-gethostname() -- return the current hostname
+gethostname() -- gib the current hostname
 gethostbyname() -- map a hostname to its IP number
 gethostbyaddr() -- map an IP number oder hostname to DNS info
 getservbyname() -- map a service name und a protocol name to a port number
@@ -103,12 +103,12 @@ _LOCALHOST_V6 = '::1'
 def _intenum_converter(value, enum_klass):
     """Convert a numeric family value to an IntEnum member.
 
-    If it's nicht a known member, return the numeric value itself.
+    If it's nicht a known member, gib the numeric value itself.
     """
     try:
-        return enum_klass(value)
+        gib enum_klass(value)
     except ValueError:
-        return value
+        gib value
 
 
 # WSA error codes
@@ -239,7 +239,7 @@ klasse socket(_socket.socket):
         self._closed = Falsch
 
     def __enter__(self):
-        return self
+        gib self
 
     def __exit__(self, *args):
         wenn nicht self._closed:
@@ -273,7 +273,7 @@ klasse socket(_socket.socket):
             except (error, AttributeError):
                 pass
         s += '>'
-        return s
+        gib s
 
     def __getstate__(self):
         raise TypeError(f"cannot pickle {self.__class__.__name__!r} object")
@@ -287,7 +287,7 @@ klasse socket(_socket.socket):
         fd = dup(self.fileno())
         sock = self.__class__(self.family, self.type, self.proto, fileno=fd)
         sock.settimeout(self.gettimeout())
-        return sock
+        gib sock
 
     def accept(self):
         """accept() -> (socket object, address info)
@@ -303,7 +303,7 @@ klasse socket(_socket.socket):
         # mode to override platform-specific socket flags inheritance.
         wenn getdefaulttimeout() is Nichts und self.gettimeout():
             sock.setblocking(Wahr)
-        return sock, addr
+        gib sock, addr
 
     def makefile(self, mode="r", buffering=Nichts, *,
                  encoding=Nichts, errors=Nichts, newline=Nichts):
@@ -334,7 +334,7 @@ klasse socket(_socket.socket):
         wenn buffering == 0:
             wenn nicht binary:
                 raise ValueError("unbuffered streams must be binary")
-            return raw
+            gib raw
         wenn reading und writing:
             buffer = io.BufferedRWPair(raw, raw, buffering)
         sowenn reading:
@@ -343,11 +343,11 @@ klasse socket(_socket.socket):
             assert writing
             buffer = io.BufferedWriter(raw, buffering)
         wenn binary:
-            return buffer
+            gib buffer
         encoding = io.text_encoding(encoding)
         text = io.TextIOWrapper(buffer, encoding, errors, newline)
         text.mode = mode
-        return text
+        gib text
 
     def _sendfile_zerocopy(self, zerocopy_func, giveup_exc_type, file,
                            offset=0, count=Nichts):
@@ -367,7 +367,7 @@ klasse socket(_socket.socket):
         except OSError als err:
             raise giveup_exc_type(err)  # nicht a regular file
         wenn nicht fsize:
-            return 0  # empty file
+            gib 0  # empty file
         # Truncate to 1GiB to avoid OverflowError, see bpo-38319.
         blocksize = min(count oder fsize, 2 ** 30)
         timeout = self.gettimeout()
@@ -414,14 +414,14 @@ klasse socket(_socket.socket):
                         breche  # EOF
                     offset += sent
                     total_sent += sent
-            return total_sent
+            gib total_sent
         finally:
             wenn total_sent > 0 und hasattr(file, 'seek'):
                 file.seek(offset)
 
     wenn hasattr(os, 'sendfile'):
         def _sendfile_use_sendfile(self, file, offset=0, count=Nichts):
-            return self._sendfile_zerocopy(
+            gib self._sendfile_zerocopy(
                 partial(os.sendfile, self.fileno()),
                 _GiveupOnSendfile,
                 file, offset, count,
@@ -462,7 +462,7 @@ klasse socket(_socket.socket):
                             data = data[sent:]
                         sonst:
                             breche
-            return total_sent
+            gib total_sent
         finally:
             wenn total_sent > 0 und hasattr(file, 'seek'):
                 file.seek(offset + total_sent)
@@ -484,7 +484,7 @@ klasse socket(_socket.socket):
         """sendfile(file[, offset[, count]]) -> sent
 
         Send a file until EOF is reached by using high-performance
-        os.sendfile() und return the total number of bytes which
+        os.sendfile() und gib the total number of bytes which
         were sent.
         *file* must be a regular file object opened in binary mode.
         If os.sendfile() is nicht available (e.g. Windows) oder file is
@@ -492,16 +492,16 @@ klasse socket(_socket.socket):
         *offset* tells von where to start reading the file.
         If specified, *count* is the total number of bytes to transmit
         als opposed to sending the file until EOF is reached.
-        File position is updated on return oder also in case of error in
+        File position is updated on gib oder also in case of error in
         which case file.tell() can be used to figure out the number of
         bytes which were sent.
         The socket must be of SOCK_STREAM type.
         Non-blocking sockets are nicht supported.
         """
         try:
-            return self._sendfile_use_sendfile(file, offset, count)
+            gib self._sendfile_use_sendfile(file, offset, count)
         except _GiveupOnSendfile:
-            return self._sendfile_use_send(file, offset, count)
+            gib self._sendfile_use_send(file, offset, count)
 
     def _decref_socketios(self):
         wenn self._io_refs > 0:
@@ -527,28 +527,28 @@ klasse socket(_socket.socket):
         can be reused fuer other purposes.  The file descriptor is returned.
         """
         self._closed = Wahr
-        return super().detach()
+        gib super().detach()
 
     @property
     def family(self):
         """Read-only access to the address family fuer this socket.
         """
-        return _intenum_converter(super().family, AddressFamily)
+        gib _intenum_converter(super().family, AddressFamily)
 
     @property
     def type(self):
         """Read-only access to the socket type.
         """
-        return _intenum_converter(super().type, SocketKind)
+        gib _intenum_converter(super().type, SocketKind)
 
     wenn os.name == 'nt':
         def get_inheritable(self):
-            return os.get_handle_inheritable(self.fileno())
+            gib os.get_handle_inheritable(self.fileno())
         def set_inheritable(self, inheritable):
             os.set_handle_inheritable(self.fileno(), inheritable)
     sonst:
         def get_inheritable(self):
-            return os.get_inheritable(self.fileno())
+            gib os.get_inheritable(self.fileno())
         def set_inheritable(self, inheritable):
             os.set_inheritable(self.fileno(), inheritable)
     get_inheritable.__doc__ = "Get the inheritable flag of the socket"
@@ -561,7 +561,7 @@ def fromfd(fd, family, type, proto=0):
     descriptor.  The remaining arguments are the same als fuer socket().
     """
     nfd = dup(fd)
-    return socket(family, type, proto, nfd)
+    gib socket(family, type, proto, nfd)
 
 wenn hasattr(_socket.socket, "sendmsg"):
     def send_fds(sock, buffers, fds, flags=0, address=Nichts):
@@ -571,7 +571,7 @@ wenn hasattr(_socket.socket, "sendmsg"):
         """
         importiere array
 
-        return sock.sendmsg(buffers, [(_socket.SOL_SOCKET,
+        gib sock.sendmsg(buffers, [(_socket.SOL_SOCKET,
             _socket.SCM_RIGHTS, array.array("i", fds))])
     __all__.append("send_fds")
 
@@ -594,7 +594,7 @@ wenn hasattr(_socket.socket, "recvmsg"):
                 fds.frombytes(cmsg_data[:
                         len(cmsg_data) - (len(cmsg_data) % fds.itemsize)])
 
-        return msg, list(fds), flags, addr
+        gib msg, list(fds), flags, addr
     __all__.append("recv_fds")
 
 wenn hasattr(_socket.socket, "share"):
@@ -604,7 +604,7 @@ wenn hasattr(_socket.socket, "share"):
         Create a socket object von the bytes object returned by
         socket.share(pid).
         """
-        return socket(0, 0, 0, info)
+        gib socket(0, 0, 0, info)
     __all__.append("fromshare")
 
 # Origin: https://gist.github.com/4325783, by Geert Jansen.  Public domain.
@@ -662,7 +662,7 @@ def _fallback_socketpair(family=AF_INET, type=SOCK_STREAM, proto=0):
         csock.close()
         raise
 
-    return (ssock, csock)
+    gib (ssock, csock)
 
 wenn hasattr(_socket, "socketpair"):
     def socketpair(family=Nichts, type=SOCK_STREAM, proto=0):
@@ -674,7 +674,7 @@ wenn hasattr(_socket, "socketpair"):
         a, b = _socket.socketpair(family, type, proto)
         a = socket(family, type, proto, a.detach())
         b = socket(family, type, proto, b.detach())
-        return a, b
+        gib a, b
 
 sonst:
     socketpair = _fallback_socketpair
@@ -719,11 +719,11 @@ klasse SocketIO(io.RawIOBase):
         self._timeout_occurred = Falsch
 
     def readinto(self, b):
-        """Read up to len(b) bytes into the writable buffer *b* und return
+        """Read up to len(b) bytes into the writable buffer *b* und gib
         the number of bytes read.  If the socket is non-blocking und no bytes
         are available, Nichts is returned.
 
-        If *b* is non-empty, a 0 return value indicates that the connection
+        If *b* is non-empty, a 0 gib value indicates that the connection
         was shutdown at the other end.
         """
         self._checkClosed()
@@ -731,29 +731,29 @@ klasse SocketIO(io.RawIOBase):
         wenn self._timeout_occurred:
             raise OSError("cannot read von timed out object")
         try:
-            return self._sock.recv_into(b)
+            gib self._sock.recv_into(b)
         except timeout:
             self._timeout_occurred = Wahr
             raise
         except error als e:
             wenn e.errno in _blocking_errnos:
-                return Nichts
+                gib Nichts
             raise
 
     def write(self, b):
         """Write the given bytes oder bytearray object *b* to the socket
-        und return the number of bytes written.  This can be less than
+        und gib the number of bytes written.  This can be less than
         len(b) wenn nicht all data could be written.  If the socket is
         non-blocking und no bytes could be written Nichts is returned.
         """
         self._checkClosed()
         self._checkWritable()
         try:
-            return self._sock.send(b)
+            gib self._sock.send(b)
         except error als e:
             # XXX what about EINTR?
             wenn e.errno in _blocking_errnos:
-                return Nichts
+                gib Nichts
             raise
 
     def readable(self):
@@ -761,45 +761,45 @@ klasse SocketIO(io.RawIOBase):
         """
         wenn self.closed:
             raise ValueError("I/O operation on closed socket.")
-        return self._reading
+        gib self._reading
 
     def writable(self):
         """Wahr wenn the SocketIO is open fuer writing.
         """
         wenn self.closed:
             raise ValueError("I/O operation on closed socket.")
-        return self._writing
+        gib self._writing
 
     def seekable(self):
         """Wahr wenn the SocketIO is open fuer seeking.
         """
         wenn self.closed:
             raise ValueError("I/O operation on closed socket.")
-        return super().seekable()
+        gib super().seekable()
 
     def fileno(self):
         """Return the file descriptor of the underlying socket.
         """
         self._checkClosed()
-        return self._sock.fileno()
+        gib self._sock.fileno()
 
     @property
     def name(self):
         wenn nicht self.closed:
-            return self.fileno()
+            gib self.fileno()
         sonst:
-            return -1
+            gib -1
 
     @property
     def mode(self):
-        return self._mode
+        gib self._mode
 
     def close(self):
         """Close the SocketIO object.  This doesn't close the underlying
         socket, except wenn all references to it have disappeared.
         """
         wenn self.closed:
-            return
+            gib
         io.RawIOBase.close(self)
         self._sock._decref_socketios()
         self._sock = Nichts
@@ -829,17 +829,17 @@ def getfqdn(name=''):
                 breche
         sonst:
             name = hostname
-    return name
+    gib name
 
 
 _GLOBAL_DEFAULT_TIMEOUT = object()
 
 def create_connection(address, timeout=_GLOBAL_DEFAULT_TIMEOUT,
                       source_address=Nichts, *, all_errors=Falsch):
-    """Connect to *address* und return the socket object.
+    """Connect to *address* und gib the socket object.
 
     Convenience function.  Connect to *address* (a 2-tuple ``(host,
-    port)``) und return the socket object.  Passing the optional
+    port)``) und gib the socket object.  Passing the optional
     *timeout* parameter will set the timeout on the socket instance
     before attempting to connect.  If no *timeout* is supplied, the
     global default timeout setting returned by :func:`getdefaulttimeout`
@@ -864,7 +864,7 @@ def create_connection(address, timeout=_GLOBAL_DEFAULT_TIMEOUT,
             sock.connect(sa)
             # Break explicitly a reference cycle
             exceptions.clear()
-            return sock
+            gib sock
 
         except error als exc:
             wenn nicht all_errors:
@@ -892,19 +892,19 @@ def has_dualstack_ipv6():
     wenn nicht has_ipv6 \
             oder nicht hasattr(_socket, 'IPPROTO_IPV6') \
             oder nicht hasattr(_socket, 'IPV6_V6ONLY'):
-        return Falsch
+        gib Falsch
     try:
         mit socket(AF_INET6, SOCK_STREAM) als sock:
             sock.setsockopt(IPPROTO_IPV6, IPV6_V6ONLY, 0)
-            return Wahr
+            gib Wahr
     except error:
-        return Falsch
+        gib Falsch
 
 
 def create_server(address, *, family=AF_INET, backlog=Nichts, reuse_port=Falsch,
                   dualstack_ipv6=Falsch):
     """Convenience function which creates a SOCK_STREAM type socket
-    bound to *address* (a 2-tuple (host, port)) und return the socket
+    bound to *address* (a 2-tuple (host, port)) und gib the socket
     object.
 
     *family* should be either AF_INET oder AF_INET6.
@@ -966,7 +966,7 @@ def create_server(address, *, family=AF_INET, backlog=Nichts, reuse_port=Falsch,
             sock.listen()
         sonst:
             sock.listen(backlog)
-        return sock
+        gib sock
     except error:
         sock.close()
         raise
@@ -994,4 +994,4 @@ def getaddrinfo(host, port, family=0, type=0, proto=0, flags=0):
         addrlist.append((_intenum_converter(af, AddressFamily),
                          _intenum_converter(socktype, SocketKind),
                          proto, canonname, sa))
-    return addrlist
+    gib addrlist

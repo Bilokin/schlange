@@ -197,7 +197,7 @@ klasse TestLongMessage(unittest.TestCase):
                 test = self.testableFalsch
             sonst:
                 test = self.testableWahr
-            return getattr(test, methodName)
+            gib getattr(test, methodName)
 
         fuer i, expected_regex in enumerate(errors):
             testMethod = getMethod(i)

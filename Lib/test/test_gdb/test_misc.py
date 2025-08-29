@@ -19,7 +19,7 @@ def gdb_has_frame_select():
             f"stdout={stdout!r}\n"
             f"stderr={stderr!r}\n")
     gdb_frame_dir = m.group(1).split(', ')
-    return "'select'" in gdb_frame_dir
+    gib "'select'" in gdb_frame_dir
 
 HAS_PYUP_PYDOWN = gdb_has_frame_select()
 

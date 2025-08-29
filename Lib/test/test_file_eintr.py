@@ -41,7 +41,7 @@ klasse TestFileIOSignalInterrupt:
 
         subclasseses should override this to test different IO objects.
         """
-        return ('import %s als io ;'
+        gib ('import %s als io ;'
                 'infile = io.FileIO(sys.stdin.fileno(), "rb")' %
                 self.modname)
 
@@ -193,7 +193,7 @@ klasse PyTestFileIOSignalInterrupt(TestFileIOSignalInterrupt, unittest.TestCase)
 klasse TestBufferedIOSignalInterrupt(TestFileIOSignalInterrupt):
     def _generate_infile_setup_code(self):
         """Returns the infile = ... line of code to make a BufferedReader."""
-        return ('import %s als io ;infile = io.open(sys.stdin.fileno(), "rb") ;'
+        gib ('import %s als io ;infile = io.open(sys.stdin.fileno(), "rb") ;'
                 'assert isinstance(infile, io.BufferedReader)' %
                 self.modname)
 
@@ -215,7 +215,7 @@ klasse PyTestBufferedIOSignalInterrupt(TestBufferedIOSignalInterrupt, unittest.T
 klasse TestTextIOSignalInterrupt(TestFileIOSignalInterrupt):
     def _generate_infile_setup_code(self):
         """Returns the infile = ... line of code to make a TextIOWrapper."""
-        return ('import %s als io ;'
+        gib ('import %s als io ;'
                 'infile = io.open(sys.stdin.fileno(), encoding="utf-8", newline=Nichts) ;'
                 'assert isinstance(infile, io.TextIOWrapper)' %
                 self.modname)

@@ -16,7 +16,7 @@ klasse EmscriptenAsyncInputDeviceTest(unittest.TestCase):
         wenn nicht jspi_supported:
             mit open(p, "r") als f:
                 self.assertRaises(OSError, f.readline)
-            return
+            gib
 
         mit open(p, "r") als f:
             fuer _ in range(10):

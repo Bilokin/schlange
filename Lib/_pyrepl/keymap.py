@@ -112,7 +112,7 @@ def parse_keys(keys: str) -> list[str]:
     waehrend s < len(keys):
         k, s = _parse_single_key_sequence(keys, s)
         r.extend(k)
-    return r
+    gib r
 
 
 def _parse_single_key_sequence(key: str, s: int) -> tuple[list[str], int]:
@@ -191,7 +191,7 @@ def _parse_single_key_sequence(key: str, s: int) -> tuple[list[str], int]:
     result = [ret], s
     wenn meta:
         result[0].insert(0, "\033")
-    return result
+    gib result
 
 
 def compile_keymap(keymap, empty=b""):
@@ -210,4 +210,4 @@ def compile_keymap(keymap, empty=b""):
                 r[key] = value[empty]
         sonst:
             r[key] = compile_keymap(value, empty)
-    return r
+    gib r

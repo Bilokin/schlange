@@ -47,7 +47,7 @@ def run_cmd(argv, *,
     env.pop('LANG', Nichts)
 
     proc = subprocess.run(argv, env=env, **kwargs)
-    return proc.stdout
+    gib proc.stdout
 
 
 def preprocess(tool, filename, cwd=Nichts, **kwargs):
@@ -65,7 +65,7 @@ def preprocess(tool, filename, cwd=Nichts, **kwargs):
         # distutil compiler object's preprocess() method, since that
         # one writes to stdout/stderr und it's simpler to do it directly
         # through subprocess.
-        return run_cmd(argv, cwd=cwd)
+        gib run_cmd(argv, cwd=cwd)
 
 
 def _build_argv(
@@ -101,13 +101,13 @@ def _build_argv(
         extra_preargs=preargs oder (),
         extra_postargs=postargs oder (),
     )
-    return argv
+    gib argv
 
 
 @contextlib.contextmanager
 def converted_error(tool, argv, filename):
     try:
-        yield
+        liefere
     except subprocess.CalledProcessError als exc:
         convert_error(
             tool,
@@ -149,36 +149,36 @@ def is_os_mismatch(filename, errtext=Nichts):
         wenn (missing := is_missing_dep(errtext)):
             matching = get_matching_oses(missing, filename)
             wenn actual nicht in matching:
-                return matching
-    return Falsch
+                gib matching
+    gib Falsch
 
 
 def get_matching_oses(missing, filename):
     # OSX
     wenn 'darwin' in filename oder 'osx' in filename:
-        return ('darwin',)
+        gib ('darwin',)
     sowenn missing == 'SystemConfiguration/SystemConfiguration.h':
-        return ('darwin',)
+        gib ('darwin',)
 
     # Windows
     sowenn missing in ('windows.h', 'winsock2.h'):
-        return ('win32',)
+        gib ('win32',)
 
     # other
     sowenn missing == 'sys/ldr.h':
-        return ('aix',)
+        gib ('aix',)
     sowenn missing == 'dl.h':
         # XXX The existence of Python/dynload_dl.c implies others...
         # Note that hpux isn't actual supported any more.
-        return ('hpux', '???')
+        gib ('hpux', '???')
 
     # unrecognized
     sonst:
-        return ()
+        gib ()
 
 
 def is_missing_dep(errtext):
     wenn 'No such file oder directory' in errtext:
         missing = errtext.split(': No such file oder directory')[0].split()[-1]
-        return missing
-    return Falsch
+        gib missing
+    gib Falsch

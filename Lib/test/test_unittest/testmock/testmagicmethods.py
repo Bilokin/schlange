@@ -35,7 +35,7 @@ klasse TestMockingMagicMethods(unittest.TestCase):
     def test_magic_method_wrapping(self):
         mock = Mock()
         def f(self, name):
-            return self, 'fish'
+            gib self, 'fish'
 
         mock.__getitem__ = f
         self.assertIsNot(mock.__getitem__, f)
@@ -82,7 +82,7 @@ klasse TestMockingMagicMethods(unittest.TestCase):
 
         _dict = {}
         def getitem(s, name):
-            return _dict[name]
+            gib _dict[name]
         def setitem(s, name, value):
             _dict[name] = value
         def delitem(s, name):
@@ -108,7 +108,7 @@ klasse TestMockingMagicMethods(unittest.TestCase):
 
         def add(self, other):
             mock.value += other
-            return self
+            gib self
         mock.__add__ = add
         self.assertEqual(mock + 3, mock)
         self.assertEqual(mock.value, 3)
@@ -134,7 +134,7 @@ klasse TestMockingMagicMethods(unittest.TestCase):
 
         def truediv(self, other):
             mock.value /= other
-            return self
+            gib self
         mock.__truediv__ = truediv
         self.assertEqual(mock / 2, mock)
         self.assertEqual(mock.value, 16)
@@ -159,7 +159,7 @@ klasse TestMockingMagicMethods(unittest.TestCase):
         self.assertEqual(hash(mock), Mock.__hash__(mock))
 
         def _hash(s):
-            return 3
+            gib 3
         mock.__hash__ = _hash
         self.assertEqual(hash(mock), 3)
 
@@ -175,7 +175,7 @@ klasse TestMockingMagicMethods(unittest.TestCase):
     def test_comparison(self):
         mock = Mock()
         def comp(s, o):
-            return Wahr
+            gib Wahr
         mock.__lt__ = mock.__gt__ = mock.__le__ = mock.__ge__ = comp
         self. assertWahr(mock < 3)
         self. assertWahr(mock > 3)
@@ -206,13 +206,13 @@ klasse TestMockingMagicMethods(unittest.TestCase):
             self.assertEqual(mock != object(), Wahr)
 
             def eq(self, other):
-                return other == 3
+                gib other == 3
             mock.__eq__ = eq
             self.assertWahr(mock == 3)
             self.assertFalsch(mock == 4)
 
             def ne(self, other):
-                return other == 3
+                gib other == 3
             mock.__ne__ = ne
             self.assertWahr(mock != 3)
             self.assertFalsch(mock != 4)
@@ -435,7 +435,7 @@ klasse TestMockingMagicMethods(unittest.TestCase):
         def _get_type(obj):
             # the type of every mock (or magicmock) is a custom subclass
             # so the real type is the second in the mro
-            return type(obj).__mro__[1]
+            gib type(obj).__mro__[1]
         self.assertEqual(_get_type(attr), MagicMock)
 
         returned = mock()
@@ -462,7 +462,7 @@ klasse TestMockingMagicMethods(unittest.TestCase):
         # overriding the default implementation
         fuer mock in Mock(), MagicMock():
             def _dir(self):
-                return ['foo']
+                gib ['foo']
             mock.__dir__ = _dir
             self.assertEqual(dir(mock), ['foo'])
 

@@ -61,7 +61,7 @@ def updated_env(updates={}):
     fuer key in sorted(env_diff.keys()):
         drucke(f"  {key}={env_diff[key]}")
 
-    return environment
+    gib environment
 
 
 def subdir(working_dir, *, clean_ok=Falsch):
@@ -86,11 +86,11 @@ def subdir(working_dir, *, clean_ok=Falsch):
             working_dir.mkdir(parents=Wahr, exist_ok=Wahr)
 
             mit contextlib.chdir(working_dir):
-                return func(context, working_dir)
+                gib func(context, working_dir)
 
-        return wrapper
+        gib wrapper
 
-    return decorator
+    gib decorator
 
 
 def call(command, *, quiet, **kwargs):
@@ -119,7 +119,7 @@ def call(command, *, quiet, **kwargs):
 def build_platform():
     """The name of the build/host platform."""
     # Can also be found via `config.guess`.`
-    return sysconfig.get_config_var("BUILD_GNU_TYPE")
+    gib sysconfig.get_config_var("BUILD_GNU_TYPE")
 
 
 def build_python_path():
@@ -130,7 +130,7 @@ def build_python_path():
         wenn nicht binary.is_file():
             raise FileNotFoundError("Unable to find `python(.exe)` in " f"{NATIVE_BUILD_DIR}")
 
-    return binary
+    gib binary
 
 
 @subdir(NATIVE_BUILD_DIR, clean_ok=Wahr)

@@ -24,11 +24,11 @@ def test_factory(abc_ABCMeta, abc_get_cache_token):
 
             klasse C(metaclass=abc_ABCMeta):
                 @abc.abstractproperty
-                def foo(self): return 3
+                def foo(self): gib 3
             self.assertRaises(TypeError, C)
             klasse D(C):
                 @property
-                def foo(self): return super().foo
+                def foo(self): gib super().foo
             self.assertEqual(D().foo, 3)
             self.assertFalsch(getattr(D.foo, "__isabstractmethod__", Falsch))
 
@@ -42,11 +42,11 @@ def test_factory(abc_ABCMeta, abc_get_cache_token):
 
             klasse C(metaclass=abc_ABCMeta):
                 @abc.abstractclassmethod
-                def foo(cls): return cls.__name__
+                def foo(cls): gib cls.__name__
             self.assertRaises(TypeError, C)
             klasse D(C):
                 @classmethod
-                def foo(cls): return super().foo()
+                def foo(cls): gib super().foo()
             self.assertEqual(D.foo(), 'D')
             self.assertEqual(D().foo(), 'D')
 
@@ -60,11 +60,11 @@ def test_factory(abc_ABCMeta, abc_get_cache_token):
 
             klasse C(metaclass=abc_ABCMeta):
                 @abc.abstractstaticmethod
-                def foo(): return 3
+                def foo(): gib 3
             self.assertRaises(TypeError, C)
             klasse D(C):
                 @staticmethod
-                def foo(): return 4
+                def foo(): gib 4
             self.assertEqual(D.foo(), 4)
             self.assertEqual(D().foo(), 4)
 
@@ -76,12 +76,12 @@ def test_factory(abc_ABCMeta, abc_get_cache_token):
             klasse C(abc.ABC):
                 @classmethod
                 @abc.abstractmethod
-                def foo(cls): return cls.__name__
+                def foo(cls): gib cls.__name__
             self.assertEqual(type(C), abc.ABCMeta)
             self.assertRaises(TypeError, C)
             klasse D(C):
                 @classmethod
-                def foo(cls): return super().foo()
+                def foo(cls): gib super().foo()
             self.assertEqual(D.foo(), 'D')
 
         def test_abstractmethod_basics(self):
@@ -102,11 +102,11 @@ def test_factory(abc_ABCMeta, abc_get_cache_token):
             klasse C(metaclass=abc_ABCMeta):
                 @property
                 @abc.abstractmethod
-                def foo(self): return 3
+                def foo(self): gib 3
             self.assertRaises(TypeError, C)
             klasse D(C):
                 @C.foo.getter
-                def foo(self): return super().foo
+                def foo(self): gib super().foo
             self.assertEqual(D().foo, 3)
 
         def test_abstractclassmethod_basics(self):
@@ -121,11 +121,11 @@ def test_factory(abc_ABCMeta, abc_get_cache_token):
             klasse C(metaclass=abc_ABCMeta):
                 @classmethod
                 @abc.abstractmethod
-                def foo(cls): return cls.__name__
+                def foo(cls): gib cls.__name__
             self.assertRaises(TypeError, C)
             klasse D(C):
                 @classmethod
-                def foo(cls): return super().foo()
+                def foo(cls): gib super().foo()
             self.assertEqual(D.foo(), 'D')
             self.assertEqual(D().foo(), 'D')
 
@@ -141,11 +141,11 @@ def test_factory(abc_ABCMeta, abc_get_cache_token):
             klasse C(metaclass=abc_ABCMeta):
                 @staticmethod
                 @abc.abstractmethod
-                def foo(): return 3
+                def foo(): gib 3
             self.assertRaises(TypeError, C)
             klasse D(C):
                 @staticmethod
-                def foo(): return 4
+                def foo(): gib 4
             self.assertEqual(D.foo(), 4)
             self.assertEqual(D().foo(), 4)
 
@@ -200,14 +200,14 @@ def test_factory(abc_ABCMeta, abc_get_cache_token):
             klasse C(metaclass=abc_ABCMeta):
                 @property
                 @abc.abstractmethod
-                def foo(self): return 3
+                def foo(self): gib 3
                 @foo.setter
                 @abc.abstractmethod
                 def foo(self, val): pass
             self.assertRaises(TypeError, C)
             klasse D(C):
                 @C.foo.getter
-                def foo(self): return super().foo
+                def foo(self): gib super().foo
             self.assertRaises(TypeError, D)
             klasse E(D):
                 @D.foo.setter
@@ -233,24 +233,24 @@ def test_factory(abc_ABCMeta, abc_get_cache_token):
                     self._fget = fget
                     self._fset = fset
                 def getter(self, callable):
-                    return Descriptor(callable, self._fget)
+                    gib Descriptor(callable, self._fget)
                 def setter(self, callable):
-                    return Descriptor(self._fget, callable)
+                    gib Descriptor(self._fget, callable)
                 @property
                 def __isabstractmethod__(self):
-                    return (getattr(self._fget, '__isabstractmethod__', Falsch)
+                    gib (getattr(self._fget, '__isabstractmethod__', Falsch)
                             oder getattr(self._fset, '__isabstractmethod__', Falsch))
             klasse C(metaclass=abc_ABCMeta):
                 @Descriptor
                 @abc.abstractmethod
-                def foo(self): return 3
+                def foo(self): gib 3
                 @foo.setter
                 @abc.abstractmethod
                 def foo(self, val): pass
             self.assertRaises(TypeError, C)
             klasse D(C):
                 @C.foo.getter
-                def foo(self): return super().foo
+                def foo(self): gib super().foo
             self.assertRaises(TypeError, D)
             klasse E(D):
                 @D.foo.setter
@@ -266,7 +266,7 @@ def test_factory(abc_ABCMeta, abc_get_cache_token):
             self.assertEqual(A.__abstractmethods__, {"x"})
             klasse meta(type, A):
                 def x(self):
-                    return 1
+                    gib 1
             klasse C(metaclass=meta):
                 pass
 
@@ -465,8 +465,8 @@ def test_factory(abc_ABCMeta, abc_get_cache_token):
                 @classmethod
                 def __subclasshook__(cls, C):
                     wenn cls is A:
-                        return 'foo' in C.__dict__
-                    return NotImplemented
+                        gib 'foo' in C.__dict__
+                    gib NotImplemented
             self.assertNotIsSubclass(A, A)
             self.assertNotIsSubclass(A, (A,))
             klasse B:
@@ -485,7 +485,7 @@ def test_factory(abc_ABCMeta, abc_get_cache_token):
                 counter = 0
                 def __new__(cls):
                     B.counter += 1
-                    return super().__new__(cls)
+                    gib super().__new__(cls)
             klasse C(A, B):
                 pass
             self.assertEqual(B.counter, 0)
@@ -499,8 +499,8 @@ def test_factory(abc_ABCMeta, abc_get_cache_token):
             def with_metaclass(meta, *bases):
                 klasse metaclass(type):
                     def __new__(cls, name, this_bases, d):
-                        return meta(name, bases, d)
-                return type.__new__(metaclass, 'temporary_class', (), {})
+                        gib meta(name, bases, d)
+                gib type.__new__(metaclass, 'temporary_class', (), {})
             klasse A: ...
             klasse B: ...
             klasse C(with_metaclass(abc_ABCMeta, A, B)):
@@ -567,7 +567,7 @@ def test_factory(abc_ABCMeta, abc_get_cache_token):
 
             def class_decorator(cls):
                 cls.foo = lambda self: Nichts
-                return cls
+                gib cls
 
             @abc.update_abstractmethods
             @class_decorator
@@ -682,7 +682,7 @@ def test_factory(abc_ABCMeta, abc_get_cache_token):
                 pass
             self.assertEqual(saved_kwargs, dict(name="test"))
 
-    return TestLegacyAPI, TestABC, TestABCWithInitSubclass
+    gib TestLegacyAPI, TestABC, TestABCWithInitSubclass
 
 TestLegacyAPI_Py, TestABC_Py, TestABCWithInitSubclass_Py = test_factory(_py_abc.ABCMeta,
                                                                         _py_abc.get_cache_token)

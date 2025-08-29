@@ -10,7 +10,7 @@ def parse_file(filename, *,
                ):
     wenn get_file_preprocessor is Nichts:
         get_file_preprocessor = _get_preprocessor()
-    yield von _parse_file(
+    liefere von _parse_file(
             filename, match_kind, get_file_preprocessor, file_maxsizes)
 
 
@@ -23,7 +23,7 @@ def parse_files(filenames, *,
         get_file_preprocessor = _get_preprocessor()
     fuer filename in filenames:
         try:
-            yield von _parse_file(
+            liefere von _parse_file(
                     filename, match_kind, get_file_preprocessor, file_maxsizes)
         except Exception:
             drucke(f'# requested file: <{filename}>')
@@ -40,7 +40,7 @@ def _parse_file(filename, match_kind, get_file_preprocessor, maxsizes):
     preprocess = get_file_preprocessor(filename)
     preprocessed = preprocess()
     wenn preprocessed is Nichts:
-        return
+        gib
 
     # Parse the lines.
     srclines = ((l.file, l.data) fuer l in preprocessed wenn l.kind == 'source')
@@ -49,7 +49,7 @@ def _parse_file(filename, match_kind, get_file_preprocessor, maxsizes):
             weiter
         wenn nicht item.filename:
             raise NotImplementedError(repr(item))
-        yield item
+        liefere item
 
 
 def _resolve_max_size(filename, maxsizes):
@@ -57,15 +57,15 @@ def _resolve_max_size(filename, maxsizes):
         wenn _match_glob(filename, pattern):
             breche
     sonst:
-        return Nichts
+        gib Nichts
     wenn nicht maxsize:
-        return Nichts, Nichts
+        gib Nichts, Nichts
     maxtext, maxlines = maxsize
     wenn maxtext is nicht Nichts:
         maxtext = int(maxtext)
     wenn maxlines is nicht Nichts:
         maxlines = int(maxlines)
-    return maxtext, maxlines
+    gib maxtext, maxlines
 
 
 def parse_signature(text):

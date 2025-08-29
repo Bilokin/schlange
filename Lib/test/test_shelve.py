@@ -10,7 +10,7 @@ von collections.abc importiere MutableMapping
 von test.test_dbm importiere dbm_iterator
 
 def L1(s):
-    return s.decode("latin-1")
+    gib s.decode("latin-1")
 
 klasse byteskeydict(MutableMapping):
     "Mapping that supports bytes keys"
@@ -19,7 +19,7 @@ klasse byteskeydict(MutableMapping):
         self.d = {}
 
     def __getitem__(self, key):
-        return self.d[L1(key)]
+        gib self.d[L1(key)]
 
     def __setitem__(self, key, value):
         self.d[L1(key)] = value
@@ -28,19 +28,19 @@ klasse byteskeydict(MutableMapping):
         del self.d[L1(key)]
 
     def __len__(self):
-        return len(self.d)
+        gib len(self.d)
 
     def iterkeys(self):
         fuer k in self.d.keys():
-            yield k.encode("latin-1")
+            liefere k.encode("latin-1")
 
     __iter__ = iterkeys
 
     def keys(self):
-        return list(self.iterkeys())
+        gib list(self.iterkeys())
 
     def copy(self):
-        return byteskeydict(self.d)
+        gib byteskeydict(self.d)
 
 
 klasse TestCase(unittest.TestCase):
@@ -173,17 +173,17 @@ klasse TestCase(unittest.TestCase):
         def serializer(obj, protocol):
             wenn isinstance(obj, (bytes, bytearray, str)):
                 wenn protocol == 5:
-                    return obj
-                return type(obj).__name__
+                    gib obj
+                gib type(obj).__name__
             sowenn isinstance(obj, array.array):
-                return obj.tobytes()
+                gib obj.tobytes()
             raise TypeError(f"Unsupported type fuer serialization: {type(obj)}")
 
         def deserializer(data):
             wenn isinstance(data, (bytes, bytearray, str)):
-                return data.decode("utf-8")
+                gib data.decode("utf-8")
             sowenn isinstance(data, array.array):
-                return array.array("b", data)
+                gib array.array("b", data)
             raise TypeError(
                 f"Unsupported type fuer deserialization: {type(data)}"
             )
@@ -232,14 +232,14 @@ klasse TestCase(unittest.TestCase):
                 pass
 
             def deserializer(data):
-                return data.decode("utf-8")
+                gib data.decode("utf-8")
 
             mit shelve.open(self.fn, serializer=serializer,
                              deserializer=deserializer) als s:
                 s["foo"] = "bar"
 
         def serializer(obj, protocol=Nichts):
-            return type(obj).__name__.encode("utf-8")
+            gib type(obj).__name__.encode("utf-8")
 
         def deserializer(data):
             pass
@@ -259,13 +259,13 @@ klasse TestCase(unittest.TestCase):
             data = obj.__class__.__name__
             wenn protocol == 5:
                 data = str(len(data))
-            return data.encode("utf-8")
+            gib data.encode("utf-8")
 
         def deserializer(data):
-            return data.decode("utf-8")
+            gib data.decode("utf-8")
 
         def type_name_len(obj):
-            return f"{(len(type(obj).__name__))}"
+            gib f"{(len(type(obj).__name__))}"
 
         fuer proto in range(pickle.HIGHEST_PROTOCOL + 1):
             mit self.subTest(proto=proto), shelve.BsdDbShelf(
@@ -358,7 +358,7 @@ klasse TestCase(unittest.TestCase):
         self.addCleanup(os_helper.rmtree, self.dirname)
 
         def serializer(obj, protocol=Nichts):
-            return type(obj).__name__.encode("utf-8")
+            gib type(obj).__name__.encode("utf-8")
 
         def deserializer(data):
             pass
@@ -374,7 +374,7 @@ klasse TestCase(unittest.TestCase):
             pass
 
         def deserializer(data):
-            return data.decode("utf-8")
+            gib data.decode("utf-8")
 
         mit shelve.BsdDbShelf(berkeleydb.btopen(self.fn),
                                serializer=serializer,
@@ -404,12 +404,12 @@ klasse TestShelveBase:
     type2test = shelve.Shelf
 
     def _reference(self):
-        return {"key1":"value1", "key2":2, "key3":(1,2,3)}
+        gib {"key1":"value1", "key2":2, "key3":(1,2,3)}
 
 
 klasse TestShelveInMemBase(TestShelveBase):
     def _empty_mapping(self):
-        return shelve.Shelf(byteskeydict(), **self._args)
+        gib shelve.Shelf(byteskeydict(), **self._args)
 
 
 klasse TestShelveFileBase(TestShelveBase):
@@ -419,7 +419,7 @@ klasse TestShelveFileBase(TestShelveBase):
         self.counter += 1
         x = shelve.open(self.base_path + str(self.counter), **self._args)
         self.addCleanup(x.close)
-        return x
+        gib x
 
     def setUp(self):
         dirname = os_helper.TESTFN

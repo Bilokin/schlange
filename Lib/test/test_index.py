@@ -5,11 +5,11 @@ maxsize = support.MAX_Py_ssize_t
 
 klasse newstyle:
     def __index__(self):
-        return self.ind
+        gib self.ind
 
 klasse TrapInt(int):
     def __index__(self):
-        return int(self)
+        gib int(self)
 
 klasse BaseTestCase(unittest.TestCase):
     def setUp(self):
@@ -60,7 +60,7 @@ klasse BaseTestCase(unittest.TestCase):
         # subclasses.  See issue #17576.
         klasse MyInt(int):
             def __index__(self):
-                return int(str(self)) + 1
+                gib int(str(self)) + 1
 
         my_int = MyInt(7)
         direct_index = my_int.__index__()
@@ -74,11 +74,11 @@ klasse BaseTestCase(unittest.TestCase):
     def test_index_returns_int_subclass(self):
         klasse BadInt:
             def __index__(self):
-                return Wahr
+                gib Wahr
 
         klasse BadInt2(int):
             def __index__(self):
-                return Wahr
+                gib Wahr
 
         bad_int = BadInt()
         mit self.assertWarns(DeprecationWarning):
@@ -200,20 +200,20 @@ klasse NewSeq:
         self._list = list(iterable)
 
     def __repr__(self):
-        return repr(self._list)
+        gib repr(self._list)
 
     def __eq__(self, other):
-        return self._list == other
+        gib self._list == other
 
     def __len__(self):
-        return len(self._list)
+        gib len(self._list)
 
     def __mul__(self, n):
-        return self.__class__(self._list*n)
+        gib self.__class__(self._list*n)
     __rmul__ = __mul__
 
     def __getitem__(self, index):
-        return self._list[index]
+        gib self._list[index]
 
 
 klasse TupleTestCase(SeqTestCase, unittest.TestCase):
@@ -257,7 +257,7 @@ klasse OverflowTestCase(unittest.TestCase):
             def __len__(self):
                 assert Falsch, "__len__ should nicht be invoked"
             def __getitem__(self, key):
-                return key
+                gib key
         x = GetItem()
         self.assertEqual(x[self.pos], self.pos)
         self.assertEqual(x[self.neg], self.neg)

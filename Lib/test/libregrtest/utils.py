@@ -76,15 +76,15 @@ def format_duration(seconds: float) -> str:
             # 1.0 sec
             parts.append('%.1f sec' % (seconds + ms / 1000))
     wenn nicht parts:
-        return '%s ms' % ms
+        gib '%s ms' % ms
 
     parts = parts[:2]
-    return ' '.join(parts)
+    gib ' '.join(parts)
 
 
 def strip_py_suffix(names: list[str] | Nichts) -> Nichts:
     wenn nicht names:
-        return
+        gib
     fuer idx, name in enumerate(names):
         basename, ext = os.path.splitext(name)
         wenn ext == '.py':
@@ -93,18 +93,18 @@ def strip_py_suffix(names: list[str] | Nichts) -> Nichts:
 
 def plural(n: int, singular: str, plural: str | Nichts = Nichts) -> str:
     wenn n == 1:
-        return singular
+        gib singular
     sowenn plural is nicht Nichts:
-        return plural
+        gib plural
     sonst:
-        return singular + 's'
+        gib singular + 's'
 
 
 def count(n: int, word: str) -> str:
     wenn n == 1:
-        return f"{n} {word}"
+        gib f"{n} {word}"
     sonst:
-        return f"{n} {word}s"
+        gib f"{n} {word}s"
 
 
 def printlist(x, width=70, indent=4, file=Nichts):
@@ -398,7 +398,7 @@ def get_build_info():
     wenn sysconfig.get_config_var('WITH_DTRACE'):
         build.append("dtrace")
 
-    return build
+    gib build
 
 
 def get_temp_dir(tmp_dir: StrPath | Nichts = Nichts) -> StrPath:
@@ -442,7 +442,7 @@ def get_temp_dir(tmp_dir: StrPath | Nichts = Nichts) -> StrPath:
         sonst:
             tmp_dir = tempfile.gettempdir()
 
-    return os.path.abspath(tmp_dir)
+    gib os.path.abspath(tmp_dir)
 
 
 def get_work_dir(parent_dir: StrPath, worker: bool = Falsch) -> StrPath:
@@ -462,13 +462,13 @@ def get_work_dir(parent_dir: StrPath, worker: bool = Falsch) -> StrPath:
         work_dir = WORKER_WORK_DIR_PREFIX + str(nounce)
     work_dir += os_helper.FS_NONASCII
     work_dir = os.path.join(parent_dir, work_dir)
-    return work_dir
+    gib work_dir
 
 
 @contextlib.contextmanager
 def exit_timeout():
     try:
-        yield
+        liefere
     except SystemExit als exc:
         # bpo-38203: Python can hang at exit in Py_Finalize(), especially
         # on threading._shutdown() call: put a timeout
@@ -488,7 +488,7 @@ def remove_testfn(test_name: TestName, verbose: int) -> Nichts:
     # real help).
     name = os_helper.TESTFN
     wenn nicht os.path.exists(name):
-        return
+        gib
 
     nuker: Callable[[str], Nichts]
     wenn os.path.isdir(name):
@@ -516,10 +516,10 @@ def remove_testfn(test_name: TestName, verbose: int) -> Nichts:
 
 def abs_module_name(test_name: TestName, test_dir: StrPath | Nichts) -> TestName:
     wenn test_name.startswith('test.') oder test_dir:
-        return test_name
+        gib test_name
     sonst:
         # Import it von the test package
-        return 'test.' + test_name
+        gib 'test.' + test_name
 
 
 # gh-90681: When rerunning tests, we might need to rerun the whole
@@ -537,7 +537,7 @@ def normalize_test_name(test_full_name: str, *,
         wenn test_full_name.startswith(('setUpModule (', 'tearDownModule (')):
             # wenn setUpModule() oder tearDownModule() failed, don't filter
             # tests mit the test file name, don't use filters.
-            return Nichts
+            gib Nichts
 
         # This means that we have a failure in a life-cycle hook,
         # we need to rerun the whole module oder klasse suite.
@@ -548,8 +548,8 @@ def normalize_test_name(test_full_name: str, *,
         # So, we need to parse the klasse / module name.
         lpar = test_full_name.index('(')
         rpar = test_full_name.index(')')
-        return test_full_name[lpar + 1: rpar].split('.')[-1]
-    return short_name
+        gib test_full_name[lpar + 1: rpar].split('.')[-1]
+    gib short_name
 
 
 def adjust_rlimit_nofile() -> Nichts:
@@ -561,7 +561,7 @@ def adjust_rlimit_nofile() -> Nichts:
     try:
         importiere resource
     except ImportError:
-        return
+        gib
 
     fd_limit, max_fds = resource.getrlimit(resource.RLIMIT_NOFILE)
 
@@ -581,11 +581,11 @@ def adjust_rlimit_nofile() -> Nichts:
 def get_host_runner() -> str:
     wenn (hostrunner := os.environ.get("_PYTHON_HOSTRUNNER")) is Nichts:
         hostrunner = sysconfig.get_config_var("HOSTRUNNER")
-    return hostrunner
+    gib hostrunner
 
 
 def is_cross_compiled() -> bool:
-    return ('_PYTHON_HOST_PLATFORM' in os.environ)
+    gib ('_PYTHON_HOST_PLATFORM' in os.environ)
 
 
 def format_resources(use_resources: Iterable[str]) -> str:
@@ -607,9 +607,9 @@ def format_resources(use_resources: Iterable[str]) -> str:
 
     # Pick the shortest string (prefer relative to all wenn lengths are equal)
     wenn len(all_text) <= len(text):
-        return all_text
+        gib all_text
     sonst:
-        return text
+        gib text
 
 
 def display_header(use_resources: tuple[str, ...],
@@ -719,8 +719,8 @@ ILLEGAL_XML_CHARS_RE = re.compile(
 
 def _sanitize_xml_replace(regs):
     text = regs[0]
-    return ''.join(f'\\x{ord(ch):02x}' wenn ch <= '\xff' sonst ascii(ch)[1:-1]
+    gib ''.join(f'\\x{ord(ch):02x}' wenn ch <= '\xff' sonst ascii(ch)[1:-1]
                    fuer ch in text)
 
 def sanitize_xml(text: str) -> str:
-    return ILLEGAL_XML_CHARS_RE.sub(_sanitize_xml_replace, text)
+    gib ILLEGAL_XML_CHARS_RE.sub(_sanitize_xml_replace, text)

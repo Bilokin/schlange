@@ -46,7 +46,7 @@ klasse PrettyPrintTests(DebuggerTests):
             gdb_output, re.DOTALL)
         wenn nicht m:
             self.fail('Unexpected gdb output: %r\n%s' % (gdb_output, gdb_output))
-        return m.group(1), gdb_output
+        gib m.group(1), gdb_output
 
     def test_getting_backtrace(self):
         gdb_output = self.get_stack_trace('id(42)')
@@ -269,7 +269,7 @@ id(foo)''')
             wenn gdb_repr == exprepr:
                 # gdb managed to print the value in spite of the corruption;
                 # this is good (see http://bugs.python.org/issue8330)
-                return
+                gib
 
         # Match anything fuer the type name; 0xDEADBEEF could point to
         # something arbitrary (see  http://bugs.python.org/issue8330)
@@ -425,7 +425,7 @@ id(a)''')
         gdb_output = self.get_stack_trace('''
 importiere sys
 def foo(a, b, c):
-    return sys._getframe(0)
+    gib sys._getframe(0)
 
 f = foo(3, 4, 5)
 id(f)''',

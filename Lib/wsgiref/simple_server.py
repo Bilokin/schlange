@@ -61,7 +61,7 @@ klasse WSGIServer(HTTPServer):
         env['SCRIPT_NAME'] = ''
 
     def get_app(self):
-        return self.application
+        gib self.application
 
     def set_app(self,application):
         self.application = application
@@ -103,10 +103,10 @@ klasse WSGIRequestHandler(BaseHTTPRequestHandler):
                 env['HTTP_'+k] += ','+v     # comma-separate multiple headers
             sonst:
                 env['HTTP_'+k] = v
-        return env
+        gib env
 
     def get_stderr(self):
-        return sys.stderr
+        gib sys.stderr
 
     def handle(self):
         """Handle a single HTTP request"""
@@ -117,10 +117,10 @@ klasse WSGIRequestHandler(BaseHTTPRequestHandler):
             self.request_version = ''
             self.command = ''
             self.send_error(414)
-            return
+            gib
 
         wenn nicht self.parse_request(): # An error code has been sent, just exit
-            return
+            gib
 
         handler = ServerHandler(
             self.rfile, self.wfile, self.get_stderr(), self.get_environ(),
@@ -140,7 +140,7 @@ def demo_app(environ,start_response):
     fuer k,v in h:
         drucke(k,'=',repr(v), file=stdout)
     start_response("200 OK", [('Content-Type','text/plain; charset=utf-8')])
-    return [stdout.getvalue().encode("utf-8")]
+    gib [stdout.getvalue().encode("utf-8")]
 
 
 def make_server(
@@ -149,7 +149,7 @@ def make_server(
     """Create a new WSGI server listening on `host` und `port` fuer `app`"""
     server = server_class((host, port), handler_class)
     server.set_app(app)
-    return server
+    gib server
 
 
 wenn __name__ == '__main__':

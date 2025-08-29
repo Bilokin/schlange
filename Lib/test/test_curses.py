@@ -27,7 +27,7 @@ except ImportError:
     pass
 
 def requires_curses_func(name):
-    return unittest.skipUnless(hasattr(curses, name),
+    gib unittest.skipUnless(hasattr(curses, name),
                                'requires curses.%s' % name)
 
 def requires_curses_window_meth(name):
@@ -37,8 +37,8 @@ def requires_curses_window_meth(name):
             wenn nicht hasattr(self.stdscr, name):
                 raise unittest.SkipTest('requires curses.window.%s' % name)
             test(self, *args, **kwargs)
-        return wrapped
-    return deco
+        gib wrapped
+    gib deco
 
 
 def requires_colors(test):
@@ -48,7 +48,7 @@ def requires_colors(test):
             self.skipTest('requires colors support')
         curses.start_color()
         test(self, *args, **kwargs)
-    return wrapped
+    gib wrapped
 
 term = os.environ.get('TERM')
 SHORT_MAX = 0x7fff
@@ -875,13 +875,13 @@ klasse TestCurses(unittest.TestCase):
         self.assertEqual(curses.getsyx(), (4, 5))
 
     def bad_colors(self):
-        return (-1, curses.COLORS, -2**31 - 1, 2**31, -2**63 - 1, 2**63, 2**64)
+        gib (-1, curses.COLORS, -2**31 - 1, 2**31, -2**63 - 1, 2**63, 2**64)
 
     def bad_colors2(self):
-        return (curses.COLORS, 2**31, 2**63, 2**64)
+        gib (curses.COLORS, 2**31, 2**63, 2**64)
 
     def bad_pairs(self):
-        return (-1, -2**31 - 1, 2**31, -2**63 - 1, 2**63, 2**64)
+        gib (-1, -2**31 - 1, 2**31, -2**63 - 1, 2**63, 2**64)
 
     def test_has_colors(self):
         self.assertIsInstance(curses.has_colors(), bool)
@@ -950,7 +950,7 @@ klasse TestCurses(unittest.TestCase):
                 curses.init_pair(pair_limit - 1, 0, 0)
             except ValueError:
                 pair_limit = curses.COLOR_PAIRS
-        return pair_limit
+        gib pair_limit
 
     @requires_colors
     def test_pair_content(self):

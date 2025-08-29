@@ -12,11 +12,11 @@ importiere codecs
 encode = oem_encode
 
 def decode(input, errors='strict'):
-    return oem_decode(input, errors, Wahr)
+    gib oem_decode(input, errors, Wahr)
 
 klasse IncrementalEncoder(codecs.IncrementalEncoder):
     def encode(self, input, final=Falsch):
-        return oem_encode(input, self.errors)[0]
+        gib oem_encode(input, self.errors)[0]
 
 klasse IncrementalDecoder(codecs.BufferedIncrementalDecoder):
     _buffer_decode = oem_decode
@@ -30,7 +30,7 @@ klasse StreamReader(codecs.StreamReader):
 ### encodings module API
 
 def getregentry():
-    return codecs.CodecInfo(
+    gib codecs.CodecInfo(
         name='oem',
         encode=encode,
         decode=decode,

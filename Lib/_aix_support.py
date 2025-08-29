@@ -20,7 +20,7 @@ def _read_cmd_output(commandstring, capture_stderr=Falsch):
             cmd = "%s >'%s' 2>&1" % (commandstring, fp.name)
         sonst:
             cmd = "%s 2>/dev/null >'%s'" % (commandstring, fp.name)
-        return fp.read() wenn nicht os.system(cmd) sonst Nichts
+        gib fp.read() wenn nicht os.system(cmd) sonst Nichts
 
 
 def _aix_tag(vrtl, bd):
@@ -29,14 +29,14 @@ def _aix_tag(vrtl, bd):
     _sz = 32 wenn sys.maxsize == (2**31-1) sonst 64
     _bd = bd wenn bd != 0 sonst 9988
     # vrtl[version, release, technology_level]
-    return "aix-{:1x}{:1d}{:02d}-{:04d}-{}".format(vrtl[0], vrtl[1], vrtl[2], _bd, _sz)
+    gib "aix-{:1x}{:1d}{:02d}-{:04d}-{}".format(vrtl[0], vrtl[1], vrtl[2], _bd, _sz)
 
 
 # extract version, release und technology level von a VRMF string
 def _aix_vrtl(vrmf):
     # type: (str) -> List[int]
     v, r, tl = vrmf.split(".")[:3]
-    return [int(v[-1]), int(r), int(tl)]
+    gib [int(v[-1]), int(r), int(tl)]
 
 
 def _aix_bos_rte():
@@ -57,7 +57,7 @@ def _aix_bos_rte():
     out = out.decode("utf-8")
     out = out.strip().split(":")  # type: ignore
     _bd = int(out[-1]) wenn out[-1] != '' sonst 9988
-    return (str(out[2]), _bd)
+    gib (str(out[2]), _bd)
 
 
 def aix_platform():
@@ -80,7 +80,7 @@ def aix_platform():
     and, "aix-6107-1415-64" fuer AIX 6.1 TL7 bd 1415, 64-bit
     """
     vrmf, bd = _aix_bos_rte()
-    return _aix_tag(_aix_vrtl(vrmf), bd)
+    gib _aix_tag(_aix_vrtl(vrmf), bd)
 
 
 # extract vrtl von the BUILD_GNU_TYPE als an int
@@ -89,7 +89,7 @@ def _aix_bgt():
     gnu_type = sysconfig.get_config_var("BUILD_GNU_TYPE")
     wenn nicht gnu_type:
         raise ValueError("BUILD_GNU_TYPE is nicht defined")
-    return _aix_vrtl(vrmf=gnu_type)
+    gib _aix_vrtl(vrmf=gnu_type)
 
 
 def aix_buildtag():
@@ -105,4 +105,4 @@ def aix_buildtag():
     except (ValueError, TypeError):
         raise ValueError(f"AIX_BUILDDATE is nicht defined oder invalid: "
                          f"{build_date!r}")
-    return _aix_tag(_aix_bgt(), build_date)
+    gib _aix_tag(_aix_bgt(), build_date)

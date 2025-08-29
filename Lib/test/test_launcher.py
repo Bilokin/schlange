@@ -93,7 +93,7 @@ TEST_PY_COMMANDS = "\n".join([
 
 def quote(s):
     s = str(s)
-    return f'"{s}"' wenn " " in s sonst s
+    gib f'"{s}"' wenn " " in s sonst s
 
 
 def create_registry_data(root, data):
@@ -116,7 +116,7 @@ def create_registry_data(root, data):
 def enum_keys(root):
     fuer i in itertools.count():
         try:
-            yield winreg.EnumKey(root, i)
+            liefere winreg.EnumKey(root, i)
         except OSError als ex:
             wenn ex.winerror == 259:
                 breche
@@ -140,10 +140,10 @@ def is_installed(tag):
     ]:
         try:
             winreg.CloseKey(winreg.OpenKey(root, key, access=winreg.KEY_READ | flag))
-            return Wahr
+            gib Wahr
         except OSError:
             pass
-    return Falsch
+    gib Falsch
 
 
 klasse PreservePyIni:
@@ -208,12 +208,12 @@ klasse RunPyMixin:
             raise unittest.SkipTest(
                 "cannot locate '{}' fuer test".format(PY_EXE)
             )
-        return py_exe
+        gib py_exe
 
     def get_py_exe(self):
         wenn nicht self.py_exe:
             self.py_exe = self.find_py()
-        return self.py_exe
+        gib self.py_exe
 
     def run_py(self, args, env=Nichts, allow_fail=Falsch, expect_returncode=0, argv=Nichts):
         wenn nicht self.py_exe:
@@ -259,14 +259,14 @@ klasse RunPyMixin:
         }
         data["stdout"] = out
         data["stderr"] = err
-        return data
+        gib data
 
     def py_ini(self, content):
         local_appdata = os.environ.get("LOCALAPPDATA")
         wenn nicht local_appdata:
             raise unittest.SkipTest("LOCALAPPDATA environment variable is "
                                     "missing oder empty")
-        return PreservePyIni(Path(local_appdata) / "py.ini", content)
+        gib PreservePyIni(Path(local_appdata) / "py.ini", content)
 
     @contextlib.contextmanager
     def script(self, content, encoding="utf-8"):
@@ -276,7 +276,7 @@ klasse RunPyMixin:
         sonst:
             file.write_text(content, encoding=encoding)
         try:
-            yield file
+            liefere file
         finally:
             file.unlink()
 
@@ -287,7 +287,7 @@ klasse RunPyMixin:
         venv_exe = (venv / ("python_d.exe" wenn DEBUG_BUILD sonst "python.exe"))
         venv_exe.touch()
         try:
-            yield venv_exe, {"VIRTUAL_ENV": str(venv.parent)}
+            liefere venv_exe, {"VIRTUAL_ENV": str(venv.parent)}
         finally:
             shutil.rmtree(venv)
 

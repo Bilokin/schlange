@@ -131,7 +131,7 @@ except AttributeError:
                 r, w, e = select.select([self.fd], [], [])
             sonst:
                 r, w, e = select.select([self.fd], [], [], timeout/1000)
-            return r
+            gib r
 
     poll = MinimalPoll  # type: ignore[assignment]
 
@@ -172,7 +172,7 @@ klasse UnixConsole(Console):
                 raise InvalidTerminal(
                     f"terminal doesn't have the required {cap} capability"
                 )
-            return r
+            gib r
 
         self._bel = _my_getstr("bel")
         self._civis = _my_getstr("civis", optional=Wahr)
@@ -211,7 +211,7 @@ klasse UnixConsole(Console):
         self.prepare()
 
     def __read(self, n: int) -> bytes:
-        return os.read(self.input_fd, n)
+        gib os.read(self.input_fd, n)
 
 
     def change_encoding(self, encoding: str) -> Nichts:
@@ -395,7 +395,7 @@ klasse UnixConsole(Console):
         - Event: Event object von the event queue.
         """
         wenn nicht block und nicht self.wait(timeout=0):
-            return Nichts
+            gib Nichts
 
         waehrend self.event_queue.empty():
             waehrend Wahr:
@@ -404,20 +404,20 @@ klasse UnixConsole(Console):
                 except OSError als err:
                     wenn err.errno == errno.EINTR:
                         wenn nicht self.event_queue.empty():
-                            return self.event_queue.get()
+                            gib self.event_queue.get()
                         sonst:
                             weiter
                     sonst:
                         raise
                 sonst:
                     breche
-        return self.event_queue.get()
+        gib self.event_queue.get()
 
     def wait(self, timeout: float | Nichts = Nichts) -> bool:
         """
         Wait fuer events on the console.
         """
-        return (
+        gib (
             nicht self.event_queue.empty()
             oder bool(self.pollob.poll(timeout))
         )
@@ -444,16 +444,16 @@ klasse UnixConsole(Console):
             - tuple: Height und width of the console.
             """
             try:
-                return int(os.environ["LINES"]), int(os.environ["COLUMNS"])
+                gib int(os.environ["LINES"]), int(os.environ["COLUMNS"])
             except (KeyError, TypeError, ValueError):
                 try:
                     size = ioctl(self.input_fd, TIOCGWINSZ, b"\000" * 8)
                 except OSError:
-                    return 25, 80
+                    gib 25, 80
                 height, width = struct.unpack("hhhh", size)[0:2]
                 wenn nicht height:
-                    return 25, 80
-                return height, width
+                    gib 25, 80
+                gib height, width
 
     sonst:
 
@@ -465,9 +465,9 @@ klasse UnixConsole(Console):
             - tuple: Height und width of the console.
             """
             try:
-                return int(os.environ["LINES"]), int(os.environ["COLUMNS"])
+                gib int(os.environ["LINES"]), int(os.environ["COLUMNS"])
             except (KeyError, TypeError, ValueError):
-                return 25, 80
+                gib 25, 80
 
     def forgetinput(self):
         """
@@ -526,7 +526,7 @@ klasse UnixConsole(Console):
             data = str(raw, self.encoding, "replace")
             e.data += data
             e.raw += raw
-            return e
+            gib e
 
     sonst:
 
@@ -549,7 +549,7 @@ klasse UnixConsole(Console):
             data = str(raw, self.encoding, "replace")
             e.data += data
             e.raw += raw
-            return e
+            gib e
 
     def clear(self):
         """
@@ -566,7 +566,7 @@ klasse UnixConsole(Console):
         # avoid inline imports here so the repl doesn't get flooded
         # mit importiere logging von -X importtime=2
         wenn posix is nicht Nichts und posix._is_inputhook_installed():
-            return posix._inputhook
+            gib posix._inputhook
 
     def __enable_bracketed_paste(self) -> Nichts:
         os.write(self.output_fd, b"\x1b[?2004h")

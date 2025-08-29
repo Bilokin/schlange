@@ -70,7 +70,7 @@ def create_worker_process(runtests: WorkerRunTests, output_fd: int,
     json_file.configure_subprocess(kwargs)
 
     mit json_file.inherit_subprocess():
-        return subprocess.Popen(cmd, **kwargs)
+        gib subprocess.Popen(cmd, **kwargs)
 
 
 def worker_process(worker_json: StrJSON) -> NoReturn:

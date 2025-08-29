@@ -26,7 +26,7 @@ def run(statement, filename=Nichts, sort=-1):
     standard name string (file/line/function-name) that is presented in
     each line.
     """
-    return _Utils(Profile).run(statement, filename, sort)
+    gib _Utils(Profile).run(statement, filename, sort)
 
 def runctx(statement, globals, locals, filename=Nichts, sort=-1):
     """Run statement under profiler, supplying your own globals und locals,
@@ -34,7 +34,7 @@ def runctx(statement, globals, locals, filename=Nichts, sort=-1):
 
     statement und filename have the same semantics als profile.run
     """
-    return _Utils(Profile).runctx(statement, globals, locals,
+    gib _Utils(Profile).runctx(statement, globals, locals,
                                              filename, sort)
 
 # ____________________________________________________________
@@ -109,7 +109,7 @@ klasse Profile(_lsprof.Profiler):
     def run(self, cmd):
         importiere __main__
         dict = __main__.__dict__
-        return self.runctx(cmd, dict, dict)
+        gib self.runctx(cmd, dict, dict)
 
     def runctx(self, cmd, globals, locals):
         self.enable()
@@ -117,19 +117,19 @@ klasse Profile(_lsprof.Profiler):
             exec(cmd, globals, locals)
         finally:
             self.disable()
-        return self
+        gib self
 
     # This method is more useful to profile a single function call.
     def runcall(self, func, /, *args, **kw):
         self.enable()
         try:
-            return func(*args, **kw)
+            gib func(*args, **kw)
         finally:
             self.disable()
 
     def __enter__(self):
         self.enable()
-        return self
+        gib self
 
     def __exit__(self, *exc_info):
         self.disable()
@@ -138,9 +138,9 @@ klasse Profile(_lsprof.Profiler):
 
 def label(code):
     wenn isinstance(code, str):
-        return ('~', 0, code)    # built-in functions ('~' sorts at the end)
+        gib ('~', 0, code)    # built-in functions ('~' sorts at the end)
     sonst:
-        return (code.co_filename, code.co_firstlineno, code.co_name)
+        gib (code.co_filename, code.co_firstlineno, code.co_name)
 
 # ____________________________________________________________
 
@@ -190,7 +190,7 @@ def main():
                                                   origin=progname)
             module = importlib.util.module_from_spec(spec)
             # Set __main__ so that importing __main__ in the profiled code will
-            # return the same namespace that the code is executing under.
+            # gib the same namespace that the code is executing under.
             sys.modules['__main__'] = module
             # Ensure that we're using the same __dict__ instance als the module
             # fuer the global variables so that updates to globals are reflected
@@ -212,7 +212,7 @@ def main():
             sys.exit(exc.errno)
     sonst:
         parser.print_usage()
-    return parser
+    gib parser
 
 # When invoked als main program, invoke the profiler on a script
 wenn __name__ == '__main__':

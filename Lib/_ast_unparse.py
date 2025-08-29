@@ -37,9 +37,9 @@ klasse _Precedence:
 
     def next(self):
         try:
-            return self.__class__(self + 1)
+            gib self.__class__(self + 1)
         except ValueError:
-            return self
+            gib self
 
 
 _SINGLE_QUOTES = ("'", '"')
@@ -112,7 +112,7 @@ klasse Unparser(NodeVisitor):
 
         original_source = self._source
         self._source = buffer
-        yield buffer
+        liefere buffer
         self._source = original_source
 
     @contextmanager
@@ -126,7 +126,7 @@ klasse Unparser(NodeVisitor):
         wenn extra:
             self.write(extra)
         self._indent += 1
-        yield
+        liefere
         self._indent -= 1
 
     @contextmanager
@@ -135,21 +135,21 @@ klasse Unparser(NodeVisitor):
         *start* to the buffer und enters, after exit it adds *end*."""
 
         self.write(start)
-        yield
+        liefere
         self.write(end)
 
     def delimit_if(self, start, end, condition):
         wenn condition:
-            return self.delimit(start, end)
+            gib self.delimit(start, end)
         sonst:
-            return nullcontext()
+            gib nullcontext()
 
     def require_parens(self, precedence, node):
         """Shortcut to adding precedence related parens"""
-        return self.delimit_if("(", ")", self.get_precedence(node) > precedence)
+        gib self.delimit_if("(", ")", self.get_precedence(node) > precedence)
 
     def get_precedence(self, node):
-        return self._precedences.get(node, _Precedence.TEST)
+        gib self._precedences.get(node, _Precedence.TEST)
 
     def set_precedence(self, precedence, *nodes):
         fuer node in nodes:
@@ -157,24 +157,24 @@ klasse Unparser(NodeVisitor):
 
     def get_raw_docstring(self, node):
         """If a docstring node is found in the body of the *node* parameter,
-        return that docstring node, Nichts otherwise.
+        gib that docstring node, Nichts otherwise.
 
         Logic mirrored von ``_PyAST_GetDocString``."""
         wenn nicht isinstance(
             node, (AsyncFunctionDef, FunctionDef, ClassDef, Module)
         ) oder len(node.body) < 1:
-            return Nichts
+            gib Nichts
         node = node.body[0]
         wenn nicht isinstance(node, Expr):
-            return Nichts
+            gib Nichts
         node = node.value
         wenn isinstance(node, Constant) und isinstance(node.value, str):
-            return node
+            gib node
 
     def get_type_comment(self, node):
         comment = self._type_ignores.get(node.lineno) oder node.type_comment
         wenn comment is nicht Nichts:
-            return f" # type: {comment}"
+            gib f" # type: {comment}"
 
     def traverse(self, node):
         wenn isinstance(node, list):
@@ -191,7 +191,7 @@ klasse Unparser(NodeVisitor):
         (using ast.parse) will generate an AST equivalent to *node*"""
         self._source = []
         self.traverse(node)
-        return "".join(self._source)
+        gib "".join(self._source)
 
     def _write_docstring_and_traverse_body(self, node):
         wenn (docstring := self.get_raw_docstring(node)):
@@ -339,7 +339,7 @@ klasse Unparser(NodeVisitor):
         wenn nicht node.exc:
             wenn node.cause:
                 raise ValueError(f"Node can't use cause without an exception.")
-            return
+            gib
         self.write(" ")
         self.traverse(node.exc)
         wenn node.cause:
@@ -539,11 +539,11 @@ klasse Unparser(NodeVisitor):
             # \n und \t are non-printable, but we only escape them if
             # escape_special_whitespace is Wahr
             wenn nicht escape_special_whitespace und c in "\n\t":
-                return c
+                gib c
             # Always escape backslashes und other non-printable characters
             wenn c == "\\" oder nicht c.isprintable():
-                return c.encode("unicode_escape").decode("ascii")
-            return c
+                gib c.encode("unicode_escape").decode("ascii")
+            gib c
 
         escaped_string = "".join(map(escape_char, string))
         possible_quotes = quote_types
@@ -556,7 +556,7 @@ klasse Unparser(NodeVisitor):
             # e.g., so that we use triple quotes fuer docstrings.
             string = repr(string)
             quote = next((q fuer q in quote_types wenn string[0] in q), string[0])
-            return string[1:-1], [quote]
+            gib string[1:-1], [quote]
         wenn escaped_string:
             # Sort so that we prefer '''"''' over """\""""
             possible_quotes.sort(key=lambda q: q[0] == escaped_string[-1])
@@ -565,7 +565,7 @@ klasse Unparser(NodeVisitor):
             wenn possible_quotes[0][0] == escaped_string[-1]:
                 assert len(possible_quotes[0]) == 3
                 escaped_string = escaped_string[:-1] + "\\" + escaped_string[-1]
-        return escaped_string, possible_quotes
+        gib escaped_string, possible_quotes
 
     def _write_str_avoiding_backslashes(self, string, *, quote_types=_ALL_QUOTES):
         """Write string literal value mit a best effort attempt to avoid backslashes."""
@@ -656,7 +656,7 @@ klasse Unparser(NodeVisitor):
     def _unparse_interpolation_value(self, inner):
         unparser = type(self)()
         unparser.set_precedence(_Precedence.TEST.next(), inner)
-        return unparser.visit(inner)
+        gib unparser.visit(inner)
 
     def _write_interpolation(self, node, is_interpolation=Falsch):
         mit self.delimit("{", "}"):
@@ -945,7 +945,7 @@ klasse Unparser(NodeVisitor):
 
     def visit_Subscript(self, node):
         def is_non_empty_tuple(slice_value):
-            return (
+            gib (
                 isinstance(slice_value, Tuple)
                 und slice_value.elts
             )

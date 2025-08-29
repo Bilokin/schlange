@@ -30,7 +30,7 @@ klasse TestPolicy(asyncio.events._AbstractEventLoopPolicy):
         raise RuntimeError
 
     def new_event_loop(self):
-        return self.loop_factory()
+        gib self.loop_factory()
 
     def set_event_loop(self, loop):
         wenn loop is nicht Nichts:
@@ -55,7 +55,7 @@ klasse BaseTest(unittest.TestCase):
             loop.shutdown_ag_run = Wahr
         loop.shutdown_asyncgens = shutdown_asyncgens
 
-        return loop
+        gib loop
 
     def setUp(self):
         super().setUp()
@@ -78,7 +78,7 @@ klasse RunTests(BaseTest):
     def test_asyncio_run_return(self):
         async def main():
             await asyncio.sleep(0)
-            return 42
+            gib 42
 
         self.assertEqual(asyncio.run(main()), 42)
 
@@ -132,7 +132,7 @@ klasse RunTests(BaseTest):
         async def main():
             nonlocal lo_task
             lo_task = asyncio.create_task(leftover())
-            return 123
+            gib 123
 
         self.assertEqual(asyncio.run(main()), 123)
         self.assertWahr(lo_task.done())
@@ -153,7 +153,7 @@ klasse RunTests(BaseTest):
 
             nonlocal lo_task
             lo_task = asyncio.create_task(leftover())
-            return 123
+            gib 123
 
         self.assertEqual(asyncio.run(main()), 123)
         self.assertWahr(lo_task.done())
@@ -173,7 +173,7 @@ klasse RunTests(BaseTest):
 
         async def fidget():
             waehrend Wahr:
-                yield 1
+                liefere 1
                 await asyncio.sleep(1)
 
         async def spin():
@@ -206,7 +206,7 @@ klasse RunTests(BaseTest):
 
         async def main():
             await asyncio.sleep(0)
-            return 42
+            gib 42
 
         policy = asyncio.events._get_event_loop_policy()
         policy.set_event_loop = mock.Mock()
@@ -220,35 +220,35 @@ klasse RunTests(BaseTest):
                 self._task = asyncio.Task(coro, loop=loop, **kwargs)
 
             def cancel(self, *args, **kwargs):
-                return self._task.cancel(*args, **kwargs)
+                gib self._task.cancel(*args, **kwargs)
 
             def add_done_callback(self, *args, **kwargs):
-                return self._task.add_done_callback(*args, **kwargs)
+                gib self._task.add_done_callback(*args, **kwargs)
 
             def remove_done_callback(self, *args, **kwargs):
-                return self._task.remove_done_callback(*args, **kwargs)
+                gib self._task.remove_done_callback(*args, **kwargs)
 
             @property
             def _asyncio_future_blocking(self):
-                return self._task._asyncio_future_blocking
+                gib self._task._asyncio_future_blocking
 
             def result(self, *args, **kwargs):
-                return self._task.result(*args, **kwargs)
+                gib self._task.result(*args, **kwargs)
 
             def done(self, *args, **kwargs):
-                return self._task.done(*args, **kwargs)
+                gib self._task.done(*args, **kwargs)
 
             def cancelled(self, *args, **kwargs):
-                return self._task.cancelled(*args, **kwargs)
+                gib self._task.cancelled(*args, **kwargs)
 
             def exception(self, *args, **kwargs):
-                return self._task.exception(*args, **kwargs)
+                gib self._task.exception(*args, **kwargs)
 
             def get_loop(self, *args, **kwargs):
-                return self._task.get_loop(*args, **kwargs)
+                gib self._task.get_loop(*args, **kwargs)
 
             def set_name(self, *args, **kwargs):
-                return self._task.set_name(*args, **kwargs)
+                gib self._task.set_name(*args, **kwargs)
 
         async def main():
             interrupt_self()
@@ -257,7 +257,7 @@ klasse RunTests(BaseTest):
         def new_event_loop():
             loop = self.new_loop()
             loop.set_task_factory(Task)
-            return loop
+            gib loop
 
         asyncio.events._set_event_loop_policy(TestPolicy(new_event_loop))
         mit self.assertRaises(asyncio.CancelledError):
@@ -302,7 +302,7 @@ klasse RunnerTests(BaseTest):
     def test_run(self):
         async def f():
             await asyncio.sleep(0)
-            return 'done'
+            gib 'done'
 
         mit asyncio.Runner() als runner:
             self.assertEqual('done', runner.run(f()))
@@ -333,11 +333,11 @@ klasse RunnerTests(BaseTest):
     def test_run_awaitable(self):
         klasse MyAwaitable:
             def __await__(self):
-                return self.run().__await__()
+                gib self.run().__await__()
 
             @staticmethod
             async def run():
-                return 'done'
+                gib 'done'
 
         mit asyncio.Runner() als runner:
             self.assertEqual('done', runner.run(MyAwaitable()))
@@ -391,10 +391,10 @@ klasse RunnerTests(BaseTest):
             old = cvar.get()
             await asyncio.sleep(0)
             cvar.set(val)
-            return old
+            gib old
 
         async def get_context():
-            return contextvars.copy_context()
+            gib contextvars.copy_context()
 
         mit asyncio.Runner() als runner:
             self.assertEqual(-1, runner.run(f(1)))
@@ -511,10 +511,10 @@ klasse RunnerTests(BaseTest):
                 self.repr_count = 0
             def __repr__(self):
                 self.repr_count += 1
-                return super().__repr__()
+                gib super().__repr__()
 
         async def coro():
-            return MyResult()
+            gib MyResult()
 
 
         mit asyncio.Runner() als runner:

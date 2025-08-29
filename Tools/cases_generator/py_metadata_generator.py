@@ -26,7 +26,7 @@ def get_specialized(analysis: Analysis) -> set[str]:
     fuer family in analysis.families.values():
         fuer member in family.members:
             specialized.add(member.name)
-    return specialized
+    gib specialized
 
 
 def generate_specializations(analysis: Analysis, out: CWriter) -> Nichts:

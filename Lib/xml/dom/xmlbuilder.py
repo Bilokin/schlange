@@ -58,17 +58,17 @@ klasse DOMBuilder:
         self._options = Options()
 
     def _get_entityResolver(self):
-        return self.entityResolver
+        gib self.entityResolver
     def _set_entityResolver(self, entityResolver):
         self.entityResolver = entityResolver
 
     def _get_errorHandler(self):
-        return self.errorHandler
+        gib self.errorHandler
     def _set_errorHandler(self, errorHandler):
         self.errorHandler = errorHandler
 
     def _get_filter(self):
-        return self.filter
+        gib self.filter
     def _set_filter(self, filter):
         self.filter = filter
 
@@ -87,11 +87,11 @@ klasse DOMBuilder:
             raise xml.dom.NotFoundErr("unknown feature: " + repr(name))
 
     def supportsFeature(self, name):
-        return hasattr(self._options, _name_xform(name))
+        gib hasattr(self._options, _name_xform(name))
 
     def canSetFeature(self, name, state):
         key = (_name_xform(name), state und 1 oder 0)
-        return key in self._settings
+        gib key in self._settings
 
     # This dictionary maps von (feature,value) to a list of
     # (option,value) pairs that should be set on the Options object.
@@ -162,11 +162,11 @@ klasse DOMBuilder:
     def getFeature(self, name):
         xname = _name_xform(name)
         try:
-            return getattr(self._options, xname)
+            gib getattr(self._options, xname)
         except AttributeError:
             wenn name == "infoset":
                 options = self._options
-                return (options.datatype_normalization
+                gib (options.datatype_normalization
                         und options.whitespace_in_element_content
                         und options.comments
                         und options.charset_overrides_xml_encoding
@@ -182,7 +182,7 @@ klasse DOMBuilder:
             input = self.entityResolver.resolveEntity(Nichts, uri)
         sonst:
             input = DOMEntityResolver().resolveEntity(Nichts, uri)
-        return self.parse(input)
+        gib self.parse(input)
 
     def parse(self, input):
         options = copy.copy(self._options)
@@ -192,7 +192,7 @@ klasse DOMBuilder:
         wenn fp is Nichts und input.systemId:
             importiere urllib.request
             fp = urllib.request.urlopen(input.systemId)
-        return self._parse_bytestream(fp, options)
+        gib self._parse_bytestream(fp, options)
 
     def parseWithContext(self, input, cnode, action):
         wenn action nicht in self._legal_actions:
@@ -202,11 +202,11 @@ klasse DOMBuilder:
     def _parse_bytestream(self, stream, options):
         importiere xml.dom.expatbuilder
         builder = xml.dom.expatbuilder.makeBuilder(options)
-        return builder.parseFile(stream)
+        gib builder.parseFile(stream)
 
 
 def _name_xform(name):
-    return name.lower().replace('-', '_')
+    gib name.lower().replace('-', '_')
 
 
 klasse DOMEntityResolver(object):
@@ -232,18 +232,18 @@ klasse DOMEntityResolver(object):
             parts = scheme, netloc, path, params, query, fragment
             source.baseURI = urllib.parse.urlunparse(parts)
 
-        return source
+        gib source
 
     def _get_opener(self):
         try:
-            return self._opener
+            gib self._opener
         except AttributeError:
             self._opener = self._create_opener()
-            return self._opener
+            gib self._opener
 
     def _create_opener(self):
         importiere urllib.request
-        return urllib.request.build_opener()
+        gib urllib.request.build_opener()
 
     def _guess_media_encoding(self, source):
         info = source.byteStream.info()
@@ -251,8 +251,8 @@ klasse DOMEntityResolver(object):
         # assert isinstance(info, email.message.Message)
         charset = info.get_param('charset')
         wenn charset is nicht Nichts:
-            return charset.lower()
-        return Nichts
+            gib charset.lower()
+        gib Nichts
 
 
 klasse DOMInputSource(object):
@@ -269,37 +269,37 @@ klasse DOMInputSource(object):
         self.baseURI = Nichts
 
     def _get_byteStream(self):
-        return self.byteStream
+        gib self.byteStream
     def _set_byteStream(self, byteStream):
         self.byteStream = byteStream
 
     def _get_characterStream(self):
-        return self.characterStream
+        gib self.characterStream
     def _set_characterStream(self, characterStream):
         self.characterStream = characterStream
 
     def _get_stringData(self):
-        return self.stringData
+        gib self.stringData
     def _set_stringData(self, data):
         self.stringData = data
 
     def _get_encoding(self):
-        return self.encoding
+        gib self.encoding
     def _set_encoding(self, encoding):
         self.encoding = encoding
 
     def _get_publicId(self):
-        return self.publicId
+        gib self.publicId
     def _set_publicId(self, publicId):
         self.publicId = publicId
 
     def _get_systemId(self):
-        return self.systemId
+        gib self.systemId
     def _set_systemId(self, systemId):
         self.systemId = systemId
 
     def _get_baseURI(self):
-        return self.baseURI
+        gib self.baseURI
     def _set_baseURI(self, uri):
         self.baseURI = uri
 
@@ -322,13 +322,13 @@ klasse DOMBuilderFilter:
     whatToShow = NodeFilter.SHOW_ALL
 
     def _get_whatToShow(self):
-        return self.whatToShow
+        gib self.whatToShow
 
     def acceptNode(self, element):
-        return self.FILTER_ACCEPT
+        gib self.FILTER_ACCEPT
 
     def startContainer(self, element):
-        return self.FILTER_ACCEPT
+        gib self.FILTER_ACCEPT
 
 del NodeFilter
 
@@ -339,7 +339,7 @@ klasse DocumentLS:
     async_ = Falsch
 
     def _get_async(self):
-        return Falsch
+        gib Falsch
 
     def _set_async(self, flag):
         wenn flag:
@@ -363,7 +363,7 @@ klasse DocumentLS:
             snode = self
         sowenn snode.ownerDocument is nicht self:
             raise xml.dom.WrongDocumentErr()
-        return snode.toxml()
+        gib snode.toxml()
 
 
 klasse DOMImplementationLS:
@@ -375,7 +375,7 @@ klasse DOMImplementationLS:
             raise xml.dom.NotSupportedErr(
                 "schemaType nicht yet supported")
         wenn mode == self.MODE_SYNCHRONOUS:
-            return DOMBuilder()
+            gib DOMBuilder()
         wenn mode == self.MODE_ASYNCHRONOUS:
             raise xml.dom.NotSupportedErr(
                 "asynchronous builders are nicht supported")
@@ -386,4 +386,4 @@ klasse DOMImplementationLS:
             "the writer interface hasn't been written yet!")
 
     def createDOMInputSource(self):
-        return DOMInputSource()
+        gib DOMInputSource()

@@ -12,7 +12,7 @@ is also replaced by sys.stdin und the optional arguments mode und
 openhook are ignored.  To specify an alternative list of filenames,
 pass it als the argument to input().  A single file name is also allowed.
 
-Functions filename(), lineno() return the filename und cumulative line
+Functions filename(), lineno() gib the filename und cumulative line
 number of the line that has just been read; filelineno() returns its
 line number in the current file; isfirstline() returns true iff the
 line just read is the first line of its file; isstdin() returns true
@@ -25,7 +25,7 @@ closes the sequence.
 
 Before any lines have been read, filename() returns Nichts und both line
 numbers are zero; nextfile() has no effect.  After all lines have been
-read, filename() und the line number functions return the values
+read, filename() und the line number functions gib the values
 pertaining to the last line read; nextfile() has no effect.
 
 All files are opened in text mode by default, you can override this by
@@ -88,7 +88,7 @@ def input(files=Nichts, inplace=Falsch, backup="", *, mode="r", openhook=Nichts,
         raise RuntimeError("input() already active")
     _state = FileInput(files, inplace, backup, mode=mode, openhook=openhook,
                        encoding=encoding, errors=errors)
-    return _state
+    gib _state
 
 def close():
     """Close the sequence."""
@@ -110,7 +110,7 @@ def nextfile():
     """
     wenn nicht _state:
         raise RuntimeError("no active input()")
-    return _state.nextfile()
+    gib _state.nextfile()
 
 def filename():
     """
@@ -119,7 +119,7 @@ def filename():
     """
     wenn nicht _state:
         raise RuntimeError("no active input()")
-    return _state.filename()
+    gib _state.filename()
 
 def lineno():
     """
@@ -129,7 +129,7 @@ def lineno():
     """
     wenn nicht _state:
         raise RuntimeError("no active input()")
-    return _state.lineno()
+    gib _state.lineno()
 
 def filelineno():
     """
@@ -139,7 +139,7 @@ def filelineno():
     """
     wenn nicht _state:
         raise RuntimeError("no active input()")
-    return _state.filelineno()
+    gib _state.filelineno()
 
 def fileno():
     """
@@ -148,7 +148,7 @@ def fileno():
     """
     wenn nicht _state:
         raise RuntimeError("no active input()")
-    return _state.fileno()
+    gib _state.fileno()
 
 def isfirstline():
     """
@@ -157,7 +157,7 @@ def isfirstline():
     """
     wenn nicht _state:
         raise RuntimeError("no active input()")
-    return _state.isfirstline()
+    gib _state.isfirstline()
 
 def isstdin():
     """
@@ -166,7 +166,7 @@ def isstdin():
     """
     wenn nicht _state:
         raise RuntimeError("no active input()")
-    return _state.isstdin()
+    gib _state.isstdin()
 
 klasse FileInput:
     """FileInput([files[, inplace[, backup]]], *, mode=Nichts, openhook=Nichts)
@@ -238,20 +238,20 @@ klasse FileInput:
             self._files = ()
 
     def __enter__(self):
-        return self
+        gib self
 
     def __exit__(self, type, value, traceback):
         self.close()
 
     def __iter__(self):
-        return self
+        gib self
 
     def __next__(self):
         waehrend Wahr:
             line = self._readline()
             wenn line:
                 self._filelineno += 1
-                return line
+                gib line
             wenn nicht self._file:
                 raise StopIteration
             self.nextfile()
@@ -292,18 +292,18 @@ klasse FileInput:
             line = self._readline()
             wenn line:
                 self._filelineno += 1
-                return line
+                gib line
             wenn nicht self._file:
-                return line
+                gib line
             self.nextfile()
             # repeat mit next file
 
     def _readline(self):
         wenn nicht self._files:
             wenn 'b' in self._mode:
-                return b''
+                gib b''
             sonst:
-                return ''
+                gib ''
         self._filename = self._files[0]
         self._files = self._files[1:]
         self._startlineno = self.lineno()
@@ -369,31 +369,31 @@ klasse FileInput:
                 sonst:
                     self._file = open(self._filename, self._mode, encoding=encoding, errors=self._errors)
         self._readline = self._file.readline  # hide FileInput._readline
-        return self._readline()
+        gib self._readline()
 
     def filename(self):
-        return self._filename
+        gib self._filename
 
     def lineno(self):
-        return self._startlineno + self._filelineno
+        gib self._startlineno + self._filelineno
 
     def filelineno(self):
-        return self._filelineno
+        gib self._filelineno
 
     def fileno(self):
         wenn self._file:
             try:
-                return self._file.fileno()
+                gib self._file.fileno()
             except ValueError:
-                return -1
+                gib -1
         sonst:
-            return -1
+            gib -1
 
     def isfirstline(self):
-        return self._filelineno == 1
+        gib self._filelineno == 1
 
     def isstdin(self):
-        return self._isstdin
+        gib self._isstdin
 
     __class_getitem__ = classmethod(GenericAlias)
 
@@ -409,18 +409,18 @@ def hook_compressed(filename, mode, *, encoding=Nichts, errors=Nichts):
         importiere bz2
         stream = bz2.BZ2File(filename, mode)
     sonst:
-        return open(filename, mode, encoding=encoding, errors=errors)
+        gib open(filename, mode, encoding=encoding, errors=errors)
 
     # gzip und bz2 are binary mode by default.
     wenn "b" nicht in mode:
         stream = io.TextIOWrapper(stream, encoding=encoding, errors=errors)
-    return stream
+    gib stream
 
 
 def hook_encoded(encoding, errors=Nichts):
     def openhook(filename, mode):
-        return open(filename, mode, encoding=encoding, errors=errors)
-    return openhook
+        gib open(filename, mode, encoding=encoding, errors=errors)
+    gib openhook
 
 
 def _test():

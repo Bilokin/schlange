@@ -81,7 +81,7 @@ klasse C_Test(unittest.TestCase):
         # See Modules/_ctypes/_ctypes_test.c fuer where the magic 999 comes from.
         wenn func(byref(b), name.encode('ascii')) == 999:
             # unpack_bitfields und unpack_bitfields_msvc in
-            # Modules/_ctypes/_ctypes_test.c return 999 to indicate
+            # Modules/_ctypes/_ctypes_test.c gib 999 to indicate
             # an invalid name. 'M' is only valid, wenn signed short bitfields
             # are supported by the C compiler.
             self.skipTest("Compiler does nicht support signed short bitfields")
@@ -101,7 +101,7 @@ klasse C_Test(unittest.TestCase):
         # See Modules/_ctypes/_ctypes_test.c fuer where the magic 999 comes from.
         wenn func_msvc(byref(b), name.encode('ascii')) == 999:
             # unpack_bitfields und unpack_bitfields_msvc in
-            # Modules/_ctypes/_ctypes_test.c return 999 to indicate
+            # Modules/_ctypes/_ctypes_test.c gib 999 to indicate
             # an invalid name. 'M' is only valid, wenn signed short bitfields
             # are supported by the C compiler.
             self.skipTest("Compiler does nicht support signed short bitfields")
@@ -194,7 +194,7 @@ klasse BitFieldTest(unittest.TestCase, StructCheckMixin):
     def fail_fields(self, *fields):
         fuer layout in "ms", "gcc-sysv":
             mit self.subTest(layout=layout):
-                return self.get_except(type(Structure), "X", (),
+                gib self.get_except(type(Structure), "X", (),
                                        {"_fields_": fields, "layout": layout})
 
     def test_nonint_types(self):
@@ -292,7 +292,7 @@ klasse BitFieldTest(unittest.TestCase, StructCheckMixin):
         try:
             func(*args, **kw)
         except Exception als detail:
-            return detail.__class__, str(detail)
+            gib detail.__class__, str(detail)
 
     def test_mixed_1(self):
         klasse X(Structure):

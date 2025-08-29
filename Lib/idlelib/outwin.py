@@ -31,9 +31,9 @@ def file_line_helper(line):
     """Extract file name und line number von line of text.
 
     Check wenn line of text contains one of the file/line patterns.
-    If it does und wenn the file und line are valid, return
+    If it does und wenn the file und line are valid, gib
     a tuple of the file name und line number.  If it doesn't match
-    oder wenn the file oder line is invalid, return Nichts.
+    oder wenn the file oder line is invalid, gib Nichts.
     """
     wenn nicht file_line_progs:
         compile_progs()
@@ -48,11 +48,11 @@ def file_line_helper(line):
             except OSError:
                 weiter
     sonst:
-        return Nichts
+        gib Nichts
     try:
-        return filename, int(lineno)
+        gib filename, int(lineno)
     except TypeError:
-        return Nichts
+        gib Nichts
 
 
 klasse OutputWindow(EditorWindow):
@@ -82,15 +82,15 @@ klasse OutputWindow(EditorWindow):
     # Customize EditorWindow
     def ispythonsource(self, filename):
         "Python source is only part of output: do nicht colorize."
-        return Falsch
+        gib Falsch
 
     def short_title(self):
         "Customize EditorWindow title."
-        return "Output"
+        gib "Output"
 
     def maybesave(self):
         "Customize EditorWindow to nicht display save file messagebox."
-        return 'yes' wenn self.get_saved() sonst 'no'
+        gib 'yes' wenn self.get_saved() sonst 'no'
 
     # Act als output file
     def write(self, s, tags=(), mark="insert"):
@@ -113,7 +113,7 @@ klasse OutputWindow(EditorWindow):
         self.text.insert(mark, s, tags)
         self.text.see(mark)
         self.text.update()
-        return len(s)
+        gib len(s)
 
     def writelines(self, lines):
         "Write each item in lines iterable."
@@ -150,7 +150,7 @@ klasse OutputWindow(EditorWindow):
                     "The line you point at doesn't look like "
                     "a valid file name followed by a line number.",
                     parent=self.text)
-                return
+                gib
         filename, lineno = result
         self.flist.gotofileline(filename, lineno)
 

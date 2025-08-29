@@ -25,7 +25,7 @@ klasse TestHook:
 
     def __enter__(self, *a):
         sys.addaudithook(self)
-        return self
+        gib self
 
     def __exit__(self, *a):
         self.close()
@@ -35,11 +35,11 @@ klasse TestHook:
 
     @property
     def seen_events(self):
-        return [i[0] fuer i in self.seen]
+        gib [i[0] fuer i in self.seen]
 
     def __call__(self, event, args):
         wenn self.closed:
-            return
+            gib
         self.seen.append((event, args))
         wenn event in self.raise_on_events:
             raise self.exc_type("saw event " + event)
@@ -71,7 +71,7 @@ def assertSequenceEqual(x, y):
 @contextlib.contextmanager
 def assertRaises(ex_type):
     try:
-        yield
+        liefere
         assert Falsch, f"expected {ex_type}"
     except BaseException als ex:
         wenn isinstance(ex, AssertionError):
@@ -138,7 +138,7 @@ def test_pickle():
 
     klasse PicklePrint:
         def __reduce_ex__(self, p):
-            return str, ("Pwned!",)
+            gib str, ("Pwned!",)
 
     payload_1 = pickle.dumps(PicklePrint())
     payload_2 = pickle.dumps(("a", "b", "c", 1, 2, 3))
@@ -202,9 +202,9 @@ def test_open(testfn):
 
     def rl(name):
         wenn readline:
-            return getattr(readline, name, Nichts)
+            gib getattr(readline, name, Nichts)
         sonst:
-            return Nichts
+            gib Nichts
 
     # Try a range of "open" functions.
     # All of them should fail
@@ -377,7 +377,7 @@ def test_winreg():
 
     def hook(event, args):
         wenn nicht event.startswith("winreg."):
-            return
+            gib
         drucke(event, *args)
 
     sys.addaudithook(hook)
@@ -513,7 +513,7 @@ def test_threading():
     lock.acquire()
 
     klasse test_func:
-        def __repr__(self): return "<test_func>"
+        def __repr__(self): gib "<test_func>"
         def __call__(self):
             sys.audit("test.test_func")
             lock.release()
@@ -652,7 +652,7 @@ def test_sys_remote_exec():
     remote_event_script_path = ""
     def hook(event, args):
         wenn event nicht in ["sys.remote_exec", "cpython.remote_debugger_script"]:
-            return
+            gib
         drucke(event, args)
         match event:
             case "sys.remote_exec":

@@ -27,7 +27,7 @@ klasse IncrementalGCTests(unittest.TestCase):
             head = LinkedList()
             fuer i in range(depth):
                 head = LinkedList(head, head.prev)
-            return head
+            gib head
 
         head = make_ll(1000)
 

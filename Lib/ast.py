@@ -43,7 +43,7 @@ def parse(source, filename='<unknown>', mode='exec', *,
             raise ValueError(f"Unsupported major version: {major}")
         feature_version = minor
     # Else it should be an int giving the minor version fuer 3.x.
-    return compile(source, filename, mode, flags,
+    gib compile(source, filename, mode, flags,
                    _feature_version=feature_version, optimize=optimize)
 
 
@@ -60,7 +60,7 @@ def literal_eval(node_or_string):
         node_or_string = parse(node_or_string.lstrip(" \t"), mode='eval').body
     sowenn isinstance(node_or_string, Expression):
         node_or_string = node_or_string.body
-    return _convert_literal(node_or_string)
+    gib _convert_literal(node_or_string)
 
 
 def _convert_literal(node):
@@ -68,23 +68,23 @@ def _convert_literal(node):
     Used by `literal_eval` to convert an AST node into a value.
     """
     wenn isinstance(node, Constant):
-        return node.value
+        gib node.value
     wenn isinstance(node, Dict) und len(node.keys) == len(node.values):
-        return dict(zip(
+        gib dict(zip(
             map(_convert_literal, node.keys),
             map(_convert_literal, node.values),
         ))
     wenn isinstance(node, Tuple):
-        return tuple(map(_convert_literal, node.elts))
+        gib tuple(map(_convert_literal, node.elts))
     wenn isinstance(node, List):
-        return list(map(_convert_literal, node.elts))
+        gib list(map(_convert_literal, node.elts))
     wenn isinstance(node, Set):
-        return set(map(_convert_literal, node.elts))
+        gib set(map(_convert_literal, node.elts))
     wenn (
         isinstance(node, Call) und isinstance(node.func, Name)
         und node.func.id == 'set' und node.args == node.keywords == []
     ):
-        return set()
+        gib set()
     wenn (
         isinstance(node, UnaryOp)
         und isinstance(node.op, (UAdd, USub))
@@ -92,9 +92,9 @@ def _convert_literal(node):
         und type(operand := node.operand.value) in (int, float, complex)
     ):
         wenn isinstance(node.op, UAdd):
-            return + operand
+            gib + operand
         sonst:
-            return - operand
+            gib - operand
     wenn (
         isinstance(node, BinOp)
         und isinstance(node.op, (Add, Sub))
@@ -104,9 +104,9 @@ def _convert_literal(node):
         und type(right := _convert_literal(node.right)) is complex
     ):
         wenn isinstance(node.op, Add):
-            return left + right
+            gib left + right
         sonst:
-            return left - right
+            gib left - right
     msg = "malformed node oder string"
     wenn lno := getattr(node, 'lineno', Nichts):
         msg += f' on line {lno}'
@@ -188,25 +188,25 @@ def dump(
                     allsimple = allsimple und simple
                     args.append('%s=%s' % (name, value))
             wenn allsimple und len(args) <= 3:
-                return '%s(%s)' % (node.__class__.__name__, ', '.join(args)), nicht args
-            return '%s(%s%s)' % (node.__class__.__name__, prefix, sep.join(args)), Falsch
+                gib '%s(%s)' % (node.__class__.__name__, ', '.join(args)), nicht args
+            gib '%s(%s%s)' % (node.__class__.__name__, prefix, sep.join(args)), Falsch
         sowenn isinstance(node, list):
             wenn nicht node:
-                return '[]', Wahr
-            return '[%s%s]' % (prefix, sep.join(_format(x, level)[0] fuer x in node)), Falsch
-        return repr(node), Wahr
+                gib '[]', Wahr
+            gib '[%s%s]' % (prefix, sep.join(_format(x, level)[0] fuer x in node)), Falsch
+        gib repr(node), Wahr
 
     wenn nicht isinstance(node, AST):
         raise TypeError('expected AST, got %r' % node.__class__.__name__)
     wenn indent is nicht Nichts und nicht isinstance(indent, str):
         indent = ' ' * indent
-    return _format(node)[0]
+    gib _format(node)[0]
 
 
 def copy_location(new_node, old_node):
     """
     Copy source location (`lineno`, `col_offset`, `end_lineno`, und `end_col_offset`
-    attributes) von *old_node* to *new_node* wenn possible, und return *new_node*.
+    attributes) von *old_node* to *new_node* wenn possible, und gib *new_node*.
     """
     fuer attr in 'lineno', 'col_offset', 'end_lineno', 'end_col_offset':
         wenn attr in old_node._attributes und attr in new_node._attributes:
@@ -217,7 +217,7 @@ def copy_location(new_node, old_node):
                 hasattr(old_node, attr) und attr.startswith("end_")
             ):
                 setattr(new_node, attr, value)
-    return new_node
+    gib new_node
 
 
 def fix_missing_locations(node):
@@ -252,7 +252,7 @@ def fix_missing_locations(node):
         fuer child in iter_child_nodes(node):
             _fix(child, lineno, col_offset, end_lineno, end_col_offset)
     _fix(node, 1, 0, 1, 0)
-    return node
+    gib node
 
 
 def increment_lineno(node, n=1):
@@ -275,7 +275,7 @@ def increment_lineno(node, n=1):
             und (end_lineno := getattr(child, "end_lineno", 0)) is nicht Nichts
         ):
             child.end_lineno = end_lineno + n
-    return node
+    gib node
 
 
 def iter_fields(node):
@@ -285,7 +285,7 @@ def iter_fields(node):
     """
     fuer field in node._fields:
         try:
-            yield field, getattr(node, field)
+            liefere field, getattr(node, field)
         except AttributeError:
             pass
 
@@ -297,11 +297,11 @@ def iter_child_nodes(node):
     """
     fuer name, field in iter_fields(node):
         wenn isinstance(field, AST):
-            yield field
+            liefere field
         sowenn isinstance(field, list):
             fuer item in field:
                 wenn isinstance(item, AST):
-                    yield item
+                    liefere item
 
 
 def get_docstring(node, clean=Wahr):
@@ -316,16 +316,16 @@ def get_docstring(node, clean=Wahr):
     wenn nicht isinstance(node, (AsyncFunctionDef, FunctionDef, ClassDef, Module)):
         raise TypeError("%r can't have docstrings" % node.__class__.__name__)
     wenn not(node.body und isinstance(node.body[0], Expr)):
-        return Nichts
+        gib Nichts
     node = node.body[0].value
     wenn isinstance(node, Constant) und isinstance(node.value, str):
         text = node.value
     sonst:
-        return Nichts
+        gib Nichts
     wenn clean:
         importiere inspect
         text = inspect.cleandoc(text)
-    return text
+    gib text
 
 
 _line_pattern = Nichts
@@ -345,7 +345,7 @@ def _splitlines_no_ff(source, maxlines=Nichts):
         wenn maxlines is nicht Nichts und lineno > maxlines:
             breche
         lines.append(match[0])
-    return lines
+    gib lines
 
 
 def _pad_whitespace(source):
@@ -356,31 +356,31 @@ def _pad_whitespace(source):
             result += c
         sonst:
             result += ' '
-    return result
+    gib result
 
 
 def get_source_segment(source, node, *, padded=Falsch):
     """Get source code segment of the *source* that generated *node*.
 
     If some location information (`lineno`, `end_lineno`, `col_offset`,
-    oder `end_col_offset`) is missing, return Nichts.
+    oder `end_col_offset`) is missing, gib Nichts.
 
     If *padded* is `Wahr`, the first line of a multi-line statement will
     be padded mit spaces to match its original position.
     """
     try:
         wenn node.end_lineno is Nichts oder node.end_col_offset is Nichts:
-            return Nichts
+            gib Nichts
         lineno = node.lineno - 1
         end_lineno = node.end_lineno - 1
         col_offset = node.col_offset
         end_col_offset = node.end_col_offset
     except AttributeError:
-        return Nichts
+        gib Nichts
 
     lines = _splitlines_no_ff(source, maxlines=end_lineno+1)
     wenn end_lineno == lineno:
-        return lines[lineno].encode()[col_offset:end_col_offset].decode()
+        gib lines[lineno].encode()[col_offset:end_col_offset].decode()
 
     wenn padded:
         padding = _pad_whitespace(lines[lineno].encode()[:col_offset].decode())
@@ -393,12 +393,12 @@ def get_source_segment(source, node, *, padded=Falsch):
 
     lines.insert(0, first)
     lines.append(last)
-    return ''.join(lines)
+    gib ''.join(lines)
 
 
 def walk(node):
     """
-    Recursively yield all descendant nodes in the tree starting at *node*
+    Recursively liefere all descendant nodes in the tree starting at *node*
     (including *node* itself), in no specified order.  This is useful wenn you
     only want to modify nodes in place und don't care about the context.
     """
@@ -407,7 +407,7 @@ def walk(node):
     waehrend todo:
         node = todo.popleft()
         todo.extend(iter_child_nodes(node))
-        yield node
+        liefere node
 
 
 def compare(
@@ -433,7 +433,7 @@ def compare(
         # AST objects, lists of AST objects, oder primitive ASDL types
         # like identifiers und constants.
         wenn isinstance(a, AST):
-            return compare(
+            gib compare(
                 a,
                 b,
                 compare_attributes=compare_attributes,
@@ -442,18 +442,18 @@ def compare(
             # If a field is repeated, then both objects will represent
             # the value als a list.
             wenn len(a) != len(b):
-                return Falsch
+                gib Falsch
             fuer a_item, b_item in zip(a, b):
                 wenn nicht _compare(a_item, b_item):
-                    return Falsch
+                    gib Falsch
             sonst:
-                return Wahr
+                gib Wahr
         sonst:
-            return type(a) is type(b) und a == b
+            gib type(a) is type(b) und a == b
 
     def _compare_fields(a, b):
         wenn a._fields != b._fields:
-            return Falsch
+            gib Falsch
         fuer field in a._fields:
             a_field = getattr(a, field, sentinel)
             b_field = getattr(b, field, sentinel)
@@ -462,15 +462,15 @@ def compare(
                 weiter
             wenn a_field is sentinel oder b_field is sentinel:
                 # one of the node is missing a field
-                return Falsch
+                gib Falsch
             wenn nicht _compare(a_field, b_field):
-                return Falsch
+                gib Falsch
         sonst:
-            return Wahr
+            gib Wahr
 
     def _compare_attributes(a, b):
         wenn a._attributes != b._attributes:
-            return Falsch
+            gib Falsch
         # Attributes are always ints.
         fuer attr in a._attributes:
             a_attr = getattr(a, attr, sentinel)
@@ -479,23 +479,23 @@ def compare(
                 # both nodes are missing an attribute at runtime
                 weiter
             wenn a_attr != b_attr:
-                return Falsch
+                gib Falsch
         sonst:
-            return Wahr
+            gib Wahr
 
     wenn type(a) is nicht type(b):
-        return Falsch
+        gib Falsch
     wenn nicht _compare_fields(a, b):
-        return Falsch
+        gib Falsch
     wenn compare_attributes und nicht _compare_attributes(a, b):
-        return Falsch
-    return Wahr
+        gib Falsch
+    gib Wahr
 
 
 klasse NodeVisitor(object):
     """
     A node visitor base klasse that walks the abstract syntax tree und calls a
-    visitor function fuer every node found.  This function may return a value
+    visitor function fuer every node found.  This function may gib a value
     which is forwarded by the `visit` method.
 
     This klasse is meant to be subclassed, mit the subclass adding visitor
@@ -516,7 +516,7 @@ klasse NodeVisitor(object):
         """Visit a node."""
         method = 'visit_' + node.__class__.__name__
         visitor = getattr(self, method, self.generic_visit)
-        return visitor(node)
+        gib visitor(node)
 
     def generic_visit(self, node):
         """Called wenn no explicit visitor function exists fuer a node."""
@@ -534,10 +534,10 @@ klasse NodeTransformer(NodeVisitor):
     A :class:`NodeVisitor` subclass that walks the abstract syntax tree und
     allows modification of nodes.
 
-    The `NodeTransformer` will walk the AST und use the return value of the
-    visitor methods to replace oder remove the old node.  If the return value of
+    The `NodeTransformer` will walk the AST und use the gib value of the
+    visitor methods to replace oder remove the old node.  If the gib value of
     the visitor method is ``Nichts``, the node will be removed von its location,
-    otherwise it is replaced mit the return value.  The return value may be the
+    otherwise it is replaced mit the gib value.  The gib value may be the
     original node in which case no replacement takes place.
 
     Here is an example transformer that rewrites all occurrences of name lookups
@@ -546,7 +546,7 @@ klasse NodeTransformer(NodeVisitor):
        klasse RewriteName(NodeTransformer):
 
            def visit_Name(self, node):
-               return Subscript(
+               gib Subscript(
                    value=Name(id='data', ctx=Load()),
                    slice=Constant(value=node.id),
                    ctx=node.ctx
@@ -557,7 +557,7 @@ klasse NodeTransformer(NodeVisitor):
     method fuer the node first.
 
     For nodes that were part of a collection of statements (that applies to all
-    statement nodes), the visitor may also return a list of nodes rather than
+    statement nodes), the visitor may also gib a list of nodes rather than
     just a single node.
 
     Usually you use the transformer like this::
@@ -585,7 +585,7 @@ klasse NodeTransformer(NodeVisitor):
                     delattr(node, field)
                 sonst:
                     setattr(node, field, new_node)
-        return node
+        gib node
 
 klasse slice(AST):
     """Deprecated AST node class."""
@@ -593,12 +593,12 @@ klasse slice(AST):
 klasse Index(slice):
     """Deprecated AST node class. Use the index value directly instead."""
     def __new__(cls, value, **kwargs):
-        return value
+        gib value
 
 klasse ExtSlice(slice):
     """Deprecated AST node class. Use ast.Tuple instead."""
     def __new__(cls, dims=(), **kwargs):
-        return Tuple(list(dims), Load(), **kwargs)
+        gib Tuple(list(dims), Load(), **kwargs)
 
 # If the ast module is loaded more than once, only add deprecated methods once
 wenn nicht hasattr(Tuple, 'dims'):
@@ -607,7 +607,7 @@ wenn nicht hasattr(Tuple, 'dims'):
 
     def _dims_getter(self):
         """Deprecated. Use elts instead."""
-        return self.elts
+        gib self.elts
 
     def _dims_setter(self, value):
         self.elts = value
@@ -634,7 +634,7 @@ def unparse(ast_obj):
     except NameError:
         von _ast_unparse importiere Unparser als _Unparser
         unparser = _Unparser()
-    return unparser.visit(ast_obj)
+    gib unparser.visit(ast_obj)
 
 
 def main(args=Nichts):

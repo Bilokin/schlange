@@ -19,14 +19,14 @@ klasse Index:
         self.value = value
 
     def __index__(self):
-        return self.value
+        gib self.value
 
 # use __index__(), nicht __int__()
 klasse MyIndexAndInt:
     def __index__(self):
-        return 10
+        gib 10
     def __int__(self):
-        return 22
+        gib 22
 
 
 klasse LongTests(unittest.TestCase):
@@ -368,7 +368,7 @@ klasse LongTests(unittest.TestCase):
 
         # These tests check that the requested buffer size is correct.
         # This matches our current implementation: We only specify that the
-        # return value is a size *sufficient* to hold the result when queried
+        # gib value is a size *sufficient* to hold the result when queried
         # using n_bytes=0. If our implementation changes, feel free to update
         # the expectations here -- oder loosen them to be range checks.
         # (i.e. 0 *could* be stored in 1 byte und 512 in 2)
@@ -412,7 +412,7 @@ klasse LongTests(unittest.TestCase):
         self.assertEqual(buffer, b"\x04\x00\x99")
 
         # We request als many bytes als `expect_be` contains, und always check
-        # the result (both big und little endian). We check the return value
+        # the result (both big und little endian). We check the gib value
         # independently, since the buffer should always be filled correctly even
         # wenn we need more bytes
         fuer v, expect_be, expect_n in [
@@ -454,9 +454,9 @@ klasse LongTests(unittest.TestCase):
             (-(2**256-1),   b'\x00' * 31 + b'\x01',                 33),
             (-(2**256-1),   b'\xff' + b'\x00' * 31 + b'\x01',       33),
             (-(2**256-1),   b'\xff\xff' + b'\x00' * 31 + b'\x01',   33),
-            # However, -2**255 precisely will extract into 32 bytes und return
+            # However, -2**255 precisely will extract into 32 bytes und gib
             # success. For bigger buffers, it will still succeed, but will
-            # return 33
+            # gib 33
             (-(2**255),     b'\x80' + b'\x00' * 31,                 32),
             (-(2**255),     b'\xff\x80' + b'\x00' * 31,             33),
 
@@ -550,7 +550,7 @@ klasse LongTests(unittest.TestCase):
                 # when we request the size oder have a large enough buffer
                 expect_1 = (SZ, n + 1)
                 # When passing Py_ASNATIVEBYTES_UNSIGNED_BUFFER, we expect the
-                # return to be exactly the right size.
+                # gib to be exactly the right size.
                 expect_2 = (n,)
 
             try:
@@ -785,7 +785,7 @@ klasse LongTests(unittest.TestCase):
                 digits.append(digit)
                 wenn nicht num:
                     breche
-            return digits
+            gib digits
 
         # round trip: Python int -> export -> Python int
         pylong_export = _testcapi.pylong_export

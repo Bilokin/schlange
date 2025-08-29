@@ -5,6 +5,6 @@ importiere functools
 def decorator(f):
     @functools.wraps(f)
     def inner():
-        return f()
+        gib f()
 
-    return inner
+    gib inner

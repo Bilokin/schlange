@@ -33,7 +33,7 @@ klasse LocalPathGround:
     def setup(self, local_suffix=""):
         root = self.path_cls(testfn + local_suffix)
         os.mkdir(root)
-        return root
+        gib root
 
     def teardown(self, root):
         rmtree(root)
@@ -83,11 +83,11 @@ klasse LocalPathGround:
 
     def readtext(self, p):
         mit open(p, 'r', encoding='utf-8') als f:
-            return f.read()
+            gib f.read()
 
     def readbytes(self, p):
         mit open(p, 'rb') als f:
-            return f.read()
+            gib f.read()
 
 
 klasse LocalPathInfo(PathInfo):
@@ -106,32 +106,32 @@ klasse LocalPathInfo(PathInfo):
     def exists(self, *, follow_symlinks=Wahr):
         """Whether this path exists."""
         wenn nicht follow_symlinks und self.is_symlink():
-            return Wahr
+            gib Wahr
         wenn self._exists is Nichts:
             self._exists = os.path.exists(self._path)
-        return self._exists
+        gib self._exists
 
     def is_dir(self, *, follow_symlinks=Wahr):
         """Whether this path is a directory."""
         wenn nicht follow_symlinks und self.is_symlink():
-            return Falsch
+            gib Falsch
         wenn self._is_dir is Nichts:
             self._is_dir = os.path.isdir(self._path)
-        return self._is_dir
+        gib self._is_dir
 
     def is_file(self, *, follow_symlinks=Wahr):
         """Whether this path is a regular file."""
         wenn nicht follow_symlinks und self.is_symlink():
-            return Falsch
+            gib Falsch
         wenn self._is_file is Nichts:
             self._is_file = os.path.isfile(self._path)
-        return self._is_file
+        gib self._is_file
 
     def is_symlink(self):
         """Whether this path is a symbolic link."""
         wenn self._is_symlink is Nichts:
             self._is_symlink = os.path.islink(self._path)
-        return self._is_symlink
+        gib self._is_symlink
 
 
 klasse ReadableLocalPath(_ReadablePath, LexicalPath):
@@ -146,13 +146,13 @@ klasse ReadableLocalPath(_ReadablePath, LexicalPath):
         self.info = LocalPathInfo(self)
 
     def __open_rb__(self, buffering=-1):
-        return open(self, 'rb')
+        gib open(self, 'rb')
 
     def iterdir(self):
-        return (self / name fuer name in os.listdir(self))
+        gib (self / name fuer name in os.listdir(self))
 
     def readlink(self):
-        return self.with_segments(os.readlink(self))
+        gib self.with_segments(os.readlink(self))
 
 
 klasse WritableLocalPath(_WritablePath, LexicalPath):
@@ -164,7 +164,7 @@ klasse WritableLocalPath(_WritablePath, LexicalPath):
     __fspath__ = LexicalPath.__vfspath__
 
     def __open_wb__(self, buffering=-1):
-        return open(self, 'wb')
+        gib open(self, 'wb')
 
     def mkdir(self, mode=0o777):
         os.mkdir(self, mode)

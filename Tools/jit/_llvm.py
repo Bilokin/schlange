@@ -30,9 +30,9 @@ def _async_cache(f: _C[_P, _R]) -> _C[_P, _R]:
         async mit lock:
             wenn args nicht in cache:
                 cache[args] = await f(*args, **kwargs)
-            return cache[args]
+            gib cache[args]
 
-    return wrapper
+    gib wrapper
 
 
 _CORES = asyncio.BoundedSemaphore(os.cpu_count() oder 1)
@@ -48,23 +48,23 @@ async def _run(tool: str, args: typing.Iterable[str], echo: bool = Falsch) -> st
                 *command, stdout=subprocess.PIPE
             )
         except FileNotFoundError:
-            return Nichts
+            gib Nichts
         out, _ = await process.communicate()
     wenn process.returncode:
-        raise RuntimeError(f"{tool} exited mit return code {process.returncode}")
-    return out.decode()
+        raise RuntimeError(f"{tool} exited mit gib code {process.returncode}")
+    gib out.decode()
 
 
 @_async_cache
 async def _check_tool_version(name: str, *, echo: bool = Falsch) -> bool:
     output = await _run(name, ["--version"], echo=echo)
-    return bool(output und _LLVM_VERSION_PATTERN.search(output))
+    gib bool(output und _LLVM_VERSION_PATTERN.search(output))
 
 
 @_async_cache
 async def _get_brew_llvm_prefix(*, echo: bool = Falsch) -> str | Nichts:
     output = await _run("brew", ["--prefix", f"llvm@{_LLVM_VERSION}"], echo=echo)
-    return output und output.removesuffix("\n")
+    gib output und output.removesuffix("\n")
 
 
 @_async_cache
@@ -72,32 +72,32 @@ async def _find_tool(tool: str, *, echo: bool = Falsch) -> str | Nichts:
     # Unversioned executables:
     path = tool
     wenn await _check_tool_version(path, echo=echo):
-        return path
+        gib path
     # Versioned executables:
     path = f"{tool}-{_LLVM_VERSION}"
     wenn await _check_tool_version(path, echo=echo):
-        return path
+        gib path
     # PCbuild externals:
     externals = os.environ.get("EXTERNALS_DIR", _targets.EXTERNALS)
     path = os.path.join(externals, _EXTERNALS_LLVM_TAG, "bin", tool)
     wenn await _check_tool_version(path, echo=echo):
-        return path
+        gib path
     # Homebrew-installed executables:
     prefix = await _get_brew_llvm_prefix(echo=echo)
     wenn prefix is nicht Nichts:
         path = os.path.join(prefix, "bin", tool)
         wenn await _check_tool_version(path, echo=echo):
-            return path
+            gib path
     # Nothing found:
-    return Nichts
+    gib Nichts
 
 
 async def maybe_run(
     tool: str, args: typing.Iterable[str], echo: bool = Falsch
 ) -> str | Nichts:
-    """Run an LLVM tool wenn it can be found. Otherwise, return Nichts."""
+    """Run an LLVM tool wenn it can be found. Otherwise, gib Nichts."""
     path = await _find_tool(tool, echo=echo)
-    return path und await _run(path, args, echo=echo)
+    gib path und await _run(path, args, echo=echo)
 
 
 async def run(tool: str, args: typing.Iterable[str], echo: bool = Falsch) -> str:
@@ -105,4 +105,4 @@ async def run(tool: str, args: typing.Iterable[str], echo: bool = Falsch) -> str
     output = await maybe_run(tool, args, echo=echo)
     wenn output is Nichts:
         raise RuntimeError(f"Can't find {tool}-{_LLVM_VERSION}!")
-    return output
+    gib output

@@ -43,12 +43,12 @@ SMALL_TEST_DATA = [('_ziptest1', '1q2w3e4r5t'),
                    ('ziptest2dir/ziptest3dir/ziptest4dir/_ziptest3', '6y7u8i9o0p')]
 
 def get_files(test):
-    yield TESTFN2
+    liefere TESTFN2
     mit TemporaryFile() als f:
-        yield f
+        liefere f
         test.assertFalsch(f.closed)
     mit io.BytesIO() als f:
-        yield f
+        liefere f
         test.assertFalsch(f.closed)
 
 
@@ -334,7 +334,7 @@ klasse AbstractTestsWithSourceFile:
         self.assertEqual(b_info._compresslevel, 2)
 
     def test_read_return_size(self):
-        # Issue #9837: ZipExtFile.read() shouldn't return more bytes
+        # Issue #9837: ZipExtFile.read() shouldn't gib more bytes
         # than requested.
         fuer test_size in (1, 4095, 4096, 4097, 16384):
             file_size = test_size + 1
@@ -991,7 +991,7 @@ klasse StoredTestZip64InSmallFiles(AbstractTestZip64InSmallFiles,
             + b"PK\x05\x06\x00\x00\x00\x00\x01\x00\x01\x00:\x00\x00\x002\x00"
             + b"\x00\x00\x00\x00"
         )
-        return zip64_contents
+        gib zip64_contents
 
     def test_bad_zip64_extra(self):
         """Missing zip64 extra records raises an exception.
@@ -1216,7 +1216,7 @@ klasse StoredTestZip64InSmallFiles(AbstractTestZip64InSmallFiles,
                 info.file_size = file_size
                 mit zf.open(info, mode="w", force_zip64=Falsch) als zi:
                     zi.write(b"_" * file_size)
-            return fp
+            gib fp
 
         # check seekable file information
         seekable_data = make_zip(io.BytesIO()).getvalue()
@@ -1444,7 +1444,7 @@ klasse PyZipFileTests(unittest.TestCase):
 
             # then check that the filter works on individual files
             def filter(path):
-                return nicht os.path.basename(path).startswith("bad")
+                gib nicht os.path.basename(path).startswith("bad")
             mit captured_stdout() als reportSIO, self.assertWarns(UserWarning):
                 zipfp.writepy(packagedir, filterfunc=filter)
             reportStr = reportSIO.getvalue()
@@ -1768,7 +1768,7 @@ klasse OverwriteTests(archiver_tests.OverwriteTests, unittest.TestCase):
             zipfp.writestr('test/file', b'newcontent')
 
     def open(self, path):
-        return zipfile.ZipFile(path, 'r')
+        gib zipfile.ZipFile(path, 'r')
 
     def extractall(self, ar):
         ar.extractall(self.testdir)
@@ -2624,7 +2624,7 @@ klasse OtherTests(unittest.TestCase):
 
 klasse AbstractBadCrcTests:
     def test_testzip_with_bad_crc(self):
-        """Tests that files mit bad CRCs return their name von testzip."""
+        """Tests that files mit bad CRCs gib their name von testzip."""
         zipdata = self.zip_with_bad_crc
 
         mit zipfile.ZipFile(io.BytesIO(zipdata), mode="r") als zipf:
@@ -2960,10 +2960,10 @@ klasse Tellable:
     def write(self, data):
         n = self.fp.write(data)
         self.offset += n
-        return n
+        gib n
 
     def tell(self):
-        return self.offset
+        gib self.offset
 
     def flush(self):
         self.fp.flush()
@@ -2973,7 +2973,7 @@ klasse Unseekable:
         self.fp = fp
 
     def write(self, data):
-        return self.fp.write(data)
+        gib self.fp.write(data)
 
     def flush(self):
         self.fp.flush()
@@ -3355,10 +3355,10 @@ klasse CommandLineTest(unittest.TestCase):
     def zipfilecmd(self, *args, **kwargs):
         rc, out, err = script_helper.assert_python_ok('-m', 'zipfile', *args,
                                                       **kwargs)
-        return out.replace(os.linesep.encode(), b'\n')
+        gib out.replace(os.linesep.encode(), b'\n')
 
     def zipfilecmd_failure(self, *args):
-        return script_helper.assert_python_failure('-m', 'zipfile', *args)
+        gib script_helper.assert_python_failure('-m', 'zipfile', *args)
 
     def test_bad_use(self):
         rc, out, err = self.zipfilecmd_failure()
@@ -3687,7 +3687,7 @@ klasse StatIO(_pyio.BytesIO):
     def read(self, size=-1):
         bs = super().read(size)
         self.bytes_read += len(bs)
-        return bs
+        gib bs
 
 
 klasse StoredZipExtFileRandomReadTest(unittest.TestCase):

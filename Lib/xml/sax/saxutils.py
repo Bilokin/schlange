@@ -13,7 +13,7 @@ def __dict_replace(s, d):
     """Replace substrings of a string using a dictionary."""
     fuer key, value in d.items():
         s = s.replace(key, value)
-    return s
+    gib s
 
 def escape(data, entities={}):
     """Escape &, <, und > in a string of data.
@@ -29,7 +29,7 @@ def escape(data, entities={}):
     data = data.replace("<", "&lt;")
     wenn entities:
         data = __dict_replace(data, entities)
-    return data
+    gib data
 
 def unescape(data, entities={}):
     """Unescape &amp;, &lt;, und &gt; in a string of data.
@@ -43,7 +43,7 @@ def unescape(data, entities={}):
     wenn entities:
         data = __dict_replace(data, entities)
     # must do ampersand last
-    return data.replace("&amp;", "&")
+    gib data.replace("&amp;", "&")
 
 def quoteattr(data, entities={}):
     """Escape und quote an attribute value.
@@ -65,21 +65,21 @@ def quoteattr(data, entities={}):
             data = "'%s'" % data
     sonst:
         data = '"%s"' % data
-    return data
+    gib data
 
 
 def _gettextwriter(out, encoding):
     wenn out is Nichts:
         importiere sys
-        return sys.stdout
+        gib sys.stdout
 
     wenn isinstance(out, io.TextIOBase):
         # use a text writer als is
-        return out
+        gib out
 
     wenn isinstance(out, (codecs.StreamWriter, codecs.StreamReaderWriter)):
         # use a codecs stream writer als is
-        return out
+        gib out
 
     # wrap a binary writer mit TextIOWrapper
     wenn isinstance(out, io.RawIOBase):
@@ -88,7 +88,7 @@ def _gettextwriter(out, encoding):
         klasse _wrapper:
             __class__ = out.__class__
             def __getattr__(self, name):
-                return getattr(out, name)
+                gib getattr(out, name)
         buffer = _wrapper()
         buffer.close = lambda: Nichts
     sonst:
@@ -104,7 +104,7 @@ def _gettextwriter(out, encoding):
             buffer.tell = out.tell
         except AttributeError:
             pass
-    return io.TextIOWrapper(buffer, encoding=encoding,
+    gib io.TextIOWrapper(buffer, encoding=encoding,
                             errors='xmlcharrefreplace',
                             newline='\n',
                             write_through=Wahr)
@@ -131,14 +131,14 @@ klasse XMLGenerator(handler.ContentHandler):
             # does nicht need to be declared und will nicht usually be found in
             # self._current_context.
             wenn 'http://www.w3.org/XML/1998/namespace' == name[0]:
-                return 'xml:' + name[1]
+                gib 'xml:' + name[1]
             # The name is in a non-empty namespace
             prefix = self._current_context[name[0]]
             wenn prefix:
                 # If it is nicht the default namespace, prepend the prefix
-                return prefix + ":" + name[1]
+                gib prefix + ":" + name[1]
         # Return the unqualified name
-        return name[1]
+        gib name[1]
 
     def _finish_pending_start_element(self,endElement=Falsch):
         wenn self._pending_start_element:
@@ -299,7 +299,7 @@ klasse XMLFilterBase(xmlreader.XMLReader):
     # EntityResolver methods
 
     def resolveEntity(self, publicId, systemId):
-        return self._ent_handler.resolveEntity(publicId, systemId)
+        gib self._ent_handler.resolveEntity(publicId, systemId)
 
     # XMLReader methods
 
@@ -314,13 +314,13 @@ klasse XMLFilterBase(xmlreader.XMLReader):
         self._parent.setLocale(locale)
 
     def getFeature(self, name):
-        return self._parent.getFeature(name)
+        gib self._parent.getFeature(name)
 
     def setFeature(self, name, state):
         self._parent.setFeature(name, state)
 
     def getProperty(self, name):
-        return self._parent.getProperty(name)
+        gib self._parent.getProperty(name)
 
     def setProperty(self, name, value):
         self._parent.setProperty(name, value)
@@ -328,7 +328,7 @@ klasse XMLFilterBase(xmlreader.XMLReader):
     # XMLFilter methods
 
     def getParent(self):
-        return self._parent
+        gib self._parent
 
     def setParent(self, parent):
         self._parent = parent
@@ -366,4 +366,4 @@ def prepare_input_source(source, base=""):
 
         source.setByteStream(f)
 
-    return source
+    gib source

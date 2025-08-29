@@ -28,7 +28,7 @@ klasse UnicodeNamesTest(unittest.TestCase):
         # chokes on \N escapes
         res = ast.literal_eval(r'"\N{%s}"' % name)
         self.assertEqual(res, code)
-        return res
+        gib res
 
     def test_general(self):
         # General und case insensitivity test:
@@ -176,7 +176,7 @@ klasse UnicodeNamesTest(unittest.TestCase):
         # Check all the named sequences
         def check_version(testfile):
             hdr = testfile.readline()
-            return unicodedata.unidata_version in hdr
+            gib unicodedata.unidata_version in hdr
         url = ("http://www.pythontest.net/unicode/%s/NamedSequences.txt" %
                unicodedata.unidata_version)
         try:

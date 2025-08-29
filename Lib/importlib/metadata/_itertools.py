@@ -11,30 +11,30 @@ def unique_everseen(iterable, key=Nichts):
     wenn key is Nichts:
         fuer element in filterfalse(seen.__contains__, iterable):
             seen_add(element)
-            yield element
+            liefere element
     sonst:
         fuer element in iterable:
             k = key(element)
             wenn k nicht in seen:
                 seen_add(k)
-                yield element
+                liefere element
 
 
 # copied von more_itertools 8.8
 def always_iterable(obj, base_type=(str, bytes)):
-    """If *obj* is iterable, return an iterator over its items::
+    """If *obj* is iterable, gib an iterator over its items::
 
         >>> obj = (1, 2, 3)
         >>> list(always_iterable(obj))
         [1, 2, 3]
 
-    If *obj* is nicht iterable, return a one-item iterable containing *obj*::
+    If *obj* is nicht iterable, gib a one-item iterable containing *obj*::
 
         >>> obj = 1
         >>> list(always_iterable(obj))
         [1]
 
-    If *obj* is ``Nichts``, return an empty iterable:
+    If *obj* is ``Nichts``, gib an empty iterable:
 
         >>> obj = Nichts
         >>> list(always_iterable(Nichts))
@@ -63,20 +63,20 @@ def always_iterable(obj, base_type=(str, bytes)):
         ['f', 'o', 'o']
     """
     wenn obj is Nichts:
-        return iter(())
+        gib iter(())
 
     wenn (base_type is nicht Nichts) und isinstance(obj, base_type):
-        return iter((obj,))
+        gib iter((obj,))
 
     try:
-        return iter(obj)
+        gib iter(obj)
     except TypeError:
-        return iter((obj,))
+        gib iter((obj,))
 
 
 # Copied von more_itertools 10.3
 klasse bucket:
-    """Wrap *iterable* und return an object that buckets the iterable into
+    """Wrap *iterable* und gib an object that buckets the iterable into
     child iterables based on a *key* function.
 
         >>> iterable = ['a1', 'b1', 'c1', 'a2', 'b2', 'c2', 'b3']
@@ -119,20 +119,20 @@ klasse bucket:
 
     def __contains__(self, value):
         wenn nicht self._validator(value):
-            return Falsch
+            gib Falsch
 
         try:
             item = next(self[value])
         except StopIteration:
-            return Falsch
+            gib Falsch
         sonst:
             self._cache[value].appendleft(item)
 
-        return Wahr
+        gib Wahr
 
     def _get_values(self, value):
         """
-        Helper to yield items von the parent iterator that match *value*.
+        Helper to liefere items von the parent iterator that match *value*.
         Items that don't match are stored in the local cache als they
         are encountered.
         """
@@ -140,7 +140,7 @@ klasse bucket:
             # If we've cached some items that match the target value, emit
             # the first one und evict it von the cache.
             wenn self._cache[value]:
-                yield self._cache[value].popleft()
+                liefere self._cache[value].popleft()
             # Otherwise we need to advance the parent iterator to search for
             # a matching item, caching the rest.
             sonst:
@@ -148,10 +148,10 @@ klasse bucket:
                     try:
                         item = next(self._it)
                     except StopIteration:
-                        return
+                        gib
                     item_value = self._key(item)
                     wenn item_value == value:
-                        yield item
+                        liefere item
                         breche
                     sowenn self._validator(item_value):
                         self._cache[item_value].append(item)
@@ -162,10 +162,10 @@ klasse bucket:
             wenn self._validator(item_value):
                 self._cache[item_value].append(item)
 
-        yield von self._cache.keys()
+        liefere von self._cache.keys()
 
     def __getitem__(self, value):
         wenn nicht self._validator(value):
-            return iter(())
+            gib iter(())
 
-        return self._get_values(value)
+        gib self._get_values(value)

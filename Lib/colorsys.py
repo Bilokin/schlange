@@ -41,7 +41,7 @@ def rgb_to_yiq(r, g, b):
     y = 0.30*r + 0.59*g + 0.11*b
     i = 0.74*(r-y) - 0.27*(b-y)
     q = 0.48*(r-y) + 0.41*(b-y)
-    return (y, i, q)
+    gib (y, i, q)
 
 def yiq_to_rgb(y, i, q):
     # r = y + (0.27*q + 0.41*i) / (0.74*0.41 + 0.27*0.48)
@@ -64,7 +64,7 @@ def yiq_to_rgb(y, i, q):
         g = 1.0
     wenn b > 1.0:
         b = 1.0
-    return (r, g, b)
+    gib (r, g, b)
 
 
 # HLS: Hue, Luminance, Saturation
@@ -79,7 +79,7 @@ def rgb_to_hls(r, g, b):
     rangec = (maxc-minc)
     l = sumc/2.0
     wenn minc == maxc:
-        return 0.0, l, 0.0
+        gib 0.0, l, 0.0
     wenn l <= 0.5:
         s = rangec / sumc
     sonst:
@@ -94,27 +94,27 @@ def rgb_to_hls(r, g, b):
     sonst:
         h = 4.0+gc-rc
     h = (h/6.0) % 1.0
-    return h, l, s
+    gib h, l, s
 
 def hls_to_rgb(h, l, s):
     wenn s == 0.0:
-        return l, l, l
+        gib l, l, l
     wenn l <= 0.5:
         m2 = l * (1.0+s)
     sonst:
         m2 = l+s-(l*s)
     m1 = 2.0*l - m2
-    return (_v(m1, m2, h+ONE_THIRD), _v(m1, m2, h), _v(m1, m2, h-ONE_THIRD))
+    gib (_v(m1, m2, h+ONE_THIRD), _v(m1, m2, h), _v(m1, m2, h-ONE_THIRD))
 
 def _v(m1, m2, hue):
     hue = hue % 1.0
     wenn hue < ONE_SIXTH:
-        return m1 + (m2-m1)*hue*6.0
+        gib m1 + (m2-m1)*hue*6.0
     wenn hue < 0.5:
-        return m2
+        gib m2
     wenn hue < TWO_THIRD:
-        return m1 + (m2-m1)*(TWO_THIRD-hue)*6.0
-    return m1
+        gib m1 + (m2-m1)*(TWO_THIRD-hue)*6.0
+    gib m1
 
 
 # HSV: Hue, Saturation, Value
@@ -128,7 +128,7 @@ def rgb_to_hsv(r, g, b):
     rangec = (maxc-minc)
     v = maxc
     wenn minc == maxc:
-        return 0.0, 0.0, v
+        gib 0.0, 0.0, v
     s = rangec / maxc
     rc = (maxc-r) / rangec
     gc = (maxc-g) / rangec
@@ -140,11 +140,11 @@ def rgb_to_hsv(r, g, b):
     sonst:
         h = 4.0+gc-rc
     h = (h/6.0) % 1.0
-    return h, s, v
+    gib h, s, v
 
 def hsv_to_rgb(h, s, v):
     wenn s == 0.0:
-        return v, v, v
+        gib v, v, v
     i = int(h*6.0) # XXX assume int() truncates!
     f = (h*6.0) - i
     p = v*(1.0 - s)
@@ -152,15 +152,15 @@ def hsv_to_rgb(h, s, v):
     t = v*(1.0 - s*(1.0-f))
     i = i%6
     wenn i == 0:
-        return v, t, p
+        gib v, t, p
     wenn i == 1:
-        return q, v, p
+        gib q, v, p
     wenn i == 2:
-        return p, v, t
+        gib p, v, t
     wenn i == 3:
-        return p, q, v
+        gib p, q, v
     wenn i == 4:
-        return t, p, v
+        gib t, p, v
     wenn i == 5:
-        return v, p, q
+        gib v, p, q
     # Cannot get here

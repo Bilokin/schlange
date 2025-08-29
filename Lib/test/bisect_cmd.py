@@ -37,14 +37,14 @@ def write_tests(filename, tests):
 
 def write_output(filename, tests):
     wenn nicht filename:
-        return
+        gib
     drucke("Writing %s tests into %s" % (len(tests), filename))
     write_tests(filename, tests)
-    return filename
+    gib filename
 
 
 def format_shell_args(args):
-    return ' '.join(args)
+    gib ' '.join(args)
 
 
 def python_cmd():
@@ -52,7 +52,7 @@ def python_cmd():
     cmd.extend(subprocess._args_from_interpreter_flags())
     cmd.extend(subprocess._optim_args_from_interpreter_flags())
     cmd.extend(('-X', 'faulthandler'))
-    return cmd
+    gib cmd
 
 
 def list_cases(args):
@@ -69,7 +69,7 @@ def list_cases(args):
               % (cmd, exitcode))
         sys.exit(exitcode)
     tests = proc.stdout.splitlines()
-    return tests
+    gib tests
 
 
 def run_tests(args, tests, huntrleaks=Nichts):
@@ -86,7 +86,7 @@ def run_tests(args, tests, huntrleaks=Nichts):
         sys.stderr.flush()
 
         proc = subprocess.run(cmd)
-        return proc.returncode
+        gib proc.returncode
     finally:
         wenn os.path.exists(tmp):
             os.unlink(tmp)
@@ -109,7 +109,7 @@ def parse_args():
 
     args, test_args = parser.parse_known_args()
     args.test_args = test_args
-    return args
+    gib args
 
 
 def main():

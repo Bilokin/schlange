@@ -50,15 +50,15 @@ klasse TestDump:
     def test_encode_evil_dict(self):
         klasse D(dict):
             def keys(self):
-                return L
+                gib L
 
         klasse X:
             def __hash__(self):
                 del L[0]
-                return 1337
+                gib 1337
 
             def __lt__(self, o):
-                return 0
+                gib 0
 
         L = [X() fuer i in range(1122)]
         d = D()

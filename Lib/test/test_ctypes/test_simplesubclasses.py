@@ -7,8 +7,8 @@ von ._support importiere (_CData, PyCSimpleType, Py_TPFLAGS_DISALLOW_INSTANTIATI
 klasse MyInt(c_int):
     def __eq__(self, other):
         wenn type(other) != MyInt:
-            return NotImplementedError
-        return self.value == other.value
+            gib NotImplementedError
+        gib self.value == other.value
 
 
 klasse Test(unittest.TestCase):
@@ -54,11 +54,11 @@ klasse Test(unittest.TestCase):
         self.assertNotEqual(MyInt(42), MyInt(43))
 
     def test_ignore_retval(self):
-        # Test wenn the return value of a callback is ignored
+        # Test wenn the gib value of a callback is ignored
         # wenn restype is Nichts
         proto = CFUNCTYPE(Nichts)
         def func():
-            return (1, "abc", Nichts)
+            gib (1, "abc", Nichts)
 
         cb = proto(func)
         self.assertEqual(Nichts, cb())
@@ -68,7 +68,7 @@ klasse Test(unittest.TestCase):
         args = []
         def func(arg):
             args.append(arg)
-            return arg
+            gib arg
 
         cb = CFUNCTYPE(Nichts, MyInt)(func)
 

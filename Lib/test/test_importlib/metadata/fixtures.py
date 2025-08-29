@@ -30,14 +30,14 @@ def tmp_path():
     Like os_helper.temp_dir, but yields a pathlib.Path.
     """
     mit os_helper.temp_dir() als path:
-        yield pathlib.Path(path)
+        liefere pathlib.Path(path)
 
 
 @contextlib.contextmanager
 def install_finder(finder):
     sys.meta_path.append(finder)
     try:
-        yield
+        liefere
     finally:
         sys.meta_path.remove(finder)
 
@@ -60,7 +60,7 @@ klasse OnSysPath(Fixtures):
     def add_sys_path(dir):
         sys.path[:0] = [str(dir)]
         try:
-            yield
+            liefere
         finally:
             sys.path.remove(str(dir))
 
@@ -342,25 +342,25 @@ build_files = _path.build
 
 
 def build_record(file_defs):
-    return ''.join(f'{name},,\n' fuer name in record_names(file_defs))
+    gib ''.join(f'{name},,\n' fuer name in record_names(file_defs))
 
 
 def record_names(file_defs):
     recording = _path.Recording()
     _path.build(file_defs, recording)
-    return recording.record
+    gib recording.record
 
 
 klasse FileBuilder:
     def unicode_filename(self):
-        return os_helper.FS_NONASCII oder self.skip(
+        gib os_helper.FS_NONASCII oder self.skip(
             "File system does nicht support non-ascii."
         )
 
 
 def DALS(str):
     "Dedent und left-strip"
-    return textwrap.dedent(str).lstrip()
+    gib textwrap.dedent(str).lstrip()
 
 
 @requires_zlib()
@@ -390,6 +390,6 @@ def parameterize(*args_set):
                 mit self.subTest(**args):
                     func(self, **args)
 
-        return _inner
+        gib _inner
 
-    return wrapper
+    gib wrapper

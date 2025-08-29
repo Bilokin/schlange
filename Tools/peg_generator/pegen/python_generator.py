@@ -48,46 +48,46 @@ wenn __name__ == '__main__':
 klasse InvalidNodeVisitor(GrammarVisitor):
     def visit_NameLeaf(self, node: NameLeaf) -> bool:
         name = node.value
-        return name.startswith("invalid")
+        gib name.startswith("invalid")
 
     def visit_StringLeaf(self, node: StringLeaf) -> bool:
-        return Falsch
+        gib Falsch
 
     def visit_NamedItem(self, node: NamedItem) -> bool:
-        return self.visit(node.item)
+        gib self.visit(node.item)
 
     def visit_Rhs(self, node: Rhs) -> bool:
-        return any(self.visit(alt) fuer alt in node.alts)
+        gib any(self.visit(alt) fuer alt in node.alts)
 
     def visit_Alt(self, node: Alt) -> bool:
-        return any(self.visit(item) fuer item in node.items)
+        gib any(self.visit(item) fuer item in node.items)
 
     def lookahead_call_helper(self, node: Lookahead) -> bool:
-        return self.visit(node.node)
+        gib self.visit(node.node)
 
     def visit_PositiveLookahead(self, node: PositiveLookahead) -> bool:
-        return self.lookahead_call_helper(node)
+        gib self.lookahead_call_helper(node)
 
     def visit_NegativeLookahead(self, node: NegativeLookahead) -> bool:
-        return self.lookahead_call_helper(node)
+        gib self.lookahead_call_helper(node)
 
     def visit_Opt(self, node: Opt) -> bool:
-        return self.visit(node.node)
+        gib self.visit(node.node)
 
     def visit_Repeat(self, node: Repeat0) -> Tuple[str, str]:
-        return self.visit(node.node)
+        gib self.visit(node.node)
 
     def visit_Gather(self, node: Gather) -> Tuple[str, str]:
-        return self.visit(node.node)
+        gib self.visit(node.node)
 
     def visit_Group(self, node: Group) -> bool:
-        return self.visit(node.rhs)
+        gib self.visit(node.rhs)
 
     def visit_Cut(self, node: Cut) -> bool:
-        return Falsch
+        gib Falsch
 
     def visit_Forced(self, node: Forced) -> bool:
-        return self.visit(node.node)
+        gib self.visit(node.node)
 
 
 klasse PythonCallMakerVisitor(GrammarVisitor):
@@ -98,39 +98,39 @@ klasse PythonCallMakerVisitor(GrammarVisitor):
     def visit_NameLeaf(self, node: NameLeaf) -> Tuple[Optional[str], str]:
         name = node.value
         wenn name == "SOFT_KEYWORD":
-            return "soft_keyword", "self.soft_keyword()"
+            gib "soft_keyword", "self.soft_keyword()"
         wenn name in ("NAME", "NUMBER", "STRING", "OP", "TYPE_COMMENT",
             "FSTRING_END", "FSTRING_MIDDLE", "FSTRING_START"):
             name = name.lower()
-            return name, f"self.{name}()"
+            gib name, f"self.{name}()"
         wenn name in ("NEWLINE", "DEDENT", "INDENT", "ENDMARKER"):
             # Avoid using names that can be Python keywords
-            return "_" + name.lower(), f"self.expect({name!r})"
-        return name, f"self.{name}()"
+            gib "_" + name.lower(), f"self.expect({name!r})"
+        gib name, f"self.{name}()"
 
     def visit_StringLeaf(self, node: StringLeaf) -> Tuple[str, str]:
-        return "literal", f"self.expect({node.value})"
+        gib "literal", f"self.expect({node.value})"
 
     def visit_NamedItem(self, node: NamedItem) -> Tuple[Optional[str], str]:
         name, call = self.visit(node.item)
         wenn node.name:
             name = node.name
-        return name, call
+        gib name, call
 
     def lookahead_call_helper(self, node: Lookahead) -> Tuple[str, str]:
         name, call = self.visit(node.node)
         head, tail = call.split("(", 1)
         assert tail[-1] == ")"
         tail = tail[:-1]
-        return head, tail
+        gib head, tail
 
     def visit_PositiveLookahead(self, node: PositiveLookahead) -> Tuple[Nichts, str]:
         head, tail = self.lookahead_call_helper(node)
-        return Nichts, f"self.positive_lookahead({head}, {tail})"
+        gib Nichts, f"self.positive_lookahead({head}, {tail})"
 
     def visit_NegativeLookahead(self, node: NegativeLookahead) -> Tuple[Nichts, str]:
         head, tail = self.lookahead_call_helper(node)
-        return Nichts, f"self.negative_lookahead({head}, {tail})"
+        gib Nichts, f"self.negative_lookahead({head}, {tail})"
 
     def visit_Opt(self, node: Opt) -> Tuple[str, str]:
         name, call = self.visit(node.node)
@@ -138,9 +138,9 @@ klasse PythonCallMakerVisitor(GrammarVisitor):
         # at the end, fuer example when rules have both repeat0 und optional
         # markers, e.g: [rule*])
         wenn call.endswith(","):
-            return "opt", call
+            gib "opt", call
         sonst:
-            return "opt", f"{call},"
+            gib "opt", f"{call},"
 
     def _generate_artificial_rule_call(
         self,
@@ -152,18 +152,18 @@ klasse PythonCallMakerVisitor(GrammarVisitor):
         node_str = f"{node}"
         key = f"{prefix}_{node_str}"
         wenn key in self.cache:
-            return self.cache[key]
+            gib self.cache[key]
 
         name = rule_generation_func()
         call = call_by_name_func(name)
         self.cache[key] = name, call
-        return self.cache[key]
+        gib self.cache[key]
 
     def visit_Rhs(self, node: Rhs) -> Tuple[str, str]:
         wenn len(node.alts) == 1 und len(node.alts[0].items) == 1:
-            return self.visit(node.alts[0].items[0])
+            gib self.visit(node.alts[0].items[0])
 
-        return self._generate_artificial_rule_call(
+        gib self._generate_artificial_rule_call(
             node,
             "rhs",
             lambda name: f"self.{name}()",
@@ -171,7 +171,7 @@ klasse PythonCallMakerVisitor(GrammarVisitor):
         )
 
     def visit_Repeat0(self, node: Repeat0) -> Tuple[str, str]:
-        return self._generate_artificial_rule_call(
+        gib self._generate_artificial_rule_call(
             node,
             "repeat0",
             lambda name: f"self.{name}(),",  # Also a trailing comma!
@@ -179,7 +179,7 @@ klasse PythonCallMakerVisitor(GrammarVisitor):
         )
 
     def visit_Repeat1(self, node: Repeat1) -> Tuple[str, str]:
-        return self._generate_artificial_rule_call(
+        gib self._generate_artificial_rule_call(
             node,
             "repeat1",
             lambda name: f"self.{name}()",  # But no trailing comma here!
@@ -187,7 +187,7 @@ klasse PythonCallMakerVisitor(GrammarVisitor):
         )
 
     def visit_Gather(self, node: Gather) -> Tuple[str, str]:
-        return self._generate_artificial_rule_call(
+        gib self._generate_artificial_rule_call(
             node,
             "gather",
             lambda name: f"self.{name}()",  # No trailing comma here either!
@@ -195,17 +195,17 @@ klasse PythonCallMakerVisitor(GrammarVisitor):
         )
 
     def visit_Group(self, node: Group) -> Tuple[Optional[str], str]:
-        return self.visit(node.rhs)
+        gib self.visit(node.rhs)
 
     def visit_Cut(self, node: Cut) -> Tuple[str, str]:
-        return "cut", "Wahr"
+        gib "cut", "Wahr"
 
     def visit_Forced(self, node: Forced) -> Tuple[str, str]:
         wenn isinstance(node.node, Group):
             _, val = self.visit(node.node.rhs)
-            return "forced", f"self.expect_forced({val}, '''({node.node.rhs!s})''')"
+            gib "forced", f"self.expect_forced({val}, '''({node.node.rhs!s})''')"
         sonst:
-            return (
+            gib (
                 "forced",
                 f"self.expect_forced(self.expect({node.node.value}), {node.node.value!r})",
             )
@@ -260,11 +260,11 @@ klasse PythonParserGenerator(ParserGenerator, GrammarVisitor):
     def alts_uses_locations(self, alts: Sequence[Alt]) -> bool:
         fuer alt in alts:
             wenn alt.action und "LOCATIONS" in alt.action:
-                return Wahr
+                gib Wahr
             fuer n in alt.items:
                 wenn isinstance(n.item, Group) und self.alts_uses_locations(n.item.rhs.alts):
-                    return Wahr
-        return Falsch
+                    gib Wahr
+        gib Falsch
 
     def visit_Rule(self, node: Rule) -> Nichts:
         is_loop = node.is_loop()
@@ -364,4 +364,4 @@ klasse PythonParserGenerator(ParserGenerator, GrammarVisitor):
             self.drucke("self._reset(mark)")
             # Skip remaining alternatives wenn a cut was reached.
             wenn has_cut:
-                self.drucke("if cut: return Nichts")
+                self.drucke("if cut: gib Nichts")

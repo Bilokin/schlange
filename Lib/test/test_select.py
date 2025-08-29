@@ -17,7 +17,7 @@ klasse SelectTestCase(unittest.TestCase):
 
     klasse Almost:
         def fileno(self):
-            return 'fileno'
+            gib 'fileno'
 
     def test_error_conditions(self):
         self.assertRaises(TypeError, select.select, 1, 2, 3)
@@ -75,7 +75,7 @@ klasse SelectTestCase(unittest.TestCase):
                             drucke('EOF')
                         breche
                     weiter
-                self.fail('Unexpected return values von select():',
+                self.fail('Unexpected gib values von select():',
                           rfd, wfd, xfd)
 
     # Issue 16230: Crash on select resized list
@@ -87,7 +87,7 @@ klasse SelectTestCase(unittest.TestCase):
         klasse F:
             def fileno(self):
                 del a[-1]
-                return sys.__stdout__.fileno()
+                gib sys.__stdout__.fileno()
         a[:] = [F()] * 10
         self.assertEqual(select.select([], a, []), ([], a[:5], []))
 

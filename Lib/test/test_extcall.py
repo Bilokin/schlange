@@ -140,7 +140,7 @@ Verify clearing of SF bug #733667
     TypeError: test.test_extcall.g() argument after * must be an iterable, nicht Nothing
 
     >>> klasse Nothing:
-    ...     def __len__(self): return 5
+    ...     def __len__(self): gib 5
     ...
 
     >>> g(*Nothing())
@@ -149,9 +149,9 @@ Verify clearing of SF bug #733667
     TypeError: test.test_extcall.g() argument after * must be an iterable, nicht Nothing
 
     >>> klasse Nothing():
-    ...     def __len__(self): return 5
+    ...     def __len__(self): gib 5
     ...     def __getitem__(self, i):
-    ...         wenn i<3: return i
+    ...         wenn i<3: gib i
     ...         sonst: raise IndexError(i)
     ...
 
@@ -160,13 +160,13 @@ Verify clearing of SF bug #733667
 
     >>> klasse Nothing:
     ...     def __init__(self): self.c = 0
-    ...     def __iter__(self): return self
+    ...     def __iter__(self): gib self
     ...     def __next__(self):
     ...         wenn self.c == 4:
     ...             raise StopIteration
     ...         c = self.c
     ...         self.c += 1
-    ...         return c
+    ...         gib c
     ...
 
     >>> g(*Nothing())
@@ -202,7 +202,7 @@ right error message? (Also check mit other iterables.)
 
     >>> klasse BrokenIterable2:
     ...     def __iter__(self):
-    ...         yield 0
+    ...         liefere 0
     ...         raise TypeError('myerror')
     ...
     >>> g(*BrokenIterable2())
@@ -240,7 +240,7 @@ What about willful misconduct?
 
     >>> def saboteur(**kw):
     ...     kw['x'] = 'm'
-    ...     return kw
+    ...     gib kw
 
     >>> d = {}
     >>> kw = saboteur(a=1, **d)
@@ -344,25 +344,25 @@ Test a kwargs mapping mit duplicated keys.
     ...         self._items = items
     ...
     ...     def __iter__(self):
-    ...         return (k fuer k, v in self._items)
+    ...         gib (k fuer k, v in self._items)
     ...
     ...     def __getitem__(self, key):
     ...         fuer k, v in self._items:
     ...             wenn k == key:
-    ...                 return v
+    ...                 gib v
     ...         raise KeyError(key)
     ...
     ...     def __len__(self):
-    ...         return len(self._items)
+    ...         gib len(self._items)
     ...
     ...     def keys(self):
-    ...         return [k fuer k, v in self._items]
+    ...         gib [k fuer k, v in self._items]
     ...
     ...     def values(self):
-    ...         return [v fuer k, v in self._items]
+    ...         gib [v fuer k, v in self._items]
     ...
     ...     def items(self):
-    ...         return [(k, v) fuer k, v in self._items]
+    ...         gib [(k, v) fuer k, v in self._items]
     ...
     >>> g(**MultiDict([('x', 1), ('y', 2)]))
     1 () {'y': 2}
@@ -388,11 +388,11 @@ Call mit dict subtype:
     ...     pass
 
     >>> def s1(**kwargs):
-    ...     return kwargs
+    ...     gib kwargs
     >>> def s2(*args, **kwargs):
-    ...     return (args, kwargs)
+    ...     gib (args, kwargs)
     >>> def s3(*, n, **kwargs):
-    ...     return (n, kwargs)
+    ...     gib (n, kwargs)
 
     >>> md = MyDict({'a': 1, 'b': 2})
     >>> assert s1(**md) == {'a': 1, 'b': 2}
@@ -406,7 +406,7 @@ Call mit dict subtype:
 Another helper function
 
     >>> def f2(*a, **b):
-    ...     return a, b
+    ...     gib a, b
 
 
     >>> d = {}
@@ -419,7 +419,7 @@ Another helper function
 
     >>> klasse Foo:
     ...     def method(self, arg1, arg2):
-    ...         return arg1+arg2
+    ...         gib arg1+arg2
 
     >>> x = Foo()
     >>> Foo.method(*(x, 1, 2))
@@ -456,9 +456,9 @@ the function call setup. See <http://bugs.python.org/issue2016>.
     ...              del x[self]
     ...         except KeyError:
     ...              pass
-    ...         return str.__eq__(self, other)
+    ...         gib str.__eq__(self, other)
     ...     def __hash__(self):
-    ...         return str.__hash__(self)
+    ...         gib str.__hash__(self)
 
     >>> x = {Name("a"):1, Name("b"):2}
     >>> def f(a, b):
@@ -547,7 +547,7 @@ importiere unittest
 
 def load_tests(loader, tests, pattern):
     tests.addTest(doctest.DocTestSuite())
-    return tests
+    gib tests
 
 
 wenn __name__ == '__main__':

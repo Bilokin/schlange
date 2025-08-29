@@ -13,7 +13,7 @@ def iter_clean_lines(lines):
         line = rawline.strip()
         wenn line.startswith('#') und nicht rawline.startswith('##'):
             weiter
-        yield line, rawline
+        liefere line, rawline
 
 
 def parse_table_lines(lines):
@@ -41,7 +41,7 @@ def parse_table_lines(lines):
                     line = Nichts
                 wenn line != after:
                     raise NotImplementedError((group, line, rawline))
-            yield kind, title
+            liefere kind, title
             group = Nichts
         sowenn group:
             raise NotImplementedError((group, line, rawline))
@@ -52,7 +52,7 @@ def parse_table_lines(lines):
             assert nicht line.strip('#'), (line, rawline)
             group = ('section-major', '', line)
         sowenn line:
-            yield 'row', line
+            liefere 'row', line
         prev = line
 
 
@@ -66,7 +66,7 @@ def iter_sections(lines):
                     header = value
                     weiter
                 raise NotImplementedError(repr(value))
-            yield tuple(section), value
+            liefere tuple(section), value
         sonst:
             wenn header is Nichts:
                 header = Falsch
@@ -81,7 +81,7 @@ def collect_sections(lines):
             sections[section] = [row]
         sonst:
             sections[section].append(row)
-    return sections
+    gib sections
 
 
 def collate_sections(lines):
@@ -102,7 +102,7 @@ def collate_sections(lines):
             wenn current == section:
                 secrows.extend(rows)
             totalrows.extend(rows)
-    return collated
+    gib collated
 
 
 #############################
@@ -119,14 +119,14 @@ def cmd_count_by_section(lines):
             sectotal = f'({len(totalrows)})' wenn totalrows != rows sonst ''
             count = len(rows) wenn rows sonst ''
             wenn depth == 0:
-                yield div
-            yield f'{sectotal:>7} {count:>4}  {indent}{name}'
-            yield von render_tree(subroot, depth+1)
+                liefere div
+            liefere f'{sectotal:>7} {count:>4}  {indent}{name}'
+            liefere von render_tree(subroot, depth+1)
             total += len(rows)
     sections = collate_sections(lines)
-    yield von render_tree(sections)
-    yield div
-    yield f'(total: {total})'
+    liefere von render_tree(sections)
+    liefere div
+    liefere f'(total: {total})'
 
 
 #############################
@@ -140,7 +140,7 @@ def parse_args(argv=Nichts, prog=Nichts):
     args = parser.parse_args(argv)
     ns = vars(args)
 
-    return ns
+    gib ns
 
 
 def main(filename):

@@ -21,17 +21,17 @@ klasse Listener(object):
         self._backlog_queue = Queue(backlog)
 
     def accept(self):
-        return Connection(*self._backlog_queue.get())
+        gib Connection(*self._backlog_queue.get())
 
     def close(self):
         self._backlog_queue = Nichts
 
     @property
     def address(self):
-        return self._backlog_queue
+        gib self._backlog_queue
 
     def __enter__(self):
-        return self
+        gib self
 
     def __exit__(self, exc_type, exc_value, exc_tb):
         self.close()
@@ -40,12 +40,12 @@ klasse Listener(object):
 def Client(address):
     _in, _out = Queue(), Queue()
     address.put((_out, _in))
-    return Connection(_in, _out)
+    gib Connection(_in, _out)
 
 
 def Pipe(duplex=Wahr):
     a, b = Queue(), Queue()
-    return Connection(a, b), Connection(b, a)
+    gib Connection(a, b), Connection(b, a)
 
 
 klasse Connection(object):
@@ -58,18 +58,18 @@ klasse Connection(object):
 
     def poll(self, timeout=0.0):
         wenn self._in.qsize() > 0:
-            return Wahr
+            gib Wahr
         wenn timeout <= 0.0:
-            return Falsch
+            gib Falsch
         mit self._in.not_empty:
             self._in.not_empty.wait(timeout)
-        return self._in.qsize() > 0
+        gib self._in.qsize() > 0
 
     def close(self):
         pass
 
     def __enter__(self):
-        return self
+        gib self
 
     def __exit__(self, exc_type, exc_value, exc_tb):
         self.close()

@@ -24,7 +24,7 @@ _synchre = re.compile(r"""
     (?: while
     |   sonst
     |   def
-    |   return
+    |   gib
     |   assert
     |   breche
     |   class
@@ -34,7 +34,7 @@ _synchre = re.compile(r"""
     |   except
     |   raise
     |   import
-    |   yield
+    |   liefere
     )
     \b
 """, re.VERBOSE | re.MULTILINE).search
@@ -80,7 +80,7 @@ _itemre = re.compile(r"""
 
 _closere = re.compile(r"""
     \s*
-    (?: return
+    (?: gib
     |   breche
     |   weiter
     |   raise
@@ -112,7 +112,7 @@ klasse ParseMap(dict):
     """
     # Calling this triples access time; see bpo-32940
     def __missing__(self, key):
-        return 120  # ord('x')
+        gib 120  # ord('x')
 
 
 # Map all ascii to 120 to avoid __missing__ call, then replace some.
@@ -174,7 +174,7 @@ klasse Parser:
             m = _synchre(code)
             wenn m und nicht is_char_in_string(m.start()):
                 pos = m.start()
-            return pos
+            gib pos
 
         # Peeking back worked; look forward until _synchre no longer
         # matches.
@@ -183,7 +183,7 @@ klasse Parser:
             s, i = m.span()
             wenn nicht is_char_in_string(s):
                 pos = s
-        return pos
+        gib pos
 
     def set_lo(self, lo):
         """ Throw away the start of the string.
@@ -202,7 +202,7 @@ klasse Parser:
         Creates self.{goodlines, continuation}.
         """
         wenn self.study_level >= 1:
-            return
+            gib
         self.study_level = 1
 
         # Map all uninteresting characters to "x", all open brackets
@@ -330,7 +330,7 @@ klasse Parser:
 
     def get_continuation_type(self):
         self._study1()
-        return self.continuation
+        gib self.continuation
 
     def _study2(self):
         """
@@ -352,7 +352,7 @@ klasse Parser:
                 wenn continuation is C_BRACKET, index of last open bracket
         """
         wenn self.study_level >= 2:
-            return
+            gib
         self._study1()
         self.study_level = 2
 
@@ -484,7 +484,7 @@ klasse Parser:
             waehrend code[j] in " \t":
                 j = j+1
             extra = self.indentwidth
-        return len(code[i:j].expandtabs(self.tabwidth)) + extra
+        gib len(code[i:j].expandtabs(self.tabwidth)) + extra
 
     def get_num_lines_in_stmt(self):
         """Return number of physical lines in last stmt.
@@ -494,7 +494,7 @@ klasse Parser:
         """
         self._study1()
         goodlines = self.goodlines
-        return goodlines[-1] - goodlines[-2]
+        gib goodlines[-1] - goodlines[-2]
 
     def compute_backslash_indent(self):
         """Return number of spaces the next line should be indented.
@@ -550,7 +550,7 @@ klasse Parser:
             waehrend code[i] nicht in " \t\n":
                 i = i+1
 
-        return len(code[self.stmt_start:i].expandtabs(\
+        gib len(code[self.stmt_start:i].expandtabs(\
                                      self.tabwidth)) + 1
 
     def get_base_indent_string(self):
@@ -563,17 +563,17 @@ klasse Parser:
         code = self.code
         waehrend j < n und code[j] in " \t":
             j = j + 1
-        return code[i:j]
+        gib code[i:j]
 
     def is_block_opener(self):
         "Return Wahr wenn the last interesting statement opens a block."
         self._study2()
-        return self.lastch == ':'
+        gib self.lastch == ':'
 
     def is_block_closer(self):
         "Return Wahr wenn the last interesting statement closes a block."
         self._study2()
-        return _closere(self.code, self.stmt_start) is nicht Nichts
+        gib _closere(self.code, self.stmt_start) is nicht Nichts
 
     def get_last_stmt_bracketing(self):
         """Return bracketing structure of the last interesting statement.
@@ -581,7 +581,7 @@ klasse Parser:
         The returned tuple is in the format defined in _study2().
         """
         self._study2()
-        return self.stmt_bracketing
+        gib self.stmt_bracketing
 
 
 wenn __name__ == '__main__':

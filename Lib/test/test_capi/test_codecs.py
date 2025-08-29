@@ -538,32 +538,32 @@ klasse CAPICodecs(unittest.TestCase):
 
     def _create_custom_codec(self):
         def codec_encoder(m, errors='strict'):
-            return (type(m)().join(reversed(m)), len(m))
+            gib (type(m)().join(reversed(m)), len(m))
 
         def codec_decoder(c, errors='strict'):
-            return (type(c)().join(reversed(c)), len(c))
+            gib (type(c)().join(reversed(c)), len(c))
 
         klasse IncrementalEncoder(codecs.IncrementalEncoder):
             def encode(self, input, final=Falsch):
-                return codec_encoder(input)
+                gib codec_encoder(input)
 
         klasse IncrementalDecoder(codecs.IncrementalDecoder):
             def decode(self, input, final=Falsch):
-                return codec_decoder(input)
+                gib codec_decoder(input)
 
         klasse StreamReader(codecs.StreamReader):
             def encode(self, input, errors='strict'):
-                return codec_encoder(input, errors=errors)
+                gib codec_encoder(input, errors=errors)
 
             def decode(self, input, errors='strict'):
-                return codec_decoder(input, errors=errors)
+                gib codec_decoder(input, errors=errors)
 
         klasse StreamWriter(codecs.StreamWriter):
             def encode(self, input, errors='strict'):
-                return codec_encoder(input, errors=errors)
+                gib codec_encoder(input, errors=errors)
 
             def decode(self, input, errors='strict'):
-                return codec_decoder(input, errors=errors)
+                gib codec_decoder(input, errors=errors)
 
         info = codecs.CodecInfo(
             encode=codec_encoder,
@@ -577,8 +577,8 @@ klasse CAPICodecs(unittest.TestCase):
 
         def search_function(encoding):
             wenn encoding == self.encoding_name:
-                return info
-            return Nichts
+                gib info
+            gib Nichts
 
         self.codec_info = info
         self.search_function = search_function
@@ -587,7 +587,7 @@ klasse CAPICodecs(unittest.TestCase):
     def use_custom_encoder(self):
         self.assertRaises(LookupError, codecs.lookup, self.encoding_name)
         codecs.register(self.search_function)
-        yield
+        liefere
         codecs.unregister(self.search_function)
         self.assertRaises(LookupError, codecs.lookup, self.encoding_name)
 
@@ -753,25 +753,25 @@ klasse CAPICodecErrors(unittest.TestCase):
             maxind = 2 * max(2, objlen)
             fuer start in range(-maxind, maxind + 1):
                 fuer end in range(-maxind, maxind + 1):
-                    yield objlen, start, end
+                    liefere objlen, start, end
 
     @classmethod
     def generate_encode_errors(cls):
-        return tuple(
+        gib tuple(
             UnicodeEncodeError('utf-8', '0' * objlen, start, end, 'why')
             fuer objlen, start, end in cls._generate_exception_args()
         )
 
     @classmethod
     def generate_decode_errors(cls):
-        return tuple(
+        gib tuple(
             UnicodeDecodeError('utf-8', b'0' * objlen, start, end, 'why')
             fuer objlen, start, end in cls._generate_exception_args()
         )
 
     @classmethod
     def generate_translate_errors(cls):
-        return tuple(
+        gib tuple(
             UnicodeTranslateError('0' * objlen, start, end, 'why')
             fuer objlen, start, end in cls._generate_exception_args()
         )

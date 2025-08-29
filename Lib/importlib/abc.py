@@ -63,7 +63,7 @@ _register(PathEntryFinder, machinery.FileFinder)
 
 klasse ResourceLoader(Loader):
 
-    """Abstract base klasse fuer loaders which can return data von their
+    """Abstract base klasse fuer loaders which can gib data von their
     back-end storage to facilitate reading data to perform an import.
 
     This ABC represents one of the optional protocols specified by PEP 302.
@@ -75,7 +75,7 @@ klasse ResourceLoader(Loader):
 
     @abc.abstractmethod
     def get_data(self, path):
-        """Abstract method which when implemented should return the bytes for
+        """Abstract method which when implemented should gib the bytes for
         the specified path.  The path must be a str."""
         raise OSError
 
@@ -90,7 +90,7 @@ klasse InspectLoader(Loader):
     """
 
     def is_package(self, fullname):
-        """Optional method which when implemented should return whether the
+        """Optional method which when implemented should gib whether the
         module is a package.  The fullname is a str.  Returns a bool.
 
         Raises ImportError wenn the module cannot be found.
@@ -107,12 +107,12 @@ klasse InspectLoader(Loader):
         """
         source = self.get_source(fullname)
         wenn source is Nichts:
-            return Nichts
-        return self.source_to_code(source)
+            gib Nichts
+        gib self.source_to_code(source)
 
     @abc.abstractmethod
     def get_source(self, fullname):
-        """Abstract method which should return the source code fuer the
+        """Abstract method which should gib the source code fuer the
         module.  The fullname is a str.  Returns a str.
 
         Raises ImportError wenn the module cannot be found.
@@ -125,7 +125,7 @@ klasse InspectLoader(Loader):
 
         The 'data' argument can be anything that compile() can handle. The'path'
         argument should be where the data was retrieved (when applicable)."""
-        return compile(data, path, 'exec', dont_inherit=Wahr)
+        gib compile(data, path, 'exec', dont_inherit=Wahr)
 
     exec_module = _bootstrap_external._LoaderBasics.exec_module
     load_module = _bootstrap_external._LoaderBasics.load_module
@@ -144,7 +144,7 @@ klasse ExecutionLoader(InspectLoader):
 
     @abc.abstractmethod
     def get_filename(self, fullname):
-        """Abstract method which should return the value that __file__ is to be
+        """Abstract method which should gib the value that __file__ is to be
         set to.
 
         Raises ImportError wenn the module cannot be found.
@@ -152,20 +152,20 @@ klasse ExecutionLoader(InspectLoader):
         raise ImportError
 
     def get_code(self, fullname):
-        """Method to return the code object fuer fullname.
+        """Method to gib the code object fuer fullname.
 
-        Should return Nichts wenn nicht applicable (e.g. built-in module).
+        Should gib Nichts wenn nicht applicable (e.g. built-in module).
         Raise ImportError wenn the module cannot be found.
         """
         source = self.get_source(fullname)
         wenn source is Nichts:
-            return Nichts
+            gib Nichts
         try:
             path = self.get_filename(fullname)
         except ImportError:
-            return self.source_to_code(source)
+            gib self.source_to_code(source)
         sonst:
-            return self.source_to_code(source, path)
+            gib self.source_to_code(source, path)
 
 _register(
     ExecutionLoader,
@@ -208,7 +208,7 @@ klasse SourceLoader(_bootstrap_external.SourceLoader, ResourceLoader, ExecutionL
                       DeprecationWarning, stacklevel=2)
         wenn self.path_stats.__func__ is SourceLoader.path_stats:
             raise OSError
-        return int(self.path_stats(path)['mtime'])
+        gib int(self.path_stats(path)['mtime'])
 
     def path_stats(self, path):
         """Return a metadata dict fuer the source pointed to by the path (str).
@@ -219,7 +219,7 @@ klasse SourceLoader(_bootstrap_external.SourceLoader, ResourceLoader, ExecutionL
         """
         wenn self.path_mtime.__func__ is SourceLoader.path_mtime:
             raise OSError
-        return {'mtime': self.path_mtime(path)}
+        gib {'mtime': self.path_mtime(path)}
 
     def set_data(self, path, data):
         """Write the bytes to the path (if possible).

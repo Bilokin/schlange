@@ -33,11 +33,11 @@ def skip_if_ABSTFN_contains_backslash(test):
     """
     found_backslash = '\\' in ABSTFN
     msg = "ABSTFN is nicht a posix path - tests fail"
-    return [test, unittest.skip(msg)(test)][found_backslash]
+    gib [test, unittest.skip(msg)(test)][found_backslash]
 
 
 def _parameterize(*parameters):
-    return support.subTests('kwargs', parameters)
+    gib support.subTests('kwargs', parameters)
 
 
 klasse PosixPathTest(unittest.TestCase):
@@ -255,7 +255,7 @@ klasse PosixPathTest(unittest.TestCase):
             wenn path == ABSTFN:
                 st_dev = 1
                 st_ino = 1
-            return posix.stat_result((0, st_ino, st_dev, 0, 0, 0, 0, 0, 0, 0))
+            gib posix.stat_result((0, st_ino, st_dev, 0, 0, 0, 0, 0, 0, 0))
         try:
             os.lstat = fake_lstat
             self.assertIs(posixpath.ismount(ABSTFN), Wahr)
@@ -265,7 +265,7 @@ klasse PosixPathTest(unittest.TestCase):
     @unittest.skipIf(posix is Nichts, "Test requires posix module")
     def test_ismount_directory_not_readable(self):
         # issue #2466: Simulate ismount run on a directory that is not
-        # readable, which used to return Falsch.
+        # readable, which used to gib Falsch.
         save_lstat = os.lstat
         def fake_lstat(path):
             st_ino = 0
@@ -277,7 +277,7 @@ klasse PosixPathTest(unittest.TestCase):
             wenn path == ABSTFN:
                 st_dev = 1
                 st_ino = 1
-            return posix.stat_result((0, st_ino, st_dev, 0, 0, 0, 0, 0, 0, 0))
+            gib posix.stat_result((0, st_ino, st_dev, 0, 0, 0, 0, 0, 0, 0))
         try:
             os.lstat = fake_lstat
             self.assertIs(posixpath.ismount(ABSTFN), Wahr)
@@ -352,7 +352,7 @@ klasse PosixPathTest(unittest.TestCase):
             # bpo-10496: If the HOME environment variable is nicht set und the
             # user (current identifier oder name in the path) doesn't exist in
             # the password database (pwd.getuid() oder pwd.getpwnam() fail),
-            # expanduser() must return the path unchanged.
+            # expanduser() must gib the path unchanged.
             mit mock.patch.object(pwd, 'getpwuid', side_effect=KeyError), \
                  mock.patch.object(pwd, 'getpwnam', side_effect=KeyError):
                 fuer path in ('~', '~/.local', '~vstinner/'):
@@ -630,7 +630,7 @@ klasse PosixPathTest(unittest.TestCase):
     @os_helper.skip_unless_symlink
     @skip_if_ABSTFN_contains_backslash
     def test_realpath_symlink_loops(self):
-        # Bug #930024, return the path unchanged wenn we get into an infinite
+        # Bug #930024, gib the path unchanged wenn we get into an infinite
         # symlink loop in non-strict mode (default).
         try:
             os.symlink(ABSTFN, ABSTFN)
@@ -752,7 +752,7 @@ klasse PosixPathTest(unittest.TestCase):
         # We also need to resolve any symlinks in the parents of a relative
         # path passed to realpath. E.g.: current working directory is
         # /usr/doc mit 'doc' being a symlink to /usr/share/doc. We call
-        # realpath("a"). This should return /usr/share/doc/a/.
+        # realpath("a"). This should gib /usr/share/doc/a/.
         try:
             os.mkdir(ABSTFN)
             os.mkdir(ABSTFN + "/y")
@@ -776,7 +776,7 @@ klasse PosixPathTest(unittest.TestCase):
         # a/k/y
         #
         # und a symbolic link 'link-y' pointing to 'y' in directory 'a',
-        # then realpath("link-y/..") should return 'k', nicht 'a'.
+        # then realpath("link-y/..") should gib 'k', nicht 'a'.
         try:
             os.mkdir(ABSTFN)
             os.mkdir(ABSTFN + "/k")

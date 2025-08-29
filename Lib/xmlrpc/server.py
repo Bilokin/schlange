@@ -33,10 +33,10 @@ klasse MyFuncs:
     def _listMethods(self):
         # implement this method so that system.listMethods
         # knows to advertise the sys methods
-        return list_public_methods(self) + \
+        gib list_public_methods(self) + \
                 ['sys.' + method fuer method in list_public_methods(self.sys)]
-    def pow(self, x, y): return pow(x, y)
-    def add(self, x, y) : return x + y
+    def pow(self, x, y): gib pow(x, y)
+    def add(self, x, y) : gib x + y
 
 server = SimpleXMLRPCServer(("localhost", 8000))
 server.register_introspection_functions()
@@ -49,23 +49,23 @@ klasse Math:
     def _listMethods(self):
         # this method must be present fuer system.listMethods
         # to work
-        return ['add', 'pow']
+        gib ['add', 'pow']
     def _methodHelp(self, method):
         # this method must be present fuer system.methodHelp
         # to work
         wenn method == 'add':
-            return "add(2,3) => 5"
+            gib "add(2,3) => 5"
         sowenn method == 'pow':
-            return "pow(x, y[, z]) => number"
+            gib "pow(x, y[, z]) => number"
         sonst:
-            # By convention, return empty
+            # By convention, gib empty
             # string wenn no help is available
-            return ""
+            gib ""
     def _dispatch(self, method, params):
         wenn method == 'pow':
-            return pow(*params)
+            gib pow(*params)
         sowenn method == 'add':
-            return params[0] + params[1]
+            gib params[0] + params[1]
         sonst:
             raise ValueError('bad method')
 
@@ -86,10 +86,10 @@ klasse MathServer(SimpleXMLRPCServer):
         except AttributeError:
             raise Exception('method "%s" is nicht supported' % method)
         sonst:
-            return func(*params)
+            gib func(*params)
 
     def export_add(self, x, y):
-        return x + y
+        gib x + y
 
 server = MathServer(("localhost", 8000))
 server.serve_forever()
@@ -143,13 +143,13 @@ def resolve_dotted_attribute(obj, attr, allow_dotted_names=Wahr):
                 )
         sonst:
             obj = getattr(obj,i)
-    return obj
+    gib obj
 
 def list_public_methods(obj):
     """Returns a list of attribute strings, found in the specified
     object, which represent callable attributes"""
 
-    return [member fuer member in dir(obj)
+    gib [member fuer member in dir(obj)
                 wenn nicht member.startswith('_') und
                     callable(getattr(obj, member))]
 
@@ -214,13 +214,13 @@ klasse SimpleXMLRPCDispatcher:
         """
         # decorator factory
         wenn function is Nichts:
-            return partial(self.register_function, name=name)
+            gib partial(self.register_function, name=name)
 
         wenn name is Nichts:
             name = function.__name__
         self.funcs[name] = function
 
-        return function
+        gib function
 
     def register_introspection_functions(self):
         """Registers the XML-RPC introspection methods in the system
@@ -274,7 +274,7 @@ klasse SimpleXMLRPCDispatcher:
                 encoding=self.encoding, allow_none=self.allow_none,
                 )
 
-        return response.encode(self.encoding, 'xmlcharrefreplace')
+        gib response.encode(self.encoding, 'xmlcharrefreplace')
 
     def system_listMethods(self):
         """system.listMethods() => ['add', 'subtract', 'multiple']
@@ -283,7 +283,7 @@ klasse SimpleXMLRPCDispatcher:
 
         methods = set(self.funcs.keys())
         wenn self.instance is nicht Nichts:
-            # Instance can implement _listMethod to return a list of
+            # Instance can implement _listMethod to gib a list of
             # methods
             wenn hasattr(self.instance, '_listMethods'):
                 methods |= set(self.instance._listMethods())
@@ -292,7 +292,7 @@ klasse SimpleXMLRPCDispatcher:
             # of methods
             sowenn nicht hasattr(self.instance, '_dispatch'):
                 methods |= set(list_public_methods(self.instance))
-        return sorted(methods)
+        gib sorted(methods)
 
     def system_methodSignature(self, method_name):
         """system.methodSignature('add') => [double, int, int]
@@ -305,7 +305,7 @@ klasse SimpleXMLRPCDispatcher:
 
         # See http://xmlrpc.usefulinc.com/doc/sysmethodsig.html
 
-        return 'signatures nicht supported'
+        gib 'signatures nicht supported'
 
     def system_methodHelp(self, method_name):
         """system.methodHelp('add') => "Adds two integers together"
@@ -316,9 +316,9 @@ klasse SimpleXMLRPCDispatcher:
         wenn method_name in self.funcs:
             method = self.funcs[method_name]
         sowenn self.instance is nicht Nichts:
-            # Instance can implement _methodHelp to return help fuer a method
+            # Instance can implement _methodHelp to gib help fuer a method
             wenn hasattr(self.instance, '_methodHelp'):
-                return self.instance._methodHelp(method_name)
+                gib self.instance._methodHelp(method_name)
             # wenn the instance has a _dispatch method then we
             # don't have enough information to provide help
             sowenn nicht hasattr(self.instance, '_dispatch'):
@@ -334,9 +334,9 @@ klasse SimpleXMLRPCDispatcher:
         # Note that we aren't checking that the method actually
         # be a callable object of some kind
         wenn method is Nichts:
-            return ""
+            gib ""
         sonst:
-            return pydoc.getdoc(method)
+            gib pydoc.getdoc(method)
 
     def system_multicall(self, call_list):
         """system.multicall([{'methodName': 'add', 'params': [2, 2]}, ...]) => \
@@ -367,7 +367,7 @@ klasse SimpleXMLRPCDispatcher:
                     {'faultCode' : 1,
                      'faultString' : "%s:%s" % (type(exc), exc)}
                     )
-        return results
+        gib results
 
     def _dispatch(self, method, params):
         """Dispatches the XML-RPC method.
@@ -397,13 +397,13 @@ klasse SimpleXMLRPCDispatcher:
             pass
         sonst:
             wenn func is nicht Nichts:
-                return func(*params)
+                gib func(*params)
             raise Exception('method "%s" is nicht supported' % method)
 
         wenn self.instance is nicht Nichts:
             wenn hasattr(self.instance, '_dispatch'):
                 # call the `_dispatch` method on the instance
-                return self.instance._dispatch(method, params)
+                gib self.instance._dispatch(method, params)
 
             # call the instance's method directly
             try:
@@ -416,7 +416,7 @@ klasse SimpleXMLRPCDispatcher:
                 pass
             sonst:
                 wenn func is nicht Nichts:
-                    return func(*params)
+                    gib func(*params)
 
         raise Exception('method "%s" is nicht supported' % method)
 
@@ -454,14 +454,14 @@ klasse SimpleXMLRPCRequestHandler(BaseHTTPRequestHandler):
                 v = match.group(3)
                 v = float(v) wenn v sonst 1.0
                 r[match.group(1)] = v
-        return r
+        gib r
 
     def is_rpc_path_valid(self):
         wenn self.rpc_paths:
-            return self.path in self.rpc_paths
+            gib self.path in self.rpc_paths
         sonst:
             # If .rpc_paths is empty, just assume all paths are legal
-            return Wahr
+            gib Wahr
 
     def do_POST(self):
         """Handles the HTTP POST request.
@@ -473,7 +473,7 @@ klasse SimpleXMLRPCRequestHandler(BaseHTTPRequestHandler):
         # Check that the path is legal
         wenn nicht self.is_rpc_path_valid():
             self.report_404()
-            return
+            gib
 
         try:
             # Get arguments by reading body of request.
@@ -494,7 +494,7 @@ klasse SimpleXMLRPCRequestHandler(BaseHTTPRequestHandler):
 
             data = self.decode_request_content(data)
             wenn data is Nichts:
-                return #response has been sent
+                gib #response has been sent
 
             # In previous versions of SimpleXMLRPCServer, _dispatch
             # could be overridden in this class, instead of in
@@ -538,10 +538,10 @@ klasse SimpleXMLRPCRequestHandler(BaseHTTPRequestHandler):
         #support gzip encoding of request
         encoding = self.headers.get("content-encoding", "identity").lower()
         wenn encoding == "identity":
-            return data
+            gib data
         wenn encoding == "gzip":
             try:
-                return gzip_decode(data)
+                gib gzip_decode(data)
             except NotImplementedError:
                 self.send_response(501, "encoding %r nicht supported" % encoding)
             except ValueError:
@@ -615,10 +615,10 @@ klasse MultiPathXMLRPCServer(SimpleXMLRPCServer):
 
     def add_dispatcher(self, path, dispatcher):
         self.dispatchers[path] = dispatcher
-        return dispatcher
+        gib dispatcher
 
     def get_dispatcher(self, path):
-        return self.dispatchers[path]
+        gib self.dispatchers[path]
 
     def _marshaled_dispatch(self, data, dispatch_method = Nichts, path = Nichts):
         try:
@@ -632,7 +632,7 @@ klasse MultiPathXMLRPCServer(SimpleXMLRPCServer):
                 Fault(1, "%s:%s" % (type(exc), exc)),
                 encoding=self.encoding, allow_none=self.allow_none)
             response = response.encode(self.encoding, 'xmlcharrefreplace')
-        return response
+        gib response
 
 klasse CGIXMLRPCRequestHandler(SimpleXMLRPCDispatcher):
     """Simple handler fuer XML-RPC data passed through CGI."""
@@ -743,7 +743,7 @@ klasse ServerHTMLDoc(pydoc.HTMLDoc):
                 results.append(self.namelink(name, classes))
             here = end
         results.append(escape(text[here:]))
-        return ''.join(results)
+        gib ''.join(results)
 
     def docroutine(self, object, name, mod=Nichts,
                    funcs={}, classes={}, methods={}, cl=Nichts):
@@ -772,7 +772,7 @@ klasse ServerHTMLDoc(pydoc.HTMLDoc):
         doc = self.markup(
             docstring, self.preformat, funcs, classes, methods)
         doc = doc und '<dd><tt>%s</tt></dd>' % doc
-        return '<dl><dt>%s</dt>%s</dl>\n' % (decl, doc)
+        gib '<dl><dt>%s</dt>%s</dl>\n' % (decl, doc)
 
     def docserver(self, server_name, package_documentation, methods):
         """Produce HTML documentation fuer an XML-RPC server."""
@@ -797,7 +797,7 @@ klasse ServerHTMLDoc(pydoc.HTMLDoc):
         result = result + self.bigsection(
             'Methods', 'functions', ''.join(contents))
 
-        return result
+        gib result
 
 
     def page(self, title, contents):
@@ -806,7 +806,7 @@ klasse ServerHTMLDoc(pydoc.HTMLDoc):
         css_link = (
             '<link rel="stylesheet" type="text/css" href="%s">' %
             css_path)
-        return '''\
+        gib '''\
 <!DOCTYPE>
 <html lang="en">
 <head>
@@ -893,7 +893,7 @@ klasse XMLRPCDocGenerator:
                                 methods
                             )
 
-        return documenter.page(html.escape(self.server_title), documentation)
+        gib documenter.page(html.escape(self.server_title), documentation)
 
 klasse DocXMLRPCRequestHandler(SimpleXMLRPCRequestHandler):
     """XML-RPC und documentation request handler class.
@@ -909,7 +909,7 @@ klasse DocXMLRPCRequestHandler(SimpleXMLRPCRequestHandler):
         path_here = os.path.dirname(os.path.realpath(__file__))
         css_path = os.path.join(path_here, "..", "pydoc_data", "_pydoc.css")
         mit open(css_path, mode="rb") als fp:
-            return fp.read()
+            gib fp.read()
 
     def do_GET(self):
         """Handles the HTTP GET request.
@@ -920,7 +920,7 @@ klasse DocXMLRPCRequestHandler(SimpleXMLRPCRequestHandler):
         # Check that the path is legal
         wenn nicht self.is_rpc_path_valid():
             self.report_404()
-            return
+            gib
 
         wenn self.path.endswith('.css'):
             content_type = 'text/css'
@@ -982,12 +982,12 @@ wenn __name__ == '__main__':
 
     klasse ExampleService:
         def getData(self):
-            return '42'
+            gib '42'
 
         klasse currentTime:
             @staticmethod
             def getCurrentTime():
-                return datetime.datetime.now()
+                gib datetime.datetime.now()
 
     mit SimpleXMLRPCServer(("localhost", 8000)) als server:
         server.register_function(pow)

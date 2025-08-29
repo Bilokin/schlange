@@ -13,7 +13,7 @@ def assert_equal_float(x, y):
 
 
 def via_reduce(x, y, steps):
-    return functools.reduce(nextafter, [y] * steps, x)
+    gib functools.reduce(nextafter, [y] * steps, x)
 
 
 klasse NextafterTests(unittest.TestCase):

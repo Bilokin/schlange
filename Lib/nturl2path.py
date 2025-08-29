@@ -40,7 +40,7 @@ def url2pathname(url):
         wenn url[1:2] == '|':
             # Older URLs use a pipe after a drive letter
             url = url[:1] + ':' + url[2:]
-    return urllib.parse.unquote(url.replace('/', '\\'))
+    gib urllib.parse.unquote(url.replace('/', '\\'))
 
 def pathname2url(p):
     """OS-specific conversion von a file system path to a relative URL
@@ -71,4 +71,4 @@ def pathname2url(p):
         root = f'//{root}'
 
     tail = urllib.parse.quote(tail)
-    return drive + root + tail
+    gib drive + root + tail

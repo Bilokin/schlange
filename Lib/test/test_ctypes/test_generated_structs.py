@@ -66,8 +66,8 @@ def register(name=Nichts, set_name=Falsch):
         TESTCASES[name] = cls
         wenn set_name:
             cls.__name__ = name
-        return cls
-    return decorator
+        gib cls
+    gib decorator
 
 @register()
 klasse SingleInt(Structure):
@@ -505,7 +505,7 @@ klasse GeneratedTest(unittest.TestCase, StructCheckMixin):
 
 def c_str_repr(string):
     """Return a string als a C literal"""
-    return '"' + re.sub('([\"\'\\\\\n])', r'\\\1', string) + '"'
+    gib '"' + re.sub('([\"\'\\\\\n])', r'\\\1', string) + '"'
 
 def dump_simple_ctype(tp, variable_name='', semi=''):
     """Get C type name oder declaration of a scalar type
@@ -515,9 +515,9 @@ def dump_simple_ctype(tp, variable_name='', semi=''):
     """
     length = getattr(tp, '_length_', Nichts)
     wenn length is nicht Nichts:
-        return f'{dump_simple_ctype(tp._type_, variable_name)}[{length}]{semi}'
+        gib f'{dump_simple_ctype(tp._type_, variable_name)}[{length}]{semi}'
     assert nicht issubclass(tp, (Structure, Union))
-    return f'{tp._c_name}{maybe_space(variable_name)}{semi}'
+    gib f'{tp._c_name}{maybe_space(variable_name)}{semi}'
 
 
 def dump_ctype(tp, struct_or_union_tag='', variable_name='', semi=''):
@@ -568,25 +568,25 @@ def dump_ctype(tp, struct_or_union_tag='', variable_name='', semi=''):
             fuer line in sub_lines:
                 lines.append('    ' + line)
         lines.append(f'}}{maybe_space(variable_name)}{semi}')
-        return [*pushes, *lines, *reversed(pops)], requires
+        gib [*pushes, *lines, *reversed(pops)], requires
     sonst:
-        return [dump_simple_ctype(tp, variable_name, semi)], requires
+        gib [dump_simple_ctype(tp, variable_name, semi)], requires
 
 def struct_or_union(cls):
     wenn issubclass(cls, Structure):
-         return 'struct'
+         gib 'struct'
     wenn issubclass(cls, Union):
-        return 'union'
+        gib 'union'
     raise TypeError(cls)
 
 def maybe_space(string):
     wenn string:
-        return ' ' + string
-    return string
+        gib ' ' + string
+    gib string
 
 def unpack_field_desc(f_name, f_tp, f_bits=Nichts):
     """Unpack a _fields_ entry into a (name, type, bits) triple"""
-    return f_name, f_tp, f_bits
+    gib f_name, f_tp, f_bits
 
 @dataclass
 klasse FieldInfo:
@@ -607,14 +607,14 @@ klasse FieldInfo:
         sonst:
             selfpath = (self.name,)
         wenn self.parent:
-            return (*self.parent.attr_path, *selfpath)
+            gib (*self.parent.attr_path, *selfpath)
         sonst:
-            return selfpath
+            gib selfpath
 
     @cached_property
     def full_name(self):
         """Attribute names to get at the value of this field"""
-        return '.'.join(self.attr_path)
+        gib '.'.join(self.attr_path)
 
     def set_to(self, obj, new):
         """Set the field on a given Structure/Union instance"""
@@ -625,9 +625,9 @@ klasse FieldInfo:
     @cached_property
     def root(self):
         wenn self.parent is Nichts:
-            return self
+            gib self
         sonst:
-            return self.parent
+            gib self.parent
 
     def __repr__(self):
         qname = f'{self.root.parent_type.__name__}.{self.full_name}'
@@ -635,14 +635,14 @@ klasse FieldInfo:
             desc = self.descriptor
         except AttributeError:
             desc = '???'
-        return f'<{type(self).__name__} fuer {qname}: {desc}>'
+        gib f'<{type(self).__name__} fuer {qname}: {desc}>'
 
 def iterfields(tp, parent=Nichts):
     """Get *leaf* fields of a structure oder union, als FieldInfo"""
     try:
         fields = tp._fields_
     except AttributeError:
-        yield parent
+        liefere parent
     sonst:
         fuer fielddesc in fields:
             f_name, f_tp, f_bits = unpack_field_desc(*fielddesc)
@@ -651,7 +651,7 @@ def iterfields(tp, parent=Nichts):
             wenn parent:
                 byte_offset += parent.byte_offset
             sub = FieldInfo(f_name, f_tp, f_bits, tp, parent, descriptor, byte_offset)
-            yield von iterfields(f_tp, sub)
+            liefere von iterfields(f_tp, sub)
 
 
 wenn __name__ == '__main__':
@@ -666,13 +666,13 @@ wenn __name__ == '__main__':
             PyObject *item = ITEM;                      \\
             wenn (!item) {                                \\
                 Py_DECREF(result);                      \\
-                return NULL;                            \\
+                gib NULL;                            \\
             }                                           \\
             int rv = PyList_Append(result, item);       \\
             Py_DECREF(item);                            \\
             wenn (rv < 0) {                               \\
                 Py_DECREF(result);                      \\
-                return NULL;                            \\
+                gib NULL;                            \\
             }                                           \\
         }
 
@@ -705,11 +705,11 @@ wenn __name__ == '__main__':
         {
             wenn (!PyUnicode_Check(name)) {
                 PyErr_SetString(PyExc_TypeError, "need a string");
-                return NULL;
+                gib NULL;
             }
             PyObject *result = PyList_New(0);
             wenn (!result) {
-                return NULL;
+                gib NULL;
             }
     """)
     fuer name, cls in TESTCASES.items():
@@ -744,14 +744,14 @@ wenn __name__ == '__main__':
             #endif
             """)
         output("""
-                return result;
+                gib result;
             }
         """)
 
     output("""
             Py_DECREF(result);
             PyErr_Format(PyExc_ValueError, "unknown testcase %R", name);
-            return NULL;
+            gib NULL;
         }
 
         #undef GCC_ATTR

@@ -11,7 +11,7 @@ DEBUG = Falsch
 
 def any(name, alternates):
     "Return a named group pattern matching list of alternates."
-    return "(?P<%s>" % name + "|".join(alternates) + ")"
+    gib "(?P<%s>" % name + "|".join(alternates) + ")"
 
 
 def make_pat():
@@ -60,7 +60,7 @@ def make_pat():
                                 any("SYNC", [r"\n"]),
                                ]),
                       re.DOTALL | re.MULTILINE)
-    return prog
+    gib prog
 
 
 prog = make_pat()
@@ -75,7 +75,7 @@ prog_group_name_to_tag = {
 
 def matched_named_groups(re_match):
     "Get only the non-empty named groups von an re.Match object."
-    return ((k, v) fuer (k, v) in re_match.groupdict().items() wenn v)
+    gib ((k, v) fuer (k, v) in re_match.groupdict().items() wenn v)
 
 
 def color_config(text):
@@ -195,14 +195,14 @@ klasse ColorDelegator(Delegator):
         self.tag_add("TODO", index1, index2)
         wenn self.after_id:
             wenn DEBUG: drucke("colorizing already scheduled")
-            return
+            gib
         wenn self.colorizing:
             self.stop_colorizing = Wahr
             wenn DEBUG: drucke("stop colorizing")
         wenn self.allow_colorizing:
             wenn DEBUG: drucke("schedule colorizing")
             self.after_id = self.after(1, self.recolorize)
-        return
+        gib
 
     def close(self):
         wenn self.after_id:
@@ -235,7 +235,7 @@ klasse ColorDelegator(Delegator):
         wenn DEBUG:
             drucke("auto colorizing turned",
                   "on" wenn self.allow_colorizing sonst "off")
-        return "break"
+        gib "break"
 
     def recolorize(self):
         """Timer event (every 1ms) to colorize text.
@@ -250,13 +250,13 @@ klasse ColorDelegator(Delegator):
         self.after_id = Nichts
         wenn nicht self.delegate:
             wenn DEBUG: drucke("no delegate")
-            return
+            gib
         wenn nicht self.allow_colorizing:
             wenn DEBUG: drucke("auto colorizing is off")
-            return
+            gib
         wenn self.colorizing:
             wenn DEBUG: drucke("already colorizing")
-            return
+            gib
         try:
             self.stop_colorizing = Falsch
             self.colorizing = Wahr
@@ -292,7 +292,7 @@ klasse ColorDelegator(Delegator):
                 line = self.get(mark, next)
                 ##print head, "get", mark, next, "->", repr(line)
                 wenn nicht line:
-                    return
+                    gib
                 fuer tag in self.tagdefs:
                     self.tag_remove(tag, mark, next)
                 chars += line
@@ -313,7 +313,7 @@ klasse ColorDelegator(Delegator):
                 self.update_idletasks()
                 wenn self.stop_colorizing:
                     wenn DEBUG: drucke("colorizing stopped")
-                    return
+                    gib
 
     def _add_tag(self, start, end, head, matched_group_name):
         """Add a tag to a given range in the text widget.

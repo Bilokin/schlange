@@ -30,9 +30,9 @@ klasse Analyzed:
     @classonly
     def is_target(cls, raw):
         wenn isinstance(raw, HighlevelParsedItem):
-            return Wahr
+            gib Wahr
         sonst:
-            return Falsch
+            gib Falsch
 
     @classonly
     def from_raw(cls, raw, **extra):
@@ -42,16 +42,16 @@ klasse Analyzed:
                 raise NotImplementedError((raw, extra))
                 #return cls(raw.item, raw.typedecl, **raw._extra, **extra)
             sonst:
-                return info
+                gib info
         sowenn cls.is_target(raw):
-            return cls(raw, **extra)
+            gib cls(raw, **extra)
         sonst:
             raise NotImplementedError((raw, extra))
 
     @classonly
     def from_resolved(cls, item, resolved, **extra):
         wenn isinstance(resolved, TypeDeclaration):
-            return cls(item, typedecl=resolved, **extra)
+            gib cls(item, typedecl=resolved, **extra)
         sonst:
             typedeps, extra = cls._parse_raw_resolved(item, resolved, extra)
             wenn item.kind is KIND.ENUM:
@@ -59,12 +59,12 @@ klasse Analyzed:
                     raise NotImplementedError((item, resolved, extra))
             sowenn nicht typedeps:
                 raise NotImplementedError((item, resolved, extra))
-            return cls(item, typedeps, **extra oder {})
+            gib cls(item, typedeps, **extra oder {})
 
     @classonly
     def _parse_raw_resolved(cls, item, resolved, extra_extra):
         wenn resolved in (UNKNOWN, IGNORED):
-            return resolved, Nichts
+            gib resolved, Nichts
         try:
             typedeps, extra = resolved
         except (TypeError, ValueError):
@@ -73,16 +73,16 @@ klasse Analyzed:
             # The resolved data takes precedence.
             extra = dict(extra_extra, **extra)
         wenn isinstance(typedeps, TypeDeclaration):
-            return typedeps, extra
+            gib typedeps, extra
         sowenn typedeps in (Nichts, UNKNOWN):
             # It is still effectively unresolved.
-            return UNKNOWN, extra
+            gib UNKNOWN, extra
         sowenn Nichts in typedeps oder UNKNOWN in typedeps:
             # It is still effectively unresolved.
-            return typedeps, extra
+            gib typedeps, extra
         sowenn any(not isinstance(td, TypeDeclaration) fuer td in typedeps):
             raise NotImplementedError((item, typedeps, extra))
-        return typedeps, extra
+        gib typedeps, extra
 
     def __init__(self, item, typedecl=Nichts, **extra):
         assert item is nicht Nichts
@@ -128,43 +128,43 @@ klasse Analyzed:
             f'typedecl={self.typedecl!r}',
             *(f'{k}={v!r}' fuer k, v in self._extra.items())
         ]
-        return f'{type(self).__name__}({", ".join(kwargs)})'
+        gib f'{type(self).__name__}({", ".join(kwargs)})'
 
     def __str__(self):
         try:
-            return self._str
+            gib self._str
         except AttributeError:
             self._str, = self.render('line')
-            return self._str
+            gib self._str
 
     def __hash__(self):
-        return hash(self.item)
+        gib hash(self.item)
 
     def __eq__(self, other):
         wenn isinstance(other, Analyzed):
-            return self.item == other.item
+            gib self.item == other.item
         sowenn isinstance(other, HighlevelParsedItem):
-            return self.item == other
+            gib self.item == other
         sowenn type(other) is tuple:
-            return self.item == other
+            gib self.item == other
         sonst:
-            return NotImplemented
+            gib NotImplemented
 
     def __gt__(self, other):
         wenn isinstance(other, Analyzed):
-            return self.item > other.item
+            gib self.item > other.item
         sowenn isinstance(other, HighlevelParsedItem):
-            return self.item > other
+            gib self.item > other
         sowenn type(other) is tuple:
-            return self.item > other
+            gib self.item > other
         sonst:
-            return NotImplemented
+            gib NotImplemented
 
     def __dir__(self):
         names = set(super().__dir__())
         names.update(self._extra)
         names.remove('_locked')
-        return sorted(names)
+        gib sorted(names)
 
     def __getattr__(self, name):
         wenn name.startswith('_'):
@@ -182,10 +182,10 @@ klasse Analyzed:
             sonst:
                 # Speed things up the next time.
                 self.__dict__[name] = value
-                return value
+                gib value
             raise  # re-raise
         sonst:
-            return value
+            gib value
 
     def __setattr__(self, name, value):
         wenn self._locked und name != '_str':
@@ -201,7 +201,7 @@ klasse Analyzed:
     def decl(self):
         wenn nicht isinstance(self.item, Declaration):
             raise AttributeError('decl')
-        return self.item
+        gib self.item
 
     @property
     def signature(self):
@@ -210,56 +210,56 @@ klasse Analyzed:
 
     @property
     def istype(self):
-        return is_type_decl(self.item.kind)
+        gib is_type_decl(self.item.kind)
 
     @property
     def is_known(self):
         wenn self.typedecl in (UNKNOWN, IGNORED):
-            return Falsch
+            gib Falsch
         sowenn isinstance(self.typedecl, TypeDeclaration):
-            return Wahr
+            gib Wahr
         sonst:
-            return UNKNOWN nicht in self.typedecl
+            gib UNKNOWN nicht in self.typedecl
 
     def fix_filename(self, relroot=fsutil.USE_CWD, **kwargs):
         self.item.fix_filename(relroot, **kwargs)
-        return self
+        gib self
 
     def as_rowdata(self, columns=Nichts):
         # XXX finish!
-        return self.item.as_rowdata(columns)
+        gib self.item.as_rowdata(columns)
 
     def render_rowdata(self, columns=Nichts):
         # XXX finish!
-        return self.item.render_rowdata(columns)
+        gib self.item.render_rowdata(columns)
 
     def render(self, fmt='line', *, itemonly=Falsch):
         wenn fmt == 'raw':
-            yield repr(self)
-            return
+            liefere repr(self)
+            gib
         rendered = self.item.render(fmt)
         wenn itemonly oder nicht self._extra:
-            yield von rendered
-            return
+            liefere von rendered
+            gib
         extra = self._render_extra(fmt)
         wenn nicht extra:
-            yield von rendered
+            liefere von rendered
         sowenn fmt in ('brief', 'line'):
             rendered, = rendered
             extra, = extra
-            yield f'{rendered}\t{extra}'
+            liefere f'{rendered}\t{extra}'
         sowenn fmt == 'summary':
             raise NotImplementedError(fmt)
         sowenn fmt == 'full':
-            yield von rendered
+            liefere von rendered
             fuer line in extra:
-                yield f'\t{line}'
+                liefere f'\t{line}'
         sonst:
             raise NotImplementedError(fmt)
 
     def _render_extra(self, fmt):
         wenn fmt in ('brief', 'line'):
-            yield str(self._extra)
+            liefere str(self._extra)
         sonst:
             raise NotImplementedError(fmt)
 
@@ -271,42 +271,42 @@ klasse Analysis:
     @classonly
     def build_item(cls, info, resolved=Nichts, **extra):
         wenn resolved is Nichts:
-            return cls._item_class.from_raw(info, **extra)
+            gib cls._item_class.from_raw(info, **extra)
         sonst:
-            return cls._item_class.from_resolved(info, resolved, **extra)
+            gib cls._item_class.from_resolved(info, resolved, **extra)
 
     @classmethod
     def from_results(cls, results):
         self = cls()
         fuer info, resolved in results:
             self._add_result(info, resolved)
-        return self
+        gib self
 
     def __init__(self, items=Nichts):
         self._analyzed = {type(self).build_item(item): Nichts
                           fuer item in items oder ()}
 
     def __repr__(self):
-        return f'{type(self).__name__}({list(self._analyzed.keys())})'
+        gib f'{type(self).__name__}({list(self._analyzed.keys())})'
 
     def __iter__(self):
         #yield von self.types
         #yield von self.functions
         #yield von self.variables
-        yield von self._analyzed
+        liefere von self._analyzed
 
     def __len__(self):
-        return len(self._analyzed)
+        gib len(self._analyzed)
 
     def __getitem__(self, key):
         wenn type(key) is int:
             fuer i, val in enumerate(self._analyzed):
                 wenn i == key:
-                    return val
+                    gib val
             sonst:
                 raise IndexError(key)
         sonst:
-            return self._analyzed[key]
+            gib self._analyzed[key]
 
     def fix_filenames(self, relroot=fsutil.USE_CWD, **kwargs):
         wenn relroot und relroot is nicht fsutil.USE_CWD:
@@ -317,4 +317,4 @@ klasse Analysis:
     def _add_result(self, info, resolved):
         analyzed = type(self).build_item(info, resolved)
         self._analyzed[analyzed] = Nichts
-        return analyzed
+        gib analyzed

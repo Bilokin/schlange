@@ -77,7 +77,7 @@ klasse ParseArgsTestCase(unittest.TestCase):
 
     @staticmethod
     def parse_args(args):
-        return cmdline._parse_args(args)
+        gib cmdline._parse_args(args)
 
     def checkError(self, args, msg):
         mit support.captured_stderr() als err, self.assertRaises(SystemExit):
@@ -426,7 +426,7 @@ klasse ParseArgsTestCase(unittest.TestCase):
 
             regrtest = main.Regrtest(ns)
 
-        return regrtest
+        gib regrtest
 
     def check_ci_mode(self, args, use_resources, rerun=Wahr):
         regrtest = self.create_regrtest(args)
@@ -438,7 +438,7 @@ klasse ParseArgsTestCase(unittest.TestCase):
         self.assertWahr(regrtest.print_slowest)
         self.assertWahr(regrtest.output_on_failure)
         self.assertEqual(sorted(regrtest.use_resources), sorted(use_resources))
-        return regrtest
+        gib regrtest
 
     def test_fast_ci(self):
         args = ['--fast-ci']
@@ -548,13 +548,13 @@ klasse BaseTestCase(unittest.TestCase):
             wenn nicht sysconfig.is_python_build():
                 self.skipTest("cannot write %s: %s" % (path, exc))
             raise
-        return name
+        gib name
 
     def regex_search(self, regex, output):
         match = re.search(regex, output, re.MULTILINE)
         wenn nicht match:
             self.fail("%r nicht found in %r" % (regex, output))
-        return match
+        gib match
 
     def check_line(self, output, pattern, full=Falsch, regex=Wahr):
         wenn nicht regex:
@@ -568,7 +568,7 @@ klasse BaseTestCase(unittest.TestCase):
         regex = (fr'^{LOG_PREFIX}\[ *[0-9]+(?:/ *[0-9]+)*\] '
                  fr'({self.TESTNAME_REGEX}) {RESULT_REGEX}')
         parser = re.finditer(regex, output, re.MULTILINE)
-        return list(match.group(1) fuer match in parser)
+        gib list(match.group(1) fuer match in parser)
 
     def check_executed_tests(self, output, tests, *, stats,
                              skipped=(), failed=(),
@@ -613,14 +613,14 @@ klasse BaseTestCase(unittest.TestCase):
             self.assertEqual(executed, total_tests, output)
 
         def plural(count):
-            return 's' wenn count != 1 sonst ''
+            gib 's' wenn count != 1 sonst ''
 
         def list_regex(line_format, tests):
             count = len(tests)
             names = ' '.join(sorted(tests))
             regex = line_format % (count, plural(count))
             regex = r'%s:\n    %s$' % (regex, names)
-            return regex
+            gib regex
 
         wenn skipped:
             regex = list_regex('%s test%s skipped', skipped)
@@ -731,7 +731,7 @@ klasse BaseTestCase(unittest.TestCase):
 
     def parse_random_seed(self, output: str) -> str:
         match = self.regex_search(r'Using random seed: (.*)', output)
-        return match.group(1)
+        gib match.group(1)
 
     def run_command(self, args, input=Nichts, exitcode=0, **kw):
         wenn nicht input:
@@ -766,7 +766,7 @@ klasse BaseTestCase(unittest.TestCase):
                         "---\n"
                         % proc.stderr)
             self.fail(msg)
-        return proc
+        gib proc
 
     def run_python(self, args, isolated=Wahr, **kw):
         extraargs = []
@@ -778,7 +778,7 @@ klasse BaseTestCase(unittest.TestCase):
             cmd.append('-I')
         cmd.extend(args)
         proc = self.run_command(cmd, **kw)
-        return proc.stdout
+        gib proc.stdout
 
 
 klasse CheckActualTests(BaseTestCase):
@@ -930,7 +930,7 @@ klasse ArgsTestCase(BaseTestCase):
 
     def run_tests(self, *testargs, **kw):
         cmdargs = ['-m', 'test', '--testdir=%s' % self.tmptestdir, *testargs]
-        return self.run_python(cmdargs, **kw)
+        gib self.run_python(cmdargs, **kw)
 
     def test_success(self):
         code = textwrap.dedent("""
@@ -1347,7 +1347,7 @@ klasse ArgsTestCase(BaseTestCase):
 
     def parse_methods(self, output):
         regex = re.compile("^(test[^ ]+).*ok$", flags=re.MULTILINE)
-        return [match.group(1) fuer match in regex.finditer(output)]
+        gib [match.group(1) fuer match in regex.finditer(output)]
 
     def test_ignorefile(self):
         code = textwrap.dedent("""
@@ -1461,7 +1461,7 @@ klasse ArgsTestCase(BaseTestCase):
 
             klasse Tests(unittest.TestCase):
                 def test_succeed(self):
-                    return
+                    gib
 
                 def test_fail_always(self):
                     # test that always fails
@@ -1490,7 +1490,7 @@ klasse ArgsTestCase(BaseTestCase):
 
             klasse Tests(unittest.TestCase):
                 def test_succeed(self):
-                    return
+                    gib
 
                 def test_fail_once(self):
                     wenn nicht os.path.exists(marker_filename):
@@ -1530,7 +1530,7 @@ klasse ArgsTestCase(BaseTestCase):
                     raise RuntimeError('Fail')
 
                 def test_success(self):
-                    return
+                    gib
         """)
         testname = self.create_test(code=code)
 
@@ -1553,7 +1553,7 @@ klasse ArgsTestCase(BaseTestCase):
                     raise RuntimeError('Fail')
 
                 def test_success(self):
-                    return
+                    gib
         """)
         testname = self.create_test(code=code)
 
@@ -1575,7 +1575,7 @@ klasse ArgsTestCase(BaseTestCase):
 
             klasse ExampleTests(unittest.TestCase):
                 def test_success(self):
-                    return
+                    gib
         """)
         testname = self.create_test(code=code)
 
@@ -1597,7 +1597,7 @@ klasse ArgsTestCase(BaseTestCase):
 
             klasse ExampleTests(unittest.TestCase):
                 def test_success(self):
-                    return
+                    gib
         """)
         testname = self.create_test(code=code)
 
@@ -1619,7 +1619,7 @@ klasse ArgsTestCase(BaseTestCase):
                     raise RuntimeError('Fail')
 
                 def test_success(self):
-                    return
+                    gib
         """)
         testname = self.create_test(code=code)
 
@@ -1641,7 +1641,7 @@ klasse ArgsTestCase(BaseTestCase):
                     raise RuntimeError('Fail')
 
                 def test_success(self):
-                    return
+                    gib
         """)
         testname = self.create_test(code=code)
 
@@ -1663,7 +1663,7 @@ klasse ArgsTestCase(BaseTestCase):
                     raise RuntimeError('Fail')
 
                 async def test_success(self):
-                    return
+                    gib
         """)
         testname = self.create_test(code=code)
 
@@ -1684,7 +1684,7 @@ klasse ArgsTestCase(BaseTestCase):
                     raise RuntimeError('Fail')
 
                 async def test_success(self):
-                    return
+                    gib
         """)
         testname = self.create_test(code=code)
 
@@ -2061,7 +2061,7 @@ klasse ArgsTestCase(BaseTestCase):
 
             def load_tests(loader, tests, pattern):
                 tests.addTest(doctest.DocTestSuite())
-                return tests
+                gib tests
         ''')
         testname = self.create_test(code=code)
 
@@ -2418,7 +2418,7 @@ klasse TestUtils(unittest.TestCase):
                 self.test_id = test_id
 
             def id(self):
-                return self.test_id
+                gib self.test_id
 
         # Restore patterns once the test completes
         patterns = get_match_tests()

@@ -63,10 +63,10 @@ Use a metaclass mit a __prepare__ static method.
     ...    @staticmethod
     ...    def __prepare__(*args, **kwds):
     ...        drucke("Prepare called:", args, kwds)
-    ...        return dict()
+    ...        gib dict()
     ...    def __new__(cls, name, bases, namespace, **kwds):
     ...        drucke("New called:", kwds)
-    ...        return type.__new__(cls, name, bases, namespace)
+    ...        gib type.__new__(cls, name, bases, namespace)
     ...    def __init__(cls, *args, **kwds):
     ...        pass
     ...
@@ -155,7 +155,7 @@ Use a __prepare__ method that returns an instrumented dict.
     >>> klasse Meta(type):
     ...    @staticmethod
     ...    def __prepare__(name, bases):
-    ...        return LoggingDict()
+    ...        gib LoggingDict()
     ...
     >>> klasse C(metaclass=Meta):
     ...     foo = 2+2
@@ -177,7 +177,7 @@ Use a metaclass that doesn't derive von type.
     ...     drucke("meta:", name, bases)
     ...     drucke("ns:", sorted(namespace.items()))
     ...     drucke("kw:", sorted(kwds.items()))
-    ...     return namespace
+    ...     gib namespace
     ...
     >>> klasse C(metaclass=meta):
     ...     a = 42
@@ -196,7 +196,7 @@ And again, mit a __prepare__ attribute.
 
     >>> def prepare(name, bases, **kwds):
     ...     drucke("prepare:", name, bases, sorted(kwds.items()))
-    ...     return LoggingDict()
+    ...     gib LoggingDict()
     ...
     >>> meta.__prepare__ = prepare
     >>> klasse C(metaclass=meta, other="booh"):
@@ -230,7 +230,7 @@ Make sure it works mit subclassing.
     ...     def __prepare__(cls, *args, **kwds):
     ...         d = super().__prepare__(*args, **kwds)
     ...         d["hello"] = 42
-    ...         return d
+    ...         gib d
     ...
     >>> klasse C(metaclass=M):
     ...     drucke(hello)
@@ -261,7 +261,7 @@ Test setting attributes mit a non-base type in mro() (gh-127773).
     ...
     >>> klasse Meta(type):
     ...     def mro(cls):
-    ...         return (cls, Base, object)
+    ...         gib (cls, Base, object)
     ...
     >>> klasse WeirdClass(metaclass=Meta):
     ...     pass
@@ -293,7 +293,7 @@ sonst:
 
 def load_tests(loader, tests, pattern):
     tests.addTest(doctest.DocTestSuite())
-    return tests
+    gib tests
 
 
 wenn __name__ == "__main__":

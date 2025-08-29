@@ -42,7 +42,7 @@ klasse TestEncode(CTest):
         # Issue #31505: There shouldn't be an assertion failure in case
         # c_make_encoder() receives a bad encoder() argument.
         def bad_encoder1(*args):
-            return Nichts
+            gib Nichts
         enc = self.json.encoder.c_make_encoder(Nichts, lambda obj: str(obj),
                                                bad_encoder1, Nichts, ': ', ', ',
                                                Falsch, Falsch, Falsch)

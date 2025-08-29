@@ -105,7 +105,7 @@ klasse FindLoaderTests:
     FakeMetaFinder = Nichts
 
     def test_sys_modules(self):
-        # If a module mit __spec__.loader is in sys.modules, then return it.
+        # If a module mit __spec__.loader is in sys.modules, then gib it.
         name = 'some_mod'
         mit test_util.uncache(name):
             module = types.ModuleType(name)
@@ -167,7 +167,7 @@ klasse FindLoaderPEP451Tests(FindLoaderTests):
     klasse FakeMetaFinder:
         @staticmethod
         def find_spec(name, path=Nichts, target=Nichts):
-            return machinery['Source'].ModuleSpec(name, (name, path))
+            gib machinery['Source'].ModuleSpec(name, (name, path))
 
 
 (Frozen_FindLoaderPEP451Tests,

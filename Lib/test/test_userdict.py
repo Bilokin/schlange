@@ -174,7 +174,7 @@ klasse UserDictTest(mapping_tests.TestHashMappingProtocol):
         # (G) subclass doesn't define __missing__ at all
         klasse D(collections.UserDict):
             def __missing__(self, key):
-                return 42
+                gib 42
         d = D({1: 2, 3: 4})
         self.assertEqual(d[1], 2)
         self.assertEqual(d[3], 4)

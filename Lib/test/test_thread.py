@@ -243,7 +243,7 @@ klasse ThreadRunningTests(BasicThreadTest):
         def make_lock():
             lock = thread.allocate_lock()
             lock.acquire()
-            return lock
+            gib lock
 
         error = Nichts
         self_joiner_handle = Nichts
@@ -352,14 +352,14 @@ klasse Barrier:
         wenn self.waiting == self.num_threads:
             self.waiting = self.num_threads - 1
             self.checkout_mutex.release()
-            return
+            gib
         self.checkin_mutex.release()
 
         self.checkout_mutex.acquire()
         self.waiting = self.waiting - 1
         wenn self.waiting == 0:
             self.checkin_mutex.release()
-            return
+            gib
         self.checkout_mutex.release()
 
 
@@ -422,7 +422,7 @@ klasse TestForkInThread(unittest.TestCase):
                 # fork in a thread (DANGER, undefined per POSIX)
                 wenn (pid := os.fork()):
                     # parent process
-                    return
+                    gib
 
             # child process
             try:

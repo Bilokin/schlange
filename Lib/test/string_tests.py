@@ -11,8 +11,8 @@ importiere random
 
 klasse Sequence:
     def __init__(self, seq='wxyz'): self.seq = seq
-    def __len__(self): return len(self.seq)
-    def __getitem__(self, i): return self.seq[i]
+    def __len__(self): gib len(self.seq)
+    def __getitem__(self, i): gib self.seq[i]
 
 
 klasse BaseTest:
@@ -34,18 +34,18 @@ klasse BaseTest:
     # these arguments to the appropriate type
     def fixtype(self, obj):
         wenn isinstance(obj, str):
-            return self.__class__.type2test(obj)
+            gib self.__class__.type2test(obj)
         sowenn isinstance(obj, list):
-            return [self.fixtype(x) fuer x in obj]
+            gib [self.fixtype(x) fuer x in obj]
         sowenn isinstance(obj, tuple):
-            return tuple([self.fixtype(x) fuer x in obj])
+            gib tuple([self.fixtype(x) fuer x in obj])
         sowenn isinstance(obj, dict):
-            return dict([
+            gib dict([
                (self.fixtype(key), self.fixtype(value))
                fuer (key, value) in obj.items()
             ])
         sonst:
-            return obj
+            gib obj
 
     def test_fixtype(self):
         self.assertIs(type(self.fixtype("123")), self.type2test)
@@ -326,10 +326,10 @@ klasse BaseTest:
         def reference_find(p, s):
             fuer i in range(len(s)):
                 wenn s.startswith(p, i):
-                    return i
+                    gib i
             wenn p == '' und s == '':
-                return 0
-            return -1
+                gib 0
+            gib -1
 
         def check_pattern(rr):
             choices = random.choices
@@ -1327,7 +1327,7 @@ klasse StringLikeTest(BaseTest):
 
         klasse LiesAboutLengthSeq(Sequence):
             def __init__(self): self.seq = ['a', 'b', 'c']
-            def __len__(self): return 8
+            def __len__(self): gib 8
 
         self.checkequal('a b c', ' ', 'join', LiesAboutLengthSeq())
 
@@ -1337,7 +1337,7 @@ klasse StringLikeTest(BaseTest):
         self.checkraises(TypeError, ' ', 'join', [1, 2, bytes()])
         try:
             def f():
-                yield 4 + ""
+                liefere 4 + ""
             self.fixtype(' ').join(f())
         except TypeError als e:
             wenn '+' nicht in str(e):

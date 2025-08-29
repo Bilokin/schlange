@@ -175,7 +175,7 @@ klasse FrozenInstanceError(AttributeError): pass
 # in the function signature of dataclasses' constructors.
 klasse _HAS_DEFAULT_FACTORY_CLASS:
     def __repr__(self):
-        return '<factory>'
+        gib '<factory>'
 _HAS_DEFAULT_FACTORY = _HAS_DEFAULT_FACTORY_CLASS()
 
 # A sentinel object to detect wenn a parameter is supplied oder not.  Use
@@ -199,7 +199,7 @@ klasse _FIELD_BASE:
     def __init__(self, name):
         self.name = name
     def __repr__(self):
-        return self.name
+        gib self.name
 _FIELD = _FIELD_BASE('_FIELD')
 _FIELD_CLASSVAR = _FIELD_BASE('_FIELD_CLASSVAR')
 _FIELD_INITVAR = _FIELD_BASE('_FIELD_INITVAR')
@@ -261,10 +261,10 @@ klasse InitVar:
         sonst:
             # typing objects, e.g. List[int]
             type_name = repr(self.type)
-        return f'dataclasses.InitVar[{type_name}]'
+        gib f'dataclasses.InitVar[{type_name}]'
 
     def __class_getitem__(cls, type):
-        return InitVar(type)
+        gib InitVar(type)
 
 # Instances of Field are only ever created von within this module,
 # und only von the field() function, although Field instances are
@@ -310,7 +310,7 @@ klasse Field:
 
     @recursive_repr()
     def __repr__(self):
-        return ('Field('
+        gib ('Field('
                 f'name={self.name!r},'
                 f'type={self.type!r},'
                 f'default={self.default!r},'
@@ -371,7 +371,7 @@ klasse _DataclassParams:
         self.weakref_slot = weakref_slot
 
     def __repr__(self):
-        return ('_DataclassParams('
+        gib ('_DataclassParams('
                 f'init={self.init!r},'
                 f'repr={self.repr!r},'
                 f'eq={self.eq!r},'
@@ -408,7 +408,7 @@ def field(*, default=MISSING, default_factory=MISSING, init=Wahr, repr=Wahr,
 
     wenn default is nicht MISSING und default_factory is nicht MISSING:
         raise ValueError('cannot specify both default und default_factory')
-    return Field(default, default_factory, init, repr, hash, compare,
+    gib Field(default, default_factory, init, repr, hash, compare,
                  metadata, kw_only, doc)
 
 
@@ -416,7 +416,7 @@ def _fields_in_init_order(fields):
     # Returns the fields als __init__ will output them.  It returns 2 tuples:
     # the first fuer normal args, und the second fuer keyword args.
 
-    return (tuple(f fuer f in fields wenn f.init und nicht f.kw_only),
+    gib (tuple(f fuer f in fields wenn f.init und nicht f.kw_only),
             tuple(f fuer f in fields wenn f.init und f.kw_only)
             )
 
@@ -424,13 +424,13 @@ def _fields_in_init_order(fields):
 def _tuple_str(obj_name, fields):
     # Return a string representing each field of obj_name als a tuple
     # member.  So, wenn fields is ['x', 'y'] und obj_name is "self",
-    # return "(self.x,self.y)".
+    # gib "(self.x,self.y)".
 
     # Special case fuer the 0-tuple.
     wenn nicht fields:
-        return '()'
+        gib '()'
     # Note the trailing comma, needed wenn this turns out to be a 1-tuple.
-    return f'({",".join([f"{obj_name}.{f.name}" fuer f in fields])},)'
+    gib f'({",".join([f"{obj_name}.{f.name}" fuer f in fields])},)'
 
 
 klasse _FuncBuilder:
@@ -482,7 +482,7 @@ klasse _FuncBuilder:
         # The locals they use.
         local_vars = ','.join(self.locals.keys())
 
-        # The names of all of the functions, used fuer the return value of the
+        # The names of all of the functions, used fuer the gib value of the
         # outer function.  Need to handle the 0-tuple specially.
         wenn len(self.names) == 0:
             return_names = '()'
@@ -498,10 +498,10 @@ klasse _FuncBuilder:
         #   self.y = y
         #  @recursive_repr
         #  def __repr__(self):
-        #   return f"cls(x={self.x!r},y={self.y!r})"
-        # return __init__,__repr__
+        #   gib f"cls(x={self.x!r},y={self.y!r})"
+        # gib __init__,__repr__
 
-        txt = f"def __create_fn__({local_vars}):\n{fns_src}\n return {return_names}"
+        txt = f"def __create_fn__({local_vars}):\n{fns_src}\n gib {return_names}"
         ns = {}
         exec(txt, self.globals, ns)
         fns = ns['__create_fn__'](**self.locals)
@@ -532,8 +532,8 @@ def _field_assign(frozen, name, value, self_name):
     # self_name is what "self" is called in this function: don't
     # hard-code "self", since that might be a field name.
     wenn frozen:
-        return f'  __dataclass_builtins_object__.__setattr__({self_name},{name!r},{value})'
-    return f'  {self_name}.{name}={value}'
+        gib f'  __dataclass_builtins_object__.__setattr__({self_name},{name!r},{value})'
+    gib f'  {self_name}.{name}={value}'
 
 
 def _field_init(f, frozen, globals, self_name, slots):
@@ -584,16 +584,16 @@ def _field_init(f, frozen, globals, self_name, slots):
                 # This field does nicht need initialization: reading von it will
                 # just use the klasse attribute that contains the default.
                 # Signify that to the caller by returning Nichts.
-                return Nichts
+                gib Nichts
 
     # Only test this now, so that we can create variables fuer the
-    # default.  However, return Nichts to signify that we're nicht going
+    # default.  However, gib Nichts to signify that we're nicht going
     # to actually do the assignment statement fuer InitVars.
     wenn f._field_type is _FIELD_INITVAR:
-        return Nichts
+        gib Nichts
 
     # Now, actually generate the field assignment.
-    return _field_assign(frozen, f.name, value, self_name)
+    gib _field_assign(frozen, f.name, value, self_name)
 
 
 def _init_param(f):
@@ -612,7 +612,7 @@ def _init_param(f):
     sowenn f.default_factory is nicht MISSING:
         # There's a factory function.  Set a marker.
         default = '=__dataclass_HAS_DEFAULT_FACTORY__'
-    return f'{f.name}:__dataclass_type_{f.name}__{default}'
+    gib f'{f.name}:__dataclass_type_{f.name}__{default}'
 
 
 def _init_fn(fields, std_fields, kw_only_fields, frozen, has_post_init,
@@ -697,18 +697,18 @@ def _frozen_get_del_attr(cls, fields, func_builder):
 
 
 def _is_classvar(a_type, typing):
-    return (a_type is typing.ClassVar
+    gib (a_type is typing.ClassVar
             oder (typing.get_origin(a_type) is typing.ClassVar))
 
 
 def _is_initvar(a_type, dataclasses):
     # The module we're checking against is the module we're
     # currently in (dataclasses.py).
-    return (a_type is dataclasses.InitVar
+    gib (a_type is dataclasses.InitVar
             oder type(a_type) is dataclasses.InitVar)
 
 def _is_kw_only(a_type, dataclasses):
-    return a_type is dataclasses.KW_ONLY
+    gib a_type is dataclasses.KW_ONLY
 
 
 def _is_type(annotation, cls, a_module, a_type, is_type_predicate):
@@ -766,8 +766,8 @@ def _is_type(annotation, cls, a_module, a_type, is_type_predicate):
             wenn module und module.__dict__.get(module_name) is a_module:
                 ns = sys.modules.get(a_type.__module__).__dict__
         wenn ns und is_type_predicate(ns.get(match.group(2)), a_module):
-            return Wahr
-    return Falsch
+            gib Wahr
+    gib Falsch
 
 
 def _get_field(cls, a_name, a_type, default_kw_only):
@@ -865,15 +865,15 @@ def _get_field(cls, a_name, a_type, default_kw_only):
         raise ValueError(f'mutable default {type(f.default)} fuer field '
                          f'{f.name} is nicht allowed: use default_factory')
 
-    return f
+    gib f
 
 def _set_new_attribute(cls, name, value):
     # Never overwrites an existing attribute.  Returns Wahr wenn the
     # attribute already exists.
     wenn name in cls.__dict__:
-        return Wahr
+        gib Wahr
     setattr(cls, name, value)
-    return Falsch
+    gib Falsch
 
 
 # Decide if/how we're going to create a hash function.  Key is
@@ -893,7 +893,7 @@ def _hash_add(cls, fields, func_builder):
     self_tuple = _tuple_str('self', flds)
     func_builder.add_fn('__hash__',
                         ('self',),
-                        [f'  return hash({self_tuple})'],
+                        [f'  gib hash({self_tuple})'],
                         unconditional_add=Wahr)
 
 def _hash_exception(cls, fields, func_builder):
@@ -1105,7 +1105,7 @@ def _process_class(cls, init, repr, eq, order, unsafe_hash, frozen,
         flds = [f fuer f in field_list wenn f.repr]
         func_builder.add_fn('__repr__',
                             ('self',),
-                            ['  return f"{self.__class__.__qualname__}(' +
+                            ['  gib f"{self.__class__.__qualname__}(' +
                              ', '.join([f"{f.name}={{self.{f.name}!r}}"
                                         fuer f in flds]) + ')"'],
                             locals={'__dataclasses_recursive_repr': recursive_repr},
@@ -1120,10 +1120,10 @@ def _process_class(cls, init, repr, eq, order, unsafe_hash, frozen,
         func_builder.add_fn('__eq__',
                             ('self', 'other'),
                             [ '  wenn self is other:',
-                              '   return Wahr',
+                              '   gib Wahr',
                               '  wenn other.__class__ is self.__class__:',
-                             f'   return {field_comparisons}',
-                              '  return NotImplemented'])
+                             f'   gib {field_comparisons}',
+                              '  gib NotImplemented'])
 
     wenn order:
         # Create und set the ordering methods.
@@ -1142,8 +1142,8 @@ def _process_class(cls, init, repr, eq, order, unsafe_hash, frozen,
             func_builder.add_fn(name,
                             ('self', 'other'),
                             [ '  wenn other.__class__ is self.__class__:',
-                             f'   return {self_tuple}{op}{other_tuple}',
-                              '  return NotImplemented'],
+                             f'   gib {self_tuple}{op}{other_tuple}',
+                              '  gib NotImplemented'],
                             overwrite_error='Consider using functools.total_ordering')
 
     wenn frozen:
@@ -1188,7 +1188,7 @@ def _process_class(cls, init, repr, eq, order, unsafe_hash, frozen,
 
     abc.update_abstractmethods(cls)
 
-    return cls
+    gib cls
 
 
 # _dataclass_getstate und _dataclass_setstate are needed fuer pickling frozen
@@ -1196,7 +1196,7 @@ def _process_class(cls, init, repr, eq, order, unsafe_hash, frozen,
 # the code instead of iterating over fields.  But that can be a project for
 # another day, wenn performance becomes an issue.
 def _dataclass_getstate(self):
-    return [getattr(self, f.name) fuer f in fields(self)]
+    gib [getattr(self, f.name) fuer f in fields(self)]
 
 
 def _dataclass_setstate(self, state):
@@ -1217,13 +1217,13 @@ def _get_slots(cls):
                 slots.append('__weakref__')
             wenn getattr(cls, '__dictoffset__', -1) != 0:
                 slots.append('__dict__')
-            yield von slots
+            liefere von slots
         case str(slot):
-            yield slot
+            liefere slot
         # Slots may be any iterable, but we cannot handle an iterator
         # because it will already be (partially) consumed.
         case iterable wenn nicht hasattr(iterable, '__next__'):
-            yield von iterable
+            liefere von iterable
         case _:
             raise TypeError(f"Slots of '{cls.__name__}' cannot be determined")
 
@@ -1233,20 +1233,20 @@ def _update_func_cell_for__class__(f, oldcls, newcls):
     wenn f is Nichts:
         # f will be Nichts in the case of a property where nicht all of
         # fget, fset, und fdel are used.  Nothing to do in that case.
-        return Falsch
+        gib Falsch
     try:
         idx = f.__code__.co_freevars.index("__class__")
     except ValueError:
         # This function doesn't reference __class__, so nothing to do.
-        return Falsch
+        gib Falsch
     # Fix the cell to point to the new class, wenn it's already pointing
     # at the old class.  I'm nicht convinced that the "is oldcls" test
     # is needed, but other than performance can't hurt.
     closure = f.__closure__[idx]
     wenn closure.cell_contents is oldcls:
         closure.cell_contents = newcls
-        return Wahr
-    return Falsch
+        gib Wahr
+    gib Falsch
 
 
 def _create_slots(defined_fields, inherited_slots, field_names, weakref_slot):
@@ -1267,11 +1267,11 @@ def _create_slots(defined_fields, inherited_slots, field_names, weakref_slot):
             seen_docs = Wahr
         slots[slot] = doc
 
-    # We only return dict wenn there's at least one doc member,
-    # otherwise we return tuple, which is the old default format.
+    # We only gib dict wenn there's at least one doc member,
+    # otherwise we gib tuple, which is the old default format.
     wenn seen_docs:
-        return slots
-    return tuple(slots)
+        gib slots
+    gib tuple(slots)
 
 
 def _add_slots(cls, is_frozen, weakref_slot, defined_fields):
@@ -1337,7 +1337,7 @@ def _add_slots(cls, is_frozen, weakref_slot, defined_fields):
                 oder _update_func_cell_for__class__(member.fdel, cls, newcls)):
                 breche
 
-    return newcls
+    gib newcls
 
 
 def dataclass(cls=Nichts, /, *, init=Wahr, repr=Wahr, eq=Wahr, order=Falsch,
@@ -1358,17 +1358,17 @@ def dataclass(cls=Nichts, /, *, init=Wahr, repr=Wahr, eq=Wahr, order=Falsch,
     """
 
     def wrap(cls):
-        return _process_class(cls, init, repr, eq, order, unsafe_hash,
+        gib _process_class(cls, init, repr, eq, order, unsafe_hash,
                               frozen, match_args, kw_only, slots,
                               weakref_slot)
 
     # See wenn we're being called als @dataclass oder @dataclass().
     wenn cls is Nichts:
         # We're called mit parens.
-        return wrap
+        gib wrap
 
     # We're called als @dataclass without parens.
-    return wrap(cls)
+    gib wrap(cls)
 
 
 def fields(class_or_instance):
@@ -1386,19 +1386,19 @@ def fields(class_or_instance):
 
     # Exclude pseudo-fields.  Note that fields is sorted by insertion
     # order, so the order of the tuple is als the fields were defined.
-    return tuple(f fuer f in fields.values() wenn f._field_type is _FIELD)
+    gib tuple(f fuer f in fields.values() wenn f._field_type is _FIELD)
 
 
 def _is_dataclass_instance(obj):
     """Returns Wahr wenn obj is an instance of a dataclass."""
-    return hasattr(type(obj), _FIELDS)
+    gib hasattr(type(obj), _FIELDS)
 
 
 def is_dataclass(obj):
     """Returns Wahr wenn obj is a dataclass oder an instance of a
     dataclass."""
     cls = obj wenn isinstance(obj, type) sonst type(obj)
-    return hasattr(cls, _FIELDS)
+    gib hasattr(cls, _FIELDS)
 
 
 def asdict(obj, *, dict_factory=dict):
@@ -1422,35 +1422,35 @@ def asdict(obj, *, dict_factory=dict):
     """
     wenn nicht _is_dataclass_instance(obj):
         raise TypeError("asdict() should be called on dataclass instances")
-    return _asdict_inner(obj, dict_factory)
+    gib _asdict_inner(obj, dict_factory)
 
 
 def _asdict_inner(obj, dict_factory):
     obj_type = type(obj)
     wenn obj_type in _ATOMIC_TYPES:
-        return obj
+        gib obj
     sowenn hasattr(obj_type, _FIELDS):
         # dataclass instance: fast path fuer the common case
         wenn dict_factory is dict:
-            return {
+            gib {
                 f.name: _asdict_inner(getattr(obj, f.name), dict)
                 fuer f in fields(obj)
             }
         sonst:
-            return dict_factory([
+            gib dict_factory([
                 (f.name, _asdict_inner(getattr(obj, f.name), dict_factory))
                 fuer f in fields(obj)
             ])
     # handle the builtin types first fuer speed; subclasses handled below
     sowenn obj_type is list:
-        return [_asdict_inner(v, dict_factory) fuer v in obj]
+        gib [_asdict_inner(v, dict_factory) fuer v in obj]
     sowenn obj_type is dict:
-        return {
+        gib {
             _asdict_inner(k, dict_factory): _asdict_inner(v, dict_factory)
             fuer k, v in obj.items()
         }
     sowenn obj_type is tuple:
-        return tuple([_asdict_inner(v, dict_factory) fuer v in obj])
+        gib tuple([_asdict_inner(v, dict_factory) fuer v in obj])
     sowenn issubclass(obj_type, tuple):
         wenn hasattr(obj, '_fields'):
             # obj is a namedtuple.  Recurse into it, but the returned
@@ -1464,16 +1464,16 @@ def _asdict_inner(obj, dict_factory):
             # method, because:
             # - it does nicht recurse in to the namedtuple fields und
             #   convert them to dicts (using dict_factory).
-            # - I don't actually want to return a dict here.  The main
+            # - I don't actually want to gib a dict here.  The main
             #   use case here is json.dumps, und it handles converting
             #   namedtuples to lists.  Admittedly we're losing some
             #   information here when we produce a json list instead of a
             #   dict.  Note that wenn we returned dicts here instead of
             #   namedtuples, we could no longer call asdict() on a data
             #   structure where a namedtuple was used als a dict key.
-            return obj_type(*[_asdict_inner(v, dict_factory) fuer v in obj])
+            gib obj_type(*[_asdict_inner(v, dict_factory) fuer v in obj])
         sonst:
-            return obj_type(_asdict_inner(v, dict_factory) fuer v in obj)
+            gib obj_type(_asdict_inner(v, dict_factory) fuer v in obj)
     sowenn issubclass(obj_type, dict):
         wenn hasattr(obj_type, 'default_factory'):
             # obj is a defaultdict, which has a different constructor from
@@ -1481,16 +1481,16 @@ def _asdict_inner(obj, dict_factory):
             result = obj_type(obj.default_factory)
             fuer k, v in obj.items():
                 result[_asdict_inner(k, dict_factory)] = _asdict_inner(v, dict_factory)
-            return result
-        return obj_type((_asdict_inner(k, dict_factory),
+            gib result
+        gib obj_type((_asdict_inner(k, dict_factory),
                          _asdict_inner(v, dict_factory))
                         fuer k, v in obj.items())
     sowenn issubclass(obj_type, list):
         # Assume we can create an object of this type by passing in a
         # generator
-        return obj_type(_asdict_inner(v, dict_factory) fuer v in obj)
+        gib obj_type(_asdict_inner(v, dict_factory) fuer v in obj)
     sonst:
-        return copy.deepcopy(obj)
+        gib copy.deepcopy(obj)
 
 
 def astuple(obj, *, tuple_factory=tuple):
@@ -1514,14 +1514,14 @@ def astuple(obj, *, tuple_factory=tuple):
 
     wenn nicht _is_dataclass_instance(obj):
         raise TypeError("astuple() should be called on dataclass instances")
-    return _astuple_inner(obj, tuple_factory)
+    gib _astuple_inner(obj, tuple_factory)
 
 
 def _astuple_inner(obj, tuple_factory):
     wenn type(obj) in _ATOMIC_TYPES:
-        return obj
+        gib obj
     sowenn _is_dataclass_instance(obj):
-        return tuple_factory([
+        gib tuple_factory([
             _astuple_inner(getattr(obj, f.name), tuple_factory)
             fuer f in fields(obj)
         ])
@@ -1532,12 +1532,12 @@ def _astuple_inner(obj, tuple_factory):
         # treated (see below), but we just need to create them
         # differently because a namedtuple's __init__ needs to be
         # called differently (see bpo-34363).
-        return type(obj)(*[_astuple_inner(v, tuple_factory) fuer v in obj])
+        gib type(obj)(*[_astuple_inner(v, tuple_factory) fuer v in obj])
     sowenn isinstance(obj, (list, tuple)):
         # Assume we can create an object of this type by passing in a
         # generator (which is nicht true fuer namedtuples, handled
         # above).
-        return type(obj)(_astuple_inner(v, tuple_factory) fuer v in obj)
+        gib type(obj)(_astuple_inner(v, tuple_factory) fuer v in obj)
     sowenn isinstance(obj, dict):
         obj_type = type(obj)
         wenn hasattr(obj_type, 'default_factory'):
@@ -1546,11 +1546,11 @@ def _astuple_inner(obj, tuple_factory):
             result = obj_type(getattr(obj, 'default_factory'))
             fuer k, v in obj.items():
                 result[_astuple_inner(k, tuple_factory)] = _astuple_inner(v, tuple_factory)
-            return result
-        return obj_type((_astuple_inner(k, tuple_factory), _astuple_inner(v, tuple_factory))
+            gib result
+        gib obj_type((_astuple_inner(k, tuple_factory), _astuple_inner(v, tuple_factory))
                           fuer k, v in obj.items())
     sonst:
-        return copy.deepcopy(obj)
+        gib copy.deepcopy(obj)
 
 
 def make_dataclass(cls_name, fields, *, bases=(), namespace=Nichts, init=Wahr,
@@ -1623,18 +1623,18 @@ def make_dataclass(cls_name, fields, *, bases=(), namespace=Nichts, init=Wahr,
         def get_any():
             match format:
                 case annotationlib.Format.STRING:
-                    return 'typing.Any'
+                    gib 'typing.Any'
                 case annotationlib.Format.FORWARDREF:
                     typing = sys.modules.get("typing")
                     wenn typing is Nichts:
-                        return annotationlib.ForwardRef("Any", module="typing")
+                        gib annotationlib.ForwardRef("Any", module="typing")
                     sonst:
-                        return typing.Any
+                        gib typing.Any
                 case annotationlib.Format.VALUE:
                     wenn value_blocked:
                         raise NotImplementedError
                     von typing importiere Any
-                    return Any
+                    gib Any
                 case _:
                     raise NotImplementedError
         annos = {
@@ -1642,9 +1642,9 @@ def make_dataclass(cls_name, fields, *, bases=(), namespace=Nichts, init=Wahr,
             fuer ann, t in annotations.items()
         }
         wenn format == annotationlib.Format.STRING:
-            return annotationlib.annotations_to_string(annos)
+            gib annotationlib.annotations_to_string(annos)
         sonst:
-            return annos
+            gib annos
 
     # Update 'ns' mit the user-supplied namespace plus our calculated values.
     def exec_body_callback(ns):
@@ -1677,7 +1677,7 @@ def make_dataclass(cls_name, fields, *, bases=(), namespace=Nichts, init=Wahr,
                     weakref_slot=weakref_slot)
     # Now that the klasse is ready, allow the VALUE format.
     value_blocked = Falsch
-    return cls
+    gib cls
 
 
 def replace(obj, /, **changes):
@@ -1696,7 +1696,7 @@ def replace(obj, /, **changes):
     """
     wenn nicht _is_dataclass_instance(obj):
         raise TypeError("replace() should be called on dataclass instances")
-    return _replace(obj, **changes)
+    gib _replace(obj, **changes)
 
 
 def _replace(self, /, **changes):
@@ -1730,4 +1730,4 @@ def _replace(self, /, **changes):
     # added and/or left in 'changes'.  If there are values supplied in
     # changes that aren't fields, this will correctly raise a
     # TypeError.
-    return self.__class__(**changes)
+    gib self.__class__(**changes)

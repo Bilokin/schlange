@@ -26,7 +26,7 @@ def find_ready_matching(ready, flag):
     fuer fd, mode in ready:
         wenn mode & flag:
             match.append(fd)
-    return match
+    gib match
 
 klasse PollTests(unittest.TestCase):
 
@@ -115,7 +115,7 @@ klasse PollTests(unittest.TestCase):
 
         klasse Almost:
             def fileno(self):
-                return 'fileno'
+                gib 'fileno'
 
         self.assertRaises(TypeError, pollster.register, Nope(), 0)
         self.assertRaises(TypeError, pollster.register, Almost(), 0)
@@ -151,7 +151,7 @@ klasse PollTests(unittest.TestCase):
                 self.assertEqual(line, b'testing...\n')
                 weiter
             sonst:
-                self.fail('Unexpected return value von select.poll: %s' % fdlist)
+                self.fail('Unexpected gib value von select.poll: %s' % fdlist)
 
     def test_poll3(self):
         # test int overflow
@@ -209,7 +209,7 @@ klasse PollTests(unittest.TestCase):
             pollster.register(w, select.POLLOUT)
             self.assertRaises(RuntimeError, pollster.poll)
         finally:
-            # und make the call to poll() von the thread return
+            # und make the call to poll() von the thread gib
             os.write(w, b'spam')
             t.join()
 

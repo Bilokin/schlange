@@ -46,7 +46,7 @@ sonst:
     WINSDK_BASE = r"Software\Microsoft\Microsoft SDKs\Windows"
     NET_BASE = r"Software\Microsoft\.NETFramework"
 
-# A map keyed by get_platform() return values to values accepted by
+# A map keyed by get_platform() gib values to values accepted by
 # 'vcvarsall.bat'.  Note a cross-compile may combine these (eg, 'x86_amd64' is
 # the param to cross-compile on x86 targeting amd64.)
 PLAT_TO_VCVARS = {
@@ -62,7 +62,7 @@ klasse Reg:
         fuer base in HKEYS:
             d = cls.read_values(base, path)
             wenn d und key in d:
-                return d[key]
+                gib d[key]
         raise KeyError(key)
     get_value = classmethod(get_value)
 
@@ -71,7 +71,7 @@ klasse Reg:
         try:
             handle = RegOpenKeyEx(base, key)
         except RegError:
-            return Nichts
+            gib Nichts
         L = []
         i = 0
         waehrend Wahr:
@@ -81,7 +81,7 @@ klasse Reg:
                 breche
             L.append(k)
             i += 1
-        return L
+        gib L
     read_keys = classmethod(read_keys)
 
     def read_values(cls, base, key):
@@ -92,7 +92,7 @@ klasse Reg:
         try:
             handle = RegOpenKeyEx(base, key)
         except RegError:
-            return Nichts
+            gib Nichts
         d = {}
         i = 0
         waehrend Wahr:
@@ -103,7 +103,7 @@ klasse Reg:
             name = name.lower()
             d[cls.convert_mbcs(name)] = cls.convert_mbcs(value)
             i += 1
-        return d
+        gib d
     read_values = classmethod(read_values)
 
     def convert_mbcs(s):
@@ -113,7 +113,7 @@ klasse Reg:
                 s = dec("mbcs")
             except UnicodeError:
                 pass
-        return s
+        gib s
     convert_mbcs = staticmethod(convert_mbcs)
 
 klasse MacroExpander:
@@ -160,7 +160,7 @@ you can try compiling mit MingW32, by passing "-c mingw32" to setup.py.""")
     def sub(self, s):
         fuer k, v in self.macros.items():
             s = s.replace(k, v)
-        return s
+        gib s
 
 def get_build_version():
     """Return the version of MSVC that was used to build Python.
@@ -171,7 +171,7 @@ def get_build_version():
     prefix = "MSC v."
     i = sys.version.find(prefix)
     wenn i == -1:
-        return 6
+        gib 6
     i = i + len(prefix)
     s, rest = sys.version[i:].split(" ", 1)
     majorVersion = int(s[:-2]) - 6
@@ -183,9 +183,9 @@ def get_build_version():
     wenn majorVersion == 6:
         minorVersion = 0
     wenn majorVersion >= 6:
-        return majorVersion + minorVersion
+        gib majorVersion + minorVersion
     # sonst we don't know what version of the compiler this is
-    return Nichts
+    gib Nichts
 
 def normalize_and_reduce_paths(paths):
     """Return a list of normalized paths mit duplicates removed.
@@ -199,7 +199,7 @@ def normalize_and_reduce_paths(paths):
         # XXX(nnorwitz): O(n**2), wenn reduced_paths gets long perhaps use a set.
         wenn np nicht in reduced_paths:
             reduced_paths.append(np)
-    return reduced_paths
+    gib reduced_paths
 
 def removeDuplicates(variable):
     """Remove duplicate values of an environment variable.
@@ -210,7 +210,7 @@ def removeDuplicates(variable):
         wenn i nicht in newList:
             newList.append(i)
     newVariable = os.pathsep.join(newList)
-    return newVariable
+    gib newVariable
 
 def find_vcvarsall(version):
     """Find the vcvarsall.bat file
@@ -235,17 +235,17 @@ def find_vcvarsall(version):
             productdir = os.path.abspath(productdir)
             wenn nicht os.path.isdir(productdir):
                 log.debug("%s is nicht a valid directory" % productdir)
-                return Nichts
+                gib Nichts
         sonst:
             log.debug("Env var %s is nicht set oder invalid" % toolskey)
     wenn nicht productdir:
         log.debug("No productdir found")
-        return Nichts
+        gib Nichts
     vcvarsall = os.path.join(productdir, "vcvarsall.bat")
     wenn os.path.isfile(vcvarsall):
-        return vcvarsall
+        gib vcvarsall
     log.debug("Unable to find vcvarsall.bat")
-    return Nichts
+    gib Nichts
 
 def query_vcvarsall(version, arch="x86"):
     """Launch vcvarsall.bat und read the settings von its environment
@@ -285,7 +285,7 @@ def query_vcvarsall(version, arch="x86"):
     wenn len(result) != len(interesting):
         raise ValueError(str(list(result.keys())))
 
-    return result
+    gib result
 
 # More globals
 VERSION = get_build_version()
@@ -349,7 +349,7 @@ klasse MSVCCompiler(CCompiler) :
         ld_args.append('/MANIFESTFILE:' + temp_manifest)
 
     def manifest_get_embed_info(self, target_desc, ld_args):
-        # If a manifest should be embedded, return a tuple of
+        # If a manifest should be embedded, gib a tuple of
         # (manifest_filename, resource_id).  Returns Nichts wenn no manifest
         # should be embedded.  See http://bugs.python.org/issue7833 fuer why
         # we want to avoid any manifest fuer extension modules wenn we can.
@@ -359,7 +359,7 @@ klasse MSVCCompiler(CCompiler) :
                 breche
         sonst:
             # no /MANIFESTFILE so nothing to do.
-            return Nichts
+            gib Nichts
         wenn target_desc == CCompiler.EXECUTABLE:
             # by default, executables always get the manifest mit the
             # CRT referenced.
@@ -369,8 +369,8 @@ klasse MSVCCompiler(CCompiler) :
             mfid = 2
             temp_manifest = self._remove_visual_c_ref(temp_manifest)
         wenn temp_manifest is Nichts:
-            return Nichts
-        return temp_manifest, mfid
+            gib Nichts
+        gib temp_manifest, mfid
 
     def _remove_visual_c_ref(self, manifest_file):
         try:
@@ -400,12 +400,12 @@ klasse MSVCCompiler(CCompiler) :
                 r"""<assemblyIdentity.*?name=(?:"|')(.+?)(?:"|')"""
                 r""".*?(?:/>|</assemblyIdentity>)""", re.DOTALL)
             wenn re.search(pattern, manifest_buf) is Nichts:
-                return Nichts
+                gib Nichts
 
             manifest_f = open(manifest_file, 'w')
             try:
                 manifest_f.write(manifest_buf)
-                return manifest_file
+                gib manifest_file
             finally:
                 manifest_f.close()
         except OSError:
@@ -420,19 +420,19 @@ klasse MSVCCompiler(CCompiler) :
 
         Tries to find the program in several places: first, one of the
         MSVC program search paths von the registry; next, the directories
-        in the PATH environment variable.  If any of those work, return an
+        in the PATH environment variable.  If any of those work, gib an
         absolute path that is known to exist.  If none of them work, just
-        return the original program name, 'exe'.
+        gib the original program name, 'exe'.
         """
         fuer p in self.__paths:
             fn = os.path.join(os.path.abspath(p), exe)
             wenn os.path.isfile(fn):
-                return fn
+                gib fn
 
         # didn't find it; try existing path
         fuer p in os.environ['Path'].split(';'):
             fn = os.path.join(os.path.abspath(p),exe)
             wenn os.path.isfile(fn):
-                return fn
+                gib fn
 
-        return exe
+        gib exe

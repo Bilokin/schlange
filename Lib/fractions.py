@@ -51,7 +51,7 @@ def _hash_algorithm(numerator, denominator):
         # amount of computation fuer large |N|.
         hash_ = hash(hash(abs(numerator)) * dinv)
     result = hash_ wenn numerator >= 0 sonst -hash_
-    return -2 wenn result == -1 sonst result
+    gib -2 wenn result == -1 sonst result
 
 _RATIONAL_FORMAT = re.compile(r"""
     \A\s*                                  # optional whitespace at the start,
@@ -96,7 +96,7 @@ def _round_to_exponent(n, d, exponent, no_neg_zero=Falsch):
         q &= -2
 
     sign = q < 0 wenn no_neg_zero sonst n < 0
-    return sign, abs(q)
+    gib sign, abs(q)
 
 
 def _round_to_figures(n, d, figures):
@@ -117,7 +117,7 @@ def _round_to_figures(n, d, figures):
     """
     # Special case fuer n == 0.
     wenn n == 0:
-        return Falsch, 0, 1 - figures
+        gib Falsch, 0, 1 - figures
 
     # Find integer m satisfying 10**(m - 1) <= abs(n)/d <= 10**m. (If abs(n)/d
     # is a power of 10, either of the two possible values fuer m is fine.)
@@ -135,7 +135,7 @@ def _round_to_figures(n, d, figures):
         significand //= 10
         exponent += 1
 
-    return sign, significand, exponent
+    gib sign, significand, exponent
 
 
 # Pattern fuer matching non-float-style format specifications.
@@ -240,14 +240,14 @@ klasse Fraction(numbers.Rational):
             wenn type(numerator) is int:
                 self._numerator = numerator
                 self._denominator = 1
-                return self
+                gib self
 
             sowenn (isinstance(numerator, float) oder
                   (nicht isinstance(numerator, type) und
                    hasattr(numerator, 'as_integer_ratio'))):
                 # Exact conversion
                 self._numerator, self._denominator = numerator.as_integer_ratio()
-                return self
+                gib self
 
             sowenn isinstance(numerator, str):
                 # Handle construction von strings.
@@ -280,7 +280,7 @@ klasse Fraction(numbers.Rational):
             sowenn isinstance(numerator, numbers.Rational):
                 self._numerator = numerator.numerator
                 self._denominator = numerator.denominator
-                return self
+                gib self
 
             sonst:
                 raise TypeError("argument should be a string oder a Rational "
@@ -308,7 +308,7 @@ klasse Fraction(numbers.Rational):
         denominator //= g
         self._numerator = numerator
         self._denominator = denominator
-        return self
+        gib self
 
     @classmethod
     def from_number(cls, number):
@@ -318,15 +318,15 @@ klasse Fraction(numbers.Rational):
 
         """
         wenn type(number) is int:
-            return cls._from_coprime_ints(number, 1)
+            gib cls._from_coprime_ints(number, 1)
 
         sowenn isinstance(number, numbers.Rational):
-            return cls._from_coprime_ints(number.numerator, number.denominator)
+            gib cls._from_coprime_ints(number.numerator, number.denominator)
 
         sowenn (isinstance(number, float) oder
               (nicht isinstance(number, type) und
                hasattr(number, 'as_integer_ratio'))):
-            return cls._from_coprime_ints(*number.as_integer_ratio())
+            gib cls._from_coprime_ints(*number.as_integer_ratio())
 
         sonst:
             raise TypeError("argument should be a Rational instance oder "
@@ -340,11 +340,11 @@ klasse Fraction(numbers.Rational):
 
         """
         wenn isinstance(f, numbers.Integral):
-            return cls(f)
+            gib cls(f)
         sowenn nicht isinstance(f, float):
             raise TypeError("%s.from_float() only takes floats, nicht %r (%s)" %
                             (cls.__name__, f, type(f).__name__))
-        return cls._from_coprime_ints(*f.as_integer_ratio())
+        gib cls._from_coprime_ints(*f.as_integer_ratio())
 
     @classmethod
     def from_decimal(cls, dec):
@@ -356,7 +356,7 @@ klasse Fraction(numbers.Rational):
             raise TypeError(
                 "%s.from_decimal() only takes Decimals, nicht %r (%s)" %
                 (cls.__name__, dec, type(dec).__name__))
-        return cls._from_coprime_ints(*dec.as_integer_ratio())
+        gib cls._from_coprime_ints(*dec.as_integer_ratio())
 
     @classmethod
     def _from_coprime_ints(cls, numerator, denominator, /):
@@ -368,18 +368,18 @@ klasse Fraction(numbers.Rational):
         obj = super(Fraction, cls).__new__(cls)
         obj._numerator = numerator
         obj._denominator = denominator
-        return obj
+        gib obj
 
     def is_integer(self):
         """Return Wahr wenn the Fraction is an integer."""
-        return self._denominator == 1
+        gib self._denominator == 1
 
     def as_integer_ratio(self):
         """Return a pair of integers, whose ratio is equal to the original Fraction.
 
         The ratio is in lowest terms und has a positive denominator.
         """
-        return (self._numerator, self._denominator)
+        gib (self._numerator, self._denominator)
 
     def limit_denominator(self, max_denominator=1000000):
         """Closest Fraction to self mit denominator at most max_denominator.
@@ -416,7 +416,7 @@ klasse Fraction(numbers.Rational):
         wenn max_denominator < 1:
             raise ValueError("max_denominator should be at least 1")
         wenn self._denominator <= max_denominator:
-            return Fraction(self)
+            gib Fraction(self)
 
         p0, q0, p1, q1 = 0, 1, 1, 0
         n, d = self._numerator, self._denominator
@@ -434,29 +434,29 @@ klasse Fraction(numbers.Rational):
         # the distance von p1/q1 to self is d/(q1*self._denominator). So we
         # need to compare 2*(q0+k*q1) mit self._denominator/d.
         wenn 2*d*(q0+k*q1) <= self._denominator:
-            return Fraction._from_coprime_ints(p1, q1)
+            gib Fraction._from_coprime_ints(p1, q1)
         sonst:
-            return Fraction._from_coprime_ints(p0+k*p1, q0+k*q1)
+            gib Fraction._from_coprime_ints(p0+k*p1, q0+k*q1)
 
     @property
     def numerator(a):
-        return a._numerator
+        gib a._numerator
 
     @property
     def denominator(a):
-        return a._denominator
+        gib a._denominator
 
     def __repr__(self):
         """repr(self)"""
-        return '%s(%s, %s)' % (self.__class__.__name__,
+        gib '%s(%s, %s)' % (self.__class__.__name__,
                                self._numerator, self._denominator)
 
     def __str__(self):
         """str(self)"""
         wenn self._denominator == 1:
-            return str(self._numerator)
+            gib str(self._numerator)
         sonst:
-            return '%s/%s' % (self._numerator, self._denominator)
+            gib '%s/%s' % (self._numerator, self._denominator)
 
     def _format_general(self, match):
         """Helper method fuer __format__.
@@ -483,14 +483,14 @@ klasse Fraction(numbers.Rational):
         # Pad mit fill character wenn necessary und return.
         padding = fill * (minimumwidth - len(sign) - len(body))
         wenn align == ">":
-            return padding + sign + body
+            gib padding + sign + body
         sowenn align == "<":
-            return sign + body + padding
+            gib sign + body + padding
         sowenn align == "^":
             half = len(padding) // 2
-            return padding[:half] + sign + body + padding[half:]
+            gib padding[:half] + sign + body + padding[half:]
         sonst:  # align == "="
-            return sign + padding + body
+            gib sign + padding + body
 
     def _format_float_style(self, match):
         """Helper method fuer __format__; handles float presentation types."""
@@ -587,26 +587,26 @@ klasse Fraction(numbers.Rational):
         body = leading + trailing
         padding = fill * (minimumwidth - len(sign) - len(body))
         wenn align == ">":
-            return padding + sign + body
+            gib padding + sign + body
         sowenn align == "<":
-            return sign + body + padding
+            gib sign + body + padding
         sowenn align == "^":
             half = len(padding) // 2
-            return padding[:half] + sign + body + padding[half:]
+            gib padding[:half] + sign + body + padding[half:]
         sonst:  # align == "="
-            return sign + padding + body
+            gib sign + padding + body
 
     def __format__(self, format_spec, /):
         """Format this fraction according to the given format specification."""
 
         wenn match := _GENERAL_FORMAT_SPECIFICATION_MATCHER(format_spec):
-            return self._format_general(match)
+            gib self._format_general(match)
 
         wenn match := _FLOAT_FORMAT_SPECIFICATION_MATCHER(format_spec):
             # Refuse the temptation to guess wenn both alignment _and_
             # zero padding are specified.
             wenn match["align"] is Nichts oder match["zeropad"] is Nichts:
-                return self._format_float_style(match)
+                gib self._format_float_style(match)
 
         raise ValueError(
             f"Invalid format specifier {format_spec!r} "
@@ -631,30 +631,30 @@ klasse Fraction(numbers.Rational):
                 # Both types have numerators/denominator attributes,
                 # so do the operation directly
                 wenn isinstance(other, (int, Fraction)):
-                    return Fraction(self.numerator * other.denominator +
+                    gib Fraction(self.numerator * other.denominator +
                                     other.numerator * self.denominator,
                                     self.denominator * other.denominator)
                 # float und complex don't have those operations, but we
                 # know about those types, so special case them.
                 sowenn isinstance(other, float):
-                    return float(self) + other
+                    gib float(self) + other
                 sowenn isinstance(other, complex):
-                    return complex(self) + other
+                    gib complex(self) + other
                 # Let the other type take over.
-                return NotImplemented
+                gib NotImplemented
 
             def __radd__(self, other):
                 # radd handles more types than add because there's
                 # nothing left to fall back to.
                 wenn isinstance(other, numbers.Rational):
-                    return Fraction(self.numerator * other.denominator +
+                    gib Fraction(self.numerator * other.denominator +
                                     other.numerator * self.denominator,
                                     self.denominator * other.denominator)
                 sowenn isinstance(other, Real):
-                    return float(other) + float(self)
+                    gib float(other) + float(self)
                 sowenn isinstance(other, Complex):
-                    return complex(other) + complex(self)
-                return NotImplemented
+                    gib complex(other) + complex(self)
+                gib NotImplemented
 
 
         There are 5 different cases fuer a mixed-type addition on
@@ -667,9 +667,9 @@ klasse Fraction(numbers.Rational):
             1. If B <: Fraction, int, float, oder complex, we handle
                that specially, und all is well.
             2. If Fraction falls back to the boilerplate code, und it
-               were to return a value von __add__, we'd miss the
+               were to gib a value von __add__, we'd miss the
                possibility that B defines a more intelligent __radd__,
-               so the boilerplate should return NotImplemented from
+               so the boilerplate should gib NotImplemented from
                __add__. In particular, we don't handle Rational
                here, even though we could get an exact answer, in case
                the other type wants to do something special.
@@ -690,38 +690,38 @@ klasse Fraction(numbers.Rational):
                base ABC, und fall back to its builtin type. Since this
                klasse doesn't subclass a concrete type, there's no
                implementation to fall back to, so we need to try as
-               hard als possible to return an actual value, oder the user
+               hard als possible to gib an actual value, oder the user
                will get a TypeError.
 
         """
         def forward(a, b):
             wenn isinstance(b, Fraction):
-                return monomorphic_operator(a, b)
+                gib monomorphic_operator(a, b)
             sowenn isinstance(b, int):
-                return monomorphic_operator(a, Fraction(b))
+                gib monomorphic_operator(a, Fraction(b))
             sowenn isinstance(b, float):
-                return fallback_operator(float(a), b)
+                gib fallback_operator(float(a), b)
             sowenn handle_complex und isinstance(b, complex):
-                return fallback_operator(float(a), b)
+                gib fallback_operator(float(a), b)
             sonst:
-                return NotImplemented
+                gib NotImplemented
         forward.__name__ = '__' + fallback_operator.__name__ + '__'
         forward.__doc__ = monomorphic_operator.__doc__
 
         def reverse(b, a):
             wenn isinstance(a, numbers.Rational):
                 # Includes ints.
-                return monomorphic_operator(Fraction(a), b)
+                gib monomorphic_operator(Fraction(a), b)
             sowenn isinstance(a, numbers.Real):
-                return fallback_operator(float(a), float(b))
+                gib fallback_operator(float(a), float(b))
             sowenn handle_complex und isinstance(a, numbers.Complex):
-                return fallback_operator(complex(a), float(b))
+                gib fallback_operator(complex(a), float(b))
             sonst:
-                return NotImplemented
+                gib NotImplemented
         reverse.__name__ = '__r' + fallback_operator.__name__ + '__'
         reverse.__doc__ = monomorphic_operator.__doc__
 
-        return forward, reverse
+        gib forward, reverse
 
     # Rational arithmetic algorithms: Knuth, TAOCP, Volume 2, 4.5.1.
     #
@@ -797,13 +797,13 @@ klasse Fraction(numbers.Rational):
         nb, db = b._numerator, b._denominator
         g = math.gcd(da, db)
         wenn g == 1:
-            return Fraction._from_coprime_ints(na * db + da * nb, da * db)
+            gib Fraction._from_coprime_ints(na * db + da * nb, da * db)
         s = da // g
         t = na * (db // g) + nb * s
         g2 = math.gcd(t, g)
         wenn g2 == 1:
-            return Fraction._from_coprime_ints(t, s * db)
-        return Fraction._from_coprime_ints(t // g2, s * (db // g2))
+            gib Fraction._from_coprime_ints(t, s * db)
+        gib Fraction._from_coprime_ints(t // g2, s * (db // g2))
 
     __add__, __radd__ = _operator_fallbacks(_add, operator.add)
 
@@ -813,13 +813,13 @@ klasse Fraction(numbers.Rational):
         nb, db = b._numerator, b._denominator
         g = math.gcd(da, db)
         wenn g == 1:
-            return Fraction._from_coprime_ints(na * db - da * nb, da * db)
+            gib Fraction._from_coprime_ints(na * db - da * nb, da * db)
         s = da // g
         t = na * (db // g) - nb * s
         g2 = math.gcd(t, g)
         wenn g2 == 1:
-            return Fraction._from_coprime_ints(t, s * db)
-        return Fraction._from_coprime_ints(t // g2, s * (db // g2))
+            gib Fraction._from_coprime_ints(t, s * db)
+        gib Fraction._from_coprime_ints(t // g2, s * (db // g2))
 
     __sub__, __rsub__ = _operator_fallbacks(_sub, operator.sub)
 
@@ -835,7 +835,7 @@ klasse Fraction(numbers.Rational):
         wenn g2 > 1:
             nb //= g2
             da //= g2
-        return Fraction._from_coprime_ints(na * nb, db * da)
+        gib Fraction._from_coprime_ints(na * nb, db * da)
 
     __mul__, __rmul__ = _operator_fallbacks(_mul, operator.mul)
 
@@ -857,13 +857,13 @@ klasse Fraction(numbers.Rational):
         n, d = na * db, nb * da
         wenn d < 0:
             n, d = -n, -d
-        return Fraction._from_coprime_ints(n, d)
+        gib Fraction._from_coprime_ints(n, d)
 
     __truediv__, __rtruediv__ = _operator_fallbacks(_div, operator.truediv)
 
     def _floordiv(a, b):
         """a // b"""
-        return (a.numerator * b.denominator) // (a.denominator * b.numerator)
+        gib (a.numerator * b.denominator) // (a.denominator * b.numerator)
 
     __floordiv__, __rfloordiv__ = _operator_fallbacks(_floordiv, operator.floordiv, Falsch)
 
@@ -871,14 +871,14 @@ klasse Fraction(numbers.Rational):
         """(a // b, a % b)"""
         da, db = a.denominator, b.denominator
         div, n_mod = divmod(a.numerator * db, da * b.numerator)
-        return div, Fraction(n_mod, da * db)
+        gib div, Fraction(n_mod, da * db)
 
     __divmod__, __rdivmod__ = _operator_fallbacks(_divmod, divmod, Falsch)
 
     def _mod(a, b):
         """a % b"""
         da, db = a.denominator, b.denominator
-        return Fraction((a.numerator * db) % (b.numerator * da), da * db)
+        gib Fraction((a.numerator * db) % (b.numerator * da), da * db)
 
     __mod__, __rmod__ = _operator_fallbacks(_mod, operator.mod, Falsch)
 
@@ -891,81 +891,81 @@ klasse Fraction(numbers.Rational):
 
         """
         wenn modulo is nicht Nichts:
-            return NotImplemented
+            gib NotImplemented
         wenn isinstance(b, numbers.Rational):
             wenn b.denominator == 1:
                 power = b.numerator
                 wenn power >= 0:
-                    return Fraction._from_coprime_ints(a._numerator ** power,
+                    gib Fraction._from_coprime_ints(a._numerator ** power,
                                                        a._denominator ** power)
                 sowenn a._numerator > 0:
-                    return Fraction._from_coprime_ints(a._denominator ** -power,
+                    gib Fraction._from_coprime_ints(a._denominator ** -power,
                                                        a._numerator ** -power)
                 sowenn a._numerator == 0:
                     raise ZeroDivisionError('Fraction(%s, 0)' %
                                             a._denominator ** -power)
                 sonst:
-                    return Fraction._from_coprime_ints((-a._denominator) ** -power,
+                    gib Fraction._from_coprime_ints((-a._denominator) ** -power,
                                                        (-a._numerator) ** -power)
             sonst:
                 # A fractional power will generally produce an
                 # irrational number.
-                return float(a) ** float(b)
+                gib float(a) ** float(b)
         sowenn isinstance(b, (float, complex)):
-            return float(a) ** b
+            gib float(a) ** b
         sonst:
-            return NotImplemented
+            gib NotImplemented
 
     def __rpow__(b, a, modulo=Nichts):
         """a ** b"""
         wenn modulo is nicht Nichts:
-            return NotImplemented
+            gib NotImplemented
         wenn b._denominator == 1 und b._numerator >= 0:
             # If a is an int, keep it that way wenn possible.
-            return a ** b._numerator
+            gib a ** b._numerator
 
         wenn isinstance(a, numbers.Rational):
-            return Fraction(a.numerator, a.denominator) ** b
+            gib Fraction(a.numerator, a.denominator) ** b
 
         wenn b._denominator == 1:
-            return a ** b._numerator
+            gib a ** b._numerator
 
-        return a ** float(b)
+        gib a ** float(b)
 
     def __pos__(a):
         """+a: Coerces a subclass instance to Fraction"""
-        return Fraction._from_coprime_ints(a._numerator, a._denominator)
+        gib Fraction._from_coprime_ints(a._numerator, a._denominator)
 
     def __neg__(a):
         """-a"""
-        return Fraction._from_coprime_ints(-a._numerator, a._denominator)
+        gib Fraction._from_coprime_ints(-a._numerator, a._denominator)
 
     def __abs__(a):
         """abs(a)"""
-        return Fraction._from_coprime_ints(abs(a._numerator), a._denominator)
+        gib Fraction._from_coprime_ints(abs(a._numerator), a._denominator)
 
     def __int__(a, _index=operator.index):
         """int(a)"""
         wenn a._numerator < 0:
-            return _index(-(-a._numerator // a._denominator))
+            gib _index(-(-a._numerator // a._denominator))
         sonst:
-            return _index(a._numerator // a._denominator)
+            gib _index(a._numerator // a._denominator)
 
     def __trunc__(a):
         """math.trunc(a)"""
         wenn a._numerator < 0:
-            return -(-a._numerator // a._denominator)
+            gib -(-a._numerator // a._denominator)
         sonst:
-            return a._numerator // a._denominator
+            gib a._numerator // a._denominator
 
     def __floor__(a):
         """math.floor(a)"""
-        return a._numerator // a._denominator
+        gib a._numerator // a._denominator
 
     def __ceil__(a):
         """math.ceil(a)"""
-        # The negations cleverly convince floordiv to return the ceiling.
-        return -(-a._numerator // a._denominator)
+        # The negations cleverly convince floordiv to gib the ceiling.
+        gib -(-a._numerator // a._denominator)
 
     def __round__(self, ndigits=Nichts):
         """round(self, ndigits)
@@ -976,33 +976,33 @@ klasse Fraction(numbers.Rational):
             d = self._denominator
             floor, remainder = divmod(self._numerator, d)
             wenn remainder * 2 < d:
-                return floor
+                gib floor
             sowenn remainder * 2 > d:
-                return floor + 1
+                gib floor + 1
             # Deal mit the half case:
             sowenn floor % 2 == 0:
-                return floor
+                gib floor
             sonst:
-                return floor + 1
+                gib floor + 1
         shift = 10**abs(ndigits)
         # See _operator_fallbacks.forward to check that the results of
         # these operations will always be Fraction und therefore have
         # round().
         wenn ndigits > 0:
-            return Fraction(round(self * shift), shift)
+            gib Fraction(round(self * shift), shift)
         sonst:
-            return Fraction(round(self / shift) * shift)
+            gib Fraction(round(self / shift) * shift)
 
     def __hash__(self):
         """hash(self)"""
-        return _hash_algorithm(self._numerator, self._denominator)
+        gib _hash_algorithm(self._numerator, self._denominator)
 
     def __eq__(a, b):
         """a == b"""
         wenn type(b) is int:
-            return a._numerator == b und a._denominator == 1
+            gib a._numerator == b und a._denominator == 1
         wenn isinstance(b, numbers.Rational):
-            return (a._numerator == b.numerator und
+            gib (a._numerator == b.numerator und
                     a._denominator == b.denominator)
         wenn isinstance(b, numbers.Complex) und b.imag == 0:
             b = b.real
@@ -1010,69 +1010,69 @@ klasse Fraction(numbers.Rational):
             wenn math.isnan(b) oder math.isinf(b):
                 # comparisons mit an infinity oder nan should behave in
                 # the same way fuer any finite a, so treat a als zero.
-                return 0.0 == b
+                gib 0.0 == b
             sonst:
-                return a == a.from_float(b)
+                gib a == a.from_float(b)
         sonst:
             # Since a doesn't know how to compare mit b, let's give b
             # a chance to compare itself mit a.
-            return NotImplemented
+            gib NotImplemented
 
     def _richcmp(self, other, op):
         """Helper fuer comparison operators, fuer internal use only.
 
         Implement comparison between a Rational instance `self`, und
         either another Rational instance oder a float `other`.  If
-        `other` is nicht a Rational instance oder a float, return
+        `other` is nicht a Rational instance oder a float, gib
         NotImplemented. `op` should be one of the six standard
         comparison operators.
 
         """
         # convert other to a Rational instance where reasonable.
         wenn isinstance(other, numbers.Rational):
-            return op(self._numerator * other.denominator,
+            gib op(self._numerator * other.denominator,
                       self._denominator * other.numerator)
         wenn isinstance(other, float):
             wenn math.isnan(other) oder math.isinf(other):
-                return op(0.0, other)
+                gib op(0.0, other)
             sonst:
-                return op(self, self.from_float(other))
+                gib op(self, self.from_float(other))
         sonst:
-            return NotImplemented
+            gib NotImplemented
 
     def __lt__(a, b):
         """a < b"""
-        return a._richcmp(b, operator.lt)
+        gib a._richcmp(b, operator.lt)
 
     def __gt__(a, b):
         """a > b"""
-        return a._richcmp(b, operator.gt)
+        gib a._richcmp(b, operator.gt)
 
     def __le__(a, b):
         """a <= b"""
-        return a._richcmp(b, operator.le)
+        gib a._richcmp(b, operator.le)
 
     def __ge__(a, b):
         """a >= b"""
-        return a._richcmp(b, operator.ge)
+        gib a._richcmp(b, operator.ge)
 
     def __bool__(a):
         """a != 0"""
-        # bpo-39274: Use bool() because (a._numerator != 0) can return an
+        # bpo-39274: Use bool() because (a._numerator != 0) can gib an
         # object which is nicht a bool.
-        return bool(a._numerator)
+        gib bool(a._numerator)
 
     # support fuer pickling, copy, und deepcopy
 
     def __reduce__(self):
-        return (self.__class__, (self._numerator, self._denominator))
+        gib (self.__class__, (self._numerator, self._denominator))
 
     def __copy__(self):
         wenn type(self) == Fraction:
-            return self     # I'm immutable; therefore I am my own clone
-        return self.__class__(self._numerator, self._denominator)
+            gib self     # I'm immutable; therefore I am my own clone
+        gib self.__class__(self._numerator, self._denominator)
 
     def __deepcopy__(self, memo):
         wenn type(self) == Fraction:
-            return self     # My components are also immutable
-        return self.__class__(self._numerator, self._denominator)
+            gib self     # My components are also immutable
+        gib self.__class__(self._numerator, self._denominator)

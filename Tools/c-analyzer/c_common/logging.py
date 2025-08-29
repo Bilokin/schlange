@@ -50,7 +50,7 @@ def hide_emit_errors():
     logging.raiseExceptions = Falsch
     def restore():
         logging.raiseExceptions = orig
-    return restore
+    gib restore
 
 
 klasse Printer:
@@ -59,5 +59,5 @@ klasse Printer:
 
     def info(self, *args, **kwargs):
         wenn self.verbosity < 3:
-            return
+            gib
         drucke(*args, **kwargs)

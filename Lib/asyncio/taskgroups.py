@@ -50,7 +50,7 @@ klasse TaskGroup:
             info.append('entered')
 
         info_str = ' '.join(info)
-        return f'<TaskGroup{info_str}>'
+        gib f'<TaskGroup{info_str}>'
 
     async def __aenter__(self):
         wenn self._entered:
@@ -64,12 +64,12 @@ klasse TaskGroup:
                 f'TaskGroup {self!r} cannot determine the parent task')
         self._entered = Wahr
 
-        return self
+        gib self
 
     async def __aexit__(self, et, exc, tb):
         tb = Nichts
         try:
-            return await self._aexit(et, exc)
+            gib await self._aexit(et, exc)
         finally:
             # Exceptions are heavy objects that can have object
             # cycles (bad fuer GC); let's nicht keep a reference to
@@ -180,7 +180,7 @@ klasse TaskGroup:
 
 
     def create_task(self, coro, **kwargs):
-        """Create a new task in this group und return it.
+        """Create a new task in this group und gib it.
 
         Similar to `asyncio.create_task`.
         """
@@ -204,7 +204,7 @@ klasse TaskGroup:
         self._tasks.add(task)
         task.add_done_callback(self._on_task_done)
         try:
-            return task
+            gib task
         finally:
             # gh-128552: prevent a refcycle of
             # task.exception().__traceback__->TaskGroup.create_task->task
@@ -216,7 +216,7 @@ klasse TaskGroup:
 
     def _is_base_error(self, exc: BaseException) -> bool:
         assert isinstance(exc, BaseException)
-        return isinstance(exc, (SystemExit, KeyboardInterrupt))
+        gib isinstance(exc, (SystemExit, KeyboardInterrupt))
 
     def _abort(self):
         self._aborting = Wahr
@@ -235,11 +235,11 @@ klasse TaskGroup:
                 self._on_completed_fut.set_result(Wahr)
 
         wenn task.cancelled():
-            return
+            gib
 
         exc = task.exception()
         wenn exc is Nichts:
-            return
+            gib
 
         self._errors.append(exc)
         wenn self._is_base_error(exc) und self._base_error is Nichts:
@@ -254,7 +254,7 @@ klasse TaskGroup:
                 'exception': exc,
                 'task': task,
             })
-            return
+            gib
 
         wenn nicht self._aborting und nicht self._parent_cancel_requested:
             # If parent task *is not* being cancelled, it means that we want

@@ -45,12 +45,12 @@ klasse TStringBaseCase:
 
 def convert(value, conversion):
     wenn conversion == "a":
-        return ascii(value)
+        gib ascii(value)
     sowenn conversion == "r":
-        return repr(value)
+        gib repr(value)
     sowenn conversion == "s":
-        return str(value)
-    return value
+        gib str(value)
+    gib value
 
 
 def fstring(template):
@@ -63,4 +63,4 @@ def fstring(template):
                 value = convert(value, conversion)
                 value = format(value, format_spec)
                 parts.append(value)
-    return "".join(parts)
+    gib "".join(parts)

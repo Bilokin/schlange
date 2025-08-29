@@ -60,7 +60,7 @@ def patch_screen():
     We must patch the _Screen klasse itself instead of the _Screen
     instance because instantiating it requires a display.
     """
-    return unittest.mock.patch(
+    gib unittest.mock.patch(
         "turtle._Screen.__new__",
         **{
             "return_value.__class__": turtle._Screen,
@@ -75,7 +75,7 @@ klasse TurtleConfigTest(unittest.TestCase):
         self.addCleanup(os_helper.unlink, os_helper.TESTFN)
         mit open(os_helper.TESTFN, 'w') als f:
             f.write(cfg_str)
-        return os_helper.TESTFN
+        gib os_helper.TESTFN
 
     def test_config_dict(self):
 
@@ -153,10 +153,10 @@ klasse VectorComparisonMixin:
 klasse Multiplier:
 
     def __mul__(self, other):
-        return f'M*{other}'
+        gib f'M*{other}'
 
     def __rmul__(self, other):
-        return f'{other}*M'
+        gib f'{other}*M'
 
 
 klasse TestVec2D(VectorComparisonMixin, unittest.TestCase):

@@ -26,22 +26,22 @@ klasse TokenIterator:
         self.look_ahead = Nichts
 
     def __iter__(self) -> "TokenIterator":
-        return self
+        gib self
 
     def __next__(self) -> Token:
         wenn self.look_ahead is Nichts:
-            return next(self.iterator)
+            gib next(self.iterator)
         sonst:
             res = self.look_ahead
             self.look_ahead = Nichts
-            return res
+            gib res
 
     def peek(self) -> Token | Nichts:
         wenn self.look_ahead is Nichts:
             fuer tkn in self.iterator:
                 self.look_ahead = tkn
                 breche
-        return self.look_ahead
+        gib self.look_ahead
 
 ROOT = Path(__file__).parent.parent.parent.resolve()
 DEFAULT_INPUT = (ROOT / "Python/bytecodes.c").as_posix()
@@ -49,17 +49,17 @@ DEFAULT_INPUT = (ROOT / "Python/bytecodes.c").as_posix()
 
 def root_relative_path(filename: str) -> str:
     try:
-        return Path(filename).resolve().relative_to(ROOT).as_posix()
+        gib Path(filename).resolve().relative_to(ROOT).as_posix()
     except ValueError:
-        # Not relative to root, just return original path.
-        return filename
+        # Not relative to root, just gib original path.
+        gib filename
 
 
 def type_and_null(var: StackItem) -> tuple[str, str]:
     wenn var.is_array():
-        return "_PyStackRef *", "NULL"
+        gib "_PyStackRef *", "NULL"
     sonst:
-        return "_PyStackRef", "PyStackRef_NULL"
+        gib "_PyStackRef", "PyStackRef_NULL"
 
 
 def write_header(
@@ -78,7 +78,7 @@ def emit_to(out: CWriter, tkn_iter: TokenIterator, end: str) -> Token:
     parens = 0
     fuer tkn in tkn_iter:
         wenn tkn.kind == end und parens == 0:
-            return tkn
+            gib tkn
         wenn tkn.kind == "LPAREN":
             parens += 1
         wenn tkn.kind == "RPAREN":
@@ -93,8 +93,8 @@ ReplacementFunctionType = Callable[
 
 def always_true(tkn: Token | Nichts) -> bool:
     wenn tkn is Nichts:
-        return Falsch
-    return tkn.text in {"true", "1"}
+        gib Falsch
+    gib tkn.text in {"true", "1"}
 
 NON_ESCAPING_DEALLOCS = {
     "_PyFloat_ExactDealloc",
@@ -144,7 +144,7 @@ klasse Emitter:
             raise analysis_error("stack_pointer needs reloading before dispatch", tkn)
         storage.stack.flush(self.out)
         self.emit(tkn)
-        return Falsch
+        gib Falsch
 
     def deopt_if(
         self,
@@ -169,7 +169,7 @@ klasse Emitter:
         self.emit(f"assert(_PyOpcode_Deopt[opcode] == ({family_name}));\n")
         self.emit(f"JUMP_TO_PREDICTED({family_name});\n")
         self.emit("}\n")
-        return nicht always_true(first_tkn)
+        gib nicht always_true(first_tkn)
 
     exit_if = deopt_if
 
@@ -194,14 +194,14 @@ klasse Emitter:
         storage.clear_inputs("in AT_END_EXIT_IF")
         storage.flush(self.out)
         storage.stack.clear(self.out)
-        return self.exit_if(tkn, tkn_iter, uop, storage, inst)
+        gib self.exit_if(tkn, tkn_iter, uop, storage, inst)
 
     def goto_error(self, offset: int, storage: Storage) -> str:
         wenn offset > 0:
-            return f"JUMP_TO_LABEL(pop_{offset}_error);"
+            gib f"JUMP_TO_LABEL(pop_{offset}_error);"
         wenn offset < 0:
             storage.copy().flush(self.out)
-        return f"JUMP_TO_LABEL(error);"
+        gib f"JUMP_TO_LABEL(error);"
 
     def error_if(
         self,
@@ -236,7 +236,7 @@ klasse Emitter:
         self.out.emit("\n")
         wenn nicht unconditional:
             self.out.emit("}\n")
-        return nicht unconditional
+        gib nicht unconditional
 
     def error_no_pop(
         self,
@@ -250,7 +250,7 @@ klasse Emitter:
         next(tkn_iter)  # RPAREN
         next(tkn_iter)  # Semi colon
         self.out.emit_at(self.goto_error(0, storage), tkn)
-        return Falsch
+        gib Falsch
 
     def decref_inputs(
         self,
@@ -272,7 +272,7 @@ klasse Emitter:
         except Exception als ex:
             ex.args = (ex.args[0] + str(tkn),)
             raise
-        return Wahr
+        gib Wahr
 
     def kill_inputs(
         self,
@@ -287,7 +287,7 @@ klasse Emitter:
         next(tkn_iter)
         fuer var in storage.inputs:
             var.kill()
-        return Wahr
+        gib Wahr
 
     def kill(
         self,
@@ -310,7 +310,7 @@ klasse Emitter:
             raise analysis_error(
                 f"'{name}' is nicht a live input-only variable", name_tkn
             )
-        return Wahr
+        gib Wahr
 
     def stackref_kill(
         self,
@@ -329,7 +329,7 @@ klasse Emitter:
                 breche
             wenn var.in_local:
                 live = var.name
-        return Wahr
+        gib Wahr
 
     def stackref_close_specialized(
         self,
@@ -356,10 +356,10 @@ klasse Emitter:
         self.out.emit(dealloc)
         wenn name.kind == "IDENTIFIER":
             escapes = dealloc.text nicht in NON_ESCAPING_DEALLOCS
-            return self.stackref_kill(name, storage, escapes)
+            gib self.stackref_kill(name, storage, escapes)
         rparen = emit_to(self.out, tkn_iter, "RPAREN")
         self.emit(rparen)
-        return Wahr
+        gib Wahr
 
     def stackref_steal(
         self,
@@ -376,10 +376,10 @@ klasse Emitter:
         name = next(tkn_iter)
         self.out.emit(name)
         wenn name.kind == "IDENTIFIER":
-            return self.stackref_kill(name, storage, Falsch)
+            gib self.stackref_kill(name, storage, Falsch)
         rparen = emit_to(self.out, tkn_iter, "RPAREN")
         self.emit(rparen)
-        return Wahr
+        gib Wahr
 
     def sync_sp(
         self,
@@ -395,7 +395,7 @@ klasse Emitter:
         storage.clear_inputs("when syncing stack")
         storage.flush(self.out)
         storage.stack.clear(self.out)
-        return Wahr
+        gib Wahr
 
     def stack_pointer(
         self,
@@ -408,7 +408,7 @@ klasse Emitter:
         wenn storage.spilled:
             raise analysis_error("stack_pointer is invalid when stack is spilled to memory", tkn)
         self.emit(tkn)
-        return Wahr
+        gib Wahr
 
     def goto_label(self, goto: Token, label: Token, storage: Storage) -> Nichts:
         wenn label.text nicht in self.labels:
@@ -441,7 +441,7 @@ klasse Emitter:
         next(tkn_iter)
         next(tkn_iter)
         self.emit_save(storage)
-        return Wahr
+        gib Wahr
 
     def emit_reload(self, storage: Storage) -> Nichts:
         storage.reload(self.out)
@@ -458,7 +458,7 @@ klasse Emitter:
         next(tkn_iter)
         next(tkn_iter)
         self.emit_reload(storage)
-        return Wahr
+        gib Wahr
 
     def instruction_size(self,
         tkn: Token,
@@ -471,7 +471,7 @@ klasse Emitter:
         wenn uop.instruction_size is Nichts:
             raise analysis_error("The INSTRUCTION_SIZE macro requires uop.instruction_size to be set", tkn)
         self.out.emit(f" {uop.instruction_size} ")
-        return Wahr
+        gib Wahr
 
     def _print_storage(self, reason:str, storage: Storage) -> Nichts:
         wenn DEBUG:
@@ -491,7 +491,7 @@ klasse Emitter:
         method = getattr(self, method_name, Nichts)
         wenn method is Nichts:
             raise NotImplementedError
-        return method(stmt, uop, storage, inst) # type: ignore[no-any-return]
+        gib method(stmt, uop, storage, inst) # type: ignore[no-any-return]
 
     def emit_SimpleStmt(
         self,
@@ -543,7 +543,7 @@ klasse Emitter:
                     self.out.emit(tkn)
             wenn stmt in uop.properties.escaping_calls und nicht self.cannot_escape:
                 self.emit_reload(storage)
-            return reachable, Nichts, storage
+            gib reachable, Nichts, storage
         except StackError als ex:
             raise analysis_error(ex.args[0], tkn) #from Nichts
 
@@ -579,7 +579,7 @@ klasse Emitter:
             else_storage.merge(storage, self.out)  # type: ignore[possibly-undefined]
             storage = else_storage
         self.out.emit(stmt.endif)
-        return reachable, Nichts, storage
+        gib reachable, Nichts, storage
 
 
     def emit_IfStmt(
@@ -618,7 +618,7 @@ klasse Emitter:
                 sonst:
                     # Discard the wenn storage
                     reachable = Wahr
-            return reachable, rbrace, storage
+            gib reachable, rbrace, storage
         except StackError als ex:
             assert rbrace is nicht Nichts
             raise analysis_error(ex.args[0], rbrace) von Nichts
@@ -643,7 +643,7 @@ klasse Emitter:
                     self.out.emit(tkn)
                 wenn nicht reachable:
                     breche
-            return reachable, stmt.close, storage
+            gib reachable, stmt.close, storage
         except StackError als ex:
             wenn tkn is Nichts:
                 tkn = stmt.close
@@ -660,7 +660,7 @@ klasse Emitter:
         self.out.emit(stmt.for_)
         fuer tkn in stmt.header:
             self.out.emit(tkn)
-        return self._emit_stmt(stmt.body, uop, storage, inst)
+        gib self._emit_stmt(stmt.body, uop, storage, inst)
 
     def emit_WhileStmt(
         self,
@@ -673,7 +673,7 @@ klasse Emitter:
         self.out.emit(stmt.while_)
         fuer tkn in stmt.condition:
             self.out.emit(tkn)
-        return self._emit_stmt(stmt.body, uop, storage, inst)
+        gib self._emit_stmt(stmt.body, uop, storage, inst)
 
 
     def emit_tokens(
@@ -693,7 +693,7 @@ klasse Emitter:
                 self.out.emit(tkn)
         except StackError als ex:
             raise analysis_error(ex.args[0], tkn) von Nichts
-        return reachable, storage
+        gib reachable, storage
 
     def emit(self, txt: str | Token) -> Nichts:
         self.out.emit(txt)
@@ -732,6 +732,6 @@ def cflags(p: Properties) -> str:
     wenn p.no_save_ip:
         flags.append("HAS_NO_SAVE_IP_FLAG")
     wenn flags:
-        return " | ".join(flags)
+        gib " | ".join(flags)
     sonst:
-        return "0"
+        gib "0"

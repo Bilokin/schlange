@@ -59,7 +59,7 @@ _PyPegen_parse(Parser *p)
     p->n_keyword_lists = n_keyword_lists;
     p->soft_keywords = soft_keywords;
 
-    return start_rule(p);
+    gib start_rule(p);
 }
 """
 
@@ -117,7 +117,7 @@ klasse FunctionCall:
                 parts = ["(", self.assigned_variable, " = ", *parts, ")"]
         wenn self.comment:
             parts.append(f"  // {self.comment}")
-        return "".join(parts)
+        gib "".join(parts)
 
 
 klasse CCallMakerVisitor(GrammarVisitor):
@@ -134,7 +134,7 @@ klasse CCallMakerVisitor(GrammarVisitor):
         self.cleanup_statements: List[str] = []
 
     def keyword_helper(self, keyword: str) -> FunctionCall:
-        return FunctionCall(
+        gib FunctionCall(
             assigned_variable="_keyword",
             function="_PyPegen_expect_token",
             arguments=["p", self.gen.keywords[keyword]],
@@ -144,7 +144,7 @@ klasse CCallMakerVisitor(GrammarVisitor):
         )
 
     def soft_keyword_helper(self, value: str) -> FunctionCall:
-        return FunctionCall(
+        gib FunctionCall(
             assigned_variable="_keyword",
             function="_PyPegen_expect_soft_keyword",
             arguments=["p", value],
@@ -157,7 +157,7 @@ klasse CCallMakerVisitor(GrammarVisitor):
         name = node.value
         wenn name in self.non_exact_tokens:
             wenn name in BASE_NODETYPES:
-                return FunctionCall(
+                gib FunctionCall(
                     assigned_variable=f"{name.lower()}_var",
                     function=f"_PyPegen_{name.lower()}_token",
                     arguments=["p"],
@@ -165,7 +165,7 @@ klasse CCallMakerVisitor(GrammarVisitor):
                     return_type="expr_ty",
                     comment=name,
                 )
-            return FunctionCall(
+            gib FunctionCall(
                 assigned_variable=f"{name.lower()}_var",
                 function=f"_PyPegen_expect_token",
                 arguments=["p", name],
@@ -179,7 +179,7 @@ klasse CCallMakerVisitor(GrammarVisitor):
         wenn rule is nicht Nichts:
             type = "asdl_seq *" wenn rule.is_loop() oder rule.is_gather() sonst rule.type
 
-        return FunctionCall(
+        gib FunctionCall(
             assigned_variable=f"{name}_var",
             function=f"{name}_rule",
             arguments=["p"],
@@ -191,13 +191,13 @@ klasse CCallMakerVisitor(GrammarVisitor):
         val = ast.literal_eval(node.value)
         wenn re.match(r"[a-zA-Z_]\w*\Z", val):  # This is a keyword
             wenn node.value.endswith("'"):
-                return self.keyword_helper(val)
+                gib self.keyword_helper(val)
             sonst:
-                return self.soft_keyword_helper(node.value)
+                gib self.soft_keyword_helper(node.value)
         sonst:
             assert val in self.exact_tokens, f"{node.value} is nicht a known literal"
             type = self.exact_tokens[val]
-            return FunctionCall(
+            gib FunctionCall(
                 assigned_variable="_literal",
                 function=f"_PyPegen_expect_token",
                 arguments=["p", type],
@@ -212,14 +212,14 @@ klasse CCallMakerVisitor(GrammarVisitor):
             call.assigned_variable = node.name
         wenn node.type:
             call.assigned_variable_type = node.type
-        return call
+        gib call
 
     def assert_no_undefined_behavior(
         self, call: FunctionCall, wrapper: str, expected_rtype: str | Nichts,
     ) -> Nichts:
         wenn call.return_type != expected_rtype:
             raise RuntimeError(
-                f"{call.function} return type is incompatible mit {wrapper}: "
+                f"{call.function} gib type is incompatible mit {wrapper}: "
                 f"expect: {expected_rtype}, actual: {call.return_type}"
             )
 
@@ -231,7 +231,7 @@ klasse CCallMakerVisitor(GrammarVisitor):
             self.assert_no_undefined_behavior(call, function, "expr_ty")
         sowenn call.nodetype is NodeTypes.STRING_TOKEN:
             # _PyPegen_string_token() returns 'void *' instead of 'Token *';
-            # in addition, the overall function call would return 'expr_ty'.
+            # in addition, the overall function call would gib 'expr_ty'.
             assert call.function == "_PyPegen_string_token"
             function = "_PyPegen_lookahead"
             self.assert_no_undefined_behavior(call, function, "expr_ty")
@@ -249,7 +249,7 @@ klasse CCallMakerVisitor(GrammarVisitor):
         sonst:
             function = "_PyPegen_lookahead"
             self.assert_no_undefined_behavior(call, function, Nichts)
-        return FunctionCall(
+        gib FunctionCall(
             function=function,
             arguments=[positive, call.function, *call.arguments],
             return_type="int",
@@ -257,10 +257,10 @@ klasse CCallMakerVisitor(GrammarVisitor):
         )
 
     def visit_PositiveLookahead(self, node: PositiveLookahead) -> FunctionCall:
-        return self.lookahead_call_helper(node, 1)
+        gib self.lookahead_call_helper(node, 1)
 
     def visit_NegativeLookahead(self, node: NegativeLookahead) -> FunctionCall:
-        return self.lookahead_call_helper(node, 0)
+        gib self.lookahead_call_helper(node, 0)
 
     def visit_Forced(self, node: Forced) -> FunctionCall:
         call = self.generate_call(node.node)
@@ -269,7 +269,7 @@ klasse CCallMakerVisitor(GrammarVisitor):
             val = ast.literal_eval(node.node.value)
             assert val in self.exact_tokens, f"{node.node.value} is nicht a known literal"
             type = self.exact_tokens[val]
-            return FunctionCall(
+            gib FunctionCall(
                 assigned_variable="_literal",
                 function=f"_PyPegen_expect_forced_token",
                 arguments=["p", type, f'"{val}"'],
@@ -281,7 +281,7 @@ klasse CCallMakerVisitor(GrammarVisitor):
             call = self.visit(node.node.rhs)
             call.assigned_variable = Nichts
             call.comment = Nichts
-            return FunctionCall(
+            gib FunctionCall(
                 assigned_variable="_literal",
                 function=f"_PyPegen_expect_forced_result",
                 arguments=["p", str(call), f'"{node.node.rhs!s}"'],
@@ -293,7 +293,7 @@ klasse CCallMakerVisitor(GrammarVisitor):
 
     def visit_Opt(self, node: Opt) -> FunctionCall:
         call = self.generate_call(node.node)
-        return FunctionCall(
+        gib FunctionCall(
             assigned_variable="_opt_var",
             function=call.function,
             arguments=call.arguments,
@@ -316,7 +316,7 @@ klasse CCallMakerVisitor(GrammarVisitor):
             name = rule_generation_func()
             self.cache[key] = name
 
-        return FunctionCall(
+        gib FunctionCall(
             assigned_variable=f"{name}_var",
             function=f"{name}_rule",
             arguments=["p"],
@@ -326,16 +326,16 @@ klasse CCallMakerVisitor(GrammarVisitor):
 
     def visit_Rhs(self, node: Rhs) -> FunctionCall:
         wenn node.can_be_inlined:
-            return self.generate_call(node.alts[0].items[0])
+            gib self.generate_call(node.alts[0].items[0])
 
-        return self._generate_artificial_rule_call(
+        gib self._generate_artificial_rule_call(
             node,
             "rhs",
             lambda: self.gen.artificial_rule_from_rhs(node),
         )
 
     def visit_Repeat0(self, node: Repeat0) -> FunctionCall:
-        return self._generate_artificial_rule_call(
+        gib self._generate_artificial_rule_call(
             node,
             "repeat0",
             lambda: self.gen.artificial_rule_from_repeat(node.node, is_repeat1=Falsch),
@@ -343,7 +343,7 @@ klasse CCallMakerVisitor(GrammarVisitor):
         )
 
     def visit_Repeat1(self, node: Repeat1) -> FunctionCall:
-        return self._generate_artificial_rule_call(
+        gib self._generate_artificial_rule_call(
             node,
             "repeat1",
             lambda: self.gen.artificial_rule_from_repeat(node.node, is_repeat1=Wahr),
@@ -351,7 +351,7 @@ klasse CCallMakerVisitor(GrammarVisitor):
         )
 
     def visit_Gather(self, node: Gather) -> FunctionCall:
-        return self._generate_artificial_rule_call(
+        gib self._generate_artificial_rule_call(
             node,
             "gather",
             lambda: self.gen.artificial_rule_from_gather(node),
@@ -359,10 +359,10 @@ klasse CCallMakerVisitor(GrammarVisitor):
         )
 
     def visit_Group(self, node: Group) -> FunctionCall:
-        return self.generate_call(node.rhs)
+        gib self.generate_call(node.rhs)
 
     def visit_Cut(self, node: Cut) -> FunctionCall:
-        return FunctionCall(
+        gib FunctionCall(
             assigned_variable="_cut_var",
             return_type="int",
             function="1",
@@ -370,7 +370,7 @@ klasse CCallMakerVisitor(GrammarVisitor):
         )
 
     def generate_call(self, node: Any) -> FunctionCall:
-        return super().visit(node)
+        gib super().visit(node)
 
 
 klasse CParserGenerator(ParserGenerator, GrammarVisitor):
@@ -411,7 +411,7 @@ klasse CParserGenerator(ParserGenerator, GrammarVisitor):
     def unique_varname(self, name: str = "tmpvar") -> str:
         new_var = name + "_" + str(self._varname_counter)
         self._varname_counter += 1
-        return new_var
+        gib new_var
 
     def call_with_errorcheck_return(self, call_text: str, returnval: str) -> Nichts:
         error_var = self.unique_varname()
@@ -499,7 +499,7 @@ klasse CParserGenerator(ParserGenerator, GrammarVisitor):
                 groups[length].append((keyword_str, keyword_type))
             sonst:
                 groups[length] = [(keyword_str, keyword_type)]
-        return groups
+        gib groups
 
     def _setup_keywords(self) -> Nichts:
         n_keyword_lists = (
@@ -594,7 +594,7 @@ klasse CParserGenerator(ParserGenerator, GrammarVisitor):
         self.drucke(f"{node.name}_raw(Parser *p)")
 
     def _should_memoize(self, node: Rule) -> bool:
-        return node.memo und nicht node.left_recursive
+        gib node.memo und nicht node.left_recursive
 
     def _handle_default_rule_body(self, node: Rule, rhs: Rhs, result_type: str) -> Nichts:
         memoize = self._should_memoize(node)
@@ -881,7 +881,7 @@ klasse CParserGenerator(ParserGenerator, GrammarVisitor):
             fuer item in node.items:
                 name, type = self.add_var(item)
                 types[name] = type
-        return types
+        gib types
 
     def add_var(self, node: NamedItem) -> Tuple[Optional[str], Optional[str]]:
         call = self.callmakervisitor.generate_call(node.item)
@@ -889,4 +889,4 @@ klasse CParserGenerator(ParserGenerator, GrammarVisitor):
         wenn name is nicht Nichts:
             name = self.dedupe(name)
         return_type = call.return_type wenn node.type is Nichts sonst node.type
-        return name, return_type
+        gib name, return_type

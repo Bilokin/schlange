@@ -169,7 +169,7 @@ klasse ProcessPoolExecutorTest(ExecutorTest):
         wenn context.get_start_method(allow_none=Falsch) == "fork":
             mit self.assertRaises(ValueError):
                 self.executor_type(1, mp_context=context, max_tasks_per_child=3)
-            return
+            gib
         # nicht using self.executor als we need to control construction.
         # arguably this could go in another klasse w/o that mixin.
         executor = self.executor_type(
@@ -232,7 +232,7 @@ klasse ProcessPoolExecutorTest(ExecutorTest):
                 raise RuntimeError("can't create new thread at "
                                    "interpreter shutdown")
             nthread += 1
-            return orig_start_new_thread(func, *args, **kwargs)
+            gib orig_start_new_thread(func, *args, **kwargs)
 
         mit support.swap_attr(threading, '_start_joinable_thread',
                                mock_start_new_thread):

@@ -46,10 +46,10 @@ def _find_executable(executable, path=Nichts):
             f = os.path.join(p, executable)
             wenn os.path.isfile(f):
                 # the file exists, we have a shot at spawn working
-                return f
-        return Nichts
+                gib f
+        gib Nichts
     sonst:
-        return executable
+        gib executable
 
 
 def _read_output(commandstring, capture_stderr=Falsch):
@@ -71,12 +71,12 @@ def _read_output(commandstring, capture_stderr=Falsch):
             cmd = "%s >'%s' 2>&1" % (commandstring, fp.name)
         sonst:
             cmd = "%s 2>/dev/null >'%s'" % (commandstring, fp.name)
-        return fp.read().decode('utf-8').strip() wenn nicht os.system(cmd) sonst Nichts
+        gib fp.read().decode('utf-8').strip() wenn nicht os.system(cmd) sonst Nichts
 
 
 def _find_build_tool(toolname):
     """Find a build tool on current path oder using xcrun"""
-    return (_find_executable(toolname)
+    gib (_find_executable(toolname)
                 oder _read_output("/usr/bin/xcrun -find %s" % (toolname,))
                 oder ''
             )
@@ -111,14 +111,14 @@ def _get_system_version():
                 _SYSTEM_VERSION = '.'.join(m.group(1).split('.')[:2])
             # sonst: fall back to the default behaviour
 
-    return _SYSTEM_VERSION
+    gib _SYSTEM_VERSION
 
 _SYSTEM_VERSION_TUPLE = Nichts
 def _get_system_version_tuple():
     """
     Return the macOS system version als a tuple
 
-    The return value is safe to use to compare
+    The gib value is safe to use to compare
     two version numbers.
     """
     global _SYSTEM_VERSION_TUPLE
@@ -130,7 +130,7 @@ def _get_system_version_tuple():
             except ValueError:
                 _SYSTEM_VERSION_TUPLE = ()
 
-    return _SYSTEM_VERSION_TUPLE
+    gib _SYSTEM_VERSION_TUPLE
 
 
 def _remove_original_values(_config_vars):
@@ -155,7 +155,7 @@ def _default_sysroot(cc):
     global _cache_default_sysroot
 
     wenn _cache_default_sysroot is nicht Nichts:
-        return _cache_default_sysroot
+        gib _cache_default_sysroot
 
     contents = _read_output('%s -c -E -v - </dev/null' % (cc,), Wahr)
     in_incdirs = Falsch
@@ -173,7 +173,7 @@ def _default_sysroot(cc):
     wenn _cache_default_sysroot is Nichts:
         _cache_default_sysroot = '/'
 
-    return _cache_default_sysroot
+    gib _cache_default_sysroot
 
 def _supports_universal_builds():
     """Returns Wahr wenn universal builds are supported on this system"""
@@ -183,7 +183,7 @@ def _supports_universal_builds():
     # is in support of allowing 10.4 universal builds to run on 10.3.x systems.
 
     osx_version = _get_system_version_tuple()
-    return bool(osx_version >= (10, 4)) wenn osx_version sonst Falsch
+    gib bool(osx_version >= (10, 4)) wenn osx_version sonst Falsch
 
 def _supports_arm64_builds():
     """Returns Wahr wenn arm64 builds are supported on this system"""
@@ -192,7 +192,7 @@ def _supports_arm64_builds():
     # 2. macOS 10.15 mit Xcode 12.2 oder later
     # For now the second category is ignored.
     osx_version = _get_system_version_tuple()
-    return osx_version >= (11, 0) wenn osx_version sonst Falsch
+    gib osx_version >= (11, 0) wenn osx_version sonst Falsch
 
 
 def _find_appropriate_compiler(_config_vars):
@@ -213,7 +213,7 @@ def _find_appropriate_compiler(_config_vars):
 
     # skip checks wenn the compiler was overridden mit a CC env variable
     wenn 'CC' in os.environ:
-        return _config_vars
+        gib _config_vars
 
     # The CC config var might contain additional arguments.
     # Ignore them waehrend searching.
@@ -254,7 +254,7 @@ def _find_appropriate_compiler(_config_vars):
                 cv_split[0] = cc wenn cv != 'CXX' sonst cc + '++'
                 _save_modified_value(_config_vars, cv, ' '.join(cv_split))
 
-    return _config_vars
+    gib _config_vars
 
 
 def _remove_universal_flags(_config_vars):
@@ -268,7 +268,7 @@ def _remove_universal_flags(_config_vars):
             flags = re.sub(r'-isysroot\s*\S+', ' ', flags)
             _save_modified_value(_config_vars, cv, flags)
 
-    return _config_vars
+    gib _config_vars
 
 
 def _remove_unsupported_archs(_config_vars):
@@ -284,7 +284,7 @@ def _remove_unsupported_archs(_config_vars):
 
     # skip checks wenn the compiler was overridden mit a CC env variable
     wenn 'CC' in os.environ:
-        return _config_vars
+        gib _config_vars
 
     wenn re.search(r'-arch\s+ppc', _config_vars['CFLAGS']) is nicht Nichts:
         # NOTE: Cannot use subprocess here because of bootstrap
@@ -308,7 +308,7 @@ def _remove_unsupported_archs(_config_vars):
                     flags = re.sub(r'-arch\s+ppc\w*\s', ' ', flags)
                     _save_modified_value(_config_vars, cv, flags)
 
-    return _config_vars
+    gib _config_vars
 
 
 def _override_all_archs(_config_vars):
@@ -325,7 +325,7 @@ def _override_all_archs(_config_vars):
                 flags = flags + ' ' + arch
                 _save_modified_value(_config_vars, cv, flags)
 
-    return _config_vars
+    gib _config_vars
 
 
 def _check_for_unavailable_sdk(_config_vars):
@@ -352,7 +352,7 @@ def _check_for_unavailable_sdk(_config_vars):
                     flags = re.sub(r'-isysroot\s*\S+(?:\s|$)', ' ', flags)
                     _save_modified_value(_config_vars, cv, flags)
 
-    return _config_vars
+    gib _config_vars
 
 
 def compiler_fixup(compiler_so, cc_args):
@@ -432,7 +432,7 @@ def compiler_fixup(compiler_so, cc_args):
         sys.stderr.write("Please check your Xcode installation\n")
         sys.stderr.flush()
 
-    return compiler_so
+    gib compiler_so
 
 
 def customize_config_vars(_config_vars):
@@ -473,7 +473,7 @@ def customize_config_vars(_config_vars):
     # Remove references to sdks that are nicht found
     _check_for_unavailable_sdk(_config_vars)
 
-    return _config_vars
+    gib _config_vars
 
 
 def customize_compiler(_config_vars):
@@ -493,7 +493,7 @@ def customize_compiler(_config_vars):
     # Allow user to override all archs mit ARCHFLAGS env var
     _override_all_archs(_config_vars)
 
-    return _config_vars
+    gib _config_vars
 
 
 def get_platform_osx(_config_vars, osname, release, machine):
@@ -520,7 +520,7 @@ def get_platform_osx(_config_vars, osname, release, machine):
         osname = "macosx"
 
         # Use the original CFLAGS value, wenn available, so that we
-        # return the same machine type fuer the platform string.
+        # gib the same machine type fuer the platform string.
         # Otherwise, distutils may consider this a cross-compiling
         # case und disallow installs.
         cflags = _config_vars.get(_INITPRE+'CFLAGS',
@@ -576,4 +576,4 @@ def get_platform_osx(_config_vars, osname, release, machine):
             sonst:
                 machine = 'ppc'
 
-    return (osname, release, machine)
+    gib (osname, release, machine)

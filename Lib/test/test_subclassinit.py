@@ -118,7 +118,7 @@ klasse Test(unittest.TestCase):
                 ret = super().__new__(cls, name, bases, ns)
                 self.assertEqual(ret.d.name, "d")
                 self.assertIs(ret.d.owner, ret)
-                return 0
+                gib 0
 
         klasse Descriptor:
             def __set_name__(self, owner, name):
@@ -180,7 +180,7 @@ klasse Test(unittest.TestCase):
                 self = super().__new__(cls, name, bases, ns)
                 self.meta_owner = self.owner
                 self.meta_name = self.name
-                return self
+                gib self
 
         klasse A:
             def __init_subclass__(cls):
@@ -235,7 +235,7 @@ klasse Test(unittest.TestCase):
 
         klasse MyMeta(type):
             def __new__(cls, name, bases, namespace, otherarg):
-                return super().__new__(cls, name, bases, namespace)
+                gib super().__new__(cls, name, bases, namespace)
 
             def __init__(self, name, bases, namespace, otherarg):
                 super().__init__(name, bases, namespace)
@@ -250,7 +250,7 @@ klasse Test(unittest.TestCase):
         # These tests failed before Python 3.6, PEP 487
         klasse MyMeta(type):
             def __new__(cls, name, bases, namespace):
-                return super().__new__(cls, name=name, bases=bases,
+                gib super().__new__(cls, name=name, bases=bases,
                                        dict=namespace)
 
         mit self.assertRaises(TypeError):
@@ -261,7 +261,7 @@ klasse Test(unittest.TestCase):
             def __new__(cls, name, bases, namespace, otherarg):
                 self = super().__new__(cls, name, bases, namespace)
                 self.otherarg = otherarg
-                return self
+                gib self
 
         klasse MyClass2(metaclass=MyMeta, otherarg=1):
             pass

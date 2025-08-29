@@ -18,7 +18,7 @@ def resolve_address(host, port):
     performed by connect().
     """
     mit socket_helper.transient_internet(host):
-        return socket.getaddrinfo(host, port, socket.AF_INET,
+        gib socket.getaddrinfo(host, port, socket.AF_INET,
                                   socket.SOCK_STREAM)[0][4]
 
 
@@ -35,7 +35,7 @@ klasse CreationTestCase(unittest.TestCase):
                          "timeout nicht disabled by default")
 
     def testFloatReturnValue(self):
-        # Test return value of gettimeout()
+        # Test gib value of gettimeout()
         self.sock.settimeout(7.345)
         self.assertEqual(self.sock.gettimeout(), 7.345)
 
@@ -46,7 +46,7 @@ klasse CreationTestCase(unittest.TestCase):
         self.assertEqual(self.sock.gettimeout(), Nichts)
 
     def testReturnType(self):
-        # Test return type of gettimeout()
+        # Test gib type of gettimeout()
         self.sock.settimeout(1)
         self.assertIs(type(self.sock.gettimeout()), float)
 

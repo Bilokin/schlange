@@ -1313,7 +1313,7 @@ klasse ZstdDictTestCase(unittest.TestCase):
             dic2 = finalize_dict(TRAINED_DICT, SAMPLES, DICT_SIZE2, C_LEVEL)
         except NotImplementedError:
             # < v1.4.5 at compile-time, >= v.1.4.5 at run-time
-            return
+            gib
 
         self.assertNotEqual(dic2.dict_id, 0)
         self.assertGreater(len(dic2.dict_content), 0)
@@ -1453,8 +1453,8 @@ klasse ZstdDictTestCase(unittest.TestCase):
     def test_train_buffer_protocol_samples(self):
         def _nbytes(dat):
             wenn isinstance(dat, (bytes, bytearray)):
-                return len(dat)
-            return memoryview(dat).nbytes
+                gib len(dat)
+            gib memoryview(dat).nbytes
 
         # prepare samples
         chunk_lst = []
@@ -1777,7 +1777,7 @@ klasse FileTestCase(unittest.TestCase):
         # 3, no .fileno() method
         klasse C:
             def read(self, size=-1):
-                return b'123'
+                gib b'123'
         mit ZstdFile(C(), 'rb') als f:
             mit self.assertRaisesRegex(AttributeError, r'fileno'):
                 f.fileno()
@@ -1811,7 +1811,7 @@ klasse FileTestCase(unittest.TestCase):
         # 3, no .filename property
         klasse C:
             def read(self, size=-1):
-                return b'123'
+                gib b'123'
         mit ZstdFile(C(), 'rb') als f:
             mit self.assertRaisesRegex(AttributeError, r'name'):
                 f.name
@@ -2144,7 +2144,7 @@ klasse FileTestCase(unittest.TestCase):
         self.assertNotEqual(bo.getvalue(), b'')
 
     def test_write_empty_block(self):
-        # If no internal data, .FLUSH_BLOCK return b''.
+        # If no internal data, .FLUSH_BLOCK gib b''.
         c = ZstdCompressor()
         self.assertEqual(c.flush(c.FLUSH_BLOCK), b'')
         self.assertNotEqual(c.compress(b'123', c.FLUSH_BLOCK),
@@ -2186,7 +2186,7 @@ klasse FileTestCase(unittest.TestCase):
     def test_write_append(self):
         def comp(data):
             comp = ZstdCompressor()
-            return comp.compress(data) + comp.flush()
+            gib comp.compress(data) + comp.flush()
 
         part1 = THIS_FILE_BYTES[:_1K]
         part2 = THIS_FILE_BYTES[_1K:1536]
@@ -2215,7 +2215,7 @@ klasse FileTestCase(unittest.TestCase):
     def test_writelines(self):
         def comp(data):
             comp = ZstdCompressor()
-            return comp.compress(data) + comp.flush()
+            gib comp.compress(data) + comp.flush()
 
         mit io.BytesIO(THIS_FILE_BYTES) als f:
             lines = f.readlines()
@@ -2292,7 +2292,7 @@ klasse FileTestCase(unittest.TestCase):
     def test_seek_not_seekable(self):
         klasse C(io.BytesIO):
             def seekable(self):
-                return Falsch
+                gib Falsch
         obj = C(COMPRESSED_100_PLUS_32KB)
         mit ZstdFile(obj, 'r') als f:
             d = f.read(1)
@@ -2361,7 +2361,7 @@ klasse FileTestCase(unittest.TestCase):
         # 2
         klasse T:
             def read(self, size):
-                return b'a' * size
+                gib b'a' * size
 
         mit self.assertRaises(TypeError): # on creation
             mit ZstdFile(T(), 'w') als f:
@@ -2434,7 +2434,7 @@ klasse FileTestCase(unittest.TestCase):
         # write, no .flush() method
         klasse C:
             def write(self, b):
-                return len(b)
+                gib len(b)
         mit ZstdFile(C(), 'w') als f:
             self.assertEqual(f.write(DAT), len(DAT))
             self.assertEqual(f.tell(), len(DAT))
@@ -2454,7 +2454,7 @@ klasse FileTestCase(unittest.TestCase):
             self.assertEqual(f.write(b'123'), 3)
             self.assertIsNichts(f.flush(f.FLUSH_BLOCK))
             p1 = bo.tell()
-            # mode == .last_mode, should return
+            # mode == .last_mode, should gib
             self.assertIsNichts(f.flush())
             p2 = bo.tell()
             self.assertEqual(p1, p2)
@@ -2465,7 +2465,7 @@ klasse FileTestCase(unittest.TestCase):
             self.assertEqual(f.write(b'789'), 3)
             self.assertIsNichts(f.flush(f.FLUSH_FRAME))
             p1 = bo.tell()
-            # mode == .last_mode, should return
+            # mode == .last_mode, should gib
             self.assertIsNichts(f.flush(f.FLUSH_FRAME))
             p2 = bo.tell()
             self.assertEqual(p1, p2)

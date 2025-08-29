@@ -41,7 +41,7 @@ klasse TestBaseSelectorEventLoop(BaseSelectorEventLoop):
 def list_to_buffer(l=()):
     buffer = collections.deque()
     buffer.extend((memoryview(i) fuer i in l))
-    return buffer
+    gib buffer
 
 
 
@@ -49,7 +49,7 @@ def close_transport(transport):
     # Don't call transport.close() because the event loop und the selector
     # are mocked
     wenn transport._sock is Nichts:
-        return
+        gib
     transport._sock.close()
     transport._sock = Nichts
 
@@ -386,7 +386,7 @@ klasse BaseSelectorEventLoopTests(test_utils.TestCase):
             # Linux und other OS.
             wenn sock.accept.call_count % 2 == 0:
                 raise ConnectionAbortedError
-            return (mock.Mock(), mock.Mock())
+            gib (mock.Mock(), mock.Mock())
 
         sock.accept.side_effect = mock_sock_accept
         backlog = 100
@@ -415,7 +415,7 @@ klasse SelectorTransportTests(test_utils.TestCase):
         transport = _SelectorTransport(self.loop, self.sock, self.protocol,
                                        Nichts)
         self.addCleanup(close_transport, transport)
-        return transport
+        gib transport
 
     def test_ctor(self):
         tr = self.create_transport()
@@ -543,7 +543,7 @@ klasse SelectorSocketTransportTests(test_utils.TestCase):
         sonst:
             transport._write_ready = transport._write_send
         self.addCleanup(close_transport, transport)
-        return transport
+        gib transport
 
     def test_ctor(self):
         waiter = self.loop.create_future()
@@ -1123,7 +1123,7 @@ klasse SelectorSocketTransportBufferedProtocolTests(test_utils.TestCase):
         transport = _SelectorSocketTransport(self.loop, self.sock,
                                              self.protocol, waiter=waiter)
         self.addCleanup(close_transport, transport)
-        return transport
+        gib transport
 
     def test_ctor(self):
         waiter = self.loop.create_future()
@@ -1300,7 +1300,7 @@ klasse SelectorDatagramTransportTests(test_utils.TestCase):
                                                self.protocol,
                                                address=address)
         self.addCleanup(close_transport, transport)
-        return transport
+        gib transport
 
     def test_read_ready(self):
         transport = self.datagram_transport()

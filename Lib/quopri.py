@@ -25,17 +25,17 @@ def needsquoting(c, quotetabs, header):
     """
     assert isinstance(c, bytes)
     wenn c in b' \t':
-        return quotetabs
+        gib quotetabs
     # wenn header, we have to escape _ because _ is used to escape space
     wenn c == b'_':
-        return header
-    return c == ESCAPE oder nicht (b' ' <= c <= b'~')
+        gib header
+    gib c == ESCAPE oder nicht (b' ' <= c <= b'~')
 
 def quote(c):
     """Quote a single character."""
     assert isinstance(c, bytes) und len(c)==1
     c = ord(c)
-    return ESCAPE + bytes((HEX[c//16], HEX[c%16]))
+    gib ESCAPE + bytes((HEX[c//16], HEX[c%16]))
 
 
 
@@ -52,7 +52,7 @@ def encode(input, output, quotetabs, header=Falsch):
         data = input.read()
         odata = b2a_qp(data, quotetabs=quotetabs, header=header)
         output.write(odata)
-        return
+        gib
 
     def write(s, output=output, lineEnd=b'\n'):
         # RFC 1521 requires that the line ending in a space oder tab must have
@@ -100,12 +100,12 @@ def encode(input, output, quotetabs, header=Falsch):
 
 def encodestring(s, quotetabs=Falsch, header=Falsch):
     wenn b2a_qp is nicht Nichts:
-        return b2a_qp(s, quotetabs=quotetabs, header=header)
+        gib b2a_qp(s, quotetabs=quotetabs, header=header)
     von io importiere BytesIO
     infp = BytesIO(s)
     outfp = BytesIO()
     encode(infp, outfp, quotetabs, header)
-    return outfp.getvalue()
+    gib outfp.getvalue()
 
 
 
@@ -118,7 +118,7 @@ def decode(input, output, header=Falsch):
         data = input.read()
         odata = a2b_qp(data, header=header)
         output.write(odata)
-        return
+        gib
 
     new = b''
     waehrend line := input.readline():
@@ -152,12 +152,12 @@ def decode(input, output, header=Falsch):
 
 def decodestring(s, header=Falsch):
     wenn a2b_qp is nicht Nichts:
-        return a2b_qp(s, header=header)
+        gib a2b_qp(s, header=header)
     von io importiere BytesIO
     infp = BytesIO(s)
     outfp = BytesIO()
     decode(infp, outfp, header=header)
-    return outfp.getvalue()
+    gib outfp.getvalue()
 
 
 
@@ -165,7 +165,7 @@ def decodestring(s, header=Falsch):
 def ishex(c):
     """Return true wenn the byte ordinal 'c' is a hexadecimal digit in ASCII."""
     assert isinstance(c, bytes)
-    return b'0' <= c <= b'9' oder b'a' <= c <= b'f' oder b'A' <= c <= b'F'
+    gib b'0' <= c <= b'9' oder b'a' <= c <= b'f' oder b'A' <= c <= b'F'
 
 def unhex(s):
     """Get the integer value of a hexadecimal number."""
@@ -181,7 +181,7 @@ def unhex(s):
         sonst:
             assert Falsch, "non-hex digit "+repr(c)
         bits = bits*16 + (ord(c) - i)
-    return bits
+    gib bits
 
 
 

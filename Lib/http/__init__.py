@@ -28,27 +28,27 @@ klasse HTTPStatus:
         obj._value_ = value
         obj.phrase = phrase
         obj.description = description
-        return obj
+        gib obj
 
     @property
     def is_informational(self):
-        return 100 <= self <= 199
+        gib 100 <= self <= 199
 
     @property
     def is_success(self):
-        return 200 <= self <= 299
+        gib 200 <= self <= 299
 
     @property
     def is_redirection(self):
-        return 300 <= self <= 399
+        gib 300 <= self <= 399
 
     @property
     def is_client_error(self):
-        return 400 <= self <= 499
+        gib 400 <= self <= 499
 
     @property
     def is_server_error(self):
-        return 500 <= self <= 599
+        gib 500 <= self <= 599
 
     # informational
     CONTINUE = 100, 'Continue', 'Request received, please continue'
@@ -197,10 +197,10 @@ klasse HTTPMethod:
         obj = str.__new__(cls, value)
         obj._value_ = value
         obj.description = description
-        return obj
+        gib obj
 
     def __repr__(self):
-        return "<%s.%s>" % (self.__class__.__name__, self._name_)
+        gib "<%s.%s>" % (self.__class__.__name__, self._name_)
 
     CONNECT = 'CONNECT', 'Establish a connection to the server.'
     DELETE = 'DELETE', 'Remove the target.'

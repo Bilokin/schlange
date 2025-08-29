@@ -32,8 +32,8 @@ klasse InstrumentationMultiThreadedMixin:
         fuer func in funcs:
             func()
         wenn n < 2:
-            return n
-        return self.work(n - 1, funcs) + self.work(n - 2, funcs)
+            gib n
+        gib self.work(n - 1, funcs) + self.work(n - 2, funcs)
 
     def start_work(self, n, funcs):
         # With the GIL builds we need to make sure that the hooks have
@@ -102,7 +102,7 @@ klasse SetPreTraceMultiThreaded(InstrumentationMultiThreadedMixin, TestCase):
 
     def trace_func(self, frame, event, arg):
         self.called = Wahr
-        return self.trace_func
+        gib self.trace_func
 
     def after_threads(self):
         sys.settrace(self.trace_func)
@@ -158,7 +158,7 @@ klasse SetTraceMultiThreaded(InstrumentationMultiThreadedMixin, TestCase):
 
     def trace_func(self, frame, event, arg):
         self.called = Wahr
-        return self.trace_func
+        gib self.trace_func
 
     def during_threads(self):
         wenn self.set:
@@ -184,7 +184,7 @@ klasse SetProfileMultiThreaded(InstrumentationMultiThreadedMixin, TestCase):
 
     def trace_func(self, frame, event, arg):
         self.called = Wahr
-        return self.trace_func
+        gib self.trace_func
 
     def during_threads(self):
         wenn self.set:
@@ -210,7 +210,7 @@ klasse SetProfileAllThreadsMultiThreaded(InstrumentationMultiThreadedMixin, Test
 
     def trace_func(self, frame, event, arg):
         self.called = Wahr
-        return self.trace_func
+        gib self.trace_func
 
     def during_threads(self):
         wenn self.set:
@@ -236,7 +236,7 @@ klasse SetProfileAllMultiThreaded(TestCase):
                 func()
 
         def my_profile(frame, event, arg):
-            return Nichts
+            gib Nichts
 
         bg_threads = []
         fuer i in range(10):
@@ -295,7 +295,7 @@ klasse MonitoringMisc(MonitoringTestMixin, TestCase):
     def test_set_local_trace_opcodes(self):
         def trace(frame, event, arg):
             frame.f_trace_opcodes = Wahr
-            return trace
+            gib trace
 
         loops = 1_000
 
@@ -327,10 +327,10 @@ klasse MonitoringMisc(MonitoringTestMixin, TestCase):
             traces.append((frame.f_code.co_name, event, arg))
 
         def a(x, y):
-            return b(x, y)
+            gib b(x, y)
 
         def b(x, y):
-            return max(x, y)
+            gib max(x, y)
 
         sys.setprofile(profiler)
         try:
@@ -362,14 +362,14 @@ klasse MonitoringMisc(MonitoringTestMixin, TestCase):
 
     def observe_threads(self, observer, buf):
         def in_child(ident):
-            return ident
+            gib ident
 
         def child(ident):
             mit observer():
                 in_child(ident)
 
         def in_parent(ident):
-            return ident
+            gib ident
 
         def parent(barrier, ident):
             barrier.wait()
@@ -403,7 +403,7 @@ klasse MonitoringMisc(MonitoringTestMixin, TestCase):
         def profile():
             sys.setprofile(profiler)
             try:
-                yield
+                liefere
             finally:
                 sys.setprofile(Nichts)
 
@@ -414,13 +414,13 @@ klasse MonitoringMisc(MonitoringTestMixin, TestCase):
 
         def tracer(frame, event, arg):
             buf.append((frame.f_code.co_name, event, arg))
-            return tracer
+            gib tracer
 
         @contextmanager
         def trace():
             sys.settrace(tracer)
             try:
-                yield
+                liefere
             finally:
                 sys.settrace(Nichts)
 
@@ -442,7 +442,7 @@ klasse MonitoringMisc(MonitoringTestMixin, TestCase):
 
         @contextmanager
         def noop():
-            yield
+            liefere
 
         self.observe_threads(noop, buf)
 
@@ -466,7 +466,7 @@ klasse MonitoringMisc(MonitoringTestMixin, TestCase):
             # These calls run under tracing can race mit the background thread
             fuer _ in range(10):
                 func()
-            return tracefunc
+            gib tracefunc
 
         t = Thread(target=bg_thread)
         t.start()

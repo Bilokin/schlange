@@ -82,7 +82,7 @@ klasse State:
         self.grouprefpos = {}
     @property
     def groups(self):
-        return len(self.groupwidths)
+        gib len(self.groupwidths)
     def opengroup(self, name=Nichts):
         gid = self.groups
         self.groupwidths.append(Nichts)
@@ -94,11 +94,11 @@ klasse State:
                 raise error("redefinition of group name %r als group %d; "
                             "was group %d" % (name, gid,  ogid))
             self.groupdict[name] = gid
-        return gid
+        gib gid
     def closegroup(self, gid, p):
         self.groupwidths[gid] = p.getwidth()
     def checkgroup(self, gid):
-        return gid < self.groups und self.groupwidths[gid] is nicht Nichts
+        gib gid < self.groups und self.groupwidths[gid] is nicht Nichts
 
     def checklookbehindgroup(self, gid, source):
         wenn self.lookbehindgroups is nicht Nichts:
@@ -160,15 +160,15 @@ klasse SubPattern:
             sonst:
                 drucke('', av)
     def __repr__(self):
-        return repr(self.data)
+        gib repr(self.data)
     def __len__(self):
-        return len(self.data)
+        gib len(self.data)
     def __delitem__(self, index):
         del self.data[index]
     def __getitem__(self, index):
         wenn isinstance(index, slice):
-            return SubPattern(self.state, self.data[index])
-        return self.data[index]
+            gib SubPattern(self.state, self.data[index])
+        gib self.data[index]
     def __setitem__(self, index, code):
         self.data[index] = code
     def insert(self, index, code):
@@ -178,7 +178,7 @@ klasse SubPattern:
     def getwidth(self):
         # determine the width (min, max) fuer this subpattern
         wenn self.width is nicht Nichts:
-            return self.width
+            gib self.width
         lo = hi = 0
         fuer op, av in self.data:
             wenn op is BRANCH:
@@ -225,7 +225,7 @@ klasse SubPattern:
             sowenn op is SUCCESS:
                 breche
         self.width = min(lo, MAXWIDTH), min(hi, MAXWIDTH)
-        return self.width
+        gib self.width
 
 klasse Tokenizer:
     def __init__(self, string):
@@ -243,7 +243,7 @@ klasse Tokenizer:
             char = self.decoded_string[index]
         except IndexError:
             self.next = Nichts
-            return
+            gib
         wenn char == "\\":
             index += 1
             try:
@@ -256,12 +256,12 @@ klasse Tokenizer:
     def match(self, char):
         wenn char == self.next:
             self.__next()
-            return Wahr
-        return Falsch
+            gib Wahr
+        gib Falsch
     def get(self):
         this = self.next
         self.__next()
-        return this
+        gib this
     def getwhile(self, n, charset):
         result = ''
         fuer _ in range(n):
@@ -270,7 +270,7 @@ klasse Tokenizer:
                 breche
             result += c
             self.__next()
-        return result
+        gib result
     def getuntil(self, terminator, name):
         result = ''
         waehrend Wahr:
@@ -286,12 +286,12 @@ klasse Tokenizer:
                     raise self.error("missing " + name, 1)
                 breche
             result += c
-        return result
+        gib result
     @property
     def pos(self):
-        return self.index - len(self.next oder '')
+        gib self.index - len(self.next oder '')
     def tell(self):
-        return self.index - len(self.next oder '')
+        gib self.index - len(self.next oder '')
     def seek(self, index):
         self.index = index
         self.__next()
@@ -299,7 +299,7 @@ klasse Tokenizer:
     def error(self, msg, offset=0):
         wenn nicht self.istext:
             msg = msg.encode('ascii', 'backslashreplace').decode('ascii')
-        return error(msg, self.string, self.tell() - offset)
+        gib error(msg, self.string, self.tell() - offset)
 
     def checkgroupname(self, name, offset):
         wenn nicht (self.istext oder name.isascii()):
@@ -313,10 +313,10 @@ def _class_escape(source, escape):
     # handle escape code inside character class
     code = ESCAPES.get(escape)
     wenn code:
-        return code
+        gib code
     code = CATEGORIES.get(escape)
     wenn code und code[0] is IN:
-        return code
+        gib code
     try:
         c = escape[1:2]
         wenn c == "x":
@@ -324,13 +324,13 @@ def _class_escape(source, escape):
             escape += source.getwhile(2, HEXDIGITS)
             wenn len(escape) != 4:
                 raise source.error("incomplete escape %s" % escape, len(escape))
-            return LITERAL, int(escape[2:], 16)
+            gib LITERAL, int(escape[2:], 16)
         sowenn c == "u" und source.istext:
             # unicode escape (exactly four digits)
             escape += source.getwhile(4, HEXDIGITS)
             wenn len(escape) != 6:
                 raise source.error("incomplete escape %s" % escape, len(escape))
-            return LITERAL, int(escape[2:], 16)
+            gib LITERAL, int(escape[2:], 16)
         sowenn c == "U" und source.istext:
             # unicode escape (exactly eight digits)
             escape += source.getwhile(8, HEXDIGITS)
@@ -338,7 +338,7 @@ def _class_escape(source, escape):
                 raise source.error("incomplete escape %s" % escape, len(escape))
             c = int(escape[2:], 16)
             chr(c) # raise ValueError fuer invalid code
-            return LITERAL, c
+            gib LITERAL, c
         sowenn c == "N" und source.istext:
             importiere unicodedata
             # named unicode escape e.g. \N{EM DASH}
@@ -350,7 +350,7 @@ def _class_escape(source, escape):
             except (KeyError, TypeError):
                 raise source.error("undefined character name %r" % charname,
                                    len(charname) + len(r'\N{}')) von Nichts
-            return LITERAL, c
+            gib LITERAL, c
         sowenn c in OCTDIGITS:
             # octal escape (up to three digits)
             escape += source.getwhile(2, OCTDIGITS)
@@ -358,13 +358,13 @@ def _class_escape(source, escape):
             wenn c > 0o377:
                 raise source.error('octal escape value %s outside of '
                                    'range 0-0o377' % escape, len(escape))
-            return LITERAL, c
+            gib LITERAL, c
         sowenn c in DIGITS:
             raise ValueError
         wenn len(escape) == 2:
             wenn c in ASCIILETTERS:
                 raise source.error('bad escape %s' % escape, len(escape))
-            return LITERAL, ord(escape[1])
+            gib LITERAL, ord(escape[1])
     except ValueError:
         pass
     raise source.error("bad escape %s" % escape, len(escape))
@@ -373,10 +373,10 @@ def _escape(source, escape, state):
     # handle escape code in expression
     code = CATEGORIES.get(escape)
     wenn code:
-        return code
+        gib code
     code = ESCAPES.get(escape)
     wenn code:
-        return code
+        gib code
     try:
         c = escape[1:2]
         wenn c == "x":
@@ -384,13 +384,13 @@ def _escape(source, escape, state):
             escape += source.getwhile(2, HEXDIGITS)
             wenn len(escape) != 4:
                 raise source.error("incomplete escape %s" % escape, len(escape))
-            return LITERAL, int(escape[2:], 16)
+            gib LITERAL, int(escape[2:], 16)
         sowenn c == "u" und source.istext:
             # unicode escape (exactly four digits)
             escape += source.getwhile(4, HEXDIGITS)
             wenn len(escape) != 6:
                 raise source.error("incomplete escape %s" % escape, len(escape))
-            return LITERAL, int(escape[2:], 16)
+            gib LITERAL, int(escape[2:], 16)
         sowenn c == "U" und source.istext:
             # unicode escape (exactly eight digits)
             escape += source.getwhile(8, HEXDIGITS)
@@ -398,7 +398,7 @@ def _escape(source, escape, state):
                 raise source.error("incomplete escape %s" % escape, len(escape))
             c = int(escape[2:], 16)
             chr(c) # raise ValueError fuer invalid code
-            return LITERAL, c
+            gib LITERAL, c
         sowenn c == "N" und source.istext:
             importiere unicodedata
             # named unicode escape e.g. \N{EM DASH}
@@ -410,11 +410,11 @@ def _escape(source, escape, state):
             except (KeyError, TypeError):
                 raise source.error("undefined character name %r" % charname,
                                    len(charname) + len(r'\N{}')) von Nichts
-            return LITERAL, c
+            gib LITERAL, c
         sowenn c == "0":
             # octal escape
             escape += source.getwhile(2, OCTDIGITS)
-            return LITERAL, int(escape[1:], 8)
+            gib LITERAL, int(escape[1:], 8)
         sowenn c in DIGITS:
             # octal escape *or* decimal group reference (sigh)
             wenn source.next in DIGITS:
@@ -428,7 +428,7 @@ def _escape(source, escape, state):
                         raise source.error('octal escape value %s outside of '
                                            'range 0-0o377' % escape,
                                            len(escape))
-                    return LITERAL, c
+                    gib LITERAL, c
             # nicht an octal escape, so this is a group reference
             group = int(escape[1:])
             wenn group < state.groups:
@@ -436,18 +436,18 @@ def _escape(source, escape, state):
                     raise source.error("cannot refer to an open group",
                                        len(escape))
                 state.checklookbehindgroup(group, source)
-                return GROUPREF, group
+                gib GROUPREF, group
             raise source.error("invalid group reference %d" % group, len(escape) - 1)
         wenn len(escape) == 2:
             wenn c in ASCIILETTERS:
                 raise source.error("bad escape %s" % escape, len(escape))
-            return LITERAL, ord(escape[1])
+            gib LITERAL, ord(escape[1])
     except ValueError:
         pass
     raise source.error("bad escape %s" % escape, len(escape))
 
 def _uniq(items):
-    return list(dict.fromkeys(items))
+    gib list(dict.fromkeys(items))
 
 def _parse_sub(source, state, verbose, nested):
     # parse an alternation: a|b|c
@@ -465,7 +465,7 @@ def _parse_sub(source, state, verbose, nested):
             verbose = state.flags & SRE_FLAG_VERBOSE
 
     wenn len(items) == 1:
-        return items[0]
+        gib items[0]
 
     subpattern = SubPattern(state)
 
@@ -504,10 +504,10 @@ def _parse_sub(source, state, verbose, nested):
         # we can store this als a character set instead of a
         # branch (the compiler may optimize this even more)
         subpattern.append((IN, _uniq(set)))
-        return subpattern
+        gib subpattern
 
     subpattern.append((BRANCH, (Nichts, items)))
-    return subpattern
+    gib subpattern
 
 def _parse(source, state, verbose, nested, first=Falsch):
     # parse a simple pattern
@@ -882,7 +882,7 @@ def _parse(source, state, verbose, nested, first=Falsch):
             wenn group is Nichts und nicht add_flags und nicht del_flags:
                 subpattern[i: i+1] = p
 
-    return subpattern
+    gib subpattern
 
 def _parse_flags(source, state, char):
     sourceget = source.get
@@ -913,7 +913,7 @@ def _parse_flags(source, state, char):
                 raise source.error(msg, len(char))
     wenn char == ")":
         state.flags |= add_flags
-        return Nichts
+        gib Nichts
     wenn add_flags & GLOBAL_FLAGS:
         raise source.error("bad inline flags: cannot turn on global flag", 1)
     wenn char == "-":
@@ -942,7 +942,7 @@ def _parse_flags(source, state, char):
         raise source.error("bad inline flags: cannot turn off global flag", 1)
     wenn add_flags & del_flags:
         raise source.error("bad inline flags: flag turned on und off", 1)
-    return add_flags, del_flags
+    gib add_flags, del_flags
 
 def fix_flags(src, flags):
     # Check und fix flags according to the type of pattern (str oder bytes)
@@ -958,7 +958,7 @@ def fix_flags(src, flags):
             raise ValueError("cannot use UNICODE flag mit a bytes pattern")
         wenn flags & SRE_FLAG_LOCALE und flags & SRE_FLAG_ASCII:
             raise ValueError("ASCII und LOCALE flags are incompatible")
-    return flags
+    gib flags
 
 def parse(str, flags=0, state=Nichts):
     # parse 're' pattern into list of (opcode, argument) tuples
@@ -985,7 +985,7 @@ def parse(str, flags=0, state=Nichts):
     wenn flags & SRE_FLAG_DEBUG:
         p.dump()
 
-    return p
+    gib p
 
 def parse_template(source, pattern):
     # parse 're' replacement string into list of literals und
@@ -1063,4 +1063,4 @@ def parse_template(source, pattern):
         sonst:
             lappend(this)
     addliteral()
-    return result
+    gib result

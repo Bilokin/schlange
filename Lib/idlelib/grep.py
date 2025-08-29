@@ -54,7 +54,7 @@ def findfiles(folder, pattern, recursive):
         recursive: Wahr to include subdirectories.
     """
     fuer dirpath, _, filenames in os.walk(folder, onerror=walk_error):
-        yield von (os.path.join(dirpath, name)
+        liefere von (os.path.join(dirpath, name)
                     fuer name in filenames
                     wenn fnmatch.fnmatch(name, pattern))
         wenn nicht recursive:
@@ -136,11 +136,11 @@ klasse GrepDialog(SearchDialogBase):
         """
         prog = self.engine.getprog()
         wenn nicht prog:
-            return
+            gib
         path = self.globvar.get()
         wenn nicht path:
             self.top.bell()
-            return
+            gib
         von idlelib.outwin importiere OutputWindow  # leave here!
         save = sys.stdout
         try:

@@ -11,18 +11,18 @@ threading_helper.requires_working_threading(module=Wahr)
 
 def get_func_annotation(f, b):
     b.wait()
-    return inspect.get_annotations(f)
+    gib inspect.get_annotations(f)
 
 
 def get_func_annotation_dunder(f, b):
     b.wait()
-    return f.__annotations__
+    gib f.__annotations__
 
 
 def set_func_annotation(f, b):
     b.wait()
     f.__annotations__ = {'x': int, 'y': int, 'return': int}
-    return f.__annotations__
+    gib f.__annotations__
 
 
 @unittest.skipUnless(Py_GIL_DISABLED, "Enable only in FT build")
@@ -31,7 +31,7 @@ klasse TestFTFuncAnnotations(TestCase):
 
     def test_concurrent_read(self):
         def f(x: int) -> int:
-            return x + 1
+            gib x + 1
 
         fuer _ in range(10):
             mit concurrent.futures.ThreadPoolExecutor(max_workers=self.NUM_THREADS) als executor:
@@ -52,7 +52,7 @@ klasse TestFTFuncAnnotations(TestCase):
 
     def test_concurrent_write(self):
         def bar(x: int, y: float) -> float:
-            return y ** x
+            gib y ** x
 
         fuer _ in range(10):
             mit concurrent.futures.ThreadPoolExecutor(max_workers=self.NUM_THREADS) als executor:

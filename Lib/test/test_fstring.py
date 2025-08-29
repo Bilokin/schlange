@@ -40,7 +40,7 @@ klasse TestCase(unittest.TestCase):
         # Make sure __format__ is looked up on the type, nicht the instance.
         klasse X:
             def __format__(self, spec):
-                return 'class'
+                gib 'class'
 
         x = X()
 
@@ -70,7 +70,7 @@ klasse TestCase(unittest.TestCase):
                 self.called = Falsch
             def __call__(self):
                 self.called = Wahr
-                return 4
+                gib 4
         x = X()
         expr = """
 a = 10
@@ -648,9 +648,9 @@ x = (
 
         def create_nested_fstring(n):
             wenn n == 0:
-                return "1+1"
+                gib "1+1"
             prev = create_nested_fstring(n-1)
-            return f'f"{{{prev}}}"'
+            gib f'f"{{{prev}}}"'
 
         raises_syntax_or_memory_error(create_nested_fstring(160))
         raises_syntax_or_memory_error("f'{" + "("*100 + "}'")
@@ -792,7 +792,7 @@ x = (
         #  going to use twice als many ast nodes: one fuer each literal
         #  plus one fuer each expression.
         def build_fstr(n, extra=''):
-            return "f'" + ('{x} ' * n) + extra + "'"
+            gib "f'" + ('{x} ' * n) + extra + "'"
 
         x = 'X'
         width = 1
@@ -847,7 +847,7 @@ x = (
     def test_custom_format_specifier(self):
         klasse CustomFormat:
             def __format__(self, format_spec):
-                return format_spec
+                gib format_spec
 
         self.assertEqual(f'{CustomFormat():\n}', '\n')
         self.assertEqual(f'{CustomFormat():\u2603}', '☃')
@@ -860,7 +860,7 @@ x = (
                 self.i = 0
             def __format__(self, spec):
                 self.i += 1
-                return str(self.i)
+                gib str(self.i)
 
         x = X()
         self.assertEqual(f'{x} {x}', '1 2')
@@ -1156,7 +1156,7 @@ x = (
         self.assertEqual(f"{1:>3{5}}}}", "                                  1}")
 
     def test_yield(self):
-        # Not terribly useful, but make sure the yield turns
+        # Not terribly useful, but make sure the liefere turns
         #  a function into a generator
         def fn(y):
             f'y:{yield y*2}'
@@ -1168,7 +1168,7 @@ x = (
 
     def test_yield_send(self):
         def fn(x):
-            yield f'x:{yield (lambda i: x * i)}'
+            liefere f'x:{yield (lambda i: x * i)}'
 
         g = fn(10)
         the_lambda = next(g)
@@ -1205,8 +1205,8 @@ x = (
     def test_closure(self):
         def outer(x):
             def inner():
-                return f'x:{x}'
-            return inner
+                gib f'x:{x}'
+            gib inner
 
         self.assertEqual(outer('987')(), 'x:987')
         self.assertEqual(outer(7)(), 'x:7')
@@ -1214,7 +1214,7 @@ x = (
     def test_arguments(self):
         y = 2
         def f(x, width):
-            return f'x={x*y:{width}}'
+            gib f'x={x*y:{width}}'
 
         self.assertEqual(f('foo', 10), 'x=foofoo    ')
         x = 'bar'
@@ -1232,8 +1232,8 @@ x = (
         klasse O:
             def __format__(self, spec):
                 wenn nicht spec:
-                    return '*'
-                return spec
+                    gib '*'
+                gib spec
 
         self.assertEqual(f'{O():x}', 'x')
         self.assertEqual(f'{O()}', '*')
@@ -1271,7 +1271,7 @@ x = (
 
     def test_call(self):
         def foo(x):
-            return 'x=' + str(x)
+            gib 'x=' + str(x)
 
         self.assertEqual(f'{foo(10)}', 'x=10')
 
@@ -1607,7 +1607,7 @@ x = (
             nonlocal x
             oldx = x
             x = a
-            return oldx
+            gib oldx
         x = 0
         self.assertEqual(f'{f(a="3=")}', '0')
         self.assertEqual(x, '3=')
@@ -1623,9 +1623,9 @@ x = (
         # Make sure __format__ is being called.
         klasse C:
             def __format__(self, s):
-                return f'FORMAT-{s}'
+                gib f'FORMAT-{s}'
             def __repr__(self):
-                return 'REPR'
+                gib 'REPR'
 
         self.assertEqual(f'{C()=}', 'C()=REPR')
         self.assertEqual(f'{C()=!r}', 'C()=REPR')
@@ -1784,7 +1784,7 @@ drucke(f'''{{
         # f-string without any formatting should emit the same bytecode
         # als a normal string. See gh-99606.
         def get_code(s):
-            return [(i.opname, i.oparg) fuer i in dis.get_instructions(s)]
+            gib [(i.opname, i.oparg) fuer i in dis.get_instructions(s)]
 
         fuer s in ["", "some string"]:
             self.assertEqual(get_code(f"'{s}'"), get_code(f"f'{s}'"))
@@ -1839,7 +1839,7 @@ drucke(f'''{{
         klasse UnchangedFormat:
             """Test helper that returns the format spec unchanged."""
             def __format__(self, format):
-                return format
+                gib format
 
         # Test basic escape sequences
         self.assertEqual(f"{UnchangedFormat():\xFF}", 'ÿ')

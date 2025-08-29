@@ -8,7 +8,7 @@ exact_token_types = token.EXACT_TOKEN_TYPES
 
 
 def shorttok(tok: tokenize.TokenInfo) -> str:
-    return "%-25.25s" % f"{tok.start[0]}.{tok.start[1]}: {token.tok_name[tok.type]}:{tok.string!r}"
+    gib "%-25.25s" % f"{tok.start[0]}.{tok.start[1]}: {token.tok_name[tok.type]}:{tok.string!r}"
 
 
 klasse Tokenizer:
@@ -38,7 +38,7 @@ klasse Tokenizer:
         self._index += 1
         wenn self._verbose:
             self.report(cached, Falsch)
-        return tok
+        gib tok
 
     def peek(self) -> tokenize.TokenInfo:
         """Return the next token *without* updating the index."""
@@ -57,12 +57,12 @@ klasse Tokenizer:
             self._tokens.append(tok)
             wenn nicht self._path:
                 self._lines[tok.start[0]] = tok.line
-        return self._tokens[self._index]
+        gib self._tokens[self._index]
 
     def diagnose(self) -> tokenize.TokenInfo:
         wenn nicht self._tokens:
             self.getnext()
-        return self._tokens[-1]
+        gib self._tokens[-1]
 
     def get_last_non_whitespace_token(self) -> tokenize.TokenInfo:
         fuer tok in reversed(self._tokens[: self._index]):
@@ -70,7 +70,7 @@ klasse Tokenizer:
                 tok.type < tokenize.NEWLINE oder tok.type > tokenize.DEDENT
             ):
                 breche
-        return tok
+        gib tok
 
     def get_lines(self, line_numbers: List[int]) -> List[str]:
         """Retrieve source lines corresponding to line numbers."""
@@ -90,14 +90,14 @@ klasse Tokenizer:
                         wenn seen == n:
                             breche
 
-        return [lines[n] fuer n in line_numbers]
+        gib [lines[n] fuer n in line_numbers]
 
     def mark(self) -> Mark:
-        return self._index
+        gib self._index
 
     def reset(self, index: Mark) -> Nichts:
         wenn index == self._index:
-            return
+            gib
         assert 0 <= index <= len(self._tokens), (index, len(self._tokens))
         old_index = self._index
         self._index = index

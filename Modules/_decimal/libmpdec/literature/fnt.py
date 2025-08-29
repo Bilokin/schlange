@@ -60,19 +60,19 @@ def prod(F, E):
     x = 1
     fuer y, z in zip(F, E):
         x *= y**z
-    return x
+    gib x
 
 def is_primitive_root(r, p, factors, exponents):
     """Check wenn r is a primitive root of F(p)."""
     wenn p != prod(factors, exponents) + 1:
-        return Falsch
+        gib Falsch
     fuer f in factors:
         q, control = divmod(p-1, f)
         wenn control != 0:
-            return Falsch
+            gib Falsch
         wenn pow(r, q, p) == 1:
-            return Falsch
-    return Wahr
+            gib Falsch
+    gib Wahr
 
 
 # =================================================================
@@ -178,7 +178,7 @@ def ntt(lst, dir):
             fuer j in range(d):
                 s += a[j] * pow(r, i*j, p)
             A[i] = s % p
-        return A
+        gib A
     sowenn dir == -1: # backward transform
         A = lst     # input array
         a = [0] * d # transformed values
@@ -187,7 +187,7 @@ def ntt(lst, dir):
             fuer i in range(d):
                 s += A[i] * pow(r_prime, i*j, p)
             a[j] = (d_prime * s) % p
-        return a
+        gib a
 
 def ntt_convolute(a, b):
     """convolute arrays a und b."""
@@ -197,7 +197,7 @@ def ntt_convolute(a, b):
     fuer i in range(len(a)):
         y[i] = y[i] * x[i]
     r = ntt(y, -1)
-    return r
+    gib r
 
 
 # Example: Two arrays representing 21 und 81 in little-endian:

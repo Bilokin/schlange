@@ -73,14 +73,14 @@ klasse Block:
         def summarize(s: object) -> str:
             s = repr(s)
             wenn len(s) > 30:
-                return s[:26] + "..." + s[0]
-            return s
+                gib s[:26] + "..." + s[0]
+            gib s
         parts = (
             repr(dsl_name),
             f"input={summarize(self.input)}",
             f"output={summarize(self.output)}"
         )
-        return f"<clinic.Block {' '.join(parts)}>"
+        gib f"<clinic.Block {' '.join(parts)}>"
 
 
 klasse BlockParser:
@@ -120,7 +120,7 @@ klasse BlockParser:
         self.first_block = Wahr
 
     def __iter__(self) -> BlockParser:
-        return self
+        gib self
 
     def __next__(self) -> Block:
         waehrend Wahr:
@@ -136,24 +136,24 @@ klasse BlockParser:
                     raise
                 self.dsl_name = Nichts
                 self.first_block = Falsch
-                return return_value
+                gib return_value
             block = self.parse_verbatim_block()
             wenn self.first_block und nicht block.input:
                 weiter
             self.first_block = Falsch
-            return block
+            gib block
 
 
     def is_start_line(self, line: str) -> str | Nichts:
         match = self.start_re.match(line.lstrip())
-        return match.group(1) wenn match sonst Nichts
+        gib match.group(1) wenn match sonst Nichts
 
     def _line(self, lookahead: bool = Falsch) -> str:
         self.line_number += 1
         line = self.input.pop()
         wenn nicht lookahead:
             self.language.parse_line(line)
-        return line
+        gib line
 
     def parse_verbatim_block(self) -> Block:
         lines = []
@@ -167,7 +167,7 @@ klasse BlockParser:
                 breche
             lines.append(line)
 
-        return Block("".join(lines))
+        gib Block("".join(lines))
 
     def parse_clinic_block(self, dsl_name: str) -> Block:
         in_lines = []
@@ -182,12 +182,12 @@ klasse BlockParser:
                 remainder = line.removeprefix(stop_line)
                 wenn remainder und nicht remainder.isspace():
                     fail(f"Garbage after stop line: {remainder!r}")
-                return Wahr
+                gib Wahr
             sonst:
                 # gh-92256: don't allow incorrectly formatted stop lines
                 wenn line.lstrip().startswith(stop_line):
                     fail(f"Whitespace is nicht allowed before the stop line: {line!r}")
-                return Falsch
+                gib Falsch
 
         # consume body of program
         waehrend self.input:
@@ -253,4 +253,4 @@ klasse BlockParser:
             self.input.extend(reversed(output_lines))
             output = Nichts
 
-        return Block("".join(in_lines), dsl_name, output=output)
+        gib Block("".join(in_lines), dsl_name, output=output)

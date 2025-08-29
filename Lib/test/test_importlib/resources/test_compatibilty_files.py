@@ -15,7 +15,7 @@ klasse CompatibilityFilesTests(unittest.TestCase):
     @property
     def package(self):
         bytes_data = io.BytesIO(b'Hello, world!')
-        return util.create_package(
+        gib util.create_package(
             file=bytes_data,
             path='some_path',
             contents=('a', 'b', 'c'),
@@ -23,7 +23,7 @@ klasse CompatibilityFilesTests(unittest.TestCase):
 
     @property
     def files(self):
-        return resources.files(self.package)
+        gib resources.files(self.package)
 
     def test_spec_path_iter(self):
         self.assertEqual(
@@ -94,11 +94,11 @@ klasse CompatibilityFilesTests(unittest.TestCase):
 klasse CompatibilityFilesNoReaderTests(unittest.TestCase):
     @property
     def package(self):
-        return util.create_package_from_loader(Nichts)
+        gib util.create_package_from_loader(Nichts)
 
     @property
     def files(self):
-        return resources.files(self.package)
+        gib resources.files(self.package)
 
     def test_spec_path_joinpath(self):
         self.assertIsInstance(self.files / 'a', CompatibilityFiles.OrphanPath)

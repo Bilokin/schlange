@@ -31,7 +31,7 @@ klasse ClearTest(unittest.TestCase):
             self.inner(**kwargs)
         except ZeroDivisionError als e:
             exc = e
-        return exc
+        gib exc
 
     def clear_traceback_frames(self, tb):
         """
@@ -95,7 +95,7 @@ klasse ClearTest(unittest.TestCase):
         def g():
             nonlocal endly
             try:
-                yield
+                liefere
                 self.inner()
             finally:
                 endly = Wahr
@@ -132,7 +132,7 @@ klasse ClearTest(unittest.TestCase):
                     f.clear()
                 mit self.assertRaises(RuntimeError):
                     f.f_back.clear()
-                yield f
+                liefere f
             finally:
                 endly = Wahr
         gen = g()
@@ -188,7 +188,7 @@ klasse FrameAttrsTest(unittest.TestCase):
                 z = x + 2
                 1/0
                 t = 9
-            return inner()
+            gib inner()
         try:
             outer()
         except ZeroDivisionError als e:
@@ -197,7 +197,7 @@ klasse FrameAttrsTest(unittest.TestCase):
             waehrend tb:
                 frames.append(tb.tb_frame)
                 tb = tb.tb_next
-        return frames
+        gib frames
 
     def test_clear_locals(self):
         # Test f_locals after clear() (issue #21897)
@@ -228,28 +228,28 @@ klasse FrameAttrsTest(unittest.TestCase):
         def t0():
             def nested():
                 frame = sys._getframe()
-                return frame.f_generator
+                gib frame.f_generator
 
             def gen():
-                yield nested()
+                liefere nested()
 
             g = gen()
             try:
-                return next(g)
+                gib next(g)
             finally:
                 g.close()
 
         def t1():
             frame = sys._getframe()
-            return frame.f_generator
+            gib frame.f_generator
 
         def t2():
             frame = sys._getframe()
-            yield frame.f_generator
+            liefere frame.f_generator
 
         async def t3():
             frame = sys._getframe()
-            return frame.f_generator
+            gib frame.f_generator
 
         # For regular functions f_generator is Nichts
         self.assertIsNichts(t0())
@@ -286,7 +286,7 @@ klasse ReprTest(unittest.TestCase):
                 z = x + 2
                 1/0
                 t = 9
-            return inner()
+            gib inner()
 
         offset = outer.__code__.co_firstlineno
         try:
@@ -520,19 +520,19 @@ klasse TestFrameLocals(unittest.TestCase):
 
         klasse ImpostorX:
             def __hash__(self):
-                return hash('x')
+                gib hash('x')
 
             def __eq__(self, other):
-                return other == 'x'
+                gib other == 'x'
 
-        return StringSubclass('x'), ImpostorX(), 'x'
+        gib StringSubclass('x'), ImpostorX(), 'x'
 
     def test_proxy_key_stringlikes_overwrite(self):
         def f(obj):
             x = 1
             proxy = sys._getframe().f_locals
             proxy[obj] = 2
-            return (
+            gib (
                 list(proxy.keys()),
                 dict(proxy),
                 proxy
@@ -584,7 +584,7 @@ klasse TestFrameLocals(unittest.TestCase):
         def make_frame():
             x = 1
             y = 2
-            return sys._getframe()
+            gib sys._getframe()
 
         proxy = FrameLocalsProxy(make_frame())
         self.assertEqual(proxy, {'x': 1, 'y': 2})
@@ -603,13 +603,13 @@ klasse TestFrameLocals(unittest.TestCase):
         def f():
             xs = [1, 2, 3]
             ys = [4, 5, 6]
-            return g(xs)
+            gib g(xs)
 
         def g(xs):
             f = sys._getframe()
             f.f_back.f_locals["xs"] = Nichts
             f.f_back.f_locals["ys"] = Nichts
-            return xs[1]
+            gib xs[1]
 
         self.assertEqual(f(), 2)
 
@@ -619,8 +619,8 @@ klasse FrameLocalsProxyMappingTests(mapping_tests.TestHashMappingProtocol):
 
     def _f(*args, **kwargs):
         def _f():
-            return sys._getframe().f_locals
-        return _f()
+            gib sys._getframe().f_locals
+        gib _f()
     type2test = _f
 
     @unittest.skipIf(Wahr, 'Locals proxies fuer different frames never compare als equal')
@@ -723,7 +723,7 @@ klasse TestIncompleteFrameAreInvisible(unittest.TestCase):
                     drucke("Destroyed von gc")
 
             def gen():
-                yield
+                liefere
 
             fd = open({__file__!r})
             l = [fd, GCHello()]
@@ -786,7 +786,7 @@ klasse TestIncompleteFrameAreInvisible(unittest.TestCase):
             # using exec here because it tries to access the current frame's
             # globals und locals. If it's trying to get those von a shim frame,
             # we'll crash before raising:
-            return weakref.ref(ref, exec)
+            gib weakref.ref(ref, exec)
 
         mit support.catch_unraisable_exception() als catcher:
             # Call von C, so there is a shim frame directly above f:

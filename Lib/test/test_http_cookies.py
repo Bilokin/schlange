@@ -597,7 +597,7 @@ klasse MorselTests(unittest.TestCase):
 
 def load_tests(loader, tests, pattern):
     tests.addTest(doctest.DocTestSuite(cookies))
-    return tests
+    gib tests
 
 
 wenn __name__ == '__main__':

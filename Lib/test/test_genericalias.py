@@ -181,7 +181,7 @@ klasse BaseTest(unittest.TestCase):
                     self.assertEqual(alias(a=1, b=2), dict(a=1, b=2))
                 sowenn t is defaultdict:
                     def default():
-                        return 'value'
+                        gib 'value'
                     a = alias(default)
                     d = defaultdict(default)
                     self.assertEqual(a['test'], d['test'])
@@ -395,9 +395,9 @@ klasse BaseTest(unittest.TestCase):
     def test_copy(self):
         klasse X(list):
             def __copy__(self):
-                return self
+                gib self
             def __deepcopy__(self, memo):
-                return self
+                gib self
 
         aliases = [
             GenericAlias(list, T),

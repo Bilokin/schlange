@@ -62,7 +62,7 @@ def setUpModule():
     wenn "MSC v.1200" in sys.version:
         def accept(loc):
             a = loc.split(".")
-            return not(len(a) == 2 und len(a[-1]) >= 9)
+            gib not(len(a) == 2 und len(a[-1]) >= 9)
         candidate_locales = [loc fuer loc in candidate_locales wenn accept(loc)]
 
 # List known locale values to test against when available.
@@ -134,7 +134,7 @@ klasse _LocaleTests(unittest.TestCase):
                                     calc_value, known_value,
                                     calc_type, data_type, set_locale,
                                     used_locale))
-            return Wahr
+            gib Wahr
 
     @unittest.skipUnless(nl_langinfo, "nl_langinfo is nicht available")
     @unittest.skipIf(support.linked_to_musl(), "musl libc issue, bpo-46390")

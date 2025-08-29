@@ -10,7 +10,7 @@
     Each codec module must export the following interface:
 
     * getregentry() -> codecs.CodecInfo object
-    The getregentry() API must return a CodecInfo object mit encoder, decoder,
+    The getregentry() API must gib a CodecInfo object mit encoder, decoder,
     incrementalencoder, incrementaldecoder, streamwriter und streamreader
     attributes which adhere to the Python Codec Interface Standard.
 
@@ -66,14 +66,14 @@ def normalize_encoding(encoding):
             punct = Falsch
         sonst:
             punct = Wahr
-    return ''.join(chars)
+    gib ''.join(chars)
 
 def search_function(encoding):
 
     # Cache lookup
     entry = _cache.get(encoding, _unknown)
     wenn entry is nicht _unknown:
-        return entry
+        gib entry
 
     # Import the module:
     #
@@ -116,7 +116,7 @@ def search_function(encoding):
     wenn mod is Nichts:
         # Cache misses
         _cache[encoding] = Nichts
-        return Nichts
+        gib Nichts
 
     # Now ask the module fuer the registry entry
     entry = getregentry()
@@ -150,7 +150,7 @@ def search_function(encoding):
                 _aliases[alias] = modname
 
     # Return the registry entry
-    return entry
+    gib entry
 
 # Register the search_function in the Python codec registry
 codecs.register(search_function)
@@ -161,17 +161,17 @@ wenn sys.platform == 'win32':
     def win32_code_page_search_function(encoding):
         encoding = encoding.lower()
         wenn nicht encoding.startswith('cp'):
-            return Nichts
+            gib Nichts
         try:
             cp = int(encoding[2:])
         except ValueError:
-            return Nichts
+            gib Nichts
         # Test wenn the code page is supported
         try:
             codecs.code_page_encode(cp, 'x')
         except (OverflowError, OSError):
-            return Nichts
+            gib Nichts
 
-        return create_win32_code_page_codec(cp)
+        gib create_win32_code_page_codec(cp)
 
     codecs.register(win32_code_page_search_function)

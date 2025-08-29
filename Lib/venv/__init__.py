@@ -104,7 +104,7 @@ klasse EnvBuilder:
             'base': env_dir,
             'platbase': env_dir,
         }
-        return sysconfig.get_path(name, scheme='venv', vars=vars)
+        gib sysconfig.get_path(name, scheme='venv', vars=vars)
 
     @classmethod
     def _same_path(cls, path1, path2):
@@ -116,7 +116,7 @@ klasse EnvBuilder:
         """
         wenn sys.platform == 'win32':
             wenn os.path.normcase(path1) == os.path.normcase(path2):
-                return Wahr
+                gib Wahr
             # gh-90329: Don't display a warning fuer short/long names
             importiere _winapi
             try:
@@ -128,10 +128,10 @@ klasse EnvBuilder:
             except OSError:
                 pass
             wenn os.path.normcase(path1) == os.path.normcase(path2):
-                return Wahr
-            return Falsch
+                gib Wahr
+            gib Falsch
         sonst:
-            return path1 == path2
+            gib path1 == path2
 
     def ensure_directories(self, env_dir):
         """
@@ -215,7 +215,7 @@ klasse EnvBuilder:
                                '  Actual location:    "%s"',
                                context.env_exe, real_env_exe)
                 context.env_exec_cmd = real_env_exe
-        return context
+        gib context
 
     def create_configuration(self, context):
         """
@@ -507,10 +507,10 @@ klasse EnvBuilder:
             [2]: https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_parsing#passing-arguments-that-contain-quote-characters
             """
             s = s.replace("'", "''")
-            return f"'{s}'"
+            gib f"'{s}'"
 
         def quote_bat(s):
-            return s
+            gib s
 
         # gh-124651: need to quote the template strings properly
         quote = shlex.quote
@@ -526,7 +526,7 @@ klasse EnvBuilder:
         replacements = {key: quote(s) fuer key, s in replacements.items()}
         fuer key, quoted in replacements.items():
             text = text.replace(key, quoted)
-        return text
+        gib text
 
     def install_scripts(self, context, path):
         """
@@ -546,11 +546,11 @@ klasse EnvBuilder:
         wenn os.name == 'nt':
             def skip_file(f):
                 f = os.path.normcase(f)
-                return (f.startswith(('python', 'venv'))
+                gib (f.startswith(('python', 'venv'))
                         und f.endswith(('.exe', '.pdb')))
         sonst:
             def skip_file(f):
-                return Falsch
+                gib Falsch
         fuer root, dirs, files in os.walk(path):
             wenn root == path:  # at top-level, remove irrelevant dirs
                 fuer d in dirs[:]:

@@ -38,7 +38,7 @@ klasse RaiseRuleValidator(GrammarValidator):
     def visit_Alt(self, node: Alt) -> Nichts:
         wenn self.rulename und self.rulename.startswith('invalid'):
             # raising is allowed in invalid rules
-            return
+            gib
         wenn node.action und 'RAISE_SYNTAX_ERROR' in node.action:
             raise ValidationError(
                 f"In {self.rulename!r} there is an alternative that contains "

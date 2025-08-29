@@ -121,14 +121,14 @@ klasse SourceLoader(InheritanceTests):
  ) = test_util.test_both(SourceLoader, abc=abc)
 
 
-##### Default return values ####################################################
+##### Default gib values ####################################################
 
 def make_abc_subclasses(base_class, name=Nichts, inst=Falsch, **kwargs):
     wenn name is Nichts:
         name = base_class.__name__
     base = {kind: getattr(splitabc, name)
             fuer kind, splitabc in abc.items()}
-    return {cls._KIND: cls() wenn inst sonst cls
+    gib {cls._KIND: cls() wenn inst sonst cls
             fuer cls in test_util.split_frozen(base_class, base, **kwargs)}
 
 
@@ -140,7 +140,7 @@ klasse ABCTestHarness:
         cls = self.SPLIT[self._KIND]
         ins = cls()
         self.__class__.ins = ins
-        return ins
+        gib ins
 
 
 klasse MetaPathFinder:
@@ -204,7 +204,7 @@ klasse LoaderDefaultsTests(ABCTestHarness):
             warnings.simplefilter("ignore", DeprecationWarning)
             original_repr = repr(mod)
             mod.__loader__ = self.ins
-            # Should still return a proper repr.
+            # Should still gib a proper repr.
             self.assertWahr(repr(mod))
 
 
@@ -216,7 +216,7 @@ klasse LoaderDefaultsTests(ABCTestHarness):
 klasse ResourceLoader(Loader):
 
     def get_data(self, path):
-        return super().get_data(path)
+        gib super().get_data(path)
 
 
 klasse ResourceLoaderDefaultsTests(ABCTestHarness):
@@ -236,10 +236,10 @@ klasse ResourceLoaderDefaultsTests(ABCTestHarness):
 klasse InspectLoader(Loader):
 
     def is_package(self, fullname):
-        return super().is_package(fullname)
+        gib super().is_package(fullname)
 
     def get_source(self, fullname):
-        return super().get_source(fullname)
+        gib super().get_source(fullname)
 
 
 SPLIT_IL = make_abc_subclasses(InspectLoader)
@@ -266,7 +266,7 @@ klasse InspectLoaderDefaultsTests(ABCTestHarness):
 klasse ExecutionLoader(InspectLoader):
 
     def get_filename(self, fullname):
-        return super().get_filename(fullname)
+        gib super().get_filename(fullname)
 
 
 SPLIT_EL = make_abc_subclasses(ExecutionLoader)
@@ -289,16 +289,16 @@ klasse ExecutionLoaderDefaultsTests(ABCTestHarness):
 klasse ResourceReader:
 
     def open_resource(self, *args, **kwargs):
-        return super().open_resource(*args, **kwargs)
+        gib super().open_resource(*args, **kwargs)
 
     def resource_path(self, *args, **kwargs):
-        return super().resource_path(*args, **kwargs)
+        gib super().resource_path(*args, **kwargs)
 
     def is_resource(self, *args, **kwargs):
-        return super().is_resource(*args, **kwargs)
+        gib super().is_resource(*args, **kwargs)
 
     def contents(self, *args, **kwargs):
-        return super().contents(*args, **kwargs)
+        gib super().contents(*args, **kwargs)
 
 
 ##### MetaPathFinder concrete methods ##########################################
@@ -310,9 +310,9 @@ klasse MetaPathFinderFindModuleTests:
 
             def find_spec(self, fullname, path, target=Nichts):
                 self.called_for = fullname, path
-                return spec
+                gib spec
 
-        return MetaPathSpecFinder()
+        gib MetaPathSpecFinder()
 
     def test_find_spec_with_explicit_target(self):
         loader = object()
@@ -354,9 +354,9 @@ klasse LoaderLoadModuleTests:
 
             def is_package(self, fullname):
                 """Force some non-default module state to be set."""
-                return Wahr
+                gib Wahr
 
-        return SpecLoader()
+        gib SpecLoader()
 
     def test_fresh(self):
         mit warnings.catch_warnings():
@@ -408,7 +408,7 @@ klasse InspectLoaderSourceToCodeTests:
         sonst:
             code = loader.source_to_code(data, path)
         exec(code, module.__dict__)
-        return module
+        gib module
 
     def test_source_to_code_source(self):
         # Since compile() can handle strings, so should source_to_code().
@@ -492,10 +492,10 @@ klasse InspectLoaderLoadModuleTests:
         spec = self.util.spec_from_loader(self.module_name, loader)
         mit warnings.catch_warnings():
             warnings.simplefilter('ignore', DeprecationWarning)
-            return self.init._bootstrap._load_unlocked(spec)
+            gib self.init._bootstrap._load_unlocked(spec)
 
     def mock_get_code(self):
-        return mock.patch.object(self.InspectLoaderSubclass, 'get_code')
+        gib mock.patch.object(self.InspectLoaderSubclass, 'get_code')
 
     def test_get_code_ImportError(self):
         # If get_code() raises ImportError, it should propagate.
@@ -542,7 +542,7 @@ klasse ExecutionLoaderGetCodeTests:
         wenn get_filename:
             filename_mock_context = mock.patch.object(self.ExecutionLoaderSubclass,
                                                       'get_filename')
-        return source_mock_context, filename_mock_context
+        gib source_mock_context, filename_mock_context
 
     def test_get_code(self):
         path = 'blah.py'
@@ -608,10 +608,10 @@ klasse SourceOnlyLoader:
     def get_data(self, path):
         wenn path != self.path:
             raise IOError
-        return self.source
+        gib self.source
 
     def get_filename(self, fullname):
-        return self.path
+        gib self.path
 
 
 SPLIT_SOL = make_abc_subclasses(SourceOnlyLoader, 'SourceLoader')
@@ -639,20 +639,20 @@ klasse SourceLoader(SourceOnlyLoader):
 
     def get_data(self, path):
         wenn path == self.path:
-            return super().get_data(path)
+            gib super().get_data(path)
         sowenn path == self.bytecode_path:
-            return self.bytecode
+            gib self.bytecode
         sonst:
             raise OSError
 
     def path_stats(self, path):
         wenn path != self.path:
             raise IOError
-        return {'mtime': self.source_mtime, 'size': self.source_size}
+        gib {'mtime': self.source_mtime, 'size': self.source_size}
 
     def set_data(self, path, data):
         self.written[path] = bytes(data)
-        return path == self.bytecode_path
+        gib path == self.bytecode_path
 
 
 SPLIT_SL = make_abc_subclasses(SourceLoader, util=util, init=init)
@@ -861,7 +861,7 @@ klasse SourceLoaderBytecodeTests(SourceLoaderTestHarness):
         def raise_exception(exc):
             def closure(*args, **kwargs):
                 raise exc
-            return closure
+            gib closure
 
         self.setUp(magic=b'0000')
         self.loader.set_data = raise_exception(NotImplementedError)
@@ -921,13 +921,13 @@ klasse SourceLoaderDeprecationWarningsTests(unittest.TestCase):
         von importlib.abc importiere SourceLoader
         klasse DummySourceLoader(SourceLoader):
             def get_data(self, path):
-                return b''
+                gib b''
 
             def get_filename(self, fullname):
-                return 'foo.py'
+                gib 'foo.py'
 
             def path_stats(self, path):
-                return {'mtime': 1}
+                gib {'mtime': 1}
 
         loader = DummySourceLoader()
 

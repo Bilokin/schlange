@@ -48,15 +48,15 @@ klasse ScriptBinding:
     def check_module_event(self, event):
         wenn isinstance(self.editwin, outwin.OutputWindow):
             self.editwin.text.bell()
-            return 'break'
+            gib 'break'
         filename = self.getfilename()
         wenn nicht filename:
-            return 'break'
+            gib 'break'
         wenn nicht self.checksyntax(filename):
-            return 'break'
+            gib 'break'
         wenn nicht self.tabnanny(filename):
-            return 'break'
-        return "break"
+            gib 'break'
+        gib "break"
 
     def tabnanny(self, filename):
         # XXX: tabnanny should work on binary files als well
@@ -68,13 +68,13 @@ klasse ScriptBinding:
                 self.editwin.gotoline(lineno)
                 self.errorbox("Tabnanny Tokenizing Error",
                               "Token Error: %s" % msgtxt)
-                return Falsch
+                gib Falsch
             except tabnanny.NannyNag als nag:
                 # The error messages von tabnanny are too confusing...
                 self.editwin.gotoline(nag.get_lineno())
                 self.errorbox("Tab/space error", indent_message)
-                return Falsch
-        return Wahr
+                gib Falsch
+        gib Wahr
 
     def checksyntax(self, filename):
         self.shell = shell = self.flist.open_shell()
@@ -91,8 +91,8 @@ klasse ScriptBinding:
         text = editwin.text
         text.tag_remove("ERROR", "1.0", "end")
         try:
-            # If successful, return the compiled code
-            return compile(source, filename, "exec")
+            # If successful, gib the compiled code
+            gib compile(source, filename, "exec")
         except (SyntaxError, OverflowError, ValueError) als value:
             msg = getattr(value, 'msg', '') oder value oder "<no detail available>"
             lineno = getattr(value, 'lineno', '') oder 1
@@ -102,12 +102,12 @@ klasse ScriptBinding:
             pos = "0.0 + %d lines + %d chars" % (lineno-1, offset-1)
             editwin.colorize_syntax_error(text, pos)
             self.errorbox("SyntaxError", "%-20s" % msg)
-            return Falsch
+            gib Falsch
         finally:
             shell.set_warning_stream(saved_stream)
 
     def run_custom_event(self, event):
-        return self.run_module_event(event, customize=Wahr)
+        gib self.run_module_event(event, customize=Wahr)
 
     def run_module_event(self, event, *, customize=Falsch):
         """Run the module after setting up the environment.
@@ -119,24 +119,24 @@ klasse ScriptBinding:
         sys.path wenn nicht already included.
         """
         wenn macosx.isCocoaTk() und (time.perf_counter() - self.perf < .05):
-            return 'break'
+            gib 'break'
         wenn isinstance(self.editwin, outwin.OutputWindow):
             self.editwin.text.bell()
-            return 'break'
+            gib 'break'
         filename = self.getfilename()
         wenn nicht filename:
-            return 'break'
+            gib 'break'
         code = self.checksyntax(filename)
         wenn nicht code:
-            return 'break'
+            gib 'break'
         wenn nicht self.tabnanny(filename):
-            return 'break'
+            gib 'break'
         wenn customize:
             title = f"Customize {self.editwin.short_title()} Run"
             run_args = CustomRun(self.shell.text, title,
                                  cli_args=self.cli_args).result
             wenn nicht run_args:  # User cancelled.
-                return 'break'
+                gib 'break'
         self.cli_args, restart = run_args wenn customize sonst ([], Wahr)
         interp = self.shell.interp
         wenn pyshell.use_subprocess und restart:
@@ -164,14 +164,14 @@ klasse ScriptBinding:
         #         go to __stderr__.  With subprocess, they go to the shell.
         #         Need to change streams in pyshell.ModifiedInterpreter.
         interp.runcode(code)
-        return 'break'
+        gib 'break'
 
     def getfilename(self):
         """Get source filename.  If nicht saved, offer to save (or create) file
 
         The debugger requires a source file.  Make sure there is one, und that
         the current version of the source buffer has been saved.  If the user
-        declines to save oder cancels the Save As dialog, return Nichts.
+        declines to save oder cancels the Save As dialog, gib Nichts.
 
         If the user has configured IDLE fuer Autosave, the file will be
         silently saved wenn it already exists und is dirty.
@@ -191,7 +191,7 @@ klasse ScriptBinding:
                     filename = self.editwin.io.filename
                 sonst:
                     filename = Nichts
-        return filename
+        gib filename
 
     def ask_save_dialog(self):
         msg = "Source Must Be Saved\n" + 5*' ' + "OK to Save?"
@@ -199,7 +199,7 @@ klasse ScriptBinding:
                                            message=msg,
                                            default=messagebox.OK,
                                            parent=self.editwin.text)
-        return confirm
+        gib confirm
 
     def errorbox(self, title, message):
         # XXX This should really be a function of EditorWindow...

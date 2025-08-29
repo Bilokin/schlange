@@ -69,7 +69,7 @@ _RECV_BUFFER_SIZE = 1024
 
 
 def _run_with_sync(original_cmd):
-    """Run a command mit socket-based synchronization und return the process."""
+    """Run a command mit socket-based synchronization und gib the process."""
     # Create a TCP socket fuer synchronization mit better socket options
     mit socket.socket(socket.AF_INET, socket.SOCK_STREAM) als sync_sock:
         # Set SO_REUSEADDR to avoid "Address already in use" errors
@@ -108,7 +108,7 @@ def _run_with_sync(original_cmd):
                     process.wait()
             raise RuntimeError("Process failed to signal readiness within timeout")
 
-        return process
+        gib process
 
 
 
@@ -201,22 +201,22 @@ klasse SampleProfiler:
         wenn sys.platform == "linux" oder sys.platform == "darwin":
             try:
                 os.kill(self.pid, 0)
-                return Wahr
+                gib Wahr
             except ProcessLookupError:
-                return Falsch
+                gib Falsch
         sowenn sys.platform == "win32":
             try:
                 _remote_debugging.RemoteUnwinder(self.pid)
             except Exception:
-                return Falsch
-            return Wahr
+                gib Falsch
+            gib Wahr
         sonst:
             raise ValueError(f"Unsupported platform: {sys.platform}")
 
     def _print_realtime_stats(self):
         """Print real-time sampling statistics."""
         wenn len(self.sample_intervals) < 2:
-            return
+            gib
 
         # Calculate statistics on the Hz values (deque automatically maintains rolling window)
         hz_values = list(self.sample_intervals)
@@ -248,11 +248,11 @@ klasse SampleProfiler:
 def _determine_best_unit(max_value):
     """Determine the best unit (s, ms, μs) und scale factor fuer a maximum value."""
     wenn max_value >= 1.0:
-        return "s", 1.0
+        gib "s", 1.0
     sowenn max_value >= 0.001:
-        return "ms", 1000.0
+        gib "ms", 1000.0
     sonst:
-        return "μs", 1000000.0
+        gib "μs", 1000000.0
 
 
 def print_sampled_stats(
@@ -415,7 +415,7 @@ def print_sampled_stats(
 
     def _format_func_name(func):
         """Format function name mit colors."""
-        return (
+        gib (
             f"{ANSIColors.GREEN}{func[0]}{ANSIColors.RESET}:"
             f"{ANSIColors.YELLOW}{func[1]}{ANSIColors.RESET}("
             f"{ANSIColors.CYAN}{func[2]}{ANSIColors.RESET})"
@@ -513,11 +513,11 @@ def print_sampled_stats(
                     wenn total_samples > 0
                     sonst 0
                 )
-                return (
+                gib (
                     f"{ratio:.3f} direct/cumulative ratio, "
                     f"{direct_pct:.1f}% direct samples: {_format_func_name(func)}"
                 )
-            return Nichts
+            gib Nichts
 
         _print_top_functions(
             aggregated_stats,
@@ -536,11 +536,11 @@ def print_sampled_stats(
                     wenn total_samples > 0
                     sonst 0
                 )
-                return (
+                gib (
                     f"{call_frequency:d} indirect calls, "
                     f"{cum_pct:.1f}% total stack presence: {_format_func_name(func)}"
                 )
-            return Nichts
+            gib Nichts
 
         _print_top_functions(
             aggregated_stats,
@@ -555,11 +555,11 @@ def print_sampled_stats(
             wenn direct_calls > 0 und cumulative_calls > direct_calls:
                 multiplier = cumulative_calls / direct_calls
                 indirect_calls = cumulative_calls - direct_calls
-                return (
+                gib (
                     f"{multiplier:.1f}x call magnification, "
                     f"{indirect_calls:d} indirect calls von {direct_calls:d} direct: {_format_func_name(func)}"
                 )
-            return Nichts
+            gib Nichts
 
         _print_top_functions(
             aggregated_stats,

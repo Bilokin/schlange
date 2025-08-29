@@ -208,7 +208,7 @@ klasse BaseSockTestsMixin:
                 waehrend Wahr:
                     buf = await self.loop.sock_recv(server, 8192)
                     wenn nicht buf:
-                        return rv
+                        gib rv
                     rv += buf.strip()
             task = asyncio.create_task(recv_all())
 
@@ -253,7 +253,7 @@ klasse BaseSockTestsMixin:
                     breche
             sonst:
                 # success
-                return
+                gib
 
         self.skipTest(skip_reason)
 
@@ -553,14 +553,14 @@ wenn sys.platform == 'win32':
                                test_utils.TestCase):
 
         def create_event_loop(self):
-            return asyncio.SelectorEventLoop()
+            gib asyncio.SelectorEventLoop()
 
 
     klasse ProactorEventLoopTests(BaseSockTestsMixin,
                                  test_utils.TestCase):
 
         def create_event_loop(self):
-            return asyncio.ProactorEventLoop()
+            gib asyncio.ProactorEventLoop()
 
 
         async def _basetest_datagram_send_to_non_listening_address(self,
@@ -577,7 +577,7 @@ wenn sys.platform == 'win32':
                 sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
                 sock.setblocking(Falsch)
                 sock.bind(('127.0.0.1', 0))
-                return sock
+                gib sock
 
             socket_1 = create_socket()
             addr_1 = socket_1.getsockname()
@@ -624,7 +624,7 @@ wenn sys.platform == 'win32':
         def test_datagram_send_to_non_listening_address_recvfrom(self):
             async def recvfrom(socket):
                 data, _ = await self.loop.sock_recvfrom(socket, 4096)
-                return data
+                gib data
 
             self.loop.run_until_complete(
                 self._basetest_datagram_send_to_non_listening_address(
@@ -636,7 +636,7 @@ wenn sys.platform == 'win32':
                 buf = bytearray(4096)
                 length, _ = await self.loop.sock_recvfrom_into(socket, buf,
                                                                4096)
-                return buf[:length]
+                gib buf[:length]
 
             self.loop.run_until_complete(
                 self._basetest_datagram_send_to_non_listening_address(
@@ -650,7 +650,7 @@ sonst:
                                    test_utils.TestCase):
 
             def create_event_loop(self):
-                return asyncio.SelectorEventLoop(
+                gib asyncio.SelectorEventLoop(
                     selectors.KqueueSelector())
 
     wenn hasattr(selectors, 'EpollSelector'):
@@ -658,21 +658,21 @@ sonst:
                                   test_utils.TestCase):
 
             def create_event_loop(self):
-                return asyncio.SelectorEventLoop(selectors.EpollSelector())
+                gib asyncio.SelectorEventLoop(selectors.EpollSelector())
 
     wenn hasattr(selectors, 'PollSelector'):
         klasse PollEventLoopTests(BaseSockTestsMixin,
                                  test_utils.TestCase):
 
             def create_event_loop(self):
-                return asyncio.SelectorEventLoop(selectors.PollSelector())
+                gib asyncio.SelectorEventLoop(selectors.PollSelector())
 
     # Should always exist.
     klasse SelectEventLoopTests(BaseSockTestsMixin,
                                test_utils.TestCase):
 
         def create_event_loop(self):
-            return asyncio.SelectorEventLoop(selectors.SelectSelector())
+            gib asyncio.SelectorEventLoop(selectors.SelectSelector())
 
 
 wenn __name__ == '__main__':

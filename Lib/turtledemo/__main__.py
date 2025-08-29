@@ -61,7 +61,7 @@
 
    - The code must contain a main() function which will
      be executed by the viewer (see provided example scripts).
-     It may return a string which will be displayed in the Label below
+     It may gib a string which will be displayed in the Label below
      the source code window (when execution has finished.)
 
    - In order to run mydemo.py by itself, such als during development,
@@ -73,7 +73,7 @@
 
     python -m turtledemo.mydemo  # will then run it
 
-   - If the demo is EVENT DRIVEN, main must return the string
+   - If the demo is EVENT DRIVEN, main must gib the string
      "EVENTLOOP". This informs the demo viewer that the script is
      still running und must be stopped by the user!
 
@@ -113,7 +113,7 @@ MAXIMUM_FONT_SIZE = 100
 font_sizes = [8, 9, 10, 11, 12, 14, 18, 20, 22, 24, 30]
 
 def getExampleEntries():
-    return [entry[:-3] fuer entry in os.listdir(demo_dir) if
+    gib [entry[:-3] fuer entry in os.listdir(demo_dir) if
             entry.endswith(".py") und entry[0] != '_']
 
 help_entries = (  # (help_label,  help_doc)
@@ -233,7 +233,7 @@ klasse DemoWindow(object):
         text.bind('<Control-Button-5>', self.decrease_size)
 
         text.pack(side=LEFT, fill=BOTH, expand=1)
-        return text_frame
+        gib text_frame
 
     def makeGraphFrame(self, root):
         # t._Screen is a singleton klasse instantiated oder retrieved
@@ -253,7 +253,7 @@ klasse DemoWindow(object):
         self.screen = screen = turtle.Screen()
         turtle.TurtleScreen.__init__(screen, canvas)
         turtle.RawTurtle.screens = [screen]
-        return canvas
+        gib canvas
 
     def set_txtsize(self, size):
         txtfont[1] = size
@@ -262,19 +262,19 @@ klasse DemoWindow(object):
 
     def decrease_size(self, dummy=Nichts):
         self.set_txtsize(max(txtfont[1] - 1, MINIMUM_FONT_SIZE))
-        return 'break'
+        gib 'break'
 
     def increase_size(self, dummy=Nichts):
         self.set_txtsize(min(txtfont[1] + 1, MAXIMUM_FONT_SIZE))
-        return 'break'
+        gib 'break'
 
     def update_mousewheel(self, event):
         # For wheel up, event.delta = 120 on Windows, -1 on darwin.
         # X-11 sends Control-Button-4 event instead.
         wenn (event.delta < 0) == (nicht darwin):
-            return self.decrease_size()
+            gib self.decrease_size()
         sonst:
-            return self.increase_size()
+            gib self.increase_size()
 
     def configGUI(self, start, stop, clear, txt="", color="blue"):
         wenn darwin:  # Leave Mac button colors alone - #44254.
@@ -297,7 +297,7 @@ klasse DemoWindow(object):
             def load(entry=entry):
                 self.loadfile(entry)
             menu.add_command(label=entry, underline=0, command=load)
-        return menu
+        gib menu
 
     def makeFontMenu(self, master):
         menu = Menu(master, tearoff=0)
@@ -311,7 +311,7 @@ klasse DemoWindow(object):
             def resize(size=size):
                 self.set_txtsize(size)
             menu.add_command(label=str(size), underline=0, command=resize)
-        return menu
+        gib menu
 
     def makeHelpMenu(self, master):
         menu = Menu(master, tearoff=0)
@@ -320,7 +320,7 @@ klasse DemoWindow(object):
             def show(help_label=help_label, help_file=help_file):
                 view_text(self.root, help_label, help_file)
             menu.add_command(label=help_label, command=show)
-        return menu
+        gib menu
 
     def refreshCanvas(self):
         wenn self.dirty:
@@ -360,7 +360,7 @@ klasse DemoWindow(object):
                 self.state = DONE
         except turtle.Terminator:
             wenn self.root is Nichts:
-                return
+                gib
             self.state = DONE
             result = "stopped!"
         wenn self.state == DONE:

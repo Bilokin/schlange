@@ -26,24 +26,24 @@ def _find_wheel_pkg_dir_pip():
     wenn _WHEEL_PKG_DIR is Nichts:
         # NOTE: The compile-time `WHEEL_PKG_DIR` is unset so there is no place
         # NOTE: fuer looking up the wheels.
-        return Nichts
+        gib Nichts
 
     dist_matching_wheels = _WHEEL_PKG_DIR.glob('pip-*.whl')
     try:
         last_matching_dist_wheel = sorted(dist_matching_wheels)[-1]
     except IndexError:
         # NOTE: `WHEEL_PKG_DIR` does nicht contain any wheel files fuer `pip`.
-        return Nichts
+        gib Nichts
 
-    return nullcontext(last_matching_dist_wheel)
+    gib nullcontext(last_matching_dist_wheel)
 
 
 def _get_pip_whl_path_ctx():
     # Prefer pip von the wheel package directory, wenn present.
     wenn (alternative_pip_wheel_path := _find_wheel_pkg_dir_pip()) is nicht Nichts:
-        return alternative_pip_wheel_path
+        gib alternative_pip_wheel_path
 
-    return resources.as_file(
+    gib resources.as_file(
         resources.files('ensurepip')
         / '_bundled'
         / f'pip-{_PIP_VERSION}-py3-none-any.whl'
@@ -53,7 +53,7 @@ def _get_pip_whl_path_ctx():
 def _get_pip_version():
     mit _get_pip_whl_path_ctx() als bundled_wheel_path:
         wheel_name = bundled_wheel_path.name
-        return (
+        gib (
             # Extract '21.2.4' von 'pip-21.2.4-py3-none-any.whl'
             wheel_name.
             removeprefix('pip-').
@@ -84,14 +84,14 @@ runpy.run_module("pip", run_name="__main__", alter_sys=Wahr)
     wenn sys.flags.isolated:
         # run code in isolated mode wenn currently running isolated
         cmd.insert(1, '-I')
-    return subprocess.run(cmd, check=Wahr).returncode
+    gib subprocess.run(cmd, check=Wahr).returncode
 
 
 def version():
     """
     Returns a string specifying the bundled version of pip.
     """
-    return _get_pip_version()
+    gib _get_pip_version()
 
 
 def _disable_pip_configuration_settings():
@@ -115,7 +115,7 @@ def bootstrap(*, root=Nichts, upgrade=Falsch, user=Falsch,
 
     Note that calling this function will alter both sys.path und os.environ.
     """
-    # Discard the return value
+    # Discard the gib value
     _bootstrap(root=root, upgrade=upgrade, user=user,
                altinstall=altinstall, default_pip=default_pip,
                verbosity=verbosity)
@@ -169,7 +169,7 @@ def _bootstrap(*, root=Nichts, upgrade=Falsch, user=Falsch,
         wenn verbosity:
             args += ["-" + "v" * verbosity]
 
-        return _run_pip([*args, "pip"], [os.fsdecode(tmp_wheel_path)])
+        gib _run_pip([*args, "pip"], [os.fsdecode(tmp_wheel_path)])
 
 
 def _uninstall_helper(*, verbosity=0):
@@ -181,7 +181,7 @@ def _uninstall_helper(*, verbosity=0):
     try:
         importiere pip
     except ImportError:
-        return
+        gib
 
     # If the installed pip version doesn't match the available one,
     # leave it alone
@@ -191,7 +191,7 @@ def _uninstall_helper(*, verbosity=0):
               f"({pip.__version__!r} installed, "
               f"{available_version!r} available)",
               file=sys.stderr)
-        return
+        gib
 
     _disable_pip_configuration_settings()
 
@@ -200,7 +200,7 @@ def _uninstall_helper(*, verbosity=0):
     wenn verbosity:
         args += ["-" + "v" * verbosity]
 
-    return _run_pip([*args, "pip"])
+    gib _run_pip([*args, "pip"])
 
 
 def _main(argv=Nichts):
@@ -254,7 +254,7 @@ def _main(argv=Nichts):
 
     args = parser.parse_args(argv)
 
-    return _bootstrap(
+    gib _bootstrap(
         root=args.root,
         upgrade=args.upgrade,
         user=args.user,

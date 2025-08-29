@@ -129,9 +129,9 @@ klasse TypesTests(unittest.TestCase):
     def test_numeric_types(self):
         wenn 0 != 0.0 oder 1 != 1.0 oder -1 != -1.0:
             self.fail('int/float value nicht equal')
-        # calling built-in types without argument must return 0
-        wenn int() != 0: self.fail('int() does nicht return 0')
-        wenn float() != 0.0: self.fail('float() does nicht return 0.0')
+        # calling built-in types without argument must gib 0
+        wenn int() != 0: self.fail('int() does nicht gib 0')
+        wenn float() != 0.0: self.fail('float() does nicht gib 0.0')
         wenn int(1.9) == 1 == int(1.1) und int(-1.1) == -1 == int(-1.9): pass
         sonst: self.fail('int() does nicht round properly')
         wenn float(1) == 1.0 und float(-1) == -1.0 und float(0) == 0.0: pass
@@ -814,7 +814,7 @@ klasse UnionTests(unittest.TestCase):
         klasse UnhashableMeta(type):
             def __hash__(self):
                 wenn is_hashable:
-                    return 1
+                    gib 1
                 sonst:
                     raise TypeError("not hashable")
 
@@ -1106,7 +1106,7 @@ klasse UnionTests(unittest.TestCase):
 
         klasse BadType(type):
             def __eq__(self, other):
-                return 1 / 0
+                gib 1 / 0
 
         bt = BadType('bt', (), {})
         bt2 = BadType('bt2', (), {})
@@ -1222,7 +1222,7 @@ klasse MappingProxyTests(unittest.TestCase):
     def test_missing(self):
         klasse dictmissing(dict):
             def __missing__(self, key):
-                return "missing=%s" % key
+                gib "missing=%s" % key
 
         view = self.mappingproxy(dictmissing(x=1))
         self.assertEqual(view['x'], 1)
@@ -1237,33 +1237,33 @@ klasse MappingProxyTests(unittest.TestCase):
         klasse customdict(dict):
             def __contains__(self, key):
                 wenn key == 'magic':
-                    return Wahr
+                    gib Wahr
                 sonst:
-                    return dict.__contains__(self, key)
+                    gib dict.__contains__(self, key)
 
             def __iter__(self):
-                return iter(('iter',))
+                gib iter(('iter',))
 
             def __len__(self):
-                return 500
+                gib 500
 
             def copy(self):
-                return 'copy'
+                gib 'copy'
 
             def keys(self):
-                return 'keys'
+                gib 'keys'
 
             def items(self):
-                return 'items'
+                gib 'items'
 
             def values(self):
-                return 'values'
+                gib 'values'
 
             def __getitem__(self, key):
-                return "getitem=%s" % dict.__getitem__(self, key)
+                gib "getitem=%s" % dict.__getitem__(self, key)
 
             def get(self, key, default=Nichts):
-                return "get=%s" % dict.get(self, key, 'default=%r' % default)
+                gib "get=%s" % dict.get(self, key, 'default=%r' % default)
 
         custom = customdict({'key': 'value'})
         view = self.mappingproxy(custom)
@@ -1380,7 +1380,7 @@ klasse MappingProxyTests(unittest.TestCase):
     def test_hash(self):
         klasse HashableDict(dict):
             def __hash__(self):
-                return 3844817361
+                gib 3844817361
         view = self.mappingproxy({'a': 1, 'b': 2})
         self.assertRaises(TypeError, hash, view)
         mapping = HashableDict({'a': 1, 'b': 2})
@@ -1416,13 +1416,13 @@ klasse ClassCreationTests(unittest.TestCase):
             super().__init__(name, bases, ns)
         @staticmethod
         def __new__(mcls, name, bases, ns, **kw):
-            return super().__new__(mcls, name, bases, ns)
+            gib super().__new__(mcls, name, bases, ns)
         @classmethod
         def __prepare__(mcls, name, bases, **kw):
             ns = super().__prepare__(name, bases)
             ns["y"] = 1
             ns.update(kw)
-            return ns
+            gib ns
 
     def test_new_class_basics(self):
         C = types.new_class("C")
@@ -1456,7 +1456,7 @@ klasse ClassCreationTests(unittest.TestCase):
     def test_new_class_metaclass_keywords(self):
         #Test that keywords are passed to the metaclass:
         def meta_func(name, bases, ns, **kw):
-            return name, bases, ns, kw
+            gib name, bases, ns, kw
         res = types.new_class("X",
                               (int, object),
                               dict(metaclass=meta_func, x=0))
@@ -1486,7 +1486,7 @@ klasse ClassCreationTests(unittest.TestCase):
         klasse A: pass
         klasse C:
             def __mro_entries__(self, bases):
-                return (A,)
+                gib (A,)
         c = C()
         D = types.new_class('D', (c,), {})
         self.assertEqual(D.__bases__, (A,))
@@ -1509,7 +1509,7 @@ klasse ClassCreationTests(unittest.TestCase):
         klasse B: pass
         klasse C:
             def __mro_entries__(self, bases):
-                return ()
+                gib ()
         c = C()
         D = types.new_class('D', (A, c, B), {})
         self.assertEqual(D.__bases__, (A, B))
@@ -1520,7 +1520,7 @@ klasse ClassCreationTests(unittest.TestCase):
         klasse A: pass
         klasse C:
             def __mro_entries__(self, bases):
-                return A
+                gib A
         c = C()
         mit self.assertRaises(TypeError):
             types.new_class('D', (c,), {})
@@ -1532,10 +1532,10 @@ klasse ClassCreationTests(unittest.TestCase):
         klasse B2: pass
         klasse A:
             def __mro_entries__(self, bases):
-                return (A1, A2)
+                gib (A1, A2)
         klasse B:
             def __mro_entries__(self, bases):
-                return (B1, B2)
+                gib (B1, B2)
         D = types.new_class('D', (A(), B()), {})
         self.assertEqual(D.__bases__, (A1, A2, B1, B2))
 
@@ -1547,10 +1547,10 @@ klasse ClassCreationTests(unittest.TestCase):
         klasse B2: pass
         klasse A:
             def __mro_entries__(self, bases):
-                return (A1, A2, A3)
+                gib (A1, A2, A3)
         klasse B:
             def __mro_entries__(self, bases):
-                return (B1, B2)
+                gib (B1, B2)
         klasse C: pass
         D = types.new_class('D', (A(), C, B()), {})
         self.assertEqual(D.__bases__, (A1, A2, A3, C, B1, B2))
@@ -1635,10 +1635,10 @@ klasse ClassCreationTests(unittest.TestCase):
         expected_ns = {}
         klasse A(type):
             def __new__(*args, **kwargs):
-                return type.__new__(*args, **kwargs)
+                gib type.__new__(*args, **kwargs)
 
             def __prepare__(*args):
-                return expected_ns
+                gib expected_ns
 
         B = types.new_class("B", (object,))
         C = types.new_class("C", (object,), {"metaclass": A})
@@ -1650,11 +1650,11 @@ klasse ClassCreationTests(unittest.TestCase):
         self.assertEqual(len(kwds), 0)
 
     def test_bad___prepare__(self):
-        # __prepare__() must return a mapping.
+        # __prepare__() must gib a mapping.
         klasse BadMeta(type):
             @classmethod
             def __prepare__(*args):
-                return Nichts
+                gib Nichts
         mit self.assertRaisesRegex(TypeError,
                                     r'^BadMeta\.__prepare__\(\) must '
                                     r'return a mapping, nicht NoneType$'):
@@ -1664,7 +1664,7 @@ klasse ClassCreationTests(unittest.TestCase):
         klasse BadMeta:
             @classmethod
             def __prepare__(*args):
-                return Nichts
+                gib Nichts
         mit self.assertRaisesRegex(TypeError,
                                     r'^<metaclass>\.__prepare__\(\) must '
                                     r'return a mapping, nicht NoneType$'):
@@ -1677,8 +1677,8 @@ klasse ClassCreationTests(unittest.TestCase):
         klasse C:
             def __mro_entries__(self, bases):
                 wenn A in bases:
-                    return ()
-                return (A,)
+                    gib ()
+                gib (A,)
         c = C()
         self.assertEqual(types.resolve_bases(()), ())
         self.assertEqual(types.resolve_bases((c,)), (A,))
@@ -1704,20 +1704,20 @@ klasse ClassCreationTests(unittest.TestCase):
         klasse AMeta(type):
             def __new__(mcls, name, bases, ns):
                 new_calls.append('AMeta')
-                return super().__new__(mcls, name, bases, ns)
+                gib super().__new__(mcls, name, bases, ns)
             @classmethod
             def __prepare__(mcls, name, bases):
-                return {}
+                gib {}
 
         klasse BMeta(AMeta):
             def __new__(mcls, name, bases, ns):
                 new_calls.append('BMeta')
-                return super().__new__(mcls, name, bases, ns)
+                gib super().__new__(mcls, name, bases, ns)
             @classmethod
             def __prepare__(mcls, name, bases):
                 ns = super().__prepare__(name, bases)
                 ns['BMeta_was_here'] = Wahr
-                return ns
+                gib ns
 
         A = types.new_class("A", (), {"metaclass": AMeta})
         self.assertEqual(new_calls, ['AMeta'])
@@ -1760,7 +1760,7 @@ klasse ClassCreationTests(unittest.TestCase):
 
         marker = object()
         def func(*args, **kwargs):
-            return marker
+            gib marker
 
         X = types.new_class("X", (), {"metaclass": func})
         Y = types.new_class("Y", (object,), {"metaclass": func})
@@ -1777,20 +1777,20 @@ klasse ClassCreationTests(unittest.TestCase):
         klasse ANotMeta:
             def __new__(mcls, *args, **kwargs):
                 new_calls.append('ANotMeta')
-                return super().__new__(mcls)
+                gib super().__new__(mcls)
             @classmethod
             def __prepare__(mcls, name, bases):
                 prepare_calls.append('ANotMeta')
-                return {}
+                gib {}
 
         klasse BNotMeta(ANotMeta):
             def __new__(mcls, *args, **kwargs):
                 new_calls.append('BNotMeta')
-                return super().__new__(mcls)
+                gib super().__new__(mcls)
             @classmethod
             def __prepare__(mcls, name, bases):
                 prepare_calls.append('BNotMeta')
-                return super().__prepare__(name, bases)
+                gib super().__prepare__(name, bases)
 
         A = types.new_class("A", (), {"metaclass": ANotMeta})
         self.assertIs(ANotMeta, type(A))
@@ -1881,7 +1881,7 @@ klasse ClassCreationTests(unittest.TestCase):
                 new_class = super_new(cls, name, bases, {})
                 wenn name != "Model":
                     raise RuntimeWarning(f"{name=}")
-                return new_class
+                gib new_class
 
         klasse Model(metaclass=ModelBase):
             pass
@@ -2192,16 +2192,16 @@ klasse CoroutineTests(unittest.TestCase):
     def test_non_gen_values(self):
         @types.coroutine
         def foo():
-            return 'spam'
+            gib 'spam'
         self.assertEqual(foo(), 'spam')
 
         klasse Awaitable:
             def __await__(self):
-                return ()
+                gib ()
         aw = Awaitable()
         @types.coroutine
         def foo():
-            return aw
+            gib aw
         self.assertIs(aw, foo())
 
         # decorate foo second time
@@ -2221,7 +2221,7 @@ klasse CoroutineTests(unittest.TestCase):
         self.assertIs(decorated_foo.__code__, foo_code)
 
         foo_coro = foo()
-        def bar(): return foo_coro
+        def bar(): gib foo_coro
         fuer _ in range(2):
             bar = types.coroutine(bar)
             coro = bar()
@@ -2234,12 +2234,12 @@ klasse CoroutineTests(unittest.TestCase):
             def send(self): pass
             def throw(self): pass
             def close(self): pass
-            def __await__(self): return self
+            def __await__(self): gib self
 
         coro = CoroLike()
         @types.coroutine
         def foo():
-            return coro
+            gib coro
         self.assertIs(foo(), coro)
         self.assertIs(foo().__await__(), coro)
 
@@ -2248,14 +2248,14 @@ klasse CoroutineTests(unittest.TestCase):
             def send(self): pass
             def throw(self): pass
             def close(self): pass
-            def __await__(self): return self
-            def __iter__(self): return self
+            def __await__(self): gib self
+            def __iter__(self): gib self
             def __next__(self): pass
 
         coro = CoroGenLike()
         @types.coroutine
         def foo():
-            return coro
+            gib coro
         self.assertIs(foo(), coro)
         self.assertIs(foo().__await__(), coro)
 
@@ -2276,7 +2276,7 @@ klasse CoroutineTests(unittest.TestCase):
         self.assertIs(gen, iter(gen))
 
         @types.coroutine
-        def foo(): return gen
+        def foo(): gib gen
 
         wrapper = foo()
         self.assertIsInstance(wrapper, types._GeneratorWrapper)
@@ -2357,7 +2357,7 @@ klasse CoroutineTests(unittest.TestCase):
 
         # Test that we do nicht double wrap
         @types.coroutine
-        def bar(): return wrapper
+        def bar(): gib wrapper
         self.assertIs(wrapper, bar())
 
         # Test weakrefs support
@@ -2369,21 +2369,21 @@ klasse CoroutineTests(unittest.TestCase):
             """Emulates the following generator (very clumsy):
 
               def gen(fut):
-                  result = yield fut
-                  return result * 2
+                  result = liefere fut
+                  gib result * 2
             """
             def __init__(self, fut):
                 self._i = 0
                 self._fut = fut
             def __iter__(self):
-                return self
+                gib self
             def __next__(self):
-                return self.send(Nichts)
+                gib self.send(Nichts)
             def send(self, v):
                 try:
                     wenn self._i == 0:
                         assert v is Nichts
-                        return self._fut
+                        gib self._fut
                     wenn self._i == 1:
                         raise StopIteration(v * 2)
                     wenn self._i > 1:
@@ -2398,13 +2398,13 @@ klasse CoroutineTests(unittest.TestCase):
                 self.throw(GeneratorExit)
 
         @types.coroutine
-        def foo(): return Generator('spam')
+        def foo(): gib Generator('spam')
 
         wrapper = foo()
         self.assertIsInstance(wrapper, types._GeneratorWrapper)
 
         async def corofunc():
-            return await foo() + 100
+            gib await foo() + 100
         coro = corofunc()
 
         self.assertEqual(coro.send(Nichts), 'spam')
@@ -2417,11 +2417,11 @@ klasse CoroutineTests(unittest.TestCase):
 
     def test_gen(self):
         def gen_func():
-            yield 1
-            return (yield 2)
+            liefere 1
+            gib (yield 2)
         gen = gen_func()
         @types.coroutine
-        def foo(): return gen
+        def foo(): gib gen
         wrapper = foo()
         self.assertIsInstance(wrapper, types._GeneratorWrapper)
         self.assertIs(wrapper.__await__(), gen)
@@ -2450,13 +2450,13 @@ klasse CoroutineTests(unittest.TestCase):
     def test_returning_itercoro(self):
         @types.coroutine
         def gen():
-            yield
+            liefere
 
         gencoro = gen()
 
         @types.coroutine
         def foo():
-            return gencoro
+            gib gencoro
 
         self.assertIs(foo(), gencoro)
 
@@ -2465,7 +2465,7 @@ klasse CoroutineTests(unittest.TestCase):
         self.assertIs(foo(), gencoro)
 
     def test_genfunc(self):
-        def gen(): yield
+        def gen(): liefere
         self.assertIs(types.coroutine(gen), gen)
         self.assertIs(types.coroutine(types.coroutine(gen)), gen)
 
@@ -2480,10 +2480,10 @@ klasse CoroutineTests(unittest.TestCase):
 
     def test_wrapper_object(self):
         def gen():
-            yield
+            liefere
         @types.coroutine
         def coro():
-            return gen()
+            gib gen()
 
         wrapper = coro()
         self.assertIn('GeneratorWrapper', repr(wrapper))
@@ -2497,7 +2497,7 @@ klasse CoroutineTests(unittest.TestCase):
 klasse FunctionTests(unittest.TestCase):
     def test_function_type_defaults(self):
         def ex(a, /, b, *, c):
-            return a + b + c
+            gib a + b + c
 
         func = types.FunctionType(
             ex.__code__, {}, "func", (1, 2), Nichts, {'c': 3},
@@ -2515,7 +2515,7 @@ klasse FunctionTests(unittest.TestCase):
 
     def test_function_type_wrong_defaults(self):
         def ex(a, /, b, *, c):
-            return a + b + c
+            gib a + b + c
 
         mit self.assertRaisesRegex(TypeError, 'arg 4'):
             types.FunctionType(
@@ -2591,7 +2591,7 @@ klasse SubinterpreterTests(unittest.TestCase):
                 key = cls, attr
                 assert key nicht in results, (results, key, wrapper)
                 results[key] = wrapper
-            return results
+            gib results
 
         exec(script)
         raw = rch.recv_nowait()

@@ -100,7 +100,7 @@ def _file_search(fname, pat):
         fuer line in f:
             match = pat.search(line)
             wenn match is nicht Nichts:
-                yield match
+                liefere match
 
 
 def parse_err_h(args):
@@ -122,7 +122,7 @@ def parse_err_h(args):
         wenn actual != expect:
             logger.warning("OpenSSL inconsistency fuer ERR_LIB_%s (%d != %d)",
                            libname, actual, expect)
-    return lib2errnum
+    gib lib2errnum
 
 
 def parse_openssl_error_text(args):
@@ -142,7 +142,7 @@ def parse_openssl_error_text(args):
             # the consistency of the OpenSSL files mit an external tool.
             # See https://github.com/python/cpython/issues/132745.
             weiter
-        yield reason, libname, errname, int(num)
+        liefere reason, libname, errname, int(num)
 
 
 def parse_extra_reasons(args):
@@ -154,33 +154,33 @@ def parse_extra_reasons(args):
     pat = re.compile(r"^R\s+((\w+)_R_(\w+))\s+(\d+)")
     fuer match in _file_search(args.errcodes, pat):
         reason, libname, errname, num = match.groups()
-        yield reason, libname, errname, int(num)
+        liefere reason, libname, errname, int(num)
 
 
 def gen_library_codes(args):
     """Generate table short libname to numeric code."""
-    yield "/* generated von args.lib2errnum */"
-    yield "static struct py_ssl_library_code library_codes[] = {"
+    liefere "/* generated von args.lib2errnum */"
+    liefere "static struct py_ssl_library_code library_codes[] = {"
     fuer libname in sorted(args.lib2errnum):
-        yield f"#ifdef ERR_LIB_{libname}"
-        yield f'    {{"{libname}", ERR_LIB_{libname}}},'
-        yield "#endif"
-    yield "    {NULL, 0}  /* sentinel */"
-    yield "};"
+        liefere f"#ifdef ERR_LIB_{libname}"
+        liefere f'    {{"{libname}", ERR_LIB_{libname}}},'
+        liefere "#endif"
+    liefere "    {NULL, 0}  /* sentinel */"
+    liefere "};"
 
 
 def gen_error_codes(args):
     """Generate error code table fuer error reasons."""
-    yield "/* generated von args.reasons */"
-    yield "static struct py_ssl_error_code error_codes[] = {"
+    liefere "/* generated von args.reasons */"
+    liefere "static struct py_ssl_error_code error_codes[] = {"
     fuer reason, libname, errname, num in args.reasons:
-        yield f"  #ifdef {reason}"
-        yield f'    {{"{errname}", ERR_LIB_{libname}, {reason}}},'
-        yield "  #else"
-        yield f'    {{"{errname}", {args.lib2errnum[libname]}, {num}}},'
-        yield "  #endif"
-    yield "    {NULL, 0, 0}  /* sentinel */"
-    yield "};"
+        liefere f"  #ifdef {reason}"
+        liefere f'    {{"{errname}", ERR_LIB_{libname}, {reason}}},'
+        liefere "  #else"
+        liefere f'    {{"{errname}", {args.lib2errnum[libname]}, {num}}},'
+        liefere "  #endif"
+    liefere "    {NULL, 0, 0}  /* sentinel */"
+    liefere "};"
 
 
 def get_openssl_git_commit(args):
@@ -191,7 +191,7 @@ def get_openssl_git_commit(args):
         encoding='utf-8',
         check=Wahr,
     )
-    return git_describe.stdout.strip()
+    gib git_describe.stdout.strip()
 
 
 def main(args=Nichts):

@@ -39,11 +39,11 @@ def load_tests(loader, tests, ignore):
     klasse HeapqMergeDocTestFinder:
         def find(self, *args, **kwargs):
             dtf = doctest.DocTestFinder()
-            return dtf.find(py_heapq.merge)
+            gib dtf.find(py_heapq.merge)
 
     tests.addTests(doctest.DocTestSuite(py_heapq,
                                         test_finder=HeapqMergeDocTestFinder()))
-    return tests
+    gib tests
 
 klasse TestHeap:
 
@@ -145,7 +145,7 @@ klasse TestHeap:
         # An iterator returning a heap's elements, smallest-first.
         try:
             waehrend 1:
-                yield self.module.heappop(heap)
+                liefere self.module.heappop(heap)
         except IndexError:
             pass
 
@@ -200,7 +200,7 @@ klasse TestHeap:
         # An iterator returning a max-heap's elements, largest-first.
         try:
             waehrend 1:
-                yield self.module.heappop_max(heap)
+                liefere self.module.heappop_max(heap)
         except IndexError:
             pass
 
@@ -343,7 +343,7 @@ klasse TestHeap:
         def iterable():
             s = list(range(10))
             fuer i in range(20):
-                yield s[i]       # IndexError when i > 10
+                liefere s[i]       # IndexError when i > 10
         mit self.assertRaises(IndexError):
             list(self.module.merge(iterable(), iterable()))
 
@@ -386,17 +386,17 @@ klasse TestHeap:
         def hsort(data, comp):
             data = [comp(x) fuer x in data]
             self.module.heapify(data)
-            return [self.module.heappop(data).x fuer i in range(len(data))]
+            gib [self.module.heappop(data).x fuer i in range(len(data))]
         klasse LT:
             def __init__(self, x):
                 self.x = x
             def __lt__(self, other):
-                return self.x > other.x
+                gib self.x > other.x
         klasse LE:
             def __init__(self, x):
                 self.x = x
             def __le__(self, other):
-                return self.x >= other.x
+                gib self.x >= other.x
         data = [random.random() fuer i in range(100)]
         target = sorted(data, reverse=Wahr)
         self.assertEqual(hsort(data, LT), target)
@@ -417,7 +417,7 @@ klasse TestHeapC(TestHeap, TestCase):
 klasse LenOnly:
     "Dummy sequence klasse defining __len__ but nicht __getitem__."
     def __len__(self):
-        return 10
+        gib 10
 
 klasse CmpErr:
     "Dummy element that always raises an error during comparison"
@@ -428,14 +428,14 @@ klasse CmpErr:
 def R(seqn):
     'Regular generator'
     fuer i in seqn:
-        yield i
+        liefere i
 
 klasse G:
     'Sequence using __getitem__'
     def __init__(self, seqn):
         self.seqn = seqn
     def __getitem__(self, i):
-        return self.seqn[i]
+        gib self.seqn[i]
 
 klasse I:
     'Sequence using iterator protocol'
@@ -443,12 +443,12 @@ klasse I:
         self.seqn = seqn
         self.i = 0
     def __iter__(self):
-        return self
+        gib self
     def __next__(self):
         wenn self.i >= len(self.seqn): raise StopIteration
         v = self.seqn[self.i]
         self.i += 1
-        return v
+        gib v
 
 klasse Ig:
     'Sequence using iterator protocol defined mit a generator'
@@ -457,7 +457,7 @@ klasse Ig:
         self.i = 0
     def __iter__(self):
         fuer val in self.seqn:
-            yield val
+            liefere val
 
 klasse X:
     'Missing __getitem__ und __iter__'
@@ -468,7 +468,7 @@ klasse X:
         wenn self.i >= len(self.seqn): raise StopIteration
         v = self.seqn[self.i]
         self.i += 1
-        return v
+        gib v
 
 klasse N:
     'Iterator missing __next__()'
@@ -476,7 +476,7 @@ klasse N:
         self.seqn = seqn
         self.i = 0
     def __iter__(self):
-        return self
+        gib self
 
 klasse E:
     'Test propagation of exceptions'
@@ -484,7 +484,7 @@ klasse E:
         self.seqn = seqn
         self.i = 0
     def __iter__(self):
-        return self
+        gib self
     def __next__(self):
         3 // 0
 
@@ -493,14 +493,14 @@ klasse S:
     def __init__(self, seqn):
         pass
     def __iter__(self):
-        return self
+        gib self
     def __next__(self):
         raise StopIteration
 
 von itertools importiere chain
 def L(seqn):
     'Test multiple tiers of iterators'
-    return chain(map(lambda x:x, R(Ig(G(seqn)))))
+    gib chain(map(lambda x:x, R(Ig(G(seqn)))))
 
 
 klasse SideEffectLT:
@@ -510,7 +510,7 @@ klasse SideEffectLT:
 
     def __lt__(self, other):
         self.heap[:] = []
-        return self.value < other.value
+        gib self.value < other.value
 
 
 klasse TestErrorHandling:
@@ -592,7 +592,7 @@ klasse TestErrorHandling:
         klasse EvilClass(int):
             def __lt__(self, o):
                 heap.clear()
-                return NotImplemented
+                gib NotImplemented
 
         heap = []
         self.module.heappush(heap, EvilClass(0))
@@ -603,12 +603,12 @@ klasse TestErrorHandling:
         klasse h(int):
             def __lt__(self, o):
                 list2.clear()
-                return NotImplemented
+                gib NotImplemented
 
         klasse g(int):
             def __lt__(self, o):
                 list1.clear()
-                return NotImplemented
+                gib NotImplemented
 
         list1, list2 = [], []
 

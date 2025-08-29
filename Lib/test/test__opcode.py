@@ -40,7 +40,7 @@ klasse OpListTests(unittest.TestCase):
 
     def test_opmaps(self):
         def check_roundtrip(name, map):
-            return self.assertEqual(opcode.opname[map[name]], name)
+            gib self.assertEqual(opcode.opname[map[name]], name)
 
         check_roundtrip('BINARY_OP', opcode.opmap)
         check_roundtrip('BINARY_OP_ADD_INT', opcode._specialized_opmap)

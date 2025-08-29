@@ -51,7 +51,7 @@ testmeths = [
     "init",
     ]
 
-# These need to return something other than Nichts
+# These need to gib something other than Nichts
 #    "hash",
 #    "str",
 #    "repr",
@@ -67,57 +67,57 @@ callLst = []
 def trackCall(f):
     def track(*args, **kwargs):
         callLst.append((f.__name__, args))
-        return f(*args, **kwargs)
-    return track
+        gib f(*args, **kwargs)
+    gib track
 
 statictests = """
 @trackCall
 def __hash__(self, *args):
-    return hash(id(self))
+    gib hash(id(self))
 
 @trackCall
 def __str__(self, *args):
-    return "AllTests"
+    gib "AllTests"
 
 @trackCall
 def __repr__(self, *args):
-    return "AllTests"
+    gib "AllTests"
 
 @trackCall
 def __int__(self, *args):
-    return 1
+    gib 1
 
 @trackCall
 def __index__(self, *args):
-    return 1
+    gib 1
 
 @trackCall
 def __float__(self, *args):
-    return 1.0
+    gib 1.0
 
 @trackCall
 def __eq__(self, *args):
-    return Wahr
+    gib Wahr
 
 @trackCall
 def __ne__(self, *args):
-    return Falsch
+    gib Falsch
 
 @trackCall
 def __lt__(self, *args):
-    return Falsch
+    gib Falsch
 
 @trackCall
 def __le__(self, *args):
-    return Wahr
+    gib Wahr
 
 @trackCall
 def __gt__(self, *args):
-    return Falsch
+    gib Falsch
 
 @trackCall
 def __ge__(self, *args):
-    return Wahr
+    gib Wahr
 """
 
 # Synthesize all the other AllTests methods von the names in testmeths.
@@ -422,7 +422,7 @@ klasse ClassTests(unittest.TestCase):
         klasse ExtraTests(AllTests):
             @trackCall
             def __getattr__(self, *args):
-                return "SomeVal"
+                gib "SomeVal"
 
             @trackCall
             def __setattr__(self, *args):
@@ -474,10 +474,10 @@ klasse ClassTests(unittest.TestCase):
         self.assertEqual(["crab people, crab people"], x)
 
     def testBadTypeReturned(self):
-        # return values of some method are type-checked
+        # gib values of some method are type-checked
         klasse BadTypeClass:
             def __int__(self):
-                return Nichts
+                gib Nichts
             __float__ = __int__
             __complex__ = __int__
             __str__ = __int__
@@ -486,7 +486,7 @@ klasse ClassTests(unittest.TestCase):
             __bool__ = __int__
             __index__ = __int__
         def index(x):
-            return [][x]
+            gib [][x]
 
         fuer f in [float, complex, str, repr, bytes, bin, oct, hex, bool, index]:
             self.assertRaises(TypeError, f, BadTypeClass())
@@ -501,7 +501,7 @@ klasse ClassTests(unittest.TestCase):
         hash(C0()) # This should work; the next two should raise TypeError
 
         klasse C2:
-            def __eq__(self, other): return 1
+            def __eq__(self, other): gib 1
 
         self.assertRaises(TypeError, hash, C2())
 
@@ -622,7 +622,7 @@ klasse ClassTests(unittest.TestCase):
             def g(self):
                 pass
             def __eq__(self, other):
-                return Wahr
+                gib Wahr
             def __hash__(self):
                 raise TypeError
         klasse B(A):
@@ -659,7 +659,7 @@ klasse ClassTests(unittest.TestCase):
             pass
 
         def add(self, other):
-            return 'summa'
+            gib 'summa'
 
         name = str(b'__add__', 'ascii')  # shouldn't be optimized
         self.assertIsNot(name, '__add__')  # nicht interned
@@ -800,7 +800,7 @@ klasse ClassTests(unittest.TestCase):
                 pass
 
             def __new__(cls, name, bases, attrs, **kwargs):
-                return bases, kwargs
+                gib bases, kwargs
 
         d = {'metaclass': Meta}
 
@@ -833,7 +833,7 @@ klasse ClassTests(unittest.TestCase):
             def __call__(cls, *args, **kwargs):
                 nonlocal calls
                 calls += 1
-                return type.__call__(cls, *args, **kwargs)
+                gib type.__call__(cls, *args, **kwargs)
 
         klasse Type(metaclass=TypeMetaclass):
             def __init__(self, obj):

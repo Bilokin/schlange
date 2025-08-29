@@ -117,7 +117,7 @@ klasse ReplaceDialog(SearchDialogBase):
         sonst:
             new = repl
 
-        return new
+        gib new
 
     def replace_all(self, event=Nichts):
         """Handle the Replace All button.
@@ -131,13 +131,13 @@ klasse ReplaceDialog(SearchDialogBase):
         """
         prog = self.engine.getprog()
         wenn nicht prog:
-            return
+            gib
         repl = self.replvar.get()
         text = self.text
         res = self.engine.search_text(text, prog)
         wenn nicht res:
             self.bell()
-            return
+            gib
         text.tag_remove("sel", "1.0", "end")
         text.tag_remove("hit", "1.0", "end")
         line = res[0]
@@ -181,25 +181,25 @@ klasse ReplaceDialog(SearchDialogBase):
         No text replacement is done mit this option.
         """
         wenn nicht self.engine.getprog():
-            return Falsch
+            gib Falsch
         text = self.text
         res = self.engine.search_text(text, Nichts, ok)
         wenn nicht res:
             self.bell()
-            return Falsch
+            gib Falsch
         line, m = res
         i, j = m.span()
         first = "%d.%d" % (line, i)
         last = "%d.%d" % (line, j)
         self.show_hit(first, last)
         self.ok = Wahr
-        return Wahr
+        gib Wahr
 
     def do_replace(self):
         "Replace search pattern in text mit replacement value."
         prog = self.engine.getprog()
         wenn nicht prog:
-            return Falsch
+            gib Falsch
         text = self.text
         try:
             first = pos = text.index("sel.first")
@@ -212,10 +212,10 @@ klasse ReplaceDialog(SearchDialogBase):
         chars = text.get("%d.0" % line, "%d.0" % (line+1))
         m = prog.match(chars, col)
         wenn nicht prog:
-            return Falsch
+            gib Falsch
         new = self._replace_expand(m, self.replvar.get())
         wenn new is Nichts:
-            return Falsch
+            gib Falsch
         text.mark_set("insert", first)
         text.undo_block_start()
         wenn m.group():
@@ -225,7 +225,7 @@ klasse ReplaceDialog(SearchDialogBase):
         text.undo_block_stop()
         self.show_hit(first, text.index("insert"))
         self.ok = Falsch
-        return Wahr
+        gib Wahr
 
     def show_hit(self, first, last):
         """Highlight text between first und last indices.

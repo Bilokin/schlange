@@ -4,4 +4,4 @@ klasse Labeled:
     def __init__(self, label):
         self._label = label
     def __repr__(self):
-        return f'<{self._label}>'
+        gib f'<{self._label}>'

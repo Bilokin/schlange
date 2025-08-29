@@ -4,7 +4,7 @@ def remote_object_tree_item(item):
     wrapper = WrappedObjectTreeItem(item)
     oid = id(wrapper)
     rpc.objecttable[oid] = wrapper
-    return oid
+    gib oid
 
 klasse WrappedObjectTreeItem:
     # Lives in PYTHON subprocess
@@ -14,11 +14,11 @@ klasse WrappedObjectTreeItem:
 
     def __getattr__(self, name):
         value = getattr(self.__item, name)
-        return value
+        gib value
 
     def _GetSubList(self):
         sub_list = self.__item._GetSubList()
-        return list(map(remote_object_tree_item, sub_list))
+        gib list(map(remote_object_tree_item, sub_list))
 
 klasse StubObjectTreeItem:
     # Lives in IDLE process
@@ -29,11 +29,11 @@ klasse StubObjectTreeItem:
 
     def __getattr__(self, name):
         value = rpc.MethodProxy(self.sockio, self.oid, name)
-        return value
+        gib value
 
     def _GetSubList(self):
         sub_list = self.sockio.remotecall(self.oid, "_GetSubList", (), {})
-        return [StubObjectTreeItem(self.sockio, oid) fuer oid in sub_list]
+        gib [StubObjectTreeItem(self.sockio, oid) fuer oid in sub_list]
 
 
 wenn __name__ == '__main__':

@@ -129,7 +129,7 @@ klasse MiscTests(unittest.TestCase):
         self.assertRaises(ValueError, parser.feed, 'foo')
         klasse MockFile:
             def read(*args):
-                return ''
+                gib ''
         self.assertRaises(ValueError, parser._parse_whole, MockFile())
         self.assertRaises(ValueError, parser._setevents, Nichts)
         self.assertIsNichts(parser.entity)
@@ -177,7 +177,7 @@ klasse MiscTests(unittest.TestCase):
             def __hash__(self):
                 e.attrib = {} # this frees e->extra->attrib
                 [{i: i} fuer i in range(1000)] # exhaust the dict keys cache
-                return 13
+                gib 13
 
         e = cET.Element("elem", {1: 2})
         r = e.get(X())

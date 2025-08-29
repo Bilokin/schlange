@@ -25,7 +25,7 @@ klasse BaseClass(object):
     @DynamicClassAttribute
     def spam(self):
         """BaseClass.getter"""
-        return self._spam
+        gib self._spam
 
     @spam.setter
     def spam(self, value):
@@ -55,7 +55,7 @@ klasse SubClass(BaseClass):
 klasse PropertyDocBase(object):
     _spam = 1
     def _get_spam(self):
-        return self._spam
+        gib self._spam
     spam = DynamicClassAttribute(_get_spam, doc="spam spam spam")
 
 klasse PropertyDocSub(PropertyDocBase):
@@ -63,24 +63,24 @@ klasse PropertyDocSub(PropertyDocBase):
     @spam.getter
     def spam(self):
         """The decorator does nicht use this doc string"""
-        return self._spam
+        gib self._spam
 
 klasse PropertySubNewGetter(BaseClass):
     spam = BaseClass.__dict__['spam']
     @spam.getter
     def spam(self):
         """new docstring"""
-        return 5
+        gib 5
 
 klasse PropertyNewGetter(object):
     @DynamicClassAttribute
     def spam(self):
         """original docstring"""
-        return 1
+        gib 1
     @spam.getter
     def spam(self):
         """new docstring"""
-        return 8
+        gib 8
 
 klasse ClassWithAbstractVirtualProperty(metaclass=abc.ABCMeta):
     @DynamicClassAttribute
@@ -179,7 +179,7 @@ klasse PropertyTests(unittest.TestCase):
         klasse Okay1(ClassWithAbstractVirtualProperty):
             @DynamicClassAttribute
             def color(self):
-                return self._color
+                gib self._color
             def __init__(self):
                 self._color = 'cyan'
         mit self.assertRaises(AttributeError):
@@ -188,7 +188,7 @@ klasse PropertyTests(unittest.TestCase):
         klasse Okay2(ClassWithAbstractVirtualProperty):
             @DynamicClassAttribute
             def color(self):
-                return self._color
+                gib self._color
             def __init__(self):
                 self._color = 'magenta'
         mit self.assertRaises(AttributeError):
@@ -214,7 +214,7 @@ klasse PropertySubclassTests(unittest.TestCase):
                 @PropertySubSlots
                 def spam(self):
                     """Trying to copy this docstring will raise an exception"""
-                    return 1
+                    gib 1
                 drucke('\n',spam.__doc__)
         except AttributeError:
             pass
@@ -228,7 +228,7 @@ klasse PropertySubclassTests(unittest.TestCase):
             @PropertySub
             def spam(self):
                 """spam wrapped in DynamicClassAttribute subclass"""
-                return 1
+                gib 1
         self.assertEqual(
             Foo.__dict__['spam'].__doc__,
             "spam wrapped in DynamicClassAttribute subclass")
@@ -241,7 +241,7 @@ klasse PropertySubclassTests(unittest.TestCase):
             @PropertySub
             def spam(self):
                 """spam wrapped in DynamicClassAttribute subclass"""
-                return self._spam
+                gib self._spam
             @spam.setter
             def spam(self, value):
                 """this docstring is ignored"""
@@ -275,23 +275,23 @@ klasse PropertySubclassTests(unittest.TestCase):
             @PropertySub
             def spam(self):
                 """a docstring"""
-                return 1
+                gib 1
             @spam.getter
             def spam(self):
                 """a new docstring"""
-                return 2
+                gib 2
         self.assertEqual(Foo.__dict__['spam'].__doc__, "a new docstring")
         klasse FooBase(object):
             @PropertySub
             def spam(self):
                 """a docstring"""
-                return 1
+                gib 1
         klasse Foo2(FooBase):
             spam = FooBase.__dict__['spam']
             @spam.getter
             def spam(self):
                 """a new docstring"""
-                return 2
+                gib 2
         self.assertEqual(Foo.__dict__['spam'].__doc__, "a new docstring")
 
 

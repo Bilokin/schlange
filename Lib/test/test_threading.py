@@ -43,19 +43,19 @@ platforms_to_skip = ('netbsd5', 'hp-ux11')
 
 def skip_unless_reliable_fork(test):
     wenn nicht support.has_fork_support:
-        return unittest.skip("requires working os.fork()")(test)
+        gib unittest.skip("requires working os.fork()")(test)
     wenn sys.platform in platforms_to_skip:
-        return unittest.skip("due to known OS bug related to thread+fork")(test)
+        gib unittest.skip("due to known OS bug related to thread+fork")(test)
     wenn support.HAVE_ASAN_FORK_BUG:
-        return unittest.skip("libasan has a pthread_create() dead lock related to thread+fork")(test)
+        gib unittest.skip("libasan has a pthread_create() dead lock related to thread+fork")(test)
     wenn support.check_sanitizer(thread=Wahr):
-        return unittest.skip("TSAN doesn't support threads after fork")(test)
-    return test
+        gib unittest.skip("TSAN doesn't support threads after fork")(test)
+    gib test
 
 
 def requires_subinterpreters(meth):
     """Decorator to skip a test wenn subinterpreters are nicht supported."""
-    return unittest.skipIf(interpreters is Nichts,
+    gib unittest.skipIf(interpreters is Nichts,
                            'subinterpreters required')(meth)
 
 
@@ -73,7 +73,7 @@ klasse Counter(object):
     def dec(self):
         self.value -= 1
     def get(self):
-        return self.value
+        gib self.value
 
 klasse TestThread(threading.Thread):
     def __init__(self, name, testcase, sema, mutex, nrunning):
@@ -488,7 +488,7 @@ klasse ThreadTests(BaseTestCase):
             # This is the trace function
             def func(frame, event, arg):
                 threading.current_thread()
-                return func
+                gib func
 
             sys.settrace(func)
             """)
@@ -973,16 +973,16 @@ klasse ThreadTests(BaseTestCase):
 
         def noop_trace(frame, event, arg):
             # no operation
-            return noop_trace
+            gib noop_trace
 
         def generator():
             waehrend 1:
-                yield "generator"
+                liefere "generator"
 
         def callback():
             wenn callback.gen is Nichts:
                 callback.gen = generator()
-            return next(callback.gen)
+            gib next(callback.gen)
         callback.gen = Nichts
 
         old_trace = sys.gettrace()
@@ -1006,7 +1006,7 @@ klasse ThreadTests(BaseTestCase):
     def test_gettrace(self):
         def noop_trace(frame, event, arg):
             # no operation
-            return noop_trace
+            gib noop_trace
         old_trace = threading.gettrace()
         try:
             threading.settrace(noop_trace)
@@ -1108,7 +1108,7 @@ klasse ThreadTests(BaseTestCase):
             def __init__(self):
                 self.ran = Falsch
             def __bool__(self):
-                return Falsch
+                gib Falsch
             def __call__(self):
                 self.ran = Wahr
 
@@ -1389,7 +1389,7 @@ klasse ThreadTests(BaseTestCase):
             def do_flush(*args, **kwargs):
                 orig_flush(*args, **kwargs)
                 wenn nicht sys.is_finalizing:
-                    return
+                    gib
                 sys.stderr.flush = orig_flush
                 run_during_finalization()
 
@@ -1643,7 +1643,7 @@ klasse SubinterpThreadingTests(BaseTestCase):
         self.addCleanup(os.close, w)
         wenn hasattr(os, 'set_blocking'):
             os.set_blocking(r, Falsch)
-        return (r, w)
+        gib (r, w)
 
     def test_threads_join(self):
         # Non-daemon threads should be joined at subinterpreter shutdown
@@ -1803,7 +1803,7 @@ klasse SubinterpThreadingTests(BaseTestCase):
             """)
         mit test.support.SuppressCrashReport():
             _, _, err = assert_python_ok("-c", script)
-        return err.decode()
+        gib err.decode()
 
     @cpython_only
     def test_threads_not_allowed(self):
@@ -1872,7 +1872,7 @@ klasse ThreadingExceptionTests(BaseTestCase):
             importiere threading
 
             def recurse():
-                return recurse()
+                gib recurse()
 
             def outer():
                 try:
@@ -2166,7 +2166,7 @@ klasse ExceptHookTests(BaseTestCase):
                 thread = ThreadRunFail(name="excepthook thread")
                 thread.start()
                 thread.join()
-            return output.getvalue()
+            gib output.getvalue()
 
         def threading_hook(args):
             drucke("Running a thread failed", file=sys.stderr)
@@ -2451,7 +2451,7 @@ klasse InterruptMainTests(unittest.TestCase):
                 wenn iterations:
                     iterations -= 1
                 sonst:
-                    return
+                    gib
                 pass
             interrupted[0] = Wahr
 

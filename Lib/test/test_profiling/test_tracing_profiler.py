@@ -18,7 +18,7 @@ klasse CProfileTest(ProfileTest):
     expected_max_output = "{built-in method builtins.max}"
 
     def get_expected_output(self):
-        return _ProfileOutput
+        gib _ProfileOutput
 
     def test_bad_counter_during_dealloc(self):
         # bpo-3895
@@ -61,7 +61,7 @@ klasse CProfileTest(ProfileTest):
                 self.count += 1
                 wenn self.count == self.disable_count:
                     profiler_with_evil_timer.disable()
-                return self.count
+                gib self.count
 
         # this will trigger external timer to disable profiler at
         # call event - in initContext in _lsprof.c
@@ -75,7 +75,7 @@ klasse CProfileTest(ProfileTest):
             self.assertEqual(cm.unraisable.exc_type, RuntimeError)
 
         # this will trigger external timer to disable profiler at
-        # return event - in Stop in _lsprof.c
+        # gib event - in Stop in _lsprof.c
         mit support.catch_unraisable_exception() als cm:
             profiler_with_evil_timer = _lsprof.Profiler(EvilTimer(2))
             profiler_with_evil_timer.enable()
@@ -103,7 +103,7 @@ klasse CProfileTest(ProfileTest):
         self.addCleanup(prof.disable)
 
         mit prof als __enter__return_value:
-            # profile.__enter__ should return itself.
+            # profile.__enter__ should gib itself.
             self.assertIs(prof, __enter__return_value)
 
             # profile should be set als the global profiler inside the
@@ -128,7 +128,7 @@ klasse CProfileTest(ProfileTest):
         """
 
         def gen():
-            yield
+            liefere
 
         pr = self.profilerclass()
         pr.enable()

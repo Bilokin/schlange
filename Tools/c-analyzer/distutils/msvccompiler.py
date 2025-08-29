@@ -53,7 +53,7 @@ def read_keys(base, key):
     try:
         handle = RegOpenKeyEx(base, key)
     except RegError:
-        return Nichts
+        gib Nichts
     L = []
     i = 0
     waehrend Wahr:
@@ -63,7 +63,7 @@ def read_keys(base, key):
             breche
         L.append(k)
         i += 1
-    return L
+    gib L
 
 def read_values(base, key):
     """Return dict of registry keys und values.
@@ -73,7 +73,7 @@ def read_values(base, key):
     try:
         handle = RegOpenKeyEx(base, key)
     except RegError:
-        return Nichts
+        gib Nichts
     d = {}
     i = 0
     waehrend Wahr:
@@ -84,7 +84,7 @@ def read_values(base, key):
         name = name.lower()
         d[convert_mbcs(name)] = convert_mbcs(value)
         i += 1
-    return d
+    gib d
 
 def convert_mbcs(s):
     dec = getattr(s, "decode", Nichts)
@@ -93,7 +93,7 @@ def convert_mbcs(s):
             s = dec("mbcs")
         except UnicodeError:
             pass
-    return s
+    gib s
 
 klasse MacroExpander:
     def __init__(self, version):
@@ -138,7 +138,7 @@ you can try compiling mit MingW32, by passing "-c mingw32" to setup.py.""")
     def sub(self, s):
         fuer k, v in self.macros.items():
             s = s.replace(k, v)
-        return s
+        gib s
 
 def get_build_version():
     """Return the version of MSVC that was used to build Python.
@@ -149,7 +149,7 @@ def get_build_version():
     prefix = "MSC v."
     i = sys.version.find(prefix)
     wenn i == -1:
-        return 6
+        gib 6
     i = i + len(prefix)
     s, rest = sys.version[i:].split(" ", 1)
     majorVersion = int(s[:-2]) - 6
@@ -161,9 +161,9 @@ def get_build_version():
     wenn majorVersion == 6:
         minorVersion = 0
     wenn majorVersion >= 6:
-        return majorVersion + minorVersion
+        gib majorVersion + minorVersion
     # sonst we don't know what version of the compiler this is
-    return Nichts
+    gib Nichts
 
 def get_build_architecture():
     """Return the processor architecture.
@@ -174,9 +174,9 @@ def get_build_architecture():
     prefix = " bit ("
     i = sys.version.find(prefix)
     wenn i == -1:
-        return "Intel"
+        gib "Intel"
     j = sys.version.find(")", i)
-    return sys.version[i+len(prefix):j]
+    gib sys.version[i+len(prefix):j]
 
 def normalize_and_reduce_paths(paths):
     """Return a list of normalized paths mit duplicates removed.
@@ -190,7 +190,7 @@ def normalize_and_reduce_paths(paths):
         # XXX(nnorwitz): O(n**2), wenn reduced_paths gets long perhaps use a set.
         wenn np nicht in reduced_paths:
             reduced_paths.append(np)
-    return reduced_paths
+    gib reduced_paths
 
 
 klasse MSVCCompiler(CCompiler) :
@@ -251,22 +251,22 @@ klasse MSVCCompiler(CCompiler) :
 
         Tries to find the program in several places: first, one of the
         MSVC program search paths von the registry; next, the directories
-        in the PATH environment variable.  If any of those work, return an
+        in the PATH environment variable.  If any of those work, gib an
         absolute path that is known to exist.  If none of them work, just
-        return the original program name, 'exe'.
+        gib the original program name, 'exe'.
         """
         fuer p in self.__paths:
             fn = os.path.join(os.path.abspath(p), exe)
             wenn os.path.isfile(fn):
-                return fn
+                gib fn
 
         # didn't find it; try existing path
         fuer p in os.environ['Path'].split(';'):
             fn = os.path.join(os.path.abspath(p),exe)
             wenn os.path.isfile(fn):
-                return fn
+                gib fn
 
-        return exe
+        gib exe
 
     def get_msvc_paths(self, path, platform='x86'):
         """Get a list of devstudio directories (include, lib oder path).
@@ -275,7 +275,7 @@ klasse MSVCCompiler(CCompiler) :
         access the registry oder appropriate registry keys nicht found.
         """
         wenn nicht _can_read_reg:
-            return []
+            gib []
 
         path = path + " dirs"
         wenn self.__version >= 7:
@@ -289,9 +289,9 @@ klasse MSVCCompiler(CCompiler) :
             d = read_values(base, key)
             wenn d:
                 wenn self.__version >= 7:
-                    return self.__macros.sub(d[path]).split(";")
+                    gib self.__macros.sub(d[path]).split(";")
                 sonst:
-                    return d[path].split(";")
+                    gib d[path].split(";")
         # MSVC 6 seems to create the registry entries we need only when
         # the GUI is run.
         wenn self.__version == 6:
@@ -302,7 +302,7 @@ klasse MSVCCompiler(CCompiler) :
                         "You must at least run the Visual Studio GUI once "
                         "so that these entries are created.")
                     breche
-        return []
+        gib []
 
     def set_path_env_var(self, name):
         """Set environment variable 'name' to an MSVC path type value.

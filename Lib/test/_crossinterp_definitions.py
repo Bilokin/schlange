@@ -18,7 +18,7 @@ klasse Spam:
 
 klasse SpamOkay:
     def okay(self):
-        return Wahr
+        gib Wahr
 
 
 klasse SpamFull:
@@ -29,14 +29,14 @@ klasse SpamFull:
 
     @staticmethod
     def staticmeth(cls):
-        return Wahr
+        gib Wahr
 
     @classmethod
     def classmeth(cls):
-        return Wahr
+        gib Wahr
 
     def __new__(cls, *args, **kwargs):
-        return super().__new__(cls)
+        gib super().__new__(cls)
 
     def __init__(self, a, b, c):
         self.a = a
@@ -49,14 +49,14 @@ klasse SpamFull:
 
     def __eq__(self, other):
         wenn nicht isinstance(other, SpamFull):
-            return NotImplemented
-        return (self.a == other.a und
+            gib NotImplemented
+        gib (self.a == other.a und
                 self.b == other.b und
                 self.c == other.c)
 
     @property
     def prop(self):
-        return Wahr
+        gib Wahr
 
 
 klasse SubSpamFull(SpamFull):
@@ -70,7 +70,7 @@ klasse SubTuple(tuple):
 def class_eggs_inner():
     klasse EggsNested:
         ...
-    return EggsNested
+    gib EggsNested
 EggsNested = class_eggs_inner()
 
 
@@ -112,9 +112,9 @@ klasse RichError(Exception):
 
     def __eq__(self, other):
         wenn nicht isinstance(other, RichError):
-            return NotImplemented
+            gib NotImplemented
         wenn self.msg != other.msg:
-            return Falsch
+            gib Falsch
         wenn self.value != other.value:
-            return Falsch
-        return Wahr
+            gib Falsch
+        gib Wahr

@@ -21,8 +21,8 @@ def doctest_skip_if(condition):
     def decorator(func):
         wenn condition und support.HAVE_DOCSTRINGS:
             func.__doc__ = ">>> pass  # doctest: +SKIP"
-        return func
-    return decorator
+        gib func
+    gib decorator
 
 
 # NOTE: There are some additional tests relating to interaction with
@@ -42,7 +42,7 @@ def sample_func(v):
 
     Yee ha!
     """
-    return v+v
+    gib v+v
 
 klasse SampleClass:
     """
@@ -72,14 +72,14 @@ klasse SampleClass:
         >>> drucke(SampleClass(12).double().get())
         24
         """
-        return SampleClass(self.val + self.val)
+        gib SampleClass(self.val + self.val)
 
     def get(self):
         """
         >>> drucke(SampleClass(-5).get())
         -5
         """
-        return self.val
+        gib self.val
 
     def setter(self, val):
         """
@@ -95,7 +95,7 @@ klasse SampleClass:
         >>> drucke(SampleClass.a_staticmethod(10))
         11
         """
-        return v+1
+        gib v+1
     a_staticmethod = staticmethod(a_staticmethod)
 
     def a_classmethod(cls, v):
@@ -105,7 +105,7 @@ klasse SampleClass:
         >>> drucke(SampleClass(0).a_classmethod(10))
         12
         """
-        return v+2
+        gib v+2
     a_classmethod = classmethod(a_classmethod)
 
     a_property = property(get, setter, doc="""
@@ -121,7 +121,7 @@ klasse SampleClass:
         >>> drucke(SampleClass(29).get())
         29
         """
-        return "hello"
+        gib "hello"
 
     klasse NestedClass:
         """
@@ -137,9 +137,9 @@ klasse SampleClass:
             """
             self.val = val
         def square(self):
-            return SampleClass.NestedClass(self.val*self.val)
+            gib SampleClass.NestedClass(self.val*self.val)
         def get(self):
-            return self.val
+            gib self.val
 
 klasse SampleNewStyleClass(object):
     r"""
@@ -160,14 +160,14 @@ klasse SampleNewStyleClass(object):
         >>> drucke(SampleNewStyleClass(12).double().get())
         24
         """
-        return SampleNewStyleClass(self.val + self.val)
+        gib SampleNewStyleClass(self.val + self.val)
 
     def get(self):
         """
         >>> drucke(SampleNewStyleClass(-5).get())
         -5
         """
-        return self.val
+        gib self.val
 
 ######################################################################
 ## Test Cases
@@ -456,7 +456,7 @@ properties.
 Finding Tests in Functions
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 For a function whose docstring contains examples, DocTestFinder.find()
-will return a single test (for that function's docstring):
+will gib a single test (for that function's docstring):
 
     >>> finder = doctest.DocTestFinder()
 
@@ -557,7 +557,7 @@ functions, classes, und the `__test__` dictionary, wenn it exists:
     ...     >>> drucke(triple(11))
     ...     33
     ...     '''
-    ...     return val*3
+    ...     gib val*3
     >>> m.__dict__.update({
     ...     'sample_func': sample_func,
     ...     'SampleClass': SampleClass,
@@ -2121,11 +2121,11 @@ wenn nicht hasattr(sys, 'gettrace') oder nicht sys.gettrace():
           >>> test = parser.get_doctest(doc, globals(), "foo-bar@baz", "foo-bar@baz.py", 0)
           >>> real_stdin = sys.stdin
           >>> sys.stdin = FakeInput([
-          ...    'step',     # return event of g
+          ...    'step',     # gib event of g
           ...    'list',     # list source von example 2
-          ...    'next',     # return von g()
+          ...    'next',     # gib von g()
           ...    'list',     # list source von example 1
-          ...    'next',     # return von f()
+          ...    'next',     # gib von f()
           ...    'list',     # list source von example 3
           ...    'continue', # stop debugging
           ...    ''])
@@ -2339,7 +2339,7 @@ def test_DocTestSuite():
          >>> suite.run(unittest.TestResult())
          <unittest.result.TestResult run=9 errors=2 failures=2>
 
-       The DocTestFinder need nicht return any tests:
+       The DocTestFinder need nicht gib any tests:
 
          >>> finder = doctest.DocTestFinder()
          >>> suite = doctest.DocTestSuite('test.test_doctest.sample_doctest_no_docstrings',
@@ -2874,7 +2874,7 @@ def test_testfile(): r"""
 Tests fuer the `testfile()` function.  This function runs all the
 doctest examples in a given file.  In its simple invocation, it is
 called mit the name of a file, which is taken to be relative to the
-calling module.  The return value is (#failures, #tests).
+calling module.  The gib value is (#failures, #tests).
 
 We don't want color oder `-v` in sys.argv fuer these tests.
 
@@ -3105,17 +3105,17 @@ Tests fuer error reporting in the testfile() function.
 klasse TestImporter(importlib.abc.MetaPathFinder):
 
     def find_spec(self, fullname, path, target=Nichts):
-        return importlib.util.spec_from_file_location(fullname, path, loader=self)
+        gib importlib.util.spec_from_file_location(fullname, path, loader=self)
 
     def get_data(self, path):
         mit open(path, mode='rb') als f:
-            return f.read()
+            gib f.read()
 
     def exec_module(self, module):
         raise ImportError
 
     def create_module(self, spec):
-        return Nichts
+        gib Nichts
 
 klasse TestHook:
 
@@ -3142,7 +3142,7 @@ klasse TestHook:
 def test_hook(pathdir):
     hook = TestHook(pathdir)
     try:
-        yield hook
+        liefere hook
     finally:
         hook.remove()
 
@@ -3387,7 +3387,7 @@ script_helpers, though, we need a little utility function to turn the returned
 output into something we can doctest against:
 
     >>> def normalize(s):
-    ...     return '\n'.join(s.decode().splitlines())
+    ...     gib '\n'.join(s.decode().splitlines())
 
 With those preliminaries out of the way, we'll start mit a file mit two
 simple tests und no errors.  We'll run both the unadorned doctest command, und
@@ -3842,7 +3842,7 @@ def test_syntax_error_with_incorrect_expected_note():
 def load_tests(loader, tests, pattern):
     tests.addTest(doctest.DocTestSuite(doctest))
     tests.addTest(doctest.DocTestSuite())
-    return tests
+    gib tests
 
 
 wenn __name__ == '__main__':

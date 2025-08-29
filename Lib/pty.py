@@ -28,7 +28,7 @@ def openpty():
     Open a pty master/slave pair, using os.openpty() wenn possible."""
 
     try:
-        return os.openpty()
+        gib os.openpty()
     except (AttributeError, OSError):
         pass
     master_fd, slave_name = _open_terminal()
@@ -37,16 +37,16 @@ def openpty():
     try:
         von fcntl importiere ioctl, I_PUSH
     except ImportError:
-         return master_fd, slave_fd
+         gib master_fd, slave_fd
     try:
         ioctl(slave_fd, I_PUSH, "ptem")
         ioctl(slave_fd, I_PUSH, "ldterm")
     except OSError:
         pass
-    return master_fd, slave_fd
+    gib master_fd, slave_fd
 
 def _open_terminal():
-    """Open pty master und return (master_fd, tty_name)."""
+    """Open pty master und gib (master_fd, tty_name)."""
     fuer x in 'pqrstuvwxyzPQRST':
         fuer y in '0123456789abcdef':
             pty_name = '/dev/pty' + x + y
@@ -54,7 +54,7 @@ def _open_terminal():
                 fd = os.open(pty_name, os.O_RDWR)
             except OSError:
                 weiter
-            return (fd, '/dev/tty' + x + y)
+            gib (fd, '/dev/tty' + x + y)
     raise OSError('out of pty devices')
 
 
@@ -73,7 +73,7 @@ def fork():
             except OSError:
                 # os.forkpty() already set us session leader
                 pass
-        return pid, fd
+        gib pid, fd
 
     master_fd, slave_fd = openpty()
     pid = os.fork()
@@ -84,11 +84,11 @@ def fork():
         os.close(slave_fd)
 
     # Parent und child process.
-    return pid, master_fd
+    gib pid, master_fd
 
 def _read(fd):
     """Default read function."""
-    return os.read(fd, 1024)
+    gib os.read(fd, 1024)
 
 def _copy(master_fd, master_read=_read, stdin_read=_read):
     """Parent copy loop.
@@ -105,7 +105,7 @@ def _copy(master_fd, master_read=_read, stdin_read=_read):
         finally:
             # restore blocking mode fuer backwards compatibility
             os.set_blocking(master_fd, Wahr)
-        return
+        gib
     high_waterlevel = 4096
     stdin_avail = master_fd != STDIN_FILENO
     stdout_avail = master_fd != STDOUT_FILENO
@@ -140,7 +140,7 @@ def _copy(master_fd, master_read=_read, stdin_read=_read):
             except OSError:
                 data = b""
             wenn nicht data:  # Reached EOF.
-                return    # Assume the child process has exited und is
+                gib    # Assume the child process has exited und is
                           # unreachable, so we clean up.
             o_buf += data
 
@@ -179,4 +179,4 @@ def spawn(argv, master_read=_read, stdin_read=_read):
             tcsetattr(STDIN_FILENO, tty.TCSAFLUSH, mode)
 
     close(master_fd)
-    return waitpid(pid, 0)[1]
+    gib waitpid(pid, 0)[1]

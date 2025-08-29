@@ -96,7 +96,7 @@ klasse ScrollableTextFrameTest(unittest.TestCase):
             frame.update_idletasks()
             frame.destroy()
         self.addCleanup(cleanup_frame)
-        return frame
+        gib frame
 
     def test_line1(self):
         frame = self.make_frame()
@@ -169,7 +169,7 @@ klasse ViewFunctionTest(unittest.TestCase):
         view.ok()
 
     def test_bad_file(self):
-        # Mock showerror will be used; view_file will return Nichts.
+        # Mock showerror will be used; view_file will gib Nichts.
         view = tv.view_file(root, 'Title', 'abc.xyz', 'ascii', modal=Falsch)
         self.assertIsNichts(view)
         self.assertEqual(tv.showerror.title, 'File Load Error')

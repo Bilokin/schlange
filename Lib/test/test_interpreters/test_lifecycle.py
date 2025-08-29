@@ -26,7 +26,7 @@ klasse StartupTests(TestBase):
         mit super().subTest(*args) als ctx:
             self._subtest_count += 1
             try:
-                yield ctx
+                liefere ctx
             finally:
                 wenn self._debugged_in_subtest:
                     wenn self._subtest_count == 1:
@@ -70,7 +70,7 @@ klasse StartupTests(TestBase):
         tmp = tempfile.mkdtemp(prefix='test_interpreters_')
         tmp = os.path.realpath(tmp)
         self.addCleanup(os_helper.rmtree, tmp)
-        return tmp
+        gib tmp
 
     def write_script(self, *path, text):
         filename = os.path.join(*path)
@@ -79,7 +79,7 @@ klasse StartupTests(TestBase):
             os.makedirs(dirname, exist_ok=Wahr)
         mit open(filename, 'w', encoding='utf-8') als outfile:
             outfile.write(dedent(text))
-        return filename
+        gib filename
 
     @support.requires_subprocess()
     def run_python(self, argv, *, cwd=Nichts):
@@ -113,7 +113,7 @@ klasse StartupTests(TestBase):
             self.debug(proc.stderr, header='stderr')
         self.assertEqual(proc.returncode, 0)
         self.assertEqual(proc.stderr, '')
-        return proc.stdout
+        gib proc.stdout
 
     def test_sys_path_0(self):
         # The main interpreter's sys.path[0] should be used by subinterpreters.

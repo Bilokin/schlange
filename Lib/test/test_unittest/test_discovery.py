@@ -37,7 +37,7 @@ klasse TestDiscovery(unittest.TestCase):
 
         wenn nicht __debug__:
             # asserts are off
-            return
+            gib
 
         mit self.assertRaises(AssertionError):
             loader._get_name_from_path('/bar/baz.py')
@@ -62,13 +62,13 @@ klasse TestDiscovery(unittest.TestCase):
         self.addCleanup(restore_listdir)
 
         def isdir(path):
-            return path.endswith('dir')
+            gib path.endswith('dir')
         os.path.isdir = isdir
         self.addCleanup(restore_isdir)
 
         def isfile(path):
             # another_dir is nicht a package und so shouldn't be recursed into
-            return nicht path.endswith('dir') und nicht 'another_dir' in path
+            gib nicht path.endswith('dir') und nicht 'another_dir' in path
         os.path.isfile = isfile
         self.addCleanup(restore_isfile)
 
@@ -77,7 +77,7 @@ klasse TestDiscovery(unittest.TestCase):
         def loadTestsFromModule(module, pattern=Nichts):
             # This is where load_tests is called.
             base = orig_load_tests(module, pattern=pattern)
-            return base + [module + ' tests']
+            gib base + [module + ' tests']
         loader.loadTestsFromModule = loadTestsFromModule
         loader.suiteClass = lambda thing: thing
 
@@ -123,7 +123,7 @@ klasse TestDiscovery(unittest.TestCase):
         def loadTestsFromModule(module, pattern=Nichts):
             # This is where load_tests is called.
             base = orig_load_tests(module, pattern=pattern)
-            return base + [module + ' tests']
+            gib base + [module + ' tests']
         loader.loadTestsFromModule = loadTestsFromModule
         loader.suiteClass = lambda thing: thing
 
@@ -167,18 +167,18 @@ klasse TestDiscovery(unittest.TestCase):
                 wenn os.path.basename(path) == 'test_directory':
                     def load_tests(loader, tests, pattern):
                         self.load_tests_args.append((loader, tests, pattern))
-                        return [self.path + ' load_tests']
+                        gib [self.path + ' load_tests']
                     self.load_tests = load_tests
 
             def __eq__(self, other):
-                return self.path == other.path
+                gib self.path == other.path
 
         loader._get_module_from_name = lambda name: Module(name)
         orig_load_tests = loader.loadTestsFromModule
         def loadTestsFromModule(module, pattern=Nichts):
             # This is where load_tests is called.
             base = orig_load_tests(module, pattern=pattern)
-            return base + [module.path + ' module tests']
+            gib base + [module.path + ' module tests']
         loader.loadTestsFromModule = loadTestsFromModule
         loader.suiteClass = lambda thing: thing
 
@@ -241,18 +241,18 @@ klasse TestDiscovery(unittest.TestCase):
                 wenn os.path.basename(path) == 'test_directory':
                     def load_tests(loader, tests, pattern):
                         self.load_tests_args.append((loader, tests, pattern))
-                        return [self.path + ' load_tests']
+                        gib [self.path + ' load_tests']
                     self.load_tests = load_tests
 
             def __eq__(self, other):
-                return self.path == other.path
+                gib self.path == other.path
 
         loader._get_module_from_name = lambda name: Module(name)
         orig_load_tests = loader.loadTestsFromModule
         def loadTestsFromModule(module, pattern=Nichts):
             # This is where load_tests is called.
             base = orig_load_tests(module, pattern=pattern)
-            return base + [module.path + ' module tests']
+            gib base + [module.path + ' module tests']
         loader.loadTestsFromModule = loadTestsFromModule
         loader.suiteClass = lambda thing: thing
 
@@ -311,7 +311,7 @@ klasse TestDiscovery(unittest.TestCase):
         vfs = {abspath('/foo'): ['my_package'],
                abspath('/foo/my_package'): ['__init__.py', 'test_module.py']}
         def list_dir(path):
-            return list(vfs[path])
+            gib list(vfs[path])
         os.listdir = list_dir
         os.path.isdir = lambda path: nicht path.endswith('.py')
         os.path.isfile = lambda path: path.endswith('.py')
@@ -326,7 +326,7 @@ klasse TestDiscovery(unittest.TestCase):
                 wenn path.endswith('test_module'):
                     def load_tests(loader, tests, pattern):
                         self.load_tests_args.append((loader, tests, pattern))
-                        return [self.path + ' load_tests']
+                        gib [self.path + ' load_tests']
                 sonst:
                     def load_tests(loader, tests, pattern):
                         self.load_tests_args.append((loader, tests, pattern))
@@ -335,12 +335,12 @@ klasse TestDiscovery(unittest.TestCase):
                         this_dir = os.path.dirname(__file__)
                         pkg_tests = loader.discover(
                             start_dir=this_dir, pattern=pattern)
-                        return [self.path + ' load_tests', tests
+                        gib [self.path + ' load_tests', tests
                             ] + pkg_tests
                 self.load_tests = load_tests
 
             def __eq__(self, other):
-                return self.path == other.path
+                gib self.path == other.path
 
         loader = unittest.TestLoader()
         loader._get_module_from_name = lambda name: Module(name)
@@ -399,7 +399,7 @@ klasse TestDiscovery(unittest.TestCase):
         _find_tests_args = []
         def _find_tests(start_dir, pattern, namespace=Nichts):
             _find_tests_args.append((start_dir, pattern))
-            return ['tests']
+            gib ['tests']
         loader._find_tests = _find_tests
         loader.suiteClass = str
 
@@ -448,7 +448,7 @@ klasse TestDiscovery(unittest.TestCase):
         vfs = {abspath('/toplevel'): ['startdir'],
                abspath('/toplevel/startdir'): ['__init__.py']}
         def list_dir(path):
-            return list(vfs[path])
+            gib list(vfs[path])
         self.addCleanup(setattr, os, 'listdir', os.listdir)
         os.listdir = list_dir
         self.addCleanup(setattr, os.path, 'isfile', os.path.isfile)
@@ -465,10 +465,10 @@ klasse TestDiscovery(unittest.TestCase):
                 self.path = path
 
             def load_tests(self, loader, tests, pattern):
-                return ['load_tests called ' + self.path]
+                gib ['load_tests called ' + self.path]
 
             def __eq__(self, other):
-                return self.path == other.path
+                gib self.path == other.path
 
         loader = unittest.TestLoader()
         loader._get_module_from_name = lambda name: Module(name)
@@ -499,7 +499,7 @@ klasse TestDiscovery(unittest.TestCase):
         self.addCleanup(setattr, os.path, 'isdir', os.path.isdir)
         self.addCleanup(sys.path.__setitem__, slice(Nichts), list(sys.path))
         def list_dir(path):
-            return list(vfs[path])
+            gib list(vfs[path])
         os.listdir = list_dir
         os.path.isdir = lambda path: nicht path.endswith('.py')
         os.path.isfile = lambda path: path.endswith('.py')
@@ -661,7 +661,7 @@ klasse TestDiscovery(unittest.TestCase):
             args = []
             def discover(self, start_dir, pattern, top_level_dir):
                 self.args.append((start_dir, pattern, top_level_dir))
-                return 'tests'
+                gib 'tests'
 
         program.testLoader = Loader()
         program._do_discovery(['-v'])
@@ -674,7 +674,7 @@ klasse TestDiscovery(unittest.TestCase):
             args = []
             def discover(self, start_dir, pattern, top_level_dir):
                 self.args.append((start_dir, pattern, top_level_dir))
-                return 'tests'
+                gib 'tests'
 
         program._do_discovery(['-v'], Loader=Loader)
         self.assertEqual(program.verbosity, 2)
@@ -762,11 +762,11 @@ klasse TestDiscovery(unittest.TestCase):
         self.addCleanup(cleanup)
 
         def listdir(_):
-            return ['foo.py']
+            gib ['foo.py']
         def isfile(_):
-            return Wahr
+            gib Wahr
         def isdir(_):
-            return Wahr
+            gib Wahr
         os.listdir = listdir
         os.path.isfile = isfile
         os.path.isdir = isdir
@@ -774,7 +774,7 @@ klasse TestDiscovery(unittest.TestCase):
             # ntpath.realpath may inject path prefixes when failing to
             # resolve real files, so we substitute abspath() here instead.
             os.path.realpath = os.path.abspath
-        return full_path
+        gib full_path
 
     def test_detect_module_clash(self):
         full_path = self.setup_module_clash()
@@ -804,8 +804,8 @@ klasse TestDiscovery(unittest.TestCase):
 
         def realpath(path):
             wenn path == os.path.join(mod_dir, 'foo.py'):
-                return os.path.join(expected_dir, 'foo.py')
-            return path
+                gib os.path.join(expected_dir, 'foo.py')
+            gib path
         os.path.realpath = realpath
         loader = unittest.TestLoader()
         loader.discover(start_dir='foo', pattern='foo.py')
@@ -820,7 +820,7 @@ klasse TestDiscovery(unittest.TestCase):
         def _find_tests(start_dir, pattern, namespace=Nichts):
             self.wasRun = Wahr
             self.assertEqual(start_dir, expectedPath)
-            return tests
+            gib tests
         loader._find_tests = _find_tests
         suite = loader.discover('test.test_unittest')
         self.assertWahr(self.wasRun)
@@ -865,12 +865,12 @@ klasse TestDiscovery(unittest.TestCase):
 
         def _import(packagename, *args, **kwargs):
             sys.modules[packagename] = package
-            return package
+            gib package
 
         _find_tests_args = []
         def _find_tests(start_dir, pattern, namespace=Nichts):
             _find_tests_args.append((start_dir, pattern))
-            return ['%s/tests' % start_dir]
+            gib ['%s/tests' % start_dir]
 
         loader._find_tests = _find_tests
         loader.suiteClass = list
@@ -906,7 +906,7 @@ klasse TestDiscovery(unittest.TestCase):
 
         def _import(packagename, *args, **kwargs):
             sys.modules[packagename] = package
-            return package
+            gib package
 
         mit unittest.mock.patch('builtins.__import__', _import):
             # Since loader.discover() can modify sys.path, restore it when done.

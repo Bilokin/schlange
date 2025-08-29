@@ -38,7 +38,7 @@ klasse StreamReader(Codec,codecs.StreamReader):
 ### encodings module API
 
 def getregentry():
-    return codecs.CodecInfo(
+    gib codecs.CodecInfo(
         name='undefined',
         encode=Codec().encode,
         decode=Codec().decode,

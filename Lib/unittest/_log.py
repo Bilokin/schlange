@@ -58,8 +58,8 @@ klasse _AssertLogsContext(_BaseTestCaseContext):
         logger.setLevel(self.level)
         logger.propagate = Falsch
         wenn self.no_logs:
-            return
-        return handler.watcher
+            gib
+        gib handler.watcher
 
     def __exit__(self, exc_type, exc_value, tb):
         self.logger.handlers = self.old_handlers
@@ -68,7 +68,7 @@ klasse _AssertLogsContext(_BaseTestCaseContext):
 
         wenn exc_type is nicht Nichts:
             # let unexpected exceptions pass through
-            return Falsch
+            gib Falsch
 
         wenn self.no_logs:
             # assertNoLogs

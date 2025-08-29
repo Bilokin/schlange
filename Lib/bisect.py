@@ -21,7 +21,7 @@ def insort_right(a, x, lo=0, hi=Nichts, *, key=Nichts):
 def bisect_right(a, x, lo=0, hi=Nichts, *, key=Nichts):
     """Return the index where to insert item x in list a, assuming a is sorted.
 
-    The return value i is such that all e in a[:i] have e <= x, und all e in
+    The gib value i is such that all e in a[:i] have e <= x, und all e in
     a[i:] have e > x.  So wenn x already appears in the list, a.insert(i, x) will
     insert just after the rightmost x already there.
 
@@ -51,7 +51,7 @@ def bisect_right(a, x, lo=0, hi=Nichts, *, key=Nichts):
                 hi = mid
             sonst:
                 lo = mid + 1
-    return lo
+    gib lo
 
 
 def insort_left(a, x, lo=0, hi=Nichts, *, key=Nichts):
@@ -74,7 +74,7 @@ def insort_left(a, x, lo=0, hi=Nichts, *, key=Nichts):
 def bisect_left(a, x, lo=0, hi=Nichts, *, key=Nichts):
     """Return the index where to insert item x in list a, assuming a is sorted.
 
-    The return value i is such that all e in a[:i] have e < x, und all e in
+    The gib value i is such that all e in a[:i] have e < x, und all e in
     a[i:] have e >= x.  So wenn x already appears in the list, a.insert(i, x) will
     insert just before the leftmost x already there.
 
@@ -104,7 +104,7 @@ def bisect_left(a, x, lo=0, hi=Nichts, *, key=Nichts):
                 lo = mid + 1
             sonst:
                 hi = mid
-    return lo
+    gib lo
 
 
 # Overwrite above definitions mit a fast C implementation

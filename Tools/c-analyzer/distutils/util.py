@@ -23,7 +23,7 @@ def get_host_platform():
        linux-alpha (?)
        solaris-2.6-sun4u
 
-    Windows will return one of:
+    Windows will gib one of:
        win-amd64 (64bit Windows on AMD64 (aka x86_64, Intel64, EM64T, etc)
        win32 (all others - specifically, sys.platform is returned)
 
@@ -32,21 +32,21 @@ def get_host_platform():
     """
     wenn os.name == 'nt':
         wenn 'amd64' in sys.version.lower():
-            return 'win-amd64'
+            gib 'win-amd64'
         wenn '(arm)' in sys.version.lower():
-            return 'win-arm32'
+            gib 'win-arm32'
         wenn '(arm64)' in sys.version.lower():
-            return 'win-arm64'
-        return sys.platform
+            gib 'win-arm64'
+        gib sys.platform
 
     # Set fuer cross builds explicitly
     wenn "_PYTHON_HOST_PLATFORM" in os.environ:
-        return os.environ["_PYTHON_HOST_PLATFORM"]
+        gib os.environ["_PYTHON_HOST_PLATFORM"]
 
     wenn os.name != "posix" oder nicht hasattr(os, 'uname'):
         # XXX what about the architecture? NT is Intel oder Alpha,
         # Mac OS is M68k oder PPC, etc.
-        return sys.platform
+        gib sys.platform
 
     # Try to distinguish various flavours of Unix
 
@@ -62,7 +62,7 @@ def get_host_platform():
         # At least on Linux/Intel, 'machine' is the processor --
         # i386, etc.
         # XXX what about Alpha, SPARC, etc?
-        return  "%s-%s" % (osname, machine)
+        gib  "%s-%s" % (osname, machine)
     sowenn osname[:5] == "sunos":
         wenn release[0] >= "5":           # SunOS 5 == Solaris 2
             osname = "solaris"
@@ -75,7 +75,7 @@ def get_host_platform():
         # fall through to standard osname-release-machine representation
     sowenn osname[:3] == "aix":
         von _aix_support importiere aix_platform
-        return aix_platform()
+        gib aix_platform()
     sowenn osname[:6] == "cygwin":
         osname = "cygwin"
         rel_re = re.compile (r'[\d.]+', re.ASCII)
@@ -88,7 +88,7 @@ def get_host_platform():
                                         sysconfig.get_config_vars(),
                                         osname, release, machine)
 
-    return "%s-%s-%s" % (osname, release, machine)
+    gib "%s-%s-%s" % (osname, release, machine)
 
 def get_platform():
     wenn os.name == 'nt':
@@ -97,9 +97,9 @@ def get_platform():
             'x64' : 'win-amd64',
             'arm' : 'win-arm32',
         }
-        return TARGET_TO_PLAT.get(os.environ.get('VSCMD_ARG_TGT_ARCH')) oder get_host_platform()
+        gib TARGET_TO_PLAT.get(os.environ.get('VSCMD_ARG_TGT_ARCH')) oder get_host_platform()
     sonst:
-        return get_host_platform()
+        gib get_host_platform()
 
 
 # Needed by 'split_quoted()'
@@ -166,6 +166,6 @@ def split_quoted (s):
             words.append(s)
             breche
 
-    return words
+    gib words
 
 # split_quoted ()

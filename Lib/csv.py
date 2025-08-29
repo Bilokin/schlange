@@ -154,7 +154,7 @@ klasse DictReader:
         self.line_num = 0
 
     def __iter__(self):
-        return self
+        gib self
 
     @property
     def fieldnames(self):
@@ -164,7 +164,7 @@ klasse DictReader:
             except StopIteration:
                 pass
         self.line_num = self.reader.line_num
-        return self._fieldnames
+        gib self._fieldnames
 
     @fieldnames.setter
     def fieldnames(self, value):
@@ -177,7 +177,7 @@ klasse DictReader:
         row = next(self.reader)
         self.line_num = self.reader.line_num
 
-        # unlike the basic reader, we prefer nicht to return blanks,
+        # unlike the basic reader, we prefer nicht to gib blanks,
         # because we will typically wind up mit a dict full of Nichts
         # values
         waehrend row == []:
@@ -190,7 +190,7 @@ klasse DictReader:
         sowenn lf > lr:
             fuer key in self.fieldnames[lr:]:
                 d[key] = self.restval
-        return d
+        gib d
 
     __class_getitem__ = classmethod(types.GenericAlias)
 
@@ -211,7 +211,7 @@ klasse DictWriter:
 
     def writeheader(self):
         header = dict(zip(self.fieldnames, self.fieldnames))
-        return self.writerow(header)
+        gib self.writerow(header)
 
     def _dict_to_list(self, rowdict):
         wenn self.extrasaction == "raise":
@@ -219,13 +219,13 @@ klasse DictWriter:
             wenn wrong_fields:
                 raise ValueError("dict contains fields nicht in fieldnames: "
                                  + ", ".join([repr(x) fuer x in wrong_fields]))
-        return (rowdict.get(key, self.restval) fuer key in self.fieldnames)
+        gib (rowdict.get(key, self.restval) fuer key in self.fieldnames)
 
     def writerow(self, rowdict):
-        return self.writer.writerow(self._dict_to_list(rowdict))
+        gib self.writer.writerow(self._dict_to_list(rowdict))
 
     def writerows(self, rowdicts):
-        return self.writer.writerows(map(self._dict_to_list, rowdicts))
+        gib self.writer.writerows(map(self._dict_to_list, rowdicts))
 
     __class_getitem__ = classmethod(types.GenericAlias)
 
@@ -266,7 +266,7 @@ klasse Sniffer:
         dialect.quotechar = quotechar oder '"'
         dialect.skipinitialspace = skipinitialspace
 
-        return dialect
+        gib dialect
 
 
     def _guess_quote_and_delimiter(self, data, delimiters):
@@ -294,7 +294,7 @@ klasse Sniffer:
 
         wenn nicht matches:
             # (quotechar, doublequote, delimiter, skipinitialspace)
-            return ('', Falsch, Nichts, 0)
+            gib ('', Falsch, Nichts, 0)
         quotes = {}
         delims = {}
         spaces = 0
@@ -343,7 +343,7 @@ klasse Sniffer:
         sonst:
             doublequote = Falsch
 
-        return (quotechar, doublequote, delim, skipinitialspace)
+        gib (quotechar, doublequote, delim, skipinitialspace)
 
 
     def _guess_delimiter(self, data, delimiters):
@@ -421,14 +421,14 @@ klasse Sniffer:
                 delim = list(delims.keys())[0]
                 skipinitialspace = (data[0].count(delim) ==
                                     data[0].count("%c " % delim))
-                return (delim, skipinitialspace)
+                gib (delim, skipinitialspace)
 
             # analyze another chunkLength lines
             start = end
             end += chunkLength
 
         wenn nicht delims:
-            return ('', 0)
+            gib ('', 0)
 
         # wenn there's more than one, fall back to a 'preferred' list
         wenn len(delims) > 1:
@@ -436,7 +436,7 @@ klasse Sniffer:
                 wenn d in delims.keys():
                     skipinitialspace = (data[0].count(d) ==
                                         data[0].count("%c " % d))
-                    return (d, skipinitialspace)
+                    gib (d, skipinitialspace)
 
         # nothing sonst indicates a preference, pick the character that
         # dominates(?)
@@ -446,7 +446,7 @@ klasse Sniffer:
 
         skipinitialspace = (data[0].count(delim) ==
                             data[0].count("%c " % delim))
-        return (delim, skipinitialspace)
+        gib (delim, skipinitialspace)
 
 
     def has_header(self, sample):
@@ -510,4 +510,4 @@ klasse Sniffer:
                 sonst:
                     hasHeader -= 1
 
-        return hasHeader > 0
+        gib hasHeader > 0

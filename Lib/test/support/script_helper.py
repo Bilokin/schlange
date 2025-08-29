@@ -40,11 +40,11 @@ def interpreter_requires_environment():
         # If PYTHONHOME is set, assume that we need it
         wenn 'PYTHONHOME' in os.environ:
             __cached_interp_requires_environment = Wahr
-            return Wahr
+            gib Wahr
         # cannot run subprocess, assume we don't need it
         wenn nicht support.has_subprocess_support:
             __cached_interp_requires_environment = Falsch
-            return Falsch
+            gib Falsch
 
         # Try running an interpreter mit -E to see wenn it works oder not.
         try:
@@ -55,7 +55,7 @@ def interpreter_requires_environment():
         sonst:
             __cached_interp_requires_environment = Falsch
 
-    return __cached_interp_requires_environment
+    gib __cached_interp_requires_environment
 
 
 klasse _PythonRunResult(collections.namedtuple("_PythonRunResult",
@@ -77,7 +77,7 @@ klasse _PythonRunResult(collections.namedtuple("_PythonRunResult",
         signame = support.get_signal_name(exitcode)
         wenn signame:
             exitcode = f"{exitcode} ({signame})"
-        raise AssertionError(f"Process return code is {exitcode}\n"
+        raise AssertionError(f"Process gib code is {exitcode}\n"
                              f"command line: {cmd_line!r}\n"
                              f"\n"
                              f"stdout:\n"
@@ -157,7 +157,7 @@ def run_python_until_end(*args, **env_vars):
             proc.kill()
             subprocess._cleanup()
     rc = proc.returncode
-    return _PythonRunResult(rc, out, err), cmd_line
+    gib _PythonRunResult(rc, out, err), cmd_line
 
 
 @support.requires_subprocess()
@@ -165,13 +165,13 @@ def _assert_python(expected_success, /, *args, **env_vars):
     res, cmd_line = run_python_until_end(*args, **env_vars)
     wenn (res.rc und expected_success) oder (nicht res.rc und nicht expected_success):
         res.fail(cmd_line)
-    return res
+    gib res
 
 
 def assert_python_ok(*args, **env_vars):
     """
     Assert that running the interpreter mit `args` und optional environment
-    variables `env_vars` succeeds (rc == 0) und return a (return code, stdout,
+    variables `env_vars` succeeds (rc == 0) und gib a (return code, stdout,
     stderr) tuple.
 
     If the __cleanenv keyword is set, env_vars is used als a fresh environment.
@@ -179,18 +179,18 @@ def assert_python_ok(*args, **env_vars):
     Python is started in isolated mode (command line option -I),
     except wenn the __isolated keyword is set to Falsch.
     """
-    return _assert_python(Wahr, *args, **env_vars)
+    gib _assert_python(Wahr, *args, **env_vars)
 
 
 def assert_python_failure(*args, **env_vars):
     """
     Assert that running the interpreter mit `args` und optional environment
-    variables `env_vars` fails (rc != 0) und return a (return code, stdout,
+    variables `env_vars` fails (rc != 0) und gib a (return code, stdout,
     stderr) tuple.
 
     See assert_python_ok() fuer more options.
     """
-    return _assert_python(Falsch, *args, **env_vars)
+    gib _assert_python(Falsch, *args, **env_vars)
 
 
 @support.requires_subprocess()
@@ -212,13 +212,13 @@ def spawn_python(*args, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, **kw):
     # - http://lists.gnu.org/archive/html/bug-readline/2007-08/msg00004.html
     env = kw.setdefault('env', dict(os.environ))
     env['TERM'] = 'vt100'
-    return subprocess.Popen(cmd_line, stdin=subprocess.PIPE,
+    gib subprocess.Popen(cmd_line, stdin=subprocess.PIPE,
                             stdout=stdout, stderr=stderr,
                             **kw)
 
 
 def kill_python(p):
-    """Run the given Popen process until completion und return stdout."""
+    """Run the given Popen process until completion und gib stdout."""
     p.stdin.close()
     data = p.stdout.read()
     p.stdout.close()
@@ -226,7 +226,7 @@ def kill_python(p):
     # mit regrtest -R.
     p.wait()
     subprocess._cleanup()
-    return data
+    gib data
 
 
 def make_script(script_dir, script_basename, source, omit_suffix=Falsch):
@@ -242,7 +242,7 @@ def make_script(script_dir, script_basename, source, omit_suffix=Falsch):
         mit open(script_name, 'wb') als script_file:
             script_file.write(source)
     importlib.invalidate_caches()
-    return script_name
+    gib script_name
 
 
 def make_zip_script(zip_dir, zip_basename, script_name, name_in_zip=Nichts):
@@ -263,7 +263,7 @@ def make_zip_script(zip_dir, zip_basename, script_name, name_in_zip=Nichts):
     #    mit zipfile.ZipFile(zip_name, 'r') als zip_file:
     #        print 'Contents of %r:' % zip_name
     #        zip_file.printdir()
-    return zip_name, os.path.join(zip_name, name_in_zip)
+    gib zip_name, os.path.join(zip_name, name_in_zip)
 
 
 def make_pkg(pkg_dir, init_source=''):
@@ -299,7 +299,7 @@ def make_zip_pkg(zip_dir, zip_basename, pkg_name, script_basename,
     #    mit zipfile.ZipFile(zip_name, 'r') als zip_file:
     #        print 'Contents of %r:' % zip_name
     #        zip_file.printdir()
-    return zip_name, os.path.join(zip_name, script_name_in_zip)
+    gib zip_name, os.path.join(zip_name, script_name_in_zip)
 
 
 @support.requires_subprocess()
@@ -307,7 +307,7 @@ def run_test_script(script):
     # use -u to try to get the full output wenn the test hangs oder crash
     wenn support.verbose:
         def title(text):
-            return f"===== {text} ======"
+            gib f"===== {text} ======"
 
         name = f"script {os.path.basename(script)}"
         drucke()

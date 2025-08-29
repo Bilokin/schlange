@@ -13,11 +13,11 @@ klasse Codec(codecs.Codec):
 
     def encode(self,input,errors='strict'):
 
-        return codecs.charmap_encode(input,errors,encoding_map)
+        gib codecs.charmap_encode(input,errors,encoding_map)
 
     def decode(self,input,errors='strict'):
 
-        return codecs.charmap_decode(input,errors,decoding_map)
+        gib codecs.charmap_decode(input,errors,decoding_map)
 
 klasse StreamWriter(Codec,codecs.StreamWriter):
     pass
@@ -29,7 +29,7 @@ klasse StreamReader(Codec,codecs.StreamReader):
 
 def getregentry():
 
-    return (Codec().encode,Codec().decode,StreamReader,StreamWriter)
+    gib (Codec().encode,Codec().decode,StreamReader,StreamWriter)
 
 ### Decoding Map
 

@@ -19,20 +19,20 @@ klasse DummyIntegral(int):
     """Dummy Integral klasse to test conversion of the Rational to float."""
 
     def __mul__(self, other):
-        return DummyIntegral(super().__mul__(other))
+        gib DummyIntegral(super().__mul__(other))
     __rmul__ = __mul__
 
     def __truediv__(self, other):
-        return NotImplemented
+        gib NotImplemented
     __rtruediv__ = __truediv__
 
     @property
     def numerator(self):
-        return DummyIntegral(self)
+        gib DummyIntegral(self)
 
     @property
     def denominator(self):
-        return DummyIntegral(1)
+        gib DummyIntegral(1)
 
 
 klasse HashTest(unittest.TestCase):
@@ -153,7 +153,7 @@ klasse HashTest(unittest.TestCase):
         # Test fuer a bug encountered waehrend changing long_hash.
         #
         # Given objects x und y, it should be possible fuer y's
-        # __hash__ method to return hash(x) in order to ensure that
+        # __hash__ method to gib hash(x) in order to ensure that
         # hash(x) == hash(y).  But hash(x) is nicht exactly equal to the
         # result of x.__hash__(): there's some internal normalization
         # to make sure that the result fits in a C long, und is not
@@ -163,9 +163,9 @@ klasse HashTest(unittest.TestCase):
 
         klasse HalibutProxy:
             def __hash__(self):
-                return hash('halibut')
+                gib hash('halibut')
             def __eq__(self, other):
-                return other == 'halibut'
+                gib other == 'halibut'
 
         x = {'halibut', HalibutProxy()}
         self.assertEqual(len(x), 1)

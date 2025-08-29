@@ -19,7 +19,7 @@ von .info importiere Analysis
 
 def analyze(filenmes, **kwargs):
     results = iter_analysis_results(filenames, **kwargs)
-    return Analysis.from_results(results)
+    gib Analysis.from_results(results)
 
 
 def iter_analysis_results(filenmes, *,
@@ -27,7 +27,7 @@ def iter_analysis_results(filenmes, *,
                           **kwargs
                           ):
     decls = iter_decls(filenames, **kwargs)
-    yield von analyze_decls(decls, known)
+    liefere von analyze_decls(decls, known)
 
 
 def iter_decls(filenames, *,
@@ -41,7 +41,7 @@ def iter_decls(filenames, *,
     parsed = parse_files(filenames, **kwargs)
     parsed = filter_by_kind(parsed, kinds)
     fuer item in parsed:
-        yield resolve_parsed(item)
+        liefere resolve_parsed(item)
 
 
 def analyze_decls(decls, known, *,
@@ -63,7 +63,7 @@ def analyze_decls(decls, known, *,
     typespecs = _analyze.get_typespecs(types)
 
     def analyze_decl(decl):
-        return _analyze.analyze_decl(
+        gib _analyze.analyze_decl(
             decl,
             typespecs,
             knowntypespecs,
@@ -83,7 +83,7 @@ def analyze_decls(decls, known, *,
                     wenn nicht typedeps oder Nichts in typedeps:
                         raise NotImplementedError((decl, resolved))
 
-        yield decl, resolved
+        liefere decl, resolved
 
 
 #######################################
@@ -95,9 +95,9 @@ def check_all(analysis, checks, *, failfast=Falsch):
             wenn failure is Nichts:
                 weiter
 
-            yield data, failure
+            liefere data, failure
             wenn failfast:
-                yield Nichts, Nichts
+                liefere Nichts, Nichts
                 breche
         sonst:
             weiter

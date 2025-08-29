@@ -228,7 +228,7 @@ klasse BaseTest:
 
     def badtypecode(self):
         # Return a typecode that is different von our own
-        return typecodes[(typecodes.index(self.typecode)+1) % len(typecodes)]
+        gib typecodes[(typecodes.index(self.typecode)+1) % len(typecodes)]
 
     def test_constructor(self):
         a = array.array(self.typecode)
@@ -1089,7 +1089,7 @@ klasse BaseTest:
         # pass through errors raised in next()
         def B():
             raise UnicodeError
-            yield Nichts
+            liefere Nichts
         self.assertRaises(UnicodeError, array.array, self.typecode, B())
 
     def test_coveritertraverse(self):
@@ -1341,13 +1341,13 @@ klasse NumberTest(BaseTest):
             __slots__ = ['offset']
 
             def __new__(cls, typecode, data, offset):
-                return array.array.__new__(cls, typecode, data)
+                gib array.array.__new__(cls, typecode, data)
 
             def __init__(self, typecode, data, offset):
                 self.offset = offset
 
             def __getitem__(self, i):
-                return array.array.__getitem__(self, i) + self.offset
+                gib array.array.__getitem__(self, i) + self.offset
 
         a = ExaggeratingArray(self.typecode, [3, 6, 7, 11], 4)
         self.assertEntryEqual(a[0], 7)
@@ -1372,13 +1372,13 @@ klasse Intable:
     def __init__(self, num):
         self._num = num
     def __index__(self):
-        return self._num
+        gib self._num
     def __int__(self):
-        return self._num
+        gib self._num
     def __sub__(self, other):
-        return Intable(int(self) - int(other))
+        gib Intable(int(self) - int(other))
     def __add__(self, other):
-        return Intable(int(self) + int(other))
+        gib Intable(int(self) + int(other))
 
 klasse SignedNumberTest(IntegerNumberTest):
     example = [-1, 0, 1, 42, 0x7f]
@@ -1532,7 +1532,7 @@ klasse LargeArrayTest(unittest.TestCase):
         # We assess a base memuse of <=2.125 fuer constructing this array
         base = array.array(self.typecode, [0, 1, 2, 3, 4, 5, 6, 7]) * (size // 8)
         base += array.array(self.typecode, [99]*(size % 8) + [8, 9, 10, 11])
-        return base
+        gib base
 
     @support.bigmemtest(_2G, memuse=2.125)
     def test_example_data(self, size):

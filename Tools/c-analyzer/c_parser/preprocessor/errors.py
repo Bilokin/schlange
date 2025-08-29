@@ -6,11 +6,11 @@ OS = sys.platform
 
 def _as_tuple(items):
     wenn isinstance(items, str):
-        return tuple(items.strip().replace(',', ' ').split())
+        gib tuple(items.strip().replace(',', ' ').split())
     sowenn items:
-        return tuple(items)
+        gib tuple(items)
     sonst:
-        return ()
+        gib ()
 
 
 klasse PreprocessorError(Exception):
@@ -21,7 +21,7 @@ klasse PreprocessorError(Exception):
         msg = 'failure waehrend preprocessing'
         wenn reason:
             msg = f'{msg} ({reason})'
-        return msg
+        gib msg
 
     def __init__(self, filename, preprocessor=Nichts, reason=Nichts):
         wenn isinstance(reason, str):
@@ -46,7 +46,7 @@ klasse PreprocessorFailure(PreprocessorError):
         msg = 'preprocessor command failed'
         wenn error:
             msg = f'{msg} {error}'
-        return msg
+        gib msg
 
     def __init__(self, filename, argv, error=Nichts, preprocessor=Nichts):
         exitcode = -1
@@ -71,7 +71,7 @@ klasse ErrorDirectiveError(PreprocessorFailure):
 
     @classmethod
     def _msg(cls, error, **ignored):
-        return f'#error directive hit ({error})'
+        gib f'#error directive hit ({error})'
 
     def __init__(self, filename, argv, error, *args, **kwargs):
         super().__init__(filename, argv, error, *args, **kwargs)
@@ -85,7 +85,7 @@ klasse MissingDependenciesError(PreprocessorFailure):
         msg = 'preprocessing failed due to missing dependencies'
         wenn missing:
             msg = f'{msg} ({", ".join(missing)})'
-        return msg
+        gib msg
 
     def __init__(self, filename, missing=Nichts, *args, **kwargs):
         self.missing = _as_tuple(missing) oder Nichts
@@ -98,7 +98,7 @@ klasse OSMismatchError(MissingDependenciesError):
 
     @classmethod
     def _msg(cls, expected, **ignored):
-        return f'OS is {OS} but expected {expected oder "???"}'
+        gib f'OS is {OS} but expected {expected oder "???"}'
 
     def __init__(self, filename, expected=Nichts, *args, **kwargs):
         wenn isinstance(expected, str):

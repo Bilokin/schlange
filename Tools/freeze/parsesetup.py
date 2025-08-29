@@ -35,7 +35,7 @@ def getmakevars(filename):
             variables[name] = value
     finally:
         fp.close()
-    return variables
+    gib variables
 
 
 # Parse a Python Setup(.in) file.
@@ -75,7 +75,7 @@ def getsetupinfo(filename):
                     modules[words[0]] = words[1:]
     finally:
         fp.close()
-    return modules, variables
+    gib modules, variables
 
 
 # Test the above functions.

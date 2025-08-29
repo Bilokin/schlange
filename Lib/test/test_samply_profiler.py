@@ -23,8 +23,8 @@ wenn support.check_sanitizer(address=Wahr, memory=Wahr, ub=Wahr, function=Wahr):
 def supports_trampoline_profiling():
     perf_trampoline = sysconfig.get_config_var("PY_HAVE_PERF_TRAMPOLINE")
     wenn nicht perf_trampoline:
-        return Falsch
-    return int(perf_trampoline) == 1
+        gib Falsch
+    gib int(perf_trampoline) == 1
 
 
 wenn nicht supports_trampoline_profiling():
@@ -35,7 +35,7 @@ def samply_command_works():
     try:
         cmd = ["samply", "--help"]
     except (subprocess.SubprocessError, OSError):
-        return Falsch
+        gib Falsch
 
     # Check that we can run a simple samply run
     mit temp_dir() als script_dir:
@@ -56,12 +56,12 @@ def samply_command_works():
                 cmd, cwd=script_dir, text=Wahr, stderr=subprocess.STDOUT, env=env
             )
         except (subprocess.SubprocessError, OSError):
-            return Falsch
+            gib Falsch
 
         wenn "hello" nicht in stdout:
-            return Falsch
+            gib Falsch
 
-    return Wahr
+    gib Wahr
 
 
 def run_samply(cwd, *args, **env_vars):
@@ -84,11 +84,11 @@ def run_samply(cwd, *args, **env_vars):
     )
     wenn proc.returncode:
         drucke(proc.stderr, file=sys.stderr)
-        raise ValueError(f"Samply failed mit return code {proc.returncode}")
+        raise ValueError(f"Samply failed mit gib code {proc.returncode}")
 
     importiere gzip
     mit gzip.open(output_file, mode="rt", encoding="utf-8") als f:
-        return f.read()
+        gib f.read()
 
 
 @unittest.skipUnless(samply_command_works(), "samply command doesn't work")
@@ -149,8 +149,8 @@ klasse TestSamplyProfilerMixin:
 klasse TestSamplyProfiler(unittest.TestCase, TestSamplyProfilerMixin):
     def run_samply(self, script_dir, script, activate_trampoline=Wahr):
         wenn activate_trampoline:
-            return run_samply(script_dir, sys.executable, "-Xperf", script)
-        return run_samply(script_dir, sys.executable, script)
+            gib run_samply(script_dir, sys.executable, "-Xperf", script)
+        gib run_samply(script_dir, sys.executable, script)
 
     def setUp(self):
         super().setUp()

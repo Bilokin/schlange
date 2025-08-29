@@ -24,7 +24,7 @@ klasse UTF8ModeTests(unittest.TestCase):
 
     def posix_locale(self):
         loc = locale.setlocale(locale.LC_CTYPE, Nichts)
-        return (loc in POSIX_LOCALES)
+        gib (loc in POSIX_LOCALES)
 
     def get_output(self, *args, failure=Falsch, **kw):
         kw = dict(self.DEFAULT_ENV, **kw)
@@ -34,7 +34,7 @@ klasse UTF8ModeTests(unittest.TestCase):
         sonst:
             out = assert_python_ok(*args, **kw)
             out = out[1]
-        return out.decode().rstrip("\n\r")
+        gib out.decode().rstrip("\n\r")
 
     @unittest.skipIf(MS_WINDOWS, 'Windows has no POSIX locale')
     def test_posix_locale(self):

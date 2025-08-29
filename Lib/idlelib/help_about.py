@@ -24,7 +24,7 @@ klasse AboutDialog(Toplevel):
 
     """
     def __init__(self, parent, title=Nichts, *, _htest=Falsch, _utest=Falsch):
-        """Create popup, do nicht return until tk widget destroyed.
+        """Create popup, do nicht gib until tk widget destroyed.
 
         parent - parent of this dialog
         title - string which is title of popup dialog

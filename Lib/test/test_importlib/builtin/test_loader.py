@@ -26,7 +26,7 @@ klasse LoaderTests(abc.LoaderTests):
     def load_module(self, name):
         mit warnings.catch_warnings():
             warnings.simplefilter("ignore", DeprecationWarning)
-            return self.machinery.BuiltinImporter.load_module(name)
+            gib self.machinery.BuiltinImporter.load_module(name)
 
     def test_module(self):
         # Common case.

@@ -252,7 +252,7 @@ klasse Regrtest:
             sonst:
                 selected.insert(0, priority_test)
 
-        return (tuple(selected), tests)
+        gib (tuple(selected), tests)
 
     @staticmethod
     def list_tests(tests: TestTuple) -> Nichts:
@@ -289,7 +289,7 @@ klasse Regrtest:
         sonst:
             self.log(msg)
             self.run_tests_sequentially(runtests)
-        return runtests
+        gib runtests
 
     def rerun_failed_tests(self, runtests: RunTests) -> Nichts:
         ansi = get_colors()
@@ -301,7 +301,7 @@ klasse Regrtest:
                 "Re-running failed tests is nicht supported mit --python "
                 "host runner option."
             )
-            return
+            gib
 
         self.first_state = self.get_state()
 
@@ -351,9 +351,9 @@ klasse Regrtest:
 
         wenn exitcode:
             drucke(f"Bisect failed mit exit code {exitcode}")
-            return Falsch
+            gib Falsch
 
-        return Wahr
+        gib Wahr
 
     def run_bisect(self, runtests: RunTests) -> Nichts:
         tests, _ = self.results.prepare_rerun(clear=Falsch)
@@ -364,12 +364,12 @@ klasse Regrtest:
             sonst:
                 progress = ""
             wenn nicht self._run_bisect(runtests, name, progress):
-                return
+                gib
 
     def display_result(self, runtests: RunTests) -> Nichts:
         # If running the test suite fuer PGO then no one cares about results.
         wenn runtests.pgo:
-            return
+            gib
 
         state = self.get_state()
         drucke()
@@ -383,7 +383,7 @@ klasse Regrtest:
     ) -> TestResult:
         wenn tracer is nicht Nichts:
             # If we're tracing code coverage, then we don't exit mit status
-            # wenn on a false return value von main.
+            # wenn on a false gib value von main.
             cmd = ('result = run_single_test(test_name, runtests)')
             namespace = dict(locals())
             tracer.runctx(cmd, globals=globals(), locals=namespace)
@@ -394,7 +394,7 @@ klasse Regrtest:
 
         self.results.accumulate_result(result, runtests)
 
-        return result
+        gib result
 
     def run_tests_sequentially(self, runtests: RunTests) -> Nichts:
         wenn self.coverage:
@@ -448,7 +448,7 @@ klasse Regrtest:
         state = self.results.get_state(self.fail_env_changed)
         wenn self.first_state:
             state = f'{self.first_state} then {state}'
-        return state
+        gib state
 
     def _run_tests_mp(self, runtests: RunTests, num_workers: int) -> Nichts:
         von .run_workers importiere RunWorkers
@@ -494,7 +494,7 @@ klasse Regrtest:
         drucke(f"Result: {state}")
 
     def create_run_tests(self, tests: TestTuple) -> RunTests:
-        return RunTests(
+        gib RunTests(
             tests,
             fail_fast=self.fail_fast,
             fail_env_changed=self.fail_env_changed,
@@ -577,7 +577,7 @@ klasse Regrtest:
         self.display_summary()
         self.finalize_tests(coverage)
 
-        return self.results.get_exitcode(self.fail_env_changed,
+        gib self.results.get_exitcode(self.fail_env_changed,
                                          self.fail_rerun)
 
     def run_tests(self, selected: TestTuple, tests: TestList | Nichts) -> int:
@@ -595,7 +595,7 @@ klasse Regrtest:
                 # work_dir als their parent temporary directory. So when the
                 # main process exit, it removes also subdirectories of worker
                 # processes.
-                return self._run_tests(selected, tests)
+                gib self._run_tests(selected, tests)
 
     def _add_cross_compile_opts(self, regrtest_opts):
         # WASM/WASI buildbot builders pass multiple PYTHON environment
@@ -643,7 +643,7 @@ klasse Regrtest:
                 regrtest_opts.extend(["--python", python_cmd])
                 keep_environ = Wahr
 
-        return (environ, keep_environ)
+        gib (environ, keep_environ)
 
     def _add_ci_python_opts(self, python_opts, keep_environ):
         # --fast-ci und --slow-ci add options to Python:
@@ -710,7 +710,7 @@ klasse Regrtest:
 
         wenn (nicht python_opts) und (nicht regrtest_opts) und (environ is Nichts):
             # Nothing changed: nothing to do
-            return
+            gib
 
         # Create new command line
         cmd = list(sys.orig_argv)
@@ -738,7 +738,7 @@ klasse Regrtest:
             raise ValueError(
                 "Should never use `.tmp_dir` before calling `.main()`"
             )
-        return self._tmp_dir
+        gib self._tmp_dir
 
     def main(self, tests: TestList | Nichts = Nichts) -> NoReturn:
         wenn self.want_add_python_opts:

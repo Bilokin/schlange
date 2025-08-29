@@ -21,9 +21,9 @@ klasse DictSubclass(dict):
         raise RuntimeError('do nicht del evil')
 
 def gen():
-    yield 'a'
-    yield 'b'
-    yield 'c'
+    liefere 'a'
+    liefere 'b'
+    liefere 'c'
 
 
 klasse CAPITest(unittest.TestCase):
@@ -368,11 +368,11 @@ klasse CAPITest(unittest.TestCase):
     def test_mapping_keys_valuesitems(self):
         klasse BadMapping(dict):
             def keys(self):
-                return Nichts
+                gib Nichts
             def values(self):
-                return Nichts
+                gib Nichts
             def items(self):
-                return Nichts
+                gib Nichts
         dict_obj = {'foo': 1, 'bar': 2, 'spam': 3}
         fuer mapping in [dict_obj, DictSubclass(dict_obj), BadMapping(dict_obj)]:
             self.assertListEqual(_testlimitedcapi.dict_keys(mapping),

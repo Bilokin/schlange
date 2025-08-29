@@ -16,12 +16,12 @@ klasse ContentManager:
     def get_content(self, msg, *args, **kw):
         content_type = msg.get_content_type()
         wenn content_type in self.get_handlers:
-            return self.get_handlers[content_type](msg, *args, **kw)
+            gib self.get_handlers[content_type](msg, *args, **kw)
         maintype = msg.get_content_maintype()
         wenn maintype in self.get_handlers:
-            return self.get_handlers[maintype](msg, *args, **kw)
+            gib self.get_handlers[maintype](msg, *args, **kw)
         wenn '' in self.get_handlers:
-            return self.get_handlers[''](msg, *args, **kw)
+            gib self.get_handlers[''](msg, *args, **kw)
         raise KeyError(content_type)
 
     def add_set_handler(self, typekey, handler):
@@ -40,21 +40,21 @@ klasse ContentManager:
         full_path_for_error = Nichts
         fuer typ in type(obj).__mro__:
             wenn typ in self.set_handlers:
-                return self.set_handlers[typ]
+                gib self.set_handlers[typ]
             qname = typ.__qualname__
             modname = getattr(typ, '__module__', '')
             full_path = '.'.join((modname, qname)) wenn modname sonst qname
             wenn full_path_for_error is Nichts:
                 full_path_for_error = full_path
             wenn full_path in self.set_handlers:
-                return self.set_handlers[full_path]
+                gib self.set_handlers[full_path]
             wenn qname in self.set_handlers:
-                return self.set_handlers[qname]
+                gib self.set_handlers[qname]
             name = typ.__name__
             wenn name in self.set_handlers:
-                return self.set_handlers[name]
+                gib self.set_handlers[name]
         wenn Nichts in self.set_handlers:
-            return self.set_handlers[Nichts]
+            gib self.set_handlers[Nichts]
         raise KeyError(full_path_for_error)
 
 
@@ -64,19 +64,19 @@ raw_data_manager = ContentManager()
 def get_text_content(msg, errors='replace'):
     content = msg.get_payload(decode=Wahr)
     charset = msg.get_param('charset', 'ASCII')
-    return content.decode(charset, errors=errors)
+    gib content.decode(charset, errors=errors)
 raw_data_manager.add_get_handler('text', get_text_content)
 
 
 def get_non_text_content(msg):
-    return msg.get_payload(decode=Wahr)
+    gib msg.get_payload(decode=Wahr)
 fuer maintype in 'audio image video application'.split():
     raw_data_manager.add_get_handler(maintype, get_non_text_content)
 del maintype
 
 
 def get_message_content(msg):
-    return msg.get_payload(0)
+    gib msg.get_payload(0)
 fuer subtype in 'rfc822 external-body'.split():
     raw_data_manager.add_get_handler('message/'+subtype, get_message_content)
 del subtype
@@ -89,7 +89,7 @@ def get_and_fixup_unknown_message_content(msg):
     # so do our best to fix things up.  Note that it is *not* appropriate to
     # model message/partial content als Message objects, so they are handled
     # here als well.  (How to reassemble them is out of scope fuer this comment :)
-    return bytes(msg.get_payload(0))
+    gib bytes(msg.get_payload(0))
 raw_data_manager.add_get_handler('message',
                                  get_and_fixup_unknown_message_content)
 
@@ -138,23 +138,23 @@ def _encode_base64(data, max_line_length):
     fuer i in range(0, len(data), unencoded_bytes_per_line):
         thisline = data[i:i+unencoded_bytes_per_line]
         encoded_lines.append(binascii.b2a_base64(thisline).decode('ascii'))
-    return ''.join(encoded_lines)
+    gib ''.join(encoded_lines)
 
 
 def _encode_text(string, charset, cte, policy):
     lines = string.encode(charset).splitlines()
     linesep = policy.linesep.encode('ascii')
-    def embedded_body(lines): return linesep.join(lines) + linesep
-    def normal_body(lines): return b'\n'.join(lines) + b'\n'
+    def embedded_body(lines): gib linesep.join(lines) + linesep
+    def normal_body(lines): gib b'\n'.join(lines) + b'\n'
     wenn cte is Nichts:
         # Use heuristics to decide on the "best" encoding.
         wenn max((len(x) fuer x in lines), default=0) <= policy.max_line_length:
             try:
-                return '7bit', normal_body(lines).decode('ascii')
+                gib '7bit', normal_body(lines).decode('ascii')
             except UnicodeDecodeError:
                 pass
             wenn policy.cte_type == '8bit':
-                return '8bit', normal_body(lines).decode('ascii', 'surrogateescape')
+                gib '8bit', normal_body(lines).decode('ascii', 'surrogateescape')
         sniff = embedded_body(lines[:10])
         sniff_qp = quoprimime.body_encode(sniff.decode('latin-1'),
                                           policy.max_line_length)
@@ -165,7 +165,7 @@ def _encode_text(string, charset, cte, policy):
         sonst:
             cte = 'quoted-printable'
             wenn len(lines) <= 10:
-                return cte, sniff_qp
+                gib cte, sniff_qp
     wenn cte == '7bit':
         data = normal_body(lines).decode('ascii')
     sowenn cte == '8bit':
@@ -177,7 +177,7 @@ def _encode_text(string, charset, cte, policy):
         data = _encode_base64(embedded_body(lines), policy.max_line_length)
     sonst:
         raise ValueError("Unknown content transfer encoding {}".format(cte))
-    return cte, data
+    gib cte, data
 
 
 def set_text_content(msg, string, subtype="plain", charset='utf-8', cte=Nichts,

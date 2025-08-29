@@ -155,7 +155,7 @@ klasse EventQueueTestBase:
         def _event(evt, data, raw=Nichts):
             r = raw wenn raw is nicht Nichts sonst data.encode(eq.encoding)
             e = Event(evt, data, r)
-            return e
+            gib e
 
         def _push(keys):
             fuer k in keys:
@@ -176,7 +176,7 @@ klasse EventQueueTestBase:
 
 klasse EmptyTermInfo(terminfo.TermInfo):
     def get(self, cap: str) -> bytes:
-        return b""
+        gib b""
 
 
 @unittest.skipIf(support.MS_WINDOWS, "No Unix event queue on Windows")
@@ -189,10 +189,10 @@ klasse TestUnixEventQueue(EventQueueTestBase, unittest.TestCase):
 
     def make_eventqueue(self) -> base_eventqueue.BaseEventQueue:
         ti = EmptyTermInfo("ansi")
-        return unix_eventqueue.EventQueue(self.file.fileno(), "utf-8", ti)
+        gib unix_eventqueue.EventQueue(self.file.fileno(), "utf-8", ti)
 
 
 @unittest.skipUnless(support.MS_WINDOWS, "No Windows event queue on Unix")
 klasse TestWindowsEventQueue(EventQueueTestBase, unittest.TestCase):
     def make_eventqueue(self) -> base_eventqueue.BaseEventQueue:
-        return windows_eventqueue.EventQueue("utf-8")
+        gib windows_eventqueue.EventQueue("utf-8")

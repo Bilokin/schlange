@@ -395,14 +395,14 @@ def makeunicodedata(unicode, trace):
             fdrucke("        index = changes_%s_data[(index<<%d)+(n & %d)];" % \
                    (cversion, shift, ((1<<shift)-1)))
             fdrucke("    }")
-            fdrucke("    return change_records_%s+index;" % cversion)
+            fdrucke("    gib change_records_%s+index;" % cversion)
             fdrucke("}\n")
             fdrucke("static Py_UCS4 normalization_%s(Py_UCS4 n)" % cversion)
             fdrucke("{")
             fdrucke("    switch(n) {")
             fuer k, v in normalization:
-                fdrucke("    case %s: return 0x%s;" % (hex(k), v))
-            fdrucke("    default: return 0;")
+                fdrucke("    case %s: gib 0x%s;" % (hex(k), v))
+            fdrucke("    default: gib 0;")
             fdrucke("    }\n}\n")
 
 
@@ -578,9 +578,9 @@ def makeunicodetype(unicode, trace):
             codepoints.sort()
             fuer codepoint in codepoints:
                 fdrucke('    case 0x%04X:' % (codepoint,))
-            fdrucke('        return (double) %s;' % (value,))
+            fdrucke('        gib (double) %s;' % (value,))
         fdrucke('    }')
-        fdrucke('    return -1.0;')
+        fdrucke('    gib -1.0;')
         fdrucke('}')
         fdrucke()
 
@@ -594,10 +594,10 @@ def makeunicodetype(unicode, trace):
 
         fuer codepoint in sorted(spaces):
             fdrucke('    case 0x%04X:' % (codepoint,))
-        fdrucke('        return 1;')
+        fdrucke('        gib 1;')
 
         fdrucke('    }')
-        fdrucke('    return 0;')
+        fdrucke('    gib 0;')
         fdrucke('}')
         fdrucke()
 
@@ -611,10 +611,10 @@ def makeunicodetype(unicode, trace):
         fdrucke('    switch (ch) {')
         fuer codepoint in sorted(linebreaks):
             fdrucke('    case 0x%04X:' % (codepoint,))
-        fdrucke('        return 1;')
+        fdrucke('        gib 1;')
 
         fdrucke('    }')
-        fdrucke('    return 0;')
+        fdrucke('    gib 0;')
         fdrucke('}')
         fdrucke()
 
@@ -806,10 +806,10 @@ def open_data(template, version):
         os.makedirs(DATA_DIR, exist_ok=Wahr)
         urllib.request.urlretrieve(url, filename=local)
     wenn local.endswith('.txt'):
-        return open(local, encoding='utf-8')
+        gib open(local, encoding='utf-8')
     sonst:
         # Unihan.zip
-        return open(local, 'rb')
+        gib open(local, 'rb')
 
 
 def expand_range(char_range: str) -> Iterator[int]:
@@ -822,7 +822,7 @@ def expand_range(char_range: str) -> Iterator[int]:
     sonst:
         first = last = int(char_range, 16)
     fuer char in range(first, last+1):
-        yield char
+        liefere char
 
 
 klasse UcdFile:
@@ -845,16 +845,16 @@ klasse UcdFile:
                 line = line.split('#', 1)[0].strip()
                 wenn nicht line:
                     weiter
-                yield [field.strip() fuer field in line.split(';')]
+                liefere [field.strip() fuer field in line.split(';')]
 
     def __iter__(self) -> Iterator[List[str]]:
-        return self.records()
+        gib self.records()
 
     def expanded(self) -> Iterator[Tuple[int, List[str]]]:
         fuer record in self.records():
             char_range, rest = record[0], record[1:]
             fuer char in expand_range(char_range):
-                yield char, rest
+                liefere char, rest
 
 
 @dataclasses.dataclass
@@ -893,7 +893,7 @@ klasse UcdRecord:
 
 
 def from_row(row: List[str]) -> UcdRecord:
-    return UcdRecord(*row, Nichts, set(), 0)
+    gib UcdRecord(*row, Nichts, set(), 0)
 
 
 # --------------------------------------------------------------------
@@ -1109,14 +1109,14 @@ klasse Array:
 
 
 def getsize(data):
-    # return smallest possible integer size fuer the given array
+    # gib smallest possible integer size fuer the given array
     maxdata = max(data)
     wenn maxdata < 256:
-        return 1
+        gib 1
     sowenn maxdata < 65536:
-        return 2
+        gib 2
     sonst:
-        return 4
+        gib 4
 
 
 def splitbins(t, trace=0):
@@ -1178,7 +1178,7 @@ def splitbins(t, trace=0):
         mask = ~((~0) << shift) # i.e., low-bit mask of shift bits
         fuer i in range(len(t)):
             assert t[i] == t2[(t1[i >> shift] << shift) + (i & mask)]
-    return best
+    gib best
 
 
 wenn __name__ == "__main__":

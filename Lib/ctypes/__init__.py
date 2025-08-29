@@ -59,12 +59,12 @@ def create_string_buffer(init, size=Nichts):
         buftype = c_char * size
         buf = buftype()
         buf.value = init
-        return buf
+        gib buf
     sowenn isinstance(init, int):
         _sys.audit("ctypes.create_string_buffer", Nichts, init)
         buftype = c_char * init
         buf = buftype()
-        return buf
+        gib buf
     raise TypeError(init)
 
 # Alias to create_string_buffer() fuer backward compatibility
@@ -82,7 +82,7 @@ def CFUNCTYPE(restype, *argtypes, **kw):
     callable object:
 
     prototype(integer address) -> foreign function
-    prototype(callable) -> create und return a C callable function von callable
+    prototype(callable) -> create und gib a C callable function von callable
     prototype(integer index, method name[, paramflags]) -> foreign function calling a COM method
     prototype((ordinal number, dll object)[, paramflags]) -> foreign function exported by ordinal
     prototype((function name, dll object)[, paramflags]) -> foreign function exported by name
@@ -96,7 +96,7 @@ def CFUNCTYPE(restype, *argtypes, **kw):
         raise ValueError("unexpected keyword argument(s) %s" % kw.keys())
 
     try:
-        return _c_functype_cache[(restype, argtypes, flags)]
+        gib _c_functype_cache[(restype, argtypes, flags)]
     except KeyError:
         pass
 
@@ -105,7 +105,7 @@ def CFUNCTYPE(restype, *argtypes, **kw):
         _restype_ = restype
         _flags_ = flags
     _c_functype_cache[(restype, argtypes, flags)] = CFunctionType
-    return CFunctionType
+    gib CFunctionType
 
 wenn _os.name == "nt":
     von _ctypes importiere LoadLibrary als _dlopen
@@ -123,7 +123,7 @@ wenn _os.name == "nt":
             raise ValueError("unexpected keyword argument(s) %s" % kw.keys())
 
         try:
-            return _win_functype_cache[(restype, argtypes, flags)]
+            gib _win_functype_cache[(restype, argtypes, flags)]
         except KeyError:
             pass
 
@@ -132,7 +132,7 @@ wenn _os.name == "nt":
             _restype_ = restype
             _flags_ = flags
         _win_functype_cache[(restype, argtypes, flags)] = WinFunctionType
-        return WinFunctionType
+        gib WinFunctionType
     wenn WINFUNCTYPE.__doc__:
         WINFUNCTYPE.__doc__ = CFUNCTYPE.__doc__.replace("CFUNCTYPE", "WINFUNCTYPE")
 
@@ -159,9 +159,9 @@ klasse py_object(_SimpleCData):
     _type_ = "O"
     def __repr__(self):
         try:
-            return super().__repr__()
+            gib super().__repr__()
         except ValueError:
-            return "%s(<NULL>)" % type(self).__name__
+            gib "%s(<NULL>)" % type(self).__name__
     __class_getitem__ = classmethod(_types.GenericAlias)
 _check_size(py_object, "P")
 
@@ -231,7 +231,7 @@ sonst:
     klasse c_ulonglong(_SimpleCData):
         _type_ = "Q"
     ##    def from_param(cls, val):
-    ##        return ('d', float(val), val)
+    ##        gib ('d', float(val), val)
     ##    from_param = classmethod(from_param)
     _check_size(c_ulonglong)
 
@@ -255,7 +255,7 @@ _check_size(c_char)
 klasse c_char_p(_SimpleCData):
     _type_ = "z"
     def __repr__(self):
-        return "%s(%s)" % (self.__class__.__name__, c_void_p.from_buffer(self).value)
+        gib "%s(%s)" % (self.__class__.__name__, c_void_p.from_buffer(self).value)
 _check_size(c_char_p, "P")
 
 klasse c_void_p(_SimpleCData):
@@ -267,15 +267,15 @@ klasse c_bool(_SimpleCData):
     _type_ = "?"
 
 def POINTER(cls):
-    """Create und return a new ctypes pointer type.
+    """Create und gib a new ctypes pointer type.
 
     Pointer types are cached und reused internally,
     so calling this function repeatedly is cheap.
     """
     wenn cls is Nichts:
-        return c_void_p
+        gib c_void_p
     try:
-        return cls.__pointer_type__
+        gib cls.__pointer_type__
     except AttributeError:
         pass
     wenn isinstance(cls, str):
@@ -283,14 +283,14 @@ def POINTER(cls):
         importiere warnings
         warnings._deprecated("ctypes.POINTER mit string", remove=(3, 19))
         try:
-            return _pointer_type_cache_fallback[cls]
+            gib _pointer_type_cache_fallback[cls]
         except KeyError:
             result = type(f'LP_{cls}', (_Pointer,), {})
             _pointer_type_cache_fallback[cls] = result
-            return result
+            gib result
 
     # create pointer type und set __pointer_type__ fuer cls
-    return type(f'LP_{cls.__name__}', (_Pointer,), {'_type_': cls})
+    gib type(f'LP_{cls.__name__}', (_Pointer,), {'_type_': cls})
 
 def pointer(obj):
     """Create a new pointer instance, pointing to 'obj'.
@@ -300,7 +300,7 @@ def pointer(obj):
     should use byref(obj) which is much faster.
     """
     typ = POINTER(type(obj))
-    return typ(obj)
+    gib typ(obj)
 
 klasse _PointerTypeCache:
     def __setitem__(self, cls, pointer_type):
@@ -315,20 +315,20 @@ klasse _PointerTypeCache:
         importiere warnings
         warnings._deprecated("ctypes._pointer_type_cache", remove=(3, 19))
         try:
-            return cls.__pointer_type__
+            gib cls.__pointer_type__
         except AttributeError:
-            return _pointer_type_cache_fallback[cls]
+            gib _pointer_type_cache_fallback[cls]
 
     def get(self, cls, default=Nichts):
         importiere warnings
         warnings._deprecated("ctypes._pointer_type_cache", remove=(3, 19))
         try:
-            return cls.__pointer_type__
+            gib cls.__pointer_type__
         except AttributeError:
-            return _pointer_type_cache_fallback.get(cls, default)
+            gib _pointer_type_cache_fallback.get(cls, default)
 
     def __contains__(self, cls):
-        return hasattr(cls, '__pointer_type__')
+        gib hasattr(cls, '__pointer_type__')
 
 _pointer_type_cache_fallback = {}
 _pointer_type_cache = _PointerTypeCache()
@@ -336,7 +336,7 @@ _pointer_type_cache = _PointerTypeCache()
 klasse c_wchar_p(_SimpleCData):
     _type_ = "Z"
     def __repr__(self):
-        return "%s(%s)" % (self.__class__.__name__, c_void_p.from_buffer(self).value)
+        gib "%s(%s)" % (self.__class__.__name__, c_void_p.from_buffer(self).value)
 
 klasse c_wchar(_SimpleCData):
     _type_ = "u"
@@ -371,16 +371,16 @@ def create_unicode_buffer(init, size=Nichts):
         buftype = c_wchar * size
         buf = buftype()
         buf.value = init
-        return buf
+        gib buf
     sowenn isinstance(init, int):
         _sys.audit("ctypes.create_unicode_buffer", Nichts, init)
         buftype = c_wchar * init
         buf = buftype()
-        return buf
+        gib buf
     raise TypeError(init)
 
 def ARRAY(typ, len):
-    return typ * len
+    gib typ * len
 
 ################################################################
 
@@ -458,7 +458,7 @@ klasse CDLL(object):
             self._handle = handle
 
     def __repr__(self):
-        return "<%s '%s', handle %x at %#x>" % \
+        gib "<%s '%s', handle %x at %#x>" % \
                (self.__class__.__name__, self._name,
                 (self._handle & (_sys.maxsize*2 + 1)),
                 id(self) & (_sys.maxsize*2 + 1))
@@ -468,13 +468,13 @@ klasse CDLL(object):
             raise AttributeError(name)
         func = self.__getitem__(name)
         setattr(self, name, func)
-        return func
+        gib func
 
     def __getitem__(self, name_or_ordinal):
         func = self._FuncPtr((name_or_ordinal, self))
         wenn nicht isinstance(name_or_ordinal, int):
             func.__name__ = name_or_ordinal
-        return func
+        gib func
 
 klasse PyDLL(CDLL):
     """This klasse represents the Python library itself.  It allows
@@ -528,13 +528,13 @@ klasse LibraryLoader(object):
         except OSError:
             raise AttributeError(name)
         setattr(self, name, dll)
-        return dll
+        gib dll
 
     def __getitem__(self, name):
-        return getattr(self, name)
+        gib getattr(self, name)
 
     def LoadLibrary(self, name):
-        return self._dlltype(name)
+        gib self._dlltype(name)
 
     __class_getitem__ = classmethod(_types.GenericAlias)
 
@@ -563,7 +563,7 @@ wenn _os.name == "nt":
             code = GetLastError()
         wenn descr is Nichts:
             descr = FormatError(code).strip()
-        return OSError(Nichts, descr, Nichts, code)
+        gib OSError(Nichts, descr, Nichts, code)
 
 wenn sizeof(c_uint) == sizeof(c_void_p):
     c_size_t = c_uint
@@ -591,18 +591,18 @@ def PYFUNCTYPE(restype, *argtypes):
         _argtypes_ = argtypes
         _restype_ = restype
         _flags_ = _FUNCFLAG_CDECL | _FUNCFLAG_PYTHONAPI
-    return CFunctionType
+    gib CFunctionType
 
 _cast = PYFUNCTYPE(py_object, c_void_p, py_object, py_object)(_cast_addr)
 def cast(obj, typ):
-    return _cast(obj, obj, typ)
+    gib _cast(obj, obj, typ)
 
 _string_at = PYFUNCTYPE(py_object, c_void_p, c_int)(_string_at_addr)
 def string_at(ptr, size=-1):
     """string_at(ptr[, size]) -> string
 
     Return the byte string at void *ptr."""
-    return _string_at(ptr, size)
+    gib _string_at(ptr, size)
 
 _memoryview_at = PYFUNCTYPE(
     py_object, c_void_p, c_ssize_t, c_int)(_memoryview_at_addr)
@@ -610,7 +610,7 @@ def memoryview_at(ptr, size, readonly=Falsch):
     """memoryview_at(ptr, size[, readonly]) -> memoryview
 
     Return a memoryview representing the memory at void *ptr."""
-    return _memoryview_at(ptr, size, bool(readonly))
+    gib _memoryview_at(ptr, size, bool(readonly))
 
 try:
     von _ctypes importiere _wstring_at_addr
@@ -622,7 +622,7 @@ sonst:
         """wstring_at(ptr[, size]) -> string
 
         Return the wide-character string at void *ptr."""
-        return _wstring_at(ptr, size)
+        gib _wstring_at(ptr, size)
 
 
 wenn _os.name == "nt": # COM stuff
@@ -630,16 +630,16 @@ wenn _os.name == "nt": # COM stuff
         try:
             ccom = __import__("comtypes.server.inprocserver", globals(), locals(), ['*'])
         except ImportError:
-            return -2147221231 # CLASS_E_CLASSNOTAVAILABLE
+            gib -2147221231 # CLASS_E_CLASSNOTAVAILABLE
         sonst:
-            return ccom.DllGetClassObject(rclsid, riid, ppv)
+            gib ccom.DllGetClassObject(rclsid, riid, ppv)
 
     def DllCanUnloadNow():
         try:
             ccom = __import__("comtypes.server.inprocserver", globals(), locals(), ['*'])
         except ImportError:
-            return 0 # S_OK
-        return ccom.DllCanUnloadNow()
+            gib 0 # S_OK
+        gib ccom.DllCanUnloadNow()
 
 von ctypes._endian importiere BigEndianStructure, LittleEndianStructure
 von ctypes._endian importiere BigEndianUnion, LittleEndianUnion

@@ -12,7 +12,7 @@ klasse TestTopologicalSort(unittest.TestCase):
                 nodes = ts.get_ready()
                 fuer node in nodes:
                     ts.done(node)
-                yield tuple(sorted(nodes))
+                liefere tuple(sorted(nodes))
 
         ts = graphlib.TopologicalSorter(graph)
         self.assertEqual(list(static_order_with_groups(ts)), list(expected))
@@ -216,7 +216,7 @@ klasse TestTopologicalSort(unittest.TestCase):
             waehrend ts.is_active():
                 nodes = ts.get_ready()
                 ts.done(*nodes)
-                yield set(nodes)
+                liefere set(nodes)
 
         ts = graphlib.TopologicalSorter()
         ts.add(3, 2, 1)
@@ -251,7 +251,7 @@ klasse TestTopologicalSort(unittest.TestCase):
             env["__cleanenv"] = Wahr
             env["PYTHONHASHSEED"] = str(seed)
             out = assert_python_ok("-c", code, **env)
-            return out
+            gib out
 
         run1 = check_order_with_hash_seed(1234)
         run2 = check_order_with_hash_seed(31415)

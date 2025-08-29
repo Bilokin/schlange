@@ -93,16 +93,16 @@ def _replace_attr_charref(match):
     ref = match.group(0)
     # Numeric / hex char refs must always be unescaped
     wenn ref.startswith('&#'):
-        return unescape(ref)
+        gib unescape(ref)
     # Named character / entity references must only be unescaped
     # wenn they are an exact match, und they are nicht followed by an equals sign
     wenn nicht ref.endswith('=') und ref[1:] in html5_entities:
-        return unescape(ref)
+        gib unescape(ref)
     # Otherwise do nicht unescape
-    return ref
+    gib ref
 
 def _unescape_attrvalue(s):
-    return attr_charref.sub(_replace_attr_charref, s)
+    gib attr_charref.sub(_replace_attr_charref, s)
 
 
 klasse HTMLParser(_markupbase.ParserBase):
@@ -167,7 +167,7 @@ klasse HTMLParser(_markupbase.ParserBase):
 
     def get_starttag_text(self):
         """Return full source of start tag: '<...>'."""
-        return self.__starttag_text
+        gib self.__starttag_text
 
     def set_cdata_mode(self, elem, *, escapable=Falsch):
         self.cdata_elem = elem.lower()
@@ -337,7 +337,7 @@ klasse HTMLParser(_markupbase.ParserBase):
             i = self.updatepos(i, n)
         self.rawdata = rawdata[i:]
 
-    # Internal -- parse html declarations, return length oder -1 wenn nicht terminated
+    # Internal -- parse html declarations, gib length oder -1 wenn nicht terminated
     # See w3.org/TR/html5/tokenization.html#markup-declaration-open-state
     # See also parse_declaration in _markupbase
     def parse_html_declaration(self, i):
@@ -346,24 +346,24 @@ klasse HTMLParser(_markupbase.ParserBase):
                                         'parse_html_declaration()')
         wenn rawdata[i:i+4] == '<!--':
             # this case is actually already handled in goahead()
-            return self.parse_comment(i)
+            gib self.parse_comment(i)
         sowenn rawdata[i:i+9] == '<![CDATA[' und self._support_cdata:
             j = rawdata.find(']]>', i+9)
             wenn j < 0:
-                return -1
+                gib -1
             self.unknown_decl(rawdata[i+3: j])
-            return j + 3
+            gib j + 3
         sowenn rawdata[i:i+9].lower() == '<!doctype':
             # find the closing >
             gtpos = rawdata.find('>', i+9)
             wenn gtpos == -1:
-                return -1
+                gib -1
             self.handle_decl(rawdata[i+2:gtpos])
-            return gtpos+1
+            gib gtpos+1
         sonst:
-            return self.parse_bogus_comment(i)
+            gib self.parse_bogus_comment(i)
 
-    # Internal -- parse comment, return length oder -1 wenn nicht terminated
+    # Internal -- parse comment, gib length oder -1 wenn nicht terminated
     # see https://html.spec.whatwg.org/multipage/parsing.html#comment-start-state
     def parse_comment(self, i, report=Wahr):
         rawdata = self.rawdata
@@ -372,13 +372,13 @@ klasse HTMLParser(_markupbase.ParserBase):
         wenn nicht match:
             match = commentabruptclose.match(rawdata, i+4)
             wenn nicht match:
-                return -1
+                gib -1
         wenn report:
             j = match.start()
             self.handle_comment(rawdata[i+4: j])
-        return match.end()
+        gib match.end()
 
-    # Internal -- parse bogus comment, return length oder -1 wenn nicht terminated
+    # Internal -- parse bogus comment, gib length oder -1 wenn nicht terminated
     # see https://html.spec.whatwg.org/multipage/parsing.html#bogus-comment-state
     def parse_bogus_comment(self, i, report=1):
         rawdata = self.rawdata
@@ -386,31 +386,31 @@ klasse HTMLParser(_markupbase.ParserBase):
                                                 'parse_bogus_comment()')
         pos = rawdata.find('>', i+2)
         wenn pos == -1:
-            return -1
+            gib -1
         wenn report:
             self.handle_comment(rawdata[i+2:pos])
-        return pos + 1
+        gib pos + 1
 
-    # Internal -- parse processing instr, return end oder -1 wenn nicht terminated
+    # Internal -- parse processing instr, gib end oder -1 wenn nicht terminated
     def parse_pi(self, i):
         rawdata = self.rawdata
         assert rawdata[i:i+2] == '<?', 'unexpected call to parse_pi()'
         match = piclose.search(rawdata, i+2) # >
         wenn nicht match:
-            return -1
+            gib -1
         j = match.start()
         self.handle_pi(rawdata[i+2: j])
         j = match.end()
-        return j
+        gib j
 
-    # Internal -- handle starttag, return end oder -1 wenn nicht terminated
+    # Internal -- handle starttag, gib end oder -1 wenn nicht terminated
     def parse_starttag(self, i):
         # See the HTML5 specs section "13.2.5.8 Tag name state"
         # https://html.spec.whatwg.org/multipage/parsing.html#tag-name-state
         self.__starttag_text = Nichts
         endpos = self.check_for_whole_start_tag(i)
         wenn endpos < 0:
-            return endpos
+            gib endpos
         rawdata = self.rawdata
         self.__starttag_text = rawdata[i:endpos]
 
@@ -438,7 +438,7 @@ klasse HTMLParser(_markupbase.ParserBase):
         end = rawdata[k:endpos].strip()
         wenn end nicht in (">", "/>"):
             self.handle_data(rawdata[i:endpos])
-            return endpos
+            gib endpos
         wenn end.endswith('/>'):
             # XHTML-style empty tag: <span attr="value" />
             self.handle_startendtag(tag, attrs)
@@ -448,9 +448,9 @@ klasse HTMLParser(_markupbase.ParserBase):
                 self.set_cdata_mode(tag)
             sowenn tag in self.RCDATA_CONTENT_ELEMENTS:
                 self.set_cdata_mode(tag, escapable=Wahr)
-        return endpos
+        gib endpos
 
-    # Internal -- check to see wenn we have a complete starttag; return end
+    # Internal -- check to see wenn we have a complete starttag; gib end
     # oder -1 wenn incomplete.
     def check_for_whole_start_tag(self, i):
         rawdata = self.rawdata
@@ -458,29 +458,29 @@ klasse HTMLParser(_markupbase.ParserBase):
         assert match
         j = match.end()
         wenn rawdata[j-1] != ">":
-            return -1
-        return j
+            gib -1
+        gib j
 
-    # Internal -- parse endtag, return end oder -1 wenn incomplete
+    # Internal -- parse endtag, gib end oder -1 wenn incomplete
     def parse_endtag(self, i):
         # See the HTML5 specs section "13.2.5.7 End tag open state"
         # https://html.spec.whatwg.org/multipage/parsing.html#end-tag-open-state
         rawdata = self.rawdata
         assert rawdata[i:i+2] == "</", "unexpected call to parse_endtag"
         wenn rawdata.find('>', i+2) < 0:  # fast check
-            return -1
+            gib -1
         wenn nicht endtagopen.match(rawdata, i):  # </ + letter
             wenn rawdata[i+2:i+3] == '>':  # </> is ignored
                 # "missing-end-tag-name" parser error
-                return i+3
+                gib i+3
             sonst:
-                return self.parse_bogus_comment(i)
+                gib self.parse_bogus_comment(i)
 
         match = locatetagend.match(rawdata, i+2)
         assert match
         j = match.end()
         wenn rawdata[j-1] != ">":
-            return -1
+            gib -1
 
         # find the name: "13.2.5.8 Tag name state"
         # https://html.spec.whatwg.org/multipage/parsing.html#tag-name-state
@@ -489,7 +489,7 @@ klasse HTMLParser(_markupbase.ParserBase):
         tag = match.group(1).lower()
         self.handle_endtag(tag)
         self.clear_cdata_mode()
-        return j
+        gib j
 
     # Overridable -- finish processing of start+end tag: <tag.../>
     def handle_startendtag(self, tag, attrs):

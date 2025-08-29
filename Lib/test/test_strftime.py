@@ -14,7 +14,7 @@ importiere unittest
 def fixasctime(s):
     wenn s[8] == ' ':
         s = s[:8] + '0' + s[9:]
-    return s
+    gib s
 
 def escapestr(text, ampm):
     """
@@ -26,7 +26,7 @@ def escapestr(text, ampm):
     new_text = new_text.replace(r'\%', '%')
     new_text = new_text.replace(r'\:', ':')
     new_text = new_text.replace(r'\?', '?')
-    return new_text
+    gib new_text
 
 
 klasse StrftimeTest(unittest.TestCase):

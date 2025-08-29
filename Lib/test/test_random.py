@@ -22,7 +22,7 @@ klasse MyIndex:
         self.value = value
 
     def __index__(self):
-        return self.value
+        gib self.value
 
 
 klasse TestBasicOps:
@@ -32,7 +32,7 @@ klasse TestBasicOps:
 
     def randomlist(self, n):
         """Helper function to make a list of random numbers"""
-        return [self.gen.random() fuer i in range(n)]
+        gib [self.gen.random() fuer i in range(n)]
 
     def test_autoseed(self):
         self.gen.seed()
@@ -54,7 +54,7 @@ klasse TestBasicOps:
         # Seed value mit a negative hash.
         klasse MySeed(object):
             def __hash__(self):
-                return -1729
+                gib -1729
         fuer arg in [Nichts, 0, 1, -1, 10**20, -(10**20),
                     Falsch, Wahr, 3.14, 'a']:
             self.gen.seed(arg)
@@ -192,10 +192,10 @@ klasse TestBasicOps:
                 self._items = items
 
             def __len__(self):
-                return len(self._items)
+                gib len(self._items)
 
             def __getitem__(self, index):
-                return self._items[index]
+                gib self._items[index]
 
         population = SeqSet([2, 4, 1, 3])
         mit warnings.catch_warnings():
@@ -687,7 +687,7 @@ klasse MersenneTwister_TestBasicOps(TestBasicOps, unittest.TestCase):
         # case the argument has a bad __abs__() method.
         klasse BadInt(int):
             def __abs__(self):
-                return Nichts
+                gib Nichts
         try:
             self.gen.seed(BadInt())
         except TypeError:
@@ -1008,10 +1008,10 @@ klasse MersenneTwister_TestBasicOps(TestBasicOps, unittest.TestCase):
 def gamma(z, sqrt2pi=(2.0*pi)**0.5):
     # Reflection to right half of complex plane
     wenn z < 0.5:
-        return pi / sin(pi*z) / gamma(1.0-z)
+        gib pi / sin(pi*z) / gamma(1.0-z)
     # Lanczos approximation mit g=7
     az = z + (7.0 - 0.5)
-    return az ** (z-0.5) / exp(az) * sqrt2pi * fsum([
+    gib az ** (z-0.5) / exp(az) * sqrt2pi * fsum([
         0.9999999999995183,
         676.5203681218835 / z,
         -1259.139216722289 / (z+1.0),
@@ -1241,7 +1241,7 @@ klasse TestDistributions(unittest.TestCase):
         #             breche
         #     sowenn u1 <= _exp(-x): # <=== (E)
         #         breche
-        # return x * beta
+        # gib x * beta
         #
         # First, we want (A) to be Wahr. For that we need that:
         # b*random() <= 1.0
@@ -1316,11 +1316,11 @@ klasse TestRandomSubclassing(unittest.TestCase):
         klasse SubClass1(random.Random):
             def random(self):
                 called.add('SubClass1.random')
-                return random.Random.random(self)
+                gib random.Random.random(self)
 
             def getrandbits(self, n):
                 called.add('SubClass1.getrandbits')
-                return random.Random.getrandbits(self, n)
+                gib random.Random.getrandbits(self, n)
         called = set()
         SubClass1().randrange(42)
         self.assertEqual(called, {'SubClass1.getrandbits'})
@@ -1329,7 +1329,7 @@ klasse TestRandomSubclassing(unittest.TestCase):
         klasse SubClass2(random.Random):
             def random(self):
                 called.add('SubClass2.random')
-                return random.Random.random(self)
+                gib random.Random.random(self)
         called = set()
         SubClass2().randrange(42)
         self.assertEqual(called, {'SubClass2.random'})
@@ -1339,7 +1339,7 @@ klasse TestRandomSubclassing(unittest.TestCase):
         klasse SubClass3(SubClass2):
             def getrandbits(self, n):
                 called.add('SubClass3.getrandbits')
-                return random.Random.getrandbits(self, n)
+                gib random.Random.getrandbits(self, n)
         called = set()
         SubClass3().randrange(42)
         self.assertEqual(called, {'SubClass3.getrandbits'})
@@ -1349,7 +1349,7 @@ klasse TestRandomSubclassing(unittest.TestCase):
         klasse SubClass4(SubClass3):
             def random(self):
                 called.add('SubClass4.random')
-                return random.Random.random(self)
+                gib random.Random.random(self)
         called = set()
         SubClass4().randrange(42)
         self.assertEqual(called, {'SubClass4.random'})
@@ -1359,11 +1359,11 @@ klasse TestRandomSubclassing(unittest.TestCase):
         klasse Mixin1:
             def random(self):
                 called.add('Mixin1.random')
-                return random.Random.random(self)
+                gib random.Random.random(self)
         klasse Mixin2:
             def getrandbits(self, n):
                 called.add('Mixin2.getrandbits')
-                return random.Random.getrandbits(self, n)
+                gib random.Random.getrandbits(self, n)
 
         klasse SubClass5(Mixin1, random.Random):
             pass

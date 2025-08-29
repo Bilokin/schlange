@@ -10,4 +10,4 @@ wenn sys.platform == "win32":
     raise unittest.SkipTest("forkserver is nicht available on Windows")
 
 def load_tests(*args):
-    return support.load_package_tests(os.path.dirname(__file__), *args)
+    gib support.load_package_tests(os.path.dirname(__file__), *args)

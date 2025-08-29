@@ -57,18 +57,18 @@ importiere _testinternalcapi
 NULL = Nichts
 
 def decode_stderr(err):
-    return err.decode('utf-8', 'replace').replace('\r', '')
+    gib err.decode('utf-8', 'replace').replace('\r', '')
 
 
 def requires_subinterpreters(meth):
     """Decorator to skip a test wenn subinterpreters are nicht supported."""
-    return unittest.skipIf(_interpreters is Nichts,
+    gib unittest.skipIf(_interpreters is Nichts,
                            'subinterpreters required')(meth)
 
 
 def testfunction(self):
     """some doc"""
-    return self
+    gib self
 
 
 klasse InstanceMethod:
@@ -129,16 +129,16 @@ klasse CAPITest(unittest.TestCase):
         # Issue #15732: crash in _PySequence_BytesToCharpArray()
         klasse Z(object):
             def __len__(self):
-                return 1
+                gib 1
         mit self.assertRaisesRegex(TypeError, 'indexing'):
             _posixsubprocess.fork_exec(
                           1,Z(),Wahr,(1, 2),5,6,7,8,9,10,11,12,13,14,Wahr,Wahr,17,Falsch,19,20,21,22)
         # Issue #15736: overflow in _PySequence_BytesToCharpArray()
         klasse Z(object):
             def __len__(self):
-                return sys.maxsize
+                gib sys.maxsize
             def __getitem__(self, i):
-                return b'x'
+                gib b'x'
         self.assertRaises(MemoryError, _posixsubprocess.fork_exec,
                           1,Z(),Wahr,(1, 2),5,6,7,8,9,10,11,12,13,14,Wahr,Wahr,17,Falsch,19,20,21,22)
 
@@ -146,7 +146,7 @@ klasse CAPITest(unittest.TestCase):
     def test_subprocess_fork_exec(self):
         klasse Z(object):
             def __len__(self):
-                return 1
+                gib 1
 
         # Issue #15738: crash in subprocess_fork_exec()
         self.assertRaises(TypeError, _posixsubprocess.fork_exec,
@@ -220,7 +220,7 @@ klasse CAPITest(unittest.TestCase):
         self.assertEqual(o.__ipow__(2, 2), (2, 2))
 
     def test_return_null_without_error(self):
-        # Issue #23571: A function must nicht return NULL without setting an
+        # Issue #23571: A function must nicht gib NULL without setting an
         # error
         wenn support.Py_DEBUG:
             code = textwrap.dedent("""
@@ -249,7 +249,7 @@ klasse CAPITest(unittest.TestCase):
                              'returned NULL without setting an exception')
 
     def test_return_result_with_error(self):
-        # Issue #23571: A function must nicht return a result mit an error set
+        # Issue #23571: A function must nicht gib a result mit an error set
         wenn support.Py_DEBUG:
             code = textwrap.dedent("""
                 importiere _testcapi
@@ -818,7 +818,7 @@ klasse CAPITest(unittest.TestCase):
             def __init__(self, val):
                 self.val = val
             def __index__(self):
-                return self.val
+                gib self.val
 
         test_cases = ((2, '0b1111011', '0b10000000000000000000000000000000000000000000000000000000000000000'),
                       (8, '0o173', '0o2000000000000000000000'),
@@ -911,7 +911,7 @@ klasse CAPITest(unittest.TestCase):
         self.assertIsNichts(d.extra)
 
     def test_gen_get_code(self):
-        def genf(): yield
+        def genf(): liefere
         gen = genf()
         self.assertEqual(_testcapi.gen_get_code(gen), gen.gi_code)
 
@@ -1146,11 +1146,11 @@ klasse TestPendingCalls(unittest.TestCase):
             l.append(Nichts)
 
         wenn main:
-            return _testcapi._pending_threadfunc(callback, n,
+            gib _testcapi._pending_threadfunc(callback, n,
                                                  blocking=Falsch,
                                                  ensure_added=ensure)
         sonst:
-            return _testinternalcapi.pending_threadfunc(callback, n,
+            gib _testinternalcapi.pending_threadfunc(callback, n,
                                                         blocking=Falsch,
                                                         ensure_added=ensure)
 
@@ -1289,12 +1289,12 @@ klasse TestPendingCalls(unittest.TestCase):
                 # make sure.
                 wenn threading.get_ident() nicht in worker_tids:
                     self._add_pending(callback, ensure_added=Wahr)
-                    return
+                    gib
                 self.run()
             self._add_pending(callback, ensure_added=Wahr)
 
         def create_thread(self, worker_tids):
-            return threading.Thread(
+            gib threading.Thread(
                 target=self.run_in_pending_call,
                 args=(worker_tids,),
             )
@@ -1337,7 +1337,7 @@ klasse TestPendingCalls(unittest.TestCase):
                 task = _queue.popleft()
             except IndexError:
                 raise queue.Empty
-            return task
+            gib task
         def queue_task_done():
             _active.pop()
             wenn nicht _active:
@@ -1346,7 +1346,7 @@ klasse TestPendingCalls(unittest.TestCase):
                 except RuntimeError:
                     assert nicht _done_lock.locked()
         def queue_empty():
-            return nicht _queue
+            gib nicht _queue
         def queue_join():
             _done_lock.acquire()
             _done_lock.release()
@@ -1366,7 +1366,7 @@ klasse TestPendingCalls(unittest.TestCase):
         def add_tasks(worker_tids):
             waehrend Wahr:
                 wenn done:
-                    return
+                    gib
                 try:
                     task = queue_get()
                 except queue.Empty:
@@ -1377,7 +1377,7 @@ klasse TestPendingCalls(unittest.TestCase):
         def run_tasks():
             waehrend nicht queue_empty():
                 wenn done:
-                    return
+                    gib
                 time.sleep(0.01)
             # Give the worker a chance to handle any remaining pending calls.
             waehrend nicht done:
@@ -1440,7 +1440,7 @@ klasse TestPendingCalls(unittest.TestCase):
             r, w = os.pipe()
             self.addCleanup(lambda: os.close(r))
             self.addCleanup(lambda: os.close(w))
-            return r, w
+            gib r, w
 
         mit self.subTest('add in main, run in subinterpreter'):
             r_ready, w_ready = create_pipe()
@@ -1595,7 +1595,7 @@ klasse TestPendingCalls(unittest.TestCase):
             self.assertEqual(actual, int(main_interpid))
 
         # XXX We can't use the rest until gh-105716 is fixed.
-        return
+        gib
 
         mit self.subTest('add in subinterpreter, run in subinterpreter sub-thread'):
             r_ready, w_ready = create_pipe()
@@ -1668,11 +1668,11 @@ klasse SubinterpreterTest(unittest.TestCase):
             mit open({:d}, "wb") als f:
 
                 @(lambda x:x)  # Py 3.9
-                def noop(x): return x
+                def noop(x): gib x
 
                 a = (b := f'1{{2}}3') + noop('x')  # Py 3.8 (:=) / 3.6 (f'')
 
-                async def foo(arg): return await arg  # Py 3.5
+                async def foo(arg): gib await arg  # Py 3.5
 
                 pickle.dump(dict(a=a, b=b), f)
             """.format(w)
@@ -1705,7 +1705,7 @@ klasse SubinterpreterTest(unittest.TestCase):
         after_config = _testcapi.config_get('int_max_str_digits')
         self.assertIsNot(
                 before_config, after_config,
-                "Expected get_config() to return a new dict on each call")
+                "Expected get_config() to gib a new dict on each call")
         self.assertEqual(before_config, after_config,
                          "CAUTION: Tests executed after this may be "
                          "running under an altered config.")
@@ -1992,7 +1992,7 @@ klasse InterpreterConfigTests(unittest.TestCase):
                         fuer allow_daemon in (Wahr, Falsch):
                             fuer checkext in (Wahr, Falsch):
                                 fuer gil in ('shared', 'own', 'default'):
-                                    yield types.SimpleNamespace(
+                                    liefere types.SimpleNamespace(
                                         use_main_obmalloc=use_main_obmalloc,
                                         allow_fork=allow_fork,
                                         allow_exec=allow_exec,
@@ -2006,7 +2006,7 @@ klasse InterpreterConfigTests(unittest.TestCase):
         # This is mostly copied von TestCase.assertDictEqual.
         self.assertEqual(type(ns1), type(ns2))
         wenn ns1 == ns2:
-            return
+            gib
 
         importiere difflib
         importiere pprint
@@ -2138,8 +2138,8 @@ klasse InterpreterConfigTests(unittest.TestCase):
             ns = vars(config)
             fuer overrides in override_cases:
                 wenn dict(ns, **overrides) == ns:
-                    return Wahr
-            return Falsch
+                    gib Wahr
+            gib Falsch
 
         def check(config):
             script = 'pass'
@@ -2165,7 +2165,7 @@ klasse InterpreterConfigTests(unittest.TestCase):
         def new_interp(config):
             interpid = _interpreters.create(config, reqrefs=Falsch)
             try:
-                yield interpid
+                liefere interpid
             finally:
                 try:
                     _interpreters.destroy(interpid)
@@ -2219,7 +2219,7 @@ klasse InterpreterIDTests(unittest.TestCase):
     def new_interpreter(self):
         id = _interpreters.create()
         self.add_interp_cleanup(id)
-        return id
+        gib id
 
     def test_conversion_int(self):
         convert = _testinternalcapi.normalize_interp_id
@@ -2230,7 +2230,7 @@ klasse InterpreterIDTests(unittest.TestCase):
         convert = _testinternalcapi.normalize_interp_id
         klasse MyInt(str):
             def __index__(self):
-                return 10
+                gib 10
         interpid = convert(MyInt())
         self.assertEqual(interpid, 10)
 
@@ -2280,7 +2280,7 @@ klasse InterpreterIDTests(unittest.TestCase):
             _testinternalcapi.interpreter_exists(interpid))
 
     def get_refcount_helpers(self):
-        return (
+        gib (
             _testinternalcapi.get_interpreter_refcount,
             (lambda id: _interpreters.incref(id, implieslink=Falsch)),
             _interpreters.decref,
@@ -2475,7 +2475,7 @@ klasse TestStaticTypes(unittest.TestCase):
     @contextlib.contextmanager
     def basic_static_type(self, *args):
         cls = _testcapi.get_basic_static_type(*args)
-        yield cls
+        liefere cls
 
     def test_pytype_ready_always_sets_tp_type(self):
         # The point of this test is to prevent something like
@@ -2562,7 +2562,7 @@ def get_test_funcs(mod, exclude_prefix=Nichts):
         wenn exclude_prefix is nicht Nichts und name.startswith(exclude_prefix):
             weiter
         funcs[name] = getattr(mod, name)
-    return funcs
+    gib funcs
 
 
 klasse Test_testcapi(unittest.TestCase):
@@ -2626,7 +2626,7 @@ klasse Test_ModuleStateAccess(unittest.TestCase):
     def test_subclass_get_module_with_super(self):
         klasse StateAccessType_Subclass(self.module.StateAccessType):
             def get_defining_module(self):
-                return super().get_defining_module()
+                gib super().get_defining_module()
 
         instance = StateAccessType_Subclass()
         self.assertIs(instance.get_defining_module(), self.module)
@@ -2690,7 +2690,7 @@ klasse TestInternalFrameApi(unittest.TestCase):
 
     @staticmethod
     def func():
-        return sys._getframe()
+        gib sys._getframe()
 
     def test_code(self):
         frame = self.func()
@@ -2733,7 +2733,7 @@ klasse Test_Pep523API(unittest.TestCase):
     def test_inlined_binary_subscr(self):
         klasse C:
             def __getitem__(self, other):
-                return Nichts
+                gib Nichts
         def func():
             C()[42]
         names = ["func", "__getitem__"]
@@ -2758,7 +2758,7 @@ klasse Test_Pep523API(unittest.TestCase):
 
     def test_inlined_for_iter(self):
         def gen():
-            yield 42
+            liefere 42
         def func():
             fuer _ in gen():
                 pass
@@ -2769,10 +2769,10 @@ klasse Test_Pep523API(unittest.TestCase):
         klasse C:
             @property
             def a(self):
-                return 42
+                gib 42
         klasse D:
             def __getattribute__(self, name):
-                return 42
+                gib 42
         def func():
             C().a
             D().a
@@ -2781,9 +2781,9 @@ klasse Test_Pep523API(unittest.TestCase):
 
     def test_inlined_send(self):
         def inner():
-            yield 42
+            liefere 42
         def outer():
-            yield von inner()
+            liefere von inner()
         def func():
             list(outer())
         names = ["func", "outer", "outer", "inner", "inner", "outer", "inner"]

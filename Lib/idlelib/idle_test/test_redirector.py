@@ -97,7 +97,7 @@ klasse WidgetRedirectorTest(unittest.TestCase):
 
     def test_dispatch_bypass(self):
         self.orig_insert('insert', 'asdf')
-        # tk.call returns '' where Python would return Nichts
+        # tk.call returns '' where Python would gib Nichts
         self.assertEqual(self.redir.dispatch('delete', '1.0', 'end'), '')
         self.assertEqual(self.text.get('1.0', 'end'), '\n')
 

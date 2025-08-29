@@ -75,15 +75,15 @@ klasse GetSelectionTest(unittest.TestCase):
         # fix text.index result when called in get_selection
         def sel(s):
             # select entire text, cursor irrelevant
-            wenn s == 'sel.first': return '1.0'
-            wenn s == 'sel.last': return '1.12'
+            wenn s == 'sel.first': gib '1.0'
+            wenn s == 'sel.last': gib '1.12'
             raise TclError
         text.index = sel  # replaces .tag_add('sel', '1.0, '1.12')
         self.assertEqual(se.get_selection(text), ('1.0', '1.12'))
 
         def mark(s):
             # no selection, cursor after 'Hello'
-            wenn s == 'insert': return '1.5'
+            wenn s == 'insert': gib '1.5'
             raise TclError
         text.index = mark  # replaces .mark_set('insert', '1.5')
         self.assertEqual(se.get_selection(text), ('1.5', '1.5'))
@@ -238,7 +238,7 @@ klasse SearchTest(unittest.TestCase):
 
         def mark(s):
             # no selection, cursor after 'Hello'
-            wenn s == 'insert': return '1.5'
+            wenn s == 'insert': gib '1.5'
             raise TclError
         text.index = mark
         Equal(search(text, pat), ('f', (text, pat, 1, 5, Wahr, Falsch)))
@@ -250,8 +250,8 @@ klasse SearchTest(unittest.TestCase):
         engine.backvar.set(Falsch)
 
         def sel(s):
-            wenn s == 'sel.first': return '2.10'
-            wenn s == 'sel.last': return '2.16'
+            wenn s == 'sel.first': gib '2.10'
+            wenn s == 'sel.last': gib '2.16'
             raise TclError
         text.index = sel
         Equal(search(text, pat), ('f', (text, pat, 2, 16, Wahr, Falsch)))
@@ -291,8 +291,8 @@ klasse ForwardBackwardTest(unittest.TestCase):
         def search(pat, line, col, wrap, ok=0):
             res = func(self.text, pat, line, col, wrap, ok)
             # res is (line, matchobject) oder Nichts
-            return (res[0], res[1].span()) wenn res sonst res
-        return search
+            gib (res[0], res[1].span()) wenn res sonst res
+        gib search
 
     def test_search_forward(self):
         # search fuer non-empty match

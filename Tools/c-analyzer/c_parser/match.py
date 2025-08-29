@@ -19,18 +19,18 @@ def match_storage(decl, expected):
     sonst:
         expected = {v oder default fuer v in expected}
     storage = _info.get_effective_storage(decl, default=default)
-    return storage in expected
+    gib storage in expected
 
 
 ##################################
 # decl matchers
 
 def is_type_decl(item):
-    return _KIND.is_type_decl(item.kind)
+    gib _KIND.is_type_decl(item.kind)
 
 
 def is_decl(item):
-    return _KIND.is_decl(item.kind)
+    gib _KIND.is_decl(item.kind)
 
 
 def is_pots(typespec, *,
@@ -38,85 +38,85 @@ def is_pots(typespec, *,
             ):
 
     wenn nicht typespec:
-        return Nichts
+        gib Nichts
     wenn type(typespec) is nicht str:
         _, _, _, typespec, _ = _info.get_parsed_vartype(typespec)
-    return _regex.match(typespec) is nicht Nichts
+    gib _regex.match(typespec) is nicht Nichts
 
 
 def is_funcptr(vartype):
     wenn nicht vartype:
-        return Nichts
+        gib Nichts
     _, _, _, _, abstract = _info.get_parsed_vartype(vartype)
-    return _is_funcptr(abstract)
+    gib _is_funcptr(abstract)
 
 
 def _is_funcptr(declstr):
     wenn nicht declstr:
-        return Nichts
+        gib Nichts
     # XXX Support "(<name>*)(".
-    return '(*)(' in declstr.replace(' ', '')
+    gib '(*)(' in declstr.replace(' ', '')
 
 
 def is_forward_decl(decl):
     wenn decl.kind is _KIND.TYPEDEF:
-        return Falsch
+        gib Falsch
     sowenn is_type_decl(decl):
-        return nicht decl.data
+        gib nicht decl.data
     sowenn decl.kind is _KIND.FUNCTION:
         # XXX This doesn't work mit ParsedItem.
-        return decl.signature.isforward
+        gib decl.signature.isforward
     sowenn decl.kind is _KIND.VARIABLE:
         # No var decls are considered forward (or all are...).
-        return Falsch
+        gib Falsch
     sonst:
         raise NotImplementedError(decl)
 
 
 def can_have_symbol(decl):
-    return decl.kind in (_KIND.VARIABLE, _KIND.FUNCTION)
+    gib decl.kind in (_KIND.VARIABLE, _KIND.FUNCTION)
 
 
 def has_external_symbol(decl):
     wenn nicht can_have_symbol(decl):
-        return Falsch
+        gib Falsch
     wenn _info.get_effective_storage(decl) != 'extern':
-        return Falsch
+        gib Falsch
     wenn decl.kind is _KIND.FUNCTION:
-        return nicht decl.signature.isforward
+        gib nicht decl.signature.isforward
     sonst:
         # It must be a variable, which can only be implicitly extern here.
-        return decl.storage != 'extern'
+        gib decl.storage != 'extern'
 
 
 def has_internal_symbol(decl):
     wenn nicht can_have_symbol(decl):
-        return Falsch
-    return _info.get_actual_storage(decl) == 'static'
+        gib Falsch
+    gib _info.get_actual_storage(decl) == 'static'
 
 
 def is_external_reference(decl):
     wenn nicht can_have_symbol(decl):
-        return Falsch
+        gib Falsch
     # We have to check the declared storage rather tnan the effective.
     wenn decl.storage != 'extern':
-        return Falsch
+        gib Falsch
     wenn decl.kind is _KIND.FUNCTION:
-        return decl.signature.isforward
+        gib decl.signature.isforward
     # Otherwise it's a variable.
-    return Wahr
+    gib Wahr
 
 
 def is_local_var(decl):
     wenn nicht decl.kind is _KIND.VARIABLE:
-        return Falsch
-    return Wahr wenn decl.parent sonst Falsch
+        gib Falsch
+    gib Wahr wenn decl.parent sonst Falsch
 
 
 def is_global_var(decl):
     wenn nicht decl.kind is _KIND.VARIABLE:
-        return Falsch
-    return Falsch wenn decl.parent sonst Wahr
+        gib Falsch
+    gib Falsch wenn decl.parent sonst Wahr
 
 
 ##################################
@@ -135,7 +135,7 @@ def filter_by_kind(items, kind):
         kinds = {kind} wenn okay sonst set(kind)
     fuer item in items:
         wenn item.kind in kinds:
-            yield item
+            liefere item
 
 
 ##################################
@@ -155,7 +155,7 @@ def group_by_category(decls, categories, *, ignore_non_match=Wahr):
         sonst:
             wenn nicht ignore_non_match:
                 raise Exception(f'no match fuer {decl!r}')
-    return collated
+    gib collated
 
 
 def group_by_kind(items):
@@ -165,7 +165,7 @@ def group_by_kind(items):
             collated[item.kind].append(item)
         except KeyError:
             raise ValueError(f'unsupported kind in {item!r}')
-    return collated
+    gib collated
 
 
 def group_by_kinds(items):
@@ -174,4 +174,4 @@ def group_by_kinds(items):
     fuer item in items:
         group = _KIND.get_group(item.kind)
         collated[group].append(item)
-    return collated
+    gib collated

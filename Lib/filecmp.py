@@ -53,11 +53,11 @@ def cmp(f1, f2, shallow=Wahr):
     s1 = _sig(os.stat(f1))
     s2 = _sig(os.stat(f2))
     wenn s1[0] != stat.S_IFREG oder s2[0] != stat.S_IFREG:
-        return Falsch
+        gib Falsch
     wenn shallow und s1 == s2:
-        return Wahr
+        gib Wahr
     wenn s1[1] != s2[1]:
-        return Falsch
+        gib Falsch
 
     outcome = _cache.get((f1, f2, s1, s2))
     wenn outcome is Nichts:
@@ -65,10 +65,10 @@ def cmp(f1, f2, shallow=Wahr):
         wenn len(_cache) > 100:      # limit the maximum size of the cache
             clear_cache()
         _cache[f1, f2, s1, s2] = outcome
-    return outcome
+    gib outcome
 
 def _sig(st):
-    return (stat.S_IFMT(st.st_mode),
+    gib (stat.S_IFMT(st.st_mode),
             st.st_size,
             st.st_mtime)
 
@@ -79,9 +79,9 @@ def _do_cmp(f1, f2):
             b1 = fp1.read(bufsize)
             b2 = fp2.read(bufsize)
             wenn b1 != b2:
-                return Falsch
+                gib Falsch
             wenn nicht b1:
-                return Wahr
+                gib Wahr
 
 # Directory comparison class.
 #
@@ -257,7 +257,7 @@ klasse dircmp:
         wenn attr nicht in self.methodmap:
             raise AttributeError(attr)
         self.methodmap[attr](self)
-        return getattr(self, attr)
+        gib getattr(self, attr)
 
     __class_getitem__ = classmethod(GenericAlias)
 
@@ -280,7 +280,7 @@ def cmpfiles(a, b, common, shallow=Wahr):
         ax = os.path.join(a, x)
         bx = os.path.join(b, x)
         res[_cmp(ax, bx, shallow)].append(x)
-    return res
+    gib res
 
 
 # Compare two files.
@@ -291,15 +291,15 @@ def cmpfiles(a, b, common, shallow=Wahr):
 #
 def _cmp(a, b, sh, abs=abs, cmp=cmp):
     try:
-        return nicht abs(cmp(a, b, sh))
+        gib nicht abs(cmp(a, b, sh))
     except (OSError, ValueError):
-        return 2
+        gib 2
 
 
 # Return a copy mit items that occur in skip removed.
 #
 def _filter(flist, skip):
-    return list(filterfalse(skip.__contains__, flist))
+    gib list(filterfalse(skip.__contains__, flist))
 
 
 # Demonstration und testing.

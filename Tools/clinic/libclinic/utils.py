@@ -15,7 +15,7 @@ def write_file(filename: str, new_contents: str) -> Nichts:
 
         wenn old_contents == new_contents:
             # no change: avoid modifying the file modification time
-            return
+            gib
     except FileNotFoundError:
         pass
     # Atomic write using a temporary file und os.replace()
@@ -33,7 +33,7 @@ def compute_checksum(input_: str, length: int | Nichts = Nichts) -> str:
     checksum = hashlib.sha1(input_.encode("utf-8")).hexdigest()
     wenn length:
         checksum = checksum[:length]
-    return checksum
+    gib checksum
 
 
 def create_regex(
@@ -46,7 +46,7 @@ def create_regex(
     pattern = rf"{before}({group_re}){after}"
     wenn whole_line:
         pattern = rf"^{pattern}$"
-    return re.compile(pattern)
+    gib re.compile(pattern)
 
 
 klasse FormatCounterFormatter(string.Formatter):
@@ -66,7 +66,7 @@ klasse FormatCounterFormatter(string.Formatter):
         self, key: str, args: object, kwargs: object  # type: ignore[override]
     ) -> Literal[""]:
         self.counts[key] += 1
-        return ""
+        gib ""
 
 
 VersionTuple = tuple[int, int]
@@ -77,7 +77,7 @@ klasse Sentinels(enum.Enum):
     unknown = "unknown"
 
     def __repr__(self) -> str:
-        return f"<{self.value.capitalize()}>"
+        gib f"<{self.value.capitalize()}>"
 
 
 unspecified: Final = Sentinels.unspecified
@@ -87,7 +87,7 @@ unknown: Final = Sentinels.unknown
 # This one needs to be a distinct class, unlike the other two
 klasse Null:
     def __repr__(self) -> str:
-        return '<Null>'
+        gib '<Null>'
 
 
 NULL = Null()

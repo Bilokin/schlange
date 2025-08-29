@@ -24,7 +24,7 @@ main(int argc, char **argv)
         Py_OptimizeFlag++;
 """) oder "")  + """
         PyImport_FrozenModules = _PyImport_FrozenModules;
-        return Py_FrozenMain(argc, argv);
+        gib Py_FrozenMain(argc, argv);
 }
 
 """
@@ -67,7 +67,7 @@ def makefreeze(base, dict, debug=0, entry_point=Nichts, fail_import=()):
             outfp.write('\t{"%s", NULL, 0},\n' % (mod,))
         outfp.write(trailer)
         outfp.write(entry_point)
-    return files
+    gib files
 
 
 

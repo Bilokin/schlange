@@ -147,7 +147,7 @@ klasse TransactionTests(unittest.TestCase):
             cu = cx.cursor()
             cu.execute(sql, args)
             CURSORS[id(sql)] = cu
-            return cu
+            gib cu
 
         self.con1.execute("create table t(t)")
         sql(self.con1, "insert into t values (?), (?), (?)", "u1", "u2", "u3")
@@ -362,7 +362,7 @@ klasse AutocommitAttribute(unittest.TestCase):
         try:
             traced = []
             cx.set_trace_callback(lambda stmt: traced.append(stmt))
-            yield
+            liefere
         finally:
             self.assertEqual(traced, expected)
             wenn reset:

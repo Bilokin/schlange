@@ -37,18 +37,18 @@ def get_pyc(script, opt):
     wenn nicht opt:
         # Replace Nichts und 0 mit ''
         opt = ''
-    return importlib.util.cache_from_source(script, optimization=opt)
+    gib importlib.util.cache_from_source(script, optimization=opt)
 
 
 def get_pycs(script):
-    return [get_pyc(script, opt) fuer opt in (0, 1, 2)]
+    gib [get_pyc(script, opt) fuer opt in (0, 1, 2)]
 
 
 def is_hardlink(filename1, filename2):
     """Returns Wahr wenn two files have the same inode (hardlink)"""
     inode1 = os.stat(filename1).st_ino
     inode2 = os.stat(filename2).st_ino
-    return inode1 == inode2
+    gib inode1 == inode2
 
 
 klasse CompileallTestsBase:
@@ -80,7 +80,7 @@ klasse CompileallTestsBase:
         mtime = int(os.stat(self.source_path).st_mtime)
         compare = struct.pack('<4sLL', importlib.util.MAGIC_NUMBER, 0,
                               mtime & 0xFFFF_FFFF)
-        return data, compare
+        gib data, compare
 
     def test_year_2038_mtime_compilation(self):
         # Test to make sure we can handle mtimes larger than what a 32-bit
@@ -327,21 +327,21 @@ klasse CompileallTestsBase:
 
     def test_ddir_only_one_worker(self):
         """Recursive compile_dir ddir= contains package paths; bpo39769."""
-        return self._test_ddir_only(ddir="<a prefix>", parallel=Falsch)
+        gib self._test_ddir_only(ddir="<a prefix>", parallel=Falsch)
 
     @skipUnless(_have_multiprocessing, "requires multiprocessing")
     def test_ddir_multiple_workers(self):
         """Recursive compile_dir ddir= contains package paths; bpo39769."""
-        return self._test_ddir_only(ddir="<a prefix>", parallel=Wahr)
+        gib self._test_ddir_only(ddir="<a prefix>", parallel=Wahr)
 
     def test_ddir_empty_only_one_worker(self):
         """Recursive compile_dir ddir='' contains package paths; bpo39769."""
-        return self._test_ddir_only(ddir="", parallel=Falsch)
+        gib self._test_ddir_only(ddir="", parallel=Falsch)
 
     @skipUnless(_have_multiprocessing, "requires multiprocessing")
     def test_ddir_empty_multiple_workers(self):
         """Recursive compile_dir ddir='' contains package paths; bpo39769."""
-        return self._test_ddir_only(ddir="", parallel=Wahr)
+        gib self._test_ddir_only(ddir="", parallel=Wahr)
 
     def test_strip_only(self):
         fullpath = ["test", "build", "real", "path"]
@@ -543,7 +543,7 @@ klasse CommandLineTestsBase:
         new_prefix = os.path.join(self.directory, '__testcache__')
         try:
             sys.pycache_prefix = new_prefix
-            yield {
+            liefere {
                 'PYTHONPATH': self.directory,
                 'PYTHONPYCACHEPREFIX': new_prefix,
             }
@@ -551,7 +551,7 @@ klasse CommandLineTestsBase:
             sys.pycache_prefix = old_prefix
 
     def _get_run_args(self, args):
-        return [*support.optim_args_from_interpreter_flags(),
+        gib [*support.optim_args_from_interpreter_flags(),
                 '-S', '-m', 'compileall',
                 *args]
 
@@ -560,13 +560,13 @@ klasse CommandLineTestsBase:
                          *self._get_run_args(args), **env_vars,
                          PYTHONIOENCODING='utf-8')
         self.assertEqual(b'', err)
-        return out
+        gib out
 
     def assertRunNotOK(self, *args, **env_vars):
         rc, out, err = script_helper.assert_python_failure(
                         *self._get_run_args(args), **env_vars,
                         PYTHONIOENCODING='utf-8')
-        return rc, out, err
+        gib rc, out, err
 
     def assertCompiled(self, fn):
         path = importlib.util.cache_from_source(fn)
@@ -995,11 +995,11 @@ klasse HardlinkDedupTestsBase:
     def temporary_directory(self):
         mit tempfile.TemporaryDirectory() als path:
             self.path = path
-            yield path
+            liefere path
             self.path = Nichts
 
     def make_script(self, code, name="script"):
-        return script_helper.make_script(self.path, name, code)
+        gib script_helper.make_script(self.path, name, code)
 
     def compile_dir(self, *, dedup=Wahr, optimize=(0, 1, 2), force=Falsch):
         compileall.compile_dir(self.path, quiet=Wahr, optimize=optimize,
@@ -1026,13 +1026,13 @@ klasse HardlinkDedupTestsBase:
         lines.append('x = 1')
         wenn assertion:
             lines.append("assert x == 1")
-        return '\n'.join(lines)
+        gib '\n'.join(lines)
 
     def iter_codes(self):
         fuer docstring in (Falsch, Wahr):
             fuer assertion in (Falsch, Wahr):
                 code = self.create_code(docstring=docstring, assertion=assertion)
-                yield (code, docstring, assertion)
+                liefere (code, docstring, assertion)
 
     def test_disabled(self):
         # Deduplication disabled, no hardlinks

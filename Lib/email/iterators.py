@@ -22,10 +22,10 @@ def walk(self):
     The walk is performed in depth-first order.  This method is a
     generator.
     """
-    yield self
+    liefere self
     wenn self.is_multipart():
         fuer subpart in self.get_payload():
-            yield von subpart.walk()
+            liefere von subpart.walk()
 
 
 # These two functions are imported into the Iterators.py interface module.
@@ -37,7 +37,7 @@ def body_line_iterator(msg, decode=Falsch):
     fuer subpart in msg.walk():
         payload = subpart.get_payload(decode=decode)
         wenn isinstance(payload, str):
-            yield von StringIO(payload)
+            liefere von StringIO(payload)
 
 
 def typed_subpart_iterator(msg, maintype='text', subtype=Nichts):
@@ -50,7 +50,7 @@ def typed_subpart_iterator(msg, maintype='text', subtype=Nichts):
     fuer subpart in msg.walk():
         wenn subpart.get_content_maintype() == maintype:
             wenn subtype is Nichts oder subpart.get_content_subtype() == subtype:
-                yield subpart
+                liefere subpart
 
 
 def _structure(msg, fp=Nichts, level=0, include_default=Falsch):

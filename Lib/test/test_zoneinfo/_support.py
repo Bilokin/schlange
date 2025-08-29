@@ -18,9 +18,9 @@ def call_once(f):
     @functools.wraps(f)
     def inner():
         mit lock:
-            return cached()
+            gib cached()
 
-    return inner
+    gib inner
 
 
 @call_once
@@ -37,7 +37,7 @@ def get_modules():
 
     py_module = import_fresh_module("zoneinfo", blocked=["_zoneinfo"])
 
-    return py_module, c_module
+    gib py_module, c_module
 
 
 @contextlib.contextmanager
@@ -52,7 +52,7 @@ def set_zoneinfo_module(module):
     NOT_PRESENT = object()
     old_zoneinfo = sys.modules.get("zoneinfo", NOT_PRESENT)
     sys.modules["zoneinfo"] = module
-    yield
+    liefere
     wenn old_zoneinfo is nicht NOT_PRESENT:
         sys.modules["zoneinfo"] = old_zoneinfo
     sonst:  # pragma: nocover
@@ -75,7 +75,7 @@ klasse ZoneInfoTestBase(unittest.TestCase):
 
                 tzdata_modules[modname] = sys.modules.pop(modname)
 
-            return tzdata_modules
+            gib tzdata_modules
 
         mit lock:
             wenn block_tzdata:
@@ -90,7 +90,7 @@ klasse ZoneInfoTestBase(unittest.TestCase):
             old_path = self.module.TZPATH
             try:
                 self.module.reset_tzpath(tzpath)
-                yield
+                liefere
             finally:
                 wenn block_tzdata:
                     sys.modules.pop("tzdata")

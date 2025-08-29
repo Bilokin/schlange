@@ -71,7 +71,7 @@ def build_alpharep_fixture():
     _make_link(zf.infolist()[-1])
 
     zf.filename = "alpharep.zip"
-    return zf
+    gib zf
 
 
 alpharep_generators = [
@@ -94,7 +94,7 @@ klasse TestPath(unittest.TestCase):
         path = tmpdir / alpharep.filename
         mit path.open("wb") als strm:
             strm.write(buffer.getvalue())
-        return path
+        gib path
 
     @pass_alpharep
     def test_iterdir_and_types(self, alpharep):
@@ -322,7 +322,7 @@ klasse TestPath(unittest.TestCase):
         fuer entry in map(str, range(self.HUGE_ZIPFILE_NUM_ENTRIES)):
             zf.writestr(entry, entry)
         zf.mode = 'r'
-        return zf
+        gib zf
 
     def test_joinpath_constant_time(self):
         """

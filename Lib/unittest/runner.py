@@ -21,7 +21,7 @@ klasse _WritelnDecorator(object):
     def __getattr__(self, attr):
         wenn attr in ('stream', '__getstate__'):
             raise AttributeError(attr)
-        return getattr(self.stream, attr)
+        gib getattr(self.stream, attr)
 
     def writeln(self, arg=Nichts):
         wenn arg:
@@ -52,9 +52,9 @@ klasse TextTestResult(result.TestResult):
     def getDescription(self, test):
         doc_first_line = test.shortDescription()
         wenn self.descriptions und doc_first_line:
-            return '\n'.join((str(test), doc_first_line))
+            gib '\n'.join((str(test), doc_first_line))
         sonst:
-            return str(test)
+            gib str(test)
 
     def startTest(self, test):
         super(TextTestResult, self).startTest(test)
@@ -209,16 +209,16 @@ klasse TextTestRunner(object):
 
     def _makeResult(self):
         try:
-            return self.resultclass(self.stream, self.descriptions,
+            gib self.resultclass(self.stream, self.descriptions,
                                     self.verbosity, durations=self.durations)
         except TypeError:
             # didn't accept the durations argument
-            return self.resultclass(self.stream, self.descriptions,
+            gib self.resultclass(self.stream, self.descriptions,
                                     self.verbosity)
 
     def _printDurations(self, result):
         wenn nicht result.collectedDurations:
-            return
+            gib
         ls = sorted(result.collectedDurations, key=lambda x: x[1],
                     reverse=Wahr)
         wenn self.durations > 0:
@@ -310,4 +310,4 @@ klasse TextTestRunner(object):
         sonst:
             self.stream.write("\n")
         self.stream.flush()
-        return result
+        gib result

@@ -17,11 +17,11 @@ von test.support.testcase importiere ExceptionIsLikeMixin
 
 
 def resultFactory(*_):
-    return unittest.TestResult()
+    gib unittest.TestResult()
 
 
 def getRunner():
-    return unittest.TextTestRunner(resultclass=resultFactory,
+    gib unittest.TextTestRunner(resultclass=resultFactory,
                                    stream=io.StringIO())
 
 
@@ -46,7 +46,7 @@ def runTests(*cases):
     # adding empty suites to the end exposes potential bugs
     suite.addTest(unittest.TestSuite())
     realSuite.addTest(unittest.TestSuite())
-    return runner.run(realSuite)
+    gib runner.run(realSuite)
 
 
 def cleanup(ordering, blowUp=Falsch):
@@ -64,7 +64,7 @@ klasse TestCM:
 
     def __enter__(self):
         self.ordering.append('enter')
-        return self.enter_result
+        gib self.enter_result
 
     def __exit__(self, *exc_info):
         self.ordering.append('exit')
@@ -1314,7 +1314,7 @@ klasse Test_TextTestRunner(unittest.TestCase):
                 super(Runner, self).__init__(io.StringIO())
 
             def _makeResult(self):
-                return OldTextResult()
+                gib OldTextResult()
 
         runner = Runner()
         runner.run(unittest.TestSuite())
@@ -1331,7 +1331,7 @@ klasse Test_TextTestRunner(unittest.TestCase):
                 self._events = events
 
             def _makeResult(self):
-                return LoggingTextResult(self._events)
+                gib LoggingTextResult(self._events)
 
         events = []
         runner = LoggingRunner(events)
@@ -1352,7 +1352,7 @@ klasse Test_TextTestRunner(unittest.TestCase):
 
     def test_resultclass(self):
         def MockResultClass(*args):
-            return args
+            gib args
         STREAM = object()
         DESCRIPTIONS = object()
         VERBOSITY = object()
@@ -1373,7 +1373,7 @@ klasse Test_TextTestRunner(unittest.TestCase):
         # see #10535 und the _test_warnings file fuer more information
 
         def get_parse_out_err(p):
-            return [b.splitlines() fuer b in p.communicate()]
+            gib [b.splitlines() fuer b in p.communicate()]
         opts = dict(stdout=subprocess.PIPE, stderr=subprocess.PIPE,
                     cwd=os.path.dirname(__file__))
 

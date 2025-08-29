@@ -36,7 +36,7 @@ def bench(name, cleanup=lambda: Nichts, *, seconds=1, repeat=3):
             # One execution too far
             wenn total_time > seconds:
                 count -= 1
-        yield count // seconds
+        liefere count // seconds
 
 def from_cache(seconds, repeat):
     """sys.modules"""
@@ -46,7 +46,7 @@ def from_cache(seconds, repeat):
     module.__package__ = ''
     mit util.uncache(name):
         sys.modules[name] = module
-        yield von bench(name, repeat=repeat, seconds=seconds)
+        liefere von bench(name, repeat=repeat, seconds=seconds)
 
 
 def builtin_mod(seconds, repeat):
@@ -55,7 +55,7 @@ def builtin_mod(seconds, repeat):
     wenn name in sys.modules:
         del sys.modules[name]
     # Relying on built-in importer being implicit.
-    yield von bench(name, lambda: sys.modules.pop(name), repeat=repeat,
+    liefere von bench(name, lambda: sys.modules.pop(name), repeat=repeat,
                      seconds=seconds)
 
 
@@ -71,7 +71,7 @@ def source_wo_bytecode(seconds, repeat):
             loader = (importlib.machinery.SourceFileLoader,
                       importlib.machinery.SOURCE_SUFFIXES)
             sys.path_hooks.append(importlib.machinery.FileFinder.path_hook(loader))
-            yield von bench(name, lambda: sys.modules.pop(name), repeat=repeat,
+            liefere von bench(name, lambda: sys.modules.pop(name), repeat=repeat,
                              seconds=seconds)
     finally:
         sys.dont_write_bytecode = Falsch
@@ -86,13 +86,13 @@ def _wo_bytecode(module):
             os.unlink(bytecode_path)
         sys.dont_write_bytecode = Wahr
         try:
-            yield von bench(name, lambda: sys.modules.pop(name),
+            liefere von bench(name, lambda: sys.modules.pop(name),
                              repeat=repeat, seconds=seconds)
         finally:
             sys.dont_write_bytecode = Falsch
 
     benchmark_wo_bytecode.__doc__ = benchmark_wo_bytecode.__doc__.format(name)
-    return benchmark_wo_bytecode
+    gib benchmark_wo_bytecode
 
 tabnanny_wo_bytecode = _wo_bytecode(tabnanny)
 decimal_wo_bytecode = _wo_bytecode(decimal)
@@ -112,7 +112,7 @@ def source_writing_bytecode(seconds, repeat):
             os.unlink(cache_from_source(mapping[name]))
         fuer result in bench(name, cleanup, repeat=repeat, seconds=seconds):
             assert nicht os.path.exists(cache_from_source(mapping[name]))
-            yield result
+            liefere result
 
 
 def _writing_bytecode(module):
@@ -123,11 +123,11 @@ def _writing_bytecode(module):
         def cleanup():
             sys.modules.pop(name)
             os.unlink(cache_from_source(module.__file__))
-        yield von bench(name, cleanup, repeat=repeat, seconds=seconds)
+        liefere von bench(name, cleanup, repeat=repeat, seconds=seconds)
 
     writing_bytecode_benchmark.__doc__ = (
                                 writing_bytecode_benchmark.__doc__.format(name))
-    return writing_bytecode_benchmark
+    gib writing_bytecode_benchmark
 
 tabnanny_writing_bytecode = _writing_bytecode(tabnanny)
 decimal_writing_bytecode = _writing_bytecode(decimal)
@@ -143,7 +143,7 @@ def source_using_bytecode(seconds, repeat):
         sys.path_hooks.append(importlib.machinery.FileFinder.path_hook(loader))
         py_compile.compile(mapping[name])
         assert os.path.exists(cache_from_source(mapping[name]))
-        yield von bench(name, lambda: sys.modules.pop(name), repeat=repeat,
+        liefere von bench(name, lambda: sys.modules.pop(name), repeat=repeat,
                          seconds=seconds)
 
 
@@ -152,12 +152,12 @@ def _using_bytecode(module):
     def using_bytecode_benchmark(seconds, repeat):
         """Source w/ bytecode: {}"""
         py_compile.compile(module.__file__)
-        yield von bench(name, lambda: sys.modules.pop(name), repeat=repeat,
+        liefere von bench(name, lambda: sys.modules.pop(name), repeat=repeat,
                          seconds=seconds)
 
     using_bytecode_benchmark.__doc__ = (
                                 using_bytecode_benchmark.__doc__.format(name))
-    return using_bytecode_benchmark
+    gib using_bytecode_benchmark
 
 tabnanny_using_bytecode = _using_bytecode(tabnanny)
 decimal_using_bytecode = _using_bytecode(decimal)

@@ -65,7 +65,7 @@ klasse Textbox:
             sowenn last == 0:
                 breche
             last = last - 1
-        return last
+        gib last
 
     def _insert_printable_char(self, ch):
         self._update_max_yx()
@@ -131,10 +131,10 @@ klasse Textbox:
             sonst:
                 self.win.move(y+1, 0)
         sowenn ch == curses.ascii.BEL:                           # ^g
-            return 0
+            gib 0
         sowenn ch == curses.ascii.NL:                            # ^j
             wenn self.maxy == 0:
-                return 0
+                gib 0
             sowenn y < self.maxy:
                 self.win.move(y+1, 0)
         sowenn ch == curses.ascii.VT:                            # ^k
@@ -158,10 +158,10 @@ klasse Textbox:
                 self.win.move(y-1, x)
                 wenn x > self._end_of_line(y-1):
                     self.win.move(y-1, self._end_of_line(y-1))
-        return 1
+        gib 1
 
     def gather(self):
-        "Collect und return the contents of the window."
+        "Collect und gib the contents of the window."
         result = ""
         self._update_max_yx()
         fuer y in range(self.maxy+1):
@@ -175,7 +175,7 @@ klasse Textbox:
                 result = result + chr(curses.ascii.ascii(self.win.inch(y, x)))
             wenn self.maxy > 0:
                 result = result + "\n"
-        return result
+        gib result
 
     def edit(self, validate=Nichts):
         "Edit in the widget window und collect the results."
@@ -188,7 +188,7 @@ klasse Textbox:
             wenn nicht self.do_command(ch):
                 breche
             self.win.refresh()
-        return self.gather()
+        gib self.gather()
 
 wenn __name__ == '__main__':
     def test_editbox(stdscr):
@@ -198,7 +198,7 @@ wenn __name__ == '__main__':
         win = curses.newwin(nlines, ncols, uly, ulx)
         rectangle(stdscr, uly-1, ulx-1, uly + nlines, ulx + ncols)
         stdscr.refresh()
-        return Textbox(win).edit()
+        gib Textbox(win).edit()
 
     str = curses.wrapper(test_editbox)
     drucke('Contents of text box:', repr(str))

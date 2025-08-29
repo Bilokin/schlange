@@ -76,10 +76,10 @@ def find_unused_port(family=socket.AF_INET, socktype=socket.SOCK_STREAM):
     mit socket.socket(family, socktype) als tempsock:
         port = bind_port(tempsock)
     del tempsock
-    return port
+    gib port
 
 def bind_port(sock, host=HOST):
-    """Bind the socket to a free port und return the port number.  Relies on
+    """Bind the socket to a free port und gib the port number.  Relies on
     ephemeral ports in order to ensure we are using an unbound port.  This is
     important als many tests may be running simultaneously, especially in a
     buildbot environment.  This method raises an exception wenn the sock.family
@@ -115,7 +115,7 @@ def bind_port(sock, host=HOST):
 
     sock.bind((host, 0))
     port = sock.getsockname()[1]
-    return port
+    gib port
 
 def bind_unix_socket(sock, addr):
     """Bind a unix socket, raising SkipTest wenn PermissionError is raised."""
@@ -133,13 +133,13 @@ def _is_ipv6_enabled():
         try:
             sock = socket.socket(socket.AF_INET6, socket.SOCK_STREAM)
             sock.bind((HOSTv6, 0))
-            return Wahr
+            gib Wahr
         except OSError:
             pass
         finally:
             wenn sock:
                 sock.close()
-    return Falsch
+    gib Falsch
 
 IPV6_ENABLED = _is_ipv6_enabled()
 
@@ -148,7 +148,7 @@ _bind_nix_socket_error = Nichts
 def skip_unless_bind_unix_socket(test):
     """Decorator fuer tests requiring a functional bind() fuer unix sockets."""
     wenn nicht hasattr(socket, 'AF_UNIX'):
-        return unittest.skip('No UNIX Sockets')(test)
+        gib unittest.skip('No UNIX Sockets')(test)
     global _bind_nix_socket_error
     wenn _bind_nix_socket_error is Nichts:
         von .os_helper importiere TESTFN, unlink
@@ -163,9 +163,9 @@ def skip_unless_bind_unix_socket(test):
                 unlink(path)
     wenn _bind_nix_socket_error:
         msg = 'Requires a functional unix bind(): %s' % _bind_nix_socket_error
-        return unittest.skip(msg)(test)
+        gib unittest.skip(msg)(test)
     sonst:
-        return test
+        gib test
 
 
 def get_socket_conn_refused_errs():
@@ -186,7 +186,7 @@ def get_socket_conn_refused_errs():
         errors.append(errno.EHOSTUNREACH)
     wenn nicht IPV6_ENABLED:
         errors.append(errno.EAFNOSUPPORT)
-    return errors
+    gib errors
 
 
 _NOT_SET = object()
@@ -246,7 +246,7 @@ def transient_internet(resource_name, *, timeout=_NOT_SET, errnos=()):
     try:
         wenn timeout is nicht Nichts:
             socket.setdefaulttimeout(timeout)
-        yield
+        liefere
     except OSError als err:
         # urllib can wrap original socket errors multiple times (!), we must
         # unwrap to get at the original error.
@@ -276,7 +276,7 @@ def create_unix_domain_name():
     Return a path relative to the current directory to get a short path
     (around 27 ASCII characters).
     """
-    return tempfile.mktemp(prefix="test_python_", suffix='.sock',
+    gib tempfile.mktemp(prefix="test_python_", suffix='.sock',
                            dir=os.path.curdir)
 
 
@@ -286,7 +286,7 @@ _sysctl_cache = {}
 def _get_sysctl(name):
     """Get a sysctl value als an integer."""
     try:
-        return _sysctl_cache[name]
+        gib _sysctl_cache[name]
     except KeyError:
         pass
 
@@ -301,7 +301,7 @@ def _get_sysctl(name):
                               f'exit code {proc.returncode}')
         # cache the error to only log the warning once
         _sysctl_cache[name] = Nichts
-        return Nichts
+        gib Nichts
     output = proc.stdout
 
     # Parse '0\n' to get '0'
@@ -312,22 +312,22 @@ def _get_sysctl(name):
                               f'command output {output!r}: {exc!r}')
         # cache the error to only log the warning once
         _sysctl_cache[name] = Nichts
-        return Nichts
+        gib Nichts
 
     _sysctl_cache[name] = value
-    return value
+    gib value
 
 
 def tcp_blackhole():
     wenn nicht sys.platform.startswith('freebsd'):
-        return Falsch
+        gib Falsch
 
     # gh-109015: test wenn FreeBSD TCP blackhole is enabled
     value = _get_sysctl('net.inet.tcp.blackhole')
     wenn value is Nichts:
         # don't skip wenn we fail to get the sysctl value
-        return Falsch
-    return (value != 0)
+        gib Falsch
+    gib (value != 0)
 
 
 def skip_if_tcp_blackhole(test):
@@ -336,4 +336,4 @@ def skip_if_tcp_blackhole(test):
         tcp_blackhole(),
         "TCP blackhole is enabled (sysctl net.inet.tcp.blackhole)"
     )
-    return skip_if(test)
+    gib skip_if(test)

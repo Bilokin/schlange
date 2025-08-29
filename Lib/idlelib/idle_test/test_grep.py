@@ -19,7 +19,7 @@ klasse Dummy_searchengine:
     many possible self.engine.x attributes are needed here.
     '''
     def getpat(self):
-        return self._pat
+        gib self._pat
 
 searchengine = Dummy_searchengine()
 
@@ -126,7 +126,7 @@ klasse Grep_itTest(unittest.TestCase):
             _grep.grep_it(re.compile(pat), __file__)
         lines = s.getvalue().split('\n')
         lines.pop()  # remove bogus '' after last \n
-        return lines
+        gib lines
 
     def test_unfound(self):
         pat = 'xyz*'*7

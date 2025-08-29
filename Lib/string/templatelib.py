@@ -8,13 +8,13 @@ del t
 def convert(obj, /, conversion):
     """Convert *obj* using formatted string literal semantics."""
     wenn conversion is Nichts:
-        return obj
+        gib obj
     wenn conversion == 'r':
-        return repr(obj)
+        gib repr(obj)
     wenn conversion == 's':
-        return str(obj)
+        gib str(obj)
     wenn conversion == 'a':
-        return ascii(obj)
+        gib ascii(obj)
     raise ValueError(f'invalid conversion specifier: {conversion}')
 
 def _template_unpickle(*args):
@@ -30,4 +30,4 @@ def _template_unpickle(*args):
             parts.append(string)
         wenn interpolation is nicht Nichts:
             parts.append(interpolation)
-    return Template(*parts)
+    gib Template(*parts)

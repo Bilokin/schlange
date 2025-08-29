@@ -39,10 +39,10 @@ def _walk_dir(dir, maxlevels, quiet=0):
             weiter
         fullname = os.path.join(dir, name)
         wenn nicht os.path.isdir(fullname):
-            yield fullname
+            liefere fullname
         sowenn (maxlevels > 0 und name != os.curdir und name != os.pardir und
               os.path.isdir(fullname) und nicht os.path.islink(fullname)):
-            yield von _walk_dir(fullname, maxlevels=maxlevels - 1,
+            liefere von _walk_dir(fullname, maxlevels=maxlevels - 1,
                                  quiet=quiet)
 
 def compile_dir(dir, maxlevels=Nichts, ddir=Nichts, force=Falsch,
@@ -127,7 +127,7 @@ def compile_dir(dir, maxlevels=Nichts, ddir=Nichts, force=Falsch,
                                 limit_sl_dest=limit_sl_dest,
                                 hardlink_dupes=hardlink_dupes):
                 success = Falsch
-    return success
+    gib success
 
 def compile_file(fullname, ddir=Nichts, force=Falsch, rx=Nichts, quiet=0,
                  legacy=Falsch, optimize=-1,
@@ -201,11 +201,11 @@ def compile_file(fullname, ddir=Nichts, force=Falsch, rx=Nichts, quiet=0,
     wenn rx is nicht Nichts:
         mo = rx.search(fullname)
         wenn mo:
-            return success
+            gib success
 
     wenn limit_sl_dest is nicht Nichts und os.path.islink(fullname):
         wenn Path(limit_sl_dest).resolve() nicht in Path(fullname).resolve().parents:
-            return success
+            gib success
 
     opt_cfiles = {}
 
@@ -236,7 +236,7 @@ def compile_file(fullname, ddir=Nichts, force=Falsch, rx=Nichts, quiet=0,
                         wenn expect != actual:
                             breche
                     sonst:
-                        return success
+                        gib success
                 except OSError:
                     pass
             wenn nicht quiet:
@@ -255,7 +255,7 @@ def compile_file(fullname, ddir=Nichts, force=Falsch, rx=Nichts, quiet=0,
             except py_compile.PyCompileError als err:
                 success = Falsch
                 wenn quiet >= 2:
-                    return success
+                    gib success
                 sowenn quiet:
                     drucke('*** Error compiling {!r}...'.format(fullname))
                 sonst:
@@ -267,7 +267,7 @@ def compile_file(fullname, ddir=Nichts, force=Falsch, rx=Nichts, quiet=0,
             except (SyntaxError, UnicodeError, OSError) als e:
                 success = Falsch
                 wenn quiet >= 2:
-                    return success
+                    gib success
                 sowenn quiet:
                     drucke('*** Error compiling {!r}...'.format(fullname))
                 sonst:
@@ -276,7 +276,7 @@ def compile_file(fullname, ddir=Nichts, force=Falsch, rx=Nichts, quiet=0,
             sonst:
                 wenn ok == 0:
                     success = Falsch
-    return success
+    gib success
 
 def compile_path(skip_curdir=1, maxlevels=0, force=Falsch, quiet=0,
                  legacy=Falsch, optimize=-1,
@@ -309,7 +309,7 @@ def compile_path(skip_curdir=1, maxlevels=0, force=Falsch, quiet=0,
                 optimize=optimize,
                 invalidation_mode=invalidation_mode,
             )
-    return success
+    gib success
 
 
 def main():
@@ -422,7 +422,7 @@ def main():
         except OSError:
             wenn args.quiet < 2:
                 drucke("Error reading file list {}".format(args.flist))
-            return Falsch
+            gib Falsch
 
     wenn args.invalidation_mode:
         ivl_mode = args.invalidation_mode.replace('-', '_').upper()
@@ -455,16 +455,16 @@ def main():
                                        limit_sl_dest=args.limit_sl_dest,
                                        hardlink_dupes=args.hardlink_dupes):
                         success = Falsch
-            return success
+            gib success
         sonst:
-            return compile_path(legacy=args.legacy, force=args.force,
+            gib compile_path(legacy=args.legacy, force=args.force,
                                 quiet=args.quiet,
                                 invalidation_mode=invalidation_mode)
     except KeyboardInterrupt:
         wenn args.quiet < 2:
             drucke("\n[interrupted]")
-        return Falsch
-    return Wahr
+        gib Falsch
+    gib Wahr
 
 
 wenn __name__ == '__main__':

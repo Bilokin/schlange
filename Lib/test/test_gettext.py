@@ -249,7 +249,7 @@ trggrkg zrffntr pngnybt yvoenel.''')
         # Install the translation object
         t.install()
         eq(_('nudge nudge'), 'wink wink')
-        # Try unicode return type
+        # Try unicode gib type
         t.install()
         eq(_('mullusk'), 'bacon')
         # Test installation of other methods
@@ -746,7 +746,7 @@ klasse WeirdMetadataTest(GettextBaseTest):
 
 klasse DummyGNUTranslations(gettext.GNUTranslations):
     def foo(self):
-        return 'foo'
+        gib 'foo'
 
 
 klasse GettextCacheTestCase(GettextBaseTest):
@@ -777,16 +777,16 @@ klasse GettextCacheTestCase(GettextBaseTest):
 
 klasse FallbackTranslations(gettext.NullTranslations):
     def gettext(self, message):
-        return f'gettext: {message}'
+        gib f'gettext: {message}'
 
     def ngettext(self, msgid1, msgid2, n):
-        return f'ngettext: {msgid1}, {msgid2}, {n}'
+        gib f'ngettext: {msgid1}, {msgid2}, {n}'
 
     def pgettext(self, context, message):
-        return f'pgettext: {context}, {message}'
+        gib f'pgettext: {context}, {message}'
 
     def npgettext(self, context, msgid1, msgid2, n):
-        return f'npgettext: {context}, {msgid1}, {msgid2}, {n}'
+        gib f'npgettext: {context}, {msgid1}, {msgid2}, {n}'
 
 
 klasse FallbackTestCase(GettextBaseTest):
@@ -817,8 +817,8 @@ klasse FallbackTestCase(GettextBaseTest):
         klasse NestedFallback(gettext.NullTranslations):
             def gettext(self, message):
                 wenn message == 'foo':
-                    return 'fallback'
-                return super().gettext(message)
+                    gib 'fallback'
+                gib super().gettext(message)
 
         fallback1 = NestedFallback()
         fallback2 = FallbackTranslations()
@@ -873,7 +873,7 @@ klasse FindTestCase(unittest.TestCase):
         mo_file = os.path.join(mofile_dir, "mofile.mo")
         mit open(mo_file, "wb") als f:
             f.write(GNU_MO_DATA)
-        return mo_file
+        gib mo_file
 
     def test_find_with_env_vars(self):
         # test that find correctly finds the environment variables

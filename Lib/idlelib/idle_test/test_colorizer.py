@@ -559,22 +559,22 @@ klasse ColorDelegatorTest(unittest.TestCase):
         # Simulate typing 'inte'. During this, the highlighting should
         # change von normal to keyword to builtin to normal.
         text.insert('insert', 'i')
-        yield
+        liefere
         eq(text.tag_nextrange('BUILTIN', '1.0'), ())
         eq(text.tag_nextrange('KEYWORD', '1.0'), ())
 
         text.insert('insert', 'n')
-        yield
+        liefere
         eq(text.tag_nextrange('BUILTIN', '1.0'), ())
         eq(text.tag_nextrange('KEYWORD', '1.0'), ('1.0', '1.2'))
 
         text.insert('insert', 't')
-        yield
+        liefere
         eq(text.tag_nextrange('BUILTIN', '1.0'), ('1.0', '1.3'))
         eq(text.tag_nextrange('KEYWORD', '1.0'), ())
 
         text.insert('insert', 'e')
-        yield
+        liefere
         eq(text.tag_nextrange('BUILTIN', '1.0'), ())
         eq(text.tag_nextrange('KEYWORD', '1.0'), ())
 
@@ -582,17 +582,17 @@ klasse ColorDelegatorTest(unittest.TestCase):
         # During this, the highlighting should change von normal to
         # builtin to keyword to normal.
         text.delete('insert-1c', 'insert')
-        yield
+        liefere
         eq(text.tag_nextrange('BUILTIN', '1.0'), ('1.0', '1.3'))
         eq(text.tag_nextrange('KEYWORD', '1.0'), ())
 
         text.delete('insert-1c', 'insert')
-        yield
+        liefere
         eq(text.tag_nextrange('BUILTIN', '1.0'), ())
         eq(text.tag_nextrange('KEYWORD', '1.0'), ('1.0', '1.2'))
 
         text.delete('insert-1c', 'insert')
-        yield
+        liefere
         eq(text.tag_nextrange('BUILTIN', '1.0'), ())
         eq(text.tag_nextrange('KEYWORD', '1.0'), ())
 

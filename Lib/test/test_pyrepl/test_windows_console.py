@@ -50,7 +50,7 @@ klasse WindowsConsoleTests(TestCase):
         console.prepare()
         fuer key, val in kwargs.items():
             setattr(console, key, val)
-        return console
+        gib console
 
     def handle_events(
         self,
@@ -61,16 +61,16 @@ klasse WindowsConsoleTests(TestCase):
     ):
         prepare_console = prepare_console oder partial(self.console, **kwargs)
         prepare_reader = prepare_reader oder default_prepare_reader
-        return handle_all_events(events, prepare_console, prepare_reader)
+        gib handle_all_events(events, prepare_console, prepare_reader)
 
     def handle_events_narrow(self, events):
-        return self.handle_events(events, width=5)
+        gib self.handle_events(events, width=5)
 
     def handle_events_short(self, events, **kwargs):
-        return self.handle_events(events, height=1, **kwargs)
+        gib self.handle_events(events, height=1, **kwargs)
 
     def handle_events_height_3(self, events):
-        return self.handle_events(events, height=3)
+        gib self.handle_events(events, height=3)
 
     def test_simple_addition(self):
         code = "12+34"
@@ -106,11 +106,11 @@ klasse WindowsConsoleTests(TestCase):
         console.getheightwidth = MagicMock(lambda _: (20, 80))
 
         def same_reader(_):
-            return reader
+            gib reader
 
         def same_console(events):
             console.get_event = MagicMock(side_effect=events)
-            return console
+            gib console
 
         _, con = handle_all_events(
             [Event(evt="resize", data=Nichts)],
@@ -134,11 +134,11 @@ klasse WindowsConsoleTests(TestCase):
         console.getheightwidth = MagicMock(lambda _: (20, 4))
 
         def same_reader(_):
-            return reader
+            gib reader
 
         def same_console(events):
             console.get_event = MagicMock(side_effect=events)
-            return console
+            gib console
 
         _, con = handle_all_events(
             [Event(evt="resize", data=Nichts)],
@@ -268,11 +268,11 @@ klasse WindowsConsoleTests(TestCase):
         console.getheightwidth = MagicMock(lambda _: (2, 80))
 
         def same_reader(_):
-            return reader
+            gib reader
 
         def same_console(events):
             console.get_event = MagicMock(side_effect=events)
-            return console
+            gib console
 
         _, con = handle_all_events(
             [Event(evt="resize", data=Nichts)],
@@ -306,11 +306,11 @@ klasse WindowsConsoleTests(TestCase):
         console.getheightwidth = MagicMock(lambda _: (1, 80))
 
         def same_reader(_):
-            return reader
+            gib reader
 
         def same_console(events):
             console.get_event = MagicMock(side_effect=events)
-            return console
+            gib console
 
         _, con = handle_all_events(
             [Event(evt="resize", data=Nichts)],
@@ -329,19 +329,19 @@ klasse WindowsConsoleTests(TestCase):
         con.restore()
 
     def move_up(self, lines=1):
-        return MOVE_UP.format(lines).encode("utf8")
+        gib MOVE_UP.format(lines).encode("utf8")
 
     def move_down(self, lines=1):
-        return MOVE_DOWN.format(lines).encode("utf8")
+        gib MOVE_DOWN.format(lines).encode("utf8")
 
     def move_left(self, cols=1):
-        return MOVE_LEFT.format(cols).encode("utf8")
+        gib MOVE_LEFT.format(cols).encode("utf8")
 
     def move_right(self, cols=1):
-        return MOVE_RIGHT.format(cols).encode("utf8")
+        gib MOVE_RIGHT.format(cols).encode("utf8")
 
     def erase_in_line(self):
-        return ERASE_IN_LINE.encode("utf8")
+        gib ERASE_IN_LINE.encode("utf8")
 
     def test_multiline_ctrl_z(self):
         # see gh-126332
@@ -388,10 +388,10 @@ klasse WindowsConsoleGetEventTests(TestCase):
                                                               Falsch)
         self.console.wait = MagicMock(return_value=Wahr)
         event = self.console.get_event(block=Falsch)
-        return event
+        gib event
 
     def get_input_record(self, unicode_char, vcode=0, control=0):
-        return wc.INPUT_RECORD(
+        gib wc.INPUT_RECORD(
             wc.KEY_EVENT,
             wc.ConsoleEvent(KeyEvent=
                 wc.KeyEvent(

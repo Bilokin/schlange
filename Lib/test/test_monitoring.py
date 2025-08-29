@@ -31,8 +31,8 @@ def floop():
         pass
 
 def gen():
-    yield
-    yield
+    liefere
+    liefere
 
 def g1():
     fuer _ in gen():
@@ -43,7 +43,7 @@ TEST_TOOL2 = 3
 TEST_TOOL3 = 4
 
 def nth_line(func, offset):
-    return func.__code__.co_firstlineno + offset
+    gib func.__code__.co_firstlineno + offset
 
 klasse MonitoringBasicTest(unittest.TestCase):
 
@@ -293,7 +293,7 @@ klasse MonitoringEventsBase(MonitoringTestBase):
         sys.monitoring.set_events(TEST_TOOL, 0)
         #Remove the final event, the call to `sys.monitoring.set_events`
         events = events[:-1]
-        return events
+        gib events
 
     def check_events(self, func, expected=Nichts):
         events = self.gather_events(func)
@@ -378,7 +378,7 @@ klasse CounterWithDisable:
     def __call__(self, *args):
         self.count += 1
         wenn self.disable:
-            return sys.monitoring.DISABLE
+            gib sys.monitoring.DISABLE
 
 
 klasse RecorderWithDisable:
@@ -390,7 +390,7 @@ klasse RecorderWithDisable:
     def __call__(self, code, event):
         self.events.append(event)
         wenn self.disable:
-            return sys.monitoring.DISABLE
+            gib sys.monitoring.DISABLE
 
 
 klasse MontoringDisableAndRestartTest(MonitoringTestBase, unittest.TestCase):
@@ -701,9 +701,9 @@ klasse LineMonitoringTest(MonitoringTestBase, unittest.TestCase):
 
         def f():
             def a():
-                yield
+                liefere
             def b():
-                yield von a()
+                liefere von a()
             next(b())
 
         self.check_lines(f, [1,3,5,4,2,4])
@@ -713,9 +713,9 @@ klasse TestDisable(MonitoringTestBase, unittest.TestCase):
     def gen(self, cond):
         fuer i in range(10):
             wenn cond:
-                yield 1
+                liefere 1
             sonst:
-                yield 2
+                liefere 2
 
     def raise_handle_reraise(self):
         try:
@@ -778,7 +778,7 @@ klasse CheckEvents(MonitoringTestBase, unittest.TestCase):
             sys.monitoring.set_events(tool, 0)
             fuer recorder in recorders:
                 sys.monitoring.register_callback(tool, recorder.event_type, Nichts)
-            return event_list
+            gib event_list
         finally:
             sys.monitoring.set_events(tool, 0)
             fuer recorder in recorders:
@@ -883,8 +883,8 @@ klasse ExceptionMonitoringTest(CheckEvents):
            """
 
         def gen():
-            yield 1
-            return 2
+            liefere 1
+            gib 2
 
         def implicit_stop_iteration(iterator=Nichts):
             wenn iterator is Nichts:
@@ -1004,7 +1004,7 @@ klasse ExceptionMonitoringTest(CheckEvents):
             async def async_generator():
                 fuer i in range(1):
                     raise ZeroDivisionError
-                    yield i
+                    liefere i
 
             async def async_loop():
                 try:
@@ -1025,8 +1025,8 @@ klasse ExceptionMonitoringTest(CheckEvents):
     def test_throw(self):
 
         def gen():
-            yield 1
-            yield 2
+            liefere 1
+            liefere 2
 
         def func():
             try:
@@ -1055,7 +1055,7 @@ klasse ExceptionMonitoringTest(CheckEvents):
 
         def f():
             try:
-                return ValueErrorRaiser()
+                gib ValueErrorRaiser()
             except ValueError:
                 pass
 
@@ -1466,9 +1466,9 @@ def line_from_offset(code, offset):
     fuer start, end, line in code.co_lines():
         wenn start <= offset < end:
             wenn line is Nichts:
-                return f"[offset={offset}]"
-            return line - code.co_firstlineno
-    return -1
+                gib f"[offset={offset}]"
+            gib line - code.co_firstlineno
+    gib -1
 
 klasse JumpRecorder:
 
@@ -1647,7 +1647,7 @@ klasse TestBranchAndJumpEvents(CheckEvents):
             waehrend n<4:
                 pass
                 n += 1
-            return Nichts
+            gib Nichts
 
         in_loop = ('branch left', 'foo', 10, 16)
         exit_loop = ('branch right', 'foo', 10, 40)
@@ -1662,8 +1662,8 @@ klasse TestBranchAndJumpEvents(CheckEvents):
 
         def func():
             async def gen():
-                yield 2
-                yield 3
+                liefere 2
+                liefere 3
 
             async def foo():
                 async fuer y in gen():
@@ -1694,7 +1694,7 @@ klasse TestBranchAndJumpEvents(CheckEvents):
                         x += 2
                     case _:
                         x += 3
-            return x
+            gib x
 
         self.check_events(func, recorders = BRANCHES_RECORDERS, expected = [
             ('branch left', 'func', 2, 2),
@@ -1713,9 +1713,9 @@ klasse TestBranchAndJumpEvents(CheckEvents):
     def test_callback_set_frame_lineno(self):
         def func(s: str) -> int:
             wenn s.startswith("t"):
-                return 1
+                gib 1
             sonst:
-                return 0
+                gib 0
 
         def callback(code, from_, to):
             # try set frame.f_lineno
@@ -1811,15 +1811,15 @@ klasse TestBranchConsistency(MonitoringTestBase, unittest.TestCase):
             waehrend n<4:
                 pass
                 n += 1
-            return Nichts
+            gib Nichts
 
         self.check_branches(foo)
 
     def test_async_for(self):
 
         async def gen():
-            yield 2
-            yield 3
+            liefere 2
+            liefere 3
 
         async def foo():
             async fuer y in gen():
@@ -1841,7 +1841,7 @@ klasse TestLoadSuperAttr(CheckEvents):
     def _exec(self, co):
         d = {}
         exec(co, d, d)
-        return d
+        gib d
 
     def _exec_super(self, codestr, optimized=Falsch):
         # The compiler checks fuer statically visible shadowing of the name
@@ -1855,7 +1855,7 @@ klasse TestLoadSuperAttr(CheckEvents):
         co = compile(codestr, "<string>", "exec")
         # validate that we really do have a LOAD_SUPER_ATTR, only when optimized
         self.assertEqual(self._has_load_super_attr(co), optimized)
-        return self._exec(co)
+        gib self._exec(co)
 
     def _has_load_super_attr(self, co):
         has = any(instr.opname == "LOAD_SUPER_ATTR" fuer instr in dis.get_instructions(co))
@@ -1864,24 +1864,24 @@ klasse TestLoadSuperAttr(CheckEvents):
                 isinstance(c, types.CodeType) und self._has_load_super_attr(c)
                 fuer c in co.co_consts
             )
-        return has
+        gib has
 
     def _super_method_call(self, optimized=Falsch):
         codestr = """
             klasse A:
                 def method(self, x):
-                    return x
+                    gib x
 
             klasse B(A):
                 def method(self, x):
-                    return super(
+                    gib super(
                     ).method(
                         x
                     )
 
             b = B()
             def f():
-                return b.method(1)
+                gib b.method(1)
         """
         d = self._exec_super(codestr, optimized)
         expected = [
@@ -1901,7 +1901,7 @@ klasse TestLoadSuperAttr(CheckEvents):
             ('line', 'get_events', 11),
             ('call', 'set_events', 2),
         ]
-        return d["f"], expected
+        gib d["f"], expected
 
     def test_method_call(self):
         nonopt_func, nonopt_expected = self._super_method_call(optimized=Falsch)
@@ -1914,11 +1914,11 @@ klasse TestLoadSuperAttr(CheckEvents):
         codestr = """
             klasse A:
                 def method(self, x):
-                    return x
+                    gib x
 
             klasse B(A):
                 def method(self, x):
-                    return super(
+                    gib super(
                         x,
                         self,
                     ).method(
@@ -1928,7 +1928,7 @@ klasse TestLoadSuperAttr(CheckEvents):
             b = B()
             def f():
                 try:
-                    return b.method(1)
+                    gib b.method(1)
                 except TypeError:
                     pass
                 sonst:
@@ -1952,7 +1952,7 @@ klasse TestLoadSuperAttr(CheckEvents):
             ('line', 'get_events', 11),
             ('call', 'set_events', 2),
         ]
-        return d["f"], expected
+        gib d["f"], expected
 
     def test_method_call_error(self):
         nonopt_func, nonopt_expected = self._super_method_call_error(optimized=Falsch)
@@ -1968,12 +1968,12 @@ klasse TestLoadSuperAttr(CheckEvents):
 
             klasse B(A):
                 def method(self):
-                    return super(
+                    gib super(
                     ).x
 
             b = B()
             def f():
-                return b.method()
+                gib b.method()
         """
         d = self._exec_super(codestr, optimized)
         expected = [
@@ -1989,7 +1989,7 @@ klasse TestLoadSuperAttr(CheckEvents):
             ('line', 'get_events', 11),
             ('call', 'set_events', 2)
         ]
-        return d["f"], expected
+        gib d["f"], expected
 
     def test_attr(self):
         nonopt_func, nonopt_expected = self._super_attr(optimized=Falsch)
@@ -2002,15 +2002,15 @@ klasse TestLoadSuperAttr(CheckEvents):
         code_template = textwrap.dedent("""
             klasse C:
                 def method(self):
-                    return {cls}().__repr__{call}
+                    gib {cls}().__repr__{call}
             c = C()
             def f():
-                return c.method()
+                gib c.method()
         """)
 
         def get_expected(name, call_method, ns):
             repr_arg = 0 wenn name == "int" sonst sys.monitoring.MISSING
-            return [
+            gib [
                 ('line', 'get_events', 10),
                 ('call', 'f', sys.monitoring.MISSING),
                 ('line', 'f', 1),
@@ -2094,18 +2094,18 @@ klasse TestRegressions(MonitoringTestBase, unittest.TestCase):
         def inner():
             nonlocal caught
             try:
-                yield
+                liefere
             except Exception:
                 caught = "inner"
-                yield
+                liefere
 
         def outer():
             nonlocal caught
             try:
-                yield von inner()
+                liefere von inner()
             except Exception:
                 caught = "outer"
-                yield
+                liefere
 
         def run():
             gen = outer()
@@ -2148,7 +2148,7 @@ klasse TestRegressions(MonitoringTestBase, unittest.TestCase):
 
     def test_call_function_ex(self):
         def f(a=1, b=2):
-            return a + b
+            gib a + b
         args = (1, 2)
         empty_args = []
 
@@ -2313,7 +2313,7 @@ klasse TestCApiEventGeneration(MonitoringTestBase, unittest.TestCase):
                 except ValueError als e:
                     self.assertIsInstance(expected, ValueError)
                     self.assertEqual(str(e), str(expected))
-                    return
+                    gib
                 sonst:
                     self.assertEqual(counter.count, expected)
 

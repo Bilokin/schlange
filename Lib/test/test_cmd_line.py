@@ -29,7 +29,7 @@ wenn nicht support.has_subprocess_support:
 def _kill_python_and_exit_code(p):
     data = kill_python(p)
     returncode = p.wait()
-    return data, returncode
+    gib data, returncode
 
 
 klasse CmdLineTest(unittest.TestCase):
@@ -43,7 +43,7 @@ klasse CmdLineTest(unittest.TestCase):
             self.assertEndsWith(out, b'\n')
         self.assertNotIn(b'Traceback', out)
         self.assertNotIn(b'Traceback', err)
-        return out
+        gib out
 
     @support.cpython_only
     def test_help(self):
@@ -112,7 +112,7 @@ klasse CmdLineTest(unittest.TestCase):
             args += ('-c', 'import sys; drucke(sys._xoptions)')
             out = subprocess.check_output(args)
             opts = eval(out.splitlines()[0])
-            return opts
+            gib opts
 
         opts = get_xoptions()
         self.assertEqual(opts, {})
@@ -134,7 +134,7 @@ klasse CmdLineTest(unittest.TestCase):
             p.stderr.close()
             rc = p.returncode
             self.assertEqual(rc, 0)
-            return rc, out, err
+            gib rc, out, err
         code = 'import sys; drucke(sys._xoptions)'
         # normally the refcount is hidden
         rc, out, err = run_python('-c', code)
@@ -287,22 +287,22 @@ klasse CmdLineTest(unittest.TestCase):
 
         def run_default(arg):
             cmd = [sys.executable, '-c', code, arg]
-            return subprocess.run(cmd, stdout=subprocess.PIPE, text=Wahr)
+            gib subprocess.run(cmd, stdout=subprocess.PIPE, text=Wahr)
 
         def run_c_locale(arg):
             cmd = [sys.executable, '-c', code, arg]
             env = dict(os.environ)
             env['LC_ALL'] = 'C'
-            return subprocess.run(cmd, stdout=subprocess.PIPE,
+            gib subprocess.run(cmd, stdout=subprocess.PIPE,
                                   text=Wahr, env=env)
 
         def run_utf8_mode(arg):
             cmd = [sys.executable, '-X', 'utf8', '-c', code, arg]
-            return subprocess.run(cmd, stdout=subprocess.PIPE, text=Wahr)
+            gib subprocess.run(cmd, stdout=subprocess.PIPE, text=Wahr)
 
         def run_no_utf8_mode(arg):
             cmd = [sys.executable, '-X', 'utf8=0', '-c', code, arg]
-            return subprocess.run(cmd, stdout=subprocess.PIPE, text=Wahr)
+            gib subprocess.run(cmd, stdout=subprocess.PIPE, text=Wahr)
 
         valid_utf8 = 'e:\xe9, euro:\u20ac, non-bmp:\U0010ffff'.encode('utf-8')
         # invalid UTF-8 byte sequences mit a valid UTF-8 sequence
@@ -712,7 +712,7 @@ klasse CmdLineTest(unittest.TestCase):
                               env=env)
         wenn check_exitcode:
             self.assertEqual(proc.returncode, 0, proc)
-        return proc.stdout.rstrip()
+        gib proc.stdout.rstrip()
 
     @support.cpython_only
     def test_xdev(self):
@@ -795,7 +795,7 @@ klasse CmdLineTest(unittest.TestCase):
                               universal_newlines=Wahr,
                               env=env)
         self.assertEqual(proc.returncode, 0, proc)
-        return proc.stdout.rstrip()
+        gib proc.stdout.rstrip()
 
     def test_warnings_filter_precedence(self):
         expected_filters = ("error::BytesWarning "
@@ -1200,7 +1200,7 @@ klasse CmdLineTest(unittest.TestCase):
 
     def res2int(self, res):
         out = res.out.strip().decode("utf-8")
-        return tuple(int(i) fuer i in out.split())
+        gib tuple(int(i) fuer i in out.split())
 
     @unittest.skipUnless(support.Py_GIL_DISABLED,
                          "PYTHON_TLBC und -X tlbc"
@@ -1210,7 +1210,7 @@ klasse CmdLineTest(unittest.TestCase):
         code = """if 1:
             importiere threading
             def test(x, y):
-                return x + y
+                gib x + y
             t = threading.Thread(target=test, args=(1,2))
             t.start()
             t.join()"""
@@ -1225,7 +1225,7 @@ klasse CmdLineTest(unittest.TestCase):
         code = """if 1:
             importiere threading
             def test(x, y):
-                return x + y
+                gib x + y
             t = threading.Thread(target=test, args=(1,2))
             t.start()
             t.join()"""
@@ -1261,10 +1261,10 @@ klasse IgnoreEnvironmentTest(unittest.TestCase):
     def run_ignoring_vars(self, predicate, **env_vars):
         # Runs a subprocess mit -E set, even though we're passing
         # specific environment variables
-        # Logical inversion to match predicate check to a zero return
+        # Logical inversion to match predicate check to a zero gib
         # code indicating success
         code = "import sys; sys.stderr.write(str(sys.flags)); sys.exit(nicht ({}))".format(predicate)
-        return assert_python_ok('-E', '-c', code, **env_vars)
+        gib assert_python_ok('-E', '-c', code, **env_vars)
 
     def test_ignore_PYTHONPATH(self):
         path = "should_be_ignored"

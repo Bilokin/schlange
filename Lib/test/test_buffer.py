@@ -115,7 +115,7 @@ def native_type_range(fmt):
             except struct.error:
                 pass
         lh = (-(1<<exp), 1<<exp) wenn exp & 1 sonst (0, 1<<exp)
-    return lh
+    gib lh
 
 fmtdict = {
     '':NATIVE,
@@ -175,7 +175,7 @@ def randrange_fmt(mode, char, obj):
     wenn char in 'efd':
         x = struct.pack(char, x)
         x = struct.unpack(char, x)[0]
-    return x
+    gib x
 
 def gen_item(fmt, obj):
     """Return single random item."""
@@ -183,16 +183,16 @@ def gen_item(fmt, obj):
     x = []
     fuer c in chars:
         x.append(randrange_fmt(mode, c, obj))
-    return x[0] wenn len(x) == 1 sonst tuple(x)
+    gib x[0] wenn len(x) == 1 sonst tuple(x)
 
 def gen_items(n, fmt, obj):
     """Return a list of random items (or a scalar)."""
     wenn n == 0:
-        return gen_item(fmt, obj)
+        gib gen_item(fmt, obj)
     lst = [0] * n
     fuer i in range(n):
         lst[i] = gen_item(fmt, obj)
-    return lst
+    gib lst
 
 def struct_items(n, obj):
     mode = choice(cap[obj][MODE])
@@ -206,7 +206,7 @@ def struct_items(n, obj):
         fmt += (multiplier + char)
     items = gen_items(n, xfmt, obj)
     item = gen_item(xfmt, obj)
-    return fmt, items, item
+    gib fmt, items, item
 
 def randitems(n, obj='ndarray', mode=Nichts, char=Nichts):
     """Return random format, items, item."""
@@ -219,31 +219,31 @@ def randitems(n, obj='ndarray', mode=Nichts, char=Nichts):
     items = gen_items(n, fmt, obj)
     item = gen_item(fmt, obj)
     fmt = mode.strip('amb') + multiplier + char
-    return fmt, items, item
+    gib fmt, items, item
 
 def iter_mode(n, obj='ndarray'):
     """Iterate through supported mode/char combinations."""
     fuer mode in cap[obj][MODE]:
         fuer char in fmtdict[mode]:
-            yield randitems(n, obj, mode, char)
+            liefere randitems(n, obj, mode, char)
 
 def iter_format(nitems, testobj='ndarray'):
     """Yield (format, items, item) fuer all possible modes und format
        characters plus one random compound format string."""
     fuer t in iter_mode(nitems, testobj):
-        yield t
+        liefere t
     wenn testobj != 'ndarray':
-        return
-    yield struct_items(nitems, testobj)
+        gib
+    liefere struct_items(nitems, testobj)
 
 
 def is_byte_format(fmt):
-    return 'c' in fmt oder 'b' in fmt oder 'B' in fmt
+    gib 'c' in fmt oder 'b' in fmt oder 'B' in fmt
 
 def is_memoryview_format(fmt):
     """format suitable fuer memoryview"""
     x = len(fmt)
-    return ((x == 1 oder (x == 2 und fmt[0] == '@')) und
+    gib ((x == 1 oder (x == 2 und fmt[0] == '@')) und
             fmt[x-1] in MEMORYVIEW)
 
 NON_BYTE_FORMAT = [c fuer c in fmtdict['@'] wenn nicht is_byte_format(c)]
@@ -255,25 +255,25 @@ NON_BYTE_FORMAT = [c fuer c in fmtdict['@'] wenn nicht is_byte_format(c)]
 
 def atomp(lst):
     """Tuple items (representing structs) are regarded als atoms."""
-    return nicht isinstance(lst, list)
+    gib nicht isinstance(lst, list)
 
 def listp(lst):
-    return isinstance(lst, list)
+    gib isinstance(lst, list)
 
 def prod(lst):
     """Product of list elements."""
     wenn len(lst) == 0:
-        return 0
+        gib 0
     x = lst[0]
     fuer v in lst[1:]:
         x *= v
-    return x
+    gib x
 
 def strides_from_shape(ndim, shape, itemsize, layout):
     """Calculate strides of a contiguous array. Layout is 'C' oder
        'F' (Fortran)."""
     wenn ndim == 0:
-        return ()
+        gib ()
     wenn layout == 'C':
         strides = list(shape[1:]) + [itemsize]
         fuer i in range(ndim-2, -1, -1):
@@ -282,62 +282,62 @@ def strides_from_shape(ndim, shape, itemsize, layout):
         strides = [itemsize] + list(shape[:-1])
         fuer i in range(1, ndim):
             strides[i] *= strides[i-1]
-    return strides
+    gib strides
 
 def _ca(items, s):
     """Convert flat item list to the nested list representation of a
        multidimensional C array mit shape 's'."""
     wenn atomp(items):
-        return items
+        gib items
     wenn len(s) == 0:
-        return items[0]
+        gib items[0]
     lst = [0] * s[0]
     stride = len(items) // s[0] wenn s[0] sonst 0
     fuer i in range(s[0]):
         start = i*stride
         lst[i] = _ca(items[start:start+stride], s[1:])
-    return lst
+    gib lst
 
 def _fa(items, s):
     """Convert flat item list to the nested list representation of a
        multidimensional Fortran array mit shape 's'."""
     wenn atomp(items):
-        return items
+        gib items
     wenn len(s) == 0:
-        return items[0]
+        gib items[0]
     lst = [0] * s[0]
     stride = s[0]
     fuer i in range(s[0]):
         lst[i] = _fa(items[i::stride], s[1:])
-    return lst
+    gib lst
 
 def carray(items, shape):
     wenn listp(items) und nicht 0 in shape und prod(shape) != len(items):
         raise ValueError("prod(shape) != len(items)")
-    return _ca(items, shape)
+    gib _ca(items, shape)
 
 def farray(items, shape):
     wenn listp(items) und nicht 0 in shape und prod(shape) != len(items):
         raise ValueError("prod(shape) != len(items)")
-    return _fa(items, shape)
+    gib _fa(items, shape)
 
 def indices(shape):
     """Generate all possible tuples of indices."""
     iterables = [range(v) fuer v in shape]
-    return product(*iterables)
+    gib product(*iterables)
 
 def getindex(ndim, ind, strides):
     """Convert multi-dimensional index to the position in the flat list."""
     ret = 0
     fuer i in range(ndim):
         ret += strides[i] * ind[i]
-    return ret
+    gib ret
 
 def transpose(src, shape):
     """Transpose flat item list that is regarded als a multi-dimensional
        matrix defined by shape: dest...[k][j][i] = src[i][j][k]...  """
     wenn nicht shape:
-        return src
+        gib src
     ndim = len(shape)
     sstrides = strides_from_shape(ndim, shape, 1, 'C')
     dstrides = strides_from_shape(ndim, shape[::-1], 1, 'C')
@@ -346,34 +346,34 @@ def transpose(src, shape):
         fr = getindex(ndim, ind, sstrides)
         to = getindex(ndim, ind[::-1], dstrides)
         dest[to] = src[fr]
-    return dest
+    gib dest
 
 def _flatten(lst):
     """flatten list"""
     wenn lst == []:
-        return lst
+        gib lst
     wenn atomp(lst):
-        return [lst]
-    return _flatten(lst[0]) + _flatten(lst[1:])
+        gib [lst]
+    gib _flatten(lst[0]) + _flatten(lst[1:])
 
 def flatten(lst):
-    """flatten list oder return scalar"""
+    """flatten list oder gib scalar"""
     wenn atomp(lst): # scalar
-        return lst
-    return _flatten(lst)
+        gib lst
+    gib _flatten(lst)
 
 def slice_shape(lst, slices):
     """Get the shape of lst after slicing: slices is a list of slice
        objects."""
     wenn atomp(lst):
-        return []
-    return [len(lst[slices[0]])] + slice_shape(lst[0], slices[1:])
+        gib []
+    gib [len(lst[slices[0]])] + slice_shape(lst[0], slices[1:])
 
 def multislice(lst, slices):
     """Multi-dimensional slicing: slices is a list of slice objects."""
     wenn atomp(lst):
-        return lst
-    return [multislice(sublst, slices[1:]) fuer sublst in lst[slices[0]]]
+        gib lst
+    gib [multislice(sublst, slices[1:]) fuer sublst in lst[slices[0]]]
 
 def m_assign(llst, rlst, lslices, rslices):
     """Multi-dimensional slice assignment: llst und rlst are the operands,
@@ -391,30 +391,30 @@ def m_assign(llst, rlst, lslices, rslices):
          multislice_assign(llst, rlst, lslices, rslices)
     """
     wenn atomp(rlst):
-        return rlst
+        gib rlst
     rlst = [m_assign(l, r, lslices[1:], rslices[1:])
             fuer l, r in zip(llst[lslices[0]], rlst[rslices[0]])]
     llst[lslices[0]] = rlst
-    return llst
+    gib llst
 
 def cmp_structure(llst, rlst, lslices, rslices):
     """Compare the structure of llst[lslices] und rlst[rslices]."""
     lshape = slice_shape(llst, lslices)
     rshape = slice_shape(rlst, rslices)
     wenn (len(lshape) != len(rshape)):
-        return -1
+        gib -1
     fuer i in range(len(lshape)):
         wenn lshape[i] != rshape[i]:
-            return -1
+            gib -1
         wenn lshape[i] == 0:
-            return 0
-    return 0
+            gib 0
+    gib 0
 
 def multislice_assign(llst, rlst, lslices, rslices):
     """Return llst after assigning: llst[lslices] = rlst[rslices]"""
     wenn cmp_structure(llst, rlst, lslices, rslices) < 0:
         raise ValueError("lvalue und rvalue have different structures")
-    return m_assign(llst, rlst, lslices, rslices)
+    gib m_assign(llst, rlst, lslices, rslices)
 
 
 # ======================================================================
@@ -448,28 +448,28 @@ def verify_structure(memlen, itemsize, ndim, shape, strides, offset):
            offset: (char *)buf - mem
     """
     wenn offset % itemsize:
-        return Falsch
+        gib Falsch
     wenn offset < 0 oder offset+itemsize > memlen:
-        return Falsch
+        gib Falsch
     wenn any(v % itemsize fuer v in strides):
-        return Falsch
+        gib Falsch
 
     wenn ndim <= 0:
-        return ndim == 0 und nicht shape und nicht strides
+        gib ndim == 0 und nicht shape und nicht strides
     wenn 0 in shape:
-        return Wahr
+        gib Wahr
 
     imin = sum(strides[j]*(shape[j]-1) fuer j in range(ndim)
                wenn strides[j] <= 0)
     imax = sum(strides[j]*(shape[j]-1) fuer j in range(ndim)
                wenn strides[j] > 0)
 
-    return 0 <= offset+imin und offset+imax+itemsize <= memlen
+    gib 0 <= offset+imin und offset+imax+itemsize <= memlen
 
 def get_item(lst, indices):
     fuer i in indices:
         lst = lst[i]
-    return lst
+    gib lst
 
 def memory_index(indices, t):
     """Location of an item in the underlying memory."""
@@ -477,7 +477,7 @@ def memory_index(indices, t):
     p = offset
     fuer i in range(ndim):
         p += strides[i]*indices[i]
-    return p
+    gib p
 
 def is_overlapping(t):
     """The structure 't' is overlapping wenn at least one memory location
@@ -489,9 +489,9 @@ def is_overlapping(t):
         i = memory_index(ind, t)
         bit = 1<<i
         wenn visited & bit:
-            return Wahr
+            gib Wahr
         visited |= bit
-    return Falsch
+    gib Falsch
 
 def rand_structure(itemsize, valid, maxdim=5, maxshape=16, shape=()):
     """Return random structure:
@@ -503,12 +503,12 @@ def rand_structure(itemsize, valid, maxdim=5, maxshape=16, shape=()):
         ndim = randrange(maxdim+1)
         wenn (ndim == 0):
             wenn valid:
-                return itemsize, itemsize, ndim, (), (), 0
+                gib itemsize, itemsize, ndim, (), (), 0
             sonst:
                 nitems = randrange(1, 16+1)
                 memlen = nitems * itemsize
                 offset = -itemsize wenn randrange(2) == 0 sonst memlen
-                return memlen, itemsize, ndim, (), (), offset
+                gib memlen, itemsize, ndim, (), (), offset
 
         minshape = 2
         n = randrange(100)
@@ -554,7 +554,7 @@ def rand_structure(itemsize, valid, maxdim=5, maxshape=16, shape=()):
     sonst:
         memlen = (-imin + imax) * itemsize
         offset = -imin-itemsize wenn randrange(2) == 0 sonst memlen
-    return memlen, itemsize, ndim, shape, strides, offset
+    gib memlen, itemsize, ndim, shape, strides, offset
 
 def randslice_from_slicelen(slicelen, listlen):
     """Create a random slice of len slicelen that fits into listlen."""
@@ -567,7 +567,7 @@ def randslice_from_slicelen(slicelen, listlen):
     _, _, _, control = slice_indices(s, listlen)
     wenn control != slicelen:
         raise RuntimeError
-    return s
+    gib s
 
 def randslice_from_shape(ndim, shape):
     """Create two sets of slices fuer an array x mit shape 'shape'
@@ -579,7 +579,7 @@ def randslice_from_shape(ndim, shape):
         slicelen = randrange(1, l+1) wenn l > 0 sonst 0
         lslices[n] = randslice_from_slicelen(slicelen, l)
         rslices[n] = randslice_from_slicelen(slicelen, l)
-    return tuple(lslices), tuple(rslices)
+    gib tuple(lslices), tuple(rslices)
 
 def rand_aligned_slices(maxdim=5, maxshape=16):
     """Create (lshape, rshape, tuple(lslices), tuple(rslices)) such that
@@ -622,18 +622,18 @@ def rand_aligned_slices(maxdim=5, maxshape=16):
             rshape[n], lshape[n] = small, big
             rslices[n], lslices[n] = s_small, s_big
 
-    return lshape, rshape, tuple(lslices), tuple(rslices)
+    gib lshape, rshape, tuple(lslices), tuple(rslices)
 
 def randitems_from_structure(fmt, t):
     """Return a list of random items fuer structure 't' mit format
        'fmtchar'."""
     memlen, itemsize, _, _, _, _ = t
-    return gen_items(memlen//itemsize, '#'+fmt, 'numpy')
+    gib gen_items(memlen//itemsize, '#'+fmt, 'numpy')
 
 def ndarray_from_structure(items, fmt, t, flags=0):
     """Return ndarray von the tuple returned by rand_structure()"""
     memlen, itemsize, ndim, shape, strides, offset = t
-    return ndarray(items, shape=shape, strides=strides, format=fmt,
+    gib ndarray(items, shape=shape, strides=strides, format=fmt,
                    offset=offset, flags=ND_WRITABLE|flags)
 
 def numpy_array_from_structure(items, fmt, t):
@@ -642,7 +642,7 @@ def numpy_array_from_structure(items, fmt, t):
     buf = bytearray(memlen)
     fuer j, v in enumerate(items):
         struct.pack_into(fmt, buf, j*itemsize, v)
-    return numpy_array(buffer=buf, shape=shape, strides=strides,
+    gib numpy_array(buffer=buf, shape=shape, strides=strides,
                        dtype=fmt, offset=offset)
 
 
@@ -655,21 +655,21 @@ def cast_items(exporter, fmt, itemsize, shape=Nichts):
        size 'itemsize'. If shape=Nichts, the new structure is assumed to
        be 1-D mit n * itemsize = bytelen. If shape is given, the usual
        constraint fuer contiguous arrays prod(shape) * itemsize = bytelen
-       applies. On success, return (items, shape). If the constraints
-       cannot be met, return (Nichts, Nichts). If a chunk of bytes is interpreted
-       als NaN als a result of float conversion, return ('nan', Nichts)."""
+       applies. On success, gib (items, shape). If the constraints
+       cannot be met, gib (Nichts, Nichts). If a chunk of bytes is interpreted
+       als NaN als a result of float conversion, gib ('nan', Nichts)."""
     bytelen = exporter.nbytes
     wenn shape:
         wenn prod(shape) * itemsize != bytelen:
-            return Nichts, shape
+            gib Nichts, shape
     sowenn shape == []:
         wenn exporter.ndim == 0 oder itemsize != bytelen:
-            return Nichts, shape
+            gib Nichts, shape
     sonst:
         n, r = divmod(bytelen, itemsize)
         shape = [n]
         wenn r != 0:
-            return Nichts, shape
+            gib Nichts, shape
 
     mem = exporter.tobytes()
     byteitems = [mem[i:i+itemsize] fuer i in range(0, len(mem), itemsize)]
@@ -678,21 +678,21 @@ def cast_items(exporter, fmt, itemsize, shape=Nichts):
     fuer v in byteitems:
         item = struct.unpack(fmt, v)[0]
         wenn item != item:
-            return 'nan', shape
+            gib 'nan', shape
         items.append(item)
 
-    return (items, shape) wenn shape != [] sonst (items[0], shape)
+    gib (items, shape) wenn shape != [] sonst (items[0], shape)
 
 def gencastshapes():
     """Generate shapes to test casting."""
     fuer n in range(32):
-        yield [n]
+        liefere [n]
     ndim = randrange(4, 6)
     minshape = 1 wenn randrange(100) > 80 sonst 2
-    yield [randrange(minshape, 5) fuer _ in range(ndim)]
+    liefere [randrange(minshape, 5) fuer _ in range(ndim)]
     ndim = randrange(2, 4)
     minshape = 1 wenn randrange(100) > 80 sonst 2
-    yield [randrange(minshape, 5) fuer _ in range(ndim)]
+    liefere [randrange(minshape, 5) fuer _ in range(ndim)]
 
 
 # ======================================================================
@@ -701,12 +701,12 @@ def gencastshapes():
 
 def genslices(n):
     """Generate all possible slices fuer a single dimension."""
-    return product(range(-n, n+1), range(-n, n+1), range(-n, n+1))
+    gib product(range(-n, n+1), range(-n, n+1), range(-n, n+1))
 
 def genslices_ndim(ndim, shape):
     """Generate all possible slice tuples fuer 'shape'."""
     iterables = [genslices(shape[n]) fuer n in range(ndim)]
-    return product(*iterables)
+    gib product(*iterables)
 
 def rslice(n, allow_empty=Falsch):
     """Generate random slice fuer a single dimension of length n.
@@ -714,28 +714,28 @@ def rslice(n, allow_empty=Falsch):
        be non-empty."""
     minlen = 0 wenn allow_empty oder n == 0 sonst 1
     slicelen = randrange(minlen, n+1)
-    return randslice_from_slicelen(slicelen, n)
+    gib randslice_from_slicelen(slicelen, n)
 
 def rslices(n, allow_empty=Falsch):
     """Generate random slices fuer a single dimension."""
     fuer _ in range(5):
-        yield rslice(n, allow_empty)
+        liefere rslice(n, allow_empty)
 
 def rslices_ndim(ndim, shape, iterations=5):
     """Generate random slice tuples fuer 'shape'."""
     # non-empty slices
     fuer _ in range(iterations):
-        yield tuple(rslice(shape[n]) fuer n in range(ndim))
+        liefere tuple(rslice(shape[n]) fuer n in range(ndim))
     # possibly empty slices
     fuer _ in range(iterations):
-        yield tuple(rslice(shape[n], allow_empty=Wahr) fuer n in range(ndim))
+        liefere tuple(rslice(shape[n], allow_empty=Wahr) fuer n in range(ndim))
     # invalid slices
-    yield tuple(slice(0,1,0) fuer _ in range(ndim))
+    liefere tuple(slice(0,1,0) fuer _ in range(ndim))
 
 def rpermutation(iterable, r=Nichts):
     pool = tuple(iterable)
     r = len(pool) wenn r is Nichts sonst r
-    yield tuple(sample(pool, r))
+    liefere tuple(sample(pool, r))
 
 def ndarray_drucke(nd):
     """Print ndarray fuer debugging."""
@@ -827,7 +827,7 @@ klasse TestBufferProtocol(unittest.TestCase):
             self.assertEqual(rep, lst)
 
         wenn nicht fmt: # array has been cast to unsigned bytes,
-            return  # the remaining tests won't work.
+            gib  # the remaining tests won't work.
 
         # PyBuffer_GetPointer() is the definition how to access an item.
         # If PyBuffer_GetPointer(indices) is correct fuer all possible
@@ -866,8 +866,8 @@ klasse TestBufferProtocol(unittest.TestCase):
                 ff = fmt wenn fmt sonst 'B'
                 flattened = flatten(lst)
 
-                # Rules fuer 'A': wenn the array is already contiguous, return
-                # the array unaltered. Otherwise, return a contiguous 'C'
+                # Rules fuer 'A': wenn the array is already contiguous, gib
+                # the array unaltered. Otherwise, gib a contiguous 'C'
                 # representation.
                 fuer order in ['C', 'F', 'A']:
                     expected = result
@@ -952,7 +952,7 @@ klasse TestBufferProtocol(unittest.TestCase):
             try:
                 m = memoryview(result)
             except BufferError: # re-exporter does nicht provide full information
-                return
+                gib
             ex = result.obj wenn isinstance(result, memoryview) sonst result
 
             def check_memoryview(m, expected_readonly=readonly):
@@ -983,7 +983,7 @@ klasse TestBufferProtocol(unittest.TestCase):
 
     def verify_getbuf(self, orig_ex, ex, req, sliced=Falsch):
         def match(req, flag):
-            return ((req&flag) == flag)
+            gib ((req&flag) == flag)
 
         wenn (# writable request to read-only exporter
             (ex.readonly und match(req, PyBUF_WRITABLE)) oder
@@ -999,7 +999,7 @@ klasse TestBufferProtocol(unittest.TestCase):
             (nicht match(req, PyBUF_ND) und match(req, PyBUF_FORMAT))):
 
             self.assertRaises(BufferError, ndarray, ex, getbuf=req)
-            return
+            gib
 
         wenn isinstance(ex, ndarray) oder is_memoryview_format(ex.format):
             lst = ex.tolist()
@@ -2229,7 +2229,7 @@ klasse TestBufferProtocol(unittest.TestCase):
         ###       >>> py_buffer_to_contiguous(nd, 'F', PyBUF_FULL_RO)
         ###       >>> b'\x00\x04\x08\x01\x05\t\x02\x06\n\x03\x07\x0b'
         ###
-        ###    The return value corresponds to this input list for
+        ###    The gib value corresponds to this input list for
         ###    _testbuffer's ndarray:
         ###       >>> nd = ndarray([0,4,8,1,5,9,2,6,10,3,7,11], shape=[3,4],
         ###                        flags=ND_FORTRAN)
@@ -2527,15 +2527,15 @@ klasse TestBufferProtocol(unittest.TestCase):
             def __init__(self, val):
                 self.val = val
             def __int__(self):
-                return self.val
+                gib self.val
 
         klasse IDX(object):
             def __init__(self, val):
                 self.val = val
             def __index__(self):
-                return self.val
+                gib self.val
 
-        def f(): return 7
+        def f(): gib 7
 
         values = [INT(9), IDX(9),
                   2.2+3j, Decimal("-21.1"), 12.2, Fraction(5, 2),
@@ -2902,7 +2902,7 @@ klasse TestBufferProtocol(unittest.TestCase):
     @contextlib.contextmanager
     def assert_out_of_bounds_error(self, dim):
         mit self.assertRaises(IndexError) als cm:
-            yield
+            liefere
         self.assertEqual(str(cm.exception),
                          "index out of bounds on dimension %d" % (dim,))
 
@@ -4474,7 +4474,7 @@ klasse TestPythonBufferProtocol(unittest.TestCase):
     def test_basic(self):
         klasse MyBuffer:
             def __buffer__(self, flags):
-                return memoryview(b"hello")
+                gib memoryview(b"hello")
 
         mv = memoryview(MyBuffer())
         self.assertEqual(mv.tobytes(), b"hello")
@@ -4483,19 +4483,19 @@ klasse TestPythonBufferProtocol(unittest.TestCase):
     def test_bad_buffer_method(self):
         klasse MustReturnMV:
             def __buffer__(self, flags):
-                return 42
+                gib 42
 
         self.assertRaises(TypeError, memoryview, MustReturnMV())
 
         klasse NoBytesEither:
             def __buffer__(self, flags):
-                return b"hello"
+                gib b"hello"
 
         self.assertRaises(TypeError, memoryview, NoBytesEither())
 
         klasse WrongArity:
             def __buffer__(self):
-                return memoryview(b"hello")
+                gib memoryview(b"hello")
 
         self.assertRaises(TypeError, memoryview, WrongArity())
 
@@ -4509,7 +4509,7 @@ klasse TestPythonBufferProtocol(unittest.TestCase):
                 wenn self.held:
                     raise TypeError("already held")
                 self.held = Wahr
-                return memoryview(self.ba)
+                gib memoryview(self.ba)
 
             def __release_buffer__(self, buffer):
                 self.held = Falsch
@@ -4533,7 +4533,7 @@ klasse TestPythonBufferProtocol(unittest.TestCase):
                     raise TypeError("already held")
                 self.held = Wahr
                 self.created_mv = memoryview(self.ba)
-                return self.created_mv
+                gib self.created_mv
 
             def __release_buffer__(self, buffer):
                 assert buffer is self.created_mv
@@ -4556,9 +4556,9 @@ klasse TestPythonBufferProtocol(unittest.TestCase):
                 wenn flags & inspect.BufferFlags.WRITABLE:
                     wenn nicht self._mutable:
                         raise RuntimeError("not mutable")
-                    return memoryview(self._data)
+                    gib memoryview(self._data)
                 sonst:
-                    return memoryview(bytes(self._data))
+                    gib memoryview(bytes(self._data))
 
         mutable = PossiblyMutable(b"hello", Wahr)
         immutable = PossiblyMutable(b"hello", Falsch)
@@ -4640,7 +4640,7 @@ klasse TestPythonBufferProtocol(unittest.TestCase):
     def test_inheritance(self):
         klasse A(bytearray):
             def __buffer__(self, flags):
-                return super().__buffer__(flags)
+                gib super().__buffer__(flags)
 
         a = A(b"hello")
         mv = memoryview(a)
@@ -4650,7 +4650,7 @@ klasse TestPythonBufferProtocol(unittest.TestCase):
         rb_call_count = 0
         klasse B(bytearray):
             def __buffer__(self, flags):
-                return super().__buffer__(flags)
+                gib super().__buffer__(flags)
             def __release_buffer__(self, view):
                 nonlocal rb_call_count
                 rb_call_count += 1
@@ -4665,7 +4665,7 @@ klasse TestPythonBufferProtocol(unittest.TestCase):
     def test_inherit_but_return_something_else(self):
         klasse A(bytearray):
             def __buffer__(self, flags):
-                return memoryview(b"hello")
+                gib memoryview(b"hello")
 
         a = A(b"hello")
         mit memoryview(a) als mv:
@@ -4675,7 +4675,7 @@ klasse TestPythonBufferProtocol(unittest.TestCase):
         rb_raised = Falsch
         klasse B(bytearray):
             def __buffer__(self, flags):
-                return memoryview(b"hello")
+                gib memoryview(b"hello")
             def __release_buffer__(self, view):
                 nonlocal rb_call_count
                 rb_call_count += 1
@@ -4733,7 +4733,7 @@ klasse TestPythonBufferProtocol(unittest.TestCase):
 
         klasse C:
             def __buffer__(self, flags):
-                return memoryview(ba)
+                gib memoryview(ba)
 
             def __release_buffer__(self, buffer):
                 self.buffer = buffer
@@ -4751,11 +4751,11 @@ klasse TestPythonBufferProtocol(unittest.TestCase):
     def test_multiple_inheritance_buffer_last(self):
         klasse A:
             def __buffer__(self, flags):
-                return memoryview(b"hello A")
+                gib memoryview(b"hello A")
 
         klasse B(A, bytearray):
             def __buffer__(self, flags):
-                return super().__buffer__(flags)
+                gib super().__buffer__(flags)
 
         b = B(b"hello")
         mit memoryview(b) als mv:
@@ -4767,7 +4767,7 @@ klasse TestPythonBufferProtocol(unittest.TestCase):
 
         klasse C(Releaser, bytearray):
             def __buffer__(self, flags):
-                return super().__buffer__(flags)
+                gib super().__buffer__(flags)
 
         c = C(b"hello C")
         mit memoryview(c) als mv:
@@ -4786,7 +4786,7 @@ klasse TestPythonBufferProtocol(unittest.TestCase):
 
         klasse B(bytearray, A):
             def __buffer__(self, flags):
-                return super().__buffer__(flags)
+                gib super().__buffer__(flags)
 
         b = B(b"hello")
         mit memoryview(b) als mv:
@@ -4799,7 +4799,7 @@ klasse TestPythonBufferProtocol(unittest.TestCase):
 
         klasse C(bytearray, Releaser):
             def __buffer__(self, flags):
-                return super().__buffer__(flags)
+                gib super().__buffer__(flags)
 
         c = C(b"hello")
         mit memoryview(c) als mv:
@@ -4810,7 +4810,7 @@ klasse TestPythonBufferProtocol(unittest.TestCase):
     def test_release_buffer_with_exception_set(self):
         klasse A:
             def __buffer__(self, flags):
-                return memoryview(bytes(8))
+                gib memoryview(bytes(8))
             def __release_buffer__(self, view):
                 pass
 

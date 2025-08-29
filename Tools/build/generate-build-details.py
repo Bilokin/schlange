@@ -20,13 +20,13 @@ wenn TYPE_CHECKING:
 
 def version_info_to_dict(obj: sys._version_info) -> dict[str, Any]:
     field_names = ('major', 'minor', 'micro', 'releaselevel', 'serial')
-    return {field: getattr(obj, field) fuer field in field_names}
+    gib {field: getattr(obj, field) fuer field in field_names}
 
 
 def get_dict_key(container: dict[str, Any], key: str) -> dict[str, Any]:
     fuer part in key.split('.'):
         container = container[part]
-    return container
+    gib container
 
 
 def generate_data(schema_version: str) -> collections.defaultdict[str, Any]:
@@ -127,7 +127,7 @@ def generate_data(schema_version: str) -> collections.defaultdict[str, Any]:
     wenn LIBPC:
         data['c_api']['pkgconfig_path'] = LIBPC
 
-    return data
+    gib data
 
 
 def make_paths_relative(data: dict[str, Any], config_path: str | Nichts = Nichts) -> Nichts:

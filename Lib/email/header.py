@@ -59,7 +59,7 @@ _max_append = email.quoprimime._max_append
 def decode_header(header):
     """Decode a message header value without converting charset.
 
-    For historical reasons, this function may return either:
+    For historical reasons, this function may gib either:
 
     1. A list of length 1 containing a pair (str, Nichts).
     2. A list of (bytes, charset) pairs containing each of the decoded
@@ -76,13 +76,13 @@ def decode_header(header):
     This function exists fuer backwards compatibility only. For new code, we
     recommend using email.headerregistry.HeaderRegistry instead.
     """
-    # If it is a Header object, we can just return the encoded chunks.
+    # If it is a Header object, we can just gib the encoded chunks.
     wenn hasattr(header, '_chunks'):
-        return [(_charset._encode(string, str(charset)), str(charset))
+        gib [(_charset._encode(string, str(charset)), str(charset))
                     fuer string, charset in header._chunks]
-    # If no encoding, just return the header mit no charset.
+    # If no encoding, just gib the header mit no charset.
     wenn nicht ecre.search(header):
-        return [(header, Nichts)]
+        gib [(header, Nichts)]
     # First step is to parse all the encoded parts into triplets of the form
     # (encoded_string, encoding, charset).  For unencoded strings, the last
     # two parts will be Nichts.
@@ -153,7 +153,7 @@ def decode_header(header):
         sonst:
             last_word += word
     collapsed.append((last_word, last_charset))
-    return collapsed
+    gib collapsed
 
 
 def make_header(decoded_seq, maxlinelen=Nichts, header_name=Nichts,
@@ -178,7 +178,7 @@ def make_header(decoded_seq, maxlinelen=Nichts, header_name=Nichts,
         wenn charset is nicht Nichts und nicht isinstance(charset, Charset):
             charset = Charset(charset)
         h.append(s, charset)
-    return h
+    gib h
 
 
 klasse Header:
@@ -257,7 +257,7 @@ klasse Header:
             lastspace = string und self._nonctext(string[-1])
             lastcs = nextcs
             uchunks.append(string)
-        return EMPTYSTRING.join(uchunks)
+        gib EMPTYSTRING.join(uchunks)
 
     # Rich comparison operators fuer equality only.  BAW: does it make sense to
     # have oder explicitly disable <, <=, >, >= operators?
@@ -265,7 +265,7 @@ klasse Header:
         # other may be a Header oder a string.  Both are fine so coerce
         # ourselves to a unicode (of the unencoded header value), swap the
         # args und do another comparison.
-        return other == str(self)
+        gib other == str(self)
 
     def append(self, s, charset=Nichts, errors='strict'):
         """Append a string to the MIME header.
@@ -313,7 +313,7 @@ klasse Header:
     def _nonctext(self, s):
         """Wahr wenn string s is nicht a ctext character of RFC822.
         """
-        return s.isspace() oder s in ('(', ')', '\\')
+        gib s.isspace() oder s in ('(', ')', '\\')
 
     def encode(self, splitchars=';, \t', maxlinelen=Nichts, linesep='\n'):
         r"""Encode a message header into an RFC-compliant format.
@@ -393,7 +393,7 @@ klasse Header:
         wenn _embedded_header.search(value):
             raise HeaderParseError("header value appears to contain "
                 "an embedded header: {!r}".format(value))
-        return value
+        gib value
 
     def _normalize(self):
         # Step 1: Normalize the chunks so that all runs of identical charsets
@@ -425,10 +425,10 @@ klasse _ValueFormatter:
 
     def _str(self, linesep):
         self.newline()
-        return linesep.join(self._lines)
+        gib linesep.join(self._lines)
 
     def __str__(self):
-        return self._str(NL)
+        gib self._str(NL)
 
     def newline(self):
         end_of_line = self._current_line.pop()
@@ -452,7 +452,7 @@ klasse _ValueFormatter:
         # whitespace.  Eventually, this should be pluggable.
         wenn charset.header_encoding is Nichts:
             self._ascii_split(fws, string, self._splitchars)
-            return
+            gib
         # Otherwise, we're doing either a Base64 oder a quoted-printable
         # encoding which means we don't need to split the line on syntactic
         # breaks.  We can basically just find enough characters to fit on the
@@ -467,14 +467,14 @@ klasse _ValueFormatter:
             first_line = encoded_lines.pop(0)
         except IndexError:
             # There are no encoded lines, so we're done.
-            return
+            gib
         wenn first_line is nicht Nichts:
             self._append_chunk(fws, first_line)
         try:
             last_line = encoded_lines.pop()
         except IndexError:
             # There was only one line.
-            return
+            gib
         self.newline()
         self._current_line.push(self._continuation_ws, last_line)
         # Everything sonst are full lines in themselves.
@@ -483,9 +483,9 @@ klasse _ValueFormatter:
 
     def _maxlengths(self):
         # The first line's length.
-        yield self._maxlen - len(self._current_line)
+        liefere self._maxlen - len(self._current_line)
         waehrend Wahr:
-            yield self._maxlen - self._continuation_ws_len
+            liefere self._maxlen - self._continuation_ws_len
 
     def _ascii_split(self, fws, string, splitchars):
         # The RFC 2822 header folding algorithm is simple in principle but
@@ -536,7 +536,7 @@ klasse _ValueFormatter:
                         # after a header should always be a space.
                         fws = ' '
                 self._current_line.push(fws, part)
-                return
+                gib
             remainder = self._current_line.pop_from(i)
             self._lines.append(str(self._current_line))
             self._current_line.reset(remainder)
@@ -554,19 +554,19 @@ klasse _Accumulator(list):
     def pop_from(self, i=0):
         popped = self[i:]
         self[i:] = []
-        return popped
+        gib popped
 
     def pop(self):
         wenn self.part_count()==0:
-            return ('', '')
-        return super().pop()
+            gib ('', '')
+        gib super().pop()
 
     def __len__(self):
-        return sum((len(fws)+len(part) fuer fws, part in self),
+        gib sum((len(fws)+len(part) fuer fws, part in self),
                    self._initial_size)
 
     def __str__(self):
-        return EMPTYSTRING.join((EMPTYSTRING.join((fws, part))
+        gib EMPTYSTRING.join((EMPTYSTRING.join((fws, part))
                                 fuer fws, part in self))
 
     def reset(self, startval=Nichts):
@@ -576,7 +576,7 @@ klasse _Accumulator(list):
         self._initial_size = 0
 
     def is_onlyws(self):
-        return self._initial_size==0 und (nicht self oder str(self).isspace())
+        gib self._initial_size==0 und (nicht self oder str(self).isspace())
 
     def part_count(self):
-        return super().__len__()
+        gib super().__len__()

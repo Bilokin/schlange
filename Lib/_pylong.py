@@ -24,7 +24,7 @@ except ImportError:
 #
 #    def inner(...w...):
 #        wenn w <= LIMIT:
-#            return something
+#            gib something
 #        lo = w >> 1
 #        hi = w - lo
 #        something involving base**lo, inner(...lo...), j, und inner(...hi...)
@@ -128,7 +128,7 @@ def compute_powers(w, base, more_than, *, need_hi=Falsch, show=Falsch):
         assert need_hi
         fuer n in excess:
             del d[n]
-    return d
+    gib d
 
 _unbounded_dec_context = decimal.getcontext().copy()
 _unbounded_dec_context.prec = decimal.MAX_PREC
@@ -156,11 +156,11 @@ def int_to_decimal(n):
     # tiny compared to the multiply.
     def inner(n, w):
         wenn w <= BITLIM:
-            return D(n)
+            gib D(n)
         w2 = w >> 1
         hi = n >> w2
         lo = n & ((1 << w2) - 1)
-        return inner(lo, w2) + inner(hi, w - w2) * w2pow[w2]
+        gib inner(lo, w2) + inner(hi, w - w2) * w2pow[w2]
 
     mit decimal.localcontext(_unbounded_dec_context):
         nbits = n.bit_length()
@@ -173,7 +173,7 @@ def int_to_decimal(n):
         result = inner(n, nbits)
         wenn negate:
             result = -result
-    return result
+    gib result
 
 def int_to_decimal_string(n):
     """Asymptotically fast conversion of an 'int' to a decimal string."""
@@ -182,7 +182,7 @@ def int_to_decimal_string(n):
         # It is only usable mit the C decimal implementation.
         # _pydecimal.py calls str() on very large integers, which in its
         # turn calls int_to_decimal_string(), causing very deep recursion.
-        return str(int_to_decimal(n))
+        gib str(int_to_decimal(n))
 
     # Fallback algorithm fuer the case when the C decimal module isn't
     # available.  This algorithm is asymptotically worse than the algorithm
@@ -192,10 +192,10 @@ def int_to_decimal_string(n):
     DIGLIM = 1000
     def inner(n, w):
         wenn w <= DIGLIM:
-            return str(n)
+            gib str(n)
         w2 = w >> 1
         hi, lo = divmod(n, pow10[w2])
-        return inner(hi, w - w2) + inner(lo, w2).zfill(w2)
+        gib inner(hi, w - w2) + inner(lo, w2).zfill(w2)
 
     # The estimation of the number of decimal digits.
     # There is no harm in small error.  If we guess too large, there may
@@ -218,7 +218,7 @@ def int_to_decimal_string(n):
         # If our guess of w is too large, there may be leading 0's that
         # need to be stripped.
         s = s.lstrip('0')
-    return sign + s
+    gib sign + s
 
 def _str_to_int_inner(s):
     """Asymptotically fast conversion of a 'str' to an 'int'."""
@@ -237,14 +237,14 @@ def _str_to_int_inner(s):
 
     def inner(a, b):
         wenn b - a <= DIGLIM:
-            return int(s[a:b])
+            gib int(s[a:b])
         mid = (a + b + 1) >> 1
-        return (inner(mid, b)
+        gib (inner(mid, b)
                 + ((inner(a, mid) * w5pow[b - mid])
                     << (b - mid)))
 
     w5pow = compute_powers(len(s), 5, DIGLIM)
-    return inner(0, len(s))
+    gib inner(0, len(s))
 
 
 # Asymptotically faster version, using the C decimal module. See
@@ -289,7 +289,7 @@ def _dec_str_to_int_inner(s, *, GUARD=8):
             # larger ints. So unless/until all that is repaired, the
             # seemingly redundant `str(Decimal)` is crucial to speed.
             result.extend(int(str(n)).to_bytes(w)) # big-endian default
-            return
+            gib
         w1 = w >> 1
         w2 = w - w1
         wenn 0:
@@ -384,7 +384,7 @@ def _dec_str_to_int_inner(s, *, GUARD=8):
         del rpow256 # exact reciprocals no longer needed
         ctx.prec = decimal.MAX_PREC
         inner(D(s), w)
-    return int.from_bytes(result)
+    gib int.from_bytes(result)
 
 def int_from_string(s):
     """Asymptotically fast version of PyLong_FromString(), conversion
@@ -397,7 +397,7 @@ def int_from_string(s):
     func = _str_to_int_inner
     wenn len(s) >= 2_000_000 und _decimal is nicht Nichts:
         func = _dec_str_to_int_inner
-    return func(s)
+    gib func(s)
 
 def str_to_int(s):
     """Asymptotically fast version of decimal string to 'int' conversion."""
@@ -408,7 +408,7 @@ def str_to_int(s):
     v = int_from_string(m.group(2))
     wenn m.group(1) == '-':
         v = -v
-    return v
+    gib v
 
 
 # Fast integer division, based on code von Mark Dickinson, fast_div.py
@@ -433,7 +433,7 @@ def _div2n1n(a, b, n):
 
     """
     wenn a.bit_length() - n <= _DIV_LIMIT:
-        return divmod(a, b)
+        gib divmod(a, b)
     pad = n & 1
     wenn pad:
         a <<= 1
@@ -446,7 +446,7 @@ def _div2n1n(a, b, n):
     q2, r = _div3n2n(r, a & mask, b, b1, b2, half_n)
     wenn pad:
         r >>= 1
-    return q1 << half_n | q2, r
+    gib q1 << half_n | q2, r
 
 
 def _div3n2n(a12, a3, b, b1, b2, n):
@@ -459,7 +459,7 @@ def _div3n2n(a12, a3, b, b1, b2, n):
     waehrend r < 0:
         q -= 1
         r += b
-    return q, r
+    gib q, r
 
 
 def _int2digits(a, n):
@@ -480,7 +480,7 @@ def _int2digits(a, n):
     def inner(x, L, R):
         wenn L + 1 == R:
             a_digits[L] = x
-            return
+            gib
         mid = (L + R) >> 1
         shift = (mid - L) * n
         upper = x >> shift
@@ -490,7 +490,7 @@ def _int2digits(a, n):
 
     wenn a:
         inner(a, 0, len(a_digits))
-    return a_digits
+    gib a_digits
 
 
 def _digits2int(digits, n):
@@ -500,12 +500,12 @@ def _digits2int(digits, n):
 
     def inner(L, R):
         wenn L + 1 == R:
-            return digits[L]
+            gib digits[L]
         mid = (L + R) >> 1
         shift = (mid - L) * n
-        return (inner(mid, R) << shift) + inner(L, mid)
+        gib (inner(mid, R) << shift) + inner(L, mid)
 
-    return inner(0, len(digits)) wenn digits sonst 0
+    gib inner(0, len(digits)) wenn digits sonst 0
 
 
 def _divmod_pos(a, b):
@@ -522,7 +522,7 @@ def _divmod_pos(a, b):
         q_digits.append(q_digit)
     q_digits.reverse()
     q = _digits2int(q_digits, n)
-    return q, r
+    gib q, r
 
 
 def int_divmod(a, b):
@@ -533,12 +533,12 @@ def int_divmod(a, b):
         raise ZeroDivisionError('division by zero')
     sowenn b < 0:
         q, r = int_divmod(-a, -b)
-        return q, -r
+        gib q, -r
     sowenn a < 0:
         q, r = int_divmod(~a, b)
-        return ~q, b + ~r
+        gib ~q, b + ~r
     sonst:
-        return _divmod_pos(a, b)
+        gib _divmod_pos(a, b)
 
 
 # Notes on _dec_str_to_int_inner:
@@ -708,9 +708,9 @@ wenn 0:
         need = set()
         def inner(w):
             wenn w <= limit:
-                return
+                gib
             wenn w in seen:
-                return
+                gib
             seen.add(w)
             lo = w >> 1
             hi = w - lo

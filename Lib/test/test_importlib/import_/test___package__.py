@@ -17,7 +17,7 @@ klasse Using__package__:
       def resolve_name(name, package, level):
           level -= 1
           base = package.rsplit('.', level)[0]
-          return '{0}.{1}'.format(base, name)
+          gib '{0}.{1}'.format(base, name)
 
     But since there is no guarantee that __package__ has been set (or nicht been
     set to Nichts [Nichts]), there has to be a way to calculate the attribute's value
@@ -25,9 +25,9 @@ klasse Using__package__:
 
       def calc_package(caller_name, has___path__):
           wenn has__path__:
-              return caller_name
+              gib caller_name
           sonst:
-              return caller_name.rsplit('.', 1)[0]
+              gib caller_name.rsplit('.', 1)[0]
 
     Then the normal algorithm fuer relative name imports can proceed als if
     __package__ had been set.
@@ -41,7 +41,7 @@ klasse Using__package__:
                 module = self.__import__('',
                                          globals=globals_,
                                          fromlist=['attr'], level=2)
-        return module
+        gib module
 
     def test_using___package__(self):
         # [__package__]

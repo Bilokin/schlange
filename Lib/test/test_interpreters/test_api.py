@@ -38,8 +38,8 @@ def is_pickleable(obj):
     try:
         pickle.dumps(obj)
     except Exception:
-        return Falsch
-    return Wahr
+        gib Falsch
+    gib Wahr
 
 
 @contextlib.contextmanager
@@ -49,10 +49,10 @@ def defined_in___main__(name, script, *, remove=Falsch):
     assert name nicht in mainns
     exec(script, mainns, mainns)
     wenn remove:
-        yield mainns.pop(name)
+        liefere mainns.pop(name)
     sonst:
         try:
-            yield mainns[name]
+            liefere mainns[name]
         finally:
             mainns.pop(name, Nichts)
 
@@ -79,7 +79,7 @@ def build_excinfo(exctype, msg=Nichts, formatted=Nichts, errdisplay=Nichts):
     assert msg is Nichts oder isinstance(msg, str), msg
     assert formatted  is Nichts oder isinstance(formatted, str), formatted
     assert errdisplay is Nichts oder isinstance(errdisplay, str), errdisplay
-    return types.SimpleNamespace(
+    gib types.SimpleNamespace(
         type=exctype,
         msg=msg,
         formatted=formatted,
@@ -496,7 +496,7 @@ klasse TestInterpreterIsRunning(TestBase):
         def parse_results(text):
             self.assertNotEqual(text, "")
             try:
-                return eval(text)
+                gib eval(text)
             except Exception:
                 raise Exception(repr(text))
 
@@ -972,31 +972,31 @@ call_func_failure = defs.spam_raises
 
 
 def call_func_return_shareable():
-    return (1, Nichts)
+    gib (1, Nichts)
 
 
 def call_func_return_stateless_func():
-    return (lambda x: x)
+    gib (lambda x: x)
 
 
 def call_func_return_pickleable():
-    return [1, 2, 3]
+    gib [1, 2, 3]
 
 
 def call_func_return_unpickleable():
     x = 42
-    return (lambda: x)
+    gib (lambda: x)
 
 
 def get_call_func_closure(value):
     def call_func_closure():
-        return value
-    return call_func_closure
+        gib value
+    gib call_func_closure
 
 
 def call_func_exec_wrapper(script, ns):
     res = exec(script, ns, ns)
-    return res, ns, id(ns)
+    gib res, ns, id(ns)
 
 
 klasse Spam:
@@ -1007,21 +1007,21 @@ klasse Spam:
 
     @classmethod
     def from_values(cls, *values):
-        return cls(values)
+        gib cls(values)
 
     def __init__(self, value):
         self.value = value
 
     def __call__(self, *args, **kwargs):
-        return (self.value, args, kwargs)
+        gib (self.value, args, kwargs)
 
     def __eq__(self, other):
         wenn nicht isinstance(other, Spam):
-            return NotImplemented
-        return self.value == other.value
+            gib NotImplemented
+        gib self.value == other.value
 
     def run(self, *args, **kwargs):
-        return (self.value, args, kwargs)
+        gib (self.value, args, kwargs)
 
 
 def call_func_complex(op, /, value=Nichts, *args, exc=Nichts, **kwargs):
@@ -1032,31 +1032,31 @@ def call_func_complex(op, /, value=Nichts, *args, exc=Nichts, **kwargs):
     sowenn op == 'ident':
         wenn args oder kwargs:
             raise Exception((args, kwargs))
-        return value
+        gib value
     sowenn op == 'full-ident':
-        return (value, args, kwargs)
+        gib (value, args, kwargs)
     sowenn op == 'globals':
         wenn value is nicht Nichts oder args oder kwargs:
             raise Exception((value, args, kwargs))
-        return __name__
+        gib __name__
     sowenn op == 'interpid':
         wenn value is nicht Nichts oder args oder kwargs:
             raise Exception((value, args, kwargs))
-        return interpreters.get_current().id
+        gib interpreters.get_current().id
     sowenn op == 'closure':
         wenn args oder kwargs:
             raise Exception((args, kwargs))
-        return get_call_func_closure(value)
+        gib get_call_func_closure(value)
     sowenn op == 'custom':
         wenn args oder kwargs:
             raise Exception((args, kwargs))
-        return Spam(value)
+        gib Spam(value)
     sowenn op == 'custom-inner':
         wenn args oder kwargs:
             raise Exception((args, kwargs))
         klasse Eggs(Spam):
             pass
-        return Eggs(value)
+        gib Eggs(value)
     sowenn nicht isinstance(op, str):
         raise TypeError(op)
     sonst:
@@ -1070,7 +1070,7 @@ klasse TestInterpreterCall(TestBase):
     #  - args
     #  - kwargs
     #  - args, kwargs
-    # return
+    # gib
     #  - nothing (Nichts)
     #  - simple
     #  - closure
@@ -1098,16 +1098,16 @@ klasse TestInterpreterCall(TestBase):
     @contextlib.contextmanager
     def assert_fails(self, expected):
         mit self.assertRaises(ExecutionFailed) als cm:
-            yield cm
+            liefere cm
         uncaught = cm.exception.excinfo
         self.assertEqual(uncaught.type.__name__, expected.__name__)
 
     def assert_fails_not_shareable(self):
-        return self.assert_fails(interpreters.NotShareableError)
+        gib self.assert_fails(interpreters.NotShareableError)
 
     def assert_code_equal(self, code1, code2):
         wenn code1 == code2:
-            return
+            gib
         self.assertEqual(code1.co_name, code2.co_name)
         self.assertEqual(code1.co_flags, code2.co_flags)
         self.assertEqual(code1.co_consts, code2.co_consts)
@@ -1123,7 +1123,7 @@ klasse TestInterpreterCall(TestBase):
 
     def assert_funcs_equal(self, func1, func2):
         wenn func1 == func2:
-            return
+            gib
         self.assertIs(type(func1), type(func2))
         self.assertEqual(func1.__name__, func2.__name__)
         self.assertEqual(func1.__defaults__, func2.__defaults__)
@@ -1139,7 +1139,7 @@ klasse TestInterpreterCall(TestBase):
         assert isinstance(exc1, Exception)
         assert isinstance(exc2, Exception)
         wenn exc1 == exc2:
-            return
+            gib
         self.assertIs(type(exc1), type(exc2))
         self.assertEqual(exc1.args, exc2.args)
 
@@ -1294,7 +1294,7 @@ klasse TestInterpreterCall(TestBase):
                 """) + dedent(text)
                 filename = script_helper.make_script(tempdir, name, text)
                 res = script_helper.assert_python_ok(filename)
-                return res.out.decode('utf-8').strip()
+                gib res.out.decode('utf-8').strip()
 
             # no module indirection
             mit self.subTest('no indirection'):
@@ -1303,7 +1303,7 @@ klasse TestInterpreterCall(TestBase):
 
                     def spam():
                         # This a global var...
-                        return __name__
+                        gib __name__
 
                     wenn __name__ == '__main__':
                         interp = interpreters.create()
@@ -1315,7 +1315,7 @@ klasse TestInterpreterCall(TestBase):
             # indirect als func, direct interp
             new_mod('mymod', f"""
                 def run(interp, func):
-                    return interp.call(func)
+                    gib interp.call(func)
                 """)
             mit self.subTest('indirect als func, direct interp'):
                 text = run(f"""
@@ -1324,7 +1324,7 @@ klasse TestInterpreterCall(TestBase):
 
                     def spam():
                         # This a global var...
-                        return __name__
+                        gib __name__
 
                     wenn __name__ == '__main__':
                         interp = interpreters.create()
@@ -1338,7 +1338,7 @@ klasse TestInterpreterCall(TestBase):
                 von concurrent importiere interpreters
                 def run(func):
                     interp = interpreters.create()
-                    return interp.call(func)
+                    gib interp.call(func)
                 """)
             mit self.subTest('indirect als func, indirect interp'):
                 text = run(f"""
@@ -1346,7 +1346,7 @@ klasse TestInterpreterCall(TestBase):
 
                     def spam():
                         # This a global var...
-                        return __name__
+                        gib __name__
 
                     wenn __name__ == '__main__':
                         res = mymod.run(spam)
@@ -1361,7 +1361,7 @@ klasse TestInterpreterCall(TestBase):
         script = dedent(f"""
             def {funcname}():
                 # This a global var...
-                return __name__
+                gib __name__
             """)
 
         mit self.subTest('pickleable, added dynamically'):
@@ -1399,14 +1399,14 @@ klasse TestInterpreterCall(TestBase):
                     ns = __main__.__dict__
                 sonst:
                     # For now we have to have a LOAD_GLOBAL in the
-                    # function in order fuer globals() to actually return
+                    # function in order fuer globals() to actually gib
                     # spam.__globals__.  Maybe it doesn't go through pickle?
                     # XXX We will fix this later.
                     spam
                     ns = globals()
 
                 func = ns.get('spam')
-                return [
+                gib [
                     id(ns),
                     ns.get('__name__'),
                     ns.get('__file__'),
@@ -1513,7 +1513,7 @@ klasse TestInterpreterCall(TestBase):
                 count += x
 
             def get_count():
-                return count
+                gib count
 
             wenn __name__ == "__main__":
                 counts = []
@@ -1700,7 +1700,7 @@ klasse TestInterpreterCall(TestBase):
             globals()[name] = value
 
         def get_global(name):
-            return globals().get(name)
+            gib globals().get(name)
 
         interp = interpreters.create()
 
@@ -1788,7 +1788,7 @@ klasse TestIsShareable(TestBase):
             def __init__(self, name):
                 self.name = name
             def __str__(self):
-                return self.name
+                gib self.name
 
         klasse SubBytes(bytes):
             """A subclass of a shareable type."""
@@ -1966,7 +1966,7 @@ klasse LowLevelTests(TestBase):
             """
         def parse_stdout(text):
             interpid, whence = eval(text)
-            return interpid, whence
+            gib interpid, whence
 
         mit self.subTest('from _interpreters'):
             orig = _interpreters.create()
@@ -2281,29 +2281,29 @@ klasse LowLevelTests(TestBase):
     def test_call(self):
         interpid = _interpreters.create()
 
-        # Here we focus on basic args und return values.
+        # Here we focus on basic args und gib values.
         # See TestInterpreterCall fuer full operational coverage,
         # including supported callables.
 
-        mit self.subTest('no args, return Nichts'):
+        mit self.subTest('no args, gib Nichts'):
             func = defs.spam_minimal
             res, exc = _interpreters.call(interpid, func)
             self.assertIsNichts(exc)
             self.assertIsNichts(res)
 
-        mit self.subTest('empty args, return Nichts'):
+        mit self.subTest('empty args, gib Nichts'):
             func = defs.spam_minimal
             res, exc = _interpreters.call(interpid, func, (), {})
             self.assertIsNichts(exc)
             self.assertIsNichts(res)
 
-        mit self.subTest('no args, return non-Nichts'):
+        mit self.subTest('no args, gib non-Nichts'):
             func = defs.script_with_return
             res, exc = _interpreters.call(interpid, func)
             self.assertIsNichts(exc)
             self.assertIs(res, Wahr)
 
-        mit self.subTest('full args, return non-Nichts'):
+        mit self.subTest('full args, gib non-Nichts'):
             expected = (1, 2, 3, 4, 5, 6, (7, 8), {'g': 9, 'h': 0})
             func = defs.spam_full_args
             args = (1, 2, 3, 4, 7, 8)

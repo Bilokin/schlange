@@ -49,7 +49,7 @@ def main():
     writer.pu()
     writer.goto(1,1.15)
     writer.write("DRAG!",align="center",font=("Arial",30,("bold","italic")))
-    return "EVENTLOOP"
+    gib "EVENTLOOP"
 
 wenn __name__ == "__main__":
     msg = main()

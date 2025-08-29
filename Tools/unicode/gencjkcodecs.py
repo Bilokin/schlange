@@ -43,7 +43,7 @@ klasse StreamWriter(Codec, mbc.MultibyteStreamWriter, codecs.StreamWriter):
     codec = codec
 
 def getregentry():
-    return codecs.CodecInfo(
+    gib codecs.CodecInfo(
         name='$encoding',
         encode=Codec().encode,
         decode=Codec().decode,

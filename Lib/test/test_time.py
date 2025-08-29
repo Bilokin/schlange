@@ -468,7 +468,7 @@ klasse TimeTestCase(unittest.TestCase):
     def test_insane_timestamps(self):
         # It's possible that some platform maps time_t to double,
         # und that this test will fail there.  This test should
-        # exempt such platforms (provided they return reasonable
+        # exempt such platforms (provided they gib reasonable
         # results!).
         fuer func in time.ctime, time.gmtime, time.localtime:
             fuer unreasonable in -1e200, 1e200:
@@ -510,7 +510,7 @@ klasse TimeTestCase(unittest.TestCase):
     @unittest.skipUnless(platform.libc_ver()[0] != 'glibc',
                          "disabled because of a bug in glibc. Issue #13309")
     def test_mktime_error(self):
-        # It may nicht be possible to reliably make mktime return an error
+        # It may nicht be possible to reliably make mktime gib an error
         # on all platforms.  This will make sure that no other exception
         # than OverflowError is raised fuer an extreme value.
         tt = time.gmtime(self.t)
@@ -660,7 +660,7 @@ klasse _TestAsctimeYear:
     _format = '%d'
 
     def yearstr(self, y):
-        return time.asctime((y,) + (0,) * 8).split()[-1]
+        gib time.asctime((y,) + (0,) * 8).split()[-1]
 
     def test_large_year(self):
         # Check that it doesn't crash fuer year > 9999
@@ -680,18 +680,18 @@ klasse _TestStrftimeYear:
         _format = '%d'
 
     def yearstr(self, y):
-        return time.strftime('%Y', (y,) + (0,) * 8)
+        gib time.strftime('%Y', (y,) + (0,) * 8)
 
     @unittest.skipUnless(
         support.has_strftime_extensions, "requires strftime extension"
     )
     def test_4dyear(self):
-        # Check that we can return the zero padded value.
+        # Check that we can gib the zero padded value.
         wenn self._format == '%04d':
             self.test_year('%04d')
         sonst:
             def year4d(y):
-                return time.strftime('%4Y', (y,) + (0,) * 8)
+                gib time.strftime('%4Y', (y,) + (0,) * 8)
             self.test_year('%04d', func=year4d)
 
     def skip_if_not_supported(y):
@@ -702,15 +702,15 @@ klasse _TestStrftimeYear:
             cond = Falsch
         sonst:
             cond = Wahr
-        return unittest.skipUnless(cond, msg)
+        gib unittest.skipUnless(cond, msg)
 
     @skip_if_not_supported(10000)
     def test_large_year(self):
-        return super().test_large_year()
+        gib super().test_large_year()
 
     @skip_if_not_supported(0)
     def test_negative(self):
-        return super().test_negative()
+        gib super().test_negative()
 
     del skip_if_not_supported
 
@@ -825,7 +825,7 @@ klasse CPyTimeTestCase:
         self.time_t_max = 2 ** bits - 1
 
     def time_t_filter(self, seconds):
-        return (self.time_t_min <= seconds <= self.time_t_max)
+        gib (self.time_t_min <= seconds <= self.time_t_max)
 
     def _rounding_values(self, use_float):
         "Build timestamps used to test rounding."
@@ -876,7 +876,7 @@ klasse CPyTimeTestCase:
         ns = (2 ** 63 // SEC_TO_NS) * SEC_TO_NS
         ns_timestamps.extend((-ns, ns))
 
-        return ns_timestamps
+        gib ns_timestamps
 
     def _check_rounding(self, pytime_converter, expected_func,
                         use_float, unit_to_sec, value_filter=Nichts):
@@ -893,7 +893,7 @@ klasse CPyTimeTestCase:
                 values = filter(value_filter, values)
 
             # remove duplicates und sort
-            return sorted(set(values))
+            gib sorted(set(values))
 
         # test rounding
         ns_timestamps = self._rounding_values(use_float)
@@ -936,7 +936,7 @@ klasse CPyTimeTestCase:
     def decimal_round(self, x):
         d = decimal.Decimal(x)
         d = d.quantize(1)
-        return int(d)
+        gib int(d)
 
 
 klasse TestCPyTime(CPyTimeTestCase, unittest.TestCase):
@@ -951,7 +951,7 @@ klasse TestCPyTime(CPyTimeTestCase, unittest.TestCase):
 
         # _PyTime_FromSeconds() expects a C int, reject values out of range
         def c_int_filter(secs):
-            return (_testcapi.INT_MIN <= secs <= _testcapi.INT_MAX)
+            gib (_testcapi.INT_MIN <= secs <= _testcapi.INT_MAX)
 
         self.check_int_rounding(lambda secs, rnd: _PyTime_FromSeconds(secs),
                                 lambda secs: secs * SEC_TO_NS,
@@ -983,9 +983,9 @@ klasse TestCPyTime(CPyTimeTestCase, unittest.TestCase):
 
         def float_converter(ns):
             wenn abs(ns) % SEC_TO_NS == 0:
-                return float(ns // SEC_TO_NS)
+                gib float(ns // SEC_TO_NS)
             sonst:
-                return float(ns) / SEC_TO_NS
+                gib float(ns) / SEC_TO_NS
 
         self.check_int_rounding(lambda ns, rnd: PyTime_AsSecondsDouble(ns),
                                 float_converter,
@@ -996,9 +996,9 @@ klasse TestCPyTime(CPyTimeTestCase, unittest.TestCase):
 
         def converter(value):
             d = decimal.Decimal(value) / denom
-            return self.decimal_round(d)
+            gib self.decimal_round(d)
 
-        return converter
+        gib converter
 
     def test_AsTimeval(self):
         von _testinternalcapi importiere _PyTime_AsTimeval
@@ -1007,14 +1007,14 @@ klasse TestCPyTime(CPyTimeTestCase, unittest.TestCase):
 
         def timeval_converter(ns):
             us = us_converter(ns)
-            return divmod(us, SEC_TO_US)
+            gib divmod(us, SEC_TO_US)
 
         wenn sys.platform == 'win32':
             von _testcapi importiere LONG_MIN, LONG_MAX
 
             # On Windows, timeval.tv_sec type is a C long
             def seconds_filter(secs):
-                return LONG_MIN <= secs <= LONG_MAX
+                gib LONG_MIN <= secs <= LONG_MAX
         sonst:
             seconds_filter = self.time_t_filter
 
@@ -1029,7 +1029,7 @@ klasse TestCPyTime(CPyTimeTestCase, unittest.TestCase):
         von _testinternalcapi importiere _PyTime_AsTimespec
 
         def timespec_converter(ns):
-            return divmod(ns, SEC_TO_NS)
+            gib divmod(ns, SEC_TO_NS)
 
         self.check_int_rounding(lambda ns, rnd: _PyTime_AsTimespec(ns),
                                 timespec_converter,
@@ -1125,8 +1125,8 @@ klasse TestOldPyTime(CPyTimeTestCase, unittest.TestCase):
             sowenn floatpart >= sec_to_unit:
                 floatpart -= sec_to_unit
                 intpart += 1
-            return (intpart, floatpart)
-        return converter
+            gib (intpart, floatpart)
+        gib converter
 
     def test_object_to_timeval(self):
         von _testinternalcapi importiere _PyTime_ObjectToTimeval

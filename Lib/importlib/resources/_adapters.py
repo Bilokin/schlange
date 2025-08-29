@@ -14,7 +14,7 @@ klasse SpecLoaderAdapter:
         self.loader = adapter(spec)
 
     def __getattr__(self, name):
-        return getattr(self.spec, name)
+        gib getattr(self.spec, name)
 
 
 klasse TraversableResourcesLoader:
@@ -26,14 +26,14 @@ klasse TraversableResourcesLoader:
         self.spec = spec
 
     def get_resource_reader(self, name):
-        return CompatibilityFiles(self.spec)._native()
+        gib CompatibilityFiles(self.spec)._native()
 
 
 def _io_wrapper(file, mode='r', *args, **kwargs):
     wenn mode == 'r':
-        return TextIOWrapper(file, *args, **kwargs)
+        gib TextIOWrapper(file, *args, **kwargs)
     sowenn mode == 'rb':
-        return file
+        gib file
     raise ValueError(f"Invalid mode value '{mode}', only 'r' und 'rb' are supported")
 
 
@@ -55,28 +55,28 @@ klasse CompatibilityFiles:
 
         def iterdir(self):
             wenn nicht self._reader:
-                return iter(())
-            return iter(
+                gib iter(())
+            gib iter(
                 CompatibilityFiles.ChildPath(self._reader, path)
                 fuer path in self._reader.contents()
             )
 
         def is_file(self):
-            return Falsch
+            gib Falsch
 
         is_dir = is_file
 
         def joinpath(self, other):
             wenn nicht self._reader:
-                return CompatibilityFiles.OrphanPath(other)
-            return CompatibilityFiles.ChildPath(self._reader, other)
+                gib CompatibilityFiles.OrphanPath(other)
+            gib CompatibilityFiles.ChildPath(self._reader, other)
 
         @property
         def name(self):
-            return self._spec.name
+            gib self._spec.name
 
         def open(self, mode='r', *args, **kwargs):
-            return _io_wrapper(self._reader.open_resource(Nichts), mode, *args, **kwargs)
+            gib _io_wrapper(self._reader.open_resource(Nichts), mode, *args, **kwargs)
 
     klasse ChildPath(abc.Traversable):
         """
@@ -89,23 +89,23 @@ klasse CompatibilityFiles:
             self._name = name
 
         def iterdir(self):
-            return iter(())
+            gib iter(())
 
         def is_file(self):
-            return self._reader.is_resource(self.name)
+            gib self._reader.is_resource(self.name)
 
         def is_dir(self):
-            return nicht self.is_file()
+            gib nicht self.is_file()
 
         def joinpath(self, other):
-            return CompatibilityFiles.OrphanPath(self.name, other)
+            gib CompatibilityFiles.OrphanPath(self.name, other)
 
         @property
         def name(self):
-            return self._name
+            gib self._name
 
         def open(self, mode='r', *args, **kwargs):
-            return _io_wrapper(
+            gib _io_wrapper(
                 self._reader.open_resource(self.name), mode, *args, **kwargs
             )
 
@@ -121,19 +121,19 @@ klasse CompatibilityFiles:
             self._path = path_parts
 
         def iterdir(self):
-            return iter(())
+            gib iter(())
 
         def is_file(self):
-            return Falsch
+            gib Falsch
 
         is_dir = is_file
 
         def joinpath(self, other):
-            return CompatibilityFiles.OrphanPath(*self._path, other)
+            gib CompatibilityFiles.OrphanPath(*self._path, other)
 
         @property
         def name(self):
-            return self._path[-1]
+            gib self._path[-1]
 
         def open(self, mode='r', *args, **kwargs):
             raise FileNotFoundError("Can't open orphan path")
@@ -144,20 +144,20 @@ klasse CompatibilityFiles:
     @property
     def _reader(self):
         mit suppress(AttributeError):
-            return self.spec.loader.get_resource_reader(self.spec.name)
+            gib self.spec.loader.get_resource_reader(self.spec.name)
 
     def _native(self):
         """
         Return the native reader wenn it supports files().
         """
         reader = self._reader
-        return reader wenn hasattr(reader, 'files') sonst self
+        gib reader wenn hasattr(reader, 'files') sonst self
 
     def __getattr__(self, attr):
-        return getattr(self._reader, attr)
+        gib getattr(self._reader, attr)
 
     def files(self):
-        return CompatibilityFiles.SpecPath(self.spec, self._reader)
+        gib CompatibilityFiles.SpecPath(self.spec, self._reader)
 
 
 def wrap_spec(package):
@@ -165,4 +165,4 @@ def wrap_spec(package):
     Construct a package spec mit traversable compatibility
     on the spec/loader/reader.
     """
-    return SpecLoaderAdapter(package.__spec__, TraversableResourcesLoader)
+    gib SpecLoaderAdapter(package.__spec__, TraversableResourcesLoader)

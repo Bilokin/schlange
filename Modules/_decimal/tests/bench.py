@@ -30,7 +30,7 @@ def pi_float():
         d, da = d+da, da+32
         t = (t * n) / d
         s += t
-    return s
+    gib s
 
 def pi_cdecimal():
     """cdecimal"""
@@ -42,7 +42,7 @@ def pi_cdecimal():
         d, da = d+da, da+32
         t = (t * n) / d
         s += t
-    return s
+    gib s
 
 def pi_decimal():
     """decimal"""
@@ -54,17 +54,17 @@ def pi_decimal():
         d, da = d+da, da+32
         t = (t * n) / d
         s += t
-    return s
+    gib s
 
 def factorial(n, m):
     wenn (n > m):
-        return factorial(m, n)
+        gib factorial(m, n)
     sowenn m == 0:
-        return 1
+        gib 1
     sowenn n == m:
-        return n
+        gib n
     sonst:
-        return factorial(n, (n+m)//2) * factorial((n+m)//2 + 1, m)
+        gib factorial(n, (n+m)//2) * factorial((n+m)//2 + 1, m)
 
 # Fix failed test cases caused by CVE-2020-10735 patch.
 # See gh-95778 fuer details.
@@ -76,9 +76,9 @@ def increase_int_max_str_digits(maxdigits):
             sys.set_int_max_str_digits(maxdigits)
             ans = func(*args, **kwargs)
             sys.set_int_max_str_digits(previous_int_limit)
-            return ans
-        return wrapper
-    return _increase_int_max_str_digits
+            gib ans
+        gib wrapper
+    gib _increase_int_max_str_digits
 
 def test_calc_pi():
     drucke("\n# ======================================================================")

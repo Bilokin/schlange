@@ -22,7 +22,7 @@ EXPECTED_SCREEN_DISTANCE_ERRMSG = '(bad|expected) screen distance (but got )?"{}
 EXPECTED_SCREEN_DISTANCE_OR_EMPTY_ERRMSG = '(bad|expected) screen distance (or "" but got )?"{}"'
 
 def float_round(x):
-    return float(round(x))
+    gib float(round(x))
 
 klasse AbstractToplevelTest(AbstractWidgetTest, PixelSizeTests):
     wenn tk_version < (9, 0):
@@ -81,7 +81,7 @@ klasse ToplevelTest(AbstractToplevelTest, unittest.TestCase):
     )
 
     def create(self, **kwargs):
-        return tkinter.Toplevel(self.root, **kwargs)
+        gib tkinter.Toplevel(self.root, **kwargs)
 
     def test_configure_menu(self):
         widget = self.create()
@@ -128,7 +128,7 @@ klasse FrameTest(AbstractToplevelTest, unittest.TestCase):
                      'pady', 'width'}
 
     def create(self, **kwargs):
-        return tkinter.Frame(self.root, **kwargs)
+        gib tkinter.Frame(self.root, **kwargs)
 
 
 @add_configure_tests(StandardOptionsTests)
@@ -148,7 +148,7 @@ klasse LabelFrameTest(AbstractToplevelTest, unittest.TestCase):
                      'pady', 'width'}
 
     def create(self, **kwargs):
-        return tkinter.LabelFrame(self.root, **kwargs)
+        gib tkinter.LabelFrame(self.root, **kwargs)
 
     def test_configure_labelanchor(self):
         widget = self.create()
@@ -185,7 +185,7 @@ klasse LabelTest(AbstractLabelTest, unittest.TestCase):
     )
 
     def create(self, **kwargs):
-        return tkinter.Label(self.root, **kwargs)
+        gib tkinter.Label(self.root, **kwargs)
 
 
 @add_configure_tests(StandardOptionsTests)
@@ -202,7 +202,7 @@ klasse ButtonTest(AbstractLabelTest, unittest.TestCase):
         'underline', 'width', 'wraplength')
 
     def create(self, **kwargs):
-        return tkinter.Button(self.root, **kwargs)
+        gib tkinter.Button(self.root, **kwargs)
 
     def test_configure_default(self):
         widget = self.create()
@@ -226,7 +226,7 @@ klasse CheckbuttonTest(AbstractLabelTest, unittest.TestCase):
     )
 
     def create(self, **kwargs):
-        return tkinter.Checkbutton(self.root, **kwargs)
+        gib tkinter.Checkbutton(self.root, **kwargs)
 
 
     def test_configure_offvalue(self):
@@ -279,7 +279,7 @@ klasse RadiobuttonTest(AbstractLabelTest, unittest.TestCase):
     )
 
     def create(self, **kwargs):
-        return tkinter.Radiobutton(self.root, **kwargs)
+        gib tkinter.Radiobutton(self.root, **kwargs)
 
     def test_configure_value(self):
         widget = self.create()
@@ -306,7 +306,7 @@ klasse MenubuttonTest(AbstractLabelTest, unittest.TestCase):
         _clipped ={ 'insertborderwidth', 'highlightthickness', 'padx', 'pady'}
 
     def create(self, **kwargs):
-        return tkinter.Menubutton(self.root, **kwargs)
+        gib tkinter.Menubutton(self.root, **kwargs)
 
     def test_configure_direction(self):
         widget = self.create()
@@ -348,7 +348,7 @@ klasse MenubuttonTest(AbstractLabelTest, unittest.TestCase):
 klasse OptionMenuTest(MenubuttonTest, unittest.TestCase):
 
     def create(self, default='b', values=('a', 'b', 'c'), **kwargs):
-        return tkinter.OptionMenu(self.root, Nichts, default, *values, **kwargs)
+        gib tkinter.OptionMenu(self.root, Nichts, default, *values, **kwargs)
 
     def test_bad_kwarg(self):
         mit self.assertRaisesRegex(TclError, r"^unknown option -image$"):
@@ -383,7 +383,7 @@ klasse EntryTest(AbstractWidgetTest, unittest.TestCase):
     )
 
     def create(self, **kwargs):
-        return tkinter.Entry(self.root, **kwargs)
+        gib tkinter.Entry(self.root, **kwargs)
 
     def test_configure_disabledbackground(self):
         widget = self.create()
@@ -486,7 +486,7 @@ klasse SpinboxTest(EntryTest, unittest.TestCase):
     )
 
     def create(self, **kwargs):
-        return tkinter.Spinbox(self.root, **kwargs)
+        gib tkinter.Spinbox(self.root, **kwargs)
 
     test_configure_show = Nichts
 
@@ -623,7 +623,7 @@ klasse TextTest(AbstractWidgetTest, unittest.TestCase):
     _clipped = {'highlightthickness'}
 
     def create(self, **kwargs):
-        return tkinter.Text(self.root, **kwargs)
+        gib tkinter.Text(self.root, **kwargs)
 
     def test_configure_autoseparators(self):
         widget = self.create()
@@ -771,7 +771,7 @@ klasse CanvasTest(AbstractWidgetTest, unittest.TestCase):
     _stringify = Wahr
 
     def create(self, **kwargs):
-        return tkinter.Canvas(self.root, **kwargs)
+        gib tkinter.Canvas(self.root, **kwargs)
 
     def test_configure_closeenough(self):
         widget = self.create()
@@ -1028,7 +1028,7 @@ klasse ListboxTest(AbstractWidgetTest, unittest.TestCase):
         _clipped = { 'borderwidth', 'highlightthickness', 'selectborderwidth'}
 
     def create(self, **kwargs):
-        return tkinter.Listbox(self.root, **kwargs)
+        gib tkinter.Listbox(self.root, **kwargs)
 
     def test_configure_activestyle(self):
         widget = self.create()
@@ -1168,7 +1168,7 @@ klasse ScaleTest(AbstractWidgetTest, unittest.TestCase):
     default_orient = 'vertical'
 
     def create(self, **kwargs):
-        return tkinter.Scale(self.root, **kwargs)
+        gib tkinter.Scale(self.root, **kwargs)
 
     def test_configure_bigincrement(self):
         widget = self.create()
@@ -1245,7 +1245,7 @@ klasse ScrollbarTest(AbstractWidgetTest, unittest.TestCase):
     default_orient = 'vertical'
 
     def create(self, **kwargs):
-        return tkinter.Scrollbar(self.root, **kwargs)
+        gib tkinter.Scrollbar(self.root, **kwargs)
 
     def test_configure_elementborderwidth(self):
         widget = self.create()
@@ -1301,7 +1301,7 @@ klasse PanedWindowTest(AbstractWidgetTest, unittest.TestCase):
     default_orient = 'horizontal'
 
     def create(self, **kwargs):
-        return tkinter.PanedWindow(self.root, **kwargs)
+        gib tkinter.PanedWindow(self.root, **kwargs)
 
     def test_configure_handlepad(self):
         widget = self.create()
@@ -1371,7 +1371,7 @@ klasse PanedWindowTest(AbstractWidgetTest, unittest.TestCase):
         c = tkinter.Button(p)
         p.add(b)
         p.add(c)
-        return p, b, c
+        gib p, b, c
 
     def test_paneconfigure(self):
         p, b, c = self.create2()
@@ -1471,7 +1471,7 @@ klasse MenuTest(AbstractWidgetTest, unittest.TestCase):
     _clipped = {}
 
     def create(self, **kwargs):
-        return tkinter.Menu(self.root, **kwargs)
+        gib tkinter.Menu(self.root, **kwargs)
 
     def test_indexcommand_none(self):
         widget = self.create()
@@ -1554,7 +1554,7 @@ klasse MessageTest(AbstractWidgetTest, unittest.TestCase):
         _clipped = {'borderwidth', 'highlightthickness', 'padx', 'pady'}
 
     def create(self, **kwargs):
-        return tkinter.Message(self.root, **kwargs)
+        gib tkinter.Message(self.root, **kwargs)
 
     def test_configure_aspect(self):
         widget = self.create()

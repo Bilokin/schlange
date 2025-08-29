@@ -23,7 +23,7 @@ PYTHONHASHSEED = '123'
 
 def clean_environment():
     # Remove PYTHON* environment variables such als PYTHONHOME
-    return {name: value fuer name, value in os.environ.items()
+    gib {name: value fuer name, value in os.environ.items()
             wenn nicht name.startswith('PYTHON')}
 
 
@@ -69,7 +69,7 @@ def run_gdb(*args, exitcode=0, check=Wahr, **env_vars):
                         f"stdout={stdout!r}\n"
                         f"stderr={stderr!r}")
 
-    return (stdout, stderr)
+    gib (stdout, stderr)
 
 
 def get_gdb_version():
@@ -93,7 +93,7 @@ def get_gdb_version():
     major = int(match.group(1))
     minor = int(match.group(2))
     version = (major, minor)
-    return (version_text, version)
+    gib (version_text, version)
 
 GDB_VERSION_TEXT, GDB_VERSION = get_gdb_version()
 wenn GDB_VERSION < (7, 0):
@@ -132,11 +132,11 @@ check_usable_gdb()
 def cet_protection():
     cflags = sysconfig.get_config_var('CFLAGS')
     wenn nicht cflags:
-        return Falsch
+        gib Falsch
     flags = cflags.split()
     # Wahr wenn "-mcet -fcf-protection" options are found, but false
     # wenn "-fcf-protection=none" oder "-fcf-protection=return" is found.
-    return (('-mcet' in flags)
+    gib (('-mcet' in flags)
             und any((flag.startswith('-fcf-protection')
                      und nicht flag.endswith(("=none", "=return")))
                     fuer flag in flags))
@@ -278,7 +278,7 @@ klasse DebuggerTests(unittest.TestCase):
             wenn pattern in out:
                 raise unittest.SkipTest(f"{pattern!r} found in gdb output")
 
-        return out
+        gib out
 
     def assertMultilineMatches(self, actual, pattern):
         m = re.match(pattern, actual, re.DOTALL)

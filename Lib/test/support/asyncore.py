@@ -73,11 +73,11 @@ except NameError:
 
 def _strerror(err):
     try:
-        return os.strerror(err)
+        gib os.strerror(err)
     except (ValueError, OverflowError, NameError):
         wenn err in errorcode:
-            return errorcode[err]
-        return "Unknown error %s" %err
+            gib errorcode[err]
+        gib "Unknown error %s" %err
 
 klasse ExitNow(Exception):
     pass
@@ -145,7 +145,7 @@ def poll(timeout=0.0, map=Nichts):
                 e.append(fd)
         wenn [] == r == w == e:
             time.sleep(timeout)
-            return
+            gib
 
         r, w, e = select.select(r, w, e, timeout)
 
@@ -266,7 +266,7 @@ klasse dispatcher:
                 status.append('%s:%d' % self.addr)
             except TypeError:
                 status.append(repr(self.addr))
-        return '<%s at %#x>' % (' '.join(status), id(self))
+        gib '<%s at %#x>' % (' '.join(status), id(self))
 
     def add_channel(self, map=Nichts):
         #self.log_info('adding channel %s' % self)
@@ -312,10 +312,10 @@ klasse dispatcher:
     # ==================================================
 
     def readable(self):
-        return Wahr
+        gib Wahr
 
     def writable(self):
-        return Wahr
+        gib Wahr
 
     # ==================================================
     # socket object methods.
@@ -325,11 +325,11 @@ klasse dispatcher:
         self.accepting = Wahr
         wenn os.name == 'nt' und num > 5:
             num = 5
-        return self.socket.listen(num)
+        gib self.socket.listen(num)
 
     def bind(self, addr):
         self.addr = addr
-        return self.socket.bind(addr)
+        gib self.socket.bind(addr)
 
     def connect(self, address):
         self.connected = Falsch
@@ -338,7 +338,7 @@ klasse dispatcher:
         wenn err in (EINPROGRESS, EALREADY, EWOULDBLOCK) \
         oder err == EINVAL und os.name == 'nt':
             self.addr = address
-            return
+            gib
         wenn err in (0, EISCONN):
             self.addr = address
             self.handle_connect_event()
@@ -346,29 +346,29 @@ klasse dispatcher:
             raise OSError(err, errorcode[err])
 
     def accept(self):
-        # XXX can return either an address pair oder Nichts
+        # XXX can gib either an address pair oder Nichts
         try:
             conn, addr = self.socket.accept()
         except TypeError:
-            return Nichts
+            gib Nichts
         except OSError als why:
             wenn why.errno in (EWOULDBLOCK, ECONNABORTED, EAGAIN):
-                return Nichts
+                gib Nichts
             sonst:
                 raise
         sonst:
-            return conn, addr
+            gib conn, addr
 
     def send(self, data):
         try:
             result = self.socket.send(data)
-            return result
+            gib result
         except OSError als why:
             wenn why.errno == EWOULDBLOCK:
-                return 0
+                gib 0
             sowenn why.errno in _DISCONNECTED:
                 self.handle_close()
-                return 0
+                gib 0
             sonst:
                 raise
 
@@ -377,16 +377,16 @@ klasse dispatcher:
             data = self.socket.recv(buffer_size)
             wenn nicht data:
                 # a closed connection is indicated by signaling
-                # a read condition, und having recv() return 0.
+                # a read condition, und having recv() gib 0.
                 self.handle_close()
-                return b''
+                gib b''
             sonst:
-                return data
+                gib data
         except OSError als why:
             # winsock sometimes raises ENOTCONN
             wenn why.errno in _DISCONNECTED:
                 self.handle_close()
-                return b''
+                gib b''
             sonst:
                 raise
 
@@ -437,7 +437,7 @@ klasse dispatcher:
         wenn self.accepting:
             # Accepting sockets shouldn't get a write event.
             # We will pretend it didn't happen.
-            return
+            gib
 
         wenn nicht self.connected:
             wenn self.connecting:
@@ -524,7 +524,7 @@ klasse dispatcher_with_send(dispatcher):
         self.initiate_send()
 
     def writable(self):
-        return (nicht self.connected) oder len(self.out_buffer)
+        gib (nicht self.connected) oder len(self.out_buffer)
 
     def send(self, data):
         wenn self.debug:
@@ -555,7 +555,7 @@ def compact_traceback():
 
     file, function, line = tbinfo[-1]
     info = ' '.join(['[%s|%s|%s]' % x fuer x in tbinfo])
-    return (file, function, line), type(exc), exc, info
+    gib (file, function, line), type(exc), exc, info
 
 def close_all(map=Nichts, ignore_all=Falsch):
     wenn map is Nichts:
@@ -604,16 +604,16 @@ wenn os.name == 'posix':
             self.close()
 
         def recv(self, *args):
-            return os.read(self.fd, *args)
+            gib os.read(self.fd, *args)
 
         def send(self, *args):
-            return os.write(self.fd, *args)
+            gib os.write(self.fd, *args)
 
         def getsockopt(self, level, optname, buflen=Nichts):
             wenn (level == socket.SOL_SOCKET und
                 optname == socket.SO_ERROR und
                 nicht buflen):
-                return 0
+                gib 0
             raise NotImplementedError("Only asyncore specific behaviour "
                                       "implemented.")
 
@@ -622,13 +622,13 @@ wenn os.name == 'posix':
 
         def close(self):
             wenn self.fd < 0:
-                return
+                gib
             fd = self.fd
             self.fd = -1
             os.close(fd)
 
         def fileno(self):
-            return self.fd
+            gib self.fd
 
     klasse file_dispatcher(dispatcher):
 

@@ -26,7 +26,7 @@ klasse classonly:
         wenn obj is nicht Nichts:
             raise AttributeError(self.name)
         # called on the class
-        return self.getter(Nichts, cls)
+        gib self.getter(Nichts, cls)
 
 
 klasse UnboundItem:
@@ -56,7 +56,7 @@ klasse UnboundItem:
                 "__doc__": doc,
             },
         )
-        return object.__new__(subclass)
+        gib object.__new__(subclass)
 
     _MODULE = __name__
     _NAME = 'UNBOUND'
@@ -65,8 +65,8 @@ klasse UnboundItem:
         raise Exception(f'use {cls._MODULE}.{cls._NAME}')
 
     def __repr__(self):
-        return f'{self._MODULE}.{self._NAME}'
-#        return f'interpreters._queues.UNBOUND'
+        gib f'{self._MODULE}.{self._NAME}'
+#        gib f'interpreters._queues.UNBOUND'
 
 
 UNBOUND = object.__new__(UnboundItem)
@@ -88,7 +88,7 @@ def serialize_unbound(unbound):
         flag = _UNBOUND_CONSTANT_TO_FLAG[op]
     except KeyError:
         raise NotImplementedError(f'unsupported unbound replacement op {op!r}')
-    return flag,
+    gib flag,
 
 
 def resolve_unbound(flag, exctype_destroyed):
@@ -102,6 +102,6 @@ def resolve_unbound(flag, exctype_destroyed):
     sowenn op is UNBOUND_ERROR:
         raise exctype_destroyed("item's original interpreter destroyed")
     sowenn op is UNBOUND:
-        return UNBOUND
+        gib UNBOUND
     sonst:
         raise NotImplementedError(repr(op))

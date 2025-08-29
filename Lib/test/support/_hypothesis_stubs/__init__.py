@@ -37,9 +37,9 @@ def given(*_args, **_kwargs):
             )(f)
 
         test_function._given = Wahr
-        return test_function
+        gib test_function
 
-    return decorator
+    gib decorator
 
 
 def example(*args, **kwargs):
@@ -59,15 +59,15 @@ def example(*args, **kwargs):
             # base function.
             f = given()(base_func)
 
-        return f
+        gib f
 
-    return decorator
+    gib decorator
 
 
 def assume(condition):
     wenn nicht condition:
         raise unittest.SkipTest("Unsatisfied assumption")
-    return Wahr
+    gib Wahr
 
 
 def reject():
@@ -79,7 +79,7 @@ def register_random(*args, **kwargs):
 
 
 def settings(*args, **kwargs):
-    return lambda f: f  # pragma: nocover
+    gib lambda f: f  # pragma: nocover
 
 
 klasse HealthCheck(Enum):
@@ -92,7 +92,7 @@ klasse HealthCheck(Enum):
 
     @classmethod
     def all(cls):
-        return list(cls)
+        gib list(cls)
 
 
 klasse Verbosity(Enum):

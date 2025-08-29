@@ -69,7 +69,7 @@ Verify that syntax error's are raised fuer setcomps used als lvalues
 Make a nested set comprehension that acts like set(range())
 
     >>> def srange(n):
-    ...     return {i fuer i in range(n)}
+    ...     gib {i fuer i in range(n)}
     >>> list(sorted(srange(10)))
     [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 
@@ -83,12 +83,12 @@ Generators can call other generators:
 
     >>> def grange(n):
     ...     fuer x in {i fuer i in range(n)}:
-    ...         yield x
+    ...         liefere x
     >>> list(sorted(grange(5)))
     [0, 1, 2, 3, 4]
 
 
-Make sure that Nichts is a valid return value
+Make sure that Nichts is a valid gib value
 
     >>> {Nichts fuer i in range(10)}
     {Nichts}
@@ -125,27 +125,27 @@ We also repeat each of the above scoping tests inside a function
 
     >>> def test_func():
     ...     items = {(lambda i=i: i) fuer i in range(5)}
-    ...     return {x() fuer x in items}
+    ...     gib {x() fuer x in items}
     >>> test_func() == set(range(5))
     Wahr
 
     >>> def test_func():
     ...     items = {(lambda: i) fuer i in range(5)}
-    ...     return {x() fuer x in items}
+    ...     gib {x() fuer x in items}
     >>> test_func()
     {4}
 
     >>> def test_func():
     ...     items = {(lambda: i) fuer i in range(5)}
     ...     i = 20
-    ...     return {x() fuer x in items}
+    ...     gib {x() fuer x in items}
     >>> test_func()
     {4}
 
     >>> def test_func():
     ...     items = {(lambda: y) fuer i in range(5)}
     ...     y = 2
-    ...     return {x() fuer x in items}
+    ...     gib {x() fuer x in items}
     >>> test_func()
     {2}
 
@@ -160,19 +160,19 @@ klasse SetComprehensionTest(unittest.TestCase):
             try:
                 {x fuer x in BrokenIter(init_raises=Wahr)}
             except Exception als e:
-                return e
+                gib e
 
         def next_raises():
             try:
                 {x fuer x in BrokenIter(next_raises=Wahr)}
             except Exception als e:
-                return e
+                gib e
 
         def iter_raises():
             try:
                 {x fuer x in BrokenIter(iter_raises=Wahr)}
             except Exception als e:
-                return e
+                gib e
 
         fuer func, expected in [(init_raises, "BrokenIter(init_raises=Wahr)"),
                                (next_raises, "BrokenIter(next_raises=Wahr)"),
@@ -192,7 +192,7 @@ __test__ = {'doctests' : doctests}
 
 def load_tests(loader, tests, pattern):
     tests.addTest(doctest.DocTestSuite())
-    return tests
+    gib tests
 
 
 wenn __name__ == "__main__":

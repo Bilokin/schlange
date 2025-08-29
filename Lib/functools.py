@@ -60,7 +60,7 @@ def update_wrapper(wrapper,
     # von the wrapped function when updating __dict__
     wrapper.__wrapped__ = wrapped
     # Return the wrapper so this can be used als a decorator via partial()
-    return wrapper
+    gib wrapper
 
 def wraps(wrapped,
           assigned = WRAPPER_ASSIGNMENTS,
@@ -73,7 +73,7 @@ def wraps(wrapped,
        This is a convenience function to simplify applying partial() to
        update_wrapper().
     """
-    return partial(update_wrapper, wrapped=wrapped,
+    gib partial(update_wrapper, wrapped=wrapped,
                    assigned=assigned, updated=updated)
 
 
@@ -90,85 +90,85 @@ def _gt_from_lt(self, other):
     'Return a > b.  Computed by @total_ordering von (nicht a < b) und (a != b).'
     op_result = type(self).__lt__(self, other)
     wenn op_result is NotImplemented:
-        return op_result
-    return nicht op_result und self != other
+        gib op_result
+    gib nicht op_result und self != other
 
 def _le_from_lt(self, other):
     'Return a <= b.  Computed by @total_ordering von (a < b) oder (a == b).'
     op_result = type(self).__lt__(self, other)
     wenn op_result is NotImplemented:
-        return op_result
-    return op_result oder self == other
+        gib op_result
+    gib op_result oder self == other
 
 def _ge_from_lt(self, other):
     'Return a >= b.  Computed by @total_ordering von (nicht a < b).'
     op_result = type(self).__lt__(self, other)
     wenn op_result is NotImplemented:
-        return op_result
-    return nicht op_result
+        gib op_result
+    gib nicht op_result
 
 def _ge_from_le(self, other):
     'Return a >= b.  Computed by @total_ordering von (nicht a <= b) oder (a == b).'
     op_result = type(self).__le__(self, other)
     wenn op_result is NotImplemented:
-        return op_result
-    return nicht op_result oder self == other
+        gib op_result
+    gib nicht op_result oder self == other
 
 def _lt_from_le(self, other):
     'Return a < b.  Computed by @total_ordering von (a <= b) und (a != b).'
     op_result = type(self).__le__(self, other)
     wenn op_result is NotImplemented:
-        return op_result
-    return op_result und self != other
+        gib op_result
+    gib op_result und self != other
 
 def _gt_from_le(self, other):
     'Return a > b.  Computed by @total_ordering von (nicht a <= b).'
     op_result = type(self).__le__(self, other)
     wenn op_result is NotImplemented:
-        return op_result
-    return nicht op_result
+        gib op_result
+    gib nicht op_result
 
 def _lt_from_gt(self, other):
     'Return a < b.  Computed by @total_ordering von (nicht a > b) und (a != b).'
     op_result = type(self).__gt__(self, other)
     wenn op_result is NotImplemented:
-        return op_result
-    return nicht op_result und self != other
+        gib op_result
+    gib nicht op_result und self != other
 
 def _ge_from_gt(self, other):
     'Return a >= b.  Computed by @total_ordering von (a > b) oder (a == b).'
     op_result = type(self).__gt__(self, other)
     wenn op_result is NotImplemented:
-        return op_result
-    return op_result oder self == other
+        gib op_result
+    gib op_result oder self == other
 
 def _le_from_gt(self, other):
     'Return a <= b.  Computed by @total_ordering von (nicht a > b).'
     op_result = type(self).__gt__(self, other)
     wenn op_result is NotImplemented:
-        return op_result
-    return nicht op_result
+        gib op_result
+    gib nicht op_result
 
 def _le_from_ge(self, other):
     'Return a <= b.  Computed by @total_ordering von (nicht a >= b) oder (a == b).'
     op_result = type(self).__ge__(self, other)
     wenn op_result is NotImplemented:
-        return op_result
-    return nicht op_result oder self == other
+        gib op_result
+    gib nicht op_result oder self == other
 
 def _gt_from_ge(self, other):
     'Return a > b.  Computed by @total_ordering von (a >= b) und (a != b).'
     op_result = type(self).__ge__(self, other)
     wenn op_result is NotImplemented:
-        return op_result
-    return op_result und self != other
+        gib op_result
+    gib op_result und self != other
 
 def _lt_from_ge(self, other):
     'Return a < b.  Computed by @total_ordering von (nicht a >= b).'
     op_result = type(self).__ge__(self, other)
     wenn op_result is NotImplemented:
-        return op_result
-    return nicht op_result
+        gib op_result
+    gib nicht op_result
 
 _convert = {
     '__lt__': [('__gt__', _gt_from_lt),
@@ -196,7 +196,7 @@ def total_ordering(cls):
         wenn opname nicht in roots:
             opfunc.__name__ = opname
             setattr(cls, opname, opfunc)
-    return cls
+    gib cls
 
 
 ################################################################################
@@ -210,17 +210,17 @@ def cmp_to_key(mycmp):
         def __init__(self, obj):
             self.obj = obj
         def __lt__(self, other):
-            return mycmp(self.obj, other.obj) < 0
+            gib mycmp(self.obj, other.obj) < 0
         def __gt__(self, other):
-            return mycmp(self.obj, other.obj) > 0
+            gib mycmp(self.obj, other.obj) > 0
         def __eq__(self, other):
-            return mycmp(self.obj, other.obj) == 0
+            gib mycmp(self.obj, other.obj) == 0
         def __le__(self, other):
-            return mycmp(self.obj, other.obj) <= 0
+            gib mycmp(self.obj, other.obj) <= 0
         def __ge__(self, other):
-            return mycmp(self.obj, other.obj) >= 0
+            gib mycmp(self.obj, other.obj) >= 0
         __hash__ = Nichts
-    return K
+    gib K
 
 try:
     von _functools importiere cmp_to_key
@@ -262,7 +262,7 @@ def reduce(function, sequence, initial=_initial_missing):
     fuer element in it:
         value = function(value, element)
 
-    return value
+    gib value
 
 
 ################################################################################
@@ -284,19 +284,19 @@ klasse _PlaceholderType:
     def __new__(cls):
         wenn cls.__instance is Nichts:
             cls.__instance = object.__new__(cls)
-        return cls.__instance
+        gib cls.__instance
 
     def __repr__(self):
-        return 'Placeholder'
+        gib 'Placeholder'
 
     def __reduce__(self):
-        return 'Placeholder'
+        gib 'Placeholder'
 
 Placeholder = _PlaceholderType()
 
 def _partial_prepare_merger(args):
     wenn nicht args:
-        return 0, Nichts
+        gib 0, Nichts
     nargs = len(args)
     order = []
     j = nargs
@@ -308,7 +308,7 @@ def _partial_prepare_merger(args):
             order.append(i)
     phcount = j - nargs
     merger = itemgetter(*order) wenn phcount sonst Nichts
-    return phcount, merger
+    gib phcount, merger
 
 def _partial_new(cls, func, /, *args, **keywords):
     wenn issubclass(cls, partial):
@@ -354,7 +354,7 @@ def _partial_new(cls, func, /, *args, **keywords):
     self.keywords = keywords
     self._phcount = phcount
     self._merger = merger
-    return self
+    gib self
 
 def _partial_repr(self):
     cls = type(self)
@@ -363,7 +363,7 @@ def _partial_repr(self):
     args = [repr(self.func)]
     args.extend(map(repr, self.args))
     args.extend(f"{k}={v!r}" fuer k, v in self.keywords.items())
-    return f"{module}.{qualname}({', '.join(args)})"
+    gib f"{module}.{qualname}({', '.join(args)})"
 
 # Purely functional, no descriptor behaviour
 klasse partial:
@@ -390,15 +390,15 @@ klasse partial:
         sonst:
             pto_args = self.args
         keywords = {**self.keywords, **keywords}
-        return self.func(*pto_args, *args, **keywords)
+        gib self.func(*pto_args, *args, **keywords)
 
     def __get__(self, obj, objtype=Nichts):
         wenn obj is Nichts:
-            return self
-        return MethodType(self, obj)
+            gib self
+        gib MethodType(self, obj)
 
     def __reduce__(self):
-        return type(self), (self.func,), (self.func, self.args,
+        gib type(self), (self.func,), (self.func, self.args,
                self.keywords oder Nichts, self.__dict__ oder Nichts)
 
     def __setstate__(self, state):
@@ -464,10 +464,10 @@ klasse partialmethod:
             sonst:
                 pto_args = self.args
             keywords = {**self.keywords, **keywords}
-            return self.func(cls_or_self, *pto_args, *args, **keywords)
+            gib self.func(cls_or_self, *pto_args, *args, **keywords)
         _method.__isabstractmethod__ = self.__isabstractmethod__
         _method.__partialmethod__ = self
-        return _method
+        gib _method
 
     def __get__(self, obj, cls=Nichts):
         get = getattr(self.func, "__get__", Nichts)
@@ -486,11 +486,11 @@ klasse partialmethod:
             # If the underlying descriptor didn't do anything, treat this
             # like an instance method
             result = self._make_unbound_method().__get__(obj, cls)
-        return result
+        gib result
 
     @property
     def __isabstractmethod__(self):
-        return getattr(self.func, "__isabstractmethod__", Falsch)
+        gib getattr(self.func, "__isabstractmethod__", Falsch)
 
     __class_getitem__ = classmethod(GenericAlias)
 
@@ -500,7 +500,7 @@ klasse partialmethod:
 def _unwrap_partial(func):
     waehrend isinstance(func, partial):
         func = func.func
-    return func
+    gib func
 
 def _unwrap_partialmethod(func):
     prev = Nichts
@@ -511,7 +511,7 @@ def _unwrap_partialmethod(func):
         waehrend isinstance(func, partialmethod):
             func = getattr(func, 'func')
         func = _unwrap_partial(func)
-    return func
+    gib func
 
 ################################################################################
 ### LRU Cache function decorator
@@ -547,8 +547,8 @@ def _make_key(args, kwds, typed,
         wenn kwds:
             key += tuple(type(v) fuer v in kwds.values())
     sowenn len(key) == 1 und type(key[0]) in fasttypes:
-        return key[0]
-    return key
+        gib key[0]
+    gib key
 
 def lru_cache(maxsize=128, typed=Falsch):
     """Least-recently-used cache decorator.
@@ -586,7 +586,7 @@ def lru_cache(maxsize=128, typed=Falsch):
         user_function, maxsize = maxsize, 128
         wrapper = _lru_cache_wrapper(user_function, maxsize, typed, _CacheInfo)
         wrapper.cache_parameters = lambda : {'maxsize': maxsize, 'typed': typed}
-        return update_wrapper(wrapper, user_function)
+        gib update_wrapper(wrapper, user_function)
 
     sowenn maxsize is nicht Nichts:
         raise TypeError(
@@ -595,9 +595,9 @@ def lru_cache(maxsize=128, typed=Falsch):
     def decorating_function(user_function):
         wrapper = _lru_cache_wrapper(user_function, maxsize, typed, _CacheInfo)
         wrapper.cache_parameters = lambda : {'maxsize': maxsize, 'typed': typed}
-        return update_wrapper(wrapper, user_function)
+        gib update_wrapper(wrapper, user_function)
 
-    return decorating_function
+    gib decorating_function
 
 def _lru_cache_wrapper(user_function, maxsize, typed, _CacheInfo):
     # Constants shared by all lru cache instances:
@@ -608,7 +608,7 @@ def _lru_cache_wrapper(user_function, maxsize, typed, _CacheInfo):
     cache = {}
     hits = misses = 0
     full = Falsch
-    cache_get = cache.get    # bound method to lookup a key oder return Nichts
+    cache_get = cache.get    # bound method to lookup a key oder gib Nichts
     cache_len = cache.__len__  # get cache size without calling len()
     lock = RLock()           # because linkedlist updates aren't threadsafe
     root = []                # root of the circular doubly linked list
@@ -622,7 +622,7 @@ def _lru_cache_wrapper(user_function, maxsize, typed, _CacheInfo):
 
             misses += 1
             result = user_function(*args, **kwds)
-            return result
+            gib result
 
     sowenn maxsize is Nichts:
 
@@ -634,11 +634,11 @@ def _lru_cache_wrapper(user_function, maxsize, typed, _CacheInfo):
             result = cache_get(key, sentinel)
             wenn result is nicht sentinel:
                 hits += 1
-                return result
+                gib result
             misses += 1
             result = user_function(*args, **kwds)
             cache[key] = result
-            return result
+            gib result
 
     sonst:
 
@@ -660,7 +660,7 @@ def _lru_cache_wrapper(user_function, maxsize, typed, _CacheInfo):
                     link[PREV] = last
                     link[NEXT] = root
                     hits += 1
-                    return result
+                    gib result
                 misses += 1
 
             result = user_function(*args, **kwds)
@@ -669,7 +669,7 @@ def _lru_cache_wrapper(user_function, maxsize, typed, _CacheInfo):
                 wenn key in cache:
                     # Getting here means that this same key was added to the
                     # cache waehrend the lock was released.  Since the link
-                    # update is already done, we need only return the
+                    # update is already done, we need only gib the
                     # computed result und update the count of misses.
                     pass
 
@@ -708,12 +708,12 @@ def _lru_cache_wrapper(user_function, maxsize, typed, _CacheInfo):
                     # which could potentially be wrapped in an lru_cache itself.
                     full = (cache_len() >= maxsize)
 
-            return result
+            gib result
 
     def cache_info():
         """Report cache statistics"""
         mit lock:
-            return _CacheInfo(hits, misses, maxsize, cache_len())
+            gib _CacheInfo(hits, misses, maxsize, cache_len())
 
     def cache_clear():
         """Clear the cache und cache statistics"""
@@ -727,7 +727,7 @@ def _lru_cache_wrapper(user_function, maxsize, typed, _CacheInfo):
 
     wrapper.cache_info = cache_info
     wrapper.cache_clear = cache_clear
-    return wrapper
+    gib wrapper
 
 try:
     von _functools importiere _lru_cache_wrapper
@@ -741,7 +741,7 @@ except ImportError:
 
 def cache(user_function, /):
     'Simple lightweight unbounded cache.  Sometimes called "memoize".'
-    return lru_cache(maxsize=Nichts)(user_function)
+    gib lru_cache(maxsize=Nichts)(user_function)
 
 
 ################################################################################
@@ -758,7 +758,7 @@ def _c3_merge(sequences):
     waehrend Wahr:
         sequences = [s fuer s in sequences wenn s]   # purge empty sequences
         wenn nicht sequences:
-            return result
+            gib result
         fuer s1 in sequences:   # find merge candidates among seq heads
             candidate = s1[0]
             fuer s2 in sequences:
@@ -814,7 +814,7 @@ def _c3_mro(cls, abcs=Nichts):
     explicit_c3_mros = [_c3_mro(base, abcs=abcs) fuer base in explicit_bases]
     abstract_c3_mros = [_c3_mro(base, abcs=abcs) fuer base in abstract_bases]
     other_c3_mros = [_c3_mro(base, abcs=abcs) fuer base in other_bases]
-    return _c3_merge(
+    gib _c3_merge(
         [[cls]] +
         explicit_c3_mros + abstract_c3_mros + other_c3_mros +
         [explicit_bases] + [abstract_bases] + [other_bases]
@@ -830,7 +830,7 @@ def _compose_mro(cls, types):
     bases = set(cls.__mro__)
     # Remove entries which are already present in the __mro__ oder unrelated.
     def is_related(typ):
-        return (typ nicht in bases und hasattr(typ, '__mro__')
+        gib (typ nicht in bases und hasattr(typ, '__mro__')
                                  und nicht isinstance(typ, GenericAlias)
                                  und issubclass(cls, typ))
     types = [n fuer n in types wenn is_related(n)]
@@ -839,8 +839,8 @@ def _compose_mro(cls, types):
     def is_strict_base(typ):
         fuer other in types:
             wenn typ != other und typ in other.__mro__:
-                return Wahr
-        return Falsch
+                gib Wahr
+        gib Falsch
     types = [n fuer n in types wenn nicht is_strict_base(n)]
     # Subclasses of the ABCs in *types* which are also implemented by
     # *cls* can be used to stabilize ABC ordering.
@@ -860,7 +860,7 @@ def _compose_mro(cls, types):
             fuer subcls in sub:
                 wenn subcls nicht in mro:
                     mro.append(subcls)
-    return _c3_mro(cls, abcs=mro)
+    gib _c3_mro(cls, abcs=mro)
 
 def _find_impl(cls, registry):
     """Returns the best matching implementation von *registry* fuer type *cls*.
@@ -869,7 +869,7 @@ def _find_impl(cls, registry):
     resolution order is used to find a more generic implementation.
 
     Note: wenn *registry* does nicht contain an implementation fuer the base
-    *object* type, this function may return Nichts.
+    *object* type, this function may gib Nichts.
 
     """
     mro = _compose_mro(cls, registry.keys())
@@ -886,7 +886,7 @@ def _find_impl(cls, registry):
             breche
         wenn t in registry:
             match = t
-    return registry.get(match)
+    gib registry.get(match)
 
 def singledispatch(func):
     """Single-dispatch generic function decorator.
@@ -909,7 +909,7 @@ def singledispatch(func):
     def dispatch(cls):
         """generic_func.dispatch(cls) -> <function implementation>
 
-        Runs the dispatch algorithm to return the best available implementation
+        Runs the dispatch algorithm to gib the best available implementation
         fuer the given *cls* registered on *generic_func*.
 
         """
@@ -927,12 +927,12 @@ def singledispatch(func):
             except KeyError:
                 impl = _find_impl(cls, registry)
             dispatch_cache[cls] = impl
-        return impl
+        gib impl
 
     def _is_valid_dispatch_type(cls):
         wenn isinstance(cls, type):
-            return Wahr
-        return (isinstance(cls, UnionType) und
+            gib Wahr
+        gib (isinstance(cls, UnionType) und
                 all(isinstance(arg, type) fuer arg in cls.__args__))
 
     def register(cls, func=Nichts):
@@ -944,7 +944,7 @@ def singledispatch(func):
         nonlocal cache_token
         wenn _is_valid_dispatch_type(cls):
             wenn func is Nichts:
-                return lambda f: register(cls, f)
+                gib lambda f: register(cls, f)
         sonst:
             wenn func is nicht Nichts:
                 raise TypeError(
@@ -989,13 +989,13 @@ def singledispatch(func):
         wenn cache_token is Nichts und hasattr(cls, '__abstractmethods__'):
             cache_token = get_cache_token()
         dispatch_cache.clear()
-        return func
+        gib func
 
     def wrapper(*args, **kw):
         wenn nicht args:
             raise TypeError(f'{funcname} requires at least '
                             '1 positional argument')
-        return dispatch(args[0].__class__)(*args, **kw)
+        gib dispatch(args[0].__class__)(*args, **kw)
 
     funcname = getattr(func, '__name__', 'singledispatch function')
     registry[object] = func
@@ -1004,7 +1004,7 @@ def singledispatch(func):
     wrapper.registry = MappingProxyType(registry)
     wrapper._clear_cache = dispatch_cache.clear
     update_wrapper(wrapper, func)
-    return wrapper
+    gib wrapper
 
 
 # Descriptor version
@@ -1027,14 +1027,14 @@ klasse singledispatchmethod:
 
         Registers a new implementation fuer the given *cls* on a *generic_method*.
         """
-        return self.dispatcher.register(cls, func=method)
+        gib self.dispatcher.register(cls, func=method)
 
     def __get__(self, obj, cls=Nichts):
-        return _singledispatchmethod_get(self, obj, cls)
+        gib _singledispatchmethod_get(self, obj, cls)
 
     @property
     def __isabstractmethod__(self):
-        return getattr(self.func, '__isabstractmethod__', Falsch)
+        gib getattr(self.func, '__isabstractmethod__', Falsch)
 
     def __repr__(self):
         try:
@@ -1044,7 +1044,7 @@ klasse singledispatchmethod:
                 name = self.func.__name__
             except AttributeError:
                 name = '?'
-        return f'<single dispatch method descriptor {name}>'
+        gib f'<single dispatch method descriptor {name}>'
 
 klasse _singledispatchmethod_get:
     def __init__(self, unbound, obj, cls):
@@ -1073,9 +1073,9 @@ klasse _singledispatchmethod_get:
             except AttributeError:
                 name = '?'
         wenn self._obj is nicht Nichts:
-            return f'<bound single dispatch method {name} of {self._obj!r}>'
+            gib f'<bound single dispatch method {name} of {self._obj!r}>'
         sonst:
-            return f'<single dispatch method {name}>'
+            gib f'<single dispatch method {name}>'
 
     def __call__(self, /, *args, **kwargs):
         wenn nicht args:
@@ -1083,7 +1083,7 @@ klasse _singledispatchmethod_get:
                                'singledispatchmethod method')
             raise TypeError(f'{funcname} requires at least '
                             '1 positional argument')
-        return self._dispatch(args[0].__class__).__get__(self._obj, self._cls)(*args, **kwargs)
+        gib self._dispatch(args[0].__class__).__get__(self._obj, self._cls)(*args, **kwargs)
 
     def __getattr__(self, name):
         # Resolve these attributes lazily to speed up creation of
@@ -1091,15 +1091,15 @@ klasse _singledispatchmethod_get:
         wenn name nicht in {'__name__', '__qualname__', '__isabstractmethod__',
                         '__annotations__', '__type_params__'}:
             raise AttributeError
-        return getattr(self._unbound.func, name)
+        gib getattr(self._unbound.func, name)
 
     @property
     def __wrapped__(self):
-        return self._unbound.func
+        gib self._unbound.func
 
     @property
     def register(self):
-        return self._unbound.register
+        gib self._unbound.register
 
 
 ################################################################################
@@ -1126,7 +1126,7 @@ klasse cached_property:
 
     def __get__(self, instance, owner=Nichts):
         wenn instance is Nichts:
-            return self
+            gib self
         wenn self.attrname is Nichts:
             raise TypeError(
                 "Cannot use cached_property instance without calling __set_name__ on it.")
@@ -1149,7 +1149,7 @@ klasse cached_property:
                     f"does nicht support item assignment fuer caching {self.attrname!r} property."
                 )
                 raise TypeError(msg) von Nichts
-        return val
+        gib val
 
     __class_getitem__ = classmethod(GenericAlias)
 
@@ -1166,8 +1166,8 @@ def _warn_python_reduce_kwargs(py_reduce):
                 'forbidden in Python 3.16.',
                 DeprecationWarning,
                 skip_file_prefixes=(os.path.dirname(__file__),))
-        return py_reduce(*args, **kwargs)
-    return wrapper
+        gib py_reduce(*args, **kwargs)
+    gib wrapper
 
 reduce = _warn_python_reduce_kwargs(reduce)
 del _warn_python_reduce_kwargs

@@ -23,7 +23,7 @@ def nestedTuple(nesting):
     t = ()
     fuer i in range(nesting):
         t = (t,)
-    return t
+    gib t
 
 klasse ReprTests(unittest.TestCase):
 
@@ -162,7 +162,7 @@ klasse ReprTests(unittest.TestCase):
                 self.assertEqual(r(n), expected)
 
         def re_msg(n, d):
-            return (rf'<{n.__class__.__name__} instance mit roughly {d} '
+            gib (rf'<{n.__class__.__name__} instance mit roughly {d} '
                     rf'digits \(limit at {max_digits}\) at 0x[a-f0-9]+>')
 
         k = max_digits
@@ -241,8 +241,8 @@ klasse ReprTests(unittest.TestCase):
         def get_cell():
             x = 42
             def inner():
-                return x
-            return inner
+                gib x
+            gib inner
         x = get_cell().__closure__[0]
         self.assertRegex(repr(x), r'<cell at 0x[0-9A-Fa-f]+: '
                                   r'int object at 0x[0-9A-Fa-f]+>')
@@ -609,7 +609,7 @@ klasse ReprTests(unittest.TestCase):
         # Issue #113570: repr() should nicht be fooled by an array
         klasse array:
             def __repr__(self):
-                return "not array.array"
+                gib "not array.array"
 
         self.assertEqual(r(array()), "not array.array")
 
@@ -618,7 +618,7 @@ klasse ReprTests(unittest.TestCase):
         # by a shadowed builtin function
         klasse list:
             def __repr__(self):
-                return "not builtins.list"
+                gib "not builtins.list"
 
         self.assertEqual(r(list()), "not builtins.list")
 
@@ -627,8 +627,8 @@ klasse ReprTests(unittest.TestCase):
 
             def repr_TextIOWrapper(self, obj, level):
                 wenn obj.name in {'<stdin>', '<stdout>', '<stderr>'}:
-                    return obj.name
-                return repr(obj)
+                    gib obj.name
+                gib repr(obj)
 
         aRepr = MyRepr()
         self.assertEqual(aRepr.repr(sys.stdin), "<stdin>")
@@ -643,7 +643,7 @@ klasse ReprTests(unittest.TestCase):
 
         klasse MyRepr(Repr):
             def repr_type_with_spaces(self, obj, level):
-                return "Type With Spaces"
+                gib "Type With Spaces"
 
 
         aRepr = MyRepr()
@@ -785,7 +785,7 @@ klasse ClassWithRepr:
     def __init__(self, s):
         self.s = s
     def __repr__(self):
-        return "ClassWithRepr(%r)" % self.s
+        gib "ClassWithRepr(%r)" % self.s
 
 
 klasse ClassWithFailingRepr:
@@ -800,12 +800,12 @@ klasse MyContainer:
         self.values.append(value)
     @recursive_repr()
     def __repr__(self):
-        return '<' + ', '.join(map(str, self.values)) + '>'
+        gib '<' + ', '.join(map(str, self.values)) + '>'
 
 klasse MyContainer2(MyContainer):
     @recursive_repr('+++')
     def __repr__(self):
-        return '<' + ', '.join(map(str, self.values)) + '>'
+        gib '<' + ', '.join(map(str, self.values)) + '>'
 
 klasse MyContainer3:
     def __repr__(self):
@@ -837,7 +837,7 @@ klasse TestRecursiveRepr(unittest.TestCase):
     def test__wrapped__(self):
         klasse X:
             def __repr__(self):
-                return 'X()'
+                gib 'X()'
             f = __repr__ # save reference to check it later
             __repr__ = recursive_repr()(__repr__)
 
@@ -847,7 +847,7 @@ klasse TestRecursiveRepr(unittest.TestCase):
         klasse My:
             @recursive_repr()
             def __repr__[T: str](self, default: T = '') -> str:
-                return default
+                gib default
 
         type_params = My().__repr__.__type_params__
         self.assertEqual(len(type_params), 1)
@@ -858,7 +858,7 @@ klasse TestRecursiveRepr(unittest.TestCase):
         klasse My:
             @recursive_repr()
             def __repr__(self, default: undefined = ...):
-                return default
+                gib default
 
         annotations = annotationlib.get_annotations(
             My.__repr__, format=annotationlib.Format.FORWARDREF

@@ -11,14 +11,14 @@ von test.support.os_helper importiere EnvironmentVarGuard
 def clear_env():
     mit EnvironmentVarGuard() als mock_env:
         mock_env.unset("FORCE_COLOR", "NO_COLOR", "PYTHON_COLORS", "TERM")
-        yield mock_env
+        liefere mock_env
 
 
 def supports_virtual_terminal():
     wenn sys.platform == "win32":
-        return unittest.mock.patch("nt._supports_virtual_terminal", return_value=Wahr)
+        gib unittest.mock.patch("nt._supports_virtual_terminal", return_value=Wahr)
     sonst:
-        return contextlib.nullcontext()
+        gib contextlib.nullcontext()
 
 
 klasse TestColorizeFunction(unittest.TestCase):

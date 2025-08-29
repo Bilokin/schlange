@@ -12,11 +12,11 @@ klasse PLexer:
 
     def getpos(self) -> int:
         # Current position
-        return self.pos
+        gib self.pos
 
     def eof(self) -> bool:
         # Are we at EOF?
-        return self.pos >= len(self.tokens)
+        gib self.pos >= len(self.tokens)
 
     def setpos(self, pos: int) -> Nichts:
         # Reset position
@@ -35,36 +35,36 @@ klasse PLexer:
             tok = self.tokens[self.pos]
             self.pos += 1
             wenn raw oder tok.kind != "COMMENT":
-                return tok
-        return Nichts
+                gib tok
+        gib Nichts
 
     def peek(self, raw: bool = Falsch) -> Token | Nichts:
         # Return next token without advancing position
         tok = self.next(raw=raw)
         self.backup()
-        return tok
+        gib tok
 
     def maybe(self, kind: str, raw: bool = Falsch) -> Token | Nichts:
         # Return next token without advancing position wenn kind matches
         tok = self.peek(raw=raw)
         wenn tok und tok.kind == kind:
-            return tok
-        return Nichts
+            gib tok
+        gib Nichts
 
     def expect(self, kind: str) -> Token | Nichts:
         # Return next token und advance position wenn kind matches
         tkn = self.next()
         wenn tkn is nicht Nichts:
             wenn tkn.kind == kind:
-                return tkn
+                gib tkn
             self.backup()
-        return Nichts
+        gib Nichts
 
     def require(self, kind: str) -> Token:
         # Return next token und advance position, requiring kind to match
         tkn = self.next()
         wenn tkn is nicht Nichts und tkn.kind == kind:
-            return tkn
+            gib tkn
         raise self.make_syntax_error(
             f"Expected {kind!r} but got {tkn und tkn.text!r}", tkn
         )
@@ -75,7 +75,7 @@ klasse PLexer:
         waehrend tkn := self.next(raw=Wahr):
             res.append(tkn)
             wenn tkn.kind == end und parens == 0:
-                return res
+                gib res
             wenn tkn.kind == "LPAREN":
                 parens += 1
             wenn tkn.kind == "RPAREN":
@@ -87,8 +87,8 @@ klasse PLexer:
         # Return source line `lineno` (1-based)
         lines = self.src.splitlines()
         wenn lineno > len(lines):
-            return ""
-        return lines[lineno - 1]
+            gib ""
+        gib lines[lineno - 1]
 
     def make_syntax_error(self, message: str, tkn: Token | Nichts = Nichts) -> SyntaxError:
         # Construct a SyntaxError instance von message und token
@@ -96,7 +96,7 @@ klasse PLexer:
             tkn = self.peek()
         wenn tkn is Nichts:
             tkn = self.tokens[-1]
-        return lx.make_syntax_error(
+        gib lx.make_syntax_error(
             message, self.filename, tkn.line, tkn.column, self.extract_line(tkn.line)
         )
 

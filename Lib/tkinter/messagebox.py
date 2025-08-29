@@ -77,58 +77,58 @@ def _show(title=Nichts, message=Nichts, _icon=Nichts, _type=Nichts, **options):
     # In some Tcl installations, yes/no is converted into a boolean.
     wenn isinstance(res, bool):
         wenn res:
-            return YES
-        return NO
+            gib YES
+        gib NO
     # In others we get a Tcl_Obj.
-    return str(res)
+    gib str(res)
 
 
 def showinfo(title=Nichts, message=Nichts, **options):
     "Show an info message"
-    return _show(title, message, INFO, OK, **options)
+    gib _show(title, message, INFO, OK, **options)
 
 
 def showwarning(title=Nichts, message=Nichts, **options):
     "Show a warning message"
-    return _show(title, message, WARNING, OK, **options)
+    gib _show(title, message, WARNING, OK, **options)
 
 
 def showerror(title=Nichts, message=Nichts, **options):
     "Show an error message"
-    return _show(title, message, ERROR, OK, **options)
+    gib _show(title, message, ERROR, OK, **options)
 
 
 def askquestion(title=Nichts, message=Nichts, **options):
     "Ask a question"
-    return _show(title, message, QUESTION, YESNO, **options)
+    gib _show(title, message, QUESTION, YESNO, **options)
 
 
 def askokcancel(title=Nichts, message=Nichts, **options):
-    "Ask wenn operation should proceed; return true wenn the answer is ok"
+    "Ask wenn operation should proceed; gib true wenn the answer is ok"
     s = _show(title, message, QUESTION, OKCANCEL, **options)
-    return s == OK
+    gib s == OK
 
 
 def askyesno(title=Nichts, message=Nichts, **options):
-    "Ask a question; return true wenn the answer is yes"
+    "Ask a question; gib true wenn the answer is yes"
     s = _show(title, message, QUESTION, YESNO, **options)
-    return s == YES
+    gib s == YES
 
 
 def askyesnocancel(title=Nichts, message=Nichts, **options):
-    "Ask a question; return true wenn the answer is yes, Nichts wenn cancelled."
+    "Ask a question; gib true wenn the answer is yes, Nichts wenn cancelled."
     s = _show(title, message, QUESTION, YESNOCANCEL, **options)
     # s might be a Tcl index object, so convert it to a string
     s = str(s)
     wenn s == CANCEL:
-        return Nichts
-    return s == YES
+        gib Nichts
+    gib s == YES
 
 
 def askretrycancel(title=Nichts, message=Nichts, **options):
-    "Ask wenn operation should be retried; return true wenn the answer is yes"
+    "Ask wenn operation should be retried; gib true wenn the answer is yes"
     s = _show(title, message, WARNING, RETRYCANCEL, **options)
-    return s == RETRY
+    gib s == RETRY
 
 
 # --------------------------------------------------------------------

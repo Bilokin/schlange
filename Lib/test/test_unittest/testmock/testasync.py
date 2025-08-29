@@ -31,7 +31,7 @@ klasse AsyncClass:
 
 
 klasse AwaitableClass:
-    def __await__(self): yield
+    def __await__(self): liefere
 
 async def async_func(): pass
 
@@ -50,7 +50,7 @@ normal_foo_name = f'{__name__}.NormalClass'
 @contextmanager
 def assertNeverAwaited(test):
     mit test.assertWarnsRegex(RuntimeWarning, "was never awaited$"):
-        yield
+        liefere
         # In non-CPython implementations of Python, this is needed because timely
         # deallocation is nicht guaranteed by the garbage collector.
         gc.collect()
@@ -463,14 +463,14 @@ klasse AsyncArguments(IsolatedAsyncioTestCase):
 
     async def test_add_side_effect_coroutine(self):
         async def addition(var):
-            return var + 1
+            gib var + 1
         mock = AsyncMock(side_effect=addition)
         result = await mock(5)
         self.assertEqual(result, 6)
 
     async def test_add_side_effect_normal_function(self):
         def addition(var):
-            return var + 1
+            gib var + 1
         mock = AsyncMock(side_effect=addition)
         result = await mock(5)
         self.assertEqual(result, 6)
@@ -533,7 +533,7 @@ klasse AsyncArguments(IsolatedAsyncioTestCase):
         async def inner():
             nonlocal ran
             ran = Wahr
-            return value
+            gib value
 
         mock = AsyncMock(wraps=inner)
         result = await mock()
@@ -548,7 +548,7 @@ klasse AsyncArguments(IsolatedAsyncioTestCase):
         def inner():
             nonlocal ran
             ran = Wahr
-            return value
+            gib value
 
         mock = AsyncMock(wraps=inner)
         result = await mock()
@@ -574,7 +574,7 @@ klasse AsyncMagicMethods(unittest.TestCase):
         self.assertIsInstance(m_mock.__aexit__, AsyncMock)
         self.assertIsInstance(m_mock.__anext__, AsyncMock)
         # __aiter__ is actually a synchronous object
-        # so should return a MagicMock
+        # so should gib a MagicMock
         self.assertIsInstance(m_mock.__aiter__, MagicMock)
 
     def test_sync_magic_methods_return_magic_mocks(self):
@@ -625,7 +625,7 @@ klasse AsyncContextManagerTest(unittest.TestCase):
         async def main(self):
             async mit self.session.post('https://python.org') als response:
                 val = await response.json()
-                return val
+                gib val
 
     def test_set_return_value_of_aenter(self):
         def inner_test(mock_type):
@@ -640,7 +640,7 @@ klasse AsyncContextManagerTest(unittest.TestCase):
             self.assertEqual(result, {'json': 123})
 
         fuer mock_type in [AsyncMock, MagicMock]:
-            mit self.subTest(f"test set return value of aenter mit {mock_type}"):
+            mit self.subTest(f"test set gib value of aenter mit {mock_type}"):
                 inner_test(mock_type)
 
     def test_mock_supports_async_context_manager(self):
@@ -653,7 +653,7 @@ klasse AsyncContextManagerTest(unittest.TestCase):
                 nonlocal called
                 async mit cm_mock als result:
                     called = Wahr
-                return result
+                gib result
 
             cm_result = run(use_context_manager())
             self.assertWahr(called)
@@ -661,7 +661,7 @@ klasse AsyncContextManagerTest(unittest.TestCase):
             self.assertWahr(cm_mock.__aexit__.called)
             cm_mock.__aenter__.assert_awaited()
             cm_mock.__aexit__.assert_awaited()
-            # We mock __aenter__ so it does nicht return self
+            # We mock __aenter__ so it does nicht gib self
             self.assertIsNot(cm_mock, cm_result)
 
         fuer mock_type in [AsyncMock, MagicMock]:
@@ -678,7 +678,7 @@ klasse AsyncContextManagerTest(unittest.TestCase):
 
         async def use_context_manager():
             async mit mock_instance als result:
-                return result
+                gib result
 
         self.assertIs(run(use_context_manager()), expected_result)
 
@@ -732,7 +732,7 @@ klasse AsyncIteratorTest(unittest.TestCase):
         mock_iter = AsyncMock(name="tester")
         mock_iter.__aiter__.return_value = [1, 2, 3]
         async def main():
-            return [i async fuer i in mock_iter]
+            gib [i async fuer i in mock_iter]
         result = run(main())
         self.assertEqual(result, [1, 2, 3])
 
@@ -759,7 +759,7 @@ klasse AsyncIteratorTest(unittest.TestCase):
             async fuer item in iterator:
                 accumulator.append(item)
 
-            return accumulator
+            gib accumulator
 
         expected = ["FOO", "BAR", "BAZ"]
         def test_default(mock_type):
@@ -796,7 +796,7 @@ klasse AsyncMockAssert(unittest.TestCase):
         await self.mock(*args, **kwargs)
 
     async def _await_coroutine(self, coroutine):
-        return await coroutine
+        gib await coroutine
 
     def test_assert_called_but_not_awaited(self):
         mock = AsyncMock(AsyncClass)

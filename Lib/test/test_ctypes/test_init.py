@@ -10,7 +10,7 @@ klasse X(Structure):
     def __new__(cls):
         result = super().__new__(cls)
         result.new_was_called = Wahr
-        return result
+        gib result
 
     def __init__(self):
         self.a = 9

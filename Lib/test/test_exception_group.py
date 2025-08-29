@@ -223,7 +223,7 @@ def create_simple_eg():
     try:
         raise ExceptionGroup('simple eg', excs)
     except ExceptionGroup als e:
-        return e
+        gib e
 
 
 klasse ExceptionGroupFields(unittest.TestCase):
@@ -299,10 +299,10 @@ klasse Predicate:
         self.func = func
 
     def __call__(self, e):
-        return self.func(e)
+        gib self.func(e)
 
     def method(self, e):
-        return self.func(e)
+        gib self.func(e)
 
 klasse ExceptionGroupSubgroupTests(ExceptionGroupTestBase):
     def setUp(self):
@@ -462,7 +462,7 @@ klasse DeepRecursionInSplitAndSubgroup(unittest.TestCase):
         e = TypeError(1)
         fuer i in range(exceeds_recursion_limit()):
             e = ExceptionGroup('eg', [e])
-        return e
+        gib e
 
     @skip_emscripten_stack_overflow()
     @skip_wasi_stack_overflow()
@@ -485,12 +485,12 @@ def leaf_generator(exc, tbs=Nichts):
     tbs.append(exc.__traceback__)
     wenn isinstance(exc, BaseExceptionGroup):
         fuer e in exc.exceptions:
-            yield von leaf_generator(e, tbs)
+            liefere von leaf_generator(e, tbs)
     sonst:
         # exc is a leaf exception und its traceback
         # is the concatenation of the traceback
         # segments in tbs
-        yield exc, tbs
+        liefere exc, tbs
     tbs.pop()
 
 
@@ -532,7 +532,7 @@ def create_nested_eg():
     try:
         raise ExceptionGroup("root", excs)
     except ExceptionGroup als eg:
-        return eg
+        gib eg
 
 
 klasse NestedExceptionGroupBasicsTest(ExceptionGroupTestBase):
@@ -601,7 +601,7 @@ klasse ExceptionGroupSplitTestBase(ExceptionGroupTestBase):
             self.assertIsInstance(rest, BaseExceptionGroup)
 
         def leaves(exc):
-            return [] wenn exc is Nichts sonst [e fuer e,_ in leaf_generator(exc)]
+            gib [] wenn exc is Nichts sonst [e fuer e,_ in leaf_generator(exc)]
 
         # match und subgroup have the same leaves
         self.assertSequenceEqual(leaves(match), leaves(sg))
@@ -632,10 +632,10 @@ klasse ExceptionGroupSplitTestBase(ExceptionGroupTestBase):
         def tbs_for_leaf(leaf, eg):
             fuer e, tbs in leaf_generator(eg):
                 wenn e is leaf:
-                    return tbs
+                    gib tbs
 
         def tb_linenos(tbs):
-            return [tb.tb_lineno fuer tb in tbs wenn tb]
+            gib [tb.tb_lineno fuer tb in tbs wenn tb]
 
         # full tracebacks match
         fuer part in [match, rest, sg]:
@@ -644,7 +644,7 @@ klasse ExceptionGroupSplitTestBase(ExceptionGroupTestBase):
                     tb_linenos(tbs_for_leaf(e, eg)),
                     tb_linenos(tbs_for_leaf(e, part)))
 
-        return match, rest
+        gib match, rest
 
 
 klasse NestedExceptionGroupSplitTest(ExceptionGroupSplitTestBase):
@@ -753,7 +753,7 @@ klasse NestedExceptionGroupSplitTest(ExceptionGroupSplitTestBase):
             try:
                 raise ex
             except BaseException als e:
-                return e
+                gib e
 
         try:
             raise BaseExceptionGroup(
@@ -820,10 +820,10 @@ klasse NestedExceptionGroupSplitTest(ExceptionGroupSplitTestBase):
     def test_drive_invalid_return_value(self):
         klasse MyEg(ExceptionGroup):
             def derive(self, excs):
-                return 42
+                gib 42
 
         eg = MyEg('eg', [TypeError(1), ValueError(2)])
-        msg = "derive must return an instance of BaseExceptionGroup"
+        msg = "derive must gib an instance of BaseExceptionGroup"
         mit self.assertRaisesRegex(TypeError, msg):
             eg.split(TypeError)
         mit self.assertRaisesRegex(TypeError, msg):
@@ -881,7 +881,7 @@ klasse NestedExceptionGroupSubclassSplitTest(ExceptionGroupSplitTestBase):
                 # the actual klasse constructor von the default derive()
                 # implementation (it would fail on unused arg wenn so because
                 # it assumes the BaseExceptionGroup.__new__ signature).
-                return super().__new__(cls, message, excs)
+                gib super().__new__(cls, message, excs)
 
         try:
             raise EG("eg", [ValueError(1), KeyboardInterrupt(2)], "unused")
@@ -921,10 +921,10 @@ klasse NestedExceptionGroupSubclassSplitTest(ExceptionGroupSplitTestBase):
             def __new__(cls, message, excs, code):
                 obj = super().__new__(cls, message, excs)
                 obj.code = code
-                return obj
+                gib obj
 
             def derive(self, excs):
-                return EG(self.message, excs, self.code)
+                gib EG(self.message, excs, self.code)
 
         try:
             try:

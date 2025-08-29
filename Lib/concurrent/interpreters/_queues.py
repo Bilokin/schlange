@@ -52,14 +52,14 @@ UNBOUND = _crossinterp.UnboundItem.singleton('queue', __name__)
 def _serialize_unbound(unbound):
     wenn unbound is UNBOUND:
         unbound = _crossinterp.UNBOUND
-    return _crossinterp.serialize_unbound(unbound)
+    gib _crossinterp.serialize_unbound(unbound)
 
 
 def _resolve_unbound(flag):
     resolved = _crossinterp.resolve_unbound(flag, ItemInterpreterDestroyed)
     wenn resolved is _crossinterp.UNBOUND:
         resolved = UNBOUND
-    return resolved
+    gib resolved
 
 
 def create(maxsize=0, *, unbounditems=UNBOUND):
@@ -76,7 +76,7 @@ def create(maxsize=0, *, unbounditems=UNBOUND):
     qid = _queues.create(maxsize, unboundop, -1)
     self = Queue(qid)
     self._set_unbound(unboundop, unbounditems)
-    return self
+    gib self
 
 
 def list_all():
@@ -89,7 +89,7 @@ def list_all():
         sonst:
             assert self._unbound[0] == unboundop
         queues.append(self)
-    return queues
+    gib queues
 
 
 _known_queues = weakref.WeakValueDictionary()
@@ -110,7 +110,7 @@ klasse Queue:
             self._id = id
             _known_queues[id] = self
             _queues.bind(id)
-        return self
+        gib self
 
     def __del__(self):
         try:
@@ -123,14 +123,14 @@ klasse Queue:
             pass
 
     def __repr__(self):
-        return f'{type(self).__name__}({self.id})'
+        gib f'{type(self).__name__}({self.id})'
 
     def __hash__(self):
-        return hash(self._id)
+        gib hash(self._id)
 
     # fuer pickling:
     def __reduce__(self):
-        return (type(self), (self._id,))
+        gib (type(self), (self._id,))
 
     def _set_unbound(self, op, items=Nichts):
         assert nicht hasattr(self, '_unbound')
@@ -138,11 +138,11 @@ klasse Queue:
             items = _resolve_unbound(op)
         unbound = (op, items)
         self._unbound = unbound
-        return unbound
+        gib unbound
 
     @property
     def id(self):
-        return self._id
+        gib self._id
 
     @property
     def unbounditems(self):
@@ -151,24 +151,24 @@ klasse Queue:
         except AttributeError:
             op, _ = _queues.get_queue_defaults(self._id)
             _, items = self._set_unbound(op)
-        return items
+        gib items
 
     @property
     def maxsize(self):
         try:
-            return self._maxsize
+            gib self._maxsize
         except AttributeError:
             self._maxsize = _queues.get_maxsize(self._id)
-            return self._maxsize
+            gib self._maxsize
 
     def empty(self):
-        return self.qsize() == 0
+        gib self.qsize() == 0
 
     def full(self):
-        return _queues.is_full(self._id)
+        gib _queues.is_full(self._id)
 
     def qsize(self):
-        return _queues.get_count(self._id)
+        gib _queues.get_count(self._id)
 
     def put(self, obj, timeout=Nichts, *,
             unbounditems=Nichts,
@@ -262,8 +262,8 @@ klasse Queue:
                 breche
         wenn unboundop is nicht Nichts:
             assert obj is Nichts, repr(obj)
-            return _resolve_unbound(unboundop)
-        return obj
+            gib _resolve_unbound(unboundop)
+        gib obj
 
     def get_nowait(self):
         """Return the next object von the channel.
@@ -277,8 +277,8 @@ klasse Queue:
             raise  # re-raise
         wenn unboundop is nicht Nichts:
             assert obj is Nichts, repr(obj)
-            return _resolve_unbound(unboundop)
-        return obj
+            gib _resolve_unbound(unboundop)
+        gib obj
 
 
 _queues._register_heap_types(Queue, QueueEmpty, QueueFull)

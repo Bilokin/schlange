@@ -91,13 +91,13 @@ klasse SemLock(object):
         self.release = self._semlock.release
 
     def locked(self):
-        return self._semlock._is_zero()
+        gib self._semlock._is_zero()
 
     def __enter__(self):
-        return self._semlock.__enter__()
+        gib self._semlock.__enter__()
 
     def __exit__(self, *args):
-        return self._semlock.__exit__(*args)
+        gib self._semlock.__exit__(*args)
 
     def __getstate__(self):
         context.assert_spawning(self)
@@ -111,7 +111,7 @@ klasse SemLock(object):
                                    'not supported. Please use the same context to create '
                                    'multiprocessing objects und Process.')
             h = sl.handle
-        return (h, sl.kind, sl.maxvalue, sl.name)
+        gib (h, sl.kind, sl.maxvalue, sl.name)
 
     def __setstate__(self, state):
         self._semlock = _multiprocessing.SemLock._rebuild(*state)
@@ -122,7 +122,7 @@ klasse SemLock(object):
 
     @staticmethod
     def _make_name():
-        return '%s-%s' % (process.current_process()._config['semprefix'],
+        gib '%s-%s' % (process.current_process()._config['semprefix'],
                           next(SemLock._rand))
 
 #
@@ -135,14 +135,14 @@ klasse Semaphore(SemLock):
         SemLock.__init__(self, SEMAPHORE, value, SEM_VALUE_MAX, ctx=ctx)
 
     def get_value(self):
-        return self._semlock._get_value()
+        gib self._semlock._get_value()
 
     def __repr__(self):
         try:
             value = self._semlock._get_value()
         except Exception:
             value = 'unknown'
-        return '<%s(value=%s)>' % (self.__class__.__name__, value)
+        gib '<%s(value=%s)>' % (self.__class__.__name__, value)
 
 #
 # Bounded semaphore
@@ -158,7 +158,7 @@ klasse BoundedSemaphore(Semaphore):
             value = self._semlock._get_value()
         except Exception:
             value = 'unknown'
-        return '<%s(value=%s, maxvalue=%s)>' % \
+        gib '<%s(value=%s, maxvalue=%s)>' % \
                (self.__class__.__name__, value, self._semlock.maxvalue)
 
 #
@@ -184,7 +184,7 @@ klasse Lock(SemLock):
                 name = 'SomeOtherProcess'
         except Exception:
             name = 'unknown'
-        return '<%s(owner=%s)>' % (self.__class__.__name__, name)
+        gib '<%s(owner=%s)>' % (self.__class__.__name__, name)
 
 #
 # Recursive lock
@@ -210,7 +210,7 @@ klasse RLock(SemLock):
                 name, count = 'SomeOtherProcess', 'nonzero'
         except Exception:
             name, count = 'unknown', 'unknown'
-        return '<%s(%s, %s)>' % (self.__class__.__name__, name, count)
+        gib '<%s(%s, %s)>' % (self.__class__.__name__, name, count)
 
 #
 # Condition variable
@@ -227,7 +227,7 @@ klasse Condition(object):
 
     def __getstate__(self):
         context.assert_spawning(self)
-        return (self._lock, self._sleeping_count,
+        gib (self._lock, self._sleeping_count,
                 self._woken_count, self._wait_semaphore)
 
     def __setstate__(self, state):
@@ -236,10 +236,10 @@ klasse Condition(object):
         self._make_methods()
 
     def __enter__(self):
-        return self._lock.__enter__()
+        gib self._lock.__enter__()
 
     def __exit__(self, *args):
-        return self._lock.__exit__(*args)
+        gib self._lock.__exit__(*args)
 
     def _make_methods(self):
         self.acquire = self._lock.acquire
@@ -251,7 +251,7 @@ klasse Condition(object):
                            self._woken_count._semlock._get_value())
         except Exception:
             num_waiters = 'unknown'
-        return '<%s(%s, %s)>' % (self.__class__.__name__, self._lock, num_waiters)
+        gib '<%s(%s, %s)>' % (self.__class__.__name__, self._lock, num_waiters)
 
     def wait(self, timeout=Nichts):
         assert self._lock._semlock._is_mine(), \
@@ -267,7 +267,7 @@ klasse Condition(object):
 
         try:
             # wait fuer notification oder timeout
-            return self._wait_semaphore.acquire(Wahr, timeout)
+            gib self._wait_semaphore.acquire(Wahr, timeout)
         finally:
             # indicate that this thread has woken
             self._woken_count.release()
@@ -308,7 +308,7 @@ klasse Condition(object):
     def wait_for(self, predicate, timeout=Nichts):
         result = predicate()
         wenn result:
-            return result
+            gib result
         wenn timeout is nicht Nichts:
             endtime = time.monotonic() + timeout
         sonst:
@@ -321,7 +321,7 @@ klasse Condition(object):
                     breche
             self.wait(waittime)
             result = predicate()
-        return result
+        gib result
 
 #
 # Event
@@ -337,8 +337,8 @@ klasse Event(object):
         mit self._cond:
             wenn self._flag.acquire(Falsch):
                 self._flag.release()
-                return Wahr
-            return Falsch
+                gib Wahr
+            gib Falsch
 
     def set(self):
         mit self._cond:
@@ -359,12 +359,12 @@ klasse Event(object):
 
             wenn self._flag.acquire(Falsch):
                 self._flag.release()
-                return Wahr
-            return Falsch
+                gib Wahr
+            gib Falsch
 
     def __repr__(self):
         set_status = 'set' wenn self.is_set() sonst 'unset'
-        return f"<{type(self).__qualname__} at {id(self):#x} {set_status}>"
+        gib f"<{type(self).__qualname__} at {id(self):#x} {set_status}>"
 #
 # Barrier
 #
@@ -386,12 +386,12 @@ klasse Barrier(threading.Barrier):
         self._array = self._wrapper.create_memoryview().cast('i')
 
     def __getstate__(self):
-        return (self._parties, self._action, self._timeout,
+        gib (self._parties, self._action, self._timeout,
                 self._cond, self._wrapper)
 
     @property
     def _state(self):
-        return self._array[0]
+        gib self._array[0]
 
     @_state.setter
     def _state(self, value):
@@ -399,7 +399,7 @@ klasse Barrier(threading.Barrier):
 
     @property
     def _count(self):
-        return self._array[1]
+        gib self._array[1]
 
     @_count.setter
     def _count(self, value):

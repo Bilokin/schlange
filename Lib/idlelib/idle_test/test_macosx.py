@@ -67,7 +67,7 @@ klasse IsTypeTkTest(unittest.TestCase):
                 mockinit.reset_mock()
 
     def test_isfuncs(self):
-        "Test that each isTypeTk return correct bool."
+        "Test that each isTypeTk gib correct bool."
         fuer func, whentrue in self.isfuncs:
             fuer tktype in alltypes:
                 mit self.subTest(func=func, whentrue=whentrue, tktype=tktype):

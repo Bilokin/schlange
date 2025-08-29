@@ -65,10 +65,10 @@ klasse PrintTest(unittest.TestCase):
         klasse PrintableObject:
 
             def __repr__(self):
-                return "spam spam spam"
+                gib "spam spam spam"
 
             def __str__(self):
-                return "egg egg egg"
+                gib "egg egg egg"
 
         obj = PrintableObject()
         output_filename = os_helper.TESTFN

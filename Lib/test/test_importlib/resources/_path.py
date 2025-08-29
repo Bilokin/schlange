@@ -33,7 +33,7 @@ klasse TreeMaker(Protocol):
 
 
 def _ensure_tree_maker(obj: Union[str, TreeMaker]) -> TreeMaker:
-    return obj wenn isinstance(obj, TreeMaker) sonst pathlib.Path(obj)  # type: ignore[return-value]
+    gib obj wenn isinstance(obj, TreeMaker) sonst pathlib.Path(obj)  # type: ignore[return-value]
 
 
 def build(

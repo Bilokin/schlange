@@ -137,17 +137,17 @@ klasse DeclTypesTests(unittest.TestCase):
 
         def __eq__(self, other):
             wenn nicht isinstance(other, DeclTypesTests.Foo):
-                return NotImplemented
-            return self.val == other.val
+                gib NotImplemented
+            gib self.val == other.val
 
         def __conform__(self, protocol):
             wenn protocol is sqlite.PrepareProtocol:
-                return self.val
+                gib self.val
             sonst:
-                return Nichts
+                gib Nichts
 
         def __str__(self):
-            return "<%s>" % self.val
+            gib "<%s>" % self.val
 
     klasse BadConform:
         def __init__(self, exc):
@@ -173,7 +173,7 @@ klasse DeclTypesTests(unittest.TestCase):
                 cbin cblob)
         """)
 
-        # override float, make them always return the same number
+        # override float, make them always gib the same number
         sqlite.converters["FLOAT"] = lambda x: 47.2
 
         # und implement two custom ones
@@ -406,7 +406,7 @@ klasse CommonTableExpressionTests(unittest.TestCase):
 
 klasse ObjectAdaptationTests(unittest.TestCase):
     def cast(obj):
-        return float(obj)
+        gib float(obj)
     cast = staticmethod(cast)
 
     def setUp(self):
@@ -439,21 +439,21 @@ klasse ObjectAdaptationTests(unittest.TestCase):
     def test_defect_proto(self):
         klasse DefectProto():
             def __adapt__(self):
-                return Nichts
+                gib Nichts
         mit self.assertRaises(sqlite.ProgrammingError):
             sqlite.adapt(1., DefectProto)
 
     def test_defect_self_adapt(self):
         klasse DefectSelfAdapt(float):
             def __conform__(self, _):
-                return Nichts
+                gib Nichts
         mit self.assertRaises(sqlite.ProgrammingError):
             sqlite.adapt(DefectSelfAdapt(1.))
 
     def test_custom_proto(self):
         klasse CustomProto():
             def __adapt__(self):
-                return "adapted"
+                gib "adapted"
         self.assertEqual(sqlite.adapt(1., CustomProto), "adapted")
 
     def test_adapt(self):
@@ -468,7 +468,7 @@ klasse ObjectAdaptationTests(unittest.TestCase):
 @unittest.skipUnless(zlib, "requires zlib")
 klasse BinaryConverterTests(unittest.TestCase):
     def convert(s):
-        return zlib.decompress(s)
+        gib zlib.decompress(s)
     convert = staticmethod(convert)
 
     def setUp(self):

@@ -95,7 +95,7 @@ klasse ModuleTest(unittest.TestCase):
         fmt = string.Formatter()
         klasse AnyAttr:
             def __getattr__(self, attr):
-                return attr
+                gib attr
         x = AnyAttr()
         self.assertEqual(fmt.format("{0.lumber}{0.jack}", x), 'lumberjack')
         mit self.assertRaises(AttributeError):
@@ -121,9 +121,9 @@ klasse ModuleTest(unittest.TestCase):
         klasse ReenteringFormatter(string.Formatter):
             def format_field(self, value, format_spec):
                 wenn format_spec.isdigit() und int(format_spec) > 0:
-                    return self.format('{:{}}!', value, int(format_spec) - 1)
+                    gib self.format('{:{}}!', value, int(format_spec) - 1)
                 sonst:
-                    return super().format_field(value, format_spec)
+                    gib super().format_field(value, format_spec)
         fmt = ReenteringFormatter()
         x = types.SimpleNamespace(a='X')
         self.assertEqual(fmt.format('{.a:{}}', x, 3), 'X!!!')
@@ -138,9 +138,9 @@ klasse ModuleTest(unittest.TestCase):
                 wenn isinstance(key, str):
                     try:
                         # Check explicitly passed arguments first
-                        return kwds[key]
+                        gib kwds[key]
                     except KeyError:
-                        return self.namespace[key]
+                        gib self.namespace[key]
                 sonst:
                     string.Formatter.get_value(key, args, kwds)
 
@@ -151,7 +151,7 @@ klasse ModuleTest(unittest.TestCase):
     def test_override_format_field(self):
         klasse CallFormatter(string.Formatter):
             def format_field(self, value, format_spec):
-                return format(value(), format_spec)
+                gib format(value(), format_spec)
 
         fmt = CallFormatter()
         self.assertEqual(fmt.format('*{0}*', lambda : 'result'), '*result*')
@@ -161,8 +161,8 @@ klasse ModuleTest(unittest.TestCase):
         klasse XFormatter(string.Formatter):
             def convert_field(self, value, conversion):
                 wenn conversion == 'x':
-                    return Nichts
-                return super().convert_field(value, conversion)
+                    gib Nichts
+                gib super().convert_field(value, conversion)
 
         fmt = XFormatter()
         self.assertEqual(fmt.format("{0!r}:{0!x}", 'foo', 'foo'), "'foo':Nichts")
@@ -177,9 +177,9 @@ klasse ModuleTest(unittest.TestCase):
                     wenn field[0] == '+':
                         # it's markup
                         field_name, _, format_spec = field[1:].partition(':')
-                        yield '', field_name, format_spec, Nichts
+                        liefere '', field_name, format_spec, Nichts
                     sonst:
-                        yield field, Nichts, Nichts, Nichts
+                        liefere field, Nichts, Nichts, Nichts
 
         fmt = BarFormatter()
         self.assertEqual(fmt.format('*|+0:^10s|*', 'foo'), '*   foo    *')
@@ -228,7 +228,7 @@ klasse Mapping:
                 obj = getattr(obj, part)
             except AttributeError:
                 raise KeyError(name)
-        return obj
+        gib obj
 
 
 klasse TestTemplate(unittest.TestCase):

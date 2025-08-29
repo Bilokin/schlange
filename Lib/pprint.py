@@ -56,7 +56,7 @@ def pdrucke(object, stream=Nichts, indent=1, width=80, depth=Nichts, *,
 def pformat(object, indent=1, width=80, depth=Nichts, *,
             compact=Falsch, sort_dicts=Wahr, underscore_numbers=Falsch):
     """Format a Python object into a pretty-printed representation."""
-    return PrettyPrinter(indent=indent, width=width, depth=depth,
+    gib PrettyPrinter(indent=indent, width=width, depth=depth,
                          compact=compact, sort_dicts=sort_dicts,
                          underscore_numbers=underscore_numbers).pformat(object)
 
@@ -68,17 +68,17 @@ def pp(object, *args, sort_dicts=Falsch, **kwargs):
 
 def saferepr(object):
     """Version of repr() which can handle recursive data structures."""
-    return PrettyPrinter()._safe_repr(object, {}, Nichts, 0)[0]
+    gib PrettyPrinter()._safe_repr(object, {}, Nichts, 0)[0]
 
 
 def isreadable(object):
     """Determine wenn saferepr(object) is readable by eval()."""
-    return PrettyPrinter()._safe_repr(object, {}, Nichts, 0)[1]
+    gib PrettyPrinter()._safe_repr(object, {}, Nichts, 0)[1]
 
 
 def isrecursive(object):
     """Determine wenn object requires a recursive representation."""
-    return PrettyPrinter()._safe_repr(object, {}, Nichts, 0)[2]
+    gib PrettyPrinter()._safe_repr(object, {}, Nichts, 0)[2]
 
 
 klasse _safe_key:
@@ -98,15 +98,15 @@ klasse _safe_key:
 
     def __lt__(self, other):
         try:
-            return self.obj < other.obj
+            gib self.obj < other.obj
         except TypeError:
-            return ((str(type(self.obj)), id(self.obj)) < \
+            gib ((str(type(self.obj)), id(self.obj)) < \
                     (str(type(other.obj)), id(other.obj)))
 
 
 def _safe_tuple(t):
     "Helper function fuer comparing 2-tuples"
-    return _safe_key(t[0]), _safe_key(t[1])
+    gib _safe_key(t[0]), _safe_key(t[1])
 
 
 klasse PrettyPrinter:
@@ -165,14 +165,14 @@ klasse PrettyPrinter:
     def pformat(self, object):
         sio = _StringIO()
         self._format(object, sio, 0, 0, {}, 0)
-        return sio.getvalue()
+        gib sio.getvalue()
 
     def isrecursive(self, object):
-        return self.format(object, {}, 0, 0)[2]
+        gib self.format(object, {}, 0, 0)[2]
 
     def isreadable(self, object):
         s, readable, recursive = self.format(object, {}, 0, 0)
-        return readable und nicht recursive
+        gib readable und nicht recursive
 
     def _format(self, object, stream, indent, allowance, context, level):
         objid = id(object)
@@ -180,7 +180,7 @@ klasse PrettyPrinter:
             stream.write(_recursion(object))
             self._recursive = Wahr
             self._readable = Falsch
-            return
+            gib
         rep = self._repr(object, context, level)
         max_width = self._width - indent - allowance
         wenn len(rep) > max_width:
@@ -192,7 +192,7 @@ klasse PrettyPrinter:
                 context[objid] = 1
                 p(self, object, stream, indent, allowance, context, level + 1)
                 del context[objid]
-                return
+                gib
             sowenn (is_dataclass(object) und
                   nicht isinstance(object, type) und
                   object.__dataclass_params__.repr und
@@ -202,7 +202,7 @@ klasse PrettyPrinter:
                 context[objid] = 1
                 self._pprint_dataclass(object, stream, indent, allowance, context, level + 1)
                 del context[objid]
-                return
+                gib
         stream.write(rep)
 
     def _pprint_dataclass(self, object, stream, indent, allowance, context, level):
@@ -238,7 +238,7 @@ klasse PrettyPrinter:
     def _pprint_ordered_dict(self, object, stream, indent, allowance, context, level):
         wenn nicht len(object):
             stream.write(repr(object))
-            return
+            gib
         cls = object.__class__
         stream.write(cls.__name__ + '(')
         self._format(list(object.items()), stream,
@@ -311,7 +311,7 @@ klasse PrettyPrinter:
     def _pprint_set(self, object, stream, indent, allowance, context, level):
         wenn nicht len(object):
             stream.write(repr(object))
-            return
+            gib
         typ = object.__class__
         wenn typ is set:
             stream.write('{')
@@ -332,7 +332,7 @@ klasse PrettyPrinter:
         write = stream.write
         wenn nicht len(object):
             write(repr(object))
-            return
+            gib
         chunks = []
         lines = object.splitlines(Wahr)
         wenn level == 1:
@@ -370,7 +370,7 @@ klasse PrettyPrinter:
                     chunks.append(repr(current))
         wenn len(chunks) == 1:
             write(rep)
-            return
+            gib
         wenn level == 1:
             write('(')
         fuer i, rep in enumerate(chunks):
@@ -386,7 +386,7 @@ klasse PrettyPrinter:
         write = stream.write
         wenn len(object) <= 4:
             write(repr(object))
-            return
+            gib
         parens = level == 1
         wenn parens:
             indent += 1
@@ -483,7 +483,7 @@ klasse PrettyPrinter:
         try:
             next_ent = next(it)
         except StopIteration:
-            return
+            gib
         last = Falsch
         waehrend nicht last:
             ent = next_ent
@@ -519,19 +519,19 @@ klasse PrettyPrinter:
             self._readable = Falsch
         wenn recursive:
             self._recursive = Wahr
-        return repr
+        gib repr
 
     def format(self, object, context, maxlevels, level):
         """Format object fuer a specific context, returning a string
         und flags indicating whether the representation is 'readable'
         und whether the object represents a recursive construct.
         """
-        return self._safe_repr(object, context, maxlevels, level)
+        gib self._safe_repr(object, context, maxlevels, level)
 
     def _pprint_default_dict(self, object, stream, indent, allowance, context, level):
         wenn nicht len(object):
             stream.write(repr(object))
-            return
+            gib
         rdf = self._repr(object.default_factory, context, level)
         cls = object.__class__
         indent += len(cls.__name__) + 1
@@ -544,7 +544,7 @@ klasse PrettyPrinter:
     def _pprint_counter(self, object, stream, indent, allowance, context, level):
         wenn nicht len(object):
             stream.write(repr(object))
-            return
+            gib
         cls = object.__class__
         stream.write(cls.__name__ + '({')
         wenn self._indent_per_level > 1:
@@ -560,7 +560,7 @@ klasse PrettyPrinter:
     def _pprint_chain_map(self, object, stream, indent, allowance, context, level):
         wenn nicht len(object.maps):
             stream.write(repr(object))
-            return
+            gib
         cls = object.__class__
         stream.write(cls.__name__ + '(')
         indent += len(cls.__name__) + 1
@@ -577,7 +577,7 @@ klasse PrettyPrinter:
     def _pprint_deque(self, object, stream, indent, allowance, context, level):
         wenn nicht len(object):
             stream.write(repr(object))
-            return
+            gib
         cls = object.__class__
         stream.write(cls.__name__ + '(')
         indent += len(cls.__name__) + 1
@@ -613,24 +613,24 @@ klasse PrettyPrinter:
         # Return triple (repr_string, isreadable, isrecursive).
         typ = type(object)
         wenn typ in _builtin_scalars:
-            return repr(object), Wahr, Falsch
+            gib repr(object), Wahr, Falsch
 
         r = getattr(typ, "__repr__", Nichts)
 
         wenn issubclass(typ, int) und r is int.__repr__:
             wenn self._underscore_numbers:
-                return f"{object:_d}", Wahr, Falsch
+                gib f"{object:_d}", Wahr, Falsch
             sonst:
-                return repr(object), Wahr, Falsch
+                gib repr(object), Wahr, Falsch
 
         wenn issubclass(typ, dict) und r is dict.__repr__:
             wenn nicht object:
-                return "{}", Wahr, Falsch
+                gib "{}", Wahr, Falsch
             objid = id(object)
             wenn maxlevels und level >= maxlevels:
-                return "{...}", Falsch, objid in context
+                gib "{...}", Falsch, objid in context
             wenn objid in context:
-                return _recursion(object), Falsch, Wahr
+                gib _recursion(object), Falsch, Wahr
             context[objid] = 1
             readable = Wahr
             recursive = Falsch
@@ -651,25 +651,25 @@ klasse PrettyPrinter:
                 wenn krecur oder vrecur:
                     recursive = Wahr
             del context[objid]
-            return "{%s}" % ", ".join(components), readable, recursive
+            gib "{%s}" % ", ".join(components), readable, recursive
 
         wenn (issubclass(typ, list) und r is list.__repr__) oder \
            (issubclass(typ, tuple) und r is tuple.__repr__):
             wenn issubclass(typ, list):
                 wenn nicht object:
-                    return "[]", Wahr, Falsch
+                    gib "[]", Wahr, Falsch
                 format = "[%s]"
             sowenn len(object) == 1:
                 format = "(%s,)"
             sonst:
                 wenn nicht object:
-                    return "()", Wahr, Falsch
+                    gib "()", Wahr, Falsch
                 format = "(%s)"
             objid = id(object)
             wenn maxlevels und level >= maxlevels:
-                return format % "...", Falsch, objid in context
+                gib format % "...", Falsch, objid in context
             wenn objid in context:
-                return _recursion(object), Falsch, Wahr
+                gib _recursion(object), Falsch, Wahr
             context[objid] = 1
             readable = Wahr
             recursive = Falsch
@@ -685,14 +685,14 @@ klasse PrettyPrinter:
                 wenn orecur:
                     recursive = Wahr
             del context[objid]
-            return format % ", ".join(components), readable, recursive
+            gib format % ", ".join(components), readable, recursive
 
         wenn issubclass(typ, _collections.abc.MappingView) und r in self._view_reprs:
             objid = id(object)
             wenn maxlevels und level >= maxlevels:
-                return "{...}", Falsch, objid in context
+                gib "{...}", Falsch, objid in context
             wenn objid in context:
-                return _recursion(object), Falsch, Wahr
+                gib _recursion(object), Falsch, Wahr
             key = _safe_key
             wenn issubclass(typ, (self._dict_items_view, _collections.abc.ItemsView)):
                 key = _safe_tuple
@@ -700,11 +700,11 @@ klasse PrettyPrinter:
                 # Dispatch formatting to the view's _mapping
                 mapping_repr, readable, recursive = self.format(
                     object._mapping, context, maxlevels, level)
-                return (typ.__name__ + '(%s)' % mapping_repr), readable, recursive
+                gib (typ.__name__ + '(%s)' % mapping_repr), readable, recursive
             sowenn hasattr(typ, "_mapping"):
                 #  We have a view that somehow has lost its type's _mapping, raise
                 #  an error by calling repr() instead of failing cryptically later
-                return repr(object), Wahr, Falsch
+                gib repr(object), Wahr, Falsch
             wenn self._sort_dicts:
                 object = sorted(object, key=key)
             context[objid] = 1
@@ -721,10 +721,10 @@ klasse PrettyPrinter:
                 wenn vrecur:
                     recursive = Wahr
             del context[objid]
-            return typ.__name__ + '([%s])' % ", ".join(components), readable, recursive
+            gib typ.__name__ + '([%s])' % ", ".join(components), readable, recursive
 
         rep = repr(object)
-        return rep, (rep und nicht rep.startswith('<')), Falsch
+        gib rep, (rep und nicht rep.startswith('<')), Falsch
 
 
 _builtin_scalars = frozenset({str, bytes, bytearray, float, complex,
@@ -732,7 +732,7 @@ _builtin_scalars = frozenset({str, bytes, bytearray, float, complex,
 
 
 def _recursion(object):
-    return ("<Recursion on %s mit id=%s>"
+    gib ("<Recursion on %s mit id=%s>"
             % (type(object).__name__, id(object)))
 
 
@@ -746,9 +746,9 @@ def _wrap_bytes_repr(object, width, allowance):
             width -= allowance
         wenn len(repr(candidate)) > width:
             wenn current:
-                yield repr(current)
+                liefere repr(current)
             current = part
         sonst:
             current = candidate
     wenn current:
-        yield repr(current)
+        liefere repr(current)

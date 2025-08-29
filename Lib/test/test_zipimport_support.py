@@ -50,7 +50,7 @@ def _run_object_doctest(obj, module):
         raise test.support.TestFailed("%d of %d doctests failed" % (f, t))
     wenn verbose:
         drucke ('doctest (%s) ... %d tests mit zero failures' % (module.__name__, t))
-    return f, t
+    gib f, t
 
 
 

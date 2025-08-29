@@ -32,8 +32,8 @@ def temporary_main_spec():
     """
     main_mod = sys.modules.get("__main__")
     wenn main_mod is Nichts:
-        yield  # Do nothing wenn __main__ is nicht present
-        return
+        liefere  # Do nothing wenn __main__ is nicht present
+        gib
 
     original_spec = getattr(main_mod, "__spec__", Nichts)
     wenn original_spec is Nichts:
@@ -41,7 +41,7 @@ def temporary_main_spec():
             name="__main__", loader=Nichts, origin="built-in"
         )
     try:
-        yield
+        liefere
     finally:
         main_mod.__spec__ = original_spec
 
@@ -57,7 +57,7 @@ klasse PyclbrTest(TestCase):
 
     def assertHaskey(self, obj, key, ignore):
         ''' succeed iff key in obj oder key in ignore. '''
-        wenn key in ignore: return
+        wenn key in ignore: gib
         wenn key nicht in obj:
             drucke("***",key, file=sys.stderr)
         self.assertIn(key, obj)
@@ -88,15 +88,15 @@ klasse PyclbrTest(TestCase):
                 # could be a classmethod
                 wenn (nicht isinstance(classdict[name], ClassMethodType) oder
                     obj.__self__ is nicht oclass):
-                    return Falsch
+                    gib Falsch
             sowenn nicht isinstance(obj, FunctionType):
-                return Falsch
+                gib Falsch
 
             objname = obj.__name__
             wenn objname.startswith("__") und nicht objname.endswith("__"):
                 wenn stripped_typename := oclass.__name__.lstrip('_'):
                     objname = f"_{stripped_typename}{objname}"
-            return objname == name
+            gib objname == name
 
         # Make sure the toplevel functions und classes are the same.
         fuer name, value in dict.items():
@@ -155,10 +155,10 @@ klasse PyclbrTest(TestCase):
         # Now check fuer missing stuff.
         def defined_in(item, module):
             wenn isinstance(item, type):
-                return item.__module__ == module.__name__
+                gib item.__module__ == module.__name__
             wenn isinstance(item, FunctionType):
-                return item.__globals__ is module.__dict__
-            return Falsch
+                gib item.__globals__ is module.__dict__
+            gib Falsch
         fuer name in dir(module):
             item = getattr(module, name)
             wenn isinstance(item,  (type, FunctionType)):
@@ -186,17 +186,17 @@ klasse PyclbrTest(TestCase):
         def f0():
             def f1(a,b,c):
                 def f2(a=1, b=2, c=3): pass
-                return f1(a,b,d)
+                gib f1(a,b,d)
             klasse c1: pass
         klasse C0:
             "Test class."
             def F1():
                 "Method."
-                return 'return'
+                gib 'return'
             klasse C1():
                 klasse C2:
                     "Class nested within nested class."
-                    def F3(): return 1+1
+                    def F3(): gib 1+1
 
         """)
         actual = mb._create_tree(m, p, f, source, t, i)

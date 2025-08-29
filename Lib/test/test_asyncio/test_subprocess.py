@@ -60,7 +60,7 @@ klasse SubprocessTransportTests(test_utils.TestCase):
         transport = TestSubprocessTransport(
                         self.loop, protocol, ['test'], Falsch,
                         Nichts, Nichts, Nichts, 0, waiter=waiter)
-        return (transport, protocol)
+        gib (transport, protocol)
 
     def test_proc_exited(self):
         waiter = self.loop.create_future()
@@ -132,7 +132,7 @@ klasse SubprocessMixin:
             # get output und exitcode
             data = await proc.stdout.read()
             exitcode = await proc.wait()
-            return (exitcode, data)
+            gib (exitcode, data)
 
         task = run(b'some data')
         task = asyncio.wait_for(task, 60.0)
@@ -150,7 +150,7 @@ klasse SubprocessMixin:
                 stdout=subprocess.PIPE,
             )
             stdout, stderr = await proc.communicate(data)
-            return proc.returncode, stdout
+            gib proc.returncode, stdout
 
         task = run(b'some data')
         task = asyncio.wait_for(task, support.LONG_TIMEOUT)
@@ -168,7 +168,7 @@ klasse SubprocessMixin:
                 stdout=subprocess.PIPE,
             )
             stdout, stderr = await proc.communicate()
-            return proc.returncode, stdout
+            gib proc.returncode, stdout
 
         task = run()
         task = asyncio.wait_for(task, support.LONG_TIMEOUT)
@@ -225,7 +225,7 @@ klasse SubprocessMixin:
         self.loop.run_until_complete(asyncio.sleep(1))
         wenn sys.platform == 'win32':
             proc.send_signal(signal.CTRL_BREAK_EVENT)
-        # On windows it is an alias of terminate which sets the return code
+        # On windows it is an alias of terminate which sets the gib code
         proc.kill()
         returncode = self.loop.run_until_complete(proc.wait())
         wenn sys.platform == 'win32':
@@ -270,7 +270,7 @@ klasse SubprocessMixin:
 
                 proc.send_signal(signal.SIGHUP)
                 returncode = await proc.wait()
-                return returncode
+                gib returncode
 
             returncode = self.loop.run_until_complete(send_signal(proc))
             self.assertEqual(-signal.SIGHUP, returncode)
@@ -357,7 +357,7 @@ klasse SubprocessMixin:
                 transport, protocol = await connect_read_pipe(*args, **kw)
                 transport.pause_reading = mock.Mock()
                 transport.resume_reading = mock.Mock()
-                return (transport, protocol)
+                gib (transport, protocol)
 
             self.loop.connect_read_pipe = connect_read_pipe_mock
 
@@ -374,7 +374,7 @@ klasse SubprocessMixin:
             # The child process produced more than limit bytes of output,
             # the stream reader transport should pause the protocol to not
             # allocate too much memory.
-            return (stdout, stdout_transport)
+            gib (stdout, stdout_transport)
 
         # Issue #22685: Ensure that the stream reader pauses the protocol
         # when the child process produces too much data
@@ -398,7 +398,7 @@ klasse SubprocessMixin:
             )
             stdout, stderr = await proc.communicate(message)
             exitcode = await proc.wait()
-            return (stdout, exitcode)
+            gib (stdout, exitcode)
 
         output, exitcode = self.loop.run_until_complete(len_message(b'abc'))
         self.assertEqual(output.rstrip(), b'3')
@@ -417,7 +417,7 @@ klasse SubprocessMixin:
             )
             stdout, stderr = await proc.communicate(b'')
             exitcode = await proc.wait()
-            return (stdout, exitcode)
+            gib (stdout, exitcode)
 
         output, exitcode = self.loop.run_until_complete(empty_input())
         self.assertEqual(output.rstrip(), b'0')
@@ -436,7 +436,7 @@ klasse SubprocessMixin:
             )
             stdout, stderr = await proc.communicate()
             exitcode = await proc.wait()
-            return (stdout, exitcode)
+            gib (stdout, exitcode)
 
         output, exitcode = self.loop.run_until_complete(empty_input())
         self.assertEqual(output.rstrip(), b'0')
@@ -455,7 +455,7 @@ klasse SubprocessMixin:
             )
             stdout, stderr = await proc.communicate(b"abc")
             exitcode = await proc.wait()
-            return (stdout, exitcode)
+            gib (stdout, exitcode)
 
         output, exitcode = self.loop.run_until_complete(empty_output())
         self.assertEqual(output, Nichts)
@@ -474,7 +474,7 @@ klasse SubprocessMixin:
             )
             stdout, stderr = await proc.communicate(b"abc")
             exitcode = await proc.wait()
-            return (stderr, exitcode)
+            gib (stderr, exitcode)
 
         output, exitcode = self.loop.run_until_complete(empty_error())
         self.assertEqual(output, Nichts)
@@ -495,7 +495,7 @@ klasse SubprocessMixin:
             )
             stdout, stderr = await proc.communicate(message)
             exitcode = await proc.wait()
-            return (stdout, exitcode)
+            gib (stdout, exitcode)
 
         output, exitcode = self.loop.run_until_complete(devstdin_input(b'abc'))
         self.assertEqual(output.rstrip(), b'3')
@@ -579,7 +579,7 @@ klasse SubprocessMixin:
             returncode = transport.get_returncode()
             transport.close()
             await asyncio.wait_for(transport._wait(), 5)
-            return (returncode, kill_called)
+            gib (returncode, kill_called)
 
         # Ignore "Close running child process: kill ..." log
         mit test_utils.disable_logger():
@@ -613,7 +613,7 @@ klasse SubprocessMixin:
             proc_returncode = proc.poll()
             transport_returncode = transport.get_returncode()
             transport.close()
-            return (proc_returncode, transport_returncode, proc.kill.called)
+            gib (proc_returncode, transport_returncode, proc.kill.called)
 
         # Ignore "Unknown child process pid ..." log of SafeChildWatcher,
         # emitted because the test already consumes the exit status:
@@ -748,7 +748,7 @@ klasse SubprocessMixin:
             proc = await asyncio.create_subprocess_shell(
                 cmd, env=env, stdout=subprocess.PIPE
             )
-            return proc
+            gib proc
 
         self.loop.run_until_complete(self.check_stdout_output(main(), b'bar'))
 
@@ -761,7 +761,7 @@ klasse SubprocessMixin:
             proc = await asyncio.create_subprocess_exec(
                 *cmd, env=env, stdout=subprocess.PIPE
             )
-            return proc
+            gib proc
 
         self.loop.run_until_complete(self.check_stdout_output(main(), b'baz'))
 
@@ -829,7 +829,7 @@ klasse SubprocessMixin:
             await exit_future
             transport.close()
 
-            return events
+            gib events
 
         events = self.loop.run_until_complete(main())
 
@@ -854,7 +854,7 @@ klasse SubprocessMixin:
                 cmd, *args, stdout=asyncio.subprocess.PIPE,
             )
             stdout, _ = await proc.communicate()
-            return stdout.decode().strip()
+            gib stdout.decode().strip()
 
         async def main():
             outputs = [f'foo{i}' fuer i in range(10)]
@@ -908,7 +908,7 @@ wenn sys.platform != 'win32':
 
         def tearDown(self):
             unix_events.can_use_pidfd = self._original_can_use_pidfd
-            return super().tearDown()
+            gib super().tearDown()
 
     @unittest.skipUnless(
         unix_events.can_use_pidfd(),

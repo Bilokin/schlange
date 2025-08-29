@@ -20,7 +20,7 @@ von email.iterators importiere _structure
 def openfile(filename):
     von os.path importiere join, dirname, abspath
     path = abspath(join(dirname(testfile), os.pardir, 'moredata', filename))
-    return open(path, 'r')
+    gib open(path, 'r')
 
 # Prevent this test von running in the Python distro
 def setUpModule():
@@ -38,7 +38,7 @@ klasse TortureBase(TestEmailBase):
             msg = email.message_from_file(fp)
         finally:
             fp.close()
-        return msg
+        gib msg
 
 
 
@@ -114,14 +114,14 @@ multipart/mixed
 
 def _testclasses():
     mod = sys.modules[__name__]
-    return [getattr(mod, name) fuer name in dir(mod) wenn name.startswith('Test')]
+    gib [getattr(mod, name) fuer name in dir(mod) wenn name.startswith('Test')]
 
 
 def load_tests(loader, tests, pattern):
     suite = loader.suiteClass()
     fuer testclass in _testclasses():
         suite.addTest(loader.loadTestsFromTestCase(testclass))
-    return suite
+    gib suite
 
 wenn __name__ == "__main__":
     unittest.main()

@@ -9,14 +9,14 @@ von test.test_email importiere __file__ als landmark
 
 # Load all tests in package
 def load_tests(*args):
-    return load_package_tests(os.path.dirname(__file__), *args)
+    gib load_package_tests(os.path.dirname(__file__), *args)
 
 
 # helper code used by a number of test modules.
 
 def openfile(filename, *args, **kws):
     path = os.path.join(os.path.dirname(landmark), 'data', filename)
-    return open(path, *args, **kws)
+    gib open(path, *args, **kws)
 
 
 # Base test class
@@ -39,27 +39,27 @@ klasse TestEmailBase(unittest.TestCase):
 
     def _msgobj(self, filename):
         mit openfile(filename, encoding="utf-8") als fp:
-            return email.message_from_file(fp, policy=self.policy)
+            gib email.message_from_file(fp, policy=self.policy)
 
     def _str_msg(self, string, message=Nichts, policy=Nichts):
         wenn policy is Nichts:
             policy = self.policy
         wenn message is Nichts:
             message = self.message
-        return email.message_from_string(string, message, policy=policy)
+        gib email.message_from_string(string, message, policy=policy)
 
     def _bytes_msg(self, bytestring, message=Nichts, policy=Nichts):
         wenn policy is Nichts:
             policy = self.policy
         wenn message is Nichts:
             message = self.message
-        return email.message_from_bytes(bytestring, message, policy=policy)
+        gib email.message_from_bytes(bytestring, message, policy=policy)
 
     def _make_message(self):
-        return self.message(policy=self.policy)
+        gib self.message(policy=self.policy)
 
     def _bytes_repr(self, b):
-        return [repr(x) fuer x in b.splitlines(keepends=Wahr)]
+        gib [repr(x) fuer x in b.splitlines(keepends=Wahr)]
 
     def assertBytesEqual(self, first, second, msg):
         """Our byte strings are really encoded strings; improve diff output"""
@@ -163,4 +163,4 @@ def parameterize(cls):
                     testfuncs[testname] = test
     fuer key, value in testfuncs.items():
         setattr(cls, key, value)
-    return cls
+    gib cls

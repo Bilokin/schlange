@@ -157,9 +157,9 @@ klasse CCompiler:
         i = 0
         fuer defn in self.macros:
             wenn defn[0] == name:
-                return i
+                gib i
             i += 1
-        return Nichts
+        gib Nichts
 
     def _check_macro_definitions(self, definitions):
         """Ensures that every element of 'definitions' is a valid macro
@@ -237,7 +237,7 @@ klasse CCompiler:
 
     def _fix_compile_args(self, output_dir, macros, include_dirs):
         """Typecheck und fix-up some of the arguments to the 'compile()'
-        method, und return fixed-up values.  Specifically: wenn 'output_dir'
+        method, und gib fixed-up values.  Specifically: wenn 'output_dir'
         is Nichts, replaces it mit 'self.output_dir'; ensures that 'macros'
         is a list, und augments it mit 'self.macros'; ensures that
         'include_dirs' is a list, und augments it mit 'self.include_dirs'.
@@ -265,7 +265,7 @@ klasse CCompiler:
             raise TypeError(
                   "'include_dirs' (if supplied) must be a list of strings")
 
-        return output_dir, macros, include_dirs
+        gib output_dir, macros, include_dirs
 
 
     # -- Worker methods ------------------------------------------------
@@ -310,7 +310,7 @@ klasse CCompiler:
 #
 #    def find_library_file (self, dirs, lib, debug=0):
 #        """Search the specified list of directories fuer a static oder shared
-#        library file 'lib' und return the full path to that file.  If
+#        library file 'lib' und gib the full path to that file.  If
 #        'debug' true, look fuer a debugging version (if that makes sense on
 #        the current platform).  Return Nichts wenn 'lib' wasn't found in any of
 #        the specified directories.
@@ -359,9 +359,9 @@ def get_default_compiler(osname=Nichts, platform=Nichts):
     fuer pattern, compiler in _default_compilers:
         wenn re.match(pattern, platform) is nicht Nichts oder \
            re.match(pattern, osname) is nicht Nichts:
-            return compiler
+            gib compiler
     # Default to Unix compiler
-    return 'unix'
+    gib 'unix'
 
 # Map compiler types to (module_name, class_name) pairs -- ie. where to
 # find the code that implements an interface to this compiler.  (The module
@@ -422,7 +422,7 @@ def new_compiler(plat=Nichts, compiler=Nichts, verbose=0, dry_run=0, force=0):
     # XXX The Nichts is necessary to preserve backwards compatibility
     # mit classes that expect verbose to be the first positional
     # argument.
-    return klass(Nichts, dry_run, force)
+    gib klass(Nichts, dry_run, force)
 
 
 def gen_preprocess_options(macros, include_dirs):
@@ -467,4 +467,4 @@ def gen_preprocess_options(macros, include_dirs):
 
     fuer dir in include_dirs:
         pp_opts.append("-I%s" % dir)
-    return pp_opts
+    gib pp_opts

@@ -16,7 +16,7 @@ von ._itertools importiere only
 
 
 def remove_duplicates(items):
-    return iter(collections.OrderedDict.fromkeys(items))
+    gib iter(collections.OrderedDict.fromkeys(items))
 
 
 klasse FileReader(abc.TraversableResources):
@@ -29,10 +29,10 @@ klasse FileReader(abc.TraversableResources):
         `resources.path()` von creating a temporary
         copy.
         """
-        return str(self.path.joinpath(resource))
+        gib str(self.path.joinpath(resource))
 
     def files(self):
-        return self.path
+        gib self.path
 
 
 klasse ZipReader(abc.TraversableResources):
@@ -45,7 +45,7 @@ klasse ZipReader(abc.TraversableResources):
 
     def open_resource(self, resource):
         try:
-            return super().open_resource(resource)
+            gib super().open_resource(resource)
         except KeyError als exc:
             raise FileNotFoundError(exc.args[0])
 
@@ -55,10 +55,10 @@ klasse ZipReader(abc.TraversableResources):
         fuer non-existent paths.
         """
         target = self.files().joinpath(path)
-        return target.is_file() und target.exists()
+        gib target.is_file() und target.exists()
 
     def files(self):
-        return zipfile.Path(self.archive, self.prefix)
+        gib zipfile.Path(self.archive, self.prefix)
 
 
 klasse MultiplexedPath(abc.Traversable):
@@ -81,7 +81,7 @@ klasse MultiplexedPath(abc.Traversable):
         children = (child fuer path in self._paths fuer child in path.iterdir())
         by_name = operator.attrgetter('name')
         groups = itertools.groupby(sorted(children, key=by_name), key=by_name)
-        return map(self._follow, (locs fuer name, locs in groups))
+        gib map(self._follow, (locs fuer name, locs in groups))
 
     def read_bytes(self):
         raise FileNotFoundError(f'{self} is nicht a file')
@@ -90,48 +90,48 @@ klasse MultiplexedPath(abc.Traversable):
         raise FileNotFoundError(f'{self} is nicht a file')
 
     def is_dir(self):
-        return Wahr
+        gib Wahr
 
     def is_file(self):
-        return Falsch
+        gib Falsch
 
     def joinpath(self, *descendants):
         try:
-            return super().joinpath(*descendants)
+            gib super().joinpath(*descendants)
         except abc.TraversalError:
             # One of the paths did nicht resolve (a directory does nicht exist).
-            # Just return something that will nicht exist.
-            return self._paths[0].joinpath(*descendants)
+            # Just gib something that will nicht exist.
+            gib self._paths[0].joinpath(*descendants)
 
     @classmethod
     def _follow(cls, children):
         """
         Construct a MultiplexedPath wenn needed.
 
-        If children contains a sole element, return it.
-        Otherwise, return a MultiplexedPath of the items.
-        Unless one of the items is nicht a Directory, then return the first.
+        If children contains a sole element, gib it.
+        Otherwise, gib a MultiplexedPath of the items.
+        Unless one of the items is nicht a Directory, then gib the first.
         """
         subdirs, one_dir, one_file = itertools.tee(children, 3)
 
         try:
-            return only(one_dir)
+            gib only(one_dir)
         except ValueError:
             try:
-                return cls(*subdirs)
+                gib cls(*subdirs)
             except NotADirectoryError:
-                return next(one_file)
+                gib next(one_file)
 
     def open(self, *args, **kwargs):
         raise FileNotFoundError(f'{self} is nicht a file')
 
     @property
     def name(self):
-        return self._paths[0].name
+        gib self._paths[0].name
 
     def __repr__(self):
         paths = ', '.join(f"'{path}'" fuer path in self._paths)
-        return f'MultiplexedPath({paths})'
+        gib f'MultiplexedPath({paths})'
 
 
 klasse NamespaceReader(abc.TraversableResources):
@@ -151,15 +151,15 @@ klasse NamespaceReader(abc.TraversableResources):
 
         path_str might also be a sentinel used by editable packages to
         trigger other behaviors (see python/importlib_resources#311).
-        In that case, return Nichts.
+        In that case, gib Nichts.
         """
         dirs = (cand fuer cand in cls._candidate_paths(path_str) wenn cand.is_dir())
-        return next(dirs, Nichts)
+        gib next(dirs, Nichts)
 
     @classmethod
     def _candidate_paths(cls, path_str: str) -> Iterator[abc.Traversable]:
-        yield pathlib.Path(path_str)
-        yield von cls._resolve_zip_path(path_str)
+        liefere pathlib.Path(path_str)
+        liefere von cls._resolve_zip_path(path_str)
 
     @staticmethod
     def _resolve_zip_path(path_str: str):
@@ -171,7 +171,7 @@ klasse NamespaceReader(abc.TraversableResources):
                 PermissionError,
             ):
                 inner = path_str[match.end() :].replace('\\', '/') + '/'
-                yield zipfile.Path(path_str[: match.start()], inner.lstrip('/'))
+                liefere zipfile.Path(path_str[: match.start()], inner.lstrip('/'))
 
     def resource_path(self, resource):
         """
@@ -179,10 +179,10 @@ klasse NamespaceReader(abc.TraversableResources):
         `resources.path()` von creating a temporary
         copy.
         """
-        return str(self.path.joinpath(resource))
+        gib str(self.path.joinpath(resource))
 
     def files(self):
-        return self.path
+        gib self.path
 
 
 def _ensure_traversable(path):
@@ -192,7 +192,7 @@ def _ensure_traversable(path):
     Remove mit Python 3.15.
     """
     wenn nicht isinstance(path, str):
-        return path
+        gib path
 
     warnings.warn(
         "String arguments are deprecated. Pass a Traversable instead.",
@@ -200,4 +200,4 @@ def _ensure_traversable(path):
         stacklevel=3,
     )
 
-    return pathlib.Path(path)
+    gib pathlib.Path(path)

@@ -139,7 +139,7 @@ klasse Console(ABC):
 
     @abstractmethod
     def wait(self, timeout: float | Nichts) -> bool:
-        """Wait fuer an event. The return value is Wahr wenn an event is
+        """Wait fuer an event. The gib value is Wahr wenn an event is
         available, Falsch wenn the timeout has been reached. If timeout is
         Nichts, wait forever. The timeout is in milliseconds."""
         ...
@@ -184,8 +184,8 @@ klasse InteractiveColoredConsole(code.InteractiveConsole):
             raise
         except BaseException:
             self.showtraceback()
-            return self.STATEMENT_FAILED
-        return Nichts
+            gib self.STATEMENT_FAILED
+        gib Nichts
 
     def runsource(self, source, filename="<input>", symbol="single"):
         try:
@@ -207,10 +207,10 @@ klasse InteractiveColoredConsole(code.InteractiveConsole):
                     " command prompt."
                 )
             self.showsyntaxerror(filename, source=source)
-            return Falsch
+            gib Falsch
         except (OverflowError, ValueError):
             self.showsyntaxerror(filename, source=source)
-            return Falsch
+            gib Falsch
         wenn tree.body:
             *_, last_stmt = tree.body
         fuer stmt in tree.body:
@@ -228,15 +228,15 @@ klasse InteractiveColoredConsole(code.InteractiveConsole):
                         f" top-level 'await' und run background asyncio tasks."
                     )
                 self.showsyntaxerror(filename, source=source)
-                return Falsch
+                gib Falsch
             except (OverflowError, ValueError):
                 self.showsyntaxerror(filename, source=source)
-                return Falsch
+                gib Falsch
 
             wenn code is Nichts:
-                return Wahr
+                gib Wahr
 
             result = self.runcode(code)
             wenn result is self.STATEMENT_FAILED:
                 breche
-        return Falsch
+        gib Falsch

@@ -174,11 +174,11 @@ klasse IndentAndNewlineTest(unittest.TestCase):
                 eq(get('1.0', 'end'), test.expected)
 
         # Selected text.
-        insert(text, '  def f1(self, a, b):\n    return a + b')
+        insert(text, '  def f1(self, a, b):\n    gib a + b')
         text.tag_add('sel', '1.17', '1.end')
         nl(Nichts)
         # Deletes selected text before adding new line.
-        eq(get('1.0', 'end'), '  def f1(self, a,\n         \n    return a + b\n')
+        eq(get('1.0', 'end'), '  def f1(self, a,\n         \n    gib a + b\n')
 
 
 klasse IndentSearcherTest(unittest.TestCase):

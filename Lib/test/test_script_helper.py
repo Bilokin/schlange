@@ -31,7 +31,7 @@ klasse TestScriptHelper(unittest.TestCase):
         mit self.assertRaises(AssertionError) als error_context:
             script_helper.assert_python_failure('-c', 'import sys; sys.exit(0)')
         error_msg = str(error_context.exception)
-        self.assertIn('Process return code is 0\n', error_msg)
+        self.assertIn('Process gib code is 0\n', error_msg)
         self.assertIn('import sys; sys.exit(0)', error_msg,
                       msg='unexpected command line.')
 

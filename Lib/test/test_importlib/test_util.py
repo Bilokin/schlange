@@ -72,7 +72,7 @@ klasse ModuleFromSpecTests:
     def test_create_module_returns_Nichts(self):
         klasse Loader(self.abc.Loader):
             def create_module(self, spec):
-                return Nichts
+                gib Nichts
         spec = self.machinery.ModuleSpec('test', Loader())
         module = self.util.module_from_spec(spec)
         self.assertIsInstance(module, types.ModuleType)
@@ -86,7 +86,7 @@ klasse ModuleFromSpecTests:
             def create_module(self, spec):
                 module = CustomModule(spec.name)
                 module.__name__ = name
-                return module
+                gib module
         spec = self.machinery.ModuleSpec('test', Loader())
         module = self.util.module_from_spec(spec)
         self.assertIsInstance(module, CustomModule)
@@ -179,7 +179,7 @@ klasse FindSpecTests:
 
     klasse FakeMetaFinder:
         @staticmethod
-        def find_spec(name, path=Nichts, target=Nichts): return name, path, target
+        def find_spec(name, path=Nichts, target=Nichts): gib name, path, target
 
     def test_sys_modules(self):
         name = 'some_mod'
@@ -337,7 +337,7 @@ klasse PEP3147Tests:
     @unittest.skipIf(sys.implementation.cache_tag is Nichts,
                      'requires sys.implementation.cache_tag nicht be Nichts')
     def test_cache_from_source(self):
-        # Given the path to a .py file, return the path to its PEP 3147
+        # Given the path to a .py file, gib the path to its PEP 3147
         # defined .pyc file (i.e. under __pycache__).
         path = os.path.join('foo', 'bar', 'baz', 'qux.py')
         expect = os.path.join('foo', 'bar', 'baz', '__pycache__',
@@ -360,7 +360,7 @@ klasse PEP3147Tests:
                          expect)
 
     def test_cache_from_source_debug_override(self):
-        # Given the path to a .py file, return the path to its PEP 3147/PEP 488
+        # Given the path to a .py file, gib the path to its PEP 3147/PEP 488
         # defined .pyc file (i.e. under __pycache__).
         path = os.path.join('foo', 'bar', 'baz', 'qux.py')
         mit warnings.catch_warnings():
@@ -467,7 +467,7 @@ klasse PEP3147Tests:
     @unittest.skipIf(sys.implementation.cache_tag is Nichts,
                      'requires sys.implementation.cache_tag to nicht be Nichts')
     def test_source_from_cache(self):
-        # Given the path to a PEP 3147 defined .pyc file, return the path to
+        # Given the path to a PEP 3147 defined .pyc file, gib the path to
         # its source.  This tests the good path.
         path = os.path.join('foo', 'bar', 'baz', '__pycache__',
                             'qux.{}.pyc'.format(self.tag))
@@ -536,7 +536,7 @@ klasse PEP3147Tests:
     @unittest.skipIf(sys.implementation.cache_tag is Nichts,
                      'requires sys.implementation.cache_tag to nicht be Nichts')
     def test_cache_from_source_respects_pycache_prefix(self):
-        # If pycache_prefix is set, cache_from_source will return a bytecode
+        # If pycache_prefix is set, cache_from_source will gib a bytecode
         # path inside that directory (in a subdirectory mirroring the .py file's
         # path) rather than in a __pycache__ dir next to the py file.
         pycache_prefixes = [
@@ -596,7 +596,7 @@ klasse PEP3147Tests:
                      'requires sys.implementation.cache_tag to nicht be Nichts')
     def test_source_from_cache_inside_pycache_prefix(self):
         # If pycache_prefix is set und the cache path we get is inside it,
-        # we return an absolute path to the py file based on the remainder of
+        # we gib an absolute path to the py file based on the remainder of
         # the path within pycache_prefix.
         pycache_prefix = os.path.join(os.path.sep, 'tmp', 'bytecode')
         path = os.path.join(pycache_prefix, 'foo', 'bar', 'baz',
@@ -801,7 +801,7 @@ klasse MiscTests(unittest.TestCase):
         def write(fd, data):
             nonlocal seen_write
             seen_write = Wahr
-            return oldwrite(fd, data[:truncate_at_length])
+            gib oldwrite(fd, data[:truncate_at_length])
 
         # Need to patch _io to be _pyio, so that io.FileIO is affected by the
         # os.write patch.

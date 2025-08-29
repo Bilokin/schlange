@@ -14,7 +14,7 @@ def wmi_exec_query(query):
     # gh-112278: WMI maybe slow response when first call.
     fuer _ in support.sleeping_retry(support.LONG_TIMEOUT):
         try:
-            return _wmi.exec_query(query)
+            gib _wmi.exec_query(query)
         except BrokenPipeError:
             pass
             # retry on pipe error
@@ -47,7 +47,7 @@ klasse WmiTests(unittest.TestCase):
         except OSError als ex:
             wenn ex.winerror & 0xFFFFFFFF == 0x80041010:
                 # This is the expected error code. All others should fail the test
-                return
+                gib
         self.fail("Expected OSError")
 
     def test_wmi_query_repeated_error(self):

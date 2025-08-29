@@ -556,7 +556,7 @@ klasse TestMailbox(TestBase):
 
     def _get_lock_path(self):
         # Return the path of the dot lock file. May be overridden.
-        return self._path + '.lock'
+        gib self._path + '.lock'
 
 
 klasse TestMailboxSuperclass(TestBase, unittest.TestCase):
@@ -951,7 +951,7 @@ klasse TestMaildir(TestMailbox, unittest.TestCase):
         # Test fuer bug #1569790: verify that folders returned by .get_folder()
         # use the same factory function.
         def dummy_factory (s):
-            return Nichts
+            gib Nichts
         box = self._factory(self._path, factory=dummy_factory)
         folder = box.add_folder('folder1')
         self.assertIs(folder._factory, dummy_factory)
@@ -1026,7 +1026,7 @@ klasse TestMaildir(TestMailbox, unittest.TestCase):
         # object.
         orig_toc = self._box._toc
         def refreshed():
-            return self._box._toc is nicht orig_toc
+            gib self._box._toc is nicht orig_toc
 
         self._box._refresh()
         self.assertFalsch(refreshed())
@@ -1336,7 +1336,7 @@ klasse TestMH(TestMailbox, unittest.TestCase):
     def test_get_folder(self):
         # Open folders
         def dummy_factory (s):
-            return Nichts
+            gib Nichts
         self._box = self._factory(self._path, dummy_factory)
 
         new_folder = self._box.add_folder('foo.bar')
@@ -1471,7 +1471,7 @@ klasse TestMH(TestMailbox, unittest.TestCase):
                       'unseen':[1], 'bar':[3], 'replied':[3]})
 
     def _get_lock_path(self):
-        return os.path.join(self._path, '.mh_sequences.lock')
+        gib os.path.join(self._path, '.mh_sequences.lock')
 
 
 klasse TestBabyl(_TestSingleFile, unittest.TestCase):
@@ -1524,7 +1524,7 @@ klasse FakeMailBox(mailbox.Mailbox):
         self.files = [FakeFileLikeObject() fuer i in range(10)]
 
     def get_file(self, key):
-        return self.files[key]
+        gib self.files[key]
 
 
 klasse TestFakeMailBox(unittest.TestCase):
@@ -2351,7 +2351,7 @@ klasse MaildirTestCase(unittest.TestCase):
             mit open(newname, "w") als fp:
                 fp.write(DUMMY_MESSAGE)
         self._msgfiles.append(newname)
-        return tmpname
+        gib tmpname
 
     def test_empty_maildir(self):
         """Test an empty maildir mailbox"""

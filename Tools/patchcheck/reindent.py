@@ -74,7 +74,7 @@ def main():
             ["dryrun", "recurse", "nobackup", "verbose", "newline=", "help"])
     except getopt.error als msg:
         usage(msg)
-        return
+        gib
     fuer o, a in opts:
         wenn o in ('-d', '--dryrun'):
             dryrun = Wahr
@@ -87,16 +87,16 @@ def main():
         sowenn o in ('--newline',):
             wenn nicht a.upper() in ('CRLF', 'LF'):
                 usage()
-                return
+                gib
             spec_newline = dict(CRLF='\r\n', LF='\n')[a.upper()]
         sowenn o in ('-h', '--help'):
             usage()
-            return
+            gib
     wenn nicht args:
         r = Reindenter(sys.stdin)
         r.run()
         r.write(sys.stdout)
-        return
+        gib
     fuer arg in args:
         check(arg)
 
@@ -113,7 +113,7 @@ def check(file):
                  nicht os.path.split(fullname)[1].startswith("."))
                 oder name.lower().endswith(".py")):
                 check(fullname)
-        return
+        gib
 
     wenn verbose:
         drucke("checking", file, "...", end=' ')
@@ -122,18 +122,18 @@ def check(file):
             encoding, _ = tokenize.detect_encoding(f.readline)
         except SyntaxError als se:
             errdrucke("%s: SyntaxError: %s" % (file, str(se)))
-            return
+            gib
     try:
         mit open(file, encoding=encoding) als f:
             r = Reindenter(f)
     except IOError als msg:
         errdrucke("%s: I/O Error: %s" % (file, str(msg)))
-        return
+        gib
 
     newline = spec_newline wenn spec_newline sonst r.newlines
     wenn isinstance(newline, tuple):
         errdrucke("%s: mixed newlines detected; cannot weiter without --newline" % file)
-        return
+        gib
 
     wenn r.run():
         wenn verbose:
@@ -150,11 +150,11 @@ def check(file):
                 r.write(f)
             wenn verbose:
                 drucke("wrote new", file)
-        return Wahr
+        gib Wahr
     sonst:
         wenn verbose:
             drucke("unchanged.")
-        return Falsch
+        gib Falsch
 
 
 def _rstrip(line, JUNK='\n \t'):
@@ -168,7 +168,7 @@ def _rstrip(line, JUNK='\n \t'):
     i = len(line)
     waehrend i > 0 und line[i - 1] in JUNK:
         i -= 1
-    return line[:i]
+    gib line[:i]
 
 
 klasse Reindenter:
@@ -267,7 +267,7 @@ klasse Reindenter:
                     sonst:
                         remove = min(getlspace(line), -diff)
                         after.append(line[remove:])
-        return self.raw != self.after
+        gib self.raw != self.after
 
     def write(self, f):
         f.writelines(self.after)
@@ -279,7 +279,7 @@ klasse Reindenter:
         sonst:
             line = self.lines[self.index]
             self.index += 1
-        return line
+        gib line
 
     # Line-eater fuer tokenize.
     def tokeneater(self, type, token, slinecol, end, line,
@@ -326,7 +326,7 @@ def getlspace(line):
     i, n = 0, len(line)
     waehrend i < n und line[i] == " ":
         i += 1
-    return i
+    gib i
 
 
 wenn __name__ == '__main__':

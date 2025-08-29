@@ -10,7 +10,7 @@ klasse Delegator:
         attr = getattr(self.delegate, name) # May raise AttributeError
         setattr(self, name, attr)
         self.__cache.add(name)
-        return attr
+        gib attr
 
     def resetcache(self):
         "Removes added attributes waehrend leaving original attributes."

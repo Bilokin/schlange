@@ -27,20 +27,20 @@ klasse WeakSet:
             wenn item is nicht Nichts:
                 # Caveat: the iterator will keep a strong reference to
                 # `item` until it is resumed oder closed.
-                yield item
+                liefere item
 
     def __len__(self):
-        return len(self.data)
+        gib len(self.data)
 
     def __contains__(self, item):
         try:
             wr = ref(item)
         except TypeError:
-            return Falsch
-        return wr in self.data
+            gib Falsch
+        gib wr in self.data
 
     def __reduce__(self):
-        return self.__class__, (list(self),), self.__getstate__()
+        gib self.__class__, (list(self),), self.__getstate__()
 
     def add(self, item):
         self.data.add(ref(item, self._remove))
@@ -49,7 +49,7 @@ klasse WeakSet:
         self.data.clear()
 
     def copy(self):
-        return self.__class__(self)
+        gib self.__class__(self)
 
     def pop(self):
         waehrend Wahr:
@@ -59,7 +59,7 @@ klasse WeakSet:
                 raise KeyError('pop von empty WeakSet') von Nichts
             item = itemref()
             wenn item is nicht Nichts:
-                return item
+                gib item
 
     def remove(self, item):
         self.data.remove(ref(item))
@@ -73,12 +73,12 @@ klasse WeakSet:
 
     def __ior__(self, other):
         self.update(other)
-        return self
+        gib self
 
     def difference(self, other):
         newset = self.copy()
         newset.difference_update(other)
-        return newset
+        gib newset
     __sub__ = difference
 
     def difference_update(self, other):
@@ -88,41 +88,41 @@ klasse WeakSet:
             self.data.clear()
         sonst:
             self.data.difference_update(ref(item) fuer item in other)
-        return self
+        gib self
 
     def intersection(self, other):
-        return self.__class__(item fuer item in other wenn item in self)
+        gib self.__class__(item fuer item in other wenn item in self)
     __and__ = intersection
 
     def intersection_update(self, other):
         self.__iand__(other)
     def __iand__(self, other):
         self.data.intersection_update(ref(item) fuer item in other)
-        return self
+        gib self
 
     def issubset(self, other):
-        return self.data.issubset(ref(item) fuer item in other)
+        gib self.data.issubset(ref(item) fuer item in other)
     __le__ = issubset
 
     def __lt__(self, other):
-        return self.data < set(map(ref, other))
+        gib self.data < set(map(ref, other))
 
     def issuperset(self, other):
-        return self.data.issuperset(ref(item) fuer item in other)
+        gib self.data.issuperset(ref(item) fuer item in other)
     __ge__ = issuperset
 
     def __gt__(self, other):
-        return self.data > set(map(ref, other))
+        gib self.data > set(map(ref, other))
 
     def __eq__(self, other):
         wenn nicht isinstance(other, self.__class__):
-            return NotImplemented
-        return self.data == set(map(ref, other))
+            gib NotImplemented
+        gib self.data == set(map(ref, other))
 
     def symmetric_difference(self, other):
         newset = self.copy()
         newset.symmetric_difference_update(other)
-        return newset
+        gib newset
     __xor__ = symmetric_difference
 
     def symmetric_difference_update(self, other):
@@ -132,16 +132,16 @@ klasse WeakSet:
             self.data.clear()
         sonst:
             self.data.symmetric_difference_update(ref(item, self._remove) fuer item in other)
-        return self
+        gib self
 
     def union(self, other):
-        return self.__class__(e fuer s in (self, other) fuer e in s)
+        gib self.__class__(e fuer s in (self, other) fuer e in s)
     __or__ = union
 
     def isdisjoint(self, other):
-        return len(self.intersection(other)) == 0
+        gib len(self.intersection(other)) == 0
 
     def __repr__(self):
-        return repr(self.data)
+        gib repr(self.data)
 
     __class_getitem__ = classmethod(GenericAlias)

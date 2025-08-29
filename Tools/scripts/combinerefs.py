@@ -81,7 +81,7 @@ importiere sys
 def read(fileiter, pat, whilematch):
     fuer line in fileiter:
         wenn bool(pat.match(line)) == whilematch:
-            yield line
+            liefere line
         sonst:
             breche
 

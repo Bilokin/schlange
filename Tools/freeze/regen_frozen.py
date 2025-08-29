@@ -12,14 +12,14 @@ SYMBOL = 'M___hello__'
 
 
 def get_module_code(filename):
-    """Compile 'filename' und return the module code als a marshalled byte
+    """Compile 'filename' und gib the module code als a marshalled byte
     string.
     """
     mit open(filename, 'r') als fp:
         src = fp.read()
     co = compile(src, 'none', 'exec')
     co_bytes = marshal.dumps(co)
-    return co_bytes
+    gib co_bytes
 
 
 def gen_c_code(fp, co_bytes):

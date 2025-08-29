@@ -18,29 +18,29 @@ klasse Seq1:
     def __init__(self, lst):
         self.lst = lst
     def __len__(self):
-        return len(self.lst)
+        gib len(self.lst)
     def __getitem__(self, i):
-        return self.lst[i]
+        gib self.lst[i]
     def __add__(self, other):
-        return self.lst + other.lst
+        gib self.lst + other.lst
     def __mul__(self, other):
-        return self.lst * other
+        gib self.lst * other
     def __rmul__(self, other):
-        return other * self.lst
+        gib other * self.lst
 
 klasse Seq2(object):
     def __init__(self, lst):
         self.lst = lst
     def __len__(self):
-        return len(self.lst)
+        gib len(self.lst)
     def __getitem__(self, i):
-        return self.lst[i]
+        gib self.lst[i]
     def __add__(self, other):
-        return self.lst + other.lst
+        gib self.lst + other.lst
     def __mul__(self, other):
-        return self.lst * other
+        gib self.lst * other
     def __rmul__(self, other):
-        return other * self.lst
+        gib other * self.lst
 
 klasse BadIterable:
     def __iter__(self):
@@ -247,7 +247,7 @@ klasse OperatorTestCase:
         self.assertRaises(TypeError, operator.matmul, 42, 42)
         klasse M:
             def __matmul__(self, other):
-                return other - 1
+                gib other - 1
         self.assertEqual(M() @ 42, 41)
 
     def test_neg(self):
@@ -477,13 +477,13 @@ klasse OperatorTestCase:
         self.assertRaises(TypeError, operator.methodcaller, 12)
         klasse A:
             def foo(self, *args, **kwds):
-                return args[0] + args[1]
+                gib args[0] + args[1]
             def bar(self, f=42):
-                return f
+                gib f
             def baz(*args, **kwds):
-                return kwds['name'], kwds['self']
+                gib kwds['name'], kwds['self']
             def return_arguments(self, *args, **kwds):
-                return args, kwds
+                gib args, kwds
         a = A()
         f = operator.methodcaller('foo')
         self.assertRaises(IndexError, f, a)
@@ -514,20 +514,20 @@ klasse OperatorTestCase:
     def test_inplace(self):
         operator = self.module
         klasse C(object):
-            def __iadd__     (self, other): return "iadd"
-            def __iand__     (self, other): return "iand"
-            def __ifloordiv__(self, other): return "ifloordiv"
-            def __ilshift__  (self, other): return "ilshift"
-            def __imod__     (self, other): return "imod"
-            def __imul__     (self, other): return "imul"
-            def __imatmul__  (self, other): return "imatmul"
-            def __ior__      (self, other): return "ior"
-            def __ipow__     (self, other): return "ipow"
-            def __irshift__  (self, other): return "irshift"
-            def __isub__     (self, other): return "isub"
-            def __itruediv__ (self, other): return "itruediv"
-            def __ixor__     (self, other): return "ixor"
-            def __getitem__(self, other): return 5  # so that C is a sequence
+            def __iadd__     (self, other): gib "iadd"
+            def __iand__     (self, other): gib "iand"
+            def __ifloordiv__(self, other): gib "ifloordiv"
+            def __ilshift__  (self, other): gib "ilshift"
+            def __imod__     (self, other): gib "imod"
+            def __imul__     (self, other): gib "imul"
+            def __imatmul__  (self, other): gib "imatmul"
+            def __ior__      (self, other): gib "ior"
+            def __ipow__     (self, other): gib "ipow"
+            def __irshift__  (self, other): gib "irshift"
+            def __isub__     (self, other): gib "isub"
+            def __itruediv__ (self, other): gib "itruediv"
+            def __ixor__     (self, other): gib "ixor"
+            def __getitem__(self, other): gib 5  # so that C is a sequence
         c = C()
         self.assertEqual(operator.iadd     (c, 5), "iadd")
         self.assertEqual(operator.iand     (c, 5), "iand")
@@ -555,7 +555,7 @@ klasse OperatorTestCase:
         operator = self.module
         klasse X:
             def __index__(self):
-                return 1
+                gib 1
 
         self.assertEqual(operator.index(X()), 1)
         self.assertEqual(operator.index(0), 0)
@@ -592,7 +592,7 @@ klasse OperatorTestCase:
                 wenn type(self.value) is type:
                     raise self.value
                 sonst:
-                    return self.value
+                    gib self.value
 
         self.assertEqual(operator.length_hint([], 2), 0)
         self.assertEqual(operator.length_hint(iter([1, 2, 3])), 3)
@@ -617,7 +617,7 @@ klasse OperatorTestCase:
     def test_call(self):
         operator = self.module
 
-        def func(*args, **kwargs): return args, kwargs
+        def func(*args, **kwargs): gib args, kwargs
 
         self.assertEqual(operator.call(func), ((), {}))
         self.assertEqual(operator.call(func, 0, 1), ((0, 1), {}))
@@ -675,7 +675,7 @@ klasse OperatorPickleTestCase:
         mit support.swap_item(sys.modules, 'operator', self.module):
             pickled = pickle.dumps(obj, proto)
         mit support.swap_item(sys.modules, 'operator', self.module2):
-            return pickle.loads(pickled)
+            gib pickle.loads(pickled)
 
     def test_attrgetter(self):
         attrgetter = self.module.attrgetter
@@ -724,11 +724,11 @@ klasse OperatorPickleTestCase:
         methodcaller = self.module.methodcaller
         klasse A:
             def foo(self, *args, **kwds):
-                return args[0] + args[1]
+                gib args[0] + args[1]
             def bar(self, f=42):
-                return f
+                gib f
             def baz(*args, **kwds):
-                return kwds['name'], kwds['self']
+                gib kwds['name'], kwds['self']
         a = A()
         fuer proto in range(pickle.HIGHEST_PROTOCOL + 1):
             mit self.subTest(proto=proto):

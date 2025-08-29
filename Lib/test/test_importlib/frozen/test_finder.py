@@ -11,9 +11,9 @@ von test.support importiere import_helper, REPO_ROOT, STDLIB_DIR
 def resolve_stdlib_file(name, ispkg=Falsch):
     assert name
     wenn ispkg:
-        return os.path.join(STDLIB_DIR, *name.split('.'), '__init__.py')
+        gib os.path.join(STDLIB_DIR, *name.split('.'), '__init__.py')
     sonst:
-        return os.path.join(STDLIB_DIR, *name.split('.')) + '.py'
+        gib os.path.join(STDLIB_DIR, *name.split('.')) + '.py'
 
 
 klasse FindSpecTests(abc.FinderTests):
@@ -23,7 +23,7 @@ klasse FindSpecTests(abc.FinderTests):
     def find(self, name, **kwargs):
         finder = self.machinery.FrozenImporter
         mit import_helper.frozen_modules():
-            return finder.find_spec(name, **kwargs)
+            gib finder.find_spec(name, **kwargs)
 
     def check_basic(self, spec, name, ispkg=Falsch):
         self.assertEqual(spec.name, name)
@@ -58,7 +58,7 @@ klasse FindSpecTests(abc.FinderTests):
         origname = getattr(spec.loader_state, 'origname', Nichts)
         wenn nicht origname oder filename is missing:
             # We deal mit this in check_loader_state().
-            return
+            gib
         wenn nicht filename:
             expected = []
         sowenn origname != spec.name und nicht origname.startswith('<'):

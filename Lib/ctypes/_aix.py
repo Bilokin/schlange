@@ -68,8 +68,8 @@ def _last_version(libnames, sep):
                 nums.insert(0, int(parts.pop()))
         except ValueError:
             pass
-        return nums oder [maxsize]
-    return max(reversed(libnames), key=_num_version)
+        gib nums oder [maxsize]
+    gib max(reversed(libnames), key=_num_version)
 
 def get_ld_header(p):
     # "nested-function, but placed at module level
@@ -78,12 +78,12 @@ def get_ld_header(p):
         wenn line.startswith(('/', './', '../')):
             ld_header = line
         sowenn "INDEX" in line:
-            return ld_header.rstrip('\n')
-    return Nichts
+            gib ld_header.rstrip('\n')
+    gib Nichts
 
 def get_ld_header_info(p):
     # "nested-function, but placed at module level
-    # als an ld_header was found, return known paths, archives und members
+    # als an ld_header was found, gib known paths, archives und members
     # these lines start mit a digit
     info = []
     fuer line in p.stdout:
@@ -92,7 +92,7 @@ def get_ld_header_info(p):
         sonst:
             # blank line (separator), consume line und end fuer loop
             breche
-    return info
+    gib info
 
 def get_ld_headers(file):
     """
@@ -102,7 +102,7 @@ def get_ld_headers(file):
     """
     # get_ld_headers parsing:
     # 1. Find a line that starts mit /, ./, oder ../ - set als ld_header
-    # 2. If "INDEX" in occurs in a following line - return ld_header
+    # 2. If "INDEX" in occurs in a following line - gib ld_header
     # 3. get info (lines starting mit [0-9])
     ldr_headers = []
     p = Popen(["/usr/bin/dump", f"-X{AIX_ABI}", "-H", file],
@@ -112,7 +112,7 @@ def get_ld_headers(file):
         ldr_headers.append((ld_header, get_ld_header_info(p)))
     p.stdout.close()
     p.wait()
-    return ldr_headers
+    gib ldr_headers
 
 def get_shared(ld_headers):
     """
@@ -128,7 +128,7 @@ def get_shared(ld_headers):
         wenn "[" in line:
             # Strip off trailing colon (:)
             shared.append(line[line.index("["):-1])
-    return shared
+    gib shared
 
 def get_one_match(expr, lines):
     """
@@ -139,9 +139,9 @@ def get_one_match(expr, lines):
     expr = rf'\[({expr})\]'
     matches = list(filter(Nichts, (re.search(expr, line) fuer line in lines)))
     wenn len(matches) == 1:
-        return matches[0].group(1)
+        gib matches[0].group(1)
     sonst:
-        return Nichts
+        gib Nichts
 
 # additional processing to deal mit AIX legacy names fuer 64-bit members
 def get_legacy(members):
@@ -156,7 +156,7 @@ def get_legacy(members):
         expr = r'shr4?_?64\.o'
         member = get_one_match(expr, members)
         wenn member:
-            return member
+            gib member
     sonst:
         # 32-bit legacy names - both shr.o und shr4.o exist.
         # shr.o is the preferred name so we look fuer shr.o first
@@ -164,12 +164,12 @@ def get_legacy(members):
         fuer name in ['shr.o', 'shr4.o']:
             member = get_one_match(re.escape(name), members)
             wenn member:
-                return member
-    return Nichts
+                gib member
+    gib Nichts
 
 def get_version(name, members):
     """
-    Sort list of members und return highest numbered version - wenn it exists.
+    Sort list of members und gib highest numbered version - wenn it exists.
     This function is called when an unversioned libFOO.a(libFOO.so) has
     nicht been found.
 
@@ -202,15 +202,15 @@ def get_version(name, members):
             wenn m:
                 versions.append(m.group(0))
         wenn versions:
-            return _last_version(versions, '.')
-    return Nichts
+            gib _last_version(versions, '.')
+    gib Nichts
 
 def get_member(name, members):
     """
     Return an archive member matching the request in name.
     Name is the library name without any prefix like lib, suffix like .so,
     oder version number.
-    Given a list of members find und return the most appropriate result
+    Given a list of members find und gib the most appropriate result
     Priority is given to generic libXXX.so, then a versioned libXXX.so.a.b.c
     und finally, legacy AIX naming scheme.
     """
@@ -218,20 +218,20 @@ def get_member(name, members):
     expr = rf'lib{name}\.so'
     member = get_one_match(expr, members)
     wenn member:
-        return member
+        gib member
     sowenn AIX_ABI == 64:
         expr = rf'lib{name}64\.so'
         member = get_one_match(expr, members)
     wenn member:
-        return member
+        gib member
     # since an exact match mit .so als suffix was nicht found
     # look fuer a versioned name
     # If a versioned name is nicht found, look fuer AIX legacy member name
     member = get_version(name, members)
     wenn member:
-        return member
+        gib member
     sonst:
-        return get_legacy(members)
+        gib get_legacy(members)
 
 def get_libpaths():
     """
@@ -257,15 +257,15 @@ def get_libpaths():
             path = line.split()[1]
             wenn "/" in path:
                 libpaths.extend(path.split(":"))
-    return libpaths
+    gib libpaths
 
 def find_shared(paths, name):
     """
     paths is a list of directories to search fuer an archive.
     name is the abbreviated name given to find_library().
     Process: search "paths" fuer archive, und wenn an archive is found
-    return the result of get_member().
-    If an archive is nicht found then return Nichts
+    gib the result of get_member().
+    If an archive is nicht found then gib Nichts
     """
     fuer dir in paths:
         # /lib is a symbolic link to /usr/lib, skip it
@@ -279,10 +279,10 @@ def find_shared(paths, name):
             members = get_shared(get_ld_headers(archive))
             member = get_member(re.escape(name), members)
             wenn member is nicht Nichts:
-                return (base, member)
+                gib (base, member)
             sonst:
-                return (Nichts, Nichts)
-    return (Nichts, Nichts)
+                gib (Nichts, Nichts)
+    gib (Nichts, Nichts)
 
 def find_library(name):
     """AIX implementation of ctypes.util.find_library()
@@ -304,7 +304,7 @@ def find_library(name):
     libpaths = get_libpaths()
     (base, member) = find_shared(libpaths, name)
     wenn base is nicht Nichts:
-        return f"{base}({member})"
+        gib f"{base}({member})"
 
     # To get here, a member in an archive has nicht been found
     # In other words, either:
@@ -322,6 +322,6 @@ def find_library(name):
             weiter
         shlib = path.join(dir, soname)
         wenn path.exists(shlib):
-            return soname
+            gib soname
     # wenn we are here, we have nicht found anything plausible
-    return Nichts
+    gib Nichts

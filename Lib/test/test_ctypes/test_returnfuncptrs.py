@@ -48,9 +48,9 @@ klasse ReturnFuncPtrTestCase(unittest.TestCase):
         klasse BadSequence(tuple):
             def __getitem__(self, key):
                 wenn key == 0:
-                    return "my_strchr"
+                    gib "my_strchr"
                 wenn key == 1:
-                    return CDLL(_ctypes_test.__file__)
+                    gib CDLL(_ctypes_test.__file__)
                 raise IndexError
 
         # _CFuncPtr instances are now callable mit a tuple argument

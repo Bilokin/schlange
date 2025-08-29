@@ -40,7 +40,7 @@ STDLIB_FILES.extend(["test/test_grammar.py", "test/test_unpack_ex.py"])
 AST_REPR_DATA_FILE = Path(__file__).parent / "data" / "ast_repr.txt"
 
 def ast_repr_get_test_cases() -> list[str]:
-    return exec_tests + eval_tests
+    gib exec_tests + eval_tests
 
 
 def ast_repr_update_snapshots() -> Nichts:
@@ -59,14 +59,14 @@ klasse AST_Tests(unittest.TestCase):
 
     def _is_ast_node(self, name, node):
         wenn nicht isinstance(node, type):
-            return Falsch
+            gib Falsch
         wenn "ast" nicht in node.__module__:
-            return Falsch
-        return name != 'AST' und name[0].isupper()
+            gib Falsch
+        gib name != 'AST' und name[0].isupper()
 
     def _assertWahrorder(self, ast_node, parent_pos):
         wenn nicht isinstance(ast_node, ast.AST) oder ast_node._fields is Nichts:
-            return
+            gib
         wenn isinstance(ast_node, (ast.expr, ast.stmt, ast.excepthandler)):
             node_pos = (ast_node.lineno, ast_node.col_offset)
             self.assertGreaterEqual(node_pos, parent_pos)
@@ -428,7 +428,7 @@ klasse AST_Tests(unittest.TestCase):
                 kwargs[name] = b'capybara'
             sowenn isinstance(typ, type) und issubclass(typ, ast.AST):
                 kwargs[name] = self._construct_ast_class(typ)
-        return cls(**kwargs)
+        gib cls(**kwargs)
 
     def test_arguments(self):
         x = ast.arguments()
@@ -602,8 +602,8 @@ klasse AST_Tests(unittest.TestCase):
                 compile(e, "<test>", "eval")
 
     def test_empty_yield_from(self):
-        # Issue 16546: yield von value is nicht optional.
-        empty_yield_from = ast.parse("def f():\n yield von g()")
+        # Issue 16546: liefere von value is nicht optional.
+        empty_yield_from = ast.parse("def f():\n liefere von g()")
         empty_yield_from.body[0].body[0].value.value = Nichts
         mit self.assertRaises(ValueError) als cm:
             compile(empty_yield_from, "<test>", "exec")
@@ -615,7 +615,7 @@ klasse AST_Tests(unittest.TestCase):
         # unicodedata.normalize().
         importiere unicodedata
         def bad_normalize(*args):
-            return Nichts
+            gib Nichts
         mit support.swap_attr(unicodedata, 'normalize', bad_normalize):
             self.assertRaises(TypeError, ast.parse, '\u03D5')
 
@@ -774,7 +774,7 @@ klasse AST_Tests(unittest.TestCase):
 
     def test_compare_attributes_option(self):
         def parse(a, b):
-            return ast.parse(a), ast.parse(b)
+            gib ast.parse(a), ast.parse(b)
 
         a, b = parse("2 + 2", "2+2")
         self.assertWahr(ast.compare(a, b))
@@ -982,9 +982,9 @@ klasse AST_Tests(unittest.TestCase):
             ATOM = enum.auto()
             def next(self):
                 try:
-                    return self.__class__(self + 1)
+                    gib self.__class__(self + 1)
                 except ValueError:
-                    return self
+                    gib self
         enum._test_simple_enum(_Precedence, _ast_unparse._Precedence)
 
     @support.cpython_only
@@ -1064,7 +1064,7 @@ klasse AST_Tests(unittest.TestCase):
                      try:
                          pass
                      finally:
-                         return 42
+                         gib 42
                  """),
             textwrap.dedent("""
                  fuer x in y:
@@ -1092,7 +1092,7 @@ klasse AST_Tests(unittest.TestCase):
                      pass
                  finally:
                      def f():
-                         return 42
+                         gib 42
                  """),
             textwrap.dedent("""
                  try:
@@ -1137,15 +1137,15 @@ klasse CopyTests(unittest.TestCase):
         """
         def do(cls):
             wenn cls.__module__ != 'ast':
-                return
+                gib
             wenn cls is ast.Index:
-                return
+                gib
 
-            yield cls
+            liefere cls
             fuer sub in cls.__subclasses__():
-                yield von do(sub)
+                liefere von do(sub)
 
-        yield von do(ast.AST)
+        liefere von do(ast.AST)
 
     def test_pickling(self):
         importiere pickle
@@ -2065,7 +2065,7 @@ klasse ASTValidatorTests(unittest.TestCase):
                 kw_defaults = []
             args = ast.arguments(args, posonlyargs, vararg, kwonlyargs,
                                  kw_defaults, kwarg, defaults)
-            return fac(args)
+            gib fac(args)
         args = [ast.arg("x", ast.Name("x", ast.Store()))]
         check(arguments(args=args), "must have Load context")
         check(arguments(posonlyargs=args), "must have Load context")
@@ -2095,7 +2095,7 @@ klasse ASTValidatorTests(unittest.TestCase):
         f = ast.FunctionDef("x", ast.arguments(), [ast.Pass()])
         self.stmt(f)
         def fac(args):
-            return ast.FunctionDef("x", args, [ast.Pass()], [], Nichts, Nichts, [])
+            gib ast.FunctionDef("x", args, [ast.Pass()], [], Nichts, Nichts, [])
         self._check_arguments(fac, self.stmt)
 
     def test_funcdef_pattern_matching(self):
@@ -2106,9 +2106,9 @@ klasse ASTValidatorTests(unittest.TestCase):
                                      [ast.Pass()],
                                      [ast.Name("capybara", ast.Load())],
                                      ast.Name("pacarana", ast.Load())):
-                    return Wahr
+                    gib Wahr
                 case _:
-                    return Falsch
+                    gib Falsch
 
         code = """
             @capybara
@@ -2132,7 +2132,7 @@ klasse ASTValidatorTests(unittest.TestCase):
                 decorator_list = []
             wenn type_params is Nichts:
                 type_params = []
-            return ast.ClassDef("myclass", bases, keywords,
+            gib ast.ClassDef("myclass", bases, keywords,
                                 body, decorator_list, type_params)
         self.stmt(cls(bases=[ast.Name("x", ast.Store())]),
                   "must have Load context")
@@ -2299,7 +2299,7 @@ klasse ASTValidatorTests(unittest.TestCase):
         self.expr(ast.Lambda(a, ast.Name("x", ast.Store())),
                   "must have Load context")
         def fac(args):
-            return ast.Lambda(args, ast.Name("x", ast.Load()))
+            gib ast.Lambda(args, ast.Name("x", ast.Load()))
         self._check_arguments(fac, self.expr)
 
     def test_ifexp(self):
@@ -2340,7 +2340,7 @@ klasse ASTValidatorTests(unittest.TestCase):
         self.expr(fac(ast.Name("x", ast.Store()), [g]),
                   "must have Load context")
         def wrap(gens):
-            return fac(ast.Name("x", ast.Store()), gens)
+            gib fac(ast.Name("x", ast.Store()), gens)
         self._check_comprehension(wrap)
 
     def test_listcomp(self):
@@ -2364,7 +2364,7 @@ klasse ASTValidatorTests(unittest.TestCase):
         def factory(comps):
             k = ast.Name("x", ast.Load())
             v = ast.Name("y", ast.Load())
-            return ast.DictComp(k, v, comps)
+            gib ast.DictComp(k, v, comps)
         self._check_comprehension(factory)
 
     def test_yield(self):
@@ -2612,7 +2612,7 @@ klasse ConstantTests(unittest.TestCase):
 
         ns = {}
         exec(code, ns)
-        return ns['x']
+        gib ns['x']
 
     def test_validation(self):
         mit self.assertRaises(TypeError) als cm:
@@ -2667,7 +2667,7 @@ klasse ConstantTests(unittest.TestCase):
         fuer instr in dis.get_instructions(co):
             wenn instr.opcode in dis.hasconst:
                 consts.append(instr.argval)
-        return consts
+        gib consts
 
     @support.cpython_only
     def test_load_const(self):
@@ -2746,7 +2746,7 @@ klasse EndPositionTests(unittest.TestCase):
     def _parse_value(self, s):
         # Use duck-typing to support both single expression
         # und a right hand side of an assignment statement.
-        return ast.parse(s).body[0].value
+        gib ast.parse(s).body[0].value
 
     def test_lambda(self):
         s = 'lambda x, *y: Nichts'
@@ -2761,7 +2761,7 @@ klasse EndPositionTests(unittest.TestCase):
                      *args: str,
                      z: float = 0,
                      **kwargs: Any) -> bool:
-                return Wahr
+                gib Wahr
             ''').strip()
         fdef = ast.parse(s).body[0]
         self._check_end_pos(fdef, 5, 15)
@@ -3008,7 +3008,7 @@ klasse EndPositionTests(unittest.TestCase):
     def test_yield_await(self):
         s = dedent('''
             async def f():
-                yield x
+                liefere x
                 await y
         ''').strip()
         fdef = ast.parse(s).body[0]
@@ -3107,8 +3107,8 @@ klasse NodeTransformerTests(ASTTestMixin, unittest.TestCase):
             def visit_Name(self, node: ast.Name):
                 self.generic_visit(node)
                 wenn node.id == 'SomeType':
-                    return Nichts
-                return node
+                    gib Nichts
+                gib node
 
         self.assertASTTransformation(SomeTypeRemover, code, expected)
 
@@ -3116,7 +3116,7 @@ klasse NodeTransformerTests(ASTTestMixin, unittest.TestCase):
         code = """
         def func(arg):
             drucke(arg)
-            yield arg
+            liefere arg
         """
         expected = """
         def func(arg):
@@ -3129,8 +3129,8 @@ klasse NodeTransformerTests(ASTTestMixin, unittest.TestCase):
             def visit_Expr(self, node: ast.Expr):
                 self.generic_visit(node)
                 wenn isinstance(node.value, ast.Yield):
-                    return Nichts  # Remove `yield` von a function
-                return node
+                    gib Nichts  # Remove `yield` von a function
+                gib node
 
         self.assertASTTransformation(YieldRemover, code, expected)
 
@@ -3146,12 +3146,12 @@ klasse NodeTransformerTests(ASTTestMixin, unittest.TestCase):
             def visit_keyword(self, node: ast.keyword):
                 self.generic_visit(node)
                 wenn node.arg == 'kw1':
-                    return [
+                    gib [
                         node,
                         ast.keyword('kw2', ast.Constant(Wahr)),
                         ast.keyword('kw3', ast.Constant(Falsch)),
                     ]
-                return node
+                gib node
 
         self.assertASTTransformation(ExtendKeywords, code, expected)
 
@@ -3170,7 +3170,7 @@ klasse NodeTransformerTests(ASTTestMixin, unittest.TestCase):
                 self.generic_visit(node)
                 wenn isinstance(node.func, ast.Name) und node.func.id == 'print':
                     node.func.id = 'log'
-                return node
+                gib node
 
         self.assertASTTransformation(PrintToLog, code, expected)
 
@@ -3188,7 +3188,7 @@ klasse NodeTransformerTests(ASTTestMixin, unittest.TestCase):
             def visit_Call(self, node: ast.Call):
                 self.generic_visit(node)
                 wenn isinstance(node.func, ast.Name) und node.func.id == 'print':
-                    return ast.Call(
+                    gib ast.Call(
                         func=ast.Attribute(
                             ast.Name('logger', ctx=ast.Load()),
                             attr='log',
@@ -3197,7 +3197,7 @@ klasse NodeTransformerTests(ASTTestMixin, unittest.TestCase):
                         args=node.args,
                         keywords=[ast.keyword('debug', ast.Constant(Wahr))],
                     )
-                return node
+                gib node
 
         self.assertASTTransformation(PrintToLog, code, expected)
 
@@ -3364,7 +3364,7 @@ klasse ModuleStateTests(unittest.TestCase):
 
         def my_import(name, *args, **kw):
             sys.modules[name] = lazy_mod
-            return lazy_mod
+            gib lazy_mod
 
         mit support.swap_item(sys.modules, '_ast', Nichts):
             del sys.modules['_ast']
@@ -3411,7 +3411,7 @@ klasse CommandLineTests(unittest.TestCase):
 
     @staticmethod
     def text_normalize(string):
-        return textwrap.dedent(string).strip()
+        gib textwrap.dedent(string).strip()
 
     def set_source(self, content):
         Path(self.filename).write_text(self.text_normalize(content))
@@ -3425,7 +3425,7 @@ klasse CommandLineTests(unittest.TestCase):
         ):
             ast.main(args=[*flags, self.filename])
         self.assertEqual(stderr.getvalue(), '')
-        return stdout.getvalue().strip()
+        gib stdout.getvalue().strip()
 
     def check_output(self, source, expect, *flags):
         self.set_source(source)
@@ -3449,7 +3449,7 @@ klasse CommandLineTests(unittest.TestCase):
             drucke(1, 2, 3)
             def f(x: int) -> int:
                 x -= 1
-                return x
+                gib x
         ''')
 
         fuer r in range(1, len(base_flags) + 1):
@@ -3665,10 +3665,10 @@ klasse CommandLineTests(unittest.TestCase):
 
 klasse ASTOptimizationTests(unittest.TestCase):
     def wrap_expr(self, expr):
-        return ast.Module(body=[ast.Expr(value=expr)])
+        gib ast.Module(body=[ast.Expr(value=expr)])
 
     def wrap_statement(self, statement):
-        return ast.Module(body=[statement])
+        gib ast.Module(body=[statement])
 
     def assert_ast(self, code, non_optimized_target, optimized_target):
         non_optimized_tree = ast.parse(code, optimize=-1)
@@ -3729,7 +3729,7 @@ klasse ASTOptimizationTests(unittest.TestCase):
                     result.extend(get_match_case_values(pat))
             sonst:
                 self.fail(f"Unexpected node {node}")
-            return result
+            gib result
 
         tests = [
             ("-0", [0]),

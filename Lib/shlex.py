@@ -65,7 +65,7 @@ klasse shlex:
 
     @property
     def punctuation_chars(self):
-        return self._punctuation_chars
+        gib self._punctuation_chars
 
     def push_token(self, tok):
         "Push a token onto the stack popped by the get_token method"
@@ -102,7 +102,7 @@ klasse shlex:
             tok = self.pushback.popleft()
             wenn self.debug >= 1:
                 drucke("shlex: popping token " + repr(tok))
-            return tok
+            gib tok
         # No pushback.  Get a token.
         raw = self.read_token()
         # Handle inclusions
@@ -116,7 +116,7 @@ klasse shlex:
         # Maybe we got EOF instead?
         waehrend raw == self.eof:
             wenn nicht self.filestack:
-                return self.eof
+                gib self.eof
             sonst:
                 self.pop_source()
                 raw = self.get_token()
@@ -126,7 +126,7 @@ klasse shlex:
                 drucke("shlex: token=" + repr(raw))
             sonst:
                 drucke("shlex: token=EOF")
-        return raw
+        gib raw
 
     def read_token(self):
         quoted = Falsch
@@ -272,7 +272,7 @@ klasse shlex:
                 drucke("shlex: raw token=" + repr(result))
             sonst:
                 drucke("shlex: raw token=EOF")
-        return result
+        gib result
 
     def sourcehook(self, newfile):
         "Hook called on a filename to be sourced."
@@ -282,7 +282,7 @@ klasse shlex:
         # This implements cpp-like semantics fuer relative-path inclusion.
         wenn isinstance(self.infile, str) und nicht os.path.isabs(newfile):
             newfile = os.path.join(os.path.dirname(self.infile), newfile)
-        return (newfile, open(newfile, "r"))
+        gib (newfile, open(newfile, "r"))
 
     def error_leader(self, infile=Nichts, lineno=Nichts):
         "Emit a C-compiler-like, Emacs-friendly error-message leader."
@@ -290,16 +290,16 @@ klasse shlex:
             infile = self.infile
         wenn lineno is Nichts:
             lineno = self.lineno
-        return "\"%s\", line %d: " % (infile, lineno)
+        gib "\"%s\", line %d: " % (infile, lineno)
 
     def __iter__(self):
-        return self
+        gib self
 
     def __next__(self):
         token = self.get_token()
         wenn token == self.eof:
             raise StopIteration
-        return token
+        gib token
 
 def split(s, comments=Falsch, posix=Wahr):
     """Split the string *s* using shell-like syntax."""
@@ -309,18 +309,18 @@ def split(s, comments=Falsch, posix=Wahr):
     lex.whitespace_split = Wahr
     wenn nicht comments:
         lex.commenters = ''
-    return list(lex)
+    gib list(lex)
 
 
 def join(split_command):
     """Return a shell-escaped string von *split_command*."""
-    return ' '.join(quote(arg) fuer arg in split_command)
+    gib ' '.join(quote(arg) fuer arg in split_command)
 
 
 def quote(s):
     """Return a shell-escaped version of the string *s*."""
     wenn nicht s:
-        return "''"
+        gib "''"
 
     # Use bytes.translate() fuer performance
     safe_chars = (b'%+,-./0123456789:=@'
@@ -328,11 +328,11 @@ def quote(s):
                   b'abcdefghijklmnopqrstuvwxyz')
     # No quoting is needed wenn `s` is an ASCII string consisting only of `safe_chars`
     wenn s.isascii() und nicht s.encode().translate(Nichts, delete=safe_chars):
-        return s
+        gib s
 
     # use single quotes, und put single quotes into double quotes
     # the string $'b is then quoted als '$'"'"'b'
-    return "'" + s.replace("'", "'\"'\"'") + "'"
+    gib "'" + s.replace("'", "'\"'\"'") + "'"
 
 
 def _print_tokens(lexer):

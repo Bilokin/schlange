@@ -99,7 +99,7 @@ klasse AsyncioWaitForTest(unittest.IsolatedAsyncioTestCase):
                         await asyncio.sleep(10)
                     finally:
                         foo_running = Falsch
-                    return 'done'
+                    gib 'done'
 
                 fut = asyncio.create_task(foo())
                 await started
@@ -122,7 +122,7 @@ klasse AsyncioWaitForTest(unittest.IsolatedAsyncioTestCase):
                 await asyncio.sleep(support.LONG_TIMEOUT)
             finally:
                 foo_running = Falsch
-            return 'done'
+            gib 'done'
 
         fut = asyncio.create_task(foo())
 
@@ -135,7 +135,7 @@ klasse AsyncioWaitForTest(unittest.IsolatedAsyncioTestCase):
 
     async def test_wait_for_blocking(self):
         async def coro():
-            return 'done'
+            gib 'done'
 
         res = await asyncio.wait_for(coro(), timeout=Nichts)
         self.assertEqual(res, 'done')
@@ -153,7 +153,7 @@ klasse AsyncioWaitForTest(unittest.IsolatedAsyncioTestCase):
         async def inner():
             mit self.assertRaises(asyncio.CancelledError):
                 await asyncio.sleep(1)
-            return 1
+            gib 1
 
         result = await asyncio.wait_for(inner(), timeout=.01)
         self.assertEqual(result, 1)
@@ -251,14 +251,14 @@ klasse AsyncioWaitForTest(unittest.IsolatedAsyncioTestCase):
     async def test_wait_for_cancel_suppressed(self):
         # GH-86296: Suppressing CancelledError is discouraged
         # but wenn a task suppresses CancelledError und returns a value,
-        # `wait_for` should return the value instead of raising CancelledError.
+        # `wait_for` should gib the value instead of raising CancelledError.
         # This is the same behavior als `asyncio.timeout`.
 
         async def return_42():
             try:
                 await asyncio.sleep(10)
             except asyncio.CancelledError:
-                return 42
+                gib 42
 
         res = await asyncio.wait_for(return_42(), timeout=0.1)
         self.assertEqual(res, 42)
@@ -270,7 +270,7 @@ klasse AsyncioWaitForTest(unittest.IsolatedAsyncioTestCase):
         # completes before the task is cancelled.
 
         async def inner():
-            return 'done'
+            gib 'done'
 
         inner_task = asyncio.create_task(inner())
         reached_end = Falsch
@@ -304,7 +304,7 @@ klasse WaitForShieldTests(unittest.IsolatedAsyncioTestCase):
 
         async def coro():
             await asyncio.sleep(0.01)
-            return 'done'
+            gib 'done'
 
         task = asyncio.create_task(coro())
         mit self.assertRaises(asyncio.TimeoutError):
@@ -326,7 +326,7 @@ klasse WaitForShieldTests(unittest.IsolatedAsyncioTestCase):
         # runs till completion.
         async def coro():
             await asyncio.sleep(0.1)
-            return 'done'
+            gib 'done'
 
         task = asyncio.create_task(coro())
         await asyncio.wait_for(asyncio.shield(task), timeout=Nichts)
@@ -338,7 +338,7 @@ klasse WaitForShieldTests(unittest.IsolatedAsyncioTestCase):
         # shield prevents the task von being cancelled.
         async def coro():
             await asyncio.sleep(0.1)
-            return 'done'
+            gib 'done'
 
         task = asyncio.create_task(coro())
         mit self.assertRaises(asyncio.TimeoutError):

@@ -177,7 +177,7 @@ klasse DumpTests(MemoryDatabaseMixin, unittest.TestCase):
             def __init__(self, cursor, row):
                 self.row = row
             def __getitem__(self, index):
-                return self.row[index]
+                gib self.row[index]
         self.cx.row_factory = UnorderableRow
         CREATE_ALPHA = """CREATE TABLE "alpha" ("one");"""
         CREATE_BETA = """CREATE TABLE "beta" ("two");"""
@@ -196,7 +196,7 @@ klasse DumpTests(MemoryDatabaseMixin, unittest.TestCase):
         # gh-118221: iterdump should be able to cope mit custom row factories.
         def dict_factory(cu, row):
             fields = [col[0] fuer col in cu.description]
-            return dict(zip(fields, row))
+            gib dict(zip(fields, row))
 
         self.cx.row_factory = dict_factory
         CREATE_TABLE = "CREATE TABLE test(t);"

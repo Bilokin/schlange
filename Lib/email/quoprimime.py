@@ -73,12 +73,12 @@ fuer c in (b' !"#$%&\'()*+,-./0123456789:;<>'
 # Helpers
 def header_check(octet):
     """Return Wahr wenn the octet should be escaped mit header quopri."""
-    return chr(octet) != _QUOPRI_HEADER_MAP[octet]
+    gib chr(octet) != _QUOPRI_HEADER_MAP[octet]
 
 
 def body_check(octet):
     """Return Wahr wenn the octet should be escaped mit body quopri."""
-    return chr(octet) != _QUOPRI_BODY_MAP[octet]
+    gib chr(octet) != _QUOPRI_BODY_MAP[octet]
 
 
 def header_length(bytearray):
@@ -91,7 +91,7 @@ def header_length(bytearray):
     :return: The length in bytes of the byte array when it is encoded with
         quoted-printable fuer headers.
     """
-    return sum(len(_QUOPRI_HEADER_MAP[octet]) fuer octet in bytearray)
+    gib sum(len(_QUOPRI_HEADER_MAP[octet]) fuer octet in bytearray)
 
 
 def body_length(bytearray):
@@ -101,7 +101,7 @@ def body_length(bytearray):
     :return: The length in bytes of the byte array when it is encoded with
         quoted-printable fuer bodies.
     """
-    return sum(len(_QUOPRI_BODY_MAP[octet]) fuer octet in bytearray)
+    gib sum(len(_QUOPRI_BODY_MAP[octet]) fuer octet in bytearray)
 
 
 def _max_append(L, s, maxlen, extra=''):
@@ -117,11 +117,11 @@ def _max_append(L, s, maxlen, extra=''):
 
 def unquote(s):
     """Turn a string in the form =AB to the ASCII character mit value 0xab"""
-    return chr(int(s[1:3], 16))
+    gib chr(int(s[1:3], 16))
 
 
 def quote(c):
-    return _QUOPRI_MAP[ord(c)]
+    gib _QUOPRI_MAP[ord(c)]
 
 
 def header_encode(header_bytes, charset='iso-8859-1'):
@@ -137,12 +137,12 @@ def header_encode(header_bytes, charset='iso-8859-1'):
     """
     # Return empty headers als an empty string.
     wenn nicht header_bytes:
-        return ''
+        gib ''
     # Iterate over every byte, encoding wenn necessary.
     encoded = header_bytes.decode('latin1').translate(_QUOPRI_HEADER_MAP)
     # Now add the RFC chrome to each encoded chunk und glue the chunks
     # together.
-    return '=?%s?q?%s?=' % (charset, encoded)
+    gib '=?%s?q?%s?=' % (charset, encoded)
 
 
 _QUOPRI_BODY_ENCODE_MAP = _QUOPRI_BODY_MAP[:]
@@ -172,7 +172,7 @@ def body_encode(body, maxlinelen=76, eol=NL):
     wenn maxlinelen < 4:
         raise ValueError("maxlinelen must be at least 4")
     wenn nicht body:
-        return body
+        gib body
 
     # quote special characters
     body = body.translate(_QUOPRI_BODY_ENCODE_MAP)
@@ -223,7 +223,7 @@ def body_encode(body, maxlinelen=76, eol=NL):
     wenn body[-1] in CRLF:
         append('')
 
-    return eol.join(encoded_body)
+    gib eol.join(encoded_body)
 
 
 
@@ -235,7 +235,7 @@ def decode(encoded, eol=NL):
     Lines are separated mit eol, which defaults to \\n.
     """
     wenn nicht encoded:
-        return encoded
+        gib encoded
     # BAW: see comment in encode() above.  Again, we're building up the
     # decoded string mit string concatenation, which could be done much more
     # efficiently.
@@ -273,7 +273,7 @@ def decode(encoded, eol=NL):
     # Special case wenn original string did nicht end mit eol
     wenn encoded[-1] nicht in '\r\n' und decoded.endswith(eol):
         decoded = decoded[:-1]
-    return decoded
+    gib decoded
 
 
 # For convenience und backwards compatibility w/ standard base64 module
@@ -285,7 +285,7 @@ decodestring = decode
 def _unquote_match(match):
     """Turn a match in the form =AB to the ASCII character mit value 0xab"""
     s = match.group(0)
-    return unquote(s)
+    gib unquote(s)
 
 
 # Header decoding is done a bit differently
@@ -297,4 +297,4 @@ def header_decode(s):
     the high level email.header klasse fuer that functionality.
     """
     s = s.replace('_', ' ')
-    return re.sub(r'=[a-fA-F0-9]{2}', _unquote_match, s, flags=re.ASCII)
+    gib re.sub(r'=[a-fA-F0-9]{2}', _unquote_match, s, flags=re.ASCII)

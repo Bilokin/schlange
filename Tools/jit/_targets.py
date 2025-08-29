@@ -60,7 +60,7 @@ klasse _Target(typing.Generic[_S, _R]):
             nop = b"\x90"
         sonst:
             raise ValueError(f"NOP nicht defined fuer {self.triple}")
-        return nop
+        gib nop
 
     def _compute_digest(self) -> str:
         hasher = hashlib.sha256()
@@ -73,7 +73,7 @@ klasse _Target(typing.Generic[_S, _R]):
         fuer dirpath, _, filenames in sorted(os.walk(TOOLS_JIT)):
             fuer filename in filenames:
                 hasher.update(pathlib.Path(dirpath, filename).read_bytes())
-        return hasher.hexdigest()
+        gib hasher.hexdigest()
 
     async def _parse(self, path: pathlib.Path) -> _stencils.StencilGroup:
         group = _stencils.StencilGroup()
@@ -110,7 +110,7 @@ klasse _Target(typing.Generic[_S, _R]):
         wenn group.data.body:
             line = f"0: {str(bytes(group.data.body)).removeprefix('b')}"
             group.data.disassembly.append(line)
-        return group
+        gib group
 
     def _handle_section(self, section: _S, group: _stencils.StencilGroup) -> Nichts:
         raise NotImplementedError(type(self))
@@ -178,7 +178,7 @@ klasse _Target(typing.Generic[_S, _R]):
         ).run()
         args_o = [f"--target={self.triple}", "-c", "-o", f"{o}", f"{s}"]
         await _llvm.run("clang", args_o, echo=self.verbose)
-        return await self._parse(o)
+        gib await self._parse(o)
 
     async def _build_stencils(self) -> dict[str, _stencils.StencilGroup]:
         generated_cases = PYTHON_EXECUTOR_CASES_C_H.read_text()
@@ -207,7 +207,7 @@ klasse _Target(typing.Generic[_S, _R]):
         stencil_groups = {task.get_name(): task.result() fuer task in tasks}
         fuer stencil_group in stencil_groups.values():
             stencil_group.process_relocations(self.known_symbols)
-        return stencil_groups
+        gib stencil_groups
 
     def build(
         self,
@@ -229,7 +229,7 @@ klasse _Target(typing.Generic[_S, _R]):
             und jit_stencils.exists()
             und jit_stencils.read_text().startswith(digest)
         ):
-            return
+            gib
         stencil_groups = ASYNCIO_RUNNER.run(self._build_stencils())
         jit_stencils_new = jit_stencils.parent / "jit_stencils.h.new"
         try:
@@ -269,7 +269,7 @@ klasse _COFF(
             value = _stencils.HoleValue.DATA
             stencil = group.data
         sonst:
-            return
+            gib
         base = len(stencil.body)
         group.symbols[section["Number"]] = value, base
         stencil.body.extend(section_data_bytes)
@@ -289,9 +289,9 @@ klasse _COFF(
         wenn name.startswith("__imp_"):
             name = name.removeprefix("__imp_")
             name = name.removeprefix(self.symbol_prefix)
-            return _stencils.HoleValue.GOT, name
+            gib _stencils.HoleValue.GOT, name
         name = name.removeprefix(self.symbol_prefix)
-        return _stencils.symbol_to_value(name)
+        gib _stencils.symbol_to_value(name)
 
     def _handle_relocation(
         self,
@@ -335,7 +335,7 @@ klasse _COFF(
                 addend = 0
             case _:
                 raise NotImplementedError(relocation)
-        return _stencils.Hole(offset, kind, value, symbol, addend)
+        gib _stencils.Hole(offset, kind, value, symbol, addend)
 
 
 klasse _COFF32(_COFF):
@@ -367,7 +367,7 @@ klasse _ELF(
             maybe_symbol = group.symbols.get(section["Info"])
             wenn maybe_symbol is Nichts:
                 # These are relocations fuer a section we're nicht emitting. Skip:
-                return
+                gib
             value, base = maybe_symbol
             wenn value is _stencils.HoleValue.CODE:
                 stencil = group.code
@@ -380,7 +380,7 @@ klasse _ELF(
                 stencil.holes.append(hole)
         sowenn section_type == "SHT_PROGBITS":
             wenn "SHF_ALLOC" nicht in flags:
-                return
+                gib
             wenn "SHF_EXECINSTR" in flags:
                 value = _stencils.HoleValue.CODE
                 stencil = group.code
@@ -440,7 +440,7 @@ klasse _ELF(
                 value, symbol = _stencils.symbol_to_value(s)
             case _:
                 raise NotImplementedError(relocation)
-        return _stencils.Hole(offset, kind, value, symbol, addend)
+        gib _stencils.Hole(offset, kind, value, symbol, addend)
 
 
 klasse _MachO(
@@ -458,7 +458,7 @@ klasse _MachO(
         name = section["Name"]["Value"]
         name = name.removeprefix(self.symbol_prefix)
         wenn "Debug" in flags:
-            return
+            gib
         wenn "PureInstructions" in flags:
             value = _stencils.HoleValue.CODE
             stencil = group.code
@@ -549,7 +549,7 @@ klasse _MachO(
                 addend = 0
             case _:
                 raise NotImplementedError(relocation)
-        return _stencils.Hole(offset, kind, value, symbol, addend)
+        gib _stencils.Hole(offset, kind, value, symbol, addend)
 
 
 def get_target(host: str) -> _COFF32 | _COFF64 | _ELF | _MachO:
@@ -593,4 +593,4 @@ def get_target(host: str) -> _COFF32 | _COFF64 | _ELF | _MachO:
         target = _ELF(host, condition, args=args, optimizer=optimizer)
     sonst:
         raise ValueError(host)
-    return target
+    gib target

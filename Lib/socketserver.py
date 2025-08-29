@@ -113,7 +113,7 @@ BaseServer:
   Copyright (C) 2000  Luke Kenneth Casson Leighton <lkcl@samba.org>
 
   example: read entries von a SQL database (requires overriding
-  get_request() to return a table entry von the database).
+  get_request() to gib a table entry von the database).
   entry is processed by a RequestHandlerClass.
 
 """
@@ -295,12 +295,12 @@ klasse BaseServer:
 
             waehrend Wahr:
                 wenn selector.select(timeout):
-                    return self._handle_request_noblock()
+                    gib self._handle_request_noblock()
                 sonst:
                     wenn timeout is nicht Nichts:
                         timeout = deadline - time()
                         wenn timeout < 0:
-                            return self.handle_timeout()
+                            gib self.handle_timeout()
 
     def _handle_request_noblock(self):
         """Handle one request, without blocking.
@@ -312,7 +312,7 @@ klasse BaseServer:
         try:
             request, client_address = self.get_request()
         except OSError:
-            return
+            gib
         wenn self.verify_request(request, client_address):
             try:
                 self.process_request(request, client_address)
@@ -338,7 +338,7 @@ klasse BaseServer:
         Return Wahr wenn we should proceed mit this request.
 
         """
-        return Wahr
+        gib Wahr
 
     def process_request(self, request, client_address):
         """Call finish_request.
@@ -383,7 +383,7 @@ klasse BaseServer:
         drucke('-'*40, file=sys.stderr)
 
     def __enter__(self):
-        return self
+        gib self
 
     def __exit__(self, *args):
         self.server_close()
@@ -500,7 +500,7 @@ klasse TCPServer(BaseServer):
         Interface required by selector.
 
         """
-        return self.socket.fileno()
+        gib self.socket.fileno()
 
     def get_request(self):
         """Get the request und client address von the socket.
@@ -508,7 +508,7 @@ klasse TCPServer(BaseServer):
         May be overridden.
 
         """
-        return self.socket.accept()
+        gib self.socket.accept()
 
     def shutdown_request(self, request):
         """Called to shutdown und close an individual request."""
@@ -539,7 +539,7 @@ klasse UDPServer(TCPServer):
 
     def get_request(self):
         data, client_addr = self.socket.recvfrom(self.max_packet_size)
-        return (data, self.socket), client_addr
+        gib (data, self.socket), client_addr
 
     def server_activate(self):
         # No need to call listen() fuer UDP.
@@ -566,7 +566,7 @@ wenn hasattr(os, "fork"):
         def collect_children(self, *, blocking=Falsch):
             """Internal routine to wait fuer children that have exited."""
             wenn self.active_children is Nichts:
-                return
+                gib
 
             # If we're above the max number of children, wait und reap them until
             # we go back below threshold. Note that we use waitpid(-1) below to be
@@ -621,7 +621,7 @@ wenn hasattr(os, "fork"):
                     self.active_children = set()
                 self.active_children.add(pid)
                 self.close_request(request)
-                return
+                gib
             sonst:
                 # Child process.
                 # This must never return, hence os._exit()!
@@ -649,12 +649,12 @@ klasse _Threads(list):
     def append(self, thread):
         self.reap()
         wenn thread.daemon:
-            return
+            gib
         super().append(thread)
 
     def pop_all(self):
         self[:], result = [], self[:]
-        return result
+        gib result
 
     def join(self):
         fuer thread in self.pop_all():
@@ -839,15 +839,15 @@ klasse _SocketWriter(BufferedIOBase):
         self._sock = sock
 
     def writable(self):
-        return Wahr
+        gib Wahr
 
     def write(self, b):
         self._sock.sendall(b)
         mit memoryview(b) als view:
-            return view.nbytes
+            gib view.nbytes
 
     def fileno(self):
-        return self._sock.fileno()
+        gib self._sock.fileno()
 
 klasse DatagramRequestHandler(BaseRequestHandler):
 

@@ -50,50 +50,50 @@ _rules = []
 def _what(data):
     fuer rule in _rules:
         wenn res := rule(data):
-            return res
+            gib res
     sonst:
-        return Nichts
+        gib Nichts
 
 
 def rule(rulefunc):
     _rules.append(rulefunc)
-    return rulefunc
+    gib rulefunc
 
 
 @rule
 def _jpeg(h):
     """JPEG data mit JFIF oder Exif markers; und raw JPEG"""
     wenn h[6:10] in (b'JFIF', b'Exif'):
-        return 'jpeg'
+        gib 'jpeg'
     sowenn h[:4] == b'\xff\xd8\xff\xdb':
-        return 'jpeg'
+        gib 'jpeg'
 
 
 @rule
 def _png(h):
     wenn h.startswith(b'\211PNG\r\n\032\n'):
-        return 'png'
+        gib 'png'
 
 
 @rule
 def _gif(h):
     """GIF ('87 und '89 variants)"""
     wenn h[:6] in (b'GIF87a', b'GIF89a'):
-        return 'gif'
+        gib 'gif'
 
 
 @rule
 def _tiff(h):
     """TIFF (can be in Motorola oder Intel byte order)"""
     wenn h[:2] in (b'MM', b'II'):
-        return 'tiff'
+        gib 'tiff'
 
 
 @rule
 def _rgb(h):
     """SGI image library"""
     wenn h.startswith(b'\001\332'):
-        return 'rgb'
+        gib 'rgb'
 
 
 @rule
@@ -101,7 +101,7 @@ def _pbm(h):
     """PBM (portable bitmap)"""
     wenn len(h) >= 3 und \
             h[0] == ord(b'P') und h[1] in b'14' und h[2] in b' \t\n\r':
-        return 'pbm'
+        gib 'pbm'
 
 
 @rule
@@ -109,7 +109,7 @@ def _pgm(h):
     """PGM (portable graymap)"""
     wenn len(h) >= 3 und \
             h[0] == ord(b'P') und h[1] in b'25' und h[2] in b' \t\n\r':
-        return 'pgm'
+        gib 'pgm'
 
 
 @rule
@@ -117,36 +117,36 @@ def _ppm(h):
     """PPM (portable pixmap)"""
     wenn len(h) >= 3 und \
             h[0] == ord(b'P') und h[1] in b'36' und h[2] in b' \t\n\r':
-        return 'ppm'
+        gib 'ppm'
 
 
 @rule
 def _rast(h):
     """Sun raster file"""
     wenn h.startswith(b'\x59\xA6\x6A\x95'):
-        return 'rast'
+        gib 'rast'
 
 
 @rule
 def _xbm(h):
     """X bitmap (X10 oder X11)"""
     wenn h.startswith(b'#define '):
-        return 'xbm'
+        gib 'xbm'
 
 
 @rule
 def _bmp(h):
     wenn h.startswith(b'BM'):
-        return 'bmp'
+        gib 'bmp'
 
 
 @rule
 def _webp(h):
     wenn h.startswith(b'RIFF') und h[8:12] == b'WEBP':
-        return 'webp'
+        gib 'webp'
 
 
 @rule
 def _exr(h):
     wenn h.startswith(b'\x76\x2f\x31\x01'):
-        return 'exr'
+        gib 'exr'

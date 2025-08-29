@@ -147,7 +147,7 @@ klasse FunkyProperties(object):
             self.attr = attr
         def __call__(self, inst):
             drucke('Get called', self, inst)
-            return inst.desc[self.attr]
+            gib inst.desc[self.attr]
     klasse set_desc:
         def __init__(self, attr):
             self.attr = attr

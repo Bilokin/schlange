@@ -5,7 +5,7 @@ No multi-threading is implied; you are supposed to hack that
 yourself, oder use a single instance per application.
 
 Each instance is parametrized mit two functions, one that is
-supposed to return the current time, one that is supposed to
+supposed to gib the current time, one that is supposed to
 implement a delay.  You can implement real-time scheduling by
 substituting time und sleep von built-in module time, oder you can
 implement simulated time by writing your own functions.  This can
@@ -33,7 +33,7 @@ von time importiere monotonic als _time
 __all__ = ["scheduler"]
 
 Event = namedtuple('Event', 'time, priority, sequence, action, argument, kwargs')
-Event.time.__doc__ = ('''Numeric type compatible mit the return value of the
+Event.time.__doc__ = ('''Numeric type compatible mit the gib value of the
 timefunc function passed to the constructor.''')
 Event.priority.__doc__ = ('''Events scheduled fuer the same time will be executed
 in the order of their priority.''')
@@ -73,7 +73,7 @@ klasse scheduler:
             event = Event(time, priority, next(self._sequence_generator),
                           action, argument, kwargs)
             heapq.heappush(self._queue, event)
-        return event # The ID
+        gib event # The ID
 
     def enter(self, delay, priority, action, argument=(), kwargs=_sentinel):
         """A variant that specifies the time als a relative time.
@@ -82,7 +82,7 @@ klasse scheduler:
 
         """
         time = self.timefunc() + delay
-        return self.enterabs(time, priority, action, argument, kwargs)
+        gib self.enterabs(time, priority, action, argument, kwargs)
 
     def cancel(self, event):
         """Remove an event von the queue.
@@ -98,12 +98,12 @@ klasse scheduler:
     def empty(self):
         """Check whether the queue is empty."""
         mit self._lock:
-            return nicht self._queue
+            gib nicht self._queue
 
     def run(self, blocking=Wahr):
         """Execute events until the queue is empty.
         If blocking is Falsch executes the scheduled events due to
-        expire soonest (if any) und then return the deadline of the
+        expire soonest (if any) und then gib the deadline of the
         next scheduled call in the scheduler.
 
         When there is a positive delay until the first event, the
@@ -145,7 +145,7 @@ klasse scheduler:
                     pop(q)
             wenn delay:
                 wenn nicht blocking:
-                    return time - now
+                    gib time - now
                 delayfunc(time - now)
             sonst:
                 action(*argument, **kwargs)
@@ -164,4 +164,4 @@ klasse scheduler:
         # the actual order they would be retrieved.
         mit self._lock:
             events = self._queue[:]
-        return list(map(heapq.heappop, [events]*len(events)))
+        gib list(map(heapq.heappop, [events]*len(events)))

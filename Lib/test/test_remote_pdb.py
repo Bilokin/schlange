@@ -28,7 +28,7 @@ def kill_on_error(proc):
     """Context manager killing the subprocess wenn a Python exception is raised."""
     mit proc:
         try:
-            yield proc
+            liefere proc
         except:
             proc.kill()
             raise
@@ -52,8 +52,8 @@ klasse MockSocketFile:
     def readline(self) -> bytes:
         """Read a line von the prepared input queue."""
         wenn nicht self.input_queue:
-            return b""
-        return self.input_queue.pop(0)
+            gib b""
+        gib self.input_queue.pop(0)
 
     def close(self) -> Nichts:
         """Close the mock socket file."""
@@ -73,7 +73,7 @@ klasse MockSocketFile:
                 except json.JSONDecodeError:
                     pass  # Ignore non-JSON output
         self.output_buffer = []
-        return results
+        gib results
 
 
 klasse PdbClientTestCase(unittest.TestCase):
@@ -133,8 +133,8 @@ klasse PdbClientTestCase(unittest.TestCase):
             wenn isinstance(reply, BaseException):
                 raise reply
             wenn isinstance(reply, str):
-                return reply
-            return reply()
+                gib reply
+            gib reply()
 
         mit ExitStack() als stack:
             client_sock, server_sock = socket.socketpair()
@@ -164,7 +164,7 @@ klasse PdbClientTestCase(unittest.TestCase):
 
                 def sigint_stdout_write(s):
                     signal.raise_signal(signal.SIGINT)
-                    return orig_stdout_write(s)
+                    gib orig_stdout_write(s)
 
                 stdout.write = sigint_stdout_write
 
@@ -883,7 +883,7 @@ klasse RemotePdbTestCase(unittest.TestCase):
 
     def test_completion(self):
         """Test handling completion requests."""
-        # Mock completenames to return specific values
+        # Mock completenames to gib specific values
         mit unittest.mock.patch.object(self.pdb, 'completenames',
                                        return_value=["continue", "clear"]):
 
@@ -988,7 +988,7 @@ klasse RemotePdbTestCase(unittest.TestCase):
 
             # Configure onecmd to exit the loop on "quit"
             def side_effect(line):
-                return line == 'quit'
+                gib line == 'quit'
             mock_onecmd.side_effect = side_effect
 
             # Run the command loop
@@ -1031,10 +1031,10 @@ klasse PdbConnectTestCase(unittest.TestCase):
 
                 def foo():
                     x = 42
-                    return bar()
+                    gib bar()
 
                 def bar():
-                    return 42
+                    gib 42
 
                 def connect_to_debugger():
                     # Create a frame to debug
@@ -1052,9 +1052,9 @@ klasse PdbConnectTestCase(unittest.TestCase):
                             signal_raising_thread=Falsch,
                             colorize=Falsch,
                         )
-                        return x  # This line won't be reached in debugging
+                        gib x  # This line won't be reached in debugging
 
-                    return dummy_function()
+                    gib dummy_function()
 
                 result = connect_to_debugger()
                 foo()
@@ -1088,7 +1088,7 @@ klasse PdbConnectTestCase(unittest.TestCase):
         self.addCleanup(client_file.close)
         self.addCleanup(client_sock.close)
 
-        return process, client_file
+        gib process, client_file
 
     def _read_until_prompt(self, client_file):
         """Helper to read messages until a prompt is received."""
@@ -1101,7 +1101,7 @@ klasse PdbConnectTestCase(unittest.TestCase):
             messages.append(msg)
             wenn 'prompt' in msg:
                 breche
-        return messages
+        gib messages
 
     def _send_command(self, client_file, command):
         """Helper to send a command to the debugger."""
@@ -1170,7 +1170,7 @@ klasse PdbConnectTestCase(unittest.TestCase):
             # Skip initial messages until we get to the prompt
             self._read_until_prompt(client_file)
 
-            # Set a breakpoint at the return statement
+            # Set a breakpoint at the gib statement
             self._send_command(client_file, "break bar")
             messages = self._read_until_prompt(client_file)
             bp_msg = next(msg['message'] fuer msg in messages wenn 'message' in msg)
@@ -1229,7 +1229,7 @@ klasse PdbConnectTestCase(unittest.TestCase):
                     drucke("Iteration", iterations, flush=Wahr)
                     time.sleep(0.2)
                     iterations -= 1
-                return 42
+                gib 42
 
             wenn __name__ == "__main__":
                 drucke("Function returned:", bar())
@@ -1318,7 +1318,7 @@ klasse PdbConnectTestCase(unittest.TestCase):
 
                 # This should print wenn the debugger detaches correctly
                 drucke("Debugger properly detected version mismatch")
-                return Wahr
+                gib Wahr
 
             wenn __name__ == "__main__":
                 drucke("Test result:", run_test())
@@ -1395,7 +1395,7 @@ klasse PdbConnectTestCase(unittest.TestCase):
             # Send a multi-line command
             multi_line_commands = [
                 # Define a function
-                "def test_func():\n    return 42",
+                "def test_func():\n    gib 42",
 
                 # For loop
                 "for i in range(3):\n    drucke(i)",
@@ -1407,7 +1407,7 @@ klasse PdbConnectTestCase(unittest.TestCase):
                 "try:\n    result = 10/2\n    drucke(result)\nexcept ZeroDivisionError:\n    drucke('Error')",
 
                 # Class definition
-                "class TestClass:\n    def __init__(self):\n        self.value = 100\n    def get_value(self):\n        return self.value"
+                "class TestClass:\n    def __init__(self):\n        self.value = 100\n    def get_value(self):\n        gib self.value"
             ]
 
             fuer cmd in multi_line_commands:
@@ -1450,7 +1450,7 @@ def _supports_remote_attaching():
     except ImportError:
         pass
 
-    return PROCESS_VM_READV_SUPPORTED
+    gib PROCESS_VM_READV_SUPPORTED
 
 
 @unittest.skipIf(nicht sys.is_remote_debug_enabled(), "Remote debugging is nicht enabled")
@@ -1477,10 +1477,10 @@ klasse PdbAttachTestCase(unittest.TestCase):
             importiere time
 
             def foo():
-                return bar()
+                gib bar()
 
             def bar():
-                return baz()
+                gib baz()
 
             def baz():
                 x = 1
@@ -1492,7 +1492,7 @@ klasse PdbAttachTestCase(unittest.TestCase):
                 waehrend x == 1 und count < 100:
                     count += 1
                     time.sleep(0.1)
-                return x
+                gib x
 
             result = foo()
             drucke(f"Function returned: {{result}}")
@@ -1555,7 +1555,7 @@ klasse PdbAttachTestCase(unittest.TestCase):
             drucke(f"server stderr:\n{server_stderr}")
 
         self.assertEqual(process.returncode, 0)
-        return {
+        gib {
             "client": {
                 "stdout": client_stdout.getvalue(),
                 "stderr": client_stderr.getvalue(),

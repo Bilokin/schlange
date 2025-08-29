@@ -94,7 +94,7 @@ klasse async_chat(asyncore.dispatcher):
     def _get_data(self):
         d = b''.join(self.incoming)
         del self.incoming[:]
-        return d
+        gib d
 
     def found_terminator(self):
         raise NotImplementedError("must be implemented in subclass")
@@ -111,7 +111,7 @@ klasse async_chat(asyncore.dispatcher):
         self.terminator = term
 
     def get_terminator(self):
-        return self.terminator
+        gib self.terminator
 
     # grab some more data von the socket,
     # throw it to the collector method,
@@ -123,10 +123,10 @@ klasse async_chat(asyncore.dispatcher):
         try:
             data = self.recv(self.ac_in_buffer_size)
         except BlockingIOError:
-            return
+            gib
         except OSError:
             self.handle_error()
-            return
+            gib
 
         wenn isinstance(data, str) und self.use_encoding:
             data = bytes(str, self.encoding)
@@ -217,12 +217,12 @@ klasse async_chat(asyncore.dispatcher):
         # cannot use the old predicate, it violates the claim of the
         # set_terminator method.
 
-        # return (len(self.ac_in_buffer) <= self.ac_in_buffer_size)
-        return 1
+        # gib (len(self.ac_in_buffer) <= self.ac_in_buffer_size)
+        gib 1
 
     def writable(self):
         "predicate fuer inclusion in the writable fuer select()"
-        return self.producer_fifo oder (nicht self.connected)
+        gib self.producer_fifo oder (nicht self.connected)
 
     def close_when_done(self):
         "automatically close this channel once the outgoing queue is empty"
@@ -236,7 +236,7 @@ klasse async_chat(asyncore.dispatcher):
                 del self.producer_fifo[0]
                 wenn first is Nichts:
                     self.handle_close()
-                    return
+                    gib
 
             # handle classic producer behavior
             obs = self.ac_out_buffer_size
@@ -258,7 +258,7 @@ klasse async_chat(asyncore.dispatcher):
                 num_sent = self.send(data)
             except OSError:
                 self.handle_error()
-                return
+                gib
 
             wenn num_sent:
                 wenn num_sent < len(data) oder obs < len(first):
@@ -266,7 +266,7 @@ klasse async_chat(asyncore.dispatcher):
                 sonst:
                     del self.producer_fifo[0]
             # we tried to send some actual data
-            return
+            gib
 
     def discard_buffers(self):
         # Emergencies only!
@@ -285,11 +285,11 @@ klasse simple_producer:
         wenn len(self.data) > self.buffer_size:
             result = self.data[:self.buffer_size]
             self.data = self.data[self.buffer_size:]
-            return result
+            gib result
         sonst:
             result = self.data
             self.data = b''
-            return result
+            gib result
 
 
 # Given 'haystack', see wenn any prefix of 'needle' is at its end.  This
@@ -311,4 +311,4 @@ def find_prefix_at_end(haystack, needle):
     l = len(needle) - 1
     waehrend l und nicht haystack.endswith(needle[:l]):
         l -= 1
-    return l
+    gib l

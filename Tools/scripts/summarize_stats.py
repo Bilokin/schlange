@@ -48,7 +48,7 @@ TOTAL = "specialization.hit", "specialization.miss", "execution_count"
 
 
 def pretty(name: str) -> str:
-    return name.replace("_", " ").lower()
+    gib name.replace("_", " ").lower()
 
 
 def _load_metadata_from_source():
@@ -63,11 +63,11 @@ def _load_metadata_from_source():
                 line = line[len(start) :]
                 name, val = line.split()
                 defines[int(val.strip())].append(name.strip())
-        return defines
+        gib defines
 
     importiere opcode
 
-    return {
+    gib {
         "_specialized_instructions": [
             op fuer op in opcode._specialized_opmap.keys() wenn "__" nicht in op  # type: ignore
         ],
@@ -86,7 +86,7 @@ def load_raw_data(input: Path) -> RawData:
         data["_stats_defines"] = {int(k): v fuer k, v in data["_stats_defines"].items()}
         data["_defines"] = {int(k): v fuer k, v in data["_defines"].items()}
 
-        return data
+        gib data
 
     sowenn input.is_dir():
         stats = collections.Counter[str]()
@@ -111,7 +111,7 @@ def load_raw_data(input: Path) -> RawData:
 
         data = dict(stats)
         data.update(_load_metadata_from_source())
-        return data
+        gib data
 
     sonst:
         raise ValueError(f"{input} is nicht a file oder directory path")
@@ -127,7 +127,7 @@ klasse Doc:
     doc: str
 
     def markdown(self) -> str:
-        return textwrap.dedent(
+        gib textwrap.dedent(
             f"""
             {self.text}
             <details>
@@ -141,7 +141,7 @@ klasse Doc:
 
 klasse Count(int):
     def markdown(self) -> str:
-        return format(self, ",d")
+        gib format(self, ",d")
 
 
 @dataclass(frozen=Wahr)
@@ -152,23 +152,23 @@ klasse Ratio:
 
     def __float__(self):
         wenn self.den == 0:
-            return 0.0
+            gib 0.0
         sowenn self.den is Nichts:
-            return self.num
+            gib self.num
         sonst:
-            return self.num / self.den
+            gib self.num / self.den
 
     def markdown(self) -> str:
         wenn self.den is Nichts:
-            return ""
+            gib ""
         sowenn self.den == 0:
             wenn self.num != 0:
-                return f"{self.num:,} / 0 !!"
-            return ""
+                gib f"{self.num:,} / 0 !!"
+            gib ""
         sowenn self.percentage:
-            return f"{self.num / self.den:,.01%}"
+            gib f"{self.num / self.den:,.01%}"
         sonst:
-            return f"{self.num / self.den:,.02f}"
+            gib f"{self.num / self.den:,.02f}"
 
 
 klasse DiffRatio(Ratio):
@@ -191,7 +191,7 @@ klasse OpcodeStats:
         self._specialized_instructions = specialized_instructions
 
     def get_opcode_names(self) -> KeysView[str]:
-        return self._data.keys()
+        gib self._data.keys()
 
     def get_pair_counts(self) -> dict[tuple[str, str], int]:
         pair_counts = {}
@@ -200,10 +200,10 @@ klasse OpcodeStats:
                 wenn value und key.startswith("pair_count"):
                     name_j, _, _ = key[len("pair_count") + 1 :].partition("]")
                     pair_counts[(name_i, name_j)] = value
-        return pair_counts
+        gib pair_counts
 
     def get_total_execution_count(self) -> int:
-        return sum(x.get("execution_count", 0) fuer x in self._data.values())
+        gib sum(x.get("execution_count", 0) fuer x in self._data.values())
 
     def get_execution_counts(self) -> dict[str, tuple[int, int]]:
         counts = {}
@@ -214,7 +214,7 @@ klasse OpcodeStats:
                 wenn "specializable" nicht in opcode_stat:
                     miss = opcode_stat.get("specialization.miss", 0)
                 counts[name] = (count, miss)
-        return counts
+        gib counts
 
     @functools.cache
     def _get_pred_succ(
@@ -233,20 +233,20 @@ klasse OpcodeStats:
                 predecessors[second][first] = count
                 successors[first][second] = count
 
-        return predecessors, successors
+        gib predecessors, successors
 
     def get_predecessors(self, opcode: str) -> collections.Counter[str]:
-        return self._get_pred_succ()[0][opcode]
+        gib self._get_pred_succ()[0][opcode]
 
     def get_successors(self, opcode: str) -> collections.Counter[str]:
-        return self._get_pred_succ()[1][opcode]
+        gib self._get_pred_succ()[1][opcode]
 
     def _get_stats_for_opcode(self, opcode: str) -> dict[str, int]:
-        return self._data[opcode]
+        gib self._data[opcode]
 
     def get_specialization_total(self, opcode: str) -> int:
         family_stats = self._get_stats_for_opcode(opcode)
-        return sum(family_stats.get(kind, 0) fuer kind in TOTAL)
+        gib sum(family_stats.get(kind, 0) fuer kind in TOTAL)
 
     def get_specialization_counts(self, opcode: str) -> dict[str, int]:
         family_stats = self._get_stats_for_opcode(opcode)
@@ -266,7 +266,7 @@ klasse OpcodeStats:
                 label = key
             result[label] = value
 
-        return result
+        gib result
 
     def get_specialization_success_failure(self, opcode: str) -> dict[str, int]:
         family_stats = self._get_stats_for_opcode(opcode)
@@ -275,15 +275,15 @@ klasse OpcodeStats:
             label = key[len("specialization.") :]
             val = family_stats.get(key, 0)
             result[label] = val
-        return result
+        gib result
 
     def get_specialization_failure_total(self, opcode: str) -> int:
-        return self._get_stats_for_opcode(opcode).get("specialization.failure", 0)
+        gib self._get_stats_for_opcode(opcode).get("specialization.failure", 0)
 
     def get_specialization_failure_kinds(self, opcode: str) -> dict[str, int]:
         def kind_to_text(kind: int, opcode: str):
             wenn kind <= 8:
-                return pretty(self._defines[kind][0])
+                gib pretty(self._defines[kind][0])
             wenn opcode == "LOAD_SUPER_ATTR":
                 opcode = "SUPER"
             sowenn opcode.endswith("ATTR"):
@@ -294,13 +294,13 @@ klasse OpcodeStats:
                 opcode = "SUBSCR"
             fuer name in self._defines[kind]:
                 wenn name.startswith(opcode):
-                    return pretty(name[len(opcode) + 1 :])
-            return "kind " + str(kind)
+                    gib pretty(name[len(opcode) + 1 :])
+            gib "kind " + str(kind)
 
         family_stats = self._get_stats_for_opcode(opcode)
 
         def key_to_index(key):
-            return int(key[:-1].split("[")[1])
+            gib int(key[:-1].split("[")[1])
 
         max_index = 0
         fuer key in family_stats:
@@ -312,14 +312,14 @@ klasse OpcodeStats:
             wenn nicht key.startswith("specialization.failure_kind"):
                 weiter
             failure_kinds[key_to_index(key)] = family_stats[key]
-        return {
+        gib {
             kind_to_text(index, opcode): value
             fuer (index, value) in enumerate(failure_kinds)
             wenn value
         }
 
     def is_specializable(self, opcode: str) -> bool:
-        return "specializable" in self._get_stats_for_opcode(opcode)
+        gib "specializable" in self._get_stats_for_opcode(opcode)
 
     def get_specialized_total_counts(self) -> tuple[int, int, int]:
         basic = 0
@@ -338,17 +338,17 @@ klasse OpcodeStats:
                 specialized_misses += miss
             sonst:
                 basic += count
-        return basic, specialized_hits, specialized_misses, not_specialized
+        gib basic, specialized_hits, specialized_misses, not_specialized
 
     def get_deferred_counts(self) -> dict[str, int]:
-        return {
+        gib {
             opcode: opcode_stat.get("specialization.deferred", 0)
             fuer opcode, opcode_stat in self._data.items()
             wenn opcode != "RESUME"
         }
 
     def get_misses_counts(self) -> dict[str, int]:
-        return {
+        gib {
             opcode: opcode_stat.get("specialization.miss", 0)
             fuer opcode, opcode_stat in self._data.items()
             wenn nicht self.is_specializable(opcode)
@@ -360,7 +360,7 @@ klasse OpcodeStats:
             count = entry.get("count", 0)
             wenn count:
                 counts[opcode] = count
-        return counts
+        gib counts
 
 
 klasse Stats:
@@ -368,7 +368,7 @@ klasse Stats:
         self._data = data
 
     def get(self, key: str) -> int:
-        return self._data.get(key, 0)
+        gib self._data.get(key, 0)
 
     @functools.cache
     def get_opcode_stats(self, prefix: str) -> OpcodeStats:
@@ -378,7 +378,7 @@ klasse Stats:
                 weiter
             name, _, rest = key[len(prefix) + 1 :].partition("]")
             opcode_stats[name][rest.strip(".")] = value
-        return OpcodeStats(
+        gib OpcodeStats(
             opcode_stats,
             self._data["_defines"],
             self._data["_specialized_instructions"],
@@ -399,7 +399,7 @@ klasse Stats:
             wenn key.startswith("Frame"):
                 result[key] = value
 
-        return result
+        gib result
 
     def get_object_stats(self) -> dict[str, tuple[int, int]]:
         total_materializations = self._data.get("Object inline values", 0)
@@ -435,7 +435,7 @@ klasse Stats:
                 label = key[6:].strip()
                 label = label[0].upper() + label[1:]
                 result[label] = (value, den)
-        return result
+        gib result
 
     def get_gc_stats(self) -> list[dict[str, int]]:
         gc_stats: list[dict[str, int]] = []
@@ -448,11 +448,11 @@ klasse Stats:
             waehrend len(gc_stats) <= gen_n:
                 gc_stats.append({})
             gc_stats[gen_n][name] = value
-        return gc_stats
+        gib gc_stats
 
     def get_optimization_stats(self) -> dict[str, tuple[int, int | Nichts]]:
         wenn "Optimization attempts" nicht in self._data:
-            return {}
+            gib {}
 
         attempts = self._data["Optimization attempts"]
         created = self._data["Optimization traces created"]
@@ -468,7 +468,7 @@ klasse Stats:
         unknown_callee = self._data["Optimization unknown callee"]
         executors_invalidated = self._data["Executors invalidated"]
 
-        return {
+        gib {
             Doc(
                 "Optimization attempts",
                 "The number of times a potential trace is identified.  Specifically, this "
@@ -535,7 +535,7 @@ klasse Stats:
         builtins_changed = self._data["Optimizer remove globals builtins changed"]
         incorrect_keys = self._data["Optimizer remove globals incorrect keys"]
 
-        return {
+        gib {
             Doc(
                 "Optimizer attempts",
                 "The number of times the trace optimizer (_Py_uop_analyze_and_optimize) was run.",
@@ -566,7 +566,7 @@ klasse Stats:
         jit_padding_size = self._data["JIT padding size"]
         jit_freed_memory_size = self._data["JIT freed memory size"]
 
-        return {
+        gib {
             Doc(
                 "Total memory size",
                 "The total size of the memory allocated fuer the JIT traces",
@@ -601,11 +601,11 @@ klasse Stats:
                 entry = int(match.groups()[0])
                 rows.append((entry, v))
         rows.sort()
-        return rows
+        gib rows
 
     def get_rare_events(self) -> list[tuple[str, int]]:
         prefix = "Rare event "
-        return [
+        gib [
             (key[len(prefix) + 1 : -1].replace("_", " "), val)
             fuer key, val in self._data.items()
             wenn key.startswith(prefix)
@@ -645,28 +645,28 @@ klasse Table:
     def join_row(self, key: str, row_a: tuple, row_b: tuple) -> tuple:
         match self.join_mode:
             case JoinMode.SIMPLE:
-                return (key, *row_a, *row_b)
+                gib (key, *row_a, *row_b)
             case JoinMode.CHANGE | JoinMode.CHANGE_NO_SORT:
-                return (key, *row_a, *row_b, DiffRatio(row_a[0], row_b[0]))
+                gib (key, *row_a, *row_b, DiffRatio(row_a[0], row_b[0]))
             case JoinMode.CHANGE_ONE_COLUMN:
-                return (key, row_a[0], row_b[0], DiffRatio(row_a[0], row_b[0]))
+                gib (key, row_a[0], row_b[0], DiffRatio(row_a[0], row_b[0]))
 
     def join_columns(self, columns: Columns) -> Columns:
         match self.join_mode:
             case JoinMode.SIMPLE:
-                return (
+                gib (
                     columns[0],
                     *("Base " + x fuer x in columns[1:]),
                     *("Head " + x fuer x in columns[1:]),
                 )
             case JoinMode.CHANGE | JoinMode.CHANGE_NO_SORT:
-                return (
+                gib (
                     columns[0],
                     *("Base " + x fuer x in columns[1:]),
                     *("Head " + x fuer x in columns[1:]),
                 ) + ("Change:",)
             case JoinMode.CHANGE_ONE_COLUMN:
-                return (
+                gib (
                     columns[0],
                     "Base " + columns[1],
                     "Head " + columns[1],
@@ -694,19 +694,19 @@ klasse Table:
             rows.sort(key=lambda row: abs(float(row[-1])), reverse=Wahr)
 
         columns = self.join_columns(self.columns)
-        return columns, rows
+        gib columns, rows
 
     def get_table(
         self, base_stats: Stats, head_stats: Stats | Nichts = Nichts
     ) -> tuple[Columns, Rows]:
         wenn head_stats is Nichts:
             rows = self.calc_rows(base_stats)
-            return self.columns, rows
+            gib self.columns, rows
         sonst:
             rows_a = self.calc_rows(base_stats)
             rows_b = self.calc_rows(head_stats)
             cols, rows = self.join_tables(rows_a, rows_b)
-            return cols, rows
+            gib cols, rows
 
 
 klasse Section:
@@ -734,7 +734,7 @@ klasse Section:
         wenn isinstance(part_iter, list):
 
             def iter_parts(base_stats: Stats, head_stats: Stats | Nichts):
-                yield von part_iter
+                liefere von part_iter
 
             self.part_iter = iter_parts
         sonst:
@@ -766,13 +766,13 @@ def calc_execution_count_table(prefix: str) -> RowCalculator:
                     miss_val,
                 )
             )
-        return rows
+        gib rows
 
-    return calc
+    gib calc
 
 
 def execution_count_section() -> Section:
-    return Section(
+    gib Section(
         "Execution counts",
         "Execution counts fuer Tier 1 instructions.",
         [
@@ -810,9 +810,9 @@ def pair_count_section(prefix: str, title=Nichts) -> Section:
                     Ratio(cumulative, total),
                 )
             )
-        return rows
+        gib rows
 
-    return Section(
+    gib Section(
         "Pair counts",
         f"Pair counts fuer top 100 {title wenn title sonst prefix} pairs",
         [
@@ -851,7 +851,7 @@ def pre_succ_pairs_section() -> Section:
                 fuer (succ, count) in successors.most_common(5)
             ]
 
-            yield Section(
+            liefere Section(
                 opcode,
                 f"Successors und predecessors fuer {opcode}",
                 [
@@ -866,7 +866,7 @@ def pre_succ_pairs_section() -> Section:
                 ],
             )
 
-    return Section(
+    gib Section(
         "Predecessor/Successor Pairs",
         "Top 5 predecessors und successors of each Tier 1 opcode.",
         iter_pre_succ_pairs_tables,
@@ -892,7 +892,7 @@ def specialization_section() -> Section:
             total = opcode_stats.get_specialization_total(opcode)
             specialization_counts = opcode_stats.get_specialization_counts(opcode)
 
-            return [
+            gib [
                 (
                     Doc(label, DOCS[label]),
                     Count(count),
@@ -901,7 +901,7 @@ def specialization_section() -> Section:
                 fuer label, count in specialization_counts.items()
             ]
 
-        return calc
+        gib calc
 
     def calc_specialization_success_failure_table(name: str) -> RowCalculator:
         def calc(stats: Stats) -> Rows:
@@ -910,14 +910,14 @@ def specialization_section() -> Section:
             ).get_specialization_success_failure(name)
             total = sum(values.values())
             wenn total:
-                return [
+                gib [
                     (label.capitalize(), Count(val), Ratio(val, total))
                     fuer label, val in values.items()
                 ]
             sonst:
-                return []
+                gib []
 
-        return calc
+        gib calc
 
     def calc_specialization_failure_kind_table(name: str) -> RowCalculator:
         def calc(stats: Stats) -> Rows:
@@ -925,7 +925,7 @@ def specialization_section() -> Section:
             failures = opcode_stats.get_specialization_failure_kinds(name)
             total = opcode_stats.get_specialization_failure_total(name)
 
-            return sorted(
+            gib sorted(
                 [
                     (label, Count(value), Ratio(value, total))
                     fuer label, value in failures.items()
@@ -935,7 +935,7 @@ def specialization_section() -> Section:
                 reverse=Wahr,
             )
 
-        return calc
+        gib calc
 
     def iter_specialization_tables(base_stats: Stats, head_stats: Stats | Nichts = Nichts):
         opcode_base_stats = base_stats.get_opcode_stats("opcode")
@@ -954,7 +954,7 @@ def specialization_section() -> Section:
                 oder opcode_head_stats.get_specialization_total(opcode) == 0
             ):
                 weiter
-            yield Section(
+            liefere Section(
                 opcode,
                 f"specialization stats fuer {opcode} family",
                 [
@@ -976,7 +976,7 @@ def specialization_section() -> Section:
                 ],
             )
 
-    return Section(
+    gib Section(
         "Specialization stats",
         "Specialization stats by family",
         iter_specialization_tables,
@@ -995,7 +995,7 @@ def specialization_effectiveness_section() -> Section:
             not_specialized,
         ) = opcode_stats.get_specialized_total_counts()
 
-        return [
+        gib [
             (
                 Doc(
                     "Basic",
@@ -1035,9 +1035,9 @@ def specialization_effectiveness_section() -> Section:
         deferred_counts = opcode_stats.get_deferred_counts()
         total = sum(deferred_counts.values())
         wenn total == 0:
-            return []
+            gib []
 
-        return [
+        gib [
             (name, Count(value), Ratio(value, total))
             fuer name, value in sorted(
                 deferred_counts.items(), key=itemgetter(1), reverse=Wahr
@@ -1049,16 +1049,16 @@ def specialization_effectiveness_section() -> Section:
         misses_counts = opcode_stats.get_misses_counts()
         total = sum(misses_counts.values())
         wenn total == 0:
-            return []
+            gib []
 
-        return [
+        gib [
             (name, Count(value), Ratio(value, total))
             fuer name, value in sorted(
                 misses_counts.items(), key=itemgetter(1), reverse=Wahr
             )[:10]
         ]
 
-    return Section(
+    gib Section(
         "Specialization effectiveness",
         "",
         [
@@ -1101,12 +1101,12 @@ def call_stats_section() -> Section:
     def calc_call_stats_table(stats: Stats) -> Rows:
         call_stats = stats.get_call_stats()
         total = sum(v fuer k, v in call_stats.items() wenn "Calls to" in k)
-        return [
+        gib [
             (key, Count(value), Ratio(value, total))
             fuer key, value in call_stats.items()
         ]
 
-    return Section(
+    gib Section(
         "Call stats",
         "Inlined calls und frame stats",
         [
@@ -1129,12 +1129,12 @@ def call_stats_section() -> Section:
 def object_stats_section() -> Section:
     def calc_object_stats_table(stats: Stats) -> Rows:
         object_stats = stats.get_object_stats()
-        return [
+        gib [
             (label, Count(value), Ratio(value, den))
             fuer label, (value, den) in object_stats.items()
         ]
 
-    return Section(
+    gib Section(
         "Object stats",
         "Allocations, frees und dict materializatons",
         [
@@ -1160,7 +1160,7 @@ def gc_stats_section() -> Section:
     def calc_gc_stats(stats: Stats) -> Rows:
         gc_stats = stats.get_gc_stats()
 
-        return [
+        gib [
             (
                 Count(i),
                 Count(gen["collections"]),
@@ -1172,7 +1172,7 @@ def gc_stats_section() -> Section:
             fuer (i, gen) in enumerate(gc_stats)
         ]
 
-    return Section(
+    gib Section(
         "GC stats",
         "GC collections und effectiveness",
         [
@@ -1192,7 +1192,7 @@ def optimization_section() -> Section:
     def calc_optimization_table(stats: Stats) -> Rows:
         optimization_stats = stats.get_optimization_stats()
 
-        return [
+        gib [
             (
                 label,
                 Count(value),
@@ -1204,7 +1204,7 @@ def optimization_section() -> Section:
     def calc_optimizer_table(stats: Stats) -> Rows:
         optimizer_stats = stats.get_optimizer_stats()
 
-        return [
+        gib [
             (label, Count(value), Ratio(value, den))
             fuer label, (value, den) in optimizer_stats.items()
         ]
@@ -1212,7 +1212,7 @@ def optimization_section() -> Section:
     def calc_jit_memory_table(stats: Stats) -> Rows:
         jit_memory_stats = stats.get_jit_memory_stats()
 
-        return [
+        gib [
             (
                 label,
                 Count(value),
@@ -1253,13 +1253,13 @@ def optimization_section() -> Section:
                 sonst:
                     breche
 
-            return rows[start:end+1]
+            gib rows[start:end+1]
 
-        return calc
+        gib calc
 
     def calc_unsupported_opcodes_table(stats: Stats) -> Rows:
         unsupported_opcodes = stats.get_opcode_stats("unsupported_opcode")
-        return sorted(
+        gib sorted(
             [
                 (opcode, Count(count))
                 fuer opcode, count in unsupported_opcodes.get_opcode_counts().items()
@@ -1270,7 +1270,7 @@ def optimization_section() -> Section:
 
     def calc_error_in_opcodes_table(stats: Stats) -> Rows:
         error_in_opcodes = stats.get_opcode_stats("error_in_opcode")
-        return sorted(
+        gib sorted(
             [
                 (opcode, Count(count))
                 fuer opcode, count in error_in_opcodes.get_opcode_counts().items()
@@ -1283,11 +1283,11 @@ def optimization_section() -> Section:
         wenn nicht base_stats.get_optimization_stats() oder (
             head_stats is nicht Nichts und nicht head_stats.get_optimization_stats()
         ):
-            return
+            gib
 
-        yield Table(("", "Count:", "Ratio:"), calc_optimization_table, JoinMode.CHANGE)
-        yield Table(("", "Count:", "Ratio:"), calc_optimizer_table, JoinMode.CHANGE)
-        yield Section(
+        liefere Table(("", "Count:", "Ratio:"), calc_optimization_table, JoinMode.CHANGE)
+        liefere Table(("", "Count:", "Ratio:"), calc_optimizer_table, JoinMode.CHANGE)
+        liefere Section(
             "JIT memory stats",
             "JIT memory stats",
             [
@@ -1298,7 +1298,7 @@ def optimization_section() -> Section:
                 )
             ],
         )
-        yield Section(
+        liefere Section(
             "JIT trace total memory histogram",
             "JIT trace total memory histogram",
             [
@@ -1314,7 +1314,7 @@ def optimization_section() -> Section:
             ("Optimized trace length", "Optimization traces created"),
             ("Trace run length", "Optimization traces executed"),
         ]:
-            yield Section(
+            liefere Section(
                 f"{name} histogram",
                 "",
                 [
@@ -1325,7 +1325,7 @@ def optimization_section() -> Section:
                     )
                 ],
             )
-        yield Section(
+        liefere Section(
             "Uop execution stats",
             "",
             [
@@ -1336,8 +1336,8 @@ def optimization_section() -> Section:
                 )
             ],
         )
-        yield pair_count_section(prefix="uop", title="Non-JIT uop")
-        yield Section(
+        liefere pair_count_section(prefix="uop", title="Non-JIT uop")
+        liefere Section(
             "Unsupported opcodes",
             "",
             [
@@ -1348,13 +1348,13 @@ def optimization_section() -> Section:
                 )
             ],
         )
-        yield Section(
+        liefere Section(
             "Optimizer errored out mit opcode",
             "Optimization stopped after encountering this opcode",
             [Table(("Opcode", "Count:"), calc_error_in_opcodes_table, JoinMode.CHANGE)],
         )
 
-    return Section(
+    gib Section(
         "Optimization (Tier 2) stats",
         "statistics about the Tier 2 optimizer",
         iter_optimization_tables,
@@ -1375,9 +1375,9 @@ def rare_event_section() -> Section:
             "watched dict modification": "A watched dict has been modified",
             "watched globals modification": "A watched `globals()` dict has been modified",
         }
-        return [(Doc(x, DOCS[x]), Count(y)) fuer x, y in stats.get_rare_events()]
+        gib [(Doc(x, DOCS[x]), Count(y)) fuer x, y in stats.get_rare_events()]
 
-    return Section(
+    gib Section(
         "Rare events",
         "Counts of rare/unlikely events",
         [Table(("Event", "Count:"), calc_rare_event_table, JoinMode.CHANGE)],
@@ -1386,9 +1386,9 @@ def rare_event_section() -> Section:
 
 def meta_stats_section() -> Section:
     def calc_rows(stats: Stats) -> Rows:
-        return [("Number of data files", Count(stats.get("__nfiles__")))]
+        gib [("Number of data files", Count(stats.get("__nfiles__")))]
 
-    return Section(
+    gib Section(
         "Meta stats",
         "Meta statistics",
         [Table(("", "Count:"), calc_rows, JoinMode.CHANGE)],
@@ -1419,11 +1419,11 @@ def output_markdown(
 ) -> Nichts:
     def to_markdown(x):
         wenn hasattr(x, "markdown"):
-            return x.markdown()
+            gib x.markdown()
         sowenn isinstance(x, str):
-            return x
+            gib x
         sowenn x is Nichts:
-            return ""
+            gib ""
         sonst:
             raise TypeError(f"Can't convert {x} to markdown")
 
@@ -1451,7 +1451,7 @@ def output_markdown(
         case Table():
             header, rows = obj.get_table(base_stats, head_stats)
             wenn len(rows) == 0:
-                return
+                gib
 
             alignments = []
             fuer item in header:

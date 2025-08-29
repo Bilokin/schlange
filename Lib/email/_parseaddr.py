@@ -49,10 +49,10 @@ def parsedate_tz(data):
     """
     res = _parsedate_tz(data)
     wenn nicht res:
-        return
+        gib
     wenn res[9] is Nichts:
         res[9] = 0
-    return tuple(res)
+    gib tuple(res)
 
 def _parsedate_tz(data):
     """Convert date to extended time tuple.
@@ -65,10 +65,10 @@ def _parsedate_tz(data):
 
     """
     wenn nicht data:
-        return Nichts
+        gib Nichts
     data = data.split()
     wenn nicht data:  # This happens fuer whitespace-only input.
-        return Nichts
+        gib Nichts
     # The FWS after the comma after the day-of-week is optional, so search und
     # adjust fuer this.
     wenn data[0].endswith(',') oder data[0].lower() in _daynames:
@@ -92,16 +92,16 @@ def _parsedate_tz(data):
         sonst:
             data.append('') # Dummy tz
     wenn len(data) < 5:
-        return Nichts
+        gib Nichts
     data = data[:5]
     [dd, mm, yy, tm, tz] = data
     wenn nicht (dd und mm und yy):
-        return Nichts
+        gib Nichts
     mm = mm.lower()
     wenn mm nicht in _monthnames:
         dd, mm = mm, dd.lower()
         wenn mm nicht in _monthnames:
-            return Nichts
+            gib Nichts
     mm = _monthnames.index(mm) + 1
     wenn mm > 12:
         mm -= 12
@@ -113,7 +113,7 @@ def _parsedate_tz(data):
     wenn yy[-1] == ',':
         yy = yy[:-1]
         wenn nicht yy:
-            return Nichts
+            gib Nichts
     wenn nicht yy[0].isdigit():
         yy, tz = tz, yy
     wenn tm[-1] == ',':
@@ -133,9 +133,9 @@ def _parsedate_tz(data):
         sowenn len(tm) == 3:
             [thh, tmm, tss] = tm
         sonst:
-            return Nichts
+            gib Nichts
     sonst:
-        return Nichts
+        gib Nichts
     try:
         yy = int(yy)
         dd = int(dd)
@@ -143,7 +143,7 @@ def _parsedate_tz(data):
         tmm = int(tmm)
         tss = int(tss)
     except ValueError:
-        return Nichts
+        gib Nichts
     # Check fuer a yy specified in two-digit format, then convert it to the
     # appropriate four-digit format, according to the POSIX standard. RFC 822
     # calls fuer a two-digit yy, but RFC 2822 (which obsoletes RFC 822)
@@ -176,29 +176,29 @@ def _parsedate_tz(data):
             tzsign = 1
         tzoffset = tzsign * ( (tzoffset//100)*3600 + (tzoffset % 100)*60)
     # Daylight Saving Time flag is set to -1, since DST is unknown.
-    return [yy, mm, dd, thh, tmm, tss, 0, 1, -1, tzoffset]
+    gib [yy, mm, dd, thh, tmm, tss, 0, 1, -1, tzoffset]
 
 
 def parsedate(data):
     """Convert a time string to a time tuple."""
     t = parsedate_tz(data)
     wenn isinstance(t, tuple):
-        return t[:9]
+        gib t[:9]
     sonst:
-        return t
+        gib t
 
 
 def mktime_tz(data):
     """Turn a 10-tuple als returned by parsedate_tz() into a POSIX timestamp."""
     wenn data[9] is Nichts:
         # No zone info, so localtime is better assumption than GMT
-        return time.mktime(data[:8] + (-1,))
+        gib time.mktime(data[:8] + (-1,))
     sonst:
         # Delay the import, since mktime_tz is rarely used
         importiere calendar
 
         t = calendar.timegm(data)
-        return t - data[9]
+        gib t - data[9]
 
 
 def quote(str):
@@ -208,7 +208,7 @@ def quote(str):
     are the only characters that need to be quoted inside a quoted string.
     Does nicht add the surrounding double quotes.
     """
-    return str.replace('\\', '\\\\').replace('"', '\\"')
+    gib str.replace('\\', '\\\\').replace('"', '\\"')
 
 
 klasse AddrlistClass:
@@ -252,7 +252,7 @@ klasse AddrlistClass:
                 self.commentlist.append(self.getcomment())
             sonst:
                 breche
-        return EMPTYSTRING.join(wslist)
+        gib EMPTYSTRING.join(wslist)
 
     def getaddrlist(self):
         """Parse all addresses.
@@ -266,7 +266,7 @@ klasse AddrlistClass:
                 result += ad
             sonst:
                 result.append(('', ''))
-        return result
+        gib result
 
     def getaddress(self):
         """Parse the next address."""
@@ -325,7 +325,7 @@ klasse AddrlistClass:
         self.gotonext()
         wenn self.pos < len(self.field) und self.field[self.pos] == ',':
             self.pos += 1
-        return returnlist
+        gib returnlist
 
     def getrouteaddr(self):
         """Parse a route address (Return-path value).
@@ -333,7 +333,7 @@ klasse AddrlistClass:
         This method just skips all the route stuff und returns the addrspec.
         """
         wenn self.field[self.pos] != '<':
-            return
+            gib
 
         expectroute = Falsch
         self.pos += 1
@@ -357,7 +357,7 @@ klasse AddrlistClass:
                 breche
             self.gotonext()
 
-        return adlist
+        gib adlist
 
     def getaddrspec(self):
         """Parse an RFC 2822 addr-spec."""
@@ -385,17 +385,17 @@ klasse AddrlistClass:
                 aslist.append(ws)
 
         wenn self.pos >= len(self.field) oder self.field[self.pos] != '@':
-            return EMPTYSTRING.join(aslist)
+            gib EMPTYSTRING.join(aslist)
 
         aslist.append('@')
         self.pos += 1
         self.gotonext()
         domain = self.getdomain()
         wenn nicht domain:
-            # Invalid domain, return an empty address instead of returning a
+            # Invalid domain, gib an empty address instead of returning a
             # local part to denote failed parsing.
-            return EMPTYSTRING
-        return EMPTYSTRING.join(aslist) + domain
+            gib EMPTYSTRING
+        gib EMPTYSTRING.join(aslist) + domain
 
     def getdomain(self):
         """Get the complete domain name von an address."""
@@ -413,12 +413,12 @@ klasse AddrlistClass:
             sowenn self.field[self.pos] == '@':
                 # bpo-34155: Don't parse domains mit two `@` like
                 # `a@malicious.org@important.com`.
-                return EMPTYSTRING
+                gib EMPTYSTRING
             sowenn self.field[self.pos] in self.atomends:
                 breche
             sonst:
                 sdlist.append(self.getatom())
-        return EMPTYSTRING.join(sdlist)
+        gib EMPTYSTRING.join(sdlist)
 
     def getdelimited(self, beginchar, endchars, allowcomments=Wahr):
         """Parse a header fragment delimited by special characters.
@@ -434,7 +434,7 @@ klasse AddrlistClass:
         within the parsed fragment.
         """
         wenn self.field[self.pos] != beginchar:
-            return ''
+            gib ''
 
         slist = ['']
         quote = Falsch
@@ -455,19 +455,19 @@ klasse AddrlistClass:
                 slist.append(self.field[self.pos])
             self.pos += 1
 
-        return EMPTYSTRING.join(slist)
+        gib EMPTYSTRING.join(slist)
 
     def getquote(self):
         """Get a quote-delimited fragment von self's field."""
-        return self.getdelimited('"', '"\r', Falsch)
+        gib self.getdelimited('"', '"\r', Falsch)
 
     def getcomment(self):
         """Get a parenthesis-delimited fragment von self's field."""
-        return self.getdelimited('(', ')\r', Wahr)
+        gib self.getdelimited('(', ')\r', Wahr)
 
     def getdomainliteral(self):
         """Parse an RFC 2822 domain-literal."""
-        return '[%s]' % self.getdelimited('[', ']\r', Falsch)
+        gib '[%s]' % self.getdelimited('[', ']\r', Falsch)
 
     def getatom(self, atomends=Nichts):
         """Parse an RFC 2822 atom.
@@ -487,7 +487,7 @@ klasse AddrlistClass:
                 atomlist.append(self.field[self.pos])
             self.pos += 1
 
-        return EMPTYSTRING.join(atomlist)
+        gib EMPTYSTRING.join(atomlist)
 
     def getphraselist(self):
         """Parse a sequence of RFC 2822 phrases.
@@ -510,7 +510,7 @@ klasse AddrlistClass:
             sonst:
                 plist.append(self.getatom(self.phraseends))
 
-        return plist
+        gib plist
 
 klasse AddressList(AddrlistClass):
     """An AddressList encapsulates a list of parsed RFC 2822 addresses."""
@@ -522,7 +522,7 @@ klasse AddressList(AddrlistClass):
             self.addresslist = []
 
     def __len__(self):
-        return len(self.addresslist)
+        gib len(self.addresslist)
 
     def __add__(self, other):
         # Set union
@@ -531,14 +531,14 @@ klasse AddressList(AddrlistClass):
         fuer x in other.addresslist:
             wenn nicht x in self.addresslist:
                 newaddr.addresslist.append(x)
-        return newaddr
+        gib newaddr
 
     def __iadd__(self, other):
         # Set union, in-place
         fuer x in other.addresslist:
             wenn nicht x in self.addresslist:
                 self.addresslist.append(x)
-        return self
+        gib self
 
     def __sub__(self, other):
         # Set difference
@@ -546,15 +546,15 @@ klasse AddressList(AddrlistClass):
         fuer x in self.addresslist:
             wenn nicht x in other.addresslist:
                 newaddr.addresslist.append(x)
-        return newaddr
+        gib newaddr
 
     def __isub__(self, other):
         # Set difference, in-place
         fuer x in other.addresslist:
             wenn x in self.addresslist:
                 self.addresslist.remove(x)
-        return self
+        gib self
 
     def __getitem__(self, index):
         # Make indexing, slices, und 'in' work
-        return self.addresslist[index]
+        gib self.addresslist[index]

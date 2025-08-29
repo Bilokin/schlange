@@ -71,7 +71,7 @@ wenn nicht os.path.isfile(os.path.join(STDLIB_INSTALL, 'os.py')):
 def debug_build(program):
     program = os.path.basename(program)
     name = os.path.splitext(program)[0]
-    return name.casefold().endswith("_d".casefold())
+    gib name.casefold().endswith("_d".casefold())
 
 
 def remove_python_envvars():
@@ -80,7 +80,7 @@ def remove_python_envvars():
     fuer key in list(env):
         wenn key.startswith('PYTHON'):
             del env[key]
-    return env
+    gib env
 
 
 klasse EmbeddingTestsMixin:
@@ -138,7 +138,7 @@ klasse EmbeddingTestsMixin:
         self.assertEqual(p.returncode, returncode,
                          "bad returncode %d, stderr is %r" %
                          (p.returncode, err))
-        return out, err
+        gib out, err
 
     def run_repeated_init_and_subinterpreters(self):
         out, err = self.run_embedded_interpreter("test_repeated_init_and_subinterpreters")
@@ -189,7 +189,7 @@ klasse EmbeddingTestsMixin:
             wenn len(current_run) == 5:
                 main = current_run[0]
                 self.assertEqual(interp, main)
-                yield current_run
+                liefere current_run
                 current_run = []
 
 
@@ -404,8 +404,8 @@ klasse EmbeddingTests(EmbeddingTestsMixin, unittest.TestCase):
                         # inserted during quickening.
                         und opname != "LOAD_CONST_IMMORTAL"
                     ):
-                        return Wahr
-                return Falsch
+                        gib Wahr
+                gib Falsch
 
             func = importlib._bootstrap._handle_fromlist
 
@@ -457,7 +457,7 @@ klasse EmbeddingTests(EmbeddingTestsMixin, unittest.TestCase):
                 key = cls, attr
                 assert key nicht in results, (results, key, wrapper)
                 results[key] = wrapper
-            return results
+            gib results
 
         ns = {}
         exec(script, ns, ns)
@@ -740,7 +740,7 @@ klasse InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
                 xoptions[key] = value
             sonst:
                 xoptions[opt] = Wahr
-        return xoptions
+        gib xoptions
 
     def _get_expected_config_impl(self):
         env = remove_python_envvars()
@@ -769,7 +769,7 @@ klasse InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
         stdout = proc.stdout.decode('utf-8')
         # ignore stderr
         try:
-            return json.loads(stdout)
+            gib json.loads(stdout)
         except json.JSONDecodeError:
             self.fail(f"fail to decode stdout: {stdout!r}")
 
@@ -787,7 +787,7 @@ klasse InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
                     value = value.copy()
                 config[key] = value
             configs[config_key] = config
-        return configs
+        gib configs
 
     def get_expected_config(self, expected_preconfig, expected,
                             env, api, modify_path_cb=Nichts):
@@ -946,7 +946,7 @@ klasse InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
         self.check_pre_config(configs, expected_preconfig)
         self.check_config(configs, expected_config)
         self.check_global_config(configs)
-        return configs
+        gib configs
 
     @unittest.skipIf(support.check_bolt_optimized, "segfaults on BOLT instrumented binaries")
     def test_init_default_config(self):
@@ -1374,10 +1374,10 @@ klasse InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
         wenn exec_prefix is Nichts:
             exec_prefix = config['config']['prefix']
         wenn MS_WINDOWS:
-            return config['config']['module_search_paths']
+            gib config['config']['module_search_paths']
         sonst:
             ver = sys.version_info
-            return [
+            gib [
                 os.path.join(prefix, sys.platlibdir,
                              f'python{ver.major}{ver.minor}{ABI_THREAD}.zip'),
                 os.path.join(prefix, sys.platlibdir,
@@ -1412,7 +1412,7 @@ klasse InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
             shutil.copystat(self.test_exe, exec_copy)
             self.test_exe = exec_copy
 
-            yield tmpdir
+            liefere tmpdir
 
     def test_init_setpythonhome(self):
         # Test Py_SetPythonHome(home) mit PYTHONPATH env var
@@ -1521,7 +1521,7 @@ klasse InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
         paths_str = os.path.pathsep.join(paths)
         config['pythonpath_env'] = paths_str
         env = {'PYTHONPATH': paths_str}
-        return env
+        gib env
 
     @unittest.skipIf(MS_WINDOWS, 'See test_init_pybuilddir_win32')
     def test_init_pybuilddir(self):
@@ -1716,7 +1716,7 @@ klasse InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
             func = getattr(ctypes.pythonapi, name)
             func.argtypes = ()
             func.restype = ctypes.c_wchar_p
-            return func
+            gib func
 
         Py_GetPath = get_func('Py_GetPath')
         Py_GetPrefix = get_func('Py_GetPrefix')

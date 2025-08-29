@@ -24,8 +24,8 @@ klasse BaseRobotTest:
     def get_agent_and_url(self, url):
         wenn isinstance(url, tuple):
             agent, url = url
-            return agent, url
-        return self.agent, url
+            gib agent, url
+        gib self.agent, url
 
     def test_good_urls(self):
         fuer url in self.good:
@@ -360,7 +360,7 @@ klasse NetworkTestCase(unittest.TestCase):
             cls.parser.read()
 
     def url(self, path):
-        return '{}{}{}'.format(
+        gib '{}{}{}'.format(
             self.base_url, path, '/' wenn nicht os.path.splitext(path)[1] sonst ''
         )
 

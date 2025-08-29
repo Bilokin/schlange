@@ -38,7 +38,7 @@ def genwinmap(codepage):
 
         enc2uni[i] = (ord(buf[0]), name)
 
-    return enc2uni
+    gib enc2uni
 
 def genwincodec(codepage):
     importiere platform

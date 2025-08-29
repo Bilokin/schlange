@@ -63,7 +63,7 @@ def nested():
     def generic_function[Eggs, **Spam](x: Eggs, y: Spam): pass
 
 
-    return SimpleNamespace(
+    gib SimpleNamespace(
         E=E,
         hints_for_E=get_type_hints(E),
         hints_for_E_meth=get_type_hints(E.generic_method),

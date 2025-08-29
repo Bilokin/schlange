@@ -737,14 +737,14 @@ klasse ExceptionTests(unittest.TestCase):
     @no_tracing
     def testInfiniteRecursion(self):
         def f():
-            return f()
+            gib f()
         self.assertRaises(RecursionError, f)
 
         def g():
             try:
-                return g()
+                gib g()
             except ValueError:
-                return -1
+                gib -1
         self.assertRaises(RecursionError, g)
 
     def test_str(self):
@@ -883,9 +883,9 @@ klasse ExceptionTests(unittest.TestCase):
         # Inside an exception-silencing "with" block
         klasse Context:
             def __enter__(self):
-                return self
+                gib self
             def __exit__ (self, exc_type, exc_value, exc_tb):
-                return Wahr
+                gib Wahr
         obj = MyObj()
         wr = weakref.ref(obj)
         mit Context():
@@ -914,9 +914,9 @@ klasse ExceptionTests(unittest.TestCase):
             try:
                 raise KeyError("caught")
             except KeyError:
-                yield sys.exception()
-                yield sys.exception()
-            yield sys.exception()
+                liefere sys.exception()
+                liefere sys.exception()
+            liefere sys.exception()
         g = yield_raise()
         self.assertIsInstance(next(g), KeyError)
         self.assertIsNichts(sys.exception())
@@ -940,7 +940,7 @@ klasse ExceptionTests(unittest.TestCase):
     def test_generator_leaking2(self):
         # See issue 12475.
         def g():
-            yield
+            liefere
         try:
             raise RuntimeError
         except RuntimeError:
@@ -957,9 +957,9 @@ klasse ExceptionTests(unittest.TestCase):
         # exception state should be save und restored.
         def g():
             try:
-                yield
+                liefere
             except ZeroDivisionError:
-                yield sys.exception()
+                liefere sys.exception()
         it = g()
         next(it)
         try:
@@ -978,7 +978,7 @@ klasse ExceptionTests(unittest.TestCase):
             try:
                 1/0
             except ZeroDivisionError:
-                yield sys.exception()
+                liefere sys.exception()
                 raise
         it = g()
         try:
@@ -1001,7 +1001,7 @@ klasse ExceptionTests(unittest.TestCase):
     def test_generator_doesnt_retain_old_exc(self):
         def g():
             self.assertIsInstance(sys.exception(), RuntimeError)
-            yield
+            liefere
             self.assertIsNichts(sys.exception())
         it = g()
         try:
@@ -1013,13 +1013,13 @@ klasse ExceptionTests(unittest.TestCase):
     def test_generator_finalizing_and_sys_exception(self):
         # See #7173
         def simple_gen():
-            yield 1
+            liefere 1
         def run_gen():
             gen = simple_gen()
             try:
                 raise RuntimeError
             except RuntimeError:
-                return next(gen)
+                gib next(gen)
         run_gen()
         gc_collect()
         self.assertIsNichts(sys.exception())
@@ -1037,7 +1037,7 @@ klasse ExceptionTests(unittest.TestCase):
             try:
                 raise MyException(obj)
             except MyException:
-                yield
+                liefere
 
         obj = MyObj()
         wr = weakref.ref(obj)
@@ -1378,7 +1378,7 @@ klasse ExceptionTests(unittest.TestCase):
         klasse Evil(str):
             def __str__(self):
                 side_effect(exc)
-                return self
+                gib self
 
         fuer reason, encoding in [
             ("reason", Evil("utf-8")),
@@ -1421,9 +1421,9 @@ klasse ExceptionTests(unittest.TestCase):
 
         def g():
             try:
-                return g()
+                gib g()
             except RecursionError als e:
-                return e
+                gib e
         exc = g()
         self.assertIsInstance(exc, RecursionError, type(exc))
         self.assertIn("maximum recursion depth exceeded", str(exc))
@@ -1469,7 +1469,7 @@ klasse ExceptionTests(unittest.TestCase):
                 waehrend 1:
                     try:
                         sys.setrecursionlimit(depth)
-                        return depth
+                        gib depth
                     except RecursionError:
                         # sys.setrecursionlimit() raises a RecursionError if
                         # the new recursion limit is too low (issue #25274).
@@ -1484,7 +1484,7 @@ klasse ExceptionTests(unittest.TestCase):
 
             def gen():
                 f = open(%a, mode='rb', buffering=0)
-                yield
+                liefere
 
             generator = gen()
             next(generator)
@@ -1611,7 +1611,7 @@ klasse ExceptionTests(unittest.TestCase):
                 tb = e.__traceback__
             sonst:
                 self.fail("Should have raised a MemoryError")
-            return traceback.format_tb(tb)
+            gib traceback.format_tb(tb)
 
         tb1 = raiseMemError()
         tb2 = raiseMemError()
@@ -1782,7 +1782,7 @@ klasse ExceptionTests(unittest.TestCase):
                 raise MainError()
             except MainError:
                 try:
-                    yield
+                    liefere
                 except SubError:
                     pass
                 raise
@@ -1798,9 +1798,9 @@ klasse ExceptionTests(unittest.TestCase):
             try:
                 raise ValueError
             except ValueError:
-                yield 1
+                liefere 1
             self.assertIsNichts(sys.exception())
-            yield 2
+            liefere 2
 
         gen = g()
 
@@ -1813,9 +1813,9 @@ klasse ExceptionTests(unittest.TestCase):
     def test_raise_in_generator(self):
         #Issue 25612#msg304117
         def g():
-            yield 1
+            liefere 1
             raise
-            yield 2
+            liefere 2
 
         mit self.assertRaises(ZeroDivisionError):
             i = g()
@@ -1991,7 +1991,7 @@ klasse AttributeErrorTests(unittest.TestCase):
     def test_getattr_has_name_and_obj_for_method(self):
         klasse A:
             def blech(self):
-                return
+                gib
 
         obj = A()
         try:
@@ -2132,7 +2132,7 @@ def run_script(source):
         mit open(TESTFN, 'wb') als testfile:
             testfile.write(source)
     _rc, _out, err = script_helper.assert_python_failure('-Wd', '-X', 'utf8', TESTFN)
-    return err.decode('utf-8').splitlines()
+    gib err.decode('utf-8').splitlines()
 
 klasse AssertionErrorTests(unittest.TestCase):
     def tearDown(self):
@@ -2405,7 +2405,7 @@ klasse SyntaxErrorTests(unittest.TestCase):
         def try_compile(source):
             mit self.assertRaises(SyntaxError) als cm:
                 compile(source, '<string>', 'exec')
-            return cm.exception
+            gib cm.exception
 
         exc = try_compile('return "ä"')
         self.assertEqual(str(exc), "'return' outside function (<string>, line 1)")
@@ -2447,25 +2447,25 @@ klasse SyntaxErrorTests(unittest.TestCase):
         self.addCleanup(unlink, TESTFN)
         err = run_script('return "ä"')
         self.assertEqual(err[-3:], [
-                         '    return "ä"',
+                         '    gib "ä"',
                          '    ^^^^^^^^^^',
                          "SyntaxError: 'return' outside function"])
 
         err = run_script('return "ä"'.encode())
         self.assertEqual(err[-3:], [
-                         '    return "ä"',
+                         '    gib "ä"',
                          '    ^^^^^^^^^^',
                          "SyntaxError: 'return' outside function"])
 
         err = run_script(BOM_UTF8 + 'return "ä"'.encode())
         self.assertEqual(err[-3:], [
-                         '    return "ä"',
+                         '    gib "ä"',
                          '    ^^^^^^^^^^',
                          "SyntaxError: 'return' outside function"])
 
         err = run_script('# coding: latin1\nreturn "ä"'.encode('latin1'))
         self.assertEqual(err[-3:], [
-                         '    return "ä"',
+                         '    gib "ä"',
                          '    ^^^^^^^^^^',
                          "SyntaxError: 'return' outside function"])
 
@@ -2473,13 +2473,13 @@ klasse SyntaxErrorTests(unittest.TestCase):
         self.assertEqual(err[-2:], [
                          '    ^^^^^^^^^^^',
                          "SyntaxError: 'return' outside function"])
-        self.assertEqual(err[-3][:100], '    return "ä" #' + 'ä'*84)
+        self.assertEqual(err[-3][:100], '    gib "ä" #' + 'ä'*84)
 
         err = run_script('return "ä" # ' + 'ä'*1000)
         self.assertEqual(err[-2:], [
                          '    ^^^^^^^^^^^',
                          "SyntaxError: 'return' outside function"])
-        self.assertEqual(err[-3][:100], '    return "ä" # ' + 'ä'*83)
+        self.assertEqual(err[-3][:100], '    gib "ä" # ' + 'ä'*83)
 
     def test_attributes_new_constructor(self):
         args = ("bad.py", 1, 2, "abcdefg", 1, 100)
@@ -2612,7 +2612,7 @@ klasse PEP626Tests(unittest.TestCase):
     def test_lineno_after_with(self):
         klasse Noop:
             def __enter__(self):
-                return self
+                gib self
             def __exit__(self, *args):
                 pass
         def after_with():
@@ -2631,7 +2631,7 @@ klasse PEP626Tests(unittest.TestCase):
     def test_lineno_after_raise_in_with_exit(self):
         klasse ExitFails:
             def __enter__(self):
-                return self
+                gib self
             def __exit__(self, *args):
                 raise ValueError
 

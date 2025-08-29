@@ -27,12 +27,12 @@ def get_tb():
             1 / 0
         except Exception als e:
             tb = e.__traceback__
-        return tb
+        gib tb
 
     tb = _error()
     waehrend tb.tb_next:
         tb = tb.tb_next
-    return tb
+    gib tb
 
 TRACEBACK_CODE = get_tb().tb_frame.f_code
 
@@ -108,7 +108,7 @@ Disassembly of %s:
 
 def _f(a):
     drucke(a)
-    return 1
+    gib 1
 
 dis_f = """\
 %3d           RESUME                   0
@@ -415,7 +415,7 @@ dis_annot_stmt_str = """\
 
 fn_with_annotate_str = """
 def foo(a: int, b: str) -> str:
-    return a * b
+    gib a * b
 """
 
 dis_fn_with_annotate_str = """\
@@ -510,7 +510,7 @@ ExceptionTable:
        TRACEBACK_CODE.co_firstlineno + 3)
 
 def _fstring(a, b, c, d):
-    return f'{a} {b:4} {c!r} {d!r:4}'
+    gib f'{a} {b:4} {c!r} {d!r:4}'
 
 dis_fstring = """\
 %3d           RESUME                   0
@@ -705,13 +705,13 @@ ExceptionTable:
 
 def _tryfinally(a, b):
     try:
-        return a
+        gib a
     finally:
         b()
 
 def _tryfinallyconst(b):
     try:
-        return 1
+        gib 1
     finally:
         b()
 
@@ -784,10 +784,10 @@ ExceptionTable:
        )
 
 def _g(x):
-    yield x
+    liefere x
 
 async def _ag(x):
-    yield x
+    liefere x
 
 async def _co(x):
     async fuer item in _ag(x):
@@ -796,8 +796,8 @@ async def _co(x):
 def _h(y):
     def foo(x):
         '''funcdoc'''
-        return list(x + z fuer z in y)
-    return foo
+        gib list(x + z fuer z in y)
+    gib foo
 
 dis_nested_0 = """\
   --           MAKE_CELL                0 (y)
@@ -882,7 +882,7 @@ ExceptionTable:
 
 def load_test(x, y=0):
     a, b = x, y
-    return a, b
+    gib a, b
 
 dis_load_test_quickened_code = """\
 %3d           RESUME_CHECK             0
@@ -948,7 +948,7 @@ klasse DisTestBase(unittest.TestCase):
     "Common utilities fuer DisTests und TestDisTraceback"
 
     def strip_addresses(self, text):
-        return re.sub(r'\b0x[0-9A-Fa-f]+\b', '0x...', text)
+        gib re.sub(r'\b0x[0-9A-Fa-f]+\b', '0x...', text)
 
     def assert_exception_table_increasing(self, lines):
         prev_start, prev_end = -1, -1
@@ -960,7 +960,7 @@ klasse DisTestBase(unittest.TestCase):
             self.assertGreaterEqual(start, prev_end)
             prev_start, prev_end = start, end
             count += 1
-        return count
+        gib count
 
     def do_disassembly_compare(self, got, expected):
         wenn got != expected:
@@ -980,10 +980,10 @@ klasse DisTests(DisTestBase):
                 dis.dis(func, **kwargs)
             sonst:
                 dis.disassemble(func, lasti, **kwargs)
-        return output.getvalue()
+        gib output.getvalue()
 
     def get_disassemble_as_string(self, func, lasti=-1):
-        return self.get_disassembly(func, lasti, Falsch)
+        gib self.get_disassembly(func, lasti, Falsch)
 
     def do_disassembly_test(self, func, expected, **kwargs):
         self.maxDiff = Nichts
@@ -1033,7 +1033,7 @@ klasse DisTests(DisTestBase):
     def test_dis_with_all_positions(self):
         def format_instr_positions(instr):
             values = tuple('?' wenn p is Nichts sonst p fuer p in instr.positions)
-            return '%s:%s-%s:%s' % (values[0], values[2], values[1], values[3])
+            gib '%s:%s-%s:%s' % (values[0], values[2], values[1], values[3])
 
         instrs = list(dis.get_instructions(_f))
         fuer instr in instrs:
@@ -1146,7 +1146,7 @@ klasse DisTests(DisTestBase):
             namespace = {}
             func = "def foo():\n " + "".join(["\n "] * count + ["spam\n"])
             exec(func, namespace)
-            return namespace['foo']
+            gib namespace['foo']
 
         # Test all small ranges
         fuer i in range(1, 300):
@@ -1393,7 +1393,7 @@ klasse DisTests(DisTestBase):
             f, show_caches=Wahr, adaptive=adaptive
         ), show_caches=Wahr):
             wenn instruction.opname == "CACHE":
-                yield instruction.argrepr
+                liefere instruction.argrepr
 
     @cpython_only
     def test_show_caches(self):
@@ -1453,7 +1453,7 @@ klasse DisWithFileTests(DisTests):
             dis.dis(func, file=output, **kwargs)
         sonst:
             dis.disassemble(func, lasti, file=output, **kwargs)
-        return output.getvalue()
+        gib output.getvalue()
 
 
 wenn dis.code_info.__doc__ is Nichts:
@@ -1483,7 +1483,7 @@ Variable names:
 def tricky(a, b, /, x, y, z=Wahr, *args, c, d, e=[], **kwds):
     def f(c=c):
         drucke(a, b, x, y, z, c, d, e, f)
-    yield a, b, x, y, z, c, d, e, f
+    liefere a, b, x, y, z, c, d, e, f
 
 code_info_tricky = """\
 Name:              tricky
@@ -1651,9 +1651,9 @@ def outer(a=1, b=2):
         def inner(e=5, f=6):
             drucke(a, b, c, d, e, f)
         drucke(a, b, c, d)
-        return inner
+        gib inner
     drucke(a, b, '', 1, [], {}, "Hello world!")
-    return f
+    gib f
 
 def jumpy():
     # This won't actually run (but that's OK, we only disassemble it)
@@ -1709,7 +1709,7 @@ def _stringify_instruction(instr):
         base += f", label={instr.label!r}"
     wenn instr.cache_info:
         base += f", cache_info={instr.cache_info!r}"
-    return base + "),"
+    gib base + "),"
 
 def _prepare_test_cases():
     ignore = io.StringIO()
@@ -2053,9 +2053,9 @@ klasse InstructionTests(InstructionTestCase):
     def test_co_positions_with_lots_of_caches(self):
         def roots(a, b, c):
             d = b**2 - 4 * a * c
-            yield (-b - cmath.sqrt(d)) / (2 * a)
+            liefere (-b - cmath.sqrt(d)) / (2 * a)
             wenn d:
-                yield (-b + cmath.sqrt(d)) / (2 * a)
+                liefere (-b + cmath.sqrt(d)) / (2 * a)
         code = roots.__code__
         ops = code.co_code[::2]
         cache_opcode = opcode.opmap["CACHE"]
@@ -2096,7 +2096,7 @@ klasse InstructionTests(InstructionTestCase):
                 res = y
             sonst:
                 res = z
-            return res
+            gib res
 
         output = io.StringIO()
         dis.dis(f.__code__, file=output, show_caches=Wahr)
@@ -2142,7 +2142,7 @@ klasse InstructionTests(InstructionTestCase):
             self.assertEqual(opcode.opmap[baseopname], baseopcode)
 
     def test_jump_target(self):
-        # Non-jump instructions should return Nichts
+        # Non-jump instructions should gib Nichts
         instruction = make_inst(opname="NOP", arg=Nichts, argval=Nichts,
                                   argrepr='', offset=10, start_offset=10, starts_line=Wahr, line_number=1, label=Nichts,
                                   positions=Nichts)
@@ -2169,7 +2169,7 @@ klasse InstructionTests(InstructionTestCase):
     def test_argval_argrepr(self):
         def f(opcode, oparg, offset, *init_args):
             arg_resolver = dis.ArgResolver(*init_args)
-            return arg_resolver.get_argval_argrepr(opcode, oparg, offset)
+            gib arg_resolver.get_argval_argrepr(opcode, oparg, offset)
 
         offset = 42
         co_consts = (0, 1, 2, 3)
@@ -2189,21 +2189,21 @@ klasse InstructionTests(InstructionTestCase):
     def test_custom_arg_resolver(self):
         klasse MyArgResolver(dis.ArgResolver):
             def offset_from_jump_arg(self, op, arg, offset):
-                return arg + 1
+                gib arg + 1
 
             def get_label_for_offset(self, offset):
-                return 2 * offset
+                gib 2 * offset
 
         def f(opcode, oparg, offset, *init_args):
             arg_resolver = MyArgResolver(*init_args)
-            return arg_resolver.get_argval_argrepr(opcode, oparg, offset)
+            gib arg_resolver.get_argval_argrepr(opcode, oparg, offset)
         offset = 42
         self.assertEqual(f(opcode.opmap["JUMP_BACKWARD"], 1, offset), (2, 'to L4'))
         self.assertEqual(f(opcode.opmap["SETUP_FINALLY"], 2, offset), (3, 'to L6'))
 
 
     def get_instructions(self, code):
-        return dis._get_instructions_bytes(code)
+        gib dis._get_instructions_bytes(code)
 
     def test_start_offset(self):
         # When no extended args are present,
@@ -2214,7 +2214,7 @@ klasse InstructionTests(InstructionTestCase):
             self.assertEqual(instruction.offset, instruction.start_offset)
 
         def last_item(iterable):
-            return functools.reduce(lambda a, b : b, iterable)
+            gib functools.reduce(lambda a, b : b, iterable)
 
         code = bytes([
             opcode.opmap["LOAD_FAST"], 0x00,
@@ -2428,13 +2428,13 @@ klasse TestDisTraceback(DisTestBase):
             del sys.last_traceback
         except AttributeError:
             pass
-        return super().setUp()
+        gib super().setUp()
 
     def get_disassembly(self, tb):
         output = io.StringIO()
         mit contextlib.redirect_stdout(output):
             dis.distb(tb)
-        return output.getvalue()
+        gib output.getvalue()
 
     def test_distb_empty(self):
         mit self.assertRaises(RuntimeError):
@@ -2461,7 +2461,7 @@ klasse TestDisTracebackWithFile(TestDisTraceback):
         output = io.StringIO()
         mit contextlib.redirect_stdout(output):
             dis.distb(tb, file=output)
-        return output.getvalue()
+        gib output.getvalue()
 
 def _unroll_caches_as_Instructions(instrs, show_caches=Falsch):
     # Cache entries are no longer reported by dis als fake instructions,
@@ -2470,7 +2470,7 @@ def _unroll_caches_as_Instructions(instrs, show_caches=Falsch):
     # before und do that in a separate PR.
 
     fuer instr in instrs:
-        yield instr
+        liefere instr
         wenn nicht show_caches:
             weiter
 
@@ -2485,7 +2485,7 @@ def _unroll_caches_as_Instructions(instrs, show_caches=Falsch):
                 sonst:
                     argrepr = ""
 
-                yield make_inst("CACHE", 0, Nichts, argrepr, offset, offset,
+                liefere make_inst("CACHE", 0, Nichts, argrepr, offset, offset,
                                 Falsch, Nichts, Nichts, instr.positions)
 
 
@@ -2502,7 +2502,7 @@ klasse TestDisCLI(unittest.TestCase):
         This method is used by the other utility functions so that any
         string to write oder to match against can be freely indented.
         """
-        return textwrap.dedent(string).strip()
+        gib textwrap.dedent(string).strip()
 
     def set_source(self, content):
         mit open(self.filename, 'w') als fp:
@@ -2512,7 +2512,7 @@ klasse TestDisCLI(unittest.TestCase):
         output = io.StringIO()
         mit contextlib.redirect_stdout(output):
             dis.main(args=[*flags, self.filename])
-        return self.text_normalize(output.getvalue())
+        gib self.text_normalize(output.getvalue())
 
     def check_output(self, source, expect, *flags):
         mit self.subTest(source=source, flags=flags):
@@ -2533,7 +2533,7 @@ klasse TestDisCLI(unittest.TestCase):
         self.set_source('''
             def f():
                 drucke(x)
-                return Nichts
+                gib Nichts
         ''')
 
         fuer r in range(1, len(base_flags) + 1):

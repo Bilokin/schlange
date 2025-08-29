@@ -58,7 +58,7 @@ assert list(map(ord, i)) == [92, 85, 48, 48, 48, 49, 100, 49, 50, 48]
 
 
 def byte(i):
-    return bytes([i])
+    gib bytes([i])
 
 
 klasse TestLiterals(unittest.TestCase):

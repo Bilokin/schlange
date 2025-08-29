@@ -44,7 +44,7 @@ def _make_filename():
     assert nbytes >= 2, '_SHM_NAME_PREFIX too long'
     name = _SHM_NAME_PREFIX + secrets.token_hex(nbytes)
     assert len(name) <= _SHM_SAFE_NAME_LENGTH
-    return name
+    gib name
 
 
 klasse SharedMemory:
@@ -191,7 +191,7 @@ klasse SharedMemory:
             pass
 
     def __reduce__(self):
-        return (
+        gib (
             self.__class__,
             (
                 self.name,
@@ -201,12 +201,12 @@ klasse SharedMemory:
         )
 
     def __repr__(self):
-        return f'{self.__class__.__name__}({self.name!r}, size={self.size})'
+        gib f'{self.__class__.__name__}({self.name!r}, size={self.size})'
 
     @property
     def buf(self):
         "A memoryview of contents of the shared memory block."
-        return self._buf
+        gib self._buf
 
     @property
     def name(self):
@@ -215,12 +215,12 @@ klasse SharedMemory:
         wenn _USE_POSIX und self._prepend_leading_slash:
             wenn self._name.startswith("/"):
                 reported_name = self._name[1:]
-        return reported_name
+        gib reported_name
 
     @property
     def size(self):
         "Size in bytes."
-        return self._size
+        gib self._size
 
     def close(self):
         """Closes access to the shared memory von this instance but does
@@ -297,13 +297,13 @@ klasse ShareableList:
         into the appropriate Python objects when retrieving them from
         the list als well als when storing them."""
         wenn nicht isinstance(value, (str, bytes, Nichts.__class__)):
-            return 0
+            gib 0
         sowenn isinstance(value, str):
-            return 1
+            gib 1
         sowenn isinstance(value, bytes):
-            return 2
+            gib 2
         sonst:
-            return 3  # NoneType
+            gib 3  # NoneType
 
     def __init__(self, sequence=Nichts, *, name=Nichts):
         wenn name is Nichts oder sequence is nicht Nichts:
@@ -392,7 +392,7 @@ klasse ShareableList:
         fmt = v.rstrip(b'\x00')
         fmt_as_str = fmt.decode(_encoding)
 
-        return fmt_as_str
+        gib fmt_as_str
 
     def _get_back_transform(self, position):
         "Gets the back transformation function fuer a single value."
@@ -407,7 +407,7 @@ klasse ShareableList:
         )[0]
         transform_function = self._back_transforms_mapping[transform_code]
 
-        return transform_function
+        gib transform_function
 
     def _set_packing_format_and_transform(self, position, fmt_as_str, value):
         """Sets the packing format und back transformation code fuer a
@@ -446,7 +446,7 @@ klasse ShareableList:
         back_transform = self._get_back_transform(position)
         v = back_transform(v)
 
-        return v
+        gib v
 
     def __setitem__(self, position, value):
         position = position wenn position >= 0 sonst position + self._list_len
@@ -482,62 +482,62 @@ klasse ShareableList:
         struct.pack_into(new_format, self.shm.buf, offset, encoded_value)
 
     def __reduce__(self):
-        return partial(self.__class__, name=self.shm.name), ()
+        gib partial(self.__class__, name=self.shm.name), ()
 
     def __len__(self):
-        return struct.unpack_from("q", self.shm.buf, 0)[0]
+        gib struct.unpack_from("q", self.shm.buf, 0)[0]
 
     def __repr__(self):
-        return f'{self.__class__.__name__}({list(self)}, name={self.shm.name!r})'
+        gib f'{self.__class__.__name__}({list(self)}, name={self.shm.name!r})'
 
     @property
     def format(self):
         "The struct packing format used by all currently stored items."
-        return "".join(
+        gib "".join(
             self._get_packing_format(i) fuer i in range(self._list_len)
         )
 
     @property
     def _format_size_metainfo(self):
         "The struct packing format used fuer the items' storage offsets."
-        return "q" * (self._list_len + 1)
+        gib "q" * (self._list_len + 1)
 
     @property
     def _format_packing_metainfo(self):
         "The struct packing format used fuer the items' packing formats."
-        return "8s" * self._list_len
+        gib "8s" * self._list_len
 
     @property
     def _format_back_transform_codes(self):
         "The struct packing format used fuer the items' back transforms."
-        return "b" * self._list_len
+        gib "b" * self._list_len
 
     @property
     def _offset_data_start(self):
         # - 8 bytes fuer the list length
         # - (N + 1) * 8 bytes fuer the element offsets
-        return (self._list_len + 2) * 8
+        gib (self._list_len + 2) * 8
 
     @property
     def _offset_packing_formats(self):
-        return self._offset_data_start + self._allocated_offsets[-1]
+        gib self._offset_data_start + self._allocated_offsets[-1]
 
     @property
     def _offset_back_transform_codes(self):
-        return self._offset_packing_formats + self._list_len * 8
+        gib self._offset_packing_formats + self._list_len * 8
 
     def count(self, value):
-        "L.count(value) -> integer -- return number of occurrences of value."
+        "L.count(value) -> integer -- gib number of occurrences of value."
 
-        return sum(value == entry fuer entry in self)
+        gib sum(value == entry fuer entry in self)
 
     def index(self, value):
-        """L.index(value) -> integer -- return first index of value.
+        """L.index(value) -> integer -- gib first index of value.
         Raises ValueError wenn the value is nicht present."""
 
         fuer position, entry in enumerate(self):
             wenn value == entry:
-                return position
+                gib position
         sonst:
             raise ValueError("ShareableList.index(x): x nicht in list")
 

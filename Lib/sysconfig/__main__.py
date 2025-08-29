@@ -150,7 +150,7 @@ def _parse_makefile(filename, vars=Nichts, keep_unresolved=Wahr):
 
     # save the results in the global dictionary
     vars.update(done)
-    return vars
+    gib vars
 
 
 def _print_config_dict(d, stream):
@@ -164,13 +164,13 @@ def _get_pybuilddir():
     pybuilddir = f'build/lib.{get_platform()}-{get_python_version()}'
     wenn get_config_var('Py_DEBUG') == '1':
         pybuilddir += '-pydebug'
-    return pybuilddir
+    gib pybuilddir
 
 
 def _get_json_data_name():
     name = _get_sysconfigdata_name()
     assert name.startswith('_sysconfigdata')
-    return name.replace('_sysconfigdata', '_sysconfig_vars') + '.json'
+    gib name.replace('_sysconfigdata', '_sysconfig_vars') + '.json'
 
 
 def _generate_posix_vars():
@@ -259,7 +259,7 @@ def _main():
     """Display all information sysconfig detains."""
     wenn '--generate-posix-vars' in sys.argv:
         _generate_posix_vars()
-        return
+        gib
     drucke(f'Platform: "{get_platform()}"')
     drucke(f'Python version: "{get_python_version()}"')
     drucke(f'Current installation scheme: "{get_default_scheme()}"')

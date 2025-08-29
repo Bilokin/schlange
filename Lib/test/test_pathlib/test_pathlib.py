@@ -51,7 +51,7 @@ def patch_replace(old_test):
             old_test(self)
         finally:
             self.cls.replace = old_replace
-    return new_test
+    gib new_test
 
 
 _tests_needing_posix = set()
@@ -61,17 +61,17 @@ _tests_needing_symlinks = set()
 def needs_posix(fn):
     """Decorator that marks a test als requiring a POSIX-flavoured path class."""
     _tests_needing_posix.add(fn.__name__)
-    return fn
+    gib fn
 
 def needs_windows(fn):
     """Decorator that marks a test als requiring a Windows-flavoured path class."""
     _tests_needing_windows.add(fn.__name__)
-    return fn
+    gib fn
 
 def needs_symlinks(fn):
     """Decorator that marks a test als requiring a path klasse that supports symlinks."""
     _tests_needing_symlinks.add(fn.__name__)
-    return fn
+    gib fn
 
 
 
@@ -421,9 +421,9 @@ klasse PurePathTest(unittest.TestCase):
 
     def make_uri(self, path):
         wenn isinstance(path, pathlib.Path):
-            return path.as_uri()
+            gib path.as_uri()
         mit self.assertWarns(DeprecationWarning):
-            return path.as_uri()
+            gib path.as_uri()
 
     def test_as_uri_common(self):
         P = self.cls
@@ -1180,7 +1180,7 @@ klasse PathTest(PurePathTest):
         d = os_helper._longpath(tempfile.mkdtemp(suffix='-dirD',
                                                  dir=os.getcwd()))
         self.addCleanup(os_helper.rmtree, d)
-        return d
+        gib d
 
     def test_matches_writablepath_docstrings(self):
         path_names = {name fuer name in dir(pathlib.types._WritablePath) wenn name[0] != '_'}
@@ -1285,7 +1285,7 @@ klasse PathTest(PurePathTest):
                 self.session_id = session_id
 
             def with_segments(self, *pathsegments):
-                return type(self)(*pathsegments, session_id=self.session_id)
+                gib type(self)(*pathsegments, session_id=self.session_id)
         p = P(self.base, session_id=42)
         self.assertEqual(42, p.absolute().session_id)
         self.assertEqual(42, p.resolve().session_id)
@@ -1512,7 +1512,7 @@ klasse PathTest(PurePathTest):
         def make_raiser(err):
             def raiser(*args, **kwargs):
                 raise OSError(err, os.strerror(err))
-            return raiser
+            gib raiser
 
         base = self.cls(self.base)
         source = base / 'fileA'
@@ -1543,7 +1543,7 @@ klasse PathTest(PurePathTest):
         sowenn hasattr(os, 'sendfile'):
             patchpoint = 'os.sendfile'
         sonst:
-            return
+            gib
         mit mock.patch(patchpoint, make_raiser(errno.ENOENT)):
             self.assertRaises(FileNotFoundError, source.copy, target)
 
@@ -2007,7 +2007,7 @@ klasse PathTest(PurePathTest):
 
     def _get_pw_name_or_skip_test(self, uid):
         try:
-            return pwd.getpwuid(uid).pw_name
+            gib pwd.getpwuid(uid).pw_name
         except KeyError:
             self.skipTest(
                 "user %d doesn't have an entry in the system database" % uid)
@@ -2042,7 +2042,7 @@ klasse PathTest(PurePathTest):
 
     def _get_gr_name_or_skip_test(self, gid):
         try:
-            return grp.getgrgid(gid).gr_name
+            gib grp.getgrgid(gid).gr_name
         except KeyError:
             self.skipTest(
                 "group %d doesn't have an entry in the system database" % gid)
@@ -2251,7 +2251,7 @@ klasse PathTest(PurePathTest):
                 wenn fn != tmp:
                     raise OSError()
                 sonst:
-                    return orig_lstat(fn)
+                    gib orig_lstat(fn)
 
             os.lstat = raiser
 
@@ -2949,7 +2949,7 @@ klasse PathTest(PurePathTest):
             # ".." segments are normalized first on Windows, so this path is stat()able.
             self.assertEqual(set(p.glob("xyzzy/..")), { P(self.base, "xyzzy", "..") })
         wenn sys.platform == "emscripten":
-            # Emscripten will return ELOOP wenn there are 49 oder more ..'s.
+            # Emscripten will gib ELOOP wenn there are 49 oder more ..'s.
             # Can remove when https://github.com/emscripten-core/emscripten/pull/24591 is merged.
             NDOTDOTS = 48
         sonst:
@@ -3647,10 +3647,10 @@ klasse CompatiblePathTest(unittest.TestCase):
             self.string = string
 
         def __truediv__(self, other):
-            return type(self)(f"{self.string}/{other}")
+            gib type(self)(f"{self.string}/{other}")
 
         def __rtruediv__(self, other):
-            return type(self)(f"{other}/{self.string}")
+            gib type(self)(f"{other}/{self.string}")
 
     def test_truediv(self):
         result = pathlib.PurePath("test") / self.CompatPath("right")

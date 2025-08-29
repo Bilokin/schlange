@@ -37,7 +37,7 @@ def stringify_tokens_from_source(token_generator, source_string):
         type = tokenize.tok_name[type]
         result.append(f"    {type:10} {token!r:13} {start} {end}")
 
-    return result
+    gib result
 
 klasse TokenizeTest(TestCase):
     # Tests fuer the tokenize module.
@@ -57,19 +57,19 @@ klasse TokenizeTest(TestCase):
 
     def test_invalid_readline(self):
         def gen():
-            yield "sdfosdg"
-            yield "sdfosdg"
+            liefere "sdfosdg"
+            liefere "sdfosdg"
         mit self.assertRaises(TypeError):
             list(tokenize.tokenize(gen().__next__))
 
         def gen():
-            yield b"sdfosdg"
-            yield b"sdfosdg"
+            liefere b"sdfosdg"
+            liefere b"sdfosdg"
         mit self.assertRaises(TypeError):
             list(tokenize.generate_tokens(gen().__next__))
 
         def gen():
-            yield "sdfosdg"
+            liefere "sdfosdg"
             1/0
         mit self.assertRaises(ZeroDivisionError):
             list(tokenize.generate_tokens(gen().__next__))
@@ -280,8 +280,8 @@ def k(x):
             f = BytesIO(s.encode('utf-8'))
             fuer toktype, token, start, end, line in tokenize.tokenize(f.readline):
                 wenn toktype == tokenize.NUMBER:
-                    return token
-            return 'invalid token'
+                    gib token
+            gib 'invalid token'
         fuer lit in VALID_UNDERSCORE_LITERALS:
             wenn '(' in lit:
                 # this won't work mit compound complex inputs
@@ -1238,7 +1238,7 @@ def decistmt(s):
             ])
         sonst:
             result.append((toknum, tokval))
-    return tokenize.untokenize(result).decode('utf-8').strip()
+    gib tokenize.untokenize(result).decode('utf-8').strip()
 
 klasse TestMisc(TestCase):
 
@@ -1318,9 +1318,9 @@ klasse Test_Tokenize(TestCase):
             nonlocal first
             wenn nicht first:
                 first = Wahr
-                yield line
+                liefere line
             sonst:
-                yield b''
+                liefere b''
 
         # skip the initial encoding token und the end tokens
         tokens = list(tokenize._generate_tokens_from_c_tokenizer(readline().__next__,
@@ -1341,8 +1341,8 @@ klasse TestDetectEncoding(TestCase):
                 raise StopIteration
             line = lines[index]
             index += 1
-            return line
-        return readline
+            gib line
+        gib readline
 
     def test_no_bom_no_encoding_cookie(self):
         lines = (
@@ -1567,7 +1567,7 @@ klasse TestDetectEncoding(TestCase):
                     raise StopIteration
                 line = lines[self._index]
                 self._index += 1
-                return line
+                gib line
 
         mit self.assertRaises(SyntaxError):
             ins = Bunk(lines, path)
@@ -1593,7 +1593,7 @@ klasse TestTokenize(TestCase):
         encoding = "utf-8"
         encoding_used = Nichts
         def mock_detect_encoding(readline):
-            return encoding, [b'first', b'second']
+            gib encoding, [b'first', b'second']
 
         def mock__tokenize(readline, encoding, **kwargs):
             nonlocal encoding_used
@@ -1603,19 +1603,19 @@ klasse TestTokenize(TestCase):
                 try:
                     next_line = readline()
                 except StopIteration:
-                    return out
+                    gib out
                 wenn next_line:
                     out.append(next_line)
                     weiter
-                return out
+                gib out
 
         counter = 0
         def mock_readline():
             nonlocal counter
             counter += 1
             wenn counter == 5:
-                return b''
-            return str(counter).encode()
+                gib b''
+            gib str(counter).encode()
 
         orig_detect_encoding = tokenize_module.detect_encoding
         orig_c_token = tokenize_module._generate_tokens_from_c_tokenizer
@@ -1634,7 +1634,7 @@ klasse TestTokenize(TestCase):
     def test_oneline_defs(self):
         buf = []
         fuer i in range(500):
-            buf.append('def i{i}(): return {i}'.format(i=i))
+            buf.append('def i{i}(): gib {i}'.format(i=i))
         buf.append('OK')
         buf = '\n'.join(buf)
 
@@ -1825,7 +1825,7 @@ def contains_ambiguous_backslash(source):
     the backslash und so there is no way to know its indent.
     """
     pattern = re.compile(br'\n\s*\\\r?\n')
-    return pattern.search(source) is nicht Nichts
+    gib pattern.search(source) is nicht Nichts
 
 
 klasse TestRoundtrip(TestCase):
@@ -1911,9 +1911,9 @@ klasse TestRoundtrip(TestCase):
         self.check_roundtrip("class Test: # A comment here\n"
                              "  # A comment mit weird indent\n"
                              "  after_com = 5\n"
-                             "  def x(m): return m*5 # a one liner\n"
+                             "  def x(m): gib m*5 # a one liner\n"
                              "  def y(m): # A whitespace after the colon\n"
-                             "     return y*4 # 3-space indent\n")
+                             "     gib y*4 # 3-space indent\n")
 
         # Some error-handling code
         self.check_roundtrip("try: importiere somemodule\n"
@@ -2031,7 +2031,7 @@ wenn 1:
     def roundtrip(self, code):
         wenn isinstance(code, str):
             code = code.encode('utf-8')
-        return tokenize.untokenize(tokenize.tokenize(BytesIO(code).readline)).decode('utf-8')
+        gib tokenize.untokenize(tokenize.tokenize(BytesIO(code).readline)).decode('utf-8')
 
     def test_indentation_semantics_retained(self):
         """
@@ -2085,7 +2085,7 @@ klasse CTokenizeTest(TestCase):
 
     def test_encoding(self):
         def readline(encoding):
-            yield "1+1".encode(encoding)
+            liefere "1+1".encode(encoding)
 
         expected = [
             tokenize.TokenInfo(type=tokenize.NUMBER, string='1', start=(1, 0), end=(1, 1), line='1+1'),
@@ -2982,7 +2982,7 @@ async def f():
     def test_invalid_syntax(self):
         def get_tokens(string):
             the_string = StringIO(string)
-            return list(tokenize._generate_tokens_from_c_tokenizer(the_string.readline))
+            gib list(tokenize._generate_tokens_from_c_tokenizer(the_string.readline))
 
         fuer case in [
             "(1+2]",
@@ -3031,7 +3031,7 @@ async def f():
         def generate_source(indents):
             source = ''.join(('  ' * x) + 'if Wahr:\n' fuer x in range(indents))
             source += '  ' * indents + 'pass\n'
-            return source
+            gib source
 
         valid = generate_source(MAXINDENT - 1)
         the_input = StringIO(valid)
@@ -3050,7 +3050,7 @@ async def f():
     def test_continuation_lines_indentation(self):
         def get_tokens(string):
             the_string = StringIO(string)
-            return [(kind, string) fuer (kind, string, *_)
+            gib [(kind, string) fuer (kind, string, *_)
                     in tokenize._generate_tokens_from_c_tokenizer(the_string.readline)]
 
         code = dedent("""
@@ -3174,7 +3174,7 @@ klasse CommandLineTest(unittest.TestCase):
         This method is used by the other utility functions so that any
         string to write oder to match against can be freely indented.
         """
-        return re.sub(r'\s+', ' ', string).strip()
+        gib re.sub(r'\s+', ' ', string).strip()
 
     def set_source(self, content):
         mit open(self.filename, 'w') als fp:
@@ -3184,7 +3184,7 @@ klasse CommandLineTest(unittest.TestCase):
         output = StringIO()
         mit contextlib.redirect_stdout(output):
             tokenize._main(args=[*flags, self.filename])
-        return self.text_normalize(output.getvalue())
+        gib self.text_normalize(output.getvalue())
 
     def check_output(self, source, expect, *flags):
         mit self.subTest(source=source, flags=flags):
@@ -3200,7 +3200,7 @@ klasse CommandLineTest(unittest.TestCase):
         self.set_source('''
             def f():
                 drucke(x)
-                return Nichts
+                gib Nichts
         ''')
 
         fuer flag in base_flags:
@@ -3290,7 +3290,7 @@ klasse StringPrefixTest(unittest.TestCase):
                         except SyntaxError:
                             pass
             wenn num_at_this_length == 0:
-                return valid_prefixes
+                gib valid_prefixes
 
 
     def test_prefixes(self):

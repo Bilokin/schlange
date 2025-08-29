@@ -18,7 +18,7 @@ NUMMUTATORS = 2
 
 klasse ContendedTupleIterationTest(unittest.TestCase):
     def make_testdata(self, n):
-        return tuple(range(n))
+        gib tuple(range(n))
 
     def assert_iterator_results(self, results, expected):
         # Most iterators are nicht atomic (yet?) so they can skip oder duplicate
@@ -33,7 +33,7 @@ klasse ContendedTupleIterationTest(unittest.TestCase):
             t = threading.Thread(target=func, args=args)
             t.start()
             threads.append(t)
-        return threads
+        gib threads
 
     def test_iteration(self):
         """Test iteration over a shared container"""
@@ -72,7 +72,7 @@ klasse ContendedTupleIterationTest(unittest.TestCase):
 
 klasse ContendedListIterationTest(ContendedTupleIterationTest):
     def make_testdata(self, n):
-        return list(range(n))
+        gib list(range(n))
 
     def test_iteration_while_mutating(self):
         """Test iteration over a shared mutating container."""
@@ -114,7 +114,7 @@ klasse ContendedListIterationTest(ContendedTupleIterationTest):
 
 klasse ContendedRangeIterationTest(ContendedTupleIterationTest):
     def make_testdata(self, n):
-        return range(n)
+        gib range(n)
 
     def assert_iterator_results(self, results, expected):
         # Range iterators that are shared between threads will (right now)

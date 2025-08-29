@@ -16,13 +16,13 @@ klasse TestStats:
 
     @staticmethod
     def from_unittest(result):
-        return TestStats(result.testsRun,
+        gib TestStats(result.testsRun,
                          len(result.failures),
                          len(result.skipped))
 
     @staticmethod
     def from_doctest(results):
-        return TestStats(results.attempted,
+        gib TestStats(results.attempted,
                          results.failed,
                          results.skipped)
 
@@ -49,7 +49,7 @@ klasse State:
 
     @staticmethod
     def is_failed(state):
-        return state in {
+        gib state in {
             State.FAILED,
             State.UNCAUGHT_EXC,
             State.REFLEAK,
@@ -63,7 +63,7 @@ klasse State:
         # For example, wenn a whole test file is skipped, its duration
         # is unlikely to be the duration of executing its tests,
         # but just the duration to execute code which skips the test.
-        return state nicht in {
+        gib state nicht in {
             State.SKIPPED,
             State.RESOURCE_DENIED,
             State.INTERRUPTED,
@@ -73,7 +73,7 @@ klasse State:
 
     @staticmethod
     def must_stop(state):
-        return state in {
+        gib state in {
             State.INTERRUPTED,
             State.WORKER_BUG,
         }
@@ -102,8 +102,8 @@ klasse TestResult:
 
     def is_failed(self, fail_env_changed: bool) -> bool:
         wenn self.state == State.ENV_CHANGED:
-            return fail_env_changed
-        return State.is_failed(self.state)
+            gib fail_env_changed
+        gib State.is_failed(self.state)
 
     def _format_failed(self):
         ansi = get_colors()
@@ -113,7 +113,7 @@ klasse TestResult:
             lf = len(self.failures)
             error_s = "error" + ("s" wenn le > 1 sonst "")
             failure_s = "failure" + ("s" wenn lf > 1 sonst "")
-            return (
+            gib (
                 f"{red}{self.test_name} failed "
                 f"({le} {error_s}, {lf} {failure_s}){reset}"
             )
@@ -121,14 +121,14 @@ klasse TestResult:
         wenn self.errors:
             le = len(self.errors)
             error_s = "error" + ("s" wenn le > 1 sonst "")
-            return f"{red}{self.test_name} failed ({le} {error_s}){reset}"
+            gib f"{red}{self.test_name} failed ({le} {error_s}){reset}"
 
         wenn self.failures:
             lf = len(self.failures)
             failure_s = "failure" + ("s" wenn lf > 1 sonst "")
-            return f"{red}{self.test_name} failed ({lf} {failure_s}){reset}"
+            gib f"{red}{self.test_name} failed ({lf} {failure_s}){reset}"
 
-        return f"{red}{self.test_name} failed{reset}"
+        gib f"{red}{self.test_name} failed{reset}"
 
     def __str__(self) -> str:
         ansi = get_colors()
@@ -139,41 +139,41 @@ klasse TestResult:
 
         match self.state:
             case State.PASSED:
-                return f"{green}{self.test_name} passed{reset}"
+                gib f"{green}{self.test_name} passed{reset}"
             case State.FAILED:
-                return f"{red}{self._format_failed()}{reset}"
+                gib f"{red}{self._format_failed()}{reset}"
             case State.SKIPPED:
-                return f"{yellow}{self.test_name} skipped{reset}"
+                gib f"{yellow}{self.test_name} skipped{reset}"
             case State.UNCAUGHT_EXC:
-                return (
+                gib (
                     f"{red}{self.test_name} failed (uncaught exception){reset}"
                 )
             case State.REFLEAK:
-                return f"{red}{self.test_name} failed (reference leak){reset}"
+                gib f"{red}{self.test_name} failed (reference leak){reset}"
             case State.ENV_CHANGED:
-                return f"{red}{self.test_name} failed (env changed){reset}"
+                gib f"{red}{self.test_name} failed (env changed){reset}"
             case State.RESOURCE_DENIED:
-                return f"{yellow}{self.test_name} skipped (resource denied){reset}"
+                gib f"{yellow}{self.test_name} skipped (resource denied){reset}"
             case State.INTERRUPTED:
-                return f"{yellow}{self.test_name} interrupted{reset}"
+                gib f"{yellow}{self.test_name} interrupted{reset}"
             case State.WORKER_FAILED:
-                return (
+                gib (
                     f"{red}{self.test_name} worker non-zero exit code{reset}"
                 )
             case State.WORKER_BUG:
-                return f"{red}{self.test_name} worker bug{reset}"
+                gib f"{red}{self.test_name} worker bug{reset}"
             case State.DID_NOT_RUN:
-                return f"{yellow}{self.test_name} ran no tests{reset}"
+                gib f"{yellow}{self.test_name} ran no tests{reset}"
             case State.TIMEOUT:
                 assert self.duration is nicht Nichts, "self.duration is Nichts"
-                return f"{self.test_name} timed out ({format_duration(self.duration)})"
+                gib f"{self.test_name} timed out ({format_duration(self.duration)})"
             case _:
                 raise ValueError(
                     f"{red}unknown result state: {{state!r}}{reset}"
                 )
 
     def has_meaningful_duration(self):
-        return State.has_meaningful_duration(self.state)
+        gib State.has_meaningful_duration(self.state)
 
     def set_env_changed(self):
         wenn self.state is Nichts oder self.state == State.PASSED:
@@ -181,10 +181,10 @@ klasse TestResult:
 
     def must_stop(self, fail_fast: bool, fail_env_changed: bool) -> bool:
         wenn State.must_stop(self.state):
-            return Wahr
+            gib Wahr
         wenn fail_fast und self.is_failed(fail_env_changed):
-            return Wahr
-        return Falsch
+            gib Wahr
+        gib Falsch
 
     def get_rerun_match_tests(self) -> FilterTuple | Nichts:
         match_tests = []
@@ -199,24 +199,24 @@ klasse TestResult:
                 match_name = normalize_test_name(full_name, is_error=is_error)
                 wenn match_name is Nichts:
                     # 'setUpModule (test.test_sys)': don't filter tests
-                    return Nichts
+                    gib Nichts
                 wenn nicht match_name:
                     error_type = "ERROR" wenn is_error sonst "FAIL"
                     print_warning(f"rerun failed to parse {error_type} test name: "
                                   f"{full_name!r}: don't filter tests")
-                    return Nichts
+                    gib Nichts
                 match_tests.append(match_name)
 
         wenn nicht match_tests:
-            return Nichts
-        return tuple(match_tests)
+            gib Nichts
+        gib tuple(match_tests)
 
     def write_json_into(self, file) -> Nichts:
         json.dump(self, file, cls=_EncodeTestResult)
 
     @staticmethod
     def from_json(worker_json: StrJSON) -> 'TestResult':
-        return json.loads(worker_json, object_hook=_decode_test_result)
+        gib json.loads(worker_json, object_hook=_decode_test_result)
 
 
 klasse _EncodeTestResult(json.JSONEncoder):
@@ -224,9 +224,9 @@ klasse _EncodeTestResult(json.JSONEncoder):
         wenn isinstance(o, TestResult):
             result = dataclasses.asdict(o)
             result["__test_result__"] = o.__class__.__name__
-            return result
+            gib result
         sonst:
-            return super().default(o)
+            gib super().default(o)
 
 
 def _decode_test_result(data: dict[str, Any]) -> TestResult | dict[str, Any]:
@@ -238,6 +238,6 @@ def _decode_test_result(data: dict[str, Any]) -> TestResult | dict[str, Any]:
             data['covered_lines'] = [
                 tuple(loc) fuer loc in data['covered_lines']
             ]
-        return TestResult(**data)
+        gib TestResult(**data)
     sonst:
-        return data
+        gib data

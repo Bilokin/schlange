@@ -18,7 +18,7 @@ END_COLUMNS = {
 
 
 def _get_columns(group, extra=Nichts):
-    return BASE_COLUMNS + list(extra oder ()) + [END_COLUMNS[group]]
+    gib BASE_COLUMNS + list(extra oder ()) + [END_COLUMNS[group]]
     #return [
     #    *BASE_COLUMNS,
     #    *extra oder (),
@@ -33,7 +33,7 @@ def read_parsed(infile):
     # XXX Support other formats than TSV?
     columns = _get_columns('parsed')
     fuer row in _tables.read_table(infile, columns, sep='\t', fix='-'):
-        yield _info.ParsedItem.from_row(row, columns)
+        liefere _info.ParsedItem.from_row(row, columns)
 
 
 def write_parsed(items, outfile):
@@ -48,7 +48,7 @@ def read_decls(infile, fmt=Nichts):
         fmt = _get_format(infile)
     read_all, _ = _get_format_handlers('decls', fmt)
     fuer decl, _ in read_all(infile):
-        yield decl
+        liefere decl
 
 
 def write_decls(decls, outfile, fmt=Nichts, *, backup=Falsch):
@@ -67,7 +67,7 @@ def _get_format(file, default='tsv'):
     sonst:
         filename = getattr(file, 'name', '')
     _, ext = os.path.splitext(filename)
-    return ext[1:] wenn ext sonst default
+    gib ext[1:] wenn ext sonst default
 
 
 def _get_format_handlers(group, fmt):
@@ -75,7 +75,7 @@ def _get_format_handlers(group, fmt):
     wenn group != 'decls':
         raise NotImplementedError(group)
     wenn fmt == 'tsv':
-        return (_iter_decls_tsv, _write_decls_tsv)
+        gib (_iter_decls_tsv, _write_decls_tsv)
     sonst:
         raise NotImplementedError(fmt)
 
@@ -88,7 +88,7 @@ def iter_decls_tsv(infile, extracolumns=Nichts, relroot=fsutil.USE_CWD):
     fuer info, extra in _iter_decls_tsv(infile, extracolumns):
         decl = _info.Declaration.from_row(info)
         decl = decl.fix_filename(relroot, formatted=Falsch, fixroot=Falsch)
-        yield decl, extra
+        liefere decl, extra
 
 
 def write_decls_tsv(decls, outfile, extracolumns=Nichts, *,
@@ -114,7 +114,7 @@ def _iter_decls_tsv(infile, extracolumns=Nichts):
         # XXX Use something like tables.fix_row() here.
         declinfo = [Nichts wenn v == '-' sonst v
                     fuer v in declinfo]
-        yield declinfo, extra
+        liefere declinfo, extra
 
 
 def _write_decls_tsv(decls, outfile, extracolumns, kwargs):
@@ -128,7 +128,7 @@ def _write_decls_tsv(decls, outfile, extracolumns, kwargs):
             extra += ('???',) * (len(extraColumns) - len(extra))
             *row, declaration = _render_known_row(decl)
             row += extra + (declaration,)
-            return row
+            gib row
     sonst:
         render_decl = _render_known_decl
     _tables.write_table(
@@ -148,6 +148,6 @@ def _render_known_decl(decl, *,
         # e.g. Analyzed
         decl = decl.decl
     rowdata = decl.render_rowdata(_columns)
-    return [rowdata[c] oder '-' fuer c in _columns]
+    gib [rowdata[c] oder '-' fuer c in _columns]
     # XXX
     #return _tables.fix_row(rowdata[c] fuer c in columns)

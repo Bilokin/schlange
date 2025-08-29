@@ -30,7 +30,7 @@ def add_line(
     lineno: int,
 ) -> "typing.Literal[sys.monitoring.DISABLE]":
     coverage.add((code.co_filename, lineno))
-    return mon.DISABLE
+    gib mon.DISABLE
 
 
 def enable():

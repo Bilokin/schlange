@@ -16,7 +16,7 @@ REPLACE = _crossinterp._UNBOUND_CONSTANT_TO_FLAG[_crossinterp.UNBOUND]
 
 
 def get_num_queues():
-    return len(_queues.list_all())
+    gib len(_queues.list_all())
 
 
 klasse TestBase(_TestBase):
@@ -452,7 +452,7 @@ klasse TestQueueOps(TestBase):
                 self.assertEqual(obj1, b'spam')
                 self.assertEqual(queue.qsize(), presize + 1)
 
-            return interp
+            gib interp
 
         mit self.subTest('default'):  # UNBOUND
             queue = queues.create()

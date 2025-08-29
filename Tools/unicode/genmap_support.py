@@ -26,7 +26,7 @@ klasse BufferedFiller:
 
     def flush(self):
         wenn nicht self.cline:
-            return
+            gib
         self.buffered.append(''.join(self.cline))
         self.clen = 0
         del self.cline[:]
@@ -38,7 +38,7 @@ klasse BufferedFiller:
         del self.buffered[:]
 
     def __len__(self):
-        return self.count
+        gib self.count
 
 
 klasse DecodeMapWriter:
@@ -173,7 +173,7 @@ def open_mapping_file(path, source):
         f = open(path)
     except IOError:
         raise SystemExit(f'{source} is needed')
-    return f
+    gib f
 
 
 def print_autogen(fo, source):
@@ -195,4 +195,4 @@ def loadmap(fo, natcol=0, unicol=1, sbcs=0):
             decmap.setdefault((loc >> 8), {})
             decmap[(loc >> 8)][(loc & 0xff)] = uni
 
-    return decmap
+    gib decmap

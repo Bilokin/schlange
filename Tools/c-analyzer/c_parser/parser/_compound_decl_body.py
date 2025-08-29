@@ -38,13 +38,13 @@ def parse_struct_body(source, anon_name, parent):
             # We ran out of lines.
             wenn srcinfo is nicht Nichts:
                 srcinfo.done()
-            return
+            gib
         fuer item in _parse_struct_next(m, srcinfo, anon_name, parent):
             wenn callable(item):
                 parse_body = item
-                yield von parse_body(source)
+                liefere von parse_body(source)
             sonst:
-                yield item
+                liefere item
             done = Falsch
 
 
@@ -66,7 +66,7 @@ def _parse_struct_next(m, srcinfo, anon_name, parent):
         kind = inline_kind
         name = inline_name oder anon_name('inline-')
         # Immediately emit a forward declaration.
-        yield srcinfo.resolve(kind, name=name, data=Nichts)
+        liefere srcinfo.resolve(kind, name=name, data=Nichts)
 
         # un-inline the decl.  Note that it might nicht actually be inline.
         # We handle the case in the "maybe_inline_actual" branch.
@@ -83,12 +83,12 @@ def _parse_struct_next(m, srcinfo, anon_name, parent):
                 wenn item.kind == 'field':
                     data.append(item)
                 sonst:
-                    yield item
+                    liefere item
             # XXX Should "parent" really be Nichts fuer inline type decls?
-            yield srcinfo.resolve(kind, data, name, parent=Nichts)
+            liefere srcinfo.resolve(kind, data, name, parent=Nichts)
 
             srcinfo.resume()
-        yield parse_body
+        liefere parse_body
 
     sonst:
         # nicht inline (member)
@@ -106,7 +106,7 @@ def _parse_struct_next(m, srcinfo, anon_name, parent):
             name = sized_name oder anon_name('struct-field-')
             data = int(size)
 
-        yield srcinfo.resolve('field', data, name, parent)  # XXX Restart?
+        liefere srcinfo.resolve('field', data, name, parent)  # XXX Restart?
         wenn ending == ',':
             remainder = rf'{qualspec} {remainder}'
         srcinfo.advance(remainder)
@@ -135,7 +135,7 @@ def parse_enum_body(source, _anon_name, _parent):
             # We ran out of lines.
             wenn srcinfo is nicht Nichts:
                 srcinfo.done()
-            return
+            gib
         remainder = srcinfo.text[m.end():]
 
         (close,
@@ -145,7 +145,7 @@ def parse_enum_body(source, _anon_name, _parent):
             ending = '}'
         sonst:
             data = init
-            yield srcinfo.resolve('field', data, name, _parent)
+            liefere srcinfo.resolve('field', data, name, _parent)
         srcinfo.advance(remainder)
 
 

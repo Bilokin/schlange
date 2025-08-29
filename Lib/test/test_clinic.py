@@ -39,14 +39,14 @@ def repeat_fn(*functions):
             fuer fn in functions:
                 mit self.subTest(fn=fn):
                     test(self, fn)
-        return wrapped
-    return wrapper
+        gib wrapped
+    gib wrapper
 
 def _make_clinic(*, filename='clinic_tests', limited_capi=Falsch):
     clang = CLanguage(filename)
     c = Clinic(clang, filename=filename, limited_capi=limited_capi)
     c.block_parser = BlockParser('', clang)
-    return c
+    gib c
 
 
 def _expect_failure(tc, parser, code, errmsg, *, filename=Nichts, lineno=Nichts,
@@ -70,7 +70,7 @@ def _expect_failure(tc, parser, code, errmsg, *, filename=Nichts, lineno=Nichts,
         tc.assertEqual(cm.exception.filename, filename)
     wenn lineno is nicht Nichts:
         tc.assertEqual(cm.exception.lineno, lineno)
-    return cm.exception
+    gib cm.exception
 
 
 def restore_dict(converters, old_converters):
@@ -914,7 +914,7 @@ klasse ClinicBlockParserTest(TestCase):
         assert output == input, "output != input!\n\noutput " + repr(output) + "\n\n input " + repr(input)
 
     def round_trip(self, input):
-        return self._test(input, input)
+        gib self._test(input, input)
 
     def test_round_trip_1(self):
         self.round_trip("""
@@ -970,7 +970,7 @@ klasse ClinicParserTest(TestCase):
         parser = DSLParser(c)
         block = Block(text)
         parser.parse(block)
-        return block
+        gib block
 
     def parse_function(self, text, signatures_in_block=2, function_index=1):
         block = self.parse(text)
@@ -978,11 +978,11 @@ klasse ClinicParserTest(TestCase):
         self.assertEqual(len(s), signatures_in_block)
         assert isinstance(s[0], Module)
         assert isinstance(s[function_index], Function)
-        return s[function_index]
+        gib s[function_index]
 
     def expect_failure(self, block, err, *,
                        filename=Nichts, lineno=Nichts, strip=Wahr):
-        return _expect_failure(self, self.parse_function, block, err,
+        gib _expect_failure(self, self.parse_function, block, err,
                                filename=filename, lineno=lineno, strip=strip)
 
     def checkDocstring(self, fn, expected):
@@ -1324,7 +1324,7 @@ klasse ClinicParserTest(TestCase):
             module os
             os.stat -> "s"
         """
-        err = "Legacy converter 's' nicht allowed als a return converter"
+        err = "Legacy converter 's' nicht allowed als a gib converter"
         self.expect_failure(block, err)
 
     def test_unknown_return_converter(self):
@@ -1332,7 +1332,7 @@ klasse ClinicParserTest(TestCase):
             module os
             os.stat -> fooooooooooooooooooooooo
         """
-        err = "No available return converter called 'fooooooooooooooooooooooo'"
+        err = "No available gib converter called 'fooooooooooooooooooooooo'"
         self.expect_failure(block, err)
 
     def test_star(self):
@@ -2315,7 +2315,7 @@ klasse ClinicParserTest(TestCase):
             klasse Foo "" ""
             Foo.__init__ -> long
         """
-        expected_error = "__init__ methods cannot define a return type"
+        expected_error = "__init__ methods cannot define a gib type"
         self.expect_failure(block, expected_error, lineno=1)
 
     def test_invalid_getset(self):
@@ -2328,7 +2328,7 @@ klasse ClinicParserTest(TestCase):
                     {annotation}
                     Foo.property -> int
                 """
-                expected_error = f"{annotation} method cannot define a return type"
+                expected_error = f"{annotation} method cannot define a gib type"
                 self.expect_failure(block, expected_error, lineno=3)
 
                 block = f"""
@@ -2624,19 +2624,19 @@ klasse ClinicExternalTest(TestCase):
             self.assertRaises(SystemExit) als cm
         ):
             clinic.main(args)
-        return out.getvalue(), err.getvalue(), cm.exception.code
+        gib out.getvalue(), err.getvalue(), cm.exception.code
 
     def expect_success(self, *args):
         out, err, code = self.run_clinic(*args)
         wenn code != 0:
             self.fail("\n".join([f"Unexpected failure: {args=}", out, err]))
         self.assertEqual(err, "")
-        return out
+        gib out
 
     def expect_failure(self, *args):
         out, err, code = self.run_clinic(*args)
         self.assertNotEqual(code, 0, f"Unexpected success: {args=}")
-        return out, err
+        gib out, err
 
     def test_external(self):
         CLINIC_TEST = 'clinic.test.c'
@@ -2853,7 +2853,7 @@ klasse ClinicExternalTest(TestCase):
                 unsigned_long()
 
             All converters also accept (c_default=Nichts, py_default=Nichts, annotation=Nichts).
-            All return converters also accept (py_default=Nichts).
+            All gib converters also accept (py_default=Nichts).
         """)
         out = self.expect_success("--converters")
         # We cannot simply compare the output, because the repr of the *accept*
@@ -3945,7 +3945,7 @@ klasse LimitedCAPIOutputTests(unittest.TestCase):
 
     @staticmethod
     def wrap_clinic_input(block):
-        return dedent(f"""
+        gib dedent(f"""
             /*[clinic input]
             output everything buffer
             {block}
@@ -4033,7 +4033,7 @@ klasse LimitedCAPIFunctionalTest(unittest.TestCase):
             def __init__(self, fd):
                 self._fd = fd
             def fileno(self):
-                return self._fd
+                gib self._fd
 
         fuer fd in (0, 1, 2, 5, 123_456):
             self.assertEqual(get_fd(fd), fd)

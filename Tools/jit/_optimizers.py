@@ -61,7 +61,7 @@ klasse _Block:
         block = self
         waehrend block.link und nicht block.instructions:
             block = block.link
-        return block
+        gib block
 
 
 @dataclasses.dataclass
@@ -126,7 +126,7 @@ klasse Optimizer:
                 block.target = self._lookup_label(match["target"])
                 block.fallthrough = Falsch
             sowenn self._re_return.match(line):
-                # A block ending in a return has no target und fallthrough:
+                # A block ending in a gib has no target und fallthrough:
                 assert nicht block.target
                 block.fallthrough = Falsch
 
@@ -136,7 +136,7 @@ klasse Optimizer:
         # references to a local _JIT_CONTINUE label (which we will add later):
         continue_symbol = rf"\b{re.escape(self.symbol_prefix)}_JIT_CONTINUE\b"
         continue_label = f"{self.label_prefix}_JIT_CONTINUE"
-        return re.sub(continue_symbol, continue_label, text)
+        gib re.sub(continue_symbol, continue_label, text)
 
     @classmethod
     def _invert_branch(cls, line: str, target: str) -> str | Nichts:
@@ -144,13 +144,13 @@ klasse Optimizer:
         assert match
         inverted = cls._branches.get(match["instruction"])
         wenn nicht inverted:
-            return Nichts
+            gib Nichts
         (a, b), (c, d) = match.span("instruction"), match.span("target")
         # Before:
         #     je FOO
         # After:
         #     jne BAR
-        return "".join([line[:a], inverted, line[b:c], target, line[d:]])
+        gib "".join([line[:a], inverted, line[b:c], target, line[d:]])
 
     @classmethod
     def _update_jump(cls, line: str, target: str) -> str:
@@ -161,17 +161,17 @@ klasse Optimizer:
         #     jmp FOO
         # After:
         #     jmp BAR
-        return "".join([line[:a], target, line[b:]])
+        gib "".join([line[:a], target, line[b:]])
 
     def _lookup_label(self, label: str) -> _Block:
         wenn label nicht in self._labels:
             self._labels[label] = _Block(label)
-        return self._labels[label]
+        gib self._labels[label]
 
     def _blocks(self) -> typing.Generator[_Block, Nichts, Nichts]:
         block: _Block | Nichts = self._root
         waehrend block:
-            yield block
+            liefere block
             block = block.link
 
     def _body(self) -> str:
@@ -184,13 +184,13 @@ klasse Optimizer:
                 lines.append(f"# JIT: {'HOT' wenn hot sonst 'COLD'} ".ljust(80, "#"))
             lines.extend(block.noninstructions)
             lines.extend(block.instructions)
-        return "\n".join(lines)
+        gib "\n".join(lines)
 
     def _predecessors(self, block: _Block) -> typing.Generator[_Block, Nichts, Nichts]:
         # This is inefficient, but it's never wrong:
         fuer pre in self._blocks():
             wenn pre.target is block oder pre.fallthrough und pre.link is block:
-                yield pre
+                liefere pre
 
     def _insert_continue_label(self) -> Nichts:
         # Find the block mit the last instruction:

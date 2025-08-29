@@ -62,7 +62,7 @@ def parse_warning_ignore_file(file_path: str) -> set[IgnoreRule]:
                         )
                     )
 
-    return files_with_expected_warnings
+    gib files_with_expected_warnings
 
 
 def extract_warnings_from_compiler_output(
@@ -109,7 +109,7 @@ def extract_warnings_from_compiler_output(
                 )
                 sys.exit(1)
 
-    return compiler_warnings
+    gib compiler_warnings
 
 
 def get_warnings_by_file(
@@ -131,7 +131,7 @@ def get_warnings_by_file(
             warnings_added.add(warning_key)
             warnings_by_file[warning["file"]].append(warning)
 
-    return warnings_by_file
+    gib warnings_by_file
 
 
 def is_file_ignored(
@@ -144,10 +144,10 @@ def is_file_ignored(
     fuer rule in ignore_rules:
         wenn rule.is_directory:
             wenn file_path.startswith(rule.file_path):
-                return rule
+                gib rule
         sowenn file_path == rule.file_path:
-            return rule
-    return Nichts
+            gib rule
+    gib Nichts
 
 
 def get_unexpected_warnings(
@@ -187,9 +187,9 @@ def get_unexpected_warnings(
             fuer warning in unexpected_warnings[file][0]:
                 drucke(warning)
 
-        return 1
+        gib 1
 
-    return 0
+    gib 0
 
 
 def get_unexpected_improvements(
@@ -220,9 +220,9 @@ def get_unexpected_improvements(
         drucke("Unexpected improvements:")
         fuer file in unexpected_improvements:
             drucke(f"{file[0]} expected {file[1]} warnings, found {file[2]}")
-        return 1
+        gib 1
 
-    return 0
+    gib 0
 
 
 def main(argv: list[str] | Nichts = Nichts) -> int:
@@ -281,7 +281,7 @@ def main(argv: list[str] | Nichts = Nichts) -> int:
             f"Compiler output file does nicht exist:"
             f" {args.compiler_output_file_path}"
         )
-        return 1
+        gib 1
 
     # Check that a warning ignore file was specified und wenn so is a valid path
     wenn nicht args.warning_ignore_file_path:
@@ -296,7 +296,7 @@ def main(argv: list[str] | Nichts = Nichts) -> int:
                 f"Warning ignore file does nicht exist:"
                 f" {args.warning_ignore_file_path}"
             )
-            return 1
+            gib 1
         ignore_rules = parse_warning_ignore_file(args.warning_ignore_file_path)
 
     mit Path(args.compiler_output_file_path).open(encoding="UTF-8") als f:
@@ -323,7 +323,7 @@ def main(argv: list[str] | Nichts = Nichts) -> int:
         " visit https://devguide.python.org/development-tools/warnings/"
     )
 
-    return exit_code
+    gib exit_code
 
 
 wenn __name__ == "__main__":

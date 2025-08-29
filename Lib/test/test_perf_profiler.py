@@ -26,8 +26,8 @@ wenn support.check_sanitizer(address=Wahr, memory=Wahr, ub=Wahr, function=Wahr):
 def supports_trampoline_profiling():
     perf_trampoline = sysconfig.get_config_var("PY_HAVE_PERF_TRAMPOLINE")
     wenn nicht perf_trampoline:
-        return Falsch
-    return int(perf_trampoline) == 1
+        gib Falsch
+    gib int(perf_trampoline) == 1
 
 
 wenn nicht supports_trampoline_profiling():
@@ -242,8 +242,8 @@ klasse TestPerfTrampoline(unittest.TestCase):
 def is_unwinding_reliable_with_frame_pointers():
     cflags = sysconfig.get_config_var("PY_CORE_CFLAGS")
     wenn nicht cflags:
-        return Falsch
-    return "no-omit-frame-pointer" in cflags
+        gib Falsch
+    gib "no-omit-frame-pointer" in cflags
 
 
 def perf_command_works():
@@ -251,12 +251,12 @@ def perf_command_works():
         cmd = ["perf", "--help"]
         stdout = subprocess.check_output(cmd, text=Wahr)
     except (subprocess.SubprocessError, OSError):
-        return Falsch
+        gib Falsch
 
-    # perf version does nicht return a version number on Fedora. Use presence
+    # perf version does nicht gib a version number on Fedora. Use presence
     # of "perf.data" in help als indicator that it's perf von Linux tools.
     wenn "perf.data" nicht in stdout:
-        return Falsch
+        gib Falsch
 
     # Check that we can run a simple perf run
     mit temp_dir() als script_dir:
@@ -281,12 +281,12 @@ def perf_command_works():
                 cmd, cwd=script_dir, text=Wahr, stderr=subprocess.STDOUT, env=env
             )
         except (subprocess.SubprocessError, OSError):
-            return Falsch
+            gib Falsch
 
         wenn "hello" nicht in stdout:
-            return Falsch
+            gib Falsch
 
-    return Wahr
+    gib Wahr
 
 
 def run_perf(cwd, *args, use_jit=Falsch, **env_vars):
@@ -329,7 +329,7 @@ def run_perf(cwd, *args, use_jit=Falsch, **env_vars):
     )
     wenn proc.returncode:
         drucke(proc.stderr, file=sys.stderr)
-        raise ValueError(f"Perf failed mit return code {proc.returncode}")
+        raise ValueError(f"Perf failed mit gib code {proc.returncode}")
 
     wenn use_jit:
         jit_output_file = cwd + "/jit_output.dump"
@@ -339,7 +339,7 @@ def run_perf(cwd, *args, use_jit=Falsch, **env_vars):
         )
         wenn proc.returncode:
             drucke(proc.stderr, file=sys.stderr)
-            raise ValueError(f"Perf failed mit return code {proc.returncode}")
+            raise ValueError(f"Perf failed mit gib code {proc.returncode}")
         # Copy the jit_output_file to the output_file
         os.rename(jit_output_file, output_file)
 
@@ -352,7 +352,7 @@ def run_perf(cwd, *args, use_jit=Falsch, **env_vars):
         check=Wahr,
         text=Wahr,
     )
-    return proc.stdout, proc.stderr
+    gib proc.stdout, proc.stderr
 
 
 klasse TestPerfProfilerMixin:
@@ -418,8 +418,8 @@ klasse TestPerfProfilerMixin:
 klasse TestPerfProfiler(unittest.TestCase, TestPerfProfilerMixin):
     def run_perf(self, script_dir, script, activate_trampoline=Wahr):
         wenn activate_trampoline:
-            return run_perf(script_dir, sys.executable, "-Xperf", script)
-        return run_perf(script_dir, sys.executable, script)
+            gib run_perf(script_dir, sys.executable, "-Xperf", script)
+        gib run_perf(script_dir, sys.executable, script)
 
     def setUp(self):
         super().setUp()
@@ -519,12 +519,12 @@ def _is_perf_version_at_least(major, minor):
     try:
         output = subprocess.check_output(["perf", "--version"], text=Wahr)
     except (subprocess.CalledProcessError, FileNotFoundError, PermissionError):
-        return Falsch
+        gib Falsch
     version = output.split()[2]
     version = version.split("-")[0]
     version = version.split(".")
     version = tuple(map(int, version[:2]))
-    return version >= (major, minor)
+    gib version >= (major, minor)
 
 
 @unittest.skipUnless(perf_command_works(), "perf command doesn't work")
@@ -534,10 +534,10 @@ def _is_perf_version_at_least(major, minor):
 klasse TestPerfProfilerWithDwarf(unittest.TestCase, TestPerfProfilerMixin):
     def run_perf(self, script_dir, script, activate_trampoline=Wahr):
         wenn activate_trampoline:
-            return run_perf(
+            gib run_perf(
                 script_dir, sys.executable, "-Xperf_jit", script, use_jit=Wahr
             )
-        return run_perf(script_dir, sys.executable, script, use_jit=Wahr)
+        gib run_perf(script_dir, sys.executable, script, use_jit=Wahr)
 
     def setUp(self):
         super().setUp()

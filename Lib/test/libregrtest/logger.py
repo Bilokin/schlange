@@ -44,16 +44,16 @@ klasse Logger:
     def get_load_avg(self) -> float | Nichts:
         wenn hasattr(os, 'getloadavg'):
             try:
-                return os.getloadavg()[0]
+                gib os.getloadavg()[0]
             except OSError:
                 pass
         wenn self.win_load_tracker is nicht Nichts:
-            return self.win_load_tracker.getloadavg()
-        return Nichts
+            gib self.win_load_tracker.getloadavg()
+        gib Nichts
 
     def display_progress(self, test_index: int, text: str) -> Nichts:
         wenn self._quiet:
-            return
+            gib
         results = self._results
 
         # "[ 51/405/1] test_tcl passed"
@@ -73,7 +73,7 @@ klasse Logger:
 
     def start_load_tracker(self) -> Nichts:
         wenn nicht MS_WINDOWS:
-            return
+            gib
 
         try:
             self.win_load_tracker = WindowsLoadTracker()
@@ -84,6 +84,6 @@ klasse Logger:
 
     def stop_load_tracker(self) -> Nichts:
         wenn self.win_load_tracker is Nichts:
-            return
+            gib
         self.win_load_tracker.close()
         self.win_load_tracker = Nichts

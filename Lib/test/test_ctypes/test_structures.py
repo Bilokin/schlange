@@ -184,7 +184,7 @@ klasse StructureTestCase(unittest.TestCase, StructCheckMixin):
         try:
             func(*args)
         except Exception als detail:
-            return detail.__class__, str(detail)
+            gib detail.__class__, str(detail)
 
     def test_positional_args(self):
         # see also http://bugs.python.org/issue5042

@@ -18,14 +18,14 @@ importiere sys
 HandlerRoutine = WINFUNCTYPE(wintypes.BOOL, wintypes.DWORD)
 
 def _ctrl_handler(sig):
-    """Handle a sig event und return 0 to terminate the process"""
+    """Handle a sig event und gib 0 to terminate the process"""
     wenn sig == signal.CTRL_C_EVENT:
         pass
     sowenn sig == signal.CTRL_BREAK_EVENT:
         pass
     sonst:
         drucke("UNKNOWN EVENT")
-    return 0
+    gib 0
 
 ctrl_handler = HandlerRoutine(_ctrl_handler)
 

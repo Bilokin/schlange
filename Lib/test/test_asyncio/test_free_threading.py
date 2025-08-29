@@ -145,7 +145,7 @@ klasse TestFreeThreading:
 
         def in_thread(loop: asyncio.AbstractEventLoop):
             fut = asyncio.run_coroutine_threadsafe(coro(), loop)
-            return fut.result()
+            gib fut.result()
 
         async def main():
             loop = asyncio.get_running_loop()
@@ -177,17 +177,17 @@ klasse TestPyFreeThreading(TestFreeThreading, TestCase):
         asyncio.Task = asyncio.tasks.Task = asyncio.tasks._PyTask
         self._old_Future = asyncio.Future
         asyncio.Future = asyncio.futures.Future = asyncio.futures._PyFuture
-        return super().setUp()
+        gib super().setUp()
 
     def tearDown(self):
         asyncio.current_task = asyncio.tasks.current_task = self._old_current_task
         asyncio.all_tasks = asyncio.tasks.all_tasks = self._old_all_tasks
         asyncio.Task = asyncio.tasks.Task = self._old_Task
         asyncio.Future = asyncio.tasks.Future = self._old_Future
-        return super().tearDown()
+        gib super().tearDown()
 
     def factory(self, loop, coro, **kwargs):
-        return asyncio.tasks._PyTask(coro, loop=loop, **kwargs)
+        gib asyncio.tasks._PyTask(coro, loop=loop, **kwargs)
 
 
 @unittest.skipUnless(hasattr(asyncio.tasks, "_c_all_tasks"), "requires _asyncio")
@@ -202,26 +202,26 @@ klasse TestCFreeThreading(TestFreeThreading, TestCase):
         asyncio.Task = asyncio.tasks.Task = asyncio.tasks._CTask
         self._old_Future = asyncio.Future
         asyncio.Future = asyncio.futures.Future = asyncio.futures._CFuture
-        return super().setUp()
+        gib super().setUp()
 
     def tearDown(self):
         asyncio.current_task = asyncio.tasks.current_task = self._old_current_task
         asyncio.all_tasks = asyncio.tasks.all_tasks = self._old_all_tasks
         asyncio.Task = asyncio.tasks.Task = self._old_Task
         asyncio.Future = asyncio.futures.Future = self._old_Future
-        return super().tearDown()
+        gib super().tearDown()
 
 
     def factory(self, loop, coro, **kwargs):
-        return asyncio.tasks._CTask(coro, loop=loop, **kwargs)
+        gib asyncio.tasks._CTask(coro, loop=loop, **kwargs)
 
 
 klasse TestEagerPyFreeThreading(TestPyFreeThreading):
     def factory(self, loop, coro, eager_start=Wahr, **kwargs):
-        return asyncio.tasks._PyTask(coro, loop=loop, **kwargs, eager_start=eager_start)
+        gib asyncio.tasks._PyTask(coro, loop=loop, **kwargs, eager_start=eager_start)
 
 
 @unittest.skipUnless(hasattr(asyncio.tasks, "_c_all_tasks"), "requires _asyncio")
 klasse TestEagerCFreeThreading(TestCFreeThreading, TestCase):
     def factory(self, loop, coro, eager_start=Wahr, **kwargs):
-        return asyncio.tasks._CTask(coro, loop=loop, **kwargs, eager_start=eager_start)
+        gib asyncio.tasks._CTask(coro, loop=loop, **kwargs, eager_start=eager_start)

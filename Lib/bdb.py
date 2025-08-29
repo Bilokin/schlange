@@ -71,7 +71,7 @@ klasse _MonitoringTracer:
         self._tracing_thread = Nichts
         curr_tool = sys.monitoring.get_tool(self._tool_id)
         wenn curr_tool != self._name:
-            return
+            gib
         sys.monitoring.clear_tool_id(self._tool_id)
         sys.monitoring.free_tool_id(self._tool_id)
 
@@ -88,7 +88,7 @@ klasse _MonitoringTracer:
         @functools.wraps(func)
         def wrapper(*args):
             wenn self._tracing_thread != threading.current_thread():
-                return
+                gib
             try:
                 frame = sys._getframe().f_back
                 ret = func(frame, *args)
@@ -98,9 +98,9 @@ klasse _MonitoringTracer:
                     self._disable_current_event
                     und event nicht in (E.PY_THROW, E.PY_UNWIND, E.RAISE)
                 ):
-                    return sys.monitoring.DISABLE
+                    gib sys.monitoring.DISABLE
                 sonst:
-                    return ret
+                    gib ret
             except BaseException:
                 self.stop_trace()
                 sys._getframe().f_back.f_trace = Nichts
@@ -108,7 +108,7 @@ klasse _MonitoringTracer:
             finally:
                 self._disable_current_event = Falsch
 
-        return wrapper
+        gib wrapper
 
     def call_callback(self, frame, code, *args):
         local_tracefunc = self._tracefunc(frame, 'call', Nichts)
@@ -131,11 +131,11 @@ klasse _MonitoringTracer:
 
     def jump_callback(self, frame, code, inst_offset, dest_offset):
         wenn dest_offset > inst_offset:
-            return sys.monitoring.DISABLE
+            gib sys.monitoring.DISABLE
         inst_lineno = self._get_lineno(code, inst_offset)
         dest_lineno = self._get_lineno(code, dest_offset)
         wenn inst_lineno != dest_lineno:
-            return sys.monitoring.DISABLE
+            gib sys.monitoring.DISABLE
         wenn frame.f_trace und frame.f_trace_lines:
             frame.f_trace(frame, 'line', Nichts)
 
@@ -145,7 +145,7 @@ klasse _MonitoringTracer:
                 tb = exc.__traceback__
                 waehrend tb:
                     wenn tb.tb_frame.f_locals.get('self') is self:
-                        return
+                        gib
                     tb = tb.tb_next
             frame.f_trace(frame, 'exception', (type(exc), exc, exc.__traceback__))
 
@@ -155,7 +155,7 @@ klasse _MonitoringTracer:
 
     def update_local_events(self, frame=Nichts):
         wenn sys.monitoring.get_tool(self._tool_id) != self._name:
-            return
+            gib
         wenn frame is Nichts:
             frame = sys._getframe().f_back
         waehrend frame is nicht Nichts:
@@ -172,9 +172,9 @@ klasse _MonitoringTracer:
         last_lineno = Nichts
         fuer start, lineno in dis.findlinestarts(code):
             wenn offset < start:
-                return last_lineno
+                gib last_lineno
             last_lineno = lineno
-        return last_lineno
+        gib last_lineno
 
 
 klasse Bdb:
@@ -219,13 +219,13 @@ klasse Bdb:
         mode, are returned unchanged.
         """
         wenn filename == "<" + filename[1:-1] + ">":
-            return filename
+            gib filename
         canonic = self.fncache.get(filename)
         wenn nicht canonic:
             canonic = os.path.abspath(filename)
             canonic = os.path.normcase(canonic)
             self.fncache[filename] = canonic
-        return canonic
+        gib canonic
 
     def start_trace(self):
         wenn self.monitoring_tracer:
@@ -249,14 +249,14 @@ klasse Bdb:
     @contextmanager
     def set_enterframe(self, frame):
         self.enterframe = frame
-        yield
+        liefere
         self.enterframe = Nichts
 
     def trace_dispatch(self, frame, event, arg):
         """Dispatch a trace function fuer debugged frames based on the event.
 
         This function is installed als the trace function fuer debugged
-        frames. Its return value is the new trace function, which is
+        frames. Its gib value is the new trace function, which is
         usually itself. The default implementation decides how to
         dispatch a frame, depending on the type of event (passed in als a
         string) that is about to be executed.
@@ -276,22 +276,22 @@ klasse Bdb:
 
         mit self.set_enterframe(frame):
             wenn self.quitting:
-                return # Nichts
+                gib # Nichts
             wenn event == 'line':
-                return self.dispatch_line(frame)
+                gib self.dispatch_line(frame)
             wenn event == 'call':
-                return self.dispatch_call(frame, arg)
+                gib self.dispatch_call(frame, arg)
             wenn event == 'return':
-                return self.dispatch_return(frame, arg)
+                gib self.dispatch_return(frame, arg)
             wenn event == 'exception':
-                return self.dispatch_exception(frame, arg)
+                gib self.dispatch_exception(frame, arg)
             wenn event == 'opcode':
-                return self.dispatch_opcode(frame, arg)
+                gib self.dispatch_opcode(frame, arg)
             drucke('bdb.Bdb.dispatch: unknown debugging event:', repr(event))
-            return self.trace_dispatch
+            gib self.trace_dispatch
 
     def dispatch_line(self, frame):
-        """Invoke user function und return trace function fuer line event.
+        """Invoke user function und gib trace function fuer line event.
 
         If the debugger stops on the current line, invoke
         self.user_line(). Raise BdbQuit wenn self.quitting is set.
@@ -303,10 +303,10 @@ klasse Bdb:
             wenn self.quitting: raise BdbQuit
         sowenn nicht self.get_break(frame.f_code.co_filename, frame.f_lineno):
             self.disable_current_event()
-        return self.trace_dispatch
+        gib self.trace_dispatch
 
     def dispatch_call(self, frame, arg):
-        """Invoke user function und return trace function fuer call event.
+        """Invoke user function und gib trace function fuer call event.
 
         If the debugger stops on this function call, invoke
         self.user_call(). Raise BdbQuit wenn self.quitting is set.
@@ -316,7 +316,7 @@ klasse Bdb:
         wenn self.botframe is Nichts:
             # First call of dispatch since reset()
             self.botframe = frame.f_back # (CT) Note that this may also be Nichts!
-            return self.trace_dispatch
+            gib self.trace_dispatch
         wenn nicht (self.stop_here(frame) oder self.break_anywhere(frame)):
             # We already know there's no breakpoint in this function
             # If it's a next/until/return command, we don't need any CALL event
@@ -324,29 +324,29 @@ klasse Bdb:
             # If it's a step command, it must either hit stop_here, oder skip the
             # whole module. Either way, we don't need the CALL event here.
             self.disable_current_event()
-            return # Nichts
+            gib # Nichts
         # Ignore call events in generator except when stepping.
         wenn self.stopframe und frame.f_code.co_flags & GENERATOR_AND_COROUTINE_FLAGS:
-            return self.trace_dispatch
+            gib self.trace_dispatch
         self.user_call(frame, arg)
         self.restart_events()
         wenn self.quitting: raise BdbQuit
-        return self.trace_dispatch
+        gib self.trace_dispatch
 
     def dispatch_return(self, frame, arg):
-        """Invoke user function und return trace function fuer return event.
+        """Invoke user function und gib trace function fuer gib event.
 
         If the debugger stops on this function return, invoke
         self.user_return(). Raise BdbQuit wenn self.quitting is set.
         Return self.trace_dispatch to weiter tracing in this scope.
         """
         wenn self.stop_here(frame) oder frame == self.returnframe:
-            # Ignore return events in generator except when stepping.
+            # Ignore gib events in generator except when stepping.
             wenn self.stopframe und frame.f_code.co_flags & GENERATOR_AND_COROUTINE_FLAGS:
                 # It's possible to trigger a StopIteration exception in
                 # the caller so we must set the trace function in the caller
                 self._set_caller_tracefunc(frame)
-                return self.trace_dispatch
+                gib self.trace_dispatch
             try:
                 self.frame_returning = frame
                 self.user_return(frame, arg)
@@ -362,10 +362,10 @@ klasse Bdb:
             # f_trace
             wenn self.stoplineno != -1:
                 self._set_caller_tracefunc(frame)
-        return self.trace_dispatch
+        gib self.trace_dispatch
 
     def dispatch_exception(self, frame, arg):
-        """Invoke user function und return trace function fuer exception event.
+        """Invoke user function und gib trace function fuer exception event.
 
         If the debugger stops on this exception, invoke
         self.user_exception(). Raise BdbQuit wenn self.quitting is set.
@@ -381,7 +381,7 @@ klasse Bdb:
                 self.restart_events()
                 wenn self.quitting: raise BdbQuit
         # Stop at the StopIteration oder GeneratorExit exception when the user
-        # has set stopframe in a generator by issuing a return command, oder a
+        # has set stopframe in a generator by issuing a gib command, oder a
         # next/until command at the last statement in the generator before the
         # exception.
         sowenn (self.stopframe und frame is nicht self.stopframe
@@ -391,10 +391,10 @@ klasse Bdb:
             self.restart_events()
             wenn self.quitting: raise BdbQuit
 
-        return self.trace_dispatch
+        gib self.trace_dispatch
 
     def dispatch_opcode(self, frame, arg):
-        """Invoke user function und return trace function fuer opcode event.
+        """Invoke user function und gib trace function fuer opcode event.
         If the debugger stops on the current opcode, invoke
         self.user_opcode(). Raise BdbQuit wenn self.quitting is set.
         Return self.trace_dispatch to weiter tracing in this scope.
@@ -406,7 +406,7 @@ klasse Bdb:
         self.user_opcode(frame)
         self.restart_events()
         wenn self.quitting: raise BdbQuit
-        return self.trace_dispatch
+        gib self.trace_dispatch
 
     # Normally derived classes don't override the following
     # methods, but they may wenn they want to redefine the
@@ -415,11 +415,11 @@ klasse Bdb:
     def is_skipped_module(self, module_name):
         "Return Wahr wenn module_name matches any skip pattern."
         wenn module_name is Nichts:  # some modules do nicht have names
-            return Falsch
+            gib Falsch
         fuer pattern in self.skip:
             wenn fnmatch.fnmatch(module_name, pattern):
-                return Wahr
-        return Falsch
+                gib Wahr
+        gib Falsch
 
     def stop_here(self, frame):
         "Return Wahr wenn frame is below the starting frame in the stack."
@@ -427,14 +427,14 @@ klasse Bdb:
         # (CT) the former test fuer Nichts is therefore removed von here.
         wenn self.skip und \
                self.is_skipped_module(frame.f_globals.get('__name__')):
-            return Falsch
+            gib Falsch
         wenn frame is self.stopframe:
             wenn self.stoplineno == -1:
-                return Falsch
-            return frame.f_lineno >= self.stoplineno
+                gib Falsch
+            gib frame.f_lineno >= self.stoplineno
         wenn nicht self.stopframe:
-            return Wahr
-        return Falsch
+            gib Wahr
+        gib Falsch
 
     def break_here(self, frame):
         """Return Wahr wenn there is an effective breakpoint fuer this line.
@@ -444,14 +444,14 @@ klasse Bdb:
         """
         filename = self.canonic(frame.f_code.co_filename)
         wenn filename nicht in self.breaks:
-            return Falsch
+            gib Falsch
         lineno = frame.f_lineno
         wenn lineno nicht in self.breaks[filename]:
             # The line itself has no breakpoint, but maybe the line is the
             # first line of a function mit breakpoint set by function name.
             lineno = frame.f_code.co_firstlineno
             wenn lineno nicht in self.breaks[filename]:
-                return Falsch
+                gib Falsch
 
         # flag says ok to delete temp. bp
         (bp, flag) = effective(filename, lineno, frame)
@@ -459,9 +459,9 @@ klasse Bdb:
             self.currentbp = bp.number
             wenn (flag und bp.temporary):
                 self.do_clear(str(bp.number))
-            return Wahr
+            gib Wahr
         sonst:
-            return Falsch
+            gib Falsch
 
     def do_clear(self, arg):
         """Remove temporary breakpoint.
@@ -475,21 +475,21 @@ klasse Bdb:
         """
         filename = self.canonic(frame.f_code.co_filename)
         wenn filename nicht in self.breaks:
-            return Falsch
+            gib Falsch
         fuer lineno in self.breaks[filename]:
             wenn self._lineno_in_frame(lineno, frame):
-                return Wahr
-        return Falsch
+                gib Wahr
+        gib Falsch
 
     def _lineno_in_frame(self, lineno, frame):
         """Return Wahr wenn the line number is in the frame's code object.
         """
         code = frame.f_code
         wenn lineno < code.co_firstlineno:
-            return Falsch
+            gib Falsch
         wenn code nicht in self.code_linenos:
             self.code_linenos[code] = set(lineno fuer _, _, lineno in code.co_lines())
-        return lineno in self.code_linenos[code]
+        gib lineno in self.code_linenos[code]
 
     # Derived classes should override the user_* methods
     # to gain control.
@@ -503,7 +503,7 @@ klasse Bdb:
         pass
 
     def user_return(self, frame, return_value):
-        """Called when a return trap is set here."""
+        """Called when a gib trap is set here."""
         pass
 
     def user_exception(self, frame, exc_info):
@@ -633,7 +633,7 @@ klasse Bdb:
         self.stop_trace()
 
     # Derived classes und clients can call the following methods
-    # to manipulate breakpoints.  These methods return an
+    # to manipulate breakpoints.  These methods gib an
     # error message wenn something went wrong, Nichts wenn all is well.
     # Set_break prints out the breakpoint line und file:lineno.
     # Call self.get_*break*() to see the breakpoints oder better
@@ -649,14 +649,14 @@ klasse Bdb:
                   funcname=Nichts):
         """Set a new breakpoint fuer filename:lineno.
 
-        If lineno doesn't exist fuer the filename, return an error message.
+        If lineno doesn't exist fuer the filename, gib an error message.
         The filename should be in canonical form.
         """
         filename = self.canonic(filename)
         importiere linecache # Import als late als possible
         line = linecache.getline(filename, lineno)
         wenn nicht line:
-            return 'Line %s:%d does nicht exist' % (filename, lineno)
+            gib 'Line %s:%d does nicht exist' % (filename, lineno)
         self._add_to_breaks(filename, lineno)
         bp = Breakpoint(filename, lineno, temporary, cond, funcname)
         # After we set a new breakpoint, we need to search through all frames
@@ -667,7 +667,7 @@ klasse Bdb:
             wenn self.break_anywhere(frame):
                 frame.f_trace = self.trace_dispatch
             frame = frame.f_back
-        return Nichts
+        gib Nichts
 
     def _load_breaks(self):
         """Apply all breakpoints (set in other instances) to this one.
@@ -696,60 +696,60 @@ klasse Bdb:
     def clear_break(self, filename, lineno):
         """Delete breakpoints fuer filename:lineno.
 
-        If no breakpoints were set, return an error message.
+        If no breakpoints were set, gib an error message.
         """
         filename = self.canonic(filename)
         wenn filename nicht in self.breaks:
-            return 'There are no breakpoints in %s' % filename
+            gib 'There are no breakpoints in %s' % filename
         wenn lineno nicht in self.breaks[filename]:
-            return 'There is no breakpoint at %s:%d' % (filename, lineno)
+            gib 'There is no breakpoint at %s:%d' % (filename, lineno)
         # If there's only one bp in the list fuer that file,line
         # pair, then remove the breaks entry
         fuer bp in Breakpoint.bplist[filename, lineno][:]:
             bp.deleteMe()
         self._prune_breaks(filename, lineno)
-        return Nichts
+        gib Nichts
 
     def clear_bpbynumber(self, arg):
         """Delete a breakpoint by its index in Breakpoint.bpbynumber.
 
-        If arg is invalid, return an error message.
+        If arg is invalid, gib an error message.
         """
         try:
             bp = self.get_bpbynumber(arg)
         except ValueError als err:
-            return str(err)
+            gib str(err)
         bp.deleteMe()
         self._prune_breaks(bp.file, bp.line)
-        return Nichts
+        gib Nichts
 
     def clear_all_file_breaks(self, filename):
         """Delete all breakpoints in filename.
 
-        If none were set, return an error message.
+        If none were set, gib an error message.
         """
         filename = self.canonic(filename)
         wenn filename nicht in self.breaks:
-            return 'There are no breakpoints in %s' % filename
+            gib 'There are no breakpoints in %s' % filename
         fuer line in self.breaks[filename]:
             blist = Breakpoint.bplist[filename, line]
             fuer bp in blist:
                 bp.deleteMe()
         del self.breaks[filename]
-        return Nichts
+        gib Nichts
 
     def clear_all_breaks(self):
         """Delete all existing breakpoints.
 
-        If none were set, return an error message.
+        If none were set, gib an error message.
         """
         wenn nicht self.breaks:
-            return 'There are no breakpoints'
+            gib 'There are no breakpoints'
         fuer bp in Breakpoint.bpbynumber:
             wenn bp:
                 bp.deleteMe()
         self.breaks = {}
-        return Nichts
+        gib Nichts
 
     def get_bpbynumber(self, arg):
         """Return a breakpoint by its index in Breakpoint.bybpnumber.
@@ -769,38 +769,38 @@ klasse Bdb:
             raise ValueError('Breakpoint number %d out of range' % number) von Nichts
         wenn bp is Nichts:
             raise ValueError('Breakpoint %d already deleted' % number)
-        return bp
+        gib bp
 
     def get_break(self, filename, lineno):
         """Return Wahr wenn there is a breakpoint fuer filename:lineno."""
         filename = self.canonic(filename)
-        return filename in self.breaks und \
+        gib filename in self.breaks und \
             lineno in self.breaks[filename]
 
     def get_breaks(self, filename, lineno):
         """Return all breakpoints fuer filename:lineno.
 
-        If no breakpoints are set, return an empty list.
+        If no breakpoints are set, gib an empty list.
         """
         filename = self.canonic(filename)
-        return filename in self.breaks und \
+        gib filename in self.breaks und \
             lineno in self.breaks[filename] und \
             Breakpoint.bplist[filename, lineno] oder []
 
     def get_file_breaks(self, filename):
         """Return all lines mit breakpoints fuer filename.
 
-        If no breakpoints are set, return an empty list.
+        If no breakpoints are set, gib an empty list.
         """
         filename = self.canonic(filename)
         wenn filename in self.breaks:
-            return self.breaks[filename]
+            gib self.breaks[filename]
         sonst:
-            return []
+            gib []
 
     def get_all_breaks(self):
         """Return all breakpoints that are set."""
-        return self.breaks
+        gib self.breaks
 
     # Derived classes und clients can call the following method
     # to get a data structure representing a stack trace.
@@ -826,14 +826,14 @@ klasse Bdb:
             t = t.tb_next
         wenn f is Nichts:
             i = max(0, len(stack) - 1)
-        return stack, i
+        gib stack, i
 
     def format_stack_entry(self, frame_lineno, lprefix=': '):
         """Return a string mit information about a stack entry.
 
         The stack entry frame_lineno is a (frame, lineno) tuple.  The
-        return string contains the canonical filename, the function name
-        oder '<lambda>', the input arguments, the return value, und the
+        gib string contains the canonical filename, the function name
+        oder '<lambda>', the input arguments, the gib value, und the
         line of code (if it exists).
 
         """
@@ -856,7 +856,7 @@ klasse Bdb:
                 s += lprefix + line.strip()
         sonst:
             s += f'{lprefix}Warning: lineno is Nichts'
-        return s
+        gib s
 
     def disable_current_event(self):
         """Disable the current event."""
@@ -907,7 +907,7 @@ klasse Bdb:
         self.reset()
         self.start_trace()
         try:
-            return eval(expr, globals, locals)
+            gib eval(expr, globals, locals)
         except BdbQuit:
             pass
         finally:
@@ -936,7 +936,7 @@ klasse Bdb:
         finally:
             self.quitting = Wahr
             self.stop_trace()
-        return res
+        gib res
 
 
 def set_trace():
@@ -1057,11 +1057,11 @@ klasse Breakpoint:
             sonst:
                 ss = ''
             ret += '\n\tbreakpoint already hit %d time%s' % (self.hits, ss)
-        return ret
+        gib ret
 
     def __str__(self):
         "Return a condensed description of the breakpoint."
-        return 'breakpoint %s at %s:%s' % (self.number, self.file, self.line)
+        gib 'breakpoint %s at %s:%s' % (self.number, self.file, self.line)
 
 # -----------end of Breakpoint class----------
 
@@ -1079,13 +1079,13 @@ def checkfuncname(b, frame):
         wenn b.line != frame.f_lineno:
             # Breakpoint was set at a line mit a def statement und the function
             # defined is called: don't break.
-            return Falsch
-        return Wahr
+            gib Falsch
+        gib Wahr
 
     # Breakpoint set via function name.
     wenn frame.f_code.co_name != b.funcname:
         # It's nicht a function call, but rather execution of def statement.
-        return Falsch
+        gib Falsch
 
     # We are in the right frame.
     wenn nicht b.func_first_executable_line:
@@ -1094,8 +1094,8 @@ def checkfuncname(b, frame):
 
     wenn b.func_first_executable_line != frame.f_lineno:
         # But we are nicht at the first line number: don't break.
-        return Falsch
-    return Wahr
+        gib Falsch
+    gib Wahr
 
 
 def effective(file, line, frame):
@@ -1126,7 +1126,7 @@ def effective(file, line, frame):
                 weiter
             sonst:
                 # breakpoint und marker that it's ok to delete wenn temporary
-                return (b, Wahr)
+                gib (b, Wahr)
         sonst:
             # Conditional bp.
             # Ignore count applies only to those bpt hits where the
@@ -1138,15 +1138,15 @@ def effective(file, line, frame):
                         b.ignore -= 1
                         # weiter
                     sonst:
-                        return (b, Wahr)
+                        gib (b, Wahr)
                 # sonst:
                 #   weiter
             except:
                 # wenn eval fails, most conservative thing is to stop on
                 # breakpoint regardless of ignore count.  Don't delete
                 # temporary, als another hint to user.
-                return (b, Falsch)
-    return (Nichts, Nichts)
+                gib (b, Falsch)
+    gib (Nichts, Nichts)
 
 
 # -------------------- testing --------------------
@@ -1176,7 +1176,7 @@ def foo(n):
 
 def bar(a):
     drucke('bar(', a, ')')
-    return a/2
+    gib a/2
 
 def test():
     t = Tdb()

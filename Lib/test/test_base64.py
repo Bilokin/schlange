@@ -860,7 +860,7 @@ klasse TestMain(unittest.TestCase):
             os.unlink(os_helper.TESTFN)
 
     def get_output(self, *args):
-        return script_helper.assert_python_ok('-m', 'base64', *args).out
+        gib script_helper.assert_python_ok('-m', 'base64', *args).out
 
     def test_encode_file(self):
         mit open(os_helper.TESTFN, 'wb') als fp:

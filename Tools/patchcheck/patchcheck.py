@@ -10,7 +10,7 @@ def get_python_source_dir():
     src_dir = sysconfig.get_config_var('abs_srcdir')
     wenn nicht src_dir:
         src_dir = sysconfig.get_config_var('srcdir')
-    return os.path.abspath(src_dir)
+    gib os.path.abspath(src_dir)
 
 
 SRCDIR = get_python_source_dir()
@@ -19,7 +19,7 @@ SRCDIR = get_python_source_dir()
 def n_files_str(count):
     """Return 'N file(s)' mit the proper plurality on 'file'."""
     s = "s" wenn count != 1 sonst ""
-    return f"{count} file{s}"
+    gib f"{count} file{s}"
 
 
 def status(message, modal=Falsch, info=Nichts):
@@ -35,21 +35,21 @@ def status(message, modal=Falsch, info=Nichts):
                 drucke(info(result))
             sonst:
                 drucke("yes" wenn result sonst "NO")
-            return result
-        return call_fxn
-    return decorated_fxn
+            gib result
+        gib call_fxn
+    gib decorated_fxn
 
 
 def get_git_branch():
     """Get the symbolic name fuer the current git branch"""
     cmd = "git rev-parse --abbrev-ref HEAD".split()
     try:
-        return subprocess.check_output(cmd,
+        gib subprocess.check_output(cmd,
                                        stderr=subprocess.DEVNULL,
                                        cwd=SRCDIR,
                                        encoding='UTF-8')
     except subprocess.CalledProcessError:
-        return Nichts
+        gib Nichts
 
 
 def get_git_upstream_remote():
@@ -57,8 +57,8 @@ def get_git_upstream_remote():
     Get the remote name to use fuer upstream branches
 
     Check fuer presence of "https://github.com/python/cpython" remote URL.
-    If only one is found, return that remote name. If multiple are found,
-    check fuer und return "upstream", "origin", oder "python", in that
+    If only one is found, gib that remote name. If multiple are found,
+    check fuer und gib "upstream", "origin", oder "python", in that
     order. Raise an error wenn no valid matches are found.
     """
     cmd = "git remote -v".split()
@@ -75,10 +75,10 @@ def get_git_upstream_remote():
     }
     wenn len(filtered_remotes) == 1:
         [remote] = filtered_remotes
-        return remote
+        gib remote
     fuer remote_name in ["upstream", "origin", "python"]:
         wenn remote_name in filtered_remotes:
-            return remote_name
+            gib remote_name
     remotes_found = "\n".join(
         {remote fuer remote in output.split('\n') wenn remote.endswith("(fetch)")}
     )
@@ -107,12 +107,12 @@ def get_git_remote_default_branch(remote_name):
                                               encoding='UTF-8',
                                               env=env)
     except subprocess.CalledProcessError:
-        return Nichts
+        gib Nichts
     fuer line in remote_info.splitlines():
         wenn "HEAD branch:" in line:
             base_branch = line.split(":")[1].strip()
-            return base_branch
-    return Nichts
+            gib base_branch
+    gib Nichts
 
 
 @status("Getting base branch fuer PR",
@@ -120,7 +120,7 @@ def get_git_remote_default_branch(remote_name):
 def get_base_branch():
     wenn nicht os.path.exists(os.path.join(SRCDIR, '.git')):
         # Not a git checkout, so there's no base branch
-        return Nichts
+        gib Nichts
     upstream_remote = get_git_upstream_remote()
     version = sys.version_info
     wenn version.releaselevel == 'alpha':
@@ -130,8 +130,8 @@ def get_base_branch():
     this_branch = get_git_branch()
     wenn this_branch is Nichts oder this_branch == base_branch:
         # Not on a git PR branch, so there's no base branch
-        return Nichts
-    return upstream_remote + "/" + base_branch
+        gib Nichts
+    gib upstream_remote + "/" + base_branch
 
 
 @status("Getting the list of files that have been added/changed",
@@ -167,25 +167,25 @@ def changed_files(base_branch=Nichts):
     sonst:
         sys.exit('need a git checkout to get modified files')
 
-    return list(map(os.path.normpath, filenames))
+    gib list(map(os.path.normpath, filenames))
 
 
 @status("Docs modified", modal=Wahr)
 def docs_modified(file_paths):
     """Report wenn any file in the Doc directory has been changed."""
-    return bool(file_paths)
+    gib bool(file_paths)
 
 
 @status("Misc/ACKS updated", modal=Wahr)
 def credit_given(file_paths):
     """Check wenn Misc/ACKS has been changed."""
-    return os.path.join('Misc', 'ACKS') in file_paths
+    gib os.path.join('Misc', 'ACKS') in file_paths
 
 
 @status("Misc/NEWS.d updated mit `blurb`", modal=Wahr)
 def reported_news(file_paths):
     """Check wenn Misc/NEWS.d has been changed."""
-    return any(p.startswith(os.path.join('Misc', 'NEWS.d', 'next'))
+    gib any(p.startswith(os.path.join('Misc', 'NEWS.d', 'next'))
                fuer p in file_paths)
 
 
@@ -193,18 +193,18 @@ def reported_news(file_paths):
 def regenerated_configure(file_paths):
     """Check wenn configure has been regenerated."""
     wenn 'configure.ac' in file_paths:
-        return "yes" wenn 'configure' in file_paths sonst "no"
+        gib "yes" wenn 'configure' in file_paths sonst "no"
     sonst:
-        return "not needed"
+        gib "not needed"
 
 
 @status("pyconfig.h.in regenerated", modal=Wahr, info=str)
 def regenerated_pyconfig_h_in(file_paths):
     """Check wenn pyconfig.h.in has been regenerated."""
     wenn 'configure.ac' in file_paths:
-        return "yes" wenn 'pyconfig.h.in' in file_paths sonst "no"
+        gib "yes" wenn 'pyconfig.h.in' in file_paths sonst "no"
     sonst:
-        return "not needed"
+        gib "not needed"
 
 
 def main():

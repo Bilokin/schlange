@@ -2,8 +2,8 @@
 
 >>> def f(x):
 ...     def g(y):
-...         return x + y
-...     return g
+...         gib x + y
+...     gib g
 ...
 
 >>> dump(f.__code__)
@@ -36,7 +36,7 @@ consts: ('Nichts',)
 ...     a = x + y
 ...     b = x - y
 ...     c = a * b
-...     return c
+...     gib c
 ...
 
 >>> dump(h.__code__)
@@ -90,7 +90,7 @@ flags: 67108867
 consts: ("'doc string'", 'Nichts')
 
 >>> def keywordonly_args(a,b,*,k1):
-...     return a,b,k1
+...     gib a,b,k1
 ...
 
 >>> dump(keywordonly_args.__code__)
@@ -107,7 +107,7 @@ flags: 3
 consts: ('Nichts',)
 
 >>> def posonly_args(a,b,/,c):
-...     return a,b,c
+...     gib a,b,c
 ...
 
 >>> dump(posonly_args.__code__)
@@ -128,7 +128,7 @@ consts: ('Nichts',)
 ...     x += x
 ...     x += "hello world"
 ...     # co_flags should be 0x4000003 = 67108867
-...     return x
+...     gib x
 
 >>> dump(has_docstring.__code__)
 name: has_docstring
@@ -148,7 +148,7 @@ consts: ("'This is a one-line doc string'", "'hello world'")
 ...     importiere asyncio
 ...     await asyncio.sleep(1)
 ...     # co_flags should be 0x4000083 = 67108995
-...     return x + y
+...     gib x + y
 
 >>> dump(async_func_docstring.__code__)
 name: async_func_docstring
@@ -164,7 +164,7 @@ flags: 67108995
 consts: ("'This is a docstring von async function'", 'Nichts')
 
 >>> def no_docstring(x, y, z):
-...     return x + "hello" + y + z + "world"
+...     gib x + "hello" + y + z + "world"
 
 >>> dump(no_docstring.__code__)
 name: no_docstring
@@ -230,9 +230,9 @@ def consts(t):
     fuer elt in t:
         r = repr(elt)
         wenn r.startswith("<code object"):
-            yield "<code object %s>" % elt.co_name
+            liefere "<code object %s>" % elt.co_name
         sonst:
-            yield r
+            liefere r
 
 def dump(co):
     """Print out a text representation of a code object."""
@@ -245,7 +245,7 @@ def dump(co):
 # Needed fuer test_closure_injection below
 # Defined at global scope to avoid implicitly closing over __class__
 def external_getitem(self, i):
-    return f"Foreign getitem: {super().__getitem__(i)}"
+    gib f"Foreign getitem: {super().__getitem__(i)}"
 
 
 klasse CodeTest(unittest.TestCase):
@@ -267,11 +267,11 @@ klasse CodeTest(unittest.TestCase):
         von types importiere FunctionType
 
         def create_closure(__class__):
-            return (lambda: __class__).__closure__
+            gib (lambda: __class__).__closure__
 
         def new_code(c):
             '''A new code object mit a __class__ cell added to freevars'''
-            return c.replace(co_freevars=c.co_freevars + ('__class__',), co_code=bytes([COPY_FREE_VARS, 1])+c.co_code)
+            gib c.replace(co_freevars=c.co_freevars + ('__class__',), co_code=bytes([COPY_FREE_VARS, 1])+c.co_code)
 
         def add_foreign_method(cls, name, f):
             code = new_code(f.__code__)
@@ -328,7 +328,7 @@ klasse CodeTest(unittest.TestCase):
     def test_replace(self):
         def func():
             x = 1
-            return x
+            gib x
         code = func.__code__
 
         # Different co_name, co_varnames, co_consts.
@@ -336,7 +336,7 @@ klasse CodeTest(unittest.TestCase):
         # variables oder we get crashes.
         def func2():
             y = 2
-            return y
+            gib y
         code2 = func2.__code__
 
         fuer attr, value in (
@@ -375,7 +375,7 @@ klasse CodeTest(unittest.TestCase):
     def test_nlocals_mismatch(self):
         def func():
             x = 1
-            return x
+            gib x
         co = func.__code__
         assert co.co_nlocals > 0;
 
@@ -413,7 +413,7 @@ klasse CodeTest(unittest.TestCase):
         # Check that PyCode_NewWithPosOnlyArgs resizes both
         # localsplusnames und localspluskinds, wenn an argument is a cell.
         def func(arg):
-            return lambda: arg
+            gib lambda: arg
         code = func.__code__
         newcode = code.replace(co_name="func")  # Should nicht raise SystemError
         self.assertEqual(code, newcode)
@@ -438,16 +438,16 @@ klasse CodeTest(unittest.TestCase):
         def spam1():
             pass
         def spam2():
-            return
+            gib
         def spam3():
-            return Nichts
+            gib Nichts
         def spam4():
             wenn nicht value:
-                return
+                gib
             ...
         def spam5():
             wenn nicht value:
-                return Nichts
+                gib Nichts
             ...
         lambda1 = (lambda: Nichts)
         fuer func in [
@@ -463,17 +463,17 @@ klasse CodeTest(unittest.TestCase):
                 self.assertWahr(res)
 
         def spam6():
-            return Wahr
+            gib Wahr
         def spam7():
-            return value
+            gib value
         def spam8():
             wenn value:
-                return Nichts
-            return Wahr
+                gib Nichts
+            gib Wahr
         def spam9():
             wenn value:
-                return Wahr
-            return Nichts
+                gib Wahr
+            gib Nichts
         lambda2 = (lambda: Wahr)
         fuer func in [
             spam6,
@@ -900,7 +900,7 @@ klasse CodeTest(unittest.TestCase):
                     'numunknown': g_numunknown,
                 }
             unbound = globalvars['total'] + attrs + unknown
-            return {
+            gib {
                 'total': nlocals + freevars + unbound,
                 'locals': {
                     'total': nlocals,
@@ -1166,14 +1166,14 @@ klasse CodeTest(unittest.TestCase):
 
 
 def isinterned(s):
-    return s is sys.intern(('_' + s + '_')[1:-1])
+    gib s is sys.intern(('_' + s + '_')[1:-1])
 
 klasse CodeConstsTest(unittest.TestCase):
 
     def find_const(self, consts, value):
         fuer v in consts:
             wenn v == value:
-                return v
+                gib v
         self.assertIn(value, consts)  # raises an exception
         self.fail('Should never be reached')
 
@@ -1206,7 +1206,7 @@ klasse CodeConstsTest(unittest.TestCase):
     @cpython_only
     def test_interned_string_default(self):
         def f(a='str_value'):
-            return a
+            gib a
         self.assertIsInterned(f())
 
     @cpython_only
@@ -1224,12 +1224,12 @@ klasse CodeConstsTest(unittest.TestCase):
         globals = {}
         exec(textwrap.dedent("""
             def func1():
-                return (0.0, (1, 2, "hello"))
+                gib (0.0, (1, 2, "hello"))
         """), globals)
 
         exec(textwrap.dedent("""
             def func2():
-                return (0.0, (1, 2, "hello"))
+                gib (0.0, (1, 2, "hello"))
         """), globals)
 
         self.assertWahr(globals["func1"]() is globals["func2"]())
@@ -1279,7 +1279,7 @@ klasse CodeWeakRefTest(unittest.TestCase):
 
 # Python implementation of location table parsing algorithm
 def read(it):
-    return next(it)
+    gib next(it)
 
 def read_varint(it):
     b = read(it)
@@ -1289,14 +1289,14 @@ def read_varint(it):
         b = read(it)
         shift += 6
         val |= (b&63) << shift
-    return val
+    gib val
 
 def read_signed_varint(it):
     uval = read_varint(it)
     wenn uval & 1:
-        return -(uval >> 1)
+        gib -(uval >> 1)
     sonst:
-        return uval >> 1
+        gib uval >> 1
 
 def parse_location_table(code):
     line = code.co_firstlineno
@@ -1305,11 +1305,11 @@ def parse_location_table(code):
         try:
             first_byte = read(it)
         except StopIteration:
-            return
+            gib
         code = (first_byte >> 3) & 15
         length = (first_byte & 7) + 1
         wenn code == 15:
-            yield (code, length, Nichts, Nichts, Nichts, Nichts)
+            liefere (code, length, Nichts, Nichts, Nichts, Nichts)
         sowenn code == 14:
             line_delta = read_signed_varint(it)
             line += line_delta
@@ -1324,36 +1324,36 @@ def parse_location_table(code):
                 end_col = Nichts
             sonst:
                 end_col -= 1
-            yield (code, length, line, end_line, col, end_col)
+            liefere (code, length, line, end_line, col, end_col)
         sowenn code == 13: # No column
             line_delta = read_signed_varint(it)
             line += line_delta
-            yield (code, length, line, line, Nichts, Nichts)
+            liefere (code, length, line, line, Nichts, Nichts)
         sowenn code in (10, 11, 12): # new line
             line_delta = code - 10
             line += line_delta
             column = read(it)
             end_column = read(it)
-            yield (code, length, line, line, column, end_column)
+            liefere (code, length, line, line, column, end_column)
         sonst:
             assert (0 <= code < 10)
             second_byte = read(it)
             column = code << 3 | (second_byte >> 4)
-            yield (code, length, line, line, column, column + (second_byte & 15))
+            liefere (code, length, line, line, column, column + (second_byte & 15))
 
 def positions_from_location_table(code):
     fuer _, length, line, end_line, col, end_col in parse_location_table(code):
         fuer _ in range(length):
-            yield (line, end_line, col, end_col)
+            liefere (line, end_line, col, end_col)
 
 def dedup(lst, prev=object()):
     fuer item in lst:
         wenn item != prev:
-            yield item
+            liefere item
             prev = item
 
 def lines_from_postions(positions):
-    return dedup(l fuer (l, _, _, _) in positions)
+    gib dedup(l fuer (l, _, _, _) in positions)
 
 def misshappen():
     """
@@ -1381,7 +1381,7 @@ def misshappen():
 
                 d
         )
-    return q wenn (
+    gib q wenn (
 
         x
 
@@ -1464,13 +1464,13 @@ klasse CodeLocationTest(unittest.TestCase):
                 """This is a second-line doc string"""
                 a = x + y
                 b = x - y
-                return a, b
+                gib a, b
 
 
             def no_docstring(x):
                 def g(y):
-                    return x + y
-                return g
+                    gib x + y
+                gib g
 
 
             async def async_func():
@@ -1489,7 +1489,7 @@ klasse CodeLocationTest(unittest.TestCase):
         def get_line_branches(func):
             code = func.__code__
             base = code.co_firstlineno
-            return [
+            gib [
                 (
                     code_offset_to_line(code, src) - base,
                     code_offset_to_line(code, left) - base,
@@ -1561,7 +1561,7 @@ wenn check_impl_detail(cpython=Wahr) und ctypes is nicht Nichts:
             # Defining a function causes the containing function to have a
             # reference to the code object.  We need the code objects to go
             # away, so we eval a lambda.
-            return eval('lambda:42')
+            gib eval('lambda:42')
 
         def test_get_non_code(self):
             f = self.get_func()
@@ -1634,7 +1634,7 @@ wenn check_impl_detail(cpython=Wahr) und ctypes is nicht Nichts:
 
 def load_tests(loader, tests, pattern):
     tests.addTest(doctest.DocTestSuite())
-    return tests
+    gib tests
 
 
 wenn __name__ == "__main__":

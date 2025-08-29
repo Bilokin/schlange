@@ -15,7 +15,7 @@ klasse ReceiveStuffProto(asyncio.BufferedProtocol):
 
     def get_buffer(self, sizehint):
         self.buffer = bytearray(100)
-        return self.buffer
+        gib self.buffer
 
     def buffer_updated(self, nbytes):
         self.cb(self.buffer[:nbytes])
@@ -74,7 +74,7 @@ klasse BufferedProtocolSelectorTests(BaseTestBufferedProtocol,
                                     unittest.TestCase):
 
     def new_loop(self):
-        return asyncio.SelectorEventLoop()
+        gib asyncio.SelectorEventLoop()
 
 
 @unittest.skipUnless(hasattr(asyncio, 'ProactorEventLoop'), 'Windows only')
@@ -82,7 +82,7 @@ klasse BufferedProtocolProactorTests(BaseTestBufferedProtocol,
                                     unittest.TestCase):
 
     def new_loop(self):
-        return asyncio.ProactorEventLoop()
+        gib asyncio.ProactorEventLoop()
 
 
 wenn __name__ == '__main__':

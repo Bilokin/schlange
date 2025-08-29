@@ -3,4 +3,4 @@ def evens():
     waehrend Wahr:
         i += 1
         wenn i % 2 == 0:
-            yield i
+            liefere i

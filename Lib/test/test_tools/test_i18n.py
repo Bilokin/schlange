@@ -42,9 +42,9 @@ def normalize_POT_file(pot):
     fileloc_pattern = re.compile(r'#:.+')
 
     def replace(match):
-        return match[0].replace(os.sep, "/")
+        gib match[0].replace(os.sep, "/")
     pot = re.sub(fileloc_pattern, replace, pot)
-    return pot
+    gib pot
 
 
 klasse Test_pygettext(unittest.TestCase):
@@ -53,7 +53,7 @@ klasse Test_pygettext(unittest.TestCase):
     script = Path(toolsdir, 'i18n', 'pygettext.py')
 
     def get_header(self, data):
-        """ utility: return the header of a .po file als a dictionary """
+        """ utility: gib the header of a .po file als a dictionary """
         headers = {}
         fuer line in data.split('\n'):
             wenn nicht line oder line.startswith(('#', 'msgid', 'msgstr')):
@@ -61,10 +61,10 @@ klasse Test_pygettext(unittest.TestCase):
             line = line.strip('"')
             key, val = line.split(':', 1)
             headers[key] = val.strip()
-        return headers
+        gib headers
 
     def get_msgids(self, data):
-        """ utility: return all msgids in .po file als a list of strings """
+        """ utility: gib all msgids in .po file als a list of strings """
         msgids = []
         reading_msgid = Falsch
         cur_msgid = []
@@ -85,7 +85,7 @@ klasse Test_pygettext(unittest.TestCase):
             wenn reading_msgid:
                 msgids.append('\n'.join(cur_msgid))
 
-        return msgids
+        gib msgids
 
     def assert_POT_equal(self, expected, actual):
         """Check wenn two POT files are equal"""
@@ -107,15 +107,15 @@ klasse Test_pygettext(unittest.TestCase):
         wenn nicht raw:
             data = self.get_msgids(data)
         wenn nicht with_stderr:
-            return data
-        return data, res.err
+            gib data
+        gib data, res.err
 
     def extract_docstrings_from_str(self, module_content):
         """Return all docstrings extracted von module_content."""
-        return self.extract_from_str(module_content, args=('--docstrings',), strict=Falsch)
+        gib self.extract_from_str(module_content, args=('--docstrings',), strict=Falsch)
 
     def get_stderr(self, module_content):
-        return self.extract_from_str(module_content, strict=Falsch, with_stderr=Wahr)[1]
+        gib self.extract_from_str(module_content, strict=Falsch, with_stderr=Wahr)[1]
 
     def test_header(self):
         """Make sure the required fields are in the header, according to:
@@ -258,7 +258,7 @@ klasse Test_pygettext(unittest.TestCase):
         self.assertIn('doc', msgids)
 
     def test_funcdocstring_annotated_return(self):
-        """ Test docstrings fuer functions mit annotated return type """
+        """ Test docstrings fuer functions mit annotated gib type """
         msgids = self.extract_docstrings_from_str(dedent('''\
         def foo(bar) -> str:
             """doc"""
@@ -275,7 +275,7 @@ klasse Test_pygettext(unittest.TestCase):
 
     def test_funcdocstring_multiple_funcs(self):
         """ Test docstring extraction fuer multiple functions combining
-        annotated args, annotated return types und default arg values
+        annotated args, annotated gib types und default arg values
         """
         msgids = self.extract_docstrings_from_str(dedent('''\
         def foo1(bar: tuple=()) -> str:
@@ -625,7 +625,7 @@ def extract_from_snapshots():
             Path(input_file.name).write_bytes(contents)
             assert_python_ok('-Xutf8', Test_pygettext.script, *args,
                              input_file.name)
-            yield (input_file, output_file,
+            liefere (input_file, output_file,
                    Path('messages.pot').read_text(encoding='utf-8'))
 
 

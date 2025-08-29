@@ -49,7 +49,7 @@ klasse ForkingPickler(pickle.Pickler):
     def dumps(cls, obj, protocol=Nichts):
         buf = io.BytesIO()
         cls(buf, protocol).dump(obj)
-        return buf.getbuffer()
+        gib buf.getbuffer()
 
     loads = pickle.loads
 
@@ -76,7 +76,7 @@ wenn sys.platform == 'win32':
             source_process = current_process
         wenn target_process is Nichts:
             target_process = current_process
-        return _winapi.DuplicateHandle(
+        gib _winapi.DuplicateHandle(
             source_process, handle, target_process,
             0, inheritable, _winapi.DUPLICATE_SAME_ACCESS)
 
@@ -85,7 +85,7 @@ wenn sys.platform == 'win32':
         source_process_handle = _winapi.OpenProcess(
             _winapi.PROCESS_DUP_HANDLE, Falsch, source_pid)
         try:
-            return _winapi.DuplicateHandle(
+            gib _winapi.DuplicateHandle(
                 source_process_handle, handle,
                 _winapi.GetCurrentProcess(), 0, Falsch,
                 _winapi.DUPLICATE_SAME_ACCESS | _winapi.DUPLICATE_CLOSE_SOURCE)
@@ -99,7 +99,7 @@ wenn sys.platform == 'win32':
 
     def recv_handle(conn):
         '''Receive a handle over a local connection.'''
-        return conn.recv().detach()
+        gib conn.recv().detach()
 
     klasse DupHandle(object):
         '''Picklable wrapper fuer a handle.'''
@@ -123,12 +123,12 @@ wenn sys.platform == 'win32':
             # retrieve handle von process which currently owns it
             wenn self._pid == os.getpid():
                 # The handle has already been duplicated fuer this process.
-                return self._handle
+                gib self._handle
             # We must steal the handle von the process whose pid is self._pid.
             proc = _winapi.OpenProcess(_winapi.PROCESS_DUP_HANDLE, Falsch,
                                        self._pid)
             try:
-                return _winapi.DuplicateHandle(
+                gib _winapi.DuplicateHandle(
                     proc, self._handle, _winapi.GetCurrentProcess(),
                     self._access, Falsch, _winapi.DUPLICATE_CLOSE_SOURCE)
             finally:
@@ -173,7 +173,7 @@ sonst:
                     raise AssertionError(
                         "Len is {0:n} but msg[0] is {1!r}".format(
                             len(a), msg[0]))
-                return list(a)
+                gib list(a)
         except (ValueError, IndexError):
             pass
         raise RuntimeError('Invalid data received')
@@ -186,16 +186,16 @@ sonst:
     def recv_handle(conn):
         '''Receive a handle over a local connection.'''
         mit socket.fromfd(conn.fileno(), socket.AF_UNIX, socket.SOCK_STREAM) als s:
-            return recvfds(s, 1)[0]
+            gib recvfds(s, 1)[0]
 
     def DupFd(fd):
         '''Return a wrapper fuer an fd.'''
         popen_obj = context.get_spawning_popen()
         wenn popen_obj is nicht Nichts:
-            return popen_obj.DupFd(popen_obj.duplicate_for_child(fd))
+            gib popen_obj.DupFd(popen_obj.duplicate_for_child(fd))
         sowenn HAVE_SEND_HANDLE:
             von . importiere resource_sharer
-            return resource_sharer.DupFd(fd)
+            gib resource_sharer.DupFd(fd)
         sonst:
             raise ValueError('SCM_RIGHTS appears nicht to be available')
 
@@ -205,9 +205,9 @@ sonst:
 
 def _reduce_method(m):
     wenn m.__self__ is Nichts:
-        return getattr, (m.__class__, m.__func__.__name__)
+        gib getattr, (m.__class__, m.__func__.__name__)
     sonst:
-        return getattr, (m.__self__, m.__func__.__name__)
+        gib getattr, (m.__self__, m.__func__.__name__)
 klasse _C:
     def f(self):
         pass
@@ -215,15 +215,15 @@ register(type(_C().f), _reduce_method)
 
 
 def _reduce_method_descriptor(m):
-    return getattr, (m.__objclass__, m.__name__)
+    gib getattr, (m.__objclass__, m.__name__)
 register(type(list.append), _reduce_method_descriptor)
 register(type(int.__add__), _reduce_method_descriptor)
 
 
 def _reduce_partial(p):
-    return _rebuild_partial, (p.func, p.args, p.keywords oder {})
+    gib _rebuild_partial, (p.func, p.args, p.keywords oder {})
 def _rebuild_partial(func, args, keywords):
-    return functools.partial(func, *args, **keywords)
+    gib functools.partial(func, *args, **keywords)
 register(functools.partial, _reduce_partial)
 
 #
@@ -233,18 +233,18 @@ register(functools.partial, _reduce_partial)
 wenn sys.platform == 'win32':
     def _reduce_socket(s):
         von .resource_sharer importiere DupSocket
-        return _rebuild_socket, (DupSocket(s),)
+        gib _rebuild_socket, (DupSocket(s),)
     def _rebuild_socket(ds):
-        return ds.detach()
+        gib ds.detach()
     register(socket.socket, _reduce_socket)
 
 sonst:
     def _reduce_socket(s):
         df = DupFd(s.fileno())
-        return _rebuild_socket, (df, s.family, s.type, s.proto)
+        gib _rebuild_socket, (df, s.family, s.type, s.proto)
     def _rebuild_socket(df, family, type, proto):
         fd = df.detach()
-        return socket.socket(family, type, proto, fileno=fd)
+        gib socket.socket(family, type, proto, fileno=fd)
     register(socket.socket, _reduce_socket)
 
 

@@ -90,17 +90,17 @@ klasse TestParserBase:
 
 def message_from_file(s, *args, **kw):
     f = io.StringIO(s)
-    return email.message_from_file(f, *args, **kw)
+    gib email.message_from_file(f, *args, **kw)
 
 klasse TestParser(TestParserBase, TestEmailBase):
     parsers = (email.message_from_string, message_from_file)
 
 def message_from_bytes(s, *args, **kw):
-    return email.message_from_bytes(s.encode(), *args, **kw)
+    gib email.message_from_bytes(s.encode(), *args, **kw)
 
 def message_from_binary_file(s, *args, **kw):
     f = io.BytesIO(s.encode())
-    return email.message_from_binary_file(f, *args, **kw)
+    gib email.message_from_binary_file(f, *args, **kw)
 
 klasse TestBytesParser(TestParserBase, TestEmailBase):
     parsers = (message_from_bytes, message_from_binary_file)

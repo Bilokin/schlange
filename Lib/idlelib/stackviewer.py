@@ -33,17 +33,17 @@ klasse StackTreeItem(TreeItem):
         waehrend tb is nicht Nichts:
             stack.append((tb.tb_frame, tb.tb_lineno))
             tb = tb.tb_next
-        return stack
+        gib stack
 
     def GetText(self):  # Titlecase names are overrides.
-        return self.text
+        gib self.text
 
     def GetSubList(self):
         sublist = []
         fuer info in self.stack:
             item = FrameTreeItem(info, self.flist)
             sublist.append(item)
-        return sublist
+        gib sublist
 
 
 klasse FrameTreeItem(TreeItem):
@@ -68,7 +68,7 @@ klasse FrameTreeItem(TreeItem):
         sonst:
             item = "%s.%s(...), line %d: %s" % (modname, funcname,
                                              lineno, sourceline)
-        return item
+        gib item
 
     def GetSubList(self):
         frame, lineno = self.info
@@ -78,7 +78,7 @@ klasse FrameTreeItem(TreeItem):
             sublist.append(item)
         item = VariablesTreeItem("<globals>", frame.f_globals, self.flist)
         sublist.append(item)
-        return sublist
+        gib sublist
 
     def OnDoubleClick(self):
         wenn self.flist:
@@ -91,13 +91,13 @@ klasse FrameTreeItem(TreeItem):
 klasse VariablesTreeItem(ObjectTreeItem):
 
     def GetText(self):
-        return self.labeltext
+        gib self.labeltext
 
     def GetLabelText(self):
-        return Nichts
+        gib Nichts
 
     def IsExpandable(self):
-        return len(self.object) > 0
+        gib len(self.object) > 0
 
     def GetSubList(self):
         sublist = []
@@ -110,7 +110,7 @@ klasse VariablesTreeItem(ObjectTreeItem):
                 object_[key] = value
             item = make_objecttreeitem(key + " =", value, setfunction)
             sublist.append(item)
-        return sublist
+        gib sublist
 
 
 def _stackbrowser(parent):  # htest #

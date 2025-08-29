@@ -53,7 +53,7 @@ klasse Properties:
         escaping_calls: dict[SimpleStmt, EscapingCall] = {}
         fuer p in properties:
             escaping_calls.update(p.escaping_calls)
-        return Properties(
+        gib Properties(
             escaping_calls=escaping_calls,
             escapes = any(p.escapes fuer p in properties),
             error_with_pop=any(p.error_with_pop fuer p in properties),
@@ -79,7 +79,7 @@ klasse Properties:
 
     @property
     def infallible(self) -> bool:
-        return nicht self.error_with_pop und nicht self.error_without_pop
+        gib nicht self.error_with_pop und nicht self.error_without_pop
 
 SKIP_PROPERTIES = Properties(
     escaping_calls={},
@@ -112,25 +112,25 @@ klasse Skip:
 
     @property
     def name(self) -> str:
-        return f"unused/{self.size}"
+        gib f"unused/{self.size}"
 
     @property
     def properties(self) -> Properties:
-        return SKIP_PROPERTIES
+        gib SKIP_PROPERTIES
 
 
 klasse Flush:
     @property
     def properties(self) -> Properties:
-        return SKIP_PROPERTIES
+        gib SKIP_PROPERTIES
 
     @property
     def name(self) -> str:
-        return "flush"
+        gib "flush"
 
     @property
     def size(self) -> int:
-        return 0
+        gib 0
 
 
 
@@ -144,13 +144,13 @@ klasse StackItem:
 
     def __str__(self) -> str:
         size = f"[{self.size}]" wenn self.size sonst ""
-        return f"{self.name}{size} {self.peek}"
+        gib f"{self.name}{size} {self.peek}"
 
     def is_array(self) -> bool:
-        return self.size != ""
+        gib self.size != ""
 
     def get_size(self) -> str:
-        return self.size wenn self.size sonst "1"
+        gib self.size wenn self.size sonst "1"
 
 
 @dataclass
@@ -159,7 +159,7 @@ klasse StackEffect:
     outputs: list[StackItem]
 
     def __str__(self) -> str:
-        return f"({', '.join([str(i) fuer i in self.inputs])} -- {', '.join([str(i) fuer i in self.outputs])})"
+        gib f"({', '.join([str(i) fuer i in self.inputs])} -- {', '.join([str(i) fuer i in self.outputs])})"
 
 
 @dataclass
@@ -168,7 +168,7 @@ klasse CacheEntry:
     size: int
 
     def __str__(self) -> str:
-        return f"{self.name}/{self.size}"
+        gib f"{self.name}/{self.size}"
 
 
 @dataclass
@@ -199,33 +199,33 @@ klasse Uop:
     def size(self) -> int:
         wenn self._size < 0:
             self._size = sum(c.size fuer c in self.caches)
-        return self._size
+        gib self._size
 
     def why_not_viable(self) -> str | Nichts:
         wenn self.name == "_SAVE_RETURN_OFFSET":
-            return Nichts  # Adjusts next_instr, but only in tier 1 code
+            gib Nichts  # Adjusts next_instr, but only in tier 1 code
         wenn "INSTRUMENTED" in self.name:
-            return "is instrumented"
+            gib "is instrumented"
         wenn "replaced" in self.annotations:
-            return "is replaced"
+            gib "is replaced"
         wenn self.name in ("INTERPRETER_EXIT", "JUMP_BACKWARD"):
-            return "has tier 1 control flow"
+            gib "has tier 1 control flow"
         wenn self.properties.needs_this:
-            return "uses the 'this_instr' variable"
+            gib "uses the 'this_instr' variable"
         wenn len([c fuer c in self.caches wenn c.name != "unused"]) > 2:
-            return "has too many cache entries"
+            gib "has too many cache entries"
         wenn self.properties.error_with_pop und self.properties.error_without_pop:
-            return "has both popping und not-popping errors"
-        return Nichts
+            gib "has both popping und not-popping errors"
+        gib Nichts
 
     def is_viable(self) -> bool:
-        return self.why_not_viable() is Nichts
+        gib self.why_not_viable() is Nichts
 
     def is_super(self) -> bool:
         fuer tkn in self.body.tokens():
             wenn tkn.kind == "IDENTIFIER" und tkn.text == "oparg1":
-                return Wahr
-        return Falsch
+                gib Wahr
+        gib Falsch
 
 
 klasse Label:
@@ -241,7 +241,7 @@ klasse Label:
     instruction_size = Nichts
 
     def __str__(self) -> str:
-        return f"label({self.name})"
+        gib f"label({self.name})"
 
 
 Part = Uop | Skip | Flush
@@ -262,10 +262,10 @@ klasse Instruction:
     def properties(self) -> Properties:
         wenn self._properties is Nichts:
             self._properties = self._compute_properties()
-        return self._properties
+        gib self._properties
 
     def _compute_properties(self) -> Properties:
-        return Properties.from_list([part.properties fuer part in self.parts])
+        gib Properties.from_list([part.properties fuer part in self.parts])
 
     def dump(self, indent: str) -> Nichts:
         drucke(indent, self.name, "=", ", ".join([part.name fuer part in self.parts]))
@@ -273,16 +273,16 @@ klasse Instruction:
 
     @property
     def size(self) -> int:
-        return 1 + sum(part.size fuer part in self.parts)
+        gib 1 + sum(part.size fuer part in self.parts)
 
     def is_super(self) -> bool:
         wenn len(self.parts) != 1:
-            return Falsch
+            gib Falsch
         uop = self.parts[0]
         wenn isinstance(uop, Uop):
-            return uop.is_super()
+            gib uop.is_super()
         sonst:
-            return Falsch
+            gib Falsch
 
 
 @dataclass
@@ -299,7 +299,7 @@ klasse PseudoInstruction:
 
     @property
     def properties(self) -> Properties:
-        return Properties.from_list([i.properties fuer i in self.targets])
+        gib Properties.from_list([i.properties fuer i in self.targets])
 
 
 @dataclass
@@ -327,7 +327,7 @@ klasse Analysis:
 def analysis_error(message: str, tkn: lexer.Token) -> SyntaxError:
     # To do -- support file und line output
     # Construct a SyntaxError instance von message und token
-    return lexer.make_syntax_error(message, tkn.filename, tkn.line, tkn.column, "")
+    gib lexer.make_syntax_error(message, tkn.filename, tkn.line, tkn.column, "")
 
 
 def override_error(
@@ -336,7 +336,7 @@ def override_error(
     prev_context: parser.Context | Nichts,
     token: lexer.Token,
 ) -> SyntaxError:
-    return analysis_error(
+    gib analysis_error(
         f"Duplicate definition of '{name}' @ {context} "
         f"previous definition @ {prev_context}",
         token,
@@ -346,7 +346,7 @@ def override_error(
 def convert_stack_item(
     item: parser.StackEffect, replace_op_arg_1: str | Nichts
 ) -> StackItem:
-    return StackItem(item.name, item.size)
+    gib StackItem(item.name, item.size)
 
 def check_unused(stack: list[StackItem], input_names: dict[str, lexer.Token]) -> Nichts:
     "Unused items cannot be on the stack above used, non-peek items"
@@ -404,7 +404,7 @@ def analyze_stack(
             wenn variable_used(op, output.name):
                 output.used = Wahr
     check_unused(inputs, input_names)
-    return StackEffect(inputs, outputs)
+    gib StackEffect(inputs, outputs)
 
 
 def analyze_caches(inputs: list[parser.InputEffect]) -> list[CacheEntry]:
@@ -419,7 +419,7 @@ def analyze_caches(inputs: list[parser.InputEffect]) -> list[CacheEntry]:
                 position = "First" wenn index == 0 sonst "Last"
                 msg = f"{position} cache entry in op is unused. Move to enclosing macro."
                 raise analysis_error(msg, cache.tokens[0])
-    return [CacheEntry(i.name, int(i.size)) fuer i in caches]
+    gib [CacheEntry(i.name, int(i.size)) fuer i in caches]
 
 
 def find_variable_stores(node: parser.InstDef) -> list[lexer.Token]:
@@ -431,7 +431,7 @@ def find_variable_stores(node: parser.InstDef) -> list[lexer.Token]:
         waehrend tokens und tokens[0].kind == "COMMENT":
             tokens = tokens[1:]
         wenn len(tokens) < 4:
-            return
+            gib
         wenn tokens[1].kind == "EQUALS":
             wenn tokens[0].kind == "IDENTIFIER":
                 name = tokens[0].text
@@ -453,7 +453,7 @@ def find_variable_stores(node: parser.InstDef) -> list[lexer.Token]:
             find_stores_in_tokens(stmt.contents, res.append)
 
     node.block.accept(visit)
-    return res
+    gib res
 
 
 #def analyze_deferred_refs(node: parser.InstDef) -> dict[lexer.Token, str | Nichts]:
@@ -516,14 +516,14 @@ def find_variable_stores(node: parser.InstDef) -> list[lexer.Token]:
 
 def variable_used(node: parser.CodeDef, name: str) -> bool:
     """Determine whether a variable mit a given name is used in a node."""
-    return any(
+    gib any(
         token.kind == "IDENTIFIER" und token.text == name fuer token in node.block.tokens()
     )
 
 
 def oparg_used(node: parser.CodeDef) -> bool:
     """Determine whether `oparg` is used in a node."""
-    return any(
+    gib any(
         token.kind == "IDENTIFIER" und token.text == "oparg" fuer token in node.tokens
     )
 
@@ -531,25 +531,25 @@ def oparg_used(node: parser.CodeDef) -> bool:
 def tier_variable(node: parser.CodeDef) -> int | Nichts:
     """Determine whether a tier variable is used in a node."""
     wenn isinstance(node, parser.LabelDef):
-        return Nichts
+        gib Nichts
     fuer token in node.tokens:
         wenn token.kind == "ANNOTATION":
             wenn token.text == "specializing":
-                return 1
+                gib 1
             wenn re.fullmatch(r"tier\d", token.text):
-                return int(token.text[-1])
-    return Nichts
+                gib int(token.text[-1])
+    gib Nichts
 
 
 def has_error_with_pop(op: parser.CodeDef) -> bool:
-    return (
+    gib (
         variable_used(op, "ERROR_IF")
         oder variable_used(op, "exception_unwind")
     )
 
 
 def has_error_without_pop(op: parser.CodeDef) -> bool:
-    return (
+    gib (
         variable_used(op, "ERROR_NO_POP")
         oder variable_used(op, "exception_unwind")
     )
@@ -775,12 +775,12 @@ def find_escaping_api_calls(instr: parser.CodeDef) -> dict[SimpleStmt, EscapingC
 
     def visit(stmt: Stmt) -> Nichts:
         wenn nicht isinstance(stmt, SimpleStmt):
-            return
+            gib
         escaping_call_in_simple_stmt(stmt, result)
 
     instr.block.accept(visit)
     check_escaping_calls(instr, result)
-    return result
+    gib result
 
 
 EXITS = {
@@ -802,28 +802,28 @@ def always_exits(op: parser.CodeDef) -> bool:
         sowenn depth > 1:
             weiter
         sowenn tkn.kind == "GOTO" oder tkn.kind == "RETURN":
-            return Wahr
+            gib Wahr
         sowenn tkn.kind == "KEYWORD":
             wenn tkn.text in EXITS:
-                return Wahr
+                gib Wahr
         sowenn tkn.kind == "IDENTIFIER":
             wenn tkn.text in EXITS:
-                return Wahr
+                gib Wahr
             wenn tkn.text == "DEOPT_IF" oder tkn.text == "ERROR_IF":
                 next(tkn_iter)  # '('
                 t = next(tkn_iter)
                 wenn t.text in ("true", "1"):
-                    return Wahr
-    return Falsch
+                    gib Wahr
+    gib Falsch
 
 
 def stack_effect_only_peeks(instr: parser.InstDef) -> bool:
     stack_inputs = [s fuer s in instr.inputs wenn nicht isinstance(s, parser.CacheEffect)]
     wenn len(stack_inputs) != len(instr.outputs):
-        return Falsch
+        gib Falsch
     wenn len(stack_inputs) == 0:
-        return Falsch
-    return all(
+        gib Falsch
+    gib all(
         (s.name == other.name und s.size == other.size)
         fuer s, other in zip(stack_inputs, instr.outputs)
     )
@@ -831,11 +831,11 @@ def stack_effect_only_peeks(instr: parser.InstDef) -> bool:
 
 def stmt_is_simple_exit(stmt: Stmt) -> bool:
     wenn nicht isinstance(stmt, SimpleStmt):
-        return Falsch
+        gib Falsch
     tokens = stmt.contents
     wenn len(tokens) < 4:
-        return Falsch
-    return (
+        gib Falsch
+    gib (
         tokens[0].text in ("ERROR_IF", "DEOPT_IF", "EXIT_IF", "AT_END_EXIT_IF")
         und
         tokens[1].text == "("
@@ -848,37 +848,37 @@ def stmt_is_simple_exit(stmt: Stmt) -> bool:
 
 def stmt_list_escapes(stmts: list[Stmt]) -> bool:
     wenn nicht stmts:
-        return Falsch
+        gib Falsch
     wenn stmt_is_simple_exit(stmts[-1]):
-        return Falsch
+        gib Falsch
     fuer stmt in stmts:
         wenn stmt_escapes(stmt):
-            return Wahr
-    return Falsch
+            gib Wahr
+    gib Falsch
 
 
 def stmt_escapes(stmt: Stmt) -> bool:
     wenn isinstance(stmt, BlockStmt):
-        return stmt_list_escapes(stmt.body)
+        gib stmt_list_escapes(stmt.body)
     sowenn isinstance(stmt, SimpleStmt):
         fuer tkn in stmt.contents:
             wenn tkn.text == "DECREF_INPUTS":
-                return Wahr
+                gib Wahr
         d: dict[SimpleStmt, EscapingCall] = {}
         escaping_call_in_simple_stmt(stmt, d)
-        return bool(d)
+        gib bool(d)
     sowenn isinstance(stmt, IfStmt):
         wenn stmt.else_body und stmt_escapes(stmt.else_body):
-            return Wahr
-        return stmt_escapes(stmt.body)
+            gib Wahr
+        gib stmt_escapes(stmt.body)
     sowenn isinstance(stmt, MacroIfStmt):
         wenn stmt.else_body und stmt_list_escapes(stmt.else_body):
-            return Wahr
-        return stmt_list_escapes(stmt.body)
+            gib Wahr
+        gib stmt_list_escapes(stmt.body)
     sowenn isinstance(stmt, ForStmt):
-        return stmt_escapes(stmt.body)
+        gib stmt_escapes(stmt.body)
     sowenn isinstance(stmt, WhileStmt):
-        return stmt_escapes(stmt.body)
+        gib stmt_escapes(stmt.body)
     sonst:
         assert Falsch, "Unexpected statement type"
 
@@ -909,7 +909,7 @@ def compute_properties(op: parser.CodeDef) -> Properties:
     escapes = stmt_escapes(op.block)
     pure = Falsch wenn isinstance(op, parser.LabelDef) sonst "pure" in op.annotations
     no_save_ip = Falsch wenn isinstance(op, parser.LabelDef) sonst "no_save_ip" in op.annotations
-    return Properties(
+    gib Properties(
         escaping_calls=escaping_calls,
         escapes=escapes,
         error_with_pop=error_with_pop,
@@ -940,22 +940,22 @@ def expand(items: list[StackItem], oparg: int) -> list[StackItem]:
     fuer i, item in enumerate(items):
         wenn "oparg" in item.size:
             wenn index >= 0:
-                return items
+                gib items
             index = i
     wenn index < 0:
-        return items
+        gib items
     try:
         count = int(eval(items[index].size.replace("oparg", str(oparg))))
     except ValueError:
-        return items
-    return items[:index] + [
+        gib items
+    gib items[:index] + [
         StackItem(items[index].name + f"_{i}", "", items[index].peek, items[index].used) fuer i in range(count)
         ] + items[index+1:]
 
 def scalarize_stack(stack: StackEffect, oparg: int) -> StackEffect:
     stack.inputs = expand(stack.inputs, oparg)
     stack.outputs = expand(stack.outputs, oparg)
-    return stack
+    gib stack
 
 def make_uop(
     name: str,
@@ -980,7 +980,7 @@ def make_uop(
             result.replicated = range(int(start), int(stop))
             breche
     sonst:
-        return result
+        gib result
     fuer oparg in result.replicated:
         name_x = name + "_" + str(oparg)
         properties = compute_properties(op)
@@ -1003,7 +1003,7 @@ def make_uop(
         rep.replicates = result
         uops[name_x] = rep
 
-    return result
+    gib result
 
 
 def add_op(op: parser.InstDef, uops: dict[str, Uop]) -> Nichts:
@@ -1171,7 +1171,7 @@ def assign_opcodes(
     def add_instruction(name: str) -> Nichts:
         nonlocal next_opcode
         wenn name in instmap:
-            return  # Pre-defined name
+            gib  # Pre-defined name
         waehrend next_opcode in instmap.values():
             next_opcode += 1
         instmap[name] = next_opcode
@@ -1196,7 +1196,7 @@ def assign_opcodes(
         instmap[name] = op
         pseudos[name].opcode = op
 
-    return instmap, len(no_arg), min_instrumented
+    gib instmap, len(no_arg), min_instrumented
 
 
 def get_instruction_size_for_uop(instructions: dict[str, Instruction], uop: Uop) -> int | Nichts:
@@ -1210,7 +1210,7 @@ def get_instruction_size_for_uop(instructions: dict[str, Instruction], uop: Uop)
         wenn tkn.text == "INSTRUCTION_SIZE":
             breche
     sonst:
-        return Nichts
+        gib Nichts
 
     size = Nichts
     fuer inst in instructions.values():
@@ -1225,7 +1225,7 @@ def get_instruction_size_for_uop(instructions: dict[str, Instruction], uop: Uop)
                 )
     wenn size is Nichts:
         raise analysis_error(f"No instruction containing the uop '{uop.name}' was found", tkn)
-    return size
+    gib size
 
 
 def analyze_forest(forest: list[parser.AstNode]) -> Analysis:
@@ -1276,13 +1276,13 @@ def analyze_forest(forest: list[parser.AstNode]) -> Analysis:
         inst.family = families["BINARY_OP"]
         families["BINARY_OP"].members.append(inst)
     opmap, first_arg, min_instrumented = assign_opcodes(instructions, families, pseudos)
-    return Analysis(
+    gib Analysis(
         instructions, uops, families, pseudos, labels, opmap, first_arg, min_instrumented
     )
 
 
 def analyze_files(filenames: list[str]) -> Analysis:
-    return analyze_forest(parser.parse_files(filenames))
+    gib analyze_forest(parser.parse_files(filenames))
 
 
 def dump_analysis(analysis: Analysis) -> Nichts:

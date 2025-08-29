@@ -40,7 +40,7 @@ klasse CFuncPtrTestCase(unittest.TestCase, StructCheckMixin):
         X = WINFUNCTYPE(c_int, c_int, c_int)
 
         def func(*args):
-            return len(args)
+            gib len(args)
 
         x = X(func)
         self.assertEqual(x.restype, c_int)
@@ -53,7 +53,7 @@ klasse CFuncPtrTestCase(unittest.TestCase, StructCheckMixin):
         CdeclCallback = CFUNCTYPE(c_int, c_int, c_int)
 
         def func(a, b):
-            return a + b
+            gib a + b
 
         s = StdCallback(func)
         c = CdeclCallback(func)
@@ -71,7 +71,7 @@ klasse CFuncPtrTestCase(unittest.TestCase, StructCheckMixin):
         WNDPROC = WINFUNCTYPE(c_long, c_int, c_int, c_int, c_int)
 
         def wndproc(hwnd, msg, wParam, lParam):
-            return hwnd + msg + wParam + lParam
+            gib hwnd + msg + wParam + lParam
 
         HINSTANCE = c_int
         HICON = c_int
@@ -117,7 +117,7 @@ klasse CFuncPtrTestCase(unittest.TestCase, StructCheckMixin):
 
         def c_string(init):
             size = len(init) + 1
-            return (c_char*size)(*init)
+            gib (c_char*size)(*init)
 
         s = b"a\nb\nc"
         b = c_string(s)

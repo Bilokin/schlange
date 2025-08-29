@@ -40,31 +40,31 @@ klasse Callable:
 
 def create_function():
     def f(): pass
-    return f
+    gib f
 
 def create_bound_method():
-    return C().method
+    gib C().method
 
 
 klasse Object:
     def __init__(self, arg):
         self.arg = arg
     def __repr__(self):
-        return "<Object %r>" % self.arg
+        gib "<Object %r>" % self.arg
     def __eq__(self, other):
         wenn isinstance(other, Object):
-            return self.arg == other.arg
-        return NotImplemented
+            gib self.arg == other.arg
+        gib NotImplemented
     def __lt__(self, other):
         wenn isinstance(other, Object):
-            return self.arg < other.arg
-        return NotImplemented
+            gib self.arg < other.arg
+        gib NotImplemented
     def __hash__(self):
-        return hash(self.arg)
+        gib hash(self.arg)
     def some_method(self):
-        return 4
+        gib 4
     def other_method(self):
-        return 5
+        gib 5
 
 
 klasse RefCycle:
@@ -97,7 +97,7 @@ def collect_in_thread(period=0.005):
         t = threading.Thread(target=collect)
         t.start()
         try:
-            yield
+            liefere
         finally:
             please_stop = Wahr
             t.join()
@@ -139,7 +139,7 @@ klasse ReferencesTestCase(TestBase):
         klasse WithName:
             @property
             def __name__(self):
-                return "custom_name"
+                gib "custom_name"
 
         obj2 = WithName()
         ref2 = weakref.ref(obj2)
@@ -154,7 +154,7 @@ klasse ReferencesTestCase(TestBase):
     def test_repr_failure_gh99184(self):
         klasse MyConfig(dict):
             def __getattr__(self, x):
-                return self[x]
+                gib self[x]
 
         obj = MyConfig(offset=5)
         obj_weakref = weakref.ref(obj)
@@ -253,7 +253,7 @@ klasse ReferencesTestCase(TestBase):
                      "weak reference to live object should be live")
         o2 = ref()
         self.assertIs(o, o2,
-                     "<ref>() should return original object wenn live")
+                     "<ref>() should gib original object wenn live")
 
     def check_basic_callback(self, factory):
         self.cbcalled = 0
@@ -329,9 +329,9 @@ klasse ReferencesTestCase(TestBase):
         # See bug 5037
         klasse C(object):
             def __str__(self):
-                return "string"
+                gib "string"
             def __bytes__(self):
-                return b"bytes"
+                gib b"bytes"
         instance = C()
         self.assertIn("__bytes__", dir(weakref.proxy(instance)))
         self.assertEqual(bytes(weakref.proxy(instance)), b"bytes")
@@ -339,7 +339,7 @@ klasse ReferencesTestCase(TestBase):
     def test_proxy_index(self):
         klasse C:
             def __index__(self):
-                return 10
+                gib 10
         o = C()
         p = weakref.proxy(o)
         self.assertEqual(operator.index(p), 10)
@@ -347,9 +347,9 @@ klasse ReferencesTestCase(TestBase):
     def test_proxy_div(self):
         klasse C:
             def __floordiv__(self, other):
-                return 42
+                gib 42
             def __ifloordiv__(self, other):
-                return 21
+                gib 21
         o = C()
         p = weakref.proxy(o)
         self.assertEqual(p // 5, 42)
@@ -359,11 +359,11 @@ klasse ReferencesTestCase(TestBase):
     def test_proxy_matmul(self):
         klasse C:
             def __matmul__(self, other):
-                return 1729
+                gib 1729
             def __rmatmul__(self, other):
-                return -163
+                gib -163
             def __imatmul__(self, other):
-                return 561
+                gib 561
         o = C()
         p = weakref.proxy(o)
         self.assertEqual(p @ 5, 1729)
@@ -472,7 +472,7 @@ klasse ReferencesTestCase(TestBase):
             def __iter__(self):
                 nonlocal obj
                 del obj
-                return NotImplemented
+                gib NotImplemented
 
         obj = MyObj()
         p = weakref.proxy(obj)
@@ -485,12 +485,12 @@ klasse ReferencesTestCase(TestBase):
     def test_proxy_next(self):
         arr = [4, 5, 6]
         def iterator_func():
-            yield von arr
+            liefere von arr
         it = iterator_func()
 
         klasse IteratesWeakly:
             def __iter__(self):
-                return weakref.proxy(it)
+                gib weakref.proxy(it)
 
         weak_it = IteratesWeakly()
 
@@ -505,7 +505,7 @@ klasse ReferencesTestCase(TestBase):
 
         klasse A:
             def __iter__(self):
-                return weakref.proxy(not_an_iterator)
+                gib weakref.proxy(not_an_iterator)
         a = A()
 
         msg = "Weakref proxy referenced a non-iterator"
@@ -515,9 +515,9 @@ klasse ReferencesTestCase(TestBase):
     def test_proxy_reversed(self):
         klasse MyObj:
             def __len__(self):
-                return 3
+                gib 3
             def __reversed__(self):
-                return iter('cba')
+                gib iter('cba')
 
         obj = MyObj()
         self.assertEqual("".join(reversed(weakref.proxy(obj))), "cba")
@@ -525,7 +525,7 @@ klasse ReferencesTestCase(TestBase):
     def test_proxy_hash(self):
         klasse MyObj:
             def __hash__(self):
-                return 42
+                gib 42
 
         obj = MyObj()
         mit self.assertRaises(TypeError):
@@ -974,7 +974,7 @@ klasse ReferencesTestCase(TestBase):
         klasse C:
             def __init__(self, parent):
                 wenn nicht parent:
-                    return
+                    gib
                 wself = weakref.ref(self)
                 def cb(wparent):
                     o = wself()
@@ -1080,7 +1080,7 @@ klasse SubclassableWeakrefTestCase(TestBase):
                 super().__init__(ob, callback)
             def __call__(self):
                 self.called = Wahr
-                return super().__call__()
+                gib super().__call__()
         o = Object("foo")
         mr = MyRef(o, value=24)
         self.assertIs(mr(), o)
@@ -1123,12 +1123,12 @@ klasse SubclassableWeakrefTestCase(TestBase):
         klasse MyRef(weakref.ref):
             __slots__ = "slot1", "slot2"
             def __new__(type, ob, callback, slot1, slot2):
-                return weakref.ref.__new__(type, ob, callback)
+                gib weakref.ref.__new__(type, ob, callback)
             def __init__(self, ob, callback, slot1, slot2):
                 self.slot1 = slot1
                 self.slot2 = slot2
             def meth(self):
-                return self.slot1 + self.slot2
+                gib self.slot1 + self.slot2
         o = Object(42)
         r = MyRef(o, Nichts, "abc", "def")
         self.assertEqual(r.slot1, "abc")
@@ -1181,8 +1181,8 @@ klasse WeakMethodTestCase(unittest.TestCase):
         """Return an Object subclass overriding `some_method`."""
         klasse C(Object):
             def some_method(self):
-                return 6
-        return C
+                gib 6
+        gib C
 
     def test_alive(self):
         o = Object(1)
@@ -1535,7 +1535,7 @@ klasse MappingTestCase(TestBase):
         # Check that we can explicitly mutate the weak dict without
         # interfering mit delayed removal.
         # `testcontext` should create an iterator, destroy one of the
-        # weakref'ed objects und then return a new key/value pair corresponding
+        # weakref'ed objects und then gib a new key/value pair corresponding
         # to the destroyed object.
         mit testcontext() als (k, v):
             self.assertNotIn(k, dict)
@@ -1605,7 +1605,7 @@ klasse MappingTestCase(TestBase):
                 # Schedule a key/value fuer removal und recreate it
                 v = objects.pop().arg
                 gc.collect()      # just in case
-                yield Object(v), v
+                liefere Object(v), v
             finally:
                 it = Nichts           # should commit all removals
                 gc.collect()
@@ -1632,7 +1632,7 @@ klasse MappingTestCase(TestBase):
                 # Schedule a key/value fuer removal und recreate it
                 k = objects.pop().arg
                 gc.collect()      # just in case
-                yield k, Object(k)
+                liefere k, Object(k)
             finally:
                 it = Nichts           # should commit all removals
                 gc.collect()
@@ -1656,7 +1656,7 @@ klasse MappingTestCase(TestBase):
         objects = list(map(Object, range(self.COUNT)))
         fuer o in objects:
             dict[o] = o.arg
-        return dict, objects
+        gib dict, objects
 
     def test_make_weak_valued_dict_from_dict(self):
         o = Object(3)
@@ -1686,7 +1686,7 @@ klasse MappingTestCase(TestBase):
         objects = list(map(Object, range(self.COUNT)))
         fuer o in objects:
             dict[o.arg] = o
-        return dict, objects
+        gib dict, objects
 
     def check_popitem(self, klass, key1, value1, key2, value2):
         weakdict = klass()
@@ -1901,13 +1901,13 @@ klasse MappingTestCase(TestBase):
             def __init__(self, i):
                 self.value = i
             def __hash__(self):
-                return hash(self.value)
+                gib hash(self.value)
             def __eq__(self, other):
                 wenn mutate:
                     # Side effect that mutates the dict, by removing the
                     # last strong reference to a key.
                     del objs[-1]
-                return self.value == other.value
+                gib self.value == other.value
 
         objs = [C(i) fuer i in range(4)]
         fuer o in objs:
@@ -2095,14 +2095,14 @@ klasse WeakValueDictionaryTestCase(mapping_tests.BasicTestMappingProtocol):
     __ref = {"key1":Object(1), "key2":Object(2), "key3":Object(3)}
     type2test = weakref.WeakValueDictionary
     def _reference(self):
-        return self.__ref.copy()
+        gib self.__ref.copy()
 
 klasse WeakKeyDictionaryTestCase(mapping_tests.BasicTestMappingProtocol):
     """Check that WeakKeyDictionary conforms to the mapping protocol"""
     __ref = {Object("key1"):1, Object("key2"):2, Object("key3"):3}
     type2test = weakref.WeakKeyDictionary
     def _reference(self):
-        return self.__ref.copy()
+        gib self.__ref.copy()
 
 
 klasse FinalizeTestCase(unittest.TestCase):
@@ -2118,7 +2118,7 @@ klasse FinalizeTestCase(unittest.TestCase):
     def test_finalize(self):
         def add(x,y,z):
             res.append(x + y + z)
-            return x + y + z
+            gib x + y + z
 
         a = self.A()
 
@@ -2320,7 +2320,7 @@ Nichts
 ...         wenn ob is nicht Nichts:
 ...             self.__counter += 1
 ...             ob = (ob, self.__counter)
-...         return ob
+...         gib ob
 ...
 >>> klasse A:   # nicht in docs von here, just testing the ExtendedRef
 ...     pass
@@ -2344,10 +2344,10 @@ Wahr
 >>> def remember(obj):
 ...     oid = id(obj)
 ...     _id2obj_dict[oid] = obj
-...     return oid
+...     gib oid
 ...
 >>> def id2obj(oid):
-...     return _id2obj_dict[oid]
+...     gib _id2obj_dict[oid]
 ...
 >>> a = A()             # von here, just testing
 >>> a_id = remember(a)
@@ -2369,7 +2369,7 @@ __test__ = {'libreftest' : libreftest}
 
 def load_tests(loader, tests, pattern):
     tests.addTest(doctest.DocTestSuite())
-    return tests
+    gib tests
 
 
 wenn __name__ == "__main__":

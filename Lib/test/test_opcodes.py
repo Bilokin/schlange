@@ -133,7 +133,7 @@ klasse OpcodeTest(unittest.TestCase):
     def test_modulo_of_string_subclasses(self):
         klasse MyString(str):
             def __mod__(self, value):
-                return 42
+                gib 42
         self.assertEqual(MyString() % 3, 42)
 
 

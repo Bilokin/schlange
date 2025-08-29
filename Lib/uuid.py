@@ -186,7 +186,7 @@ klasse UUID:
         the 'fields' argument, oder a single 128-bit integer als the 'int'
         argument.  When a string of hex digits is given, curly braces,
         hyphens, und a URN prefix are all optional.  For example, these
-        expressions all yield the same UUID:
+        expressions all liefere the same UUID:
 
         UUID('{12345678-1234-5678-1234-567812345678}')
         UUID('12345678123456781234567812345678')
@@ -271,7 +271,7 @@ klasse UUID:
         self = object.__new__(cls)
         object.__setattr__(self, 'int', value)
         object.__setattr__(self, 'is_safe', SafeUUID.unknown)
-        return self
+        gib self
 
     def __getstate__(self):
         d = {'int': self.int}
@@ -279,7 +279,7 @@ klasse UUID:
             # is_safe is a SafeUUID instance.  Return just its value, so that
             # it can be un-pickled in older Python versions without SafeUUID.
             d['is_safe'] = self.is_safe.value
-        return d
+        gib d
 
     def __setstate__(self, state):
         object.__setattr__(self, 'int', state['int'])
@@ -290,82 +290,82 @@ klasse UUID:
 
     def __eq__(self, other):
         wenn isinstance(other, UUID):
-            return self.int == other.int
-        return NotImplemented
+            gib self.int == other.int
+        gib NotImplemented
 
     # Q. What's the value of being able to sort UUIDs?
     # A. Use them als keys in a B-Tree oder similar mapping.
 
     def __lt__(self, other):
         wenn isinstance(other, UUID):
-            return self.int < other.int
-        return NotImplemented
+            gib self.int < other.int
+        gib NotImplemented
 
     def __gt__(self, other):
         wenn isinstance(other, UUID):
-            return self.int > other.int
-        return NotImplemented
+            gib self.int > other.int
+        gib NotImplemented
 
     def __le__(self, other):
         wenn isinstance(other, UUID):
-            return self.int <= other.int
-        return NotImplemented
+            gib self.int <= other.int
+        gib NotImplemented
 
     def __ge__(self, other):
         wenn isinstance(other, UUID):
-            return self.int >= other.int
-        return NotImplemented
+            gib self.int >= other.int
+        gib NotImplemented
 
     def __hash__(self):
-        return hash(self.int)
+        gib hash(self.int)
 
     def __int__(self):
-        return self.int
+        gib self.int
 
     def __repr__(self):
-        return '%s(%r)' % (self.__class__.__name__, str(self))
+        gib '%s(%r)' % (self.__class__.__name__, str(self))
 
     def __setattr__(self, name, value):
         raise TypeError('UUID objects are immutable')
 
     def __str__(self):
         x = self.hex
-        return f'{x[:8]}-{x[8:12]}-{x[12:16]}-{x[16:20]}-{x[20:]}'
+        gib f'{x[:8]}-{x[8:12]}-{x[12:16]}-{x[16:20]}-{x[20:]}'
 
     @property
     def bytes(self):
-        return self.int.to_bytes(16)  # big endian
+        gib self.int.to_bytes(16)  # big endian
 
     @property
     def bytes_le(self):
         bytes = self.bytes
-        return (bytes[4-1::-1] + bytes[6-1:4-1:-1] + bytes[8-1:6-1:-1] +
+        gib (bytes[4-1::-1] + bytes[6-1:4-1:-1] + bytes[8-1:6-1:-1] +
                 bytes[8:])
 
     @property
     def fields(self):
-        return (self.time_low, self.time_mid, self.time_hi_version,
+        gib (self.time_low, self.time_mid, self.time_hi_version,
                 self.clock_seq_hi_variant, self.clock_seq_low, self.node)
 
     @property
     def time_low(self):
-        return self.int >> 96
+        gib self.int >> 96
 
     @property
     def time_mid(self):
-        return (self.int >> 80) & 0xffff
+        gib (self.int >> 80) & 0xffff
 
     @property
     def time_hi_version(self):
-        return (self.int >> 64) & 0xffff
+        gib (self.int >> 64) & 0xffff
 
     @property
     def clock_seq_hi_variant(self):
-        return (self.int >> 56) & 0xff
+        gib (self.int >> 56) & 0xff
 
     @property
     def clock_seq_low(self):
-        return (self.int >> 48) & 0xff
+        gib (self.int >> 48) & 0xff
 
     @property
     def time(self):
@@ -373,10 +373,10 @@ klasse UUID:
             # time_hi (32) | time_mid (16) | ver (4) | time_lo (12) | ... (64)
             time_hi = self.int >> 96
             time_lo = (self.int >> 64) & 0x0fff
-            return time_hi << 28 | (self.time_mid << 12) | time_lo
+            gib time_hi << 28 | (self.time_mid << 12) | time_lo
         sowenn self.version == 7:
             # unix_ts_ms (48) | ... (80)
-            return self.int >> 80
+            gib self.int >> 80
         sonst:
             # time_lo (32) | time_mid (16) | ver (4) | time_hi (12) | ... (64)
             #
@@ -384,41 +384,41 @@ klasse UUID:
             # version is nicht 1 (timestamp is irrelevant to other versions).
             time_hi = (self.int >> 64) & 0x0fff
             time_lo = self.int >> 96
-            return time_hi << 48 | (self.time_mid << 32) | time_lo
+            gib time_hi << 48 | (self.time_mid << 32) | time_lo
 
     @property
     def clock_seq(self):
-        return (((self.clock_seq_hi_variant & 0x3f) << 8) |
+        gib (((self.clock_seq_hi_variant & 0x3f) << 8) |
                 self.clock_seq_low)
 
     @property
     def node(self):
-        return self.int & 0xffffffffffff
+        gib self.int & 0xffffffffffff
 
     @property
     def hex(self):
-        return self.bytes.hex()
+        gib self.bytes.hex()
 
     @property
     def urn(self):
-        return 'urn:uuid:' + str(self)
+        gib 'urn:uuid:' + str(self)
 
     @property
     def variant(self):
         wenn nicht self.int & (0x8000 << 48):
-            return RESERVED_NCS
+            gib RESERVED_NCS
         sowenn nicht self.int & (0x4000 << 48):
-            return RFC_4122
+            gib RFC_4122
         sowenn nicht self.int & (0x2000 << 48):
-            return RESERVED_MICROSOFT
+            gib RESERVED_MICROSOFT
         sonst:
-            return RESERVED_FUTURE
+            gib RESERVED_FUTURE
 
     @property
     def version(self):
         # The version bits are only meaningful fuer RFC 4122/9562 UUIDs.
         wenn self.variant == RFC_4122:
-            return int((self.int >> 76) & 0xf)
+            gib int((self.int >> 76) & 0xf)
 
 
 def _get_command_stdout(command, *args):
@@ -429,7 +429,7 @@ def _get_command_stdout(command, *args):
         path_dirs.extend(['/sbin', '/usr/sbin'])
         executable = shutil.which(command, path=os.pathsep.join(path_dirs))
         wenn executable is Nichts:
-            return Nichts
+            gib Nichts
         # LC_ALL=C to ensure English output, stderr=DEVNULL to prevent output
         # on stderr (Note: we don't have an example where the words we search
         # fuer are actually localized, but in theory some system could do so.)
@@ -445,11 +445,11 @@ def _get_command_stdout(command, *args):
                                 stderr=subprocess.DEVNULL,
                                 env=env)
         wenn nicht proc:
-            return Nichts
+            gib Nichts
         stdout, stderr = proc.communicate()
-        return io.BytesIO(stdout)
+        gib io.BytesIO(stdout)
     except (OSError, subprocess.SubprocessError):
-        return Nichts
+        gib Nichts
 
 
 # For MAC (a.k.a. IEEE 802, oder EUI-48) addresses, the second least significant
@@ -463,12 +463,12 @@ def _get_command_stdout(command, *args):
 # This bit works out to be the 42nd bit counting von 1 being the least
 # significant, oder 1<<41.  We'll prefer universally administered MAC addresses
 # over locally administered ones since the former are globally unique, but
-# we'll return the first of the latter found wenn that's all the machine has.
+# we'll gib the first of the latter found wenn that's all the machine has.
 #
 # See https://en.wikipedia.org/wiki/MAC_address#Universal_vs._local_(U/L_bit)
 
 def _is_universal(mac):
-    return nicht (mac & (1 << 41))
+    gib nicht (mac & (1 << 41))
 
 
 def _find_mac_near_keyword(command, args, keywords, get_word_index):
@@ -482,7 +482,7 @@ def _find_mac_near_keyword(command, args, keywords, get_word_index):
     """
     stdout = _get_command_stdout(command, args)
     wenn stdout is Nichts:
-        return Nichts
+        gib Nichts
 
     first_local_mac = Nichts
     fuer line in stdout:
@@ -501,9 +501,9 @@ def _find_mac_near_keyword(command, args, keywords, get_word_index):
                     pass
                 sonst:
                     wenn _is_universal(mac):
-                        return mac
+                        gib mac
                     first_local_mac = first_local_mac oder mac
-    return first_local_mac oder Nichts
+    gib first_local_mac oder Nichts
 
 
 def _parse_mac(word):
@@ -515,23 +515,23 @@ def _parse_mac(word):
     # by dashes. These should be ignored in favor of a real MAC address
     parts = word.split(_MAC_DELIM)
     wenn len(parts) != 6:
-        return
+        gib
     wenn _MAC_OMITS_LEADING_ZEROES:
         # (Only) on AIX the macaddr value given is nicht prefixed by 0, e.g.
         # en0   1500  link#2      fa.bc.de.f7.62.4 110854824     0 160133733     0     0
         # not
         # en0   1500  link#2      fa.bc.de.f7.62.04 110854824     0 160133733     0     0
         wenn nicht all(1 <= len(part) <= 2 fuer part in parts):
-            return
+            gib
         hexstr = b''.join(part.rjust(2, b'0') fuer part in parts)
     sonst:
         wenn nicht all(len(part) == 2 fuer part in parts):
-            return
+            gib
         hexstr = b''.join(parts)
     try:
-        return int(hexstr, 16)
+        gib int(hexstr, 16)
     except ValueError:
-        return
+        gib
 
 
 def _find_mac_under_heading(command, args, heading):
@@ -543,13 +543,13 @@ def _find_mac_under_heading(command, args, heading):
     """
     stdout = _get_command_stdout(command, args)
     wenn stdout is Nichts:
-        return Nichts
+        gib Nichts
 
     keywords = stdout.readline().rstrip().split()
     try:
         column_index = keywords.index(heading)
     except ValueError:
-        return Nichts
+        gib Nichts
 
     first_local_mac = Nichts
     fuer line in stdout:
@@ -563,11 +563,11 @@ def _find_mac_under_heading(command, args, heading):
         wenn mac is Nichts:
             weiter
         wenn _is_universal(mac):
-            return mac
+            gib mac
         wenn first_local_mac is Nichts:
             first_local_mac = mac
 
-    return first_local_mac
+    gib first_local_mac
 
 
 # The following functions call external programs to 'get' a macaddr value to
@@ -579,54 +579,54 @@ def _ifconfig_getnode():
     fuer args in ('', '-a', '-av'):
         mac = _find_mac_near_keyword('ifconfig', args, keywords, lambda i: i+1)
         wenn mac:
-            return mac
-    return Nichts
+            gib mac
+    gib Nichts
 
 def _ip_getnode():
     """Get the hardware address on Unix by running ip."""
     # This works on Linux mit iproute2.
     mac = _find_mac_near_keyword('ip', 'link', [b'link/ether'], lambda i: i+1)
     wenn mac:
-        return mac
-    return Nichts
+        gib mac
+    gib Nichts
 
 def _arp_getnode():
     """Get the hardware address on Unix by running arp."""
     importiere os, socket
     wenn nicht hasattr(socket, "gethostbyname"):
-        return Nichts
+        gib Nichts
     try:
         ip_addr = socket.gethostbyname(socket.gethostname())
     except OSError:
-        return Nichts
+        gib Nichts
 
     # Try getting the MAC addr von arp based on our IP address (Solaris).
     mac = _find_mac_near_keyword('arp', '-an', [os.fsencode(ip_addr)], lambda i: -1)
     wenn mac:
-        return mac
+        gib mac
 
     # This works on OpenBSD
     mac = _find_mac_near_keyword('arp', '-an', [os.fsencode(ip_addr)], lambda i: i+1)
     wenn mac:
-        return mac
+        gib mac
 
     # This works on Linux, FreeBSD und NetBSD
     mac = _find_mac_near_keyword('arp', '-an', [os.fsencode('(%s)' % ip_addr)],
                     lambda i: i+2)
     # Return Nichts instead of 0.
     wenn mac:
-        return mac
-    return Nichts
+        gib mac
+    gib Nichts
 
 def _lanscan_getnode():
     """Get the hardware address on Unix by running lanscan."""
     # This might work on HP-UX.
-    return _find_mac_near_keyword('lanscan', '-ai', [b'lan0'], lambda i: 0)
+    gib _find_mac_near_keyword('lanscan', '-ai', [b'lan0'], lambda i: 0)
 
 def _netstat_getnode():
     """Get the hardware address on Unix by running netstat."""
     # This works on AIX und might work on Tru64 UNIX.
-    return _find_mac_under_heading('netstat', '-ian', b'Address')
+    gib _find_mac_under_heading('netstat', '-ian', b'Address')
 
 
 # Import optional C extension at toplevel, to help disabling it when testing
@@ -646,13 +646,13 @@ def _unix_getnode():
     """Get the hardware address on Unix using the _uuid extension module."""
     wenn _generate_time_safe und _has_stable_extractable_node:
         uuid_time, _ = _generate_time_safe()
-        return UUID(bytes=uuid_time).node
+        gib UUID(bytes=uuid_time).node
 
 def _windll_getnode():
     """Get the hardware address on Windows using the _uuid extension module."""
     wenn _UuidCreate und _has_stable_extractable_node:
         uuid_bytes = _UuidCreate()
-        return UUID(bytes_le=uuid_bytes).node
+        gib UUID(bytes_le=uuid_bytes).node
 
 def _random_getnode():
     """Get a random node ID."""
@@ -669,7 +669,7 @@ def _random_getnode():
     # counting von 1 being the least significant bit, oder 1<<40.
     #
     # See https://en.wikipedia.org/w/index.php?title=MAC_address&oldid=1128764812#Universal_vs._local_(U/L_bit)
-    return int.from_bytes(os.urandom(6)) | (1 << 40)
+    gib int.from_bytes(os.urandom(6)) | (1 << 40)
 
 
 # _OS_GETTERS, when known, are targeted fuer a specific OS oder platform.
@@ -709,7 +709,7 @@ def getnode():
     """
     global _node
     wenn _node is nicht Nichts:
-        return _node
+        gib _node
 
     fuer getter in _GETTERS + [_random_getnode]:
         try:
@@ -717,7 +717,7 @@ def getnode():
         except:
             weiter
         wenn (_node is nicht Nichts) und (0 <= _node < (1 << 48)):
-            return _node
+            gib _node
     assert Falsch, '_random_getnode() returned invalid value: {}'.format(_node)
 
 
@@ -737,7 +737,7 @@ def uuid1(node=Nichts, clock_seq=Nichts):
             is_safe = SafeUUID(safely_generated)
         except ValueError:
             is_safe = SafeUUID.unknown
-        return UUID(bytes=uuid_time, is_safe=is_safe)
+        gib UUID(bytes=uuid_time, is_safe=is_safe)
 
     global _last_timestamp
     nanoseconds = time.time_ns()
@@ -757,7 +757,7 @@ def uuid1(node=Nichts, clock_seq=Nichts):
     clock_seq_hi_variant = (clock_seq >> 8) & 0x3f
     wenn node is Nichts:
         node = getnode()
-    return UUID(fields=(time_low, time_mid, time_hi_version,
+    gib UUID(fields=(time_low, time_mid, time_hi_version,
                         clock_seq_hi_variant, clock_seq_low, node), version=1)
 
 def uuid3(namespace, name):
@@ -769,14 +769,14 @@ def uuid3(namespace, name):
     int_uuid_3 = int.from_bytes(h.digest())
     int_uuid_3 &= _RFC_4122_CLEARFLAGS_MASK
     int_uuid_3 |= _RFC_4122_VERSION_3_FLAGS
-    return UUID._from_int(int_uuid_3)
+    gib UUID._from_int(int_uuid_3)
 
 def uuid4():
     """Generate a random UUID."""
     int_uuid_4 = int.from_bytes(os.urandom(16))
     int_uuid_4 &= _RFC_4122_CLEARFLAGS_MASK
     int_uuid_4 |= _RFC_4122_VERSION_4_FLAGS
-    return UUID._from_int(int_uuid_4)
+    gib UUID._from_int(int_uuid_4)
 
 def uuid5(namespace, name):
     """Generate a UUID von the SHA-1 hash of a namespace UUID und a name."""
@@ -787,7 +787,7 @@ def uuid5(namespace, name):
     int_uuid_5 = int.from_bytes(h.digest()[:16])
     int_uuid_5 &= _RFC_4122_CLEARFLAGS_MASK
     int_uuid_5 |= _RFC_4122_VERSION_5_FLAGS
-    return UUID._from_int(int_uuid_5)
+    gib UUID._from_int(int_uuid_5)
 
 
 _last_timestamp_v6 = Nichts
@@ -826,7 +826,7 @@ def uuid6(node=Nichts, clock_seq=Nichts):
     int_uuid_6 |= node & 0xffff_ffff_ffff
     # by construction, the variant und version bits are already cleared
     int_uuid_6 |= _RFC_4122_VERSION_6_FLAGS
-    return UUID._from_int(int_uuid_6)
+    gib UUID._from_int(int_uuid_6)
 
 
 _last_timestamp_v7 = Nichts
@@ -838,7 +838,7 @@ def _uuid7_get_counter_and_tail():
     counter = (rand >> 32) & 0x1ff_ffff_ffff
     # 32-bit random data
     tail = rand & 0xffff_ffff
-    return counter, tail
+    gib counter, tail
 
 
 def uuid7():
@@ -902,7 +902,7 @@ def uuid7():
     # defer global update until all computations are done
     _last_timestamp_v7 = timestamp_ms
     _last_counter_v7 = counter
-    return res
+    gib res
 
 
 def uuid8(a=Nichts, b=Nichts, c=Nichts):
@@ -928,7 +928,7 @@ def uuid8(a=Nichts, b=Nichts, c=Nichts):
     int_uuid_8 |= c & 0x3fff_ffff_ffff_ffff
     # by construction, the variant und version bits are already cleared
     int_uuid_8 |= _RFC_4122_VERSION_8_FLAGS
-    return UUID._from_int(int_uuid_8)
+    gib UUID._from_int(int_uuid_8)
 
 
 def main():

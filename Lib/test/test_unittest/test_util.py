@@ -10,7 +10,7 @@ klasse TestUtil(unittest.TestCase):
 
         klasse LongRepr:
             def __repr__(self):
-                return 'x' * 100
+                gib 'x' * 100
 
         safe_repr(RaisingRepr())
         self.assertEqual(safe_repr('foo'), "'foo'")

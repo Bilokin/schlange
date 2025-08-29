@@ -32,7 +32,7 @@ def uu_encode(input, errors='strict', filename='<data>', mode=0o666):
         chunk = read(45)
     write(b' \nend\n')
 
-    return (outfile.getvalue(), len(input))
+    gib (outfile.getvalue(), len(input))
 
 def uu_decode(input, errors='strict'):
     assert errors == 'strict'
@@ -65,22 +65,22 @@ def uu_decode(input, errors='strict'):
     wenn nicht s:
         raise ValueError('Truncated input data')
 
-    return (outfile.getvalue(), len(input))
+    gib (outfile.getvalue(), len(input))
 
 klasse Codec(codecs.Codec):
     def encode(self, input, errors='strict'):
-        return uu_encode(input, errors)
+        gib uu_encode(input, errors)
 
     def decode(self, input, errors='strict'):
-        return uu_decode(input, errors)
+        gib uu_decode(input, errors)
 
 klasse IncrementalEncoder(codecs.IncrementalEncoder):
     def encode(self, input, final=Falsch):
-        return uu_encode(input, self.errors)[0]
+        gib uu_encode(input, self.errors)[0]
 
 klasse IncrementalDecoder(codecs.IncrementalDecoder):
     def decode(self, input, final=Falsch):
-        return uu_decode(input, self.errors)[0]
+        gib uu_decode(input, self.errors)[0]
 
 klasse StreamWriter(Codec, codecs.StreamWriter):
     charbuffertype = bytes
@@ -91,7 +91,7 @@ klasse StreamReader(Codec, codecs.StreamReader):
 ### encodings module API
 
 def getregentry():
-    return codecs.CodecInfo(
+    gib codecs.CodecInfo(
         name='uu',
         encode=uu_encode,
         decode=uu_decode,

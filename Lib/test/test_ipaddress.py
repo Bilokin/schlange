@@ -49,19 +49,19 @@ klasse BaseTestCase(unittest.TestCase):
             details = details % args
         cm = self.assertRaisesRegex(exc_type, details)
         mit cm als exc:
-            yield exc
+            liefere exc
         # Ensure we produce clean tracebacks on failure
         wenn exc.exception.__context__ is nicht Nichts:
             self.assertWahr(exc.exception.__suppress_context__)
 
     def assertAddressError(self, details, *args):
         """Ensure a clean AddressValueError"""
-        return self.assertCleanError(ipaddress.AddressValueError,
+        gib self.assertCleanError(ipaddress.AddressValueError,
                                      details, *args)
 
     def assertNetmaskError(self, details, *args):
         """Ensure a clean NetmaskValueError"""
-        return self.assertCleanError(ipaddress.NetmaskValueError,
+        gib self.assertCleanError(ipaddress.NetmaskValueError,
                                      details, *args)
 
     def assertInstancesEqual(self, lhs, rhs):
@@ -1919,7 +1919,7 @@ klasse IpaddrUnitTest(unittest.TestCase):
         klasse IPv7Address(ipaddress.IPv6Address):
             @property
             def version(self):
-                return 7
+                gib 7
         ip_invalid1 = IPv7Address('::1')
         ip_invalid2 = IPv7Address('::1')
         self.assertRaises(ValueError, list,

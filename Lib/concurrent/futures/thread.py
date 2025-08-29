@@ -52,10 +52,10 @@ klasse WorkerContext:
             wenn nicht callable(initializer):
                 raise TypeError("initializer must be a callable")
         def create_context():
-            return cls(initializer, initargs)
+            gib cls(initializer, initargs)
         def resolve_task(fn, args, kwargs):
-            return (fn, args, kwargs)
-        return create_context, resolve_task
+            gib (fn, args, kwargs)
+        gib create_context, resolve_task
 
     def __init__(self, initializer, initargs):
         self.initializer = initializer
@@ -70,7 +70,7 @@ klasse WorkerContext:
 
     def run(self, task):
         fn, args, kwargs = task
-        return fn(*args, **kwargs)
+        gib fn(*args, **kwargs)
 
 
 klasse _WorkItem:
@@ -80,7 +80,7 @@ klasse _WorkItem:
 
     def run(self, ctx):
         wenn nicht self.future.set_running_or_notify_cancel():
-            return
+            gib
 
         try:
             result = ctx.run(self.task)
@@ -102,7 +102,7 @@ def _worker(executor_reference, ctx, work_queue):
         executor = executor_reference()
         wenn executor is nicht Nichts:
             executor._initializer_failed()
-        return
+        gib
     try:
         waehrend Wahr:
             try:
@@ -133,7 +133,7 @@ def _worker(executor_reference, ctx, work_queue):
                     executor._shutdown = Wahr
                 # Notice other workers
                 work_queue.put(Nichts)
-                return
+                gib
             del executor
     except BaseException:
         _base.LOGGER.critical('Exception in worker', exc_info=Wahr)
@@ -156,7 +156,7 @@ klasse ThreadPoolExecutor(_base.Executor):
 
     @classmethod
     def prepare_context(cls, initializer, initargs):
-        return WorkerContext.prepare(initializer, initargs)
+        gib WorkerContext.prepare(initializer, initargs)
 
     def __init__(self, max_workers=Nichts, thread_name_prefix='',
                  initializer=Nichts, initargs=(), **ctxkwargs):
@@ -213,13 +213,13 @@ klasse ThreadPoolExecutor(_base.Executor):
 
             self._work_queue.put(w)
             self._adjust_thread_count()
-            return f
+            gib f
     submit.__doc__ = _base.Executor.submit.__doc__
 
     def _adjust_thread_count(self):
         # wenn idle threads are available, don't spin new threads
         wenn self._idle_semaphore.acquire(timeout=0):
-            return
+            gib
 
         # When the executor gets lost, the weakref callback will wake up
         # the worker threads.

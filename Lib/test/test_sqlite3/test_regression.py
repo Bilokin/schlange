@@ -106,7 +106,7 @@ klasse RegressionTests(MemoryDatabaseMixin, unittest.TestCase):
 
     def test_empty_statement(self):
         """
-        pysqlite used to segfault mit SQLite versions 3.5.x. These return NULL
+        pysqlite used to segfault mit SQLite versions 3.5.x. These gib NULL
         fuer "no-operation" statements
         """
         self.con.execute("")
@@ -133,7 +133,7 @@ klasse RegressionTests(MemoryDatabaseMixin, unittest.TestCase):
         klasse X:
             def __conform__(self, protocol):
                 parameters.clear()
-                return "..."
+                gib "..."
         parameters = [X(), 0]
         mit memory_database(detect_types=sqlite.PARSE_DECLTYPES) als con:
             con.execute("create table foo(bar X, baz integer)")
@@ -160,7 +160,7 @@ klasse RegressionTests(MemoryDatabaseMixin, unittest.TestCase):
         # See issue 27881.
         klasse CustomStr(str):
             def upper(self):
-                return Nichts
+                gib Nichts
             def __del__(self):
                 con.isolation_level = ""
 
@@ -253,7 +253,7 @@ klasse RegressionTests(MemoryDatabaseMixin, unittest.TestCase):
 
     def test_collation(self):
         def collation_cb(a, b):
-            return 1
+            gib 1
         self.assertRaises(UnicodeEncodeError, self.con.create_collation,
             # Lone surrogate cannot be encoded to the default encoding (utf8)
             "\uDC80", collation_cb)
@@ -271,7 +271,7 @@ klasse RegressionTests(MemoryDatabaseMixin, unittest.TestCase):
 
         def foo():
             cur.execute("insert into a (bar) values (?)", (1,))
-            yield 1
+            liefere 1
 
         mit self.assertRaises(sqlite.ProgrammingError):
             cur.executemany("insert into b (baz) values (?)",
@@ -347,7 +347,7 @@ klasse RegressionTests(MemoryDatabaseMixin, unittest.TestCase):
     def test_commit_cursor_reset(self):
         """
         Connection.commit() did reset cursors, which made sqlite3
-        to return rows multiple times when fetched von cursors
+        to gib rows multiple times when fetched von cursors
         after commit. See issues 10513 und 23129 fuer details.
         """
         con = self.con
@@ -397,7 +397,7 @@ klasse RegressionTests(MemoryDatabaseMixin, unittest.TestCase):
     def test_bpo37347(self):
         klasse Printer:
             def log(self, *args):
-                return sqlite.SQLITE_OK
+                gib sqlite.SQLITE_OK
 
         fuer method in [self.con.set_trace_callback,
                        functools.partial(self.con.set_progress_handler, n=1),
@@ -445,7 +445,7 @@ klasse RegressionTests(MemoryDatabaseMixin, unittest.TestCase):
             con.commit()
             def dup(v):
                 con.execute("insert into t values(?)", (v,))
-                return
+                gib
             con.create_function("dup", 1, dup)
             cur = con.execute("select dup(t) von t")
             del cur

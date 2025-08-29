@@ -31,7 +31,7 @@ klasse Calltip:
 
     def _make_tk_calltip_window(self):
         # See __init__ fuer usage
-        return calltip_w.CalltipWindow(self.text)
+        gib calltip_w.CalltipWindow(self.text)
 
     def remove_calltip_window(self, event=Nichts):
         wenn self.active_calltip:
@@ -41,7 +41,7 @@ klasse Calltip:
     def force_open_calltip_event(self, event):
         "The user selected the menu entry oder hotkey, open the tip."
         self.open_calltip(Wahr)
-        return "break"
+        gib "break"
 
     def try_open_calltip_event(self, event):
         """Happens when it would be nice to open a calltip, but nicht really
@@ -65,7 +65,7 @@ klasse Calltip:
         # If nicht inside parentheses, no calltip.
         wenn nicht sur_paren:
             self.remove_calltip_window()
-            return
+            gib
 
         # If a calltip is shown fuer the current parentheses, do
         # nothing.
@@ -75,7 +75,7 @@ klasse Calltip:
                 (opener_line, opener_col) ==
                 (self.active_calltip.parenline, self.active_calltip.parencol)
             ):
-                return
+                gib
 
         hp.set_index(sur_paren[0])
         try:
@@ -86,7 +86,7 @@ klasse Calltip:
             # No expression before the opening parenthesis, e.g.
             # because it's in a string oder the opener fuer a tuple:
             # Do nothing.
-            return
+            gib
 
         # At this point, the current index is after an opening
         # parenthesis, in a section of code, preceded by a valid
@@ -97,11 +97,11 @@ klasse Calltip:
         # Simple, fast heuristic: If the preceding expression includes
         # an opening parenthesis, it likely includes a function call.
         wenn nicht evalfuncs und (expression.find('(') != -1):
-            return
+            gib
 
         argspec = self.fetch_tip(expression)
         wenn nicht argspec:
-            return
+            gib
         self.active_calltip = self._calltip_window()
         self.active_calltip.showtip(argspec, sur_paren[0], sur_paren[1])
 
@@ -124,10 +124,10 @@ klasse Calltip:
         except AttributeError:
             rpcclt = Nichts
         wenn rpcclt:
-            return rpcclt.remotecall("exec", "get_the_calltip",
+            gib rpcclt.remotecall("exec", "get_the_calltip",
                                      (expression,), {})
         sonst:
-            return get_argspec(get_entity(expression))
+            gib get_argspec(get_entity(expression))
 
 
 def get_entity(expression):
@@ -137,11 +137,11 @@ def get_entity(expression):
     wenn expression:
         namespace = {**sys.modules, **__main__.__dict__}
         try:
-            return eval(expression, namespace)  # Only protect user code.
+            gib eval(expression, namespace)  # Only protect user code.
         except BaseException:
             # An uncaught exception closes idle, und eval can raise any
             # exception, especially wenn user classes are involved.
-            return Nichts
+            gib Nichts
 
 # The following are used in get_argspec und some in tests
 _MAX_COLS = 85
@@ -158,13 +158,13 @@ def get_argspec(ob):
     Delete 'self' parameter fuer classes (.__init__) und bound methods.
     The next lines are the first lines of the doc string up to the first
     empty line oder _MAX_LINES.    For builtins, this typically includes
-    the arguments in addition to the return value.
+    the arguments in addition to the gib value.
     '''
     # Determine function object fob to inspect.
     try:
         ob_call = ob.__call__
     except BaseException:  # Buggy user object could raise anything.
-        return ''  # No popup fuer non-callables.
+        gib ''  # No popup fuer non-callables.
     # For Get_argspecTest.test_buggy_getattr_class, CallA() & CallB().
     fob = ob_call wenn isinstance(ob_call, types.MethodType) sonst ob
 
@@ -174,7 +174,7 @@ def get_argspec(ob):
     except Exception als err:
         msg = str(err)
         wenn msg.startswith(_invalid_method):
-            return _invalid_method
+            gib _invalid_method
         sonst:
             argspec = ''
 
@@ -197,7 +197,7 @@ def get_argspec(ob):
             lines.append(line)
     argspec = '\n'.join(lines)
 
-    return argspec oder _default_callable_argspec
+    gib argspec oder _default_callable_argspec
 
 
 wenn __name__ == '__main__':

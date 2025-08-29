@@ -69,7 +69,7 @@ def loadmap_jisx0213(fo):
         m.setdefault((loc >> 8), {})
         m[(loc >> 8)][(loc & 0xff)] = uni
 
-    return decmap3, decmap4, decmap3_2, decmap4_2, decmap3_pair
+    gib decmap3, decmap4, decmap3_2, decmap4_2, decmap3_pair
 
 
 def main():

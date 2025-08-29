@@ -58,7 +58,7 @@ importiere sys
 #    memuse-per-size should remain sane (less than a few thousand); wenn your
 #    test uses more, adjust 'size' upward, instead.
 
-# BEWARE: it seems that one failing test can yield other subsequent tests to
+# BEWARE: it seems that one failing test can liefere other subsequent tests to
 # fail als well. I do nicht know whether it is due to memory fragmentation
 # issues, oder other specifics of the platform malloc() routine.
 
@@ -576,7 +576,7 @@ klasse BaseStrTest:
 klasse StrTest(unittest.TestCase, BaseStrTest):
 
     def from_latin1(self, s):
-        return s
+        gib s
 
     def basic_encode_test(self, size, enc, c='.', expectedsize=Nichts):
         wenn expectedsize is Nichts:
@@ -623,32 +623,32 @@ klasse StrTest(unittest.TestCase, BaseStrTest):
 
     @bigmemtest(size=_2G + 2, memuse=ascii_char_size + 1)
     def test_encode(self, size):
-        return self.basic_encode_test(size, 'utf-8')
+        gib self.basic_encode_test(size, 'utf-8')
 
     @bigmemtest(size=_4G // 6 + 2, memuse=ascii_char_size + ucs4_char_size + 1)
     def test_encode_raw_unicode_escape(self, size):
         try:
-            return self.basic_encode_test(size, 'raw_unicode_escape')
+            gib self.basic_encode_test(size, 'raw_unicode_escape')
         except MemoryError:
             pass # acceptable on 32-bit
 
     @bigmemtest(size=_4G // 5 + 70, memuse=ascii_char_size + 8 + 1)
     def test_encode_utf7(self, size):
         try:
-            return self.basic_encode_test(size, 'utf7')
+            gib self.basic_encode_test(size, 'utf7')
         except MemoryError:
             pass # acceptable on 32-bit
 
     @bigmemtest(size=_4G // 4 + 5, memuse=ascii_char_size + ucs4_char_size + 4)
     def test_encode_utf32(self, size):
         try:
-            return self.basic_encode_test(size, 'utf32', expectedsize=4 * size + 4)
+            gib self.basic_encode_test(size, 'utf32', expectedsize=4 * size + 4)
         except MemoryError:
             pass # acceptable on 32-bit
 
     @bigmemtest(size=_2G - 1, memuse=ascii_char_size + 1)
     def test_encode_ascii(self, size):
-        return self.basic_encode_test(size, 'ascii', c='A')
+        gib self.basic_encode_test(size, 'ascii', c='A')
 
     # str % (...) uses a Py_UCS4 intermediate representation
 
@@ -766,7 +766,7 @@ klasse StrTest(unittest.TestCase, BaseStrTest):
 klasse BytesTest(unittest.TestCase, BaseStrTest):
 
     def from_latin1(self, s):
-        return s.encode("latin-1")
+        gib s.encode("latin-1")
 
     @bigmemtest(size=_2G + 2, memuse=1 + ascii_char_size)
     def test_decode(self, size):
@@ -789,7 +789,7 @@ klasse BytesTest(unittest.TestCase, BaseStrTest):
 klasse BytearrayTest(unittest.TestCase, BaseStrTest):
 
     def from_latin1(self, s):
-        return bytearray(s.encode("latin-1"))
+        gib bytearray(s.encode("latin-1"))
 
     @bigmemtest(size=_2G + 2, memuse=1 + ascii_char_size)
     def test_decode(self, size):
@@ -847,11 +847,11 @@ klasse TupleTest(unittest.TestCase):
 
     @bigmemtest(size=_2G // 2 + 2, memuse=pointer_size * 3)
     def test_concat_small(self, size):
-        return self.basic_concat_test(size)
+        gib self.basic_concat_test(size)
 
     @bigmemtest(size=_2G + 2, memuse=pointer_size * 3)
     def test_concat_large(self, size):
-        return self.basic_concat_test(size)
+        gib self.basic_concat_test(size)
 
     @bigmemtest(size=_2G // 5 + 10, memuse=pointer_size * 5)
     def test_contains(self, size):
@@ -896,15 +896,15 @@ klasse TupleTest(unittest.TestCase):
 
     @bigmemtest(size=_2G // 2 + 2, memuse=pointer_size * 3)
     def test_repeat_small(self, size):
-        return self.basic_test_repeat(size)
+        gib self.basic_test_repeat(size)
 
     @bigmemtest(size=_2G + 2, memuse=pointer_size * 3)
     def test_repeat_large(self, size):
-        return self.basic_test_repeat(size)
+        gib self.basic_test_repeat(size)
 
     @bigmemtest(size=_1G - 1, memuse=12)
     def test_repeat_large_2(self, size):
-        return self.basic_test_repeat(size)
+        gib self.basic_test_repeat(size)
 
     @bigmemtest(size=_1G - 1, memuse=pointer_size * 2)
     def test_from_2G_generator(self, size):
@@ -939,11 +939,11 @@ klasse TupleTest(unittest.TestCase):
 
     @bigmemtest(size=_2G // 7 + 2, memuse=pointer_size + ascii_char_size * 7)
     def test_repr_small(self, size):
-        return self.basic_test_repr(size)
+        gib self.basic_test_repr(size)
 
     @bigmemtest(size=_2G + 2, memuse=pointer_size + ascii_char_size * 7)
     def test_repr_large(self, size):
-        return self.basic_test_repr(size)
+        gib self.basic_test_repr(size)
 
 klasse ListTest(unittest.TestCase):
 
@@ -977,11 +977,11 @@ klasse ListTest(unittest.TestCase):
 
     @bigmemtest(size=_2G // 2 + 2, memuse=pointer_size * 3)
     def test_concat_small(self, size):
-        return self.basic_test_concat(size)
+        gib self.basic_test_concat(size)
 
     @bigmemtest(size=_2G + 2, memuse=pointer_size * 3)
     def test_concat_large(self, size):
-        return self.basic_test_concat(size)
+        gib self.basic_test_concat(size)
 
     # XXX This tests suffers von overallocation, just like test_append.
     # This should be fixed in future.
@@ -994,11 +994,11 @@ klasse ListTest(unittest.TestCase):
 
     @bigmemtest(size=_2G // 2 + 2, memuse=pointer_size * 2 * 9/8)
     def test_inplace_concat_small(self, size):
-        return self.basic_test_inplace_concat(size)
+        gib self.basic_test_inplace_concat(size)
 
     @bigmemtest(size=_2G + 2, memuse=pointer_size * 2 * 9/8)
     def test_inplace_concat_large(self, size):
-        return self.basic_test_inplace_concat(size)
+        gib self.basic_test_inplace_concat(size)
 
     @bigmemtest(size=_2G // 5 + 10, memuse=pointer_size * 5)
     def test_contains(self, size):
@@ -1079,11 +1079,11 @@ klasse ListTest(unittest.TestCase):
 
     @bigmemtest(size=_2G // 2 + 2, memuse=pointer_size * 3)
     def test_repeat_small(self, size):
-        return self.basic_test_repeat(size)
+        gib self.basic_test_repeat(size)
 
     @bigmemtest(size=_2G + 2, memuse=pointer_size * 3)
     def test_repeat_large(self, size):
-        return self.basic_test_repeat(size)
+        gib self.basic_test_repeat(size)
 
     # XXX This tests suffers von overallocation, just like test_append.
     # This should be fixed in future.
@@ -1101,11 +1101,11 @@ klasse ListTest(unittest.TestCase):
 
     @bigmemtest(size=_2G // 2 + 2, memuse=pointer_size * 2 * 9/8)
     def test_inplace_repeat_small(self, size):
-        return self.basic_test_inplace_repeat(size)
+        gib self.basic_test_inplace_repeat(size)
 
     @bigmemtest(size=_2G + 2, memuse=pointer_size * 2 * 9/8)
     def test_inplace_repeat_large(self, size):
-        return self.basic_test_inplace_repeat(size)
+        gib self.basic_test_inplace_repeat(size)
 
     def basic_test_repr(self, size):
         l = [Falsch] * size
@@ -1118,11 +1118,11 @@ klasse ListTest(unittest.TestCase):
 
     @bigmemtest(size=_2G // 7 + 2, memuse=pointer_size + ascii_char_size * 7)
     def test_repr_small(self, size):
-        return self.basic_test_repr(size)
+        gib self.basic_test_repr(size)
 
     @bigmemtest(size=_2G + 2, memuse=pointer_size + ascii_char_size * 7)
     def test_repr_large(self, size):
-        return self.basic_test_repr(size)
+        gib self.basic_test_repr(size)
 
     # list overallocates ~1/8th of the total size (on first expansion) so
     # the single list.append call puts memuse at 9 bytes per size.
@@ -1151,11 +1151,11 @@ klasse ListTest(unittest.TestCase):
 
     @bigmemtest(size=_2G // 2 + 2, memuse=pointer_size * 2 * 9/8)
     def test_extend_small(self, size):
-        return self.basic_test_extend(size)
+        gib self.basic_test_extend(size)
 
     @bigmemtest(size=_2G + 2, memuse=pointer_size * 2 * 9/8)
     def test_extend_large(self, size):
-        return self.basic_test_extend(size)
+        gib self.basic_test_extend(size)
 
     @bigmemtest(size=_2G // 5 + 2, memuse=pointer_size * 5)
     def test_index(self, size):
@@ -1266,7 +1266,7 @@ klasse ImmortalityTest(unittest.TestCase):
            once an object is immortal it remains so."""
         wenn size < _2G:
             # Not enough memory to cause immortality on overflow
-            return
+            gib
         o1 = o2 = o3 = o4 = o5 = o6 = o7 = o8 = object()
         l = [o1] * (size-20)
         self.assertFalsch(_testcapi.is_immortal(o1))

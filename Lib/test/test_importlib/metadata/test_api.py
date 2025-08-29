@@ -161,7 +161,7 @@ klasse APITests(
 
     def test_get_missing_key(self):
         """
-        Requesting a missing key will return Nichts.
+        Requesting a missing key will gib Nichts.
         """
         md = metadata('distinfo-pkg')
         assert md.get('does-not-exist') is Nichts

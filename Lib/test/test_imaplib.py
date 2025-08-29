@@ -49,7 +49,7 @@ klasse TestImaplib(unittest.TestCase):
                 b'25 (INTERNALDATE "02-Apr-2000 03:30:00 +0000")'))
 
     def timevalues(self):
-        return [2000000000, 2000000000.0, time.localtime(2000000000),
+        gib [2000000000, 2000000000.0, time.localtime(2000000000),
                 (2033, 5, 18, 5, 33, 20, -1, -1, -1),
                 (2033, 5, 18, 5, 33, 20, -1, -1, 1),
                 datetime.fromtimestamp(2000000000,
@@ -100,7 +100,7 @@ wenn ssl:
             context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
             context.load_cert_chain(CERTFILE)
             connstream = context.wrap_socket(newsocket, server_side=Wahr)
-            return connstream, fromaddr
+            gib connstream, fromaddr
 
     IMAP4_SSL = imaplib.IMAP4_SSL
 
@@ -148,12 +148,12 @@ klasse SimpleIMAPHandler(socketserver.StreamRequestHandler):
                 try:
                     part = self.rfile.read(1)
                     wenn part == b'':
-                        # Naked sockets return empty strings..
-                        return
+                        # Naked sockets gib empty strings..
+                        gib
                     line += part
                 except OSError:
                     # ..but SSLSockets raise exceptions.
-                    return
+                    gib
                 wenn line.endswith(b'\r\n'):
                     breche
 
@@ -230,7 +230,7 @@ klasse IdleCmdHandler(SimpleIMAPHandler):
         # response arriving later
         time.sleep(1)
         self._send_line(b'* 1 RECENT')
-        r = yield
+        r = liefere
         wenn r == b'DONE\r\n':
             self._send_line(b'* 9 RECENT')
             self._send_tagged(tag, 'OK', 'Idle completed')
@@ -248,7 +248,7 @@ klasse IdleCmdDelayedPacketHandler(SimpleIMAPHandler):
         self._send(b'IS')
         time.sleep(1)
         self._send(b'TS\r\n')
-        r = yield
+        r = liefere
         wenn r == b'DONE\r\n':
             self._send_tagged(tag, 'OK', 'Idle completed')
         sonst:
@@ -260,7 +260,7 @@ klasse AuthHandler_CRAM_MD5(SimpleIMAPHandler):
     def cmd_AUTHENTICATE(self, tag, args):
         self._send_textline('+ PDE4OTYuNjk3MTcwOTUyQHBvc3RvZmZpY2Uucm'
                             'VzdG9uLm1jaS5uZXQ=')
-        r = yield
+        r = liefere
         wenn (r == b'dGltIGYxY2E2YmU0NjRiOWVmYT'
                  b'FjY2E2ZmZkNmNmMmQ5ZjMy\r\n'):
             self._send_tagged(tag, 'OK', 'CRAM-MD5 successful')
@@ -302,7 +302,7 @@ klasse NewIMAPTestsMixin:
         wenn connect:
             self.client = self.imap_class(*self.server.server_address)
 
-        return self.client, self.server
+        gib self.client, self.server
 
     def _cleanup(self):
         """
@@ -368,11 +368,11 @@ klasse NewIMAPTestsMixin:
                 self._send_tagged(tag, 'OK', 'ENABLE successful')
             def cmd_AUTHENTICATE(self, tag, args):
                 self._send_textline('+')
-                self.server.response = yield
+                self.server.response = liefere
                 self._send_tagged(tag, 'OK', 'FAKEAUTH successful')
             def cmd_APPEND(self, tag, args):
                 self._send_textline('+')
-                self.server.response = yield
+                self.server.response = liefere
                 self._send_tagged(tag, 'OK', 'okay')
         client, server = self._setup(UTF8AppendServer)
         self.assertEqual(client._encoding, 'ascii')
@@ -395,7 +395,7 @@ klasse NewIMAPTestsMixin:
                 self._send_tagged(tag, 'OK', 'ENABLE successful')
             def cmd_AUTHENTICATE(self, tag, args):
                 self._send_textline('+')
-                self.server.response = yield
+                self.server.response = liefere
                 self._send_tagged(tag, 'OK', 'FAKEAUTH successful')
         client, _ = self._setup(UTF8Server)
         typ, _ = client.authenticate('MYAUTH', lambda x: b'fake')
@@ -420,7 +420,7 @@ klasse NewIMAPTestsMixin:
         klasse MyServer(SimpleIMAPHandler):
             def cmd_AUTHENTICATE(self, tag, args):
                 self._send_textline('+')
-                self.response = yield
+                self.response = liefere
                 self._send_tagged(tag, 'NO', '[AUTHENTICATIONFAILED] invalid')
         client, _ = self._setup(MyServer)
         mit self.assertRaisesRegex(imaplib.IMAP4.error,
@@ -431,7 +431,7 @@ klasse NewIMAPTestsMixin:
         klasse MyServer(SimpleIMAPHandler):
             def cmd_AUTHENTICATE(self, tag, args):
                 self._send_textline('+')
-                self.server.response = yield
+                self.server.response = liefere
                 self._send_tagged(tag, 'OK', 'FAKEAUTH successful')
         client, server = self._setup(MyServer)
         code, _ = client.authenticate('MYAUTH', lambda x: b'fake')
@@ -442,7 +442,7 @@ klasse NewIMAPTestsMixin:
         klasse MyServer(SimpleIMAPHandler):
             def cmd_AUTHENTICATE(self, tag, args):
                 self._send_textline('+')
-                self.server.response = yield
+                self.server.response = liefere
                 self._send_tagged(tag, 'OK', 'FAKEAUTH successful')
         client, server = self._setup(MyServer)
         code, _ = client.authenticate('MYAUTH', lambda x: 'fake')
@@ -475,7 +475,7 @@ klasse NewIMAPTestsMixin:
         klasse MyServer(SimpleIMAPHandler):
             def cmd_AUTHENTICATE(self, tag, args):
                 self._send_textline('+')
-                self.response = yield
+                self.response = liefere
                 wenn self.response == b'*\r\n':
                     self._send_tagged(
                         tag,
@@ -590,7 +590,7 @@ klasse NewIMAPTestsMixin:
     def test_idle_burst(self):
         client, _ = self._setup(IdleCmdHandler)
         client.login('user', 'pass')
-        # burst() should yield immediately available responses
+        # burst() should liefere immediately available responses
         mit client.idle() als idler:
             batch = list(idler.burst())
             self.assertEqual(len(batch), 4)
@@ -631,7 +631,7 @@ klasse NewIMAPTestsMixin:
         klasse LsubCmd(SimpleIMAPHandler):
             def cmd_LSUB(self, tag, args):
                 self._send_textline('* LSUB () "." directoryA')
-                return self._send_tagged(tag, 'OK', 'LSUB completed')
+                gib self._send_tagged(tag, 'OK', 'LSUB completed')
         client, _ = self._setup(LsubCmd)
         client.login('user', 'pass')
         typ, data = client.lsub()
@@ -730,7 +730,7 @@ klasse ThreadedNetworkedTests(unittest.TestCase):
         t.start()
         wenn verbose:
             drucke("server running")
-        return server, t
+        gib server, t
 
     def reap_server(self, server, thread):
         wenn verbose:
@@ -745,7 +745,7 @@ klasse ThreadedNetworkedTests(unittest.TestCase):
     def reaped_server(self, hdlr):
         server, thread = self.make_server((socket_helper.HOST, 0), hdlr)
         try:
-            yield server
+            liefere server
         finally:
             self.reap_server(server, thread)
 
@@ -754,7 +754,7 @@ klasse ThreadedNetworkedTests(unittest.TestCase):
         mit self.reaped_server(hdlr) als server:
             client = self.imap_class(*server.server_address)
             try:
-                yield server, client
+                liefere server, client
             finally:
                 client.logout()
 
@@ -781,7 +781,7 @@ klasse ThreadedNetworkedTests(unittest.TestCase):
 
             def cmd_AUTHENTICATE(self, tag, args):
                 self._send_textline('+')
-                self.server.response = yield
+                self.server.response = liefere
                 self._send_tagged(tag, 'OK', 'FAKEAUTH successful')
 
             def cmd_SELECT(self, tag, args):
@@ -846,7 +846,7 @@ klasse ThreadedNetworkedTests(unittest.TestCase):
 
         def cmd_AUTHENTICATE(self, tag, args):
             self._send_textline('+')
-            self.server.response = yield
+            self.server.response = liefere
             self._send_tagged(tag, 'OK', 'FAKEAUTH successful')
 
     @threading_helper.reap_threads
@@ -881,7 +881,7 @@ klasse ThreadedNetworkedTests(unittest.TestCase):
         klasse UTF8AppendServer(self.UTF8Server):
             def cmd_APPEND(self, tag, args):
                 self._send_textline('+')
-                self.server.response = yield
+                self.server.response = liefere
                 self._send_tagged(tag, 'OK', 'okay')
 
         mit self.reaped_pair(UTF8AppendServer) als (server, client):
@@ -935,7 +935,7 @@ klasse ThreadedNetworkedTests(unittest.TestCase):
 
             def cmd_AUTHENTICATE(self, tag, args):
                 self._send_textline('+')
-                self.response = yield
+                self.response = liefere
                 self._send_tagged(tag, 'NO', '[AUTHENTICATIONFAILED] invalid')
 
         mit self.reaped_pair(MyServer) als (server, client):
@@ -949,7 +949,7 @@ klasse ThreadedNetworkedTests(unittest.TestCase):
 
             def cmd_AUTHENTICATE(self, tag, args):
                 self._send_textline('+')
-                self.server.response = yield
+                self.server.response = liefere
                 self._send_tagged(tag, 'OK', 'FAKEAUTH successful')
 
         mit self.reaped_pair(MyServer) als (server, client):
@@ -975,7 +975,7 @@ klasse ThreadedNetworkedTests(unittest.TestCase):
             def cmd_AUTHENTICATE(self, tag, args):
                 self._send_textline('+ PDE4OTYuNjk3MTcwOTUyQHBvc3RvZmZpY2Uucm'
                                     'VzdG9uLm1jaS5uZXQ=')
-                r = yield
+                r = liefere
                 wenn (r == b'dGltIGYxY2E2YmU0NjRiOWVmYT'
                          b'FjY2E2ZmZkNmNmMmQ5ZjMy\r\n'):
                     self._send_tagged(tag, 'OK', 'CRAM-MD5 successful')
@@ -1000,7 +1000,7 @@ klasse ThreadedNetworkedTests(unittest.TestCase):
 
             def cmd_AUTHENTICATE(self, tag, args):
                 self._send_textline('+')
-                self.response = yield
+                self.response = liefere
 
                 wenn self.response == b'*\r\n':
                     self._send_tagged(tag, 'NO', '[AUTHENTICATIONFAILED] aborted')

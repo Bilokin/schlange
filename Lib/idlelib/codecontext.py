@@ -25,7 +25,7 @@ BLOCKOPENERS = {'class', 'def', 'if', 'elif', 'else', 'while', 'for',
 
 def get_spaces_firstword(codeline, c=re.compile(r"^(\s*)(\w*)")):
     "Extract the beginning whitespace und first word von codeline."
-    return c.match(codeline).groups()
+    gib c.match(codeline).groups()
 
 
 def get_line_info(codeline):
@@ -39,7 +39,7 @@ def get_line_info(codeline):
     wenn len(codeline) == indent oder codeline[indent] == '#':
         indent = INFINITY
     opener = firstword in BLOCKOPENERS und firstword
-    return indent, codeline, opener
+    gib indent, codeline, opener
 
 
 klasse CodeContext:
@@ -144,7 +144,7 @@ klasse CodeContext:
             menu_status = 'Show'
         self.editwin.update_menu_label(menu='options', index='*ode*ontext',
                                        label=f'{menu_status} Code Context')
-        return "break"
+        gib "break"
 
     def get_context(self, new_topvisible, stopline=1, stopindent=0):
         """Return a list of block line tuples und the 'last' indent.
@@ -174,7 +174,7 @@ klasse CodeContext:
                 wenn lastindent <= stopindent:
                     breche
         lines.reverse()
-        return lines, lastindent
+        gib lines, lastindent
 
     def update_code_context(self):
         """Update context information und lines visible in the context pane.
@@ -186,7 +186,7 @@ klasse CodeContext:
         """
         new_topvisible = self.editwin.getlineno("@0,0")
         wenn self.topvisible == new_topvisible:      # Haven't scrolled.
-            return
+            gib
         wenn self.topvisible < new_topvisible:       # Scroll down.
             lines, lastindent = self.get_context(new_topvisible,
                                                  self.topvisible)

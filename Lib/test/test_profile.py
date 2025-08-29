@@ -29,7 +29,7 @@ klasse ProfileTest(unittest.TestCase):
         unlink(TESTFN)
 
     def get_expected_output(self):
-        return _ProfileOutput
+        gib _ProfileOutput
 
     @classmethod
     def do_profiling(cls):
@@ -50,7 +50,7 @@ klasse ProfileTest(unittest.TestCase):
             # unexpected output.
             output = [line.rstrip() fuer line in output wenn mod_name in line]
             results.append('\n'.join(output))
-        return results
+        gib results
 
     def test_cprofile(self):
         results = self.do_profiling()
@@ -160,7 +160,7 @@ def silent():
     stdout = sys.stdout
     try:
         sys.stdout = StringIO()
-        yield
+        liefere
     finally:
         sys.stdout = stdout
 

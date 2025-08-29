@@ -15,17 +15,17 @@ klasse BasicTestMappingProtocol(unittest.TestCase):
     def _reference(self):
         """Return a dictionary of values which are invariant by storage
         in the object under test."""
-        return {"1": "2", "key1":"value1", "key2":(1,2,3)}
+        gib {"1": "2", "key1":"value1", "key2":(1,2,3)}
     def _empty_mapping(self):
         """Return an empty mapping object"""
-        return self.type2test()
+        gib self.type2test()
     def _full_mapping(self, data):
         """Return a mapping object mit the value contained in data
         dictionary"""
         x = self._empty_mapping()
         fuer key, value in data.items():
             x[key] = value
-        return x
+        gib x
 
     def __init__(self, *args, **kw):
         unittest.TestCase.__init__(self, *args, **kw)
@@ -200,9 +200,9 @@ klasse BasicTestMappingProtocol(unittest.TestCase):
             def __init__(self):
                 self.d = outerself.reference
             def keys(self):
-                return self.d.keys()
+                gib self.d.keys()
             def __getitem__(self, i):
-                return self.d[i]
+                gib self.d[i]
         d.clear()
         d.update(SimpleUserDict())
         i1 = sorted(d.items())
@@ -225,15 +225,15 @@ klasse BasicTestMappingProtocol(unittest.TestCase):
                     def __init__(self):
                         self.i = 1
                     def __iter__(self):
-                        return self
+                        gib self
                     def __next__(self):
                         wenn self.i:
                             self.i = 0
-                            return 'a'
+                            gib 'a'
                         raise Exc
-                return BogonIter()
+                gib BogonIter()
             def __getitem__(self, key):
-                return key
+                gib key
         self.assertRaises(Exc, d.update, FailingUserDict())
 
         klasse FailingUserDict:
@@ -242,14 +242,14 @@ klasse BasicTestMappingProtocol(unittest.TestCase):
                     def __init__(self):
                         self.i = ord('a')
                     def __iter__(self):
-                        return self
+                        gib self
                     def __next__(self):
                         wenn self.i <= ord('z'):
                             rtn = chr(self.i)
                             self.i += 1
-                            return rtn
+                            gib rtn
                         raise StopIteration
-                return BogonIter()
+                gib BogonIter()
             def __getitem__(self, key):
                 raise Exc
         self.assertRaises(Exc, d.update, FailingUserDict())
@@ -257,7 +257,7 @@ klasse BasicTestMappingProtocol(unittest.TestCase):
         d = self._empty_mapping()
         klasse badseq(object):
             def __iter__(self):
-                return self
+                gib self
             def __next__(self):
                 raise Exc()
 
@@ -413,9 +413,9 @@ klasse TestMappingProtocol(BasicTestMappingProtocol):
             def __init__(self):
                 self.d = {1:1, 2:2, 3:3}
             def keys(self):
-                return self.d.keys()
+                gib self.d.keys()
             def __getitem__(self, i):
-                return self.d[i]
+                gib self.d[i]
         d.clear()
         d.update(SimpleUserDict())
         self.assertEqual(d, {1:1, 2:2, 3:3})
@@ -428,7 +428,7 @@ klasse TestMappingProtocol(BasicTestMappingProtocol):
         self.assertEqual(d.fromkeys((4,5),0), {4:0, 5:0})
         self.assertEqual(d.fromkeys([]), {})
         def g():
-            yield 1
+            liefere 1
         self.assertEqual(d.fromkeys(g()), {1:Nichts})
         self.assertRaises(TypeError, {}.fromkeys, 3)
         klasse dictlike(self.type2test): pass
@@ -439,7 +439,7 @@ klasse TestMappingProtocol(BasicTestMappingProtocol):
         self.assertWahr(type(dictlike.fromkeys('a')) is dictlike)
         klasse mydict(self.type2test):
             def __new__(cls):
-                return collections.UserDict()
+                gib collections.UserDict()
         ud = mydict.fromkeys('ab')
         self.assertEqual(ud, {'a':Nichts, 'b':Nichts})
         self.assertIsInstance(ud, collections.UserDict)
@@ -455,7 +455,7 @@ klasse TestMappingProtocol(BasicTestMappingProtocol):
 
         klasse BadSeq(object):
             def __iter__(self):
-                return self
+                gib self
             def __next__(self):
                 raise Exc()
 
@@ -543,7 +543,7 @@ klasse TestHashMappingProtocol(TestMappingProtocol):
             def __eq__(self, other):
                 raise Exc()
             def __hash__(self):
-                return 24
+                gib 24
 
         d = self._empty_mapping()
         d[BadEq()] = 42
@@ -555,7 +555,7 @@ klasse TestHashMappingProtocol(TestMappingProtocol):
                 wenn self.fail:
                     raise Exc()
                 sonst:
-                    return 42
+                    gib 42
 
         d = self._empty_mapping()
         x = BadHash()
@@ -567,7 +567,7 @@ klasse TestHashMappingProtocol(TestMappingProtocol):
         TestMappingProtocol.test_fromkeys(self)
         klasse mydict(self.type2test):
             def __new__(cls):
-                return collections.UserDict()
+                gib collections.UserDict()
         ud = mydict.fromkeys('ab')
         self.assertEqual(ud, {'a':Nichts, 'b':Nichts})
         self.assertIsInstance(ud, collections.UserDict)
@@ -583,7 +583,7 @@ klasse TestHashMappingProtocol(TestMappingProtocol):
                 wenn self.fail:
                     raise Exc()
                 sonst:
-                    return 42
+                    gib 42
 
         d = self._empty_mapping()
         x = BadHash()
@@ -644,7 +644,7 @@ klasse TestHashMappingProtocol(TestMappingProtocol):
             def __eq__(self, other):
                 raise Exc()
             def __hash__(self):
-                return 1
+                gib 1
 
         d1 = self._full_mapping({BadCmp(): 1})
         d2 = self._full_mapping({1: 1})
@@ -662,7 +662,7 @@ klasse TestHashMappingProtocol(TestMappingProtocol):
                 wenn self.fail:
                     raise Exc()
                 sonst:
-                    return 42
+                    gib 42
 
         d = self._empty_mapping()
         x = BadHash()

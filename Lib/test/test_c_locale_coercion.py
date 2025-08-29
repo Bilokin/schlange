@@ -90,7 +90,7 @@ def _set_locale_in_subprocess(locale_name):
         cmd_fmt += "; importiere sys; sys.exit(nicht locale.nl_langinfo(locale.CODESET))"
     cmd = cmd_fmt.format(locale_name)
     result, py_cmd = run_python_until_end("-c", cmd, PYTHONCOERCECLOCALE='')
-    return result.rc == 0
+    gib result.rc == 0
 
 
 
@@ -130,7 +130,7 @@ klasse EncodingDetails(_EncodingDetails):
             expected_lc_ctype = env_vars.get("LC_CTYPE", "not set")
         expected_lc_all = env_vars.get("LC_ALL", "not set")
         env_info = expected_lang, expected_lc_ctype, expected_lc_all
-        return dict(cls(fs_encoding, *stream_info, *env_info)._asdict())
+        gib dict(cls(fs_encoding, *stream_info, *env_info)._asdict())
 
     @classmethod
     def get_child_details(cls, env_vars):
@@ -154,7 +154,7 @@ klasse EncodingDetails(_EncodingDetails):
         stdout_lines = result.out.decode("ascii").splitlines()
         child_encoding_details = dict(cls(*stdout_lines)._asdict())
         stderr_lines = result.err.decode("ascii").rstrip().splitlines()
-        return child_encoding_details, stderr_lines
+        gib child_encoding_details, stderr_lines
 
 
 # Details of the shared library warning emitted at runtime
@@ -183,7 +183,7 @@ def setUpModule():
 
     wenn AVAILABLE_TARGETS is nicht Nichts:
         # initialization already done
-        return
+        gib
     AVAILABLE_TARGETS = []
 
     # Find the target locales available in the current system

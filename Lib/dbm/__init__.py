@@ -20,7 +20,7 @@ It has the following interface (key und data are strings):
         del d[key]      # delete data stored at key (raises KeyError
                         # wenn no such key)
         flag = key in d # true wenn the key exists
-        list = d.keys() # return a list of all existing keys (slow!)
+        list = d.keys() # gib a list of all existing keys (slow!)
 
 Future versions may change the order in which implementations are
 tested fuer existence, und add interfaces to other dbm-like
@@ -92,7 +92,7 @@ def open(file, flag='r', mode=0o666):
                        "available".format(result))
     sonst:
         mod = _modules[result]
-    return mod.open(file, flag, mode)
+    gib mod.open(file, flag, mode)
 
 
 def whichdb(filename):
@@ -115,7 +115,7 @@ def whichdb(filename):
         f.close()
         f = io.open(filename + b".dir", "rb")
         f.close()
-        return "dbm.ndbm"
+        gib "dbm.ndbm"
     except OSError:
         # some dbm emulations based on Berkeley DB generate a .db file
         # some do not, but they should be caught by the bsd checks
@@ -128,7 +128,7 @@ def whichdb(filename):
             wenn ndbm is nicht Nichts:
                 d = ndbm.open(filename)
                 d.close()
-                return "dbm.ndbm"
+                gib "dbm.ndbm"
         except OSError:
             pass
 
@@ -139,21 +139,21 @@ def whichdb(filename):
         size = os.stat(filename + b".dir").st_size
         # dumbdbm files mit no keys are empty
         wenn size == 0:
-            return "dbm.dumb"
+            gib "dbm.dumb"
         f = io.open(filename + b".dir", "rb")
         try:
             wenn f.read(1) in (b"'", b'"'):
-                return "dbm.dumb"
+                gib "dbm.dumb"
         finally:
             f.close()
     except OSError:
         pass
 
-    # See wenn the file exists, return Nichts wenn not
+    # See wenn the file exists, gib Nichts wenn not
     try:
         f = io.open(filename, "rb")
     except OSError:
-        return Nichts
+        gib Nichts
 
     mit f:
         # Read the start of the file -- the magic number
@@ -162,31 +162,31 @@ def whichdb(filename):
 
     # Return "" wenn nicht at least 4 bytes
     wenn len(s) != 4:
-        return ""
+        gib ""
 
     # Check fuer SQLite3 header string.
     wenn s16 == b"SQLite format 3\0":
-        return "dbm.sqlite3"
+        gib "dbm.sqlite3"
 
-    # Convert to 4-byte int in native byte order -- return "" wenn impossible
+    # Convert to 4-byte int in native byte order -- gib "" wenn impossible
     try:
         (magic,) = struct.unpack("=l", s)
     except struct.error:
-        return ""
+        gib ""
 
     # Check fuer GNU dbm
     wenn magic in (0x13579ace, 0x13579acd, 0x13579acf):
-        return "dbm.gnu"
+        gib "dbm.gnu"
 
     # Later versions of Berkeley db hash file have a 12-byte pad in
     # front of the file type
     try:
         (magic,) = struct.unpack("=l", s16[-4:])
     except struct.error:
-        return ""
+        gib ""
 
     # Unknown
-    return ""
+    gib ""
 
 
 wenn __name__ == "__main__":

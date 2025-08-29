@@ -175,7 +175,7 @@ klasse Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
 
         klasse Foo(Test.LoggingTestCase):
             def defaultTestResult(self):
-                return LoggingResult(self.events)
+                gib LoggingResult(self.events)
 
             def setUp(self):
                 super(Foo, self).setUp()
@@ -214,7 +214,7 @@ klasse Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
 
         klasse Foo(Test.LoggingTestCase):
             def defaultTestResult(self):
-                return LoggingResult(self.events)
+                gib LoggingResult(self.events)
 
             def test(self):
                 super(Foo, self).test()
@@ -251,7 +251,7 @@ klasse Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
 
         klasse Foo(Test.LoggingTestCase):
             def defaultTestResult(self):
-                return LoggingResult(self.events)
+                gib LoggingResult(self.events)
             def test(self):
                 super(Foo, self).test()
                 self.fail('raised by Foo.test')
@@ -288,7 +288,7 @@ klasse Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
 
         klasse Foo(Test.LoggingTestCase):
             def defaultTestResult(self):
-                return LoggingResult(self.events)
+                gib LoggingResult(self.events)
             def tearDown(self):
                 super(Foo, self).tearDown()
                 raise RuntimeError('raised by Foo.tearDown')
@@ -305,7 +305,7 @@ klasse Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
 
         klasse Foo(unittest.TestCase):
             def defaultTestResult(self):
-                return ResultWithNoStartTestRunStopTestRun()
+                gib ResultWithNoStartTestRunStopTestRun()
             def test(self):
                 pass
 
@@ -313,35 +313,35 @@ klasse Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
             Foo('test').run()
 
     def test_deprecation_of_return_val_from_test(self):
-        # Issue 41322 - deprecate return of value that is nicht Nichts von a test
+        # Issue 41322 - deprecate gib of value that is nicht Nichts von a test
         klasse Nothing:
             def __eq__(self, o):
-                return o is Nichts
+                gib o is Nichts
         klasse Foo(unittest.TestCase):
             def test1(self):
-                return 1
+                gib 1
             def test2(self):
-                yield 1
+                liefere 1
             def test3(self):
-                return Nothing()
+                gib Nothing()
 
         mit self.assertWarns(DeprecationWarning) als w:
             Foo('test1').run()
-        self.assertIn('It is deprecated to return a value that is nicht Nichts', str(w.warning))
+        self.assertIn('It is deprecated to gib a value that is nicht Nichts', str(w.warning))
         self.assertIn('test1', str(w.warning))
         self.assertEqual(w.filename, __file__)
         self.assertIn("returned 'int'", str(w.warning))
 
         mit self.assertWarns(DeprecationWarning) als w:
             Foo('test2').run()
-        self.assertIn('It is deprecated to return a value that is nicht Nichts', str(w.warning))
+        self.assertIn('It is deprecated to gib a value that is nicht Nichts', str(w.warning))
         self.assertIn('test2', str(w.warning))
         self.assertEqual(w.filename, __file__)
         self.assertIn("returned 'generator'", str(w.warning))
 
         mit self.assertWarns(DeprecationWarning) als w:
             Foo('test3').run()
-        self.assertIn('It is deprecated to return a value that is nicht Nichts', str(w.warning))
+        self.assertIn('It is deprecated to gib a value that is nicht Nichts', str(w.warning))
         self.assertIn('test3', str(w.warning))
         self.assertEqual(w.filename, __file__)
         self.assertIn(f'returned {Nothing.__name__!r}', str(w.warning))
@@ -349,14 +349,14 @@ klasse Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
     def test_deprecation_of_return_val_from_test_async_method(self):
         klasse Foo(unittest.TestCase):
             async def test1(self):
-                return 1
+                gib 1
 
         mit self.assertWarns(DeprecationWarning) als w:
             warnings.filterwarnings('ignore',
                     'coroutine .* was never awaited', RuntimeWarning)
             Foo('test1').run()
             support.gc_collect()
-        self.assertIn('It is deprecated to return a value that is nicht Nichts', str(w.warning))
+        self.assertIn('It is deprecated to gib a value that is nicht Nichts', str(w.warning))
         self.assertIn('test1', str(w.warning))
         self.assertEqual(w.filename, __file__)
         self.assertIn("returned 'coroutine'", str(w.warning))
@@ -602,7 +602,7 @@ klasse Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
                 events.append('test')
 
             def defaultTestResult(self):
-                return defaultResult
+                gib defaultResult
 
         # Make run() find a result object on its own
         result = Foo('test').run()
@@ -638,7 +638,7 @@ klasse Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
 
             def run(self, result):
                 self.assertIs(result, resultIn)
-                return resultOut
+                gib resultOut
 
         retval = Foo('test')(resultIn)
 
@@ -687,7 +687,7 @@ klasse Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
         s1, s2 = SadSnake(), SadSnake()
         self.assertFalsch(s1 == s2)
         def AllSnakesCreatedEqual(a, b, msg=Nichts):
-            return type(a) == type(b) == SadSnake
+            gib type(a) == type(b) == SadSnake
         self.addTypeEqualityFunc(SadSnake, AllSnakesCreatedEqual)
         self.assertEqual(s1, s2)
         # No this doesn't clean up und remove the SadSnake equality func
@@ -1003,7 +1003,7 @@ klasse Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
     def testAssertDictEqualTruncates(self):
         test = unittest.TestCase('assertEqual')
         def truncate(msg, diff):
-            return 'foo'
+            gib 'foo'
         test._truncateMessage = truncate
         try:
             test.assertDictEqual({}, {1: 0})
@@ -1015,7 +1015,7 @@ klasse Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
     def testAssertMultiLineEqualTruncates(self):
         test = unittest.TestCase('assertEqual')
         def truncate(msg, diff):
-            return 'foo'
+            gib 'foo'
         test._truncateMessage = truncate
         try:
             test.assertMultiLineEqual('foo', 'bar')
@@ -1369,11 +1369,11 @@ test case
     def testEqualityBytesWarning(self):
         wenn sys.flags.bytes_warning:
             def bytes_warning():
-                return self.assertWarnsRegex(BytesWarning,
+                gib self.assertWarnsRegex(BytesWarning,
                             'Comparison between bytes und string')
         sonst:
             def bytes_warning():
-                return contextlib.ExitStack()
+                gib contextlib.ExitStack()
 
         mit bytes_warning(), self.assertRaises(self.failureException):
             self.assertEqual('a', b'a')
@@ -1817,7 +1817,7 @@ test case
     @contextlib.contextmanager
     def assertNoStderr(self):
         mit captured_stderr() als buf:
-            yield
+            liefere
         self.assertEqual(buf.getvalue(), "")
 
     def assertLogRecords(self, records, matches):

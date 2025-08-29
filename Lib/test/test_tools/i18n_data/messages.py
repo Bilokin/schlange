@@ -65,7 +65,7 @@ def test():
 
 klasse Foo:
     def bar(self):
-        return _("baz")
+        gib _("baz")
 
 
 def bar(x=_('default value')):

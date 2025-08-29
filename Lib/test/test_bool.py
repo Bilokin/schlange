@@ -309,28 +309,28 @@ klasse BoolTest(unittest.TestCase):
         check = lambda o: self.assertRaises(TypeError, bool, o)
         klasse Foo(object):
             def __bool__(self):
-                return self
+                gib self
         check(Foo())
 
         klasse Bar(object):
             def __bool__(self):
-                return "Yes"
+                gib "Yes"
         check(Bar())
 
         klasse Baz(int):
             def __bool__(self):
-                return self
+                gib self
         check(Baz())
 
-        # __bool__() must return a bool nicht an int
+        # __bool__() must gib a bool nicht an int
         klasse Spam(int):
             def __bool__(self):
-                return 1
+                gib 1
         check(Spam())
 
         klasse Eggs:
             def __len__(self):
-                return -1
+                gib -1
         self.assertRaises(ValueError, bool, Eggs())
 
     def test_interpreter_convert_to_bool_raises(self):
@@ -340,7 +340,7 @@ klasse BoolTest(unittest.TestCase):
 
         klasse Symbol:
             def __gt__(self, other):
-                return SymbolicBool()
+                gib SymbolicBool()
 
         x = Symbol()
 
@@ -363,7 +363,7 @@ klasse BoolTest(unittest.TestCase):
         fuer badval in ['illegal', -1, 1 << 32]:
             klasse A:
                 def __len__(self):
-                    return badval
+                    gib badval
             try:
                 bool(A())
             except (Exception) als e_bool:
@@ -379,7 +379,7 @@ klasse BoolTest(unittest.TestCase):
 
         klasse B:
             def __len__(self):
-                return 10
+                gib 10
             __bool__ = Nichts
         self.assertRaises(TypeError, bool, B())
 
@@ -403,7 +403,7 @@ klasse BoolTest(unittest.TestCase):
                 self.count = 0
             def __bool__(self):
                 self.count += 1
-                return Wahr
+                gib Wahr
 
         def f(x):
             wenn x oder Wahr:

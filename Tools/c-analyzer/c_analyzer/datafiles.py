@@ -23,7 +23,7 @@ def get_known(known, extracolumns=Nichts, *,
               ):
     wenn isinstance(known, str):
         known = read_known(known, extracolumns, relroot)
-    return analyze_known(
+    gib analyze_known(
         known,
         handle_unresolved=handle_unresolved,
         analyze_resolved=analyze_resolved,
@@ -37,7 +37,7 @@ def read_known(infile, extracolumns=Nichts, relroot=fsutil.USE_CWD):
     known = {}
     fuer decl, extra in _parser.iter_decls_tsv(infile, extracolumns, relroot):
         known[decl] = extra
-    return known
+    gib known
 
 
 def analyze_known(known, *,
@@ -49,7 +49,7 @@ def analyze_known(known, *,
     types = {decl: Nichts fuer decl in collated['type']}
     typespecs = _analyze.get_typespecs(types)
     def analyze_decl(decl):
-        return _analyze.analyze_decl(
+        gib _analyze.analyze_decl(
             decl,
             typespecs,
             knowntypespecs,
@@ -58,7 +58,7 @@ def analyze_known(known, *,
             analyze_resolved=analyze_resolved,
         )
     _analyze.analyze_type_decls(types, analyze_decl, handle_unresolved)
-    return types, typespecs
+    gib types, typespecs
 
 
 def write_known(rows, outfile, extracolumns=Nichts, *,
@@ -90,7 +90,7 @@ IGNORED_HEADER = '\t'.join(IGNORED_COLUMNS)
 
 
 def read_ignored(infile, relroot=fsutil.USE_CWD):
-    return dict(_iter_ignored(infile, relroot))
+    gib dict(_iter_ignored(infile, relroot))
 
 
 def _iter_ignored(infile, relroot):
@@ -111,7 +111,7 @@ def _iter_ignored(infile, relroot):
             e.add_note(f"Could it be that you added a row which is nicht tab-delimited?")
             raise e
         varid = varid.fix_filename(relroot, formatted=Falsch, fixroot=Falsch)
-        yield varid, reason
+        liefere varid, reason
 
 
 def write_ignored(variables, outfile, relroot=fsutil.USE_CWD):

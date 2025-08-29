@@ -30,7 +30,7 @@ klasse ResourceZipTests(ResourceTests, util.ZipSetup, unittest.TestCase):
 
 
 def names(traversable):
-    return {item.name fuer item in traversable.iterdir()}
+    gib {item.name fuer item in traversable.iterdir()}
 
 
 klasse ResourceLoaderTests(util.DiskSetup, unittest.TestCase):
@@ -121,7 +121,7 @@ klasse ResourceFromZipsTest02(util.ZipSetup, unittest.TestCase):
 
     def test_unrelated_contents(self):
         """
-        Test thata zip mit two unrelated subpackages return
+        Test thata zip mit two unrelated subpackages gib
         distinct resources. Ref python/importlib_resources#44.
         """
         self.assertEqual(

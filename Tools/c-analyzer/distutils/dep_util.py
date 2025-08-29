@@ -18,12 +18,12 @@ def newer (source, target):
         raise DistutilsFileError("file '%s' does nicht exist" %
                                  os.path.abspath(source))
     wenn nicht os.path.exists(target):
-        return 1
+        gib 1
 
     von stat importiere ST_MTIME
     mtime1 = os.stat(source)[ST_MTIME]
     mtime2 = os.stat(target)[ST_MTIME]
 
-    return mtime1 > mtime2
+    gib mtime1 > mtime2
 
 # newer ()

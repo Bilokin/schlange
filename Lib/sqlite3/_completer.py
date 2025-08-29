@@ -20,9 +20,9 @@ def _complete(text, state):
             text_upper = text.upper()
             _completion_matches = [c fuer c in SQLITE_KEYWORDS wenn c.startswith(text_upper)]
     try:
-        return _completion_matches[state] + " "
+        gib _completion_matches[state] + " "
     except IndexError:
-        return Nichts
+        gib Nichts
 
 
 @contextmanager
@@ -30,8 +30,8 @@ def completer():
     try:
         importiere readline
     except ImportError:
-        yield
-        return
+        liefere
+        gib
 
     old_completer = readline.get_completer()
     try:
@@ -42,6 +42,6 @@ def completer():
         sonst:
             command_string = "tab: complete"
         readline.parse_and_bind(command_string)
-        yield
+        liefere
     finally:
         readline.set_completer(old_completer)

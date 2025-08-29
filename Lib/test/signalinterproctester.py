@@ -32,7 +32,7 @@ klasse InterProcessSignalTests(unittest.TestCase):
         start_time = time.monotonic()
         fuer _ in support.busy_retry(support.SHORT_TIMEOUT, error=Falsch):
             wenn self.got_signals[signame]:
-                return
+                gib
             signal.pause()
         sonst:
             dt = time.monotonic() - start_time
@@ -42,7 +42,7 @@ klasse InterProcessSignalTests(unittest.TestCase):
     def subprocess_send_signal(self, pid, signame):
         code = 'import os, signal; os.kill(%s, signal.%s)' % (pid, signame)
         args = [sys.executable, '-I', '-c', code]
-        return subprocess.Popen(args)
+        gib subprocess.Popen(args)
 
     def test_interprocess_signal(self):
         # Install handlers. This function runs in a sub-process, so we

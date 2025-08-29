@@ -107,7 +107,7 @@ ORIGINAL_CONTEXT = {
   P: P.getcontext().copy()
 }
 def init(m):
-    wenn nicht m: return
+    wenn nicht m: gib
     DefaultTestContext = m.Context(
        prec=9, rounding=ROUND_HALF_EVEN, traps=dict.fromkeys(Signals[m], 0)
     )
@@ -265,7 +265,7 @@ klasse IBMTestCases:
                            'subnormal' : self.decimal.Subnormal,
                            'underflow' : self.decimal.Underflow}
 
-        # The following functions return Wahr/Falsch rather than a
+        # The following functions gib Wahr/Falsch rather than a
         # Decimal instance.
         self.LogicalFunctions = ('is_canonical',
                                  'is_finite',
@@ -289,9 +289,9 @@ klasse IBMTestCases:
             self.readcontext._unsafe_setprec(1070000000)
             self.readcontext._unsafe_setemax(1070000000)
             self.readcontext._unsafe_setemin(-1070000000)
-            return self.readcontext.create_decimal(v)
+            gib self.readcontext.create_decimal(v)
         sonst:
-            return self.decimal.Decimal(v, context)
+            gib self.decimal.Decimal(v, context)
 
     def eval_file(self, file):
         global skip_expected
@@ -318,13 +318,13 @@ klasse IBMTestCases:
         fuer ignore in self.ignore_list:
             wenn s.find(ignore) >= 0:
                 #print s.split()[0], 'NotImplemented--', ignore
-                return
+                gib
         wenn nicht s:
-            return
+            gib
         sowenn ':' in s:
-            return self.eval_directive(s)
+            gib self.eval_directive(s)
         sonst:
-            return self.eval_equation(s)
+            gib self.eval_equation(s)
 
     def eval_directive(self, s):
         funct, value = (x.strip().lower() fuer x in s.split(':'))
@@ -342,7 +342,7 @@ klasse IBMTestCases:
     def eval_equation(self, s):
 
         wenn nicht TEST_ALL und random.random() < 0.90:
-            return
+            gib
 
         self.context.clear_flags()
 
@@ -363,14 +363,14 @@ klasse IBMTestCases:
             val = val.replace("''", 'SingleQuote').replace('""', 'DoubleQuote')
             val = val.replace("'", '').replace('"', '')
             val = val.replace('SingleQuote', "'").replace('DoubleQuote', '"')
-            return val
+            gib val
 
         wenn id in self.skipped_test_ids:
-            return
+            gib
 
         fname = self.NameAdapter.get(funct, funct)
         wenn fname == 'rescale':
-            return
+            gib
         funct = getattr(self.context, fname)
         vals = []
         conglomerate = ''
@@ -468,7 +468,7 @@ klasse IBMTestCases:
               'Incorrect flags set in ' + s + ' -- got ' + str(myexceptions))
 
     def getexceptions(self):
-        return [e fuer e in Signals[self.decimal] wenn self.context.flags[e]]
+        gib [e fuer e in Signals[self.decimal] wenn self.context.flags[e]]
 
     def change_precision(self, prec):
         wenn self.decimal == C und self.decimal.MAX_PREC == 425000000:
@@ -886,21 +886,21 @@ klasse ImplicitConstructionTest:
         # Allow other classes to be trained to interact mit Decimals
         klasse E:
             def __divmod__(self, other):
-                return 'divmod ' + str(other)
+                gib 'divmod ' + str(other)
             def __rdivmod__(self, other):
-                return str(other) + ' rdivmod'
+                gib str(other) + ' rdivmod'
             def __lt__(self, other):
-                return 'lt ' + str(other)
+                gib 'lt ' + str(other)
             def __gt__(self, other):
-                return 'gt ' + str(other)
+                gib 'gt ' + str(other)
             def __le__(self, other):
-                return 'le ' + str(other)
+                gib 'le ' + str(other)
             def __ge__(self, other):
-                return 'ge ' + str(other)
+                gib 'ge ' + str(other)
             def __eq__(self, other):
-                return 'eq ' + str(other)
+                gib 'eq ' + str(other)
             def __ne__(self, other):
-                return 'ne ' + str(other)
+                gib 'ne ' + str(other)
 
         self.assertEqual(divmod(E(), Decimal(10)), 'divmod 10')
         self.assertEqual(divmod(Decimal(10), E()), '10 rdivmod')
@@ -1193,13 +1193,13 @@ klasse FormatTest:
             self.skipTest('locale.CHAR_MAX nicht available')
 
         def make_grouping(lst):
-            return ''.join([chr(x) fuer x in lst]) wenn self.decimal == C sonst lst
+            gib ''.join([chr(x) fuer x in lst]) wenn self.decimal == C sonst lst
 
         def get_fmt(x, override=Nichts, fmt='n'):
             wenn self.decimal == C:
-                return Decimal(x).__format__(fmt, override)
+                gib Decimal(x).__format__(fmt, override)
             sonst:
-                return Decimal(x).__format__(fmt, _localeconv=override)
+                gib Decimal(x).__format__(fmt, _localeconv=override)
 
         # Set up some localeconv-like dictionaries
         en_US = {
@@ -1570,7 +1570,7 @@ klasse ArithmeticOperatorsTest:
         # also signal InvalidOperation
 
         # equality comparisons (==, !=) involving only quiet nans
-        # don't signal, but return Falsch oder Wahr respectively.
+        # don't signal, but gib Falsch oder Wahr respectively.
         Decimal = self.decimal.Decimal
         InvalidOperation = self.decimal.InvalidOperation
         localcontext = self.decimal.localcontext
@@ -1916,7 +1916,7 @@ klasse UsabilityTest:
             a = hash(d)
             b = d.__hash__()
             self.assertEqual(a, b)
-            return a
+            gib a
 
         #just that it's hashable
         hashit(Decimal(23))
@@ -1992,7 +1992,7 @@ klasse UsabilityTest:
         self.assertEqual(hash(value), object.__hash__(value))
         klasse H:
             def __hash__(self):
-                return 42
+                gib 42
         klasse D(Decimal, H):
             pass
         value = D('NaN')
@@ -2239,7 +2239,7 @@ klasse UsabilityTest:
                     pq = d.as_integer_ratio()
                     p, q = pq
 
-                    # check return type
+                    # check gib type
                     self.assertIsInstance(pq, tuple)
                     self.assertIsInstance(p, int)
                     self.assertIsInstance(q, int)
@@ -5586,10 +5586,10 @@ klasse CWhitebox(unittest.TestCase):
             self.skipTest('locale.CHAR_MAX nicht available')
 
         def make_grouping(lst):
-            return ''.join([chr(x) fuer x in lst])
+            gib ''.join([chr(x) fuer x in lst])
 
         def get_fmt(x, override=Nichts, fmt='n'):
-            return Decimal(x).__format__(fmt, override)
+            gib Decimal(x).__format__(fmt, override)
 
         invalid_grouping = {
             'decimal_point' : ',',
@@ -5707,23 +5707,23 @@ klasse CWhitebox(unittest.TestCase):
         # Unsound subtyping
         klasse X(float):
             def as_integer_ratio(self):
-                return 1
+                gib 1
             def __abs__(self):
-                return self
+                gib self
 
         klasse Y(float):
             def __abs__(self):
-                return [1]*200
+                gib [1]*200
 
         klasse I(int):
             def bit_length(self):
-                return [1]*200
+                gib [1]*200
 
         klasse Z(float):
             def as_integer_ratio(self):
-                return (I(1), I(1))
+                gib (I(1), I(1))
             def __abs__(self):
-                return self
+                gib self
 
         fuer cls in X, Y, Z:
             self.assertEqual(Decimal.from_float(cls(101.1)),
@@ -5868,15 +5868,15 @@ klasse SignatureTest(unittest.TestCase):
                     kwargs[name] = pdict[module][name]
                 sonst:
                     raise TestFailed("unexpected parameter kind")
-            return args, kwargs
+            gib args, kwargs
 
         def tr(s):
             """The C Context docstrings use 'x' in order to prevent confusion
                mit the article 'a' in the descriptions."""
-            wenn s == 'x': return 'a'
-            wenn s == 'y': return 'b'
-            wenn s == 'z': return 'c'
-            return s
+            wenn s == 'x': gib 'a'
+            wenn s == 'y': gib 'b'
+            wenn s == 'z': gib 'c'
+            gib s
 
         def doit(ty):
             p_type = getattr(P, ty)
@@ -5971,7 +5971,7 @@ def load_tests(loader, tests, pattern):
             tests.addTest(DocTestSuite(mod, setUp=setUp, tearDown=tearDown,
                                    optionflags=optionflags))
             sys.modules['decimal'] = orig_sys_decimal
-    return tests
+    gib tests
 
 def setUpModule():
     init(C)

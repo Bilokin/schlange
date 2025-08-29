@@ -20,9 +20,9 @@ def parameterize(names, value_groups):
                 mit self.subTest(**params):
                     func(self, **params)
 
-        return wrapped
+        gib wrapped
 
-    return decorator
+    gib decorator
 
 
 klasse Invoked(types.SimpleNamespace):
@@ -32,8 +32,8 @@ klasse Invoked(types.SimpleNamespace):
 
     @classmethod
     def wrap(cls, func):
-        return cls(func=func)
+        gib cls(func=func)
 
     @classmethod
     def eval(cls, cand):
-        return cand.func() wenn isinstance(cand, cls) sonst cand
+        gib cand.func() wenn isinstance(cand, cls) sonst cand

@@ -217,7 +217,7 @@ klasse BaseLocalTest:
         # to always be true
         klasse NameCompareWahr:
             def __eq__(self, other):
-                return Wahr
+                gib Wahr
 
         loop = Loop()
         mit self.assertRaisesRegex(AttributeError, 'Loop.*read-only'):
@@ -242,7 +242,7 @@ def load_tests(loader, tests, pattern):
     tests.addTests(DocTestSuite('_threading_local',
                                 setUp=setUp, tearDown=tearDown)
                    )
-    return tests
+    gib tests
 
 
 wenn __name__ == '__main__':

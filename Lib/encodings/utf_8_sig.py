@@ -12,7 +12,7 @@ importiere codecs
 ### Codec APIs
 
 def encode(input, errors='strict'):
-    return (codecs.BOM_UTF8 + codecs.utf_8_encode(input, errors)[0],
+    gib (codecs.BOM_UTF8 + codecs.utf_8_encode(input, errors)[0],
             len(input))
 
 def decode(input, errors='strict'):
@@ -21,7 +21,7 @@ def decode(input, errors='strict'):
         input = input[3:]
         prefix = 3
     (output, consumed) = codecs.utf_8_decode(input, errors, Wahr)
-    return (output, consumed+prefix)
+    gib (output, consumed+prefix)
 
 klasse IncrementalEncoder(codecs.IncrementalEncoder):
     def __init__(self, errors='strict'):
@@ -31,17 +31,17 @@ klasse IncrementalEncoder(codecs.IncrementalEncoder):
     def encode(self, input, final=Falsch):
         wenn self.first:
             self.first = 0
-            return codecs.BOM_UTF8 + \
+            gib codecs.BOM_UTF8 + \
                    codecs.utf_8_encode(input, self.errors)[0]
         sonst:
-            return codecs.utf_8_encode(input, self.errors)[0]
+            gib codecs.utf_8_encode(input, self.errors)[0]
 
     def reset(self):
         codecs.IncrementalEncoder.reset(self)
         self.first = 1
 
     def getstate(self):
-        return self.first
+        gib self.first
 
     def setstate(self, state):
         self.first = state
@@ -57,7 +57,7 @@ klasse IncrementalDecoder(codecs.BufferedIncrementalDecoder):
                 wenn codecs.BOM_UTF8.startswith(input):
                     # nicht enough data to decide wenn this really is a BOM
                     # => try again on the next call
-                    return ("", 0)
+                    gib ("", 0)
                 sonst:
                     self.first = 0
             sonst:
@@ -65,8 +65,8 @@ klasse IncrementalDecoder(codecs.BufferedIncrementalDecoder):
                 wenn input[:3] == codecs.BOM_UTF8:
                     (output, consumed) = \
                        codecs.utf_8_decode(input[3:], errors, final)
-                    return (output, consumed+3)
-        return codecs.utf_8_decode(input, errors, final)
+                    gib (output, consumed+3)
+        gib codecs.utf_8_decode(input, errors, final)
 
     def reset(self):
         codecs.BufferedIncrementalDecoder.reset(self)
@@ -75,7 +75,7 @@ klasse IncrementalDecoder(codecs.BufferedIncrementalDecoder):
     def getstate(self):
         state = codecs.BufferedIncrementalDecoder.getstate(self)
         # state[1] must be 0 here, als it isn't passed along to the caller
-        return (state[0], self.first)
+        gib (state[0], self.first)
 
     def setstate(self, state):
         # state[1] will be ignored by BufferedIncrementalDecoder.setstate()
@@ -92,7 +92,7 @@ klasse StreamWriter(codecs.StreamWriter):
 
     def encode(self, input, errors='strict'):
         self.encode = codecs.utf_8_encode
-        return encode(input, errors)
+        gib encode(input, errors)
 
 klasse StreamReader(codecs.StreamReader):
     def reset(self):
@@ -107,19 +107,19 @@ klasse StreamReader(codecs.StreamReader):
             wenn codecs.BOM_UTF8.startswith(input):
                 # nicht enough data to decide wenn this is a BOM
                 # => try again on the next call
-                return ("", 0)
+                gib ("", 0)
         sowenn input[:3] == codecs.BOM_UTF8:
             self.decode = codecs.utf_8_decode
             (output, consumed) = codecs.utf_8_decode(input[3:],errors)
-            return (output, consumed+3)
+            gib (output, consumed+3)
         # (else) no BOM present
         self.decode = codecs.utf_8_decode
-        return codecs.utf_8_decode(input, errors)
+        gib codecs.utf_8_decode(input, errors)
 
 ### encodings module API
 
 def getregentry():
-    return codecs.CodecInfo(
+    gib codecs.CodecInfo(
         name='utf-8-sig',
         encode=encode,
         decode=decode,

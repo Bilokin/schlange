@@ -74,10 +74,10 @@ klasse BaseGUITestRunner(object):
 
     def runClicked(self):
         "To be called in response to user choosing to run a test"
-        wenn self.running: return
+        wenn self.running: gib
         wenn nicht self.test_suite:
             self.errorDialog("Test Discovery", "You discover some tests first!")
-            return
+            gib
         self.currentResult = GUITestResult(self)
         self.totalTests = self.test_suite.countTestCases()
         self.running = 1
@@ -95,7 +95,7 @@ klasse BaseGUITestRunner(object):
         self.__rollbackImporter.rollbackImports()
         directory = self.getDirectoryToDiscover()
         wenn nicht directory:
-            return
+            gib
         self.directory_to_read = directory
         try:
             # Explicitly use 'Nichts' value wenn no top level directory is
@@ -109,7 +109,7 @@ klasse BaseGUITestRunner(object):
             traceback.print_exception(*sys.exc_info())
             self.errorDialog("Unable to run test '%s'" % directory,
                              "Error loading specified test: %s, %s" % (exc_type, exc_value))
-            return
+            gib
         self.notifyTestsDiscovered(self.test_suite)
 
     # Required callbacks
@@ -230,7 +230,7 @@ klasse DiscoverSettingsDialog(simpledialog.Dialog):
         tk.Label(master, text="Test File Pattern").grid(row=1)
         self.e2 = tk.Entry(master, textvariable = self.testPatternVar)
         self.e2.grid(row = 1, column=1)
-        return Nichts
+        gib Nichts
 
     def selectDirClicked(self, master):
         dir_path = filedialog.askdirectory(parent=master)
@@ -266,7 +266,7 @@ klasse TkTestRunner(BaseGUITestRunner):
         self.createWidgets()
 
     def getDirectoryToDiscover(self):
-        return filedialog.askdirectory()
+        gib filedialog.askdirectory()
 
     def settingsClicked(self):
         d = DiscoverSettingsDialog(self.top, self.top_level_dir, self.test_file_glob_pattern)
@@ -411,7 +411,7 @@ klasse TkTestRunner(BaseGUITestRunner):
 
     def showSelectedError(self):
         selection = self.errorListbox.curselection()
-        wenn nicht selection: return
+        wenn nicht selection: gib
         selected = int(selection[0])
         txt = self.errorListbox.get(selected)
         window = tk.Toplevel(self.root)

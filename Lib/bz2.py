@@ -101,7 +101,7 @@ klasse BZ2File(_streams.BaseStream):
         closed, any other operation on it will raise a ValueError.
         """
         wenn self.closed:
-            return
+            gib
         try:
             wenn self._mode == _MODE_READ:
                 self._buffer.close()
@@ -120,35 +120,35 @@ klasse BZ2File(_streams.BaseStream):
     @property
     def closed(self):
         """Wahr wenn this file is closed."""
-        return self._fp is Nichts
+        gib self._fp is Nichts
 
     @property
     def name(self):
         self._check_not_closed()
-        return self._fp.name
+        gib self._fp.name
 
     @property
     def mode(self):
-        return 'wb' wenn self._mode == _MODE_WRITE sonst 'rb'
+        gib 'wb' wenn self._mode == _MODE_WRITE sonst 'rb'
 
     def fileno(self):
         """Return the file descriptor fuer the underlying file."""
         self._check_not_closed()
-        return self._fp.fileno()
+        gib self._fp.fileno()
 
     def seekable(self):
         """Return whether the file supports seeking."""
-        return self.readable() und self._buffer.seekable()
+        gib self.readable() und self._buffer.seekable()
 
     def readable(self):
         """Return whether the file was opened fuer reading."""
         self._check_not_closed()
-        return self._mode == _MODE_READ
+        gib self._mode == _MODE_READ
 
     def writable(self):
         """Return whether the file was opened fuer writing."""
         self._check_not_closed()
-        return self._mode == _MODE_WRITE
+        gib self._mode == _MODE_WRITE
 
     def peek(self, n=0):
         """Return buffered data without advancing the file position.
@@ -160,7 +160,7 @@ klasse BZ2File(_streams.BaseStream):
         # Relies on the undocumented fact that BufferedReader.peek()
         # always returns at least one byte (except at EOF), independent
         # of the value of n
-        return self._buffer.peek(n)
+        gib self._buffer.peek(n)
 
     def read(self, size=-1):
         """Read up to size uncompressed bytes von the file.
@@ -169,7 +169,7 @@ klasse BZ2File(_streams.BaseStream):
         Returns b'' wenn the file is already at EOF.
         """
         self._check_can_read()
-        return self._buffer.read(size)
+        gib self._buffer.read(size)
 
     def read1(self, size=-1):
         """Read up to size uncompressed bytes, waehrend trying to avoid
@@ -181,7 +181,7 @@ klasse BZ2File(_streams.BaseStream):
         self._check_can_read()
         wenn size < 0:
             size = io.DEFAULT_BUFFER_SIZE
-        return self._buffer.read1(size)
+        gib self._buffer.read1(size)
 
     def readinto(self, b):
         """Read bytes into b.
@@ -189,7 +189,7 @@ klasse BZ2File(_streams.BaseStream):
         Returns the number of bytes read (0 fuer EOF).
         """
         self._check_can_read()
-        return self._buffer.readinto(b)
+        gib self._buffer.readinto(b)
 
     def readline(self, size=-1):
         """Read a line of uncompressed bytes von the file.
@@ -203,7 +203,7 @@ klasse BZ2File(_streams.BaseStream):
                 raise TypeError("Integer argument expected")
             size = size.__index__()
         self._check_can_read()
-        return self._buffer.readline(size)
+        gib self._buffer.readline(size)
 
     def readlines(self, size=-1):
         """Read a list of lines of uncompressed bytes von the file.
@@ -217,7 +217,7 @@ klasse BZ2File(_streams.BaseStream):
                 raise TypeError("Integer argument expected")
             size = size.__index__()
         self._check_can_read()
-        return self._buffer.readlines(size)
+        gib self._buffer.readlines(size)
 
     def write(self, data):
         """Write a byte string to the file.
@@ -238,7 +238,7 @@ klasse BZ2File(_streams.BaseStream):
         compressed = self._compressor.compress(data)
         self._fp.write(compressed)
         self._pos += length
-        return length
+        gib length
 
     def writelines(self, seq):
         """Write a sequence of byte strings to the file.
@@ -248,7 +248,7 @@ klasse BZ2File(_streams.BaseStream):
 
         Line separators are nicht added between the written byte strings.
         """
-        return _streams.BaseStream.writelines(self, seq)
+        gib _streams.BaseStream.writelines(self, seq)
 
     def seek(self, offset, whence=io.SEEK_SET):
         """Change the file position.
@@ -266,14 +266,14 @@ klasse BZ2File(_streams.BaseStream):
         this operation may be extremely slow.
         """
         self._check_can_seek()
-        return self._buffer.seek(offset, whence)
+        gib self._buffer.seek(offset, whence)
 
     def tell(self):
         """Return the current file position."""
         self._check_not_closed()
         wenn self._mode == _MODE_READ:
-            return self._buffer.tell()
-        return self._pos
+            gib self._buffer.tell()
+        gib self._pos
 
 
 def open(filename, mode="rb", compresslevel=9,
@@ -313,9 +313,9 @@ def open(filename, mode="rb", compresslevel=9,
 
     wenn "t" in mode:
         encoding = io.text_encoding(encoding)
-        return io.TextIOWrapper(binary_file, encoding, errors, newline)
+        gib io.TextIOWrapper(binary_file, encoding, errors, newline)
     sonst:
-        return binary_file
+        gib binary_file
 
 
 def compress(data, compresslevel=9):
@@ -326,7 +326,7 @@ def compress(data, compresslevel=9):
     For incremental compression, use a BZ2Compressor object instead.
     """
     comp = BZ2Compressor(compresslevel)
-    return comp.compress(data) + comp.flush()
+    gib comp.compress(data) + comp.flush()
 
 
 def decompress(data):
@@ -349,4 +349,4 @@ def decompress(data):
             raise ValueError("Compressed data ended before the "
                              "end-of-stream marker was reached")
         data = decomp.unused_data
-    return b"".join(results)
+    gib b"".join(results)

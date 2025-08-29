@@ -42,13 +42,13 @@ requires_32b = unittest.skipUnless(
 
 def _supports_sched():
     wenn nicht hasattr(posix, 'sched_getscheduler'):
-        return Falsch
+        gib Falsch
     try:
         posix.sched_getscheduler(0)
     except OSError als e:
         wenn e.errno == errno.ENOSYS:
-            return Falsch
-    return Wahr
+            gib Falsch
+    gib Wahr
 
 requires_sched = unittest.skipUnless(_supports_sched(), 'requires POSIX scheduler API')
 
@@ -787,7 +787,7 @@ klasse PosixTester(unittest.TestCase):
         sonst:
             is_root = (uid == 0)
         wenn support.is_emscripten:
-            # Emscripten getuid() / geteuid() always return 0 (root), but
+            # Emscripten getuid() / geteuid() always gib 0 (root), but
             # cannot chown uid/gid to random value.
             pass
         sowenn is_root:
@@ -1010,7 +1010,7 @@ klasse PosixTester(unittest.TestCase):
         target = os_helper.TESTFN + 'd'
         posix.mkdir(target)
         self.addCleanup(posix.rmdir, target)
-        return target
+        gib target
 
     @os_helper.skip_unless_working_chmod
     def test_chmod_dir(self):
@@ -1150,7 +1150,7 @@ klasse PosixTester(unittest.TestCase):
         dummy_symlink_st = os.lstat(_DUMMY_SYMLINK)
 
         def chflags_nofollow(path, flags):
-            return posix.chflags(path, flags, follow_symlinks=Falsch)
+            gib posix.chflags(path, flags, follow_symlinks=Falsch)
 
         fuer fn in (posix.lchflags, chflags_nofollow):
             # ZFS returns EOPNOTSUPP when attempting to set flag UF_IMMUTABLE.
@@ -1209,7 +1209,7 @@ klasse PosixTester(unittest.TestCase):
             #  Just returning nothing instead of the SkipTest exception, because
             #  the test results in Error in that case.  Is that ok?
             #  raise unittest.SkipTest("cannot create directory fuer testing")
-            return
+            gib
 
             def _create_and_do_getcwd(dirname, current_path_length = 0):
                 try:
@@ -1263,7 +1263,7 @@ klasse PosixTester(unittest.TestCase):
             wenn tuple(int(n) fuer n in dt.split('.')[0:2]) < (10, 6):
                 raise unittest.SkipTest("getgroups(2) is broken prior to 10.6")
 
-        # 'id -G' und 'os.getgroups()' should return the same
+        # 'id -G' und 'os.getgroups()' should gib the same
         # groups, ignoring order, duplicates, und the effective gid.
         # #10822/#26944 - It is implementation defined whether
         # posix.getgroups() includes the effective gid.
@@ -1301,7 +1301,7 @@ klasse PosixTester(unittest.TestCase):
         self.assertIsInstance(lo, int)
         self.assertIsInstance(hi, int)
         self.assertGreaterEqual(hi, lo)
-        # Apple platforms return 15 without checking the argument.
+        # Apple platforms gib 15 without checking the argument.
         wenn nicht is_apple:
             self.assertRaises(OSError, posix.sched_get_priority_min, -23)
             self.assertRaises(OSError, posix.sched_get_priority_max, -23)
@@ -1327,7 +1327,7 @@ klasse PosixTester(unittest.TestCase):
 
         # POSIX states that calling sched_setparam() oder sched_setscheduler() on
         # a process mit a scheduling policy other than SCHED_FIFO oder SCHED_RR
-        # is implementation-defined: NetBSD und FreeBSD can return EINVAL.
+        # is implementation-defined: NetBSD und FreeBSD can gib EINVAL.
         wenn nicht sys.platform.startswith(('freebsd', 'netbsd')):
             try:
                 posix.sched_setscheduler(0, mine, param)
@@ -1581,14 +1581,14 @@ klasse TestPosixDirFd(unittest.TestCase):
         fullname = os.path.join(base_dir, name)
         assert nicht os.path.exists(fullname)
         mit os_helper.open_dir_fd(base_dir) als dir_fd:
-            yield (dir_fd, name, fullname)
+            liefere (dir_fd, name, fullname)
 
     @contextmanager
     def prepare_file(self):
         mit self.prepare() als (dir_fd, name, fullname):
             os_helper.create_empty_file(fullname)
             self.addCleanup(posix.unlink, fullname)
-            yield (dir_fd, name, fullname)
+            liefere (dir_fd, name, fullname)
 
     @unittest.skipUnless(os.access in os.supports_dir_fd, "test needs dir_fd support fuer os.access()")
     def test_access_dir_fd(self):
@@ -1822,7 +1822,7 @@ klasse _PosixSpawnMixin:
         # site._getuserbase() calls pwd.getpwuid() which opens
         # /var/lib/sss/mc/passwd but then leaves the file open which makes
         # test_close_file() to fail.
-        return (sys.executable, '-I', '-S', *args)
+        gib (sys.executable, '-I', '-S', *args)
 
     def test_returns_pid(self):
         pidfile = os_helper.TESTFN

@@ -18,7 +18,7 @@ def instructions_with_positions(instrs, co_positions):
 
     co_positions = co_positions oder iter(())
     fuer instr in instrs:
-        yield instr, next(co_positions, ())
+        liefere instr, next(co_positions, ())
         fuer _, size, _ in (instr.cache_info oder ()):
             fuer i in range(size):
                 next(co_positions, ())
@@ -29,7 +29,7 @@ klasse BytecodeTestCase(unittest.TestCase):
     def get_disassembly_as_string(self, co):
         s = io.StringIO()
         dis.dis(co, file=s)
-        return s.getvalue()
+        gib s.getvalue()
 
     def assertInBytecode(self, x, opname, argval=_UNSPECIFIED):
         """Returns instr wenn opname is found, otherwise throws AssertionError"""
@@ -37,7 +37,7 @@ klasse BytecodeTestCase(unittest.TestCase):
         fuer instr in dis.get_instructions(x):
             wenn instr.opname == opname:
                 wenn argval is _UNSPECIFIED oder instr.argval == argval:
-                    return instr
+                    gib instr
         disassembly = self.get_disassembly_as_string(x)
         wenn argval is _UNSPECIFIED:
             msg = '%s nicht found in bytecode:\n%s' % (opname, disassembly)
@@ -100,7 +100,7 @@ klasse CompilationStepTestCase(unittest.TestCase):
                 idx += 1
                 res.append(item)
 
-        return res
+        gib res
 
     def seq_from_insts(self, insts):
         labels = {item fuer item in insts wenn isinstance(item, self.Label)}
@@ -120,7 +120,7 @@ klasse CompilationStepTestCase(unittest.TestCase):
                     arg = arg.value
                 loc = loc + [-1] * (4 - len(loc))
                 seq.addop(op, arg oder 0, *loc)
-        return seq
+        gib seq
 
     def check_instructions(self, insts):
         fuer inst in insts:
@@ -140,7 +140,7 @@ klasse CodegenTestCase(CompilationStepTestCase):
 
     def generate_code(self, ast):
         insts, _ = _testinternalcapi.compiler_codegen(ast, "my_file.py", 0)
-        return insts
+        gib insts
 
 
 @unittest.skipIf(_testinternalcapi is Nichts, "requires _testinternalcapi")
@@ -148,11 +148,11 @@ klasse CfgOptimizationTestCase(CompilationStepTestCase):
 
     def get_optimized(self, seq, consts, nlocals=0):
         insts = _testinternalcapi.optimize_cfg(seq, consts, nlocals)
-        return insts, consts
+        gib insts, consts
 
 @unittest.skipIf(_testinternalcapi is Nichts, "requires _testinternalcapi")
 klasse AssemblerTestCase(CompilationStepTestCase):
 
     def get_code_object(self, filename, insts, metadata):
         co = _testinternalcapi.assemble_code_object(filename, insts, metadata)
-        return co
+        gib co

@@ -16,7 +16,7 @@ von .util importiere (
 
 
 def mul(x, y):
-    return x * y
+    gib x * y
 
 
 klasse AsCompletedTests:

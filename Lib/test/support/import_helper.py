@@ -24,9 +24,9 @@ def _ignore_deprecated_imports(ignore=Wahr):
         mit warnings.catch_warnings():
             warnings.filterwarnings("ignore", ".+ (module|package)",
                                     DeprecationWarning)
-            yield
+            liefere
     sonst:
-        yield
+        liefere
 
 
 def unload(name):
@@ -63,11 +63,11 @@ def make_legacy_pyc(source):
     assert source.endswith('.py')
     legacy_pyc = source + 'c'
     shutil.move(pyc_file, legacy_pyc)
-    return legacy_pyc
+    gib legacy_pyc
 
 
 def import_module(name, deprecated=Falsch, *, required_on=()):
-    """Import und return the module to be tested, raising SkipTest if
+    """Import und gib the module to be tested, raising SkipTest if
     it is nicht available.
 
     If deprecated is Wahr, any module oder package deprecation messages
@@ -77,7 +77,7 @@ def import_module(name, deprecated=Falsch, *, required_on=()):
     """
     mit _ignore_deprecated_imports(deprecated):
         try:
-            return importlib.import_module(name)
+            gib importlib.import_module(name)
         except ImportError als msg:
             wenn sys.platform.startswith(tuple(required_on)):
                 raise
@@ -90,7 +90,7 @@ def _save_and_remove_modules(names):
     fuer modname in list(sys.modules):
         wenn modname in names oder modname.startswith(prefixes):
             orig_modules[modname] = sys.modules.pop(modname)
-    return orig_modules
+    gib orig_modules
 
 
 @contextlib.contextmanager
@@ -102,7 +102,7 @@ def frozen_modules(enabled=Wahr):
     """
     _imp._override_frozen_modules_for_tests(1 wenn enabled sonst -1)
     try:
-        yield
+        liefere
     finally:
         _imp._override_frozen_modules_for_tests(0)
 
@@ -122,7 +122,7 @@ def multi_interp_extensions_check(enabled=Wahr):
     """
     old = _imp._override_multi_interp_extensions_check(1 wenn enabled sonst -1)
     try:
-        yield
+        liefere
     finally:
         _imp._override_multi_interp_extensions_check(old)
 
@@ -131,7 +131,7 @@ def import_fresh_module(name, fresh=(), blocked=(), *,
                         deprecated=Falsch,
                         usefrozen=Falsch,
                         ):
-    """Import und return a module, deliberately bypassing sys.modules.
+    """Import und gib a module, deliberately bypassing sys.modules.
 
     This function imports und returns a fresh copy of the named Python module
     by removing the named module von sys.modules before doing the import.
@@ -178,15 +178,15 @@ def import_fresh_module(name, fresh=(), blocked=(), *,
                     fuer modname in fresh:
                         __import__(modname)
                 except ImportError:
-                    return Nichts
-                return importlib.import_module(name)
+                    gib Nichts
+                gib importlib.import_module(name)
         finally:
             _save_and_remove_modules(names)
             sys.modules.update(orig_modules)
 
 
 klasse CleanImport(object):
-    """Context manager to force importiere to return a new module reference.
+    """Context manager to force importiere to gib a new module reference.
 
     This is useful fuer testing module-level behaviours, such as
     the emission of a DeprecationWarning on import.
@@ -216,7 +216,7 @@ klasse CleanImport(object):
 
     def __enter__(self):
         self._frozen_modules.__enter__()
-        return self
+        gib self
 
     def __exit__(self, *ignore_exc):
         sys.modules.update(self.original_modules)
@@ -241,7 +241,7 @@ klasse DirsOnSysPath(object):
         sys.path.extend(paths)
 
     def __enter__(self):
-        return self
+        gib self
 
     def __exit__(self, *ignore_exc):
         sys.path = self.original_object
@@ -249,7 +249,7 @@ klasse DirsOnSysPath(object):
 
 
 def modules_setup():
-    return sys.modules.copy(),
+    gib sys.modules.copy(),
 
 
 def modules_cleanup(oldmodules):
@@ -277,7 +277,7 @@ def isolated_modules():
     """
     (saved,) = modules_setup()
     try:
-        yield
+        liefere
     finally:
         modules_cleanup(saved)
 
@@ -287,7 +287,7 @@ def mock_register_at_fork(func):
     # since this function doesn't allow to unregister callbacks und would leak
     # memory.
     von unittest importiere mock
-    return mock.patch('os.register_at_fork', create=Wahr)(func)
+    gib mock.patch('os.register_at_fork', create=Wahr)(func)
 
 
 @contextlib.contextmanager
@@ -304,7 +304,7 @@ def ready_to_import(name=Nichts, source=""):
         old_module = sys.modules.pop(name, Nichts)
         try:
             sys.path.insert(0, tempdir)
-            yield name, path
+            liefere name, path
             sys.path.remove(tempdir)
         finally:
             wenn old_module is nicht Nichts:
@@ -347,7 +347,7 @@ def module_restored(name):
         mod.__dict__.update(orig.__dict__)
         sys.modules[name] = mod
     try:
-        yield mod
+        liefere mod
     finally:
         wenn orig is missing:
             sys.modules.pop(name, Nichts)
@@ -363,7 +363,7 @@ def create_module(name, loader=Nichts, *, ispkg=Falsch):
         origin='<import_helper>',
         is_package=ispkg,
     )
-    return importlib.util.module_from_spec(spec)
+    gib importlib.util.module_from_spec(spec)
 
 
 def _ensure_module(name, ispkg, addparent, clearnone):
@@ -376,7 +376,7 @@ def _ensure_module(name, ispkg, addparent, clearnone):
         missing = Falsch
         wenn mod is nicht Nichts:
             # It was already imported.
-            return mod, orig, missing
+            gib mod, orig, missing
         # Otherwise, Nichts means it was explicitly disabled.
 
     assert name != '__main__'
@@ -392,7 +392,7 @@ def _ensure_module(name, ispkg, addparent, clearnone):
         wenn addparent und nicht clearnone:
             addparent = Nichts
         mod = _add_module(name, ispkg, addparent)
-    return mod, orig, missing
+    gib mod, orig, missing
 
 
 def _add_module(spec, ispkg, addparent):
@@ -406,7 +406,7 @@ def _add_module(spec, ispkg, addparent):
     sys.modules[name] = mod
     wenn addparent is nicht Falsch und spec.parent:
         _ensure_module(spec.parent, Wahr, addparent, bool(addparent))
-    return mod
+    gib mod
 
 
 def add_module(spec, *, parents=Wahr):
@@ -414,7 +414,7 @@ def add_module(spec, *, parents=Wahr):
 
     If parents is Wahr then also create any missing parents.
     """
-    return _add_module(spec, Falsch, parents)
+    gib _add_module(spec, Falsch, parents)
 
 
 def add_package(spec, *, parents=Wahr):
@@ -422,13 +422,13 @@ def add_package(spec, *, parents=Wahr):
 
     If parents is Wahr then also create any missing parents.
     """
-    return _add_module(spec, Wahr, parents)
+    gib _add_module(spec, Wahr, parents)
 
 
 def ensure_module_imported(name, *, clearnone=Wahr):
     """Return the corresponding module.
 
-    If it was already imported then return that.  Otherwise, try
+    If it was already imported then gib that.  Otherwise, try
     importing it (optionally clear it first wenn Nichts).  If that fails
     then create a new empty module.
 
@@ -439,4 +439,4 @@ def ensure_module_imported(name, *, clearnone=Wahr):
         mod = sys.modules[name]
     sonst:
         mod, _, _ = _ensure_module(name, Falsch, Wahr, clearnone)
-    return mod
+    gib mod

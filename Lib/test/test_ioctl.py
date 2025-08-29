@@ -82,7 +82,7 @@ klasse IoctlTestsTty(unittest.TestCase):
             self.assertEqual(len(buf) * intsize, nbytes)   # sanity check
         sonst:
             buf.append(fill)
-        return buf
+        gib buf
 
     def _check_ioctl_mutate_len(self, nbytes=Nichts):
         ids = (os.getpgrp(), os.getsid(0))

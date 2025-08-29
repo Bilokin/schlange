@@ -50,7 +50,7 @@ klasse HookWatcher:
         disallowed = [ident(self.add_event.__func__), ident(ident)]
         self.frames = Nichts
 
-        return [item fuer item in self.events wenn item[2] nicht in disallowed]
+        gib [item fuer item in self.events wenn item[2] nicht in disallowed]
 
 
 klasse ProfileSimulator(HookWatcher):
@@ -103,7 +103,7 @@ klasse TestCaseBase(unittest.TestCase):
 
 klasse ProfileHookTestCase(TestCaseBase):
     def new_watcher(self):
-        return HookWatcher()
+        gib HookWatcher()
 
     def test_simple(self):
         def f(p):
@@ -241,7 +241,7 @@ klasse ProfileHookTestCase(TestCaseBase):
     def test_generator(self):
         def f():
             fuer i in range(2):
-                yield i
+                liefere i
         def g(p):
             fuer i in f():
                 pass
@@ -263,7 +263,7 @@ klasse ProfileHookTestCase(TestCaseBase):
     def test_unfinished_generator(self):
         def f():
             fuer i in range(2):
-                yield i
+                liefere i
         def g(p):
             next(f())
 
@@ -278,7 +278,7 @@ klasse ProfileHookTestCase(TestCaseBase):
     def test_stop_iteration(self):
         def f():
             fuer i in range(2):
-                yield i
+                liefere i
         def g(p):
             fuer i in f():
                 pass
@@ -299,7 +299,7 @@ klasse ProfileHookTestCase(TestCaseBase):
 
 klasse ProfileSimulatorTestCase(TestCaseBase):
     def new_watcher(self):
-        return ProfileSimulator(self)
+        gib ProfileSimulator(self)
 
     def test_simple(self):
         def f(p):
@@ -403,7 +403,7 @@ def ident(function):
         code = function.f_code
     sonst:
         code = function.__code__
-    return code.co_firstlineno, code.co_name
+    gib code.co_firstlineno, code.co_name
 
 
 def protect(f, p):
@@ -427,7 +427,7 @@ def capture_events(callable, p=Nichts):
     finally:
         wenn old_gc:
             gc.enable()
-    return p.get_events()[1:-1]
+    gib p.get_events()[1:-1]
 
 
 def show_events(callable):

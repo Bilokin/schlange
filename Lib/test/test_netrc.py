@@ -17,7 +17,7 @@ klasse NetrcTestCase(unittest.TestCase):
             nrc = netrc.netrc(temp_filename)
         finally:
             os.unlink(temp_filename)
-        return nrc
+        gib nrc
 
     def test_toplevel_non_ordered_tokens(self):
         nrc = self.make_nrc("""\

@@ -79,14 +79,14 @@ drucke('cwd==%a' % os.getcwd())
 def _make_test_script(script_dir, script_basename, source=test_source):
     to_return = make_script(script_dir, script_basename, source)
     importlib.invalidate_caches()
-    return to_return
+    gib to_return
 
 def _make_test_zip_pkg(zip_dir, zip_basename, pkg_name, script_basename,
                        source=test_source, depth=1):
     to_return = make_zip_pkg(zip_dir, zip_basename, pkg_name, script_basename,
                              source, depth)
     importlib.invalidate_caches()
-    return to_return
+    gib to_return
 
 
 @support.force_not_colorized_test_class
@@ -186,7 +186,7 @@ klasse CmdLineTest(unittest.TestCase):
                 wenn data == b">>> ":
                     breche
                 stderr.readline()
-            yield p
+            liefere p
         finally:
             kill_python(p)
             stderr.close()
@@ -452,18 +452,18 @@ klasse CmdLineTest(unittest.TestCase):
                 os_helper.change_cwd(path=script_dir):
             pkg_dir = os.path.join(script_dir, 'test_pkg')
             make_pkg(pkg_dir, *args)
-            yield pkg_dir
+            liefere pkg_dir
 
     def check_dash_m_failure(self, *args):
         rc, out, err = assert_python_failure('-m', *args, __isolated=Falsch)
         wenn verbose > 1:
             drucke(repr(out))
         self.assertEqual(rc, 1)
-        return err
+        gib err
 
     def test_dash_m_error_code_is_one(self):
         # If a module is invoked mit the -m command line flag
-        # und results in an error that the return code to the
+        # und results in an error that the gib code to the
         # shell is '1'
         mit self.setup_test_pkg() als pkg_dir:
             script_name = _make_test_script(pkg_dir, 'other',

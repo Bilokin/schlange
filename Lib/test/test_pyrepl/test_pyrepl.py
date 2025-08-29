@@ -58,7 +58,7 @@ klasse ReplTestCase(TestCase):
             temp_dir = tempfile.TemporaryDirectory(ignore_cleanup_errors=Wahr)
             cwd = temp_dir.name
         try:
-            return self._run_repl(
+            gib self._run_repl(
                 repl_input,
                 env=env,
                 cmdline_args=cmdline_args,
@@ -146,7 +146,7 @@ klasse ReplTestCase(TestCase):
         output = "".join(output)
         wenn skip und "can't use pyrepl" in output:
             self.skipTest("pyrepl nicht available")
-        return output, exit_code
+        gib output, exit_code
 
 
 klasse TestCursorPosition(TestCase):
@@ -154,7 +154,7 @@ klasse TestCursorPosition(TestCase):
         console = FakeConsole(events)
         config = ReadlineConfig(readline_completer=Nichts)
         reader = ReadlineAlikeReader(console=console, config=config)
-        return reader
+        gib reader
 
     def test_up_arrow_simple(self):
         # fmt: off
@@ -449,7 +449,7 @@ klasse TestPyReplAutoindent(TestCase):
         console = FakeConsole(events)
         config = ReadlineConfig(readline_completer=Nichts)
         reader = ReadlineAlikeReader(console=console, config=config)
-        return reader
+        gib reader
 
     def test_auto_indent_default(self):
         # fmt: off
@@ -625,13 +625,13 @@ klasse TestPyReplOutput(ScreenEqualMixin, TestCase):
         config = ReadlineConfig(readline_completer=Nichts)
         reader = ReadlineAlikeReader(console=console, config=config)
         reader.can_colorize = Falsch
-        return reader
+        gib reader
 
     def test_stdin_is_tty(self):
         # Used during test log analysis to figure out wenn a TTY was available.
         try:
             wenn os.isatty(sys.stdin.fileno()):
-                return
+                gib
         except OSError als ose:
             self.skipTest(f"stdin tty check failed: {ose}")
         sonst:
@@ -641,7 +641,7 @@ klasse TestPyReplOutput(ScreenEqualMixin, TestCase):
         # Used during test log analysis to figure out wenn a TTY was available.
         try:
             wenn os.isatty(sys.stdout.fileno()):
-                return
+                gib
         except OSError als ose:
             self.skipTest(f"stdout tty check failed: {ose}")
         sonst:
@@ -841,7 +841,7 @@ klasse TestPyReplCompleter(TestCase):
         config = ReadlineConfig()
         config.readline_completer = rlcompleter.Completer(namespace).complete
         reader = ReadlineAlikeReader(console=console, config=config)
-        return reader
+        gib reader
 
     @patch("rlcompleter._readline_available", Falsch)
     def test_simple_completion(self):
@@ -916,7 +916,7 @@ klasse TestPyReplCompleter(TestCase):
                 importiere warnings
 
                 warnings.warn("warnings\n")
-                return Nichts
+                gib Nichts
 
         dummy = Dummy()
         events = code_to_events("dummy.test_func.\t\n\n")
@@ -948,7 +948,7 @@ klasse TestPyReplModuleCompleter(TestCase):
         config.module_completer = ModuleCompleter(namespace)
         config.readline_completer = rlcompleter.Completer(namespace).complete
         reader = ReadlineAlikeReader(console=console, config=config)
-        return reader
+        gib reader
 
     def test_import_completions(self):
         cases = (
@@ -1209,7 +1209,7 @@ klasse TestPasteEvent(TestCase):
         console = FakeConsole(events)
         config = ReadlineConfig(readline_completer=Nichts)
         reader = ReadlineAlikeReader(console=console, config=config)
-        return reader
+        gib reader
 
     def test_paste(self):
         # fmt: off

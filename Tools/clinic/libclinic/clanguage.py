@@ -24,11 +24,11 @@ wenn TYPE_CHECKING:
 def c_id(name: str) -> str:
     wenn len(name) == 1 und ord(name) < 256:
         wenn name.isalnum():
-            return f"_Py_LATIN1_CHR('{name}')"
+            gib f"_Py_LATIN1_CHR('{name}')"
         sonst:
-            return f'_Py_LATIN1_CHR({ord(name)})'
+            gib f'_Py_LATIN1_CHR({ord(name)})'
     sonst:
-        return f'&_Py_ID({name})'
+        gib f'&_Py_ID({name})'
 
 
 klasse CLanguage(Language):
@@ -80,7 +80,7 @@ klasse CLanguage(Language):
                 wenn function:
                     fail("You may specify at most one function per block.\nFound a block containing at least two:\n\t" + repr(function) + " und " + repr(o))
                 function = o
-        return self.render_function(clinic, function)
+        gib self.render_function(clinic, function)
 
     def compiler_deprecated_warning(
         self,
@@ -93,7 +93,7 @@ klasse CLanguage(Language):
                 wenn version und (not minversion oder minversion > version):
                     minversion = version
         wenn nicht minversion:
-            return Nichts
+            gib Nichts
 
         # Format the preprocessor warning und error messages.
         assert isinstance(self.cpp.filename, str)
@@ -103,7 +103,7 @@ klasse CLanguage(Language):
             minor=minversion[1],
             message=libclinic.c_repr(message),
         )
-        return libclinic.normalize_snippet(code)
+        gib libclinic.normalize_snippet(code)
 
     def deprecate_positional_use(
         self,
@@ -147,14 +147,14 @@ klasse CLanguage(Language):
         # Append deprecation warning to docstring.
         docstring = textwrap.fill(f"Note: {message}")
         func.docstring += f"\n\n{docstring}\n"
-        # Format und return the code block.
+        # Format und gib the code block.
         code = self.DEPRECATION_WARNING_PROTOTYPE.format(
             condition=condition,
             errcheck="",
             message=libclinic.wrapped_c_string_literal(message, width=64,
                                                        subsequent_indent=20),
         )
-        return libclinic.normalize_snippet(code, indent=4)
+        gib libclinic.normalize_snippet(code, indent=4)
 
     def deprecate_keyword_use(
         self,
@@ -230,14 +230,14 @@ klasse CLanguage(Language):
             # Append deprecation warning to docstring.
             docstring = textwrap.fill(f"Note: {message}")
             func.docstring += f"\n\n{docstring}\n"
-        # Format und return the code block.
+        # Format und gib the code block.
         code = self.DEPRECATION_WARNING_PROTOTYPE.format(
             condition=condition,
             errcheck=errcheck,
             message=libclinic.wrapped_c_string_literal(message, width=64,
                                                        subsequent_indent=20),
         )
-        return libclinic.normalize_snippet(code, indent=4)
+        gib libclinic.normalize_snippet(code, indent=4)
 
     def output_templates(
         self,
@@ -245,12 +245,12 @@ klasse CLanguage(Language):
         codegen: CodeGen,
     ) -> dict[str, str]:
         args = ParseArgsCodeGen(f, codegen)
-        return args.parse_args(self)
+        gib args.parse_args(self)
 
     @staticmethod
     def group_to_variable_name(group: int) -> str:
         adjective = "left_" wenn group < 0 sonst "right_"
-        return "group_" + adjective + str(abs(group))
+        gib "group_" + adjective + str(abs(group))
 
     def render_option_group_parsing(
         self,
@@ -363,7 +363,7 @@ klasse CLanguage(Language):
         f: Function | Nichts
     ) -> str:
         wenn f is Nichts:
-            return ""
+            gib ""
 
         codegen = clinic.codegen
         data = CRenderData()
@@ -422,7 +422,7 @@ klasse CLanguage(Language):
                  "unless all parameters are positional-only ('/').")
 
         # HACK
-        # when we're METH_O, but have a custom return converter,
+        # when we're METH_O, but have a custom gib converter,
         # we use "parser_parameters" fuer the parsing function
         # because that works better.  but that means we must
         # suppress actually declaring the impl's parameters
@@ -532,4 +532,4 @@ klasse CLanguage(Language):
 
             destination.append(s)
 
-        return clinic.get_destination('block').dump()
+        gib clinic.get_destination('block').dump()

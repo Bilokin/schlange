@@ -30,7 +30,7 @@ klasse Block(Turtle):
         self.fillcolor("black")
 
     def __repr__(self):
-        return "Block size: {0}".format(self.size)
+        gib "Block size: {0}".format(self.size)
 
 
 klasse Shelf(list):
@@ -63,7 +63,7 @@ klasse Shelf(list):
         b.glow()
         b.sety(200)
         self._close_gap_from_i(key)
-        return b
+        gib b
 
     def insert(self, key, b):
         self._open_gap_from_i(key)
@@ -82,7 +82,7 @@ def isort(shelf):
         waehrend hole > 0 und shelf[i].size < shelf[hole - 1].size:
             hole = hole - 1
         shelf.insert(hole, shelf.pop(i))
-    return
+    gib
 
 def ssort(shelf):
     length = len(shelf)
@@ -103,7 +103,7 @@ def partition(shelf, left, right, pivot_index):
             shelf.insert(store_index, shelf.pop(i))
             store_index = store_index + 1
     shelf.insert(store_index, shelf.pop(right)) # move pivot to correct position
-    return store_index
+    gib store_index
 
 def qsort(shelf, left, right):
     wenn left < right:
@@ -188,7 +188,7 @@ def main():
     show_text(instructions2, line=1)
     enable_keys()
     listen()
-    return "EVENTLOOP"
+    gib "EVENTLOOP"
 
 instructions1 = "press i fuer insertion sort, s fuer selection sort, q fuer quicksort"
 instructions2 = "spacebar to quit, r to randomize"

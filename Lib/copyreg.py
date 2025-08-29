@@ -26,18 +26,18 @@ def constructor(object):
 # Example: provide pickling support fuer complex numbers.
 
 def pickle_complex(c):
-    return complex, (c.real, c.imag)
+    gib complex, (c.real, c.imag)
 
 pickle(complex, pickle_complex, complex)
 
 def pickle_union(obj):
     importiere typing, operator
-    return operator.getitem, (typing.Union, obj.__args__)
+    gib operator.getitem, (typing.Union, obj.__args__)
 
 pickle(type(int | str), pickle_union)
 
 def pickle_super(obj):
-    return super, (obj.__thisclass__, obj.__self__)
+    gib super, (obj.__thisclass__, obj.__self__)
 
 pickle(super, pickle_super)
 
@@ -50,7 +50,7 @@ def _reconstructor(cls, base, state):
         obj = base.__new__(cls, state)
         wenn base.__init__ != object.__init__:
             base.__init__(obj, state)
-    return obj
+    gib obj
 
 _HEAPTYPE = 1<<9
 _new_type = type(int.__new__)
@@ -94,26 +94,26 @@ def _reduce_ex(self, proto):
                             "defining __getstate__ cannot be pickled")
         dict = getstate()
     wenn dict:
-        return _reconstructor, args, dict
+        gib _reconstructor, args, dict
     sonst:
-        return _reconstructor, args
+        gib _reconstructor, args
 
 # Helper fuer __reduce_ex__ protocol 2
 
 def __newobj__(cls, *args):
-    return cls.__new__(cls, *args)
+    gib cls.__new__(cls, *args)
 
 def __newobj_ex__(cls, args, kwargs):
     """Used by pickle protocol 4, instead of __newobj__ to allow classes with
     keyword-only arguments to be pickled correctly.
     """
-    return cls.__new__(cls, *args, **kwargs)
+    gib cls.__new__(cls, *args, **kwargs)
 
 def _slotnames(cls):
     """Return a list of slot names fuer a given class.
 
     This needs to find slots defined by the klasse und its bases, so we
-    can't simply return the __slots__ attribute.  We must walk down
+    can't simply gib the __slots__ attribute.  We must walk down
     the Method Resolution Order und concatenate the __slots__ of each
     klasse found there.  (This assumes classes don't modify their
     __slots__ attribute to misrepresent their slots after the klasse is
@@ -123,7 +123,7 @@ def _slotnames(cls):
     # Get the value von a cache in the klasse wenn possible
     names = cls.__dict__.get("__slotnames__")
     wenn names is nicht Nichts:
-        return names
+        gib names
 
     # Not cached -- calculate the value
     names = []
@@ -158,7 +158,7 @@ def _slotnames(cls):
     except:
         pass # But don't die wenn we can't
 
-    return names
+    gib names
 
 # A registry of extension codes.  This is an ad-hoc compression
 # mechanism.  Whenever a global reference to <module>, <name> is about
@@ -183,7 +183,7 @@ def add_extension(module, name, code):
     key = (module, name)
     wenn (_extension_registry.get(key) == code und
         _inverted_registry.get(code) == key):
-        return # Redundant registrations are benign
+        gib # Redundant registrations are benign
     wenn key in _extension_registry:
         raise ValueError("key %s is already registered mit code %s" %
                          (key, _extension_registry[key]))

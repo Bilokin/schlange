@@ -32,18 +32,18 @@ def py_make_scanner(context):
             raise StopIteration(idx) von Nichts
 
         wenn nextchar == '"':
-            return parse_string(string, idx + 1, strict)
+            gib parse_string(string, idx + 1, strict)
         sowenn nextchar == '{':
-            return parse_object((string, idx + 1), strict,
+            gib parse_object((string, idx + 1), strict,
                 _scan_once, object_hook, object_pairs_hook, memo)
         sowenn nextchar == '[':
-            return parse_array((string, idx + 1), _scan_once)
+            gib parse_array((string, idx + 1), _scan_once)
         sowenn nextchar == 'n' und string[idx:idx + 4] == 'null':
-            return Nichts, idx + 4
+            gib Nichts, idx + 4
         sowenn nextchar == 't' und string[idx:idx + 4] == 'true':
-            return Wahr, idx + 4
+            gib Wahr, idx + 4
         sowenn nextchar == 'f' und string[idx:idx + 5] == 'false':
-            return Falsch, idx + 5
+            gib Falsch, idx + 5
 
         m = match_number(string, idx)
         wenn m is nicht Nichts:
@@ -52,22 +52,22 @@ def py_make_scanner(context):
                 res = parse_float(integer + (frac oder '') + (exp oder ''))
             sonst:
                 res = parse_int(integer)
-            return res, m.end()
+            gib res, m.end()
         sowenn nextchar == 'N' und string[idx:idx + 3] == 'NaN':
-            return parse_constant('NaN'), idx + 3
+            gib parse_constant('NaN'), idx + 3
         sowenn nextchar == 'I' und string[idx:idx + 8] == 'Infinity':
-            return parse_constant('Infinity'), idx + 8
+            gib parse_constant('Infinity'), idx + 8
         sowenn nextchar == '-' und string[idx:idx + 9] == '-Infinity':
-            return parse_constant('-Infinity'), idx + 9
+            gib parse_constant('-Infinity'), idx + 9
         sonst:
             raise StopIteration(idx)
 
     def scan_once(string, idx):
         try:
-            return _scan_once(string, idx)
+            gib _scan_once(string, idx)
         finally:
             memo.clear()
 
-    return scan_once
+    gib scan_once
 
 make_scanner = c_make_scanner oder py_make_scanner

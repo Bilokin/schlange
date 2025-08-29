@@ -85,7 +85,7 @@ klasse TestBreakContinueReturnInExceptStarBlock(unittest.TestCase):
                         breche
                 finally:
                     pass
-                return 0
+                gib 0
             """)
 
 
@@ -119,7 +119,7 @@ klasse TestBreakContinueReturnInExceptStarBlock(unittest.TestCase):
                         weiter
                 finally:
                     pass
-                return 0
+                gib 0
             """)
 
     def test_return_in_except_star_block_invalid(self):
@@ -129,7 +129,7 @@ klasse TestBreakContinueReturnInExceptStarBlock(unittest.TestCase):
                 try:
                     raise ValueError
                 except* Exception als e:
-                    return 42
+                    gib 42
             """)
 
         self.check_invalid(
@@ -138,7 +138,7 @@ klasse TestBreakContinueReturnInExceptStarBlock(unittest.TestCase):
                 try:
                     pass
                 except* Exception als e:
-                    return 42
+                    gib 42
                 finally:
                     finished = Wahr
             """)
@@ -165,7 +165,7 @@ klasse TestBreakContinueReturnInExceptStarBlock(unittest.TestCase):
             raise ValueError(42)
         except* Exception als e:
             def f(x):
-                return 2*x
+                gib 2*x
             r = f(3)
             exc = e
         self.assertEqual(r, 6)
@@ -185,7 +185,7 @@ klasse ExceptStarTest(ExceptionIsLikeMixin, unittest.TestCase):
         wenn e1 is Nichts oder e2 is Nichts:
             self.assertNotEqual(e1, e2)
         sonst:
-            return nicht (e1.__context__ == e2.__context__
+            gib nicht (e1.__context__ == e2.__context__
                         und e1.__cause__ == e2.__cause__
                         und e1.__traceback__ == e2.__traceback__)
 
@@ -896,10 +896,10 @@ klasse TestExceptStarExceptionGroupSubclass(ExceptStarTest):
             def __new__(cls, message, excs, code):
                 obj = super().__new__(cls, message, excs)
                 obj.code = code
-                return obj
+                gib obj
 
             def derive(self, excs):
-                return EG(self.message, excs, self.code)
+                gib EG(self.message, excs, self.code)
 
         try:
             try:
@@ -929,10 +929,10 @@ klasse TestExceptStarExceptionGroupSubclass(ExceptStarTest):
     def test_falsy_exception_group_subclass(self):
         klasse FalsyEG(ExceptionGroup):
             def __bool__(self):
-                return Falsch
+                gib Falsch
 
             def derive(self, excs):
-                return FalsyEG(self.message, excs)
+                gib FalsyEG(self.message, excs)
 
         try:
             try:
@@ -958,17 +958,17 @@ klasse TestExceptStarExceptionGroupSubclass(ExceptStarTest):
         # see gh-128049.
         klasse BadEG1(ExceptionGroup):
             def split(self, *args):
-                return "NOT A 2-TUPLE!"
+                gib "NOT A 2-TUPLE!"
 
         klasse BadEG2(ExceptionGroup):
             def split(self, *args):
-                return ("NOT A 2-TUPLE!",)
+                gib ("NOT A 2-TUPLE!",)
 
         eg_list = [
             (BadEG1("eg", [OSError(123), ValueError(456)]),
-             r"split must return a tuple, nicht str"),
+             r"split must gib a tuple, nicht str"),
             (BadEG2("eg", [OSError(123), ValueError(456)]),
-             r"split must return a 2-tuple, got tuple of size 1")
+             r"split must gib a 2-tuple, got tuple of size 1")
         ]
 
         fuer eg_class, msg in eg_list:
@@ -985,7 +985,7 @@ klasse TestExceptStarExceptionGroupSubclass(ExceptStarTest):
         # we allow tuples of length > 2 fuer backwards compatibility
         klasse WeirdEG(ExceptionGroup):
             def split(self, *args):
-                return super().split(*args) + ("anything", 123456, Nichts)
+                gib super().split(*args) + ("anything", 123456, Nichts)
 
         try:
             raise WeirdEG("eg", [OSError(123), ValueError(456)])
@@ -1026,11 +1026,11 @@ klasse TestExceptStar_WeirdLeafExceptions(ExceptStarTest):
 
     klasse AlwaysEqualExc(ValueError):
         def __eq__(self, other):
-            return Wahr
+            gib Wahr
 
     klasse NeverEqualExc(ValueError):
         def __eq__(self, other):
-            return Falsch
+            gib Falsch
 
     klasse BrokenEqualExc(ValueError):
         def __eq__(self, other):
@@ -1051,7 +1051,7 @@ klasse TestExceptStar_WeirdLeafExceptions(ExceptStarTest):
                 match = e
         except Exception als e:
             rest = e
-        return match, rest
+        gib match, rest
 
     def test_catch_unhashable_leaf_exception(self):
         fuer Bad in self.bad_types:
@@ -1117,28 +1117,28 @@ klasse TestExceptStar_WeirdExceptionGroupSubclass(ExceptStarTest):
         __hash__ = Nichts
 
         def derive(self, excs):
-            return type(self)(self.message, excs)
+            gib type(self)(self.message, excs)
 
     klasse AlwaysEqualEG(ExceptionGroup):
         def __eq__(self, other):
-            return Wahr
+            gib Wahr
 
         def derive(self, excs):
-            return type(self)(self.message, excs)
+            gib type(self)(self.message, excs)
 
     klasse NeverEqualEG(ExceptionGroup):
         def __eq__(self, other):
-            return Falsch
+            gib Falsch
 
         def derive(self, excs):
-            return type(self)(self.message, excs)
+            gib type(self)(self.message, excs)
 
     klasse BrokenEqualEG(ExceptionGroup):
         def __eq__(self, other):
             raise RuntimeError()
 
         def derive(self, excs):
-            return type(self)(self.message, excs)
+            gib type(self)(self.message, excs)
 
     def setUp(self):
         self.bad_types = [self.UnhashableEG,
@@ -1155,7 +1155,7 @@ klasse TestExceptStar_WeirdExceptionGroupSubclass(ExceptStarTest):
                 match = e
         except Exception als e:
             rest = e
-        return match, rest
+        gib match, rest
 
     def test_catch_some_unhashable_exception_group_subclass(self):
         fuer BadEG in self.bad_types:

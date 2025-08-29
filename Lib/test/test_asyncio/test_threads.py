@@ -54,7 +54,7 @@ klasse ToThreadTests(unittest.IsolatedAsyncioTestCase):
         test_ctx = ContextVar('test_ctx')
 
         def get_ctx():
-            return test_ctx.get()
+            gib test_ctx.get()
 
         test_ctx.set('parrot')
         result = await asyncio.to_thread(get_ctx)

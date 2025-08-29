@@ -14,7 +14,7 @@ except ImportError:
         klasse C(object):
             def __new__(cls, *args, **kwargs):
                 raise unittest.SkipTest('requires _testcapi.with_tp_del')
-        return C
+        gib C
 
 try:
     von _testcapi importiere without_gc
@@ -23,7 +23,7 @@ except ImportError:
         klasse C:
             def __new__(cls, *args, **kwargs):
                 raise unittest.SkipTest('requires _testcapi.without_gc')
-        return C
+        gib C
 
 von test importiere support
 
@@ -63,7 +63,7 @@ klasse NonGCSimpleBase:
             cls.tp_del_calls.clear()
             NonGCSimpleBase._cleaning = Falsch
             try:
-                yield
+                liefere
                 wenn cls.errors:
                     raise cls.errors[0]
             finally:
@@ -365,7 +365,7 @@ klasse CycleChainFinalizationTest(TestBase, unittest.TestCase):
         nodes = [cls() fuer cls in classes]
         fuer i in range(len(nodes)):
             nodes[i].chain(nodes[i-1])
-        return nodes
+        gib nodes
 
     def check_non_resurrecting_chain(self, classes):
         N = len(classes)

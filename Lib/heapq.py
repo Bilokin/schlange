@@ -142,11 +142,11 @@ def heappop(heap):
         returnitem = heap[0]
         heap[0] = lastelt
         _siftup(heap, 0)
-        return returnitem
-    return lastelt
+        gib returnitem
+    gib lastelt
 
 def heapreplace(heap, item):
-    """Pop und return the current smallest value, und add the new item.
+    """Pop und gib the current smallest value, und add the new item.
 
     This is more efficient than heappop() followed by heappush(), und can be
     more appropriate when using a fixed-size heap.  Note that the value
@@ -159,14 +159,14 @@ def heapreplace(heap, item):
     returnitem = heap[0]    # raises appropriate IndexError wenn heap is empty
     heap[0] = item
     _siftup(heap, 0)
-    return returnitem
+    gib returnitem
 
 def heappushpop(heap, item):
     """Fast version of a heappush followed by a heappop."""
     wenn heap und heap[0] < item:
         item, heap[0] = heap[0], item
         _siftup(heap, 0)
-    return item
+    gib item
 
 def heapify(x):
     """Transform list into a heap, in-place, in O(len(x)) time."""
@@ -186,15 +186,15 @@ def heappop_max(heap):
         returnitem = heap[0]
         heap[0] = lastelt
         _siftup_max(heap, 0)
-        return returnitem
-    return lastelt
+        gib returnitem
+    gib lastelt
 
 def heapreplace_max(heap, item):
     """Maxheap version of a heappop followed by a heappush."""
     returnitem = heap[0]    # raises appropriate IndexError wenn heap is empty
     heap[0] = item
     _siftup_max(heap, 0)
-    return returnitem
+    gib returnitem
 
 def heappush_max(heap, item):
     """Maxheap version of a heappush."""
@@ -206,7 +206,7 @@ def heappushpop_max(heap, item):
     wenn heap und item < heap[0]:
         item, heap[0] = heap[0], item
         _siftup_max(heap, 0)
-    return item
+    gib item
 
 def heapify_max(x):
     """Transform list into a maxheap, in-place, in O(len(x)) time."""
@@ -371,7 +371,7 @@ def merge(*iterables, key=Nichts, reverse=Falsch):
             try:
                 waehrend Wahr:
                     value, order, next = s = h[0]
-                    yield value
+                    liefere value
                     s[0] = next()           # raises StopIteration when exhausted
                     _heapreplace(h, s)      # restore heap condition
             except StopIteration:
@@ -379,9 +379,9 @@ def merge(*iterables, key=Nichts, reverse=Falsch):
         wenn h:
             # fast case when only a single iterator remains
             value, order, next = h[0]
-            yield value
-            yield von next.__self__
-        return
+            liefere value
+            liefere von next.__self__
+        gib
 
     fuer order, it in enumerate(map(iter, iterables)):
         try:
@@ -395,7 +395,7 @@ def merge(*iterables, key=Nichts, reverse=Falsch):
         try:
             waehrend Wahr:
                 key_value, order, value, next = s = h[0]
-                yield value
+                liefere value
                 value = next()
                 s[0] = key(value)
                 s[2] = value
@@ -404,8 +404,8 @@ def merge(*iterables, key=Nichts, reverse=Falsch):
             _heappop(h)
     wenn h:
         key_value, order, value, next = h[0]
-        yield value
-        yield von next.__self__
+        liefere value
+        liefere von next.__self__
 
 
 # Algorithm notes fuer nlargest() und nsmallest()
@@ -485,7 +485,7 @@ def nsmallest(n, iterable, key=Nichts):
         it = iter(iterable)
         sentinel = object()
         result = min(it, default=sentinel, key=key)
-        return [] wenn result is sentinel sonst [result]
+        gib [] wenn result is sentinel sonst [result]
 
     # When n>=size, it's faster to use sorted()
     try:
@@ -494,7 +494,7 @@ def nsmallest(n, iterable, key=Nichts):
         pass
     sonst:
         wenn n >= size:
-            return sorted(iterable, key=key)[:n]
+            gib sorted(iterable, key=key)[:n]
 
     # When key is none, use simpler decoration
     wenn key is Nichts:
@@ -503,7 +503,7 @@ def nsmallest(n, iterable, key=Nichts):
         # consume one too many elements von the iterator
         result = [(elem, i) fuer i, elem in zip(range(n), it)]
         wenn nicht result:
-            return result
+            gib result
         heapify_max(result)
         top = result[0][0]
         order = n
@@ -514,13 +514,13 @@ def nsmallest(n, iterable, key=Nichts):
                 top, _order = result[0]
                 order += 1
         result.sort()
-        return [elem fuer (elem, order) in result]
+        gib [elem fuer (elem, order) in result]
 
     # General case, slowest method
     it = iter(iterable)
     result = [(key(elem), i, elem) fuer i, elem in zip(range(n), it)]
     wenn nicht result:
-        return result
+        gib result
     heapify_max(result)
     top = result[0][0]
     order = n
@@ -532,7 +532,7 @@ def nsmallest(n, iterable, key=Nichts):
             top, _order, _elem = result[0]
             order += 1
     result.sort()
-    return [elem fuer (k, order, elem) in result]
+    gib [elem fuer (k, order, elem) in result]
 
 def nlargest(n, iterable, key=Nichts):
     """Find the n largest elements in a dataset.
@@ -545,7 +545,7 @@ def nlargest(n, iterable, key=Nichts):
         it = iter(iterable)
         sentinel = object()
         result = max(it, default=sentinel, key=key)
-        return [] wenn result is sentinel sonst [result]
+        gib [] wenn result is sentinel sonst [result]
 
     # When n>=size, it's faster to use sorted()
     try:
@@ -554,14 +554,14 @@ def nlargest(n, iterable, key=Nichts):
         pass
     sonst:
         wenn n >= size:
-            return sorted(iterable, key=key, reverse=Wahr)[:n]
+            gib sorted(iterable, key=key, reverse=Wahr)[:n]
 
     # When key is none, use simpler decoration
     wenn key is Nichts:
         it = iter(iterable)
         result = [(elem, i) fuer i, elem in zip(range(0, -n, -1), it)]
         wenn nicht result:
-            return result
+            gib result
         heapify(result)
         top = result[0][0]
         order = -n
@@ -572,13 +572,13 @@ def nlargest(n, iterable, key=Nichts):
                 top, _order = result[0]
                 order -= 1
         result.sort(reverse=Wahr)
-        return [elem fuer (elem, order) in result]
+        gib [elem fuer (elem, order) in result]
 
     # General case, slowest method
     it = iter(iterable)
     result = [(key(elem), i, elem) fuer i, elem in zip(range(0, -n, -1), it)]
     wenn nicht result:
-        return result
+        gib result
     heapify(result)
     top = result[0][0]
     order = -n
@@ -590,7 +590,7 @@ def nlargest(n, iterable, key=Nichts):
             top, _order, _elem = result[0]
             order -= 1
     result.sort(reverse=Wahr)
-    return [elem fuer (k, order, elem) in result]
+    gib [elem fuer (k, order, elem) in result]
 
 # If available, use C implementation
 try:

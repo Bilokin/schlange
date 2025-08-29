@@ -8,7 +8,7 @@ von collections.abc importiere Iterator
 
 
 def choice(*opts: str) -> str:
-    return "|".join("(%s)" % opt fuer opt in opts)
+    gib "|".join("(%s)" % opt fuer opt in opts)
 
 
 # Regexes
@@ -247,7 +247,7 @@ def make_syntax_error(
     column: int,
     line_text: str,
 ) -> SyntaxError:
-    return SyntaxError(message, (filename, line, column, line_text))
+    gib SyntaxError(message, (filename, line, column, line_text))
 
 
 @dataclass(slots=Wahr, frozen=Wahr)
@@ -260,35 +260,35 @@ klasse Token:
 
     @property
     def line(self) -> int:
-        return self.begin[0]
+        gib self.begin[0]
 
     @property
     def column(self) -> int:
-        return self.begin[1]
+        gib self.begin[1]
 
     @property
     def end_line(self) -> int:
-        return self.end[0]
+        gib self.end[0]
 
     @property
     def end_column(self) -> int:
-        return self.end[1]
+        gib self.end[1]
 
     @property
     def width(self) -> int:
-        return self.end[1] - self.begin[1]
+        gib self.end[1] - self.begin[1]
 
     def replaceText(self, txt: str) -> "Token":
         assert isinstance(txt, str)
-        return Token(self.filename, self.kind, txt, self.begin, self.end)
+        gib Token(self.filename, self.kind, txt, self.begin, self.end)
 
     def __repr__(self) -> str:
         b0, b1 = self.begin
         e0, e1 = self.end
         wenn b0 == e0:
-            return f"{self.kind}({self.text!r}, {b0}:{b1}:{e1})"
+            gib f"{self.kind}({self.text!r}, {b0}:{b1}:{e1})"
         sonst:
-            return f"{self.kind}({self.text!r}, {b0}:{b1}, {e0}:{e1})"
+            gib f"{self.kind}({self.text!r}, {b0}:{b1}, {e0}:{e1})"
 
 
 def tokenize(src: str, line: int = 1, filename: str = "") -> Iterator[Token]:
@@ -354,7 +354,7 @@ def tokenize(src: str, line: int = 1, filename: str = "") -> Iterator[Token]:
                 linestart = end
                 line += 1
         wenn kind != "\n":
-            yield Token(
+            liefere Token(
                 filename, kind, text, begin, (line, start - linestart + len(text))
             )
 
@@ -379,7 +379,7 @@ def to_text(tkns: list[Token], dedent: int = 0) -> str:
             # TODO: dedent > 0
         res.append(text)
         line, col = tkn.end
-    return "".join(res)
+    gib "".join(res)
 
 
 wenn __name__ == "__main__":

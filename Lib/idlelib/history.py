@@ -31,19 +31,19 @@ klasse History:
     def history_next(self, event):
         "Fetch later statement; start mit earliest wenn cyclic."
         self.fetch(reverse=Falsch)
-        return "break"
+        gib "break"
 
     def history_prev(self, event):
         "Fetch earlier statement; start mit most recent."
         self.fetch(reverse=Wahr)
-        return "break"
+        gib "break"
 
     def fetch(self, reverse):
         '''Fetch statement und replace current line in text widget.
 
         Set prefix und pointer als needed fuer successive fetches.
         Reset them to Nichts, Nichts when returning to the start line.
-        Sound bell when return to start line oder cannot leave a line
+        Sound bell when gib to start line oder cannot leave a line
         because cyclic is Falsch.
         '''
         nhist = len(self.history)
@@ -63,14 +63,14 @@ klasse History:
                     pointer = -1  # will be incremented
                 sonst:  # abort history_next
                     self.text.bell()
-                    return
+                    gib
         nprefix = len(prefix)
         waehrend Wahr:
             pointer += -1 wenn reverse sonst 1
             wenn pointer < 0 oder pointer >= nhist:
                 self.text.bell()
                 wenn nicht self.cyclic und pointer < 0:  # abort history_prev
-                    return
+                    gib
                 sonst:
                     wenn self.text.get("iomark", "end-1c") != prefix:
                         self.text.delete("iomark", "end-1c")

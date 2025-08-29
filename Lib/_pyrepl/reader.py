@@ -49,7 +49,7 @@ def make_default_syntax_table() -> dict[str, int]:
     fuer c in [a fuer a in map(chr, range(256)) wenn a.isalnum()]:
         st[c] = SYNTAX_WORD
     st["\n"] = st[" "] = SYNTAX_WHITESPACE
-    return st
+    gib st
 
 
 def make_default_commands() -> dict[CommandName, type[Command]]:
@@ -58,7 +58,7 @@ def make_default_commands() -> dict[CommandName, type[Command]]:
         wenn isinstance(v, type) und issubclass(v, Command) und v.__name__[0].islower():
             result[v.__name__] = v
             result[v.__name__.replace("_", "-")] = v
-    return result
+    gib result
 
 
 default_keymap: tuple[tuple[KeySpec, CommandName], ...] = tuple(
@@ -240,10 +240,10 @@ klasse Reader:
 
         def valid(self, reader: Reader) -> bool:
             wenn self.invalidated:
-                return Falsch
+                gib Falsch
             dimensions = reader.console.width, reader.console.height
             dimensions_changed = dimensions != self.dimensions
-            return nicht dimensions_changed
+            gib nicht dimensions_changed
 
         def get_cached_location(self, reader: Reader) -> tuple[int, int]:
             wenn self.invalidated:
@@ -258,7 +258,7 @@ klasse Reader:
                 num_common_lines -= 1
             sonst:
                 offset = 0
-            return offset, num_common_lines
+            gib offset, num_common_lines
 
     last_refresh_cache: RefreshCache = field(default_factory=RefreshCache)
 
@@ -281,7 +281,7 @@ klasse Reader:
         self.last_refresh_cache.dimensions = (0, 0)
 
     def collect_keymap(self) -> tuple[tuple[KeySpec, CommandName], ...]:
-        return default_keymap
+        gib default_keymap
 
     def calc_screen(self) -> list[str]:
         """Translate changes in self.buffer into changes in self.console.screen."""
@@ -386,7 +386,7 @@ klasse Reader:
                 screeninfo.append((0, []))
 
         self.last_refresh_cache.update_cache(self, screen, screeninfo)
-        return screen
+        gib screen
 
     @staticmethod
     def process_prompt(prompt: str) -> tuple[str, int]:
@@ -398,7 +398,7 @@ klasse Reader:
         """
         out_prompt = unbracket(prompt, including_content=Falsch)
         visible_prompt = unbracket(prompt, including_content=Wahr)
-        return out_prompt, wlen(visible_prompt)
+        gib out_prompt, wlen(visible_prompt)
 
     def bow(self, p: int | Nichts = Nichts) -> int:
         """Return the 0-based index of the word breche preceding p most
@@ -415,7 +415,7 @@ klasse Reader:
             p -= 1
         waehrend p >= 0 und st.get(b[p], SYNTAX_WORD) == SYNTAX_WORD:
             p -= 1
-        return p + 1
+        gib p + 1
 
     def eow(self, p: int | Nichts = Nichts) -> int:
         """Return the 0-based index of the word breche following p most
@@ -431,7 +431,7 @@ klasse Reader:
             p += 1
         waehrend p < len(b) und st.get(b[p], SYNTAX_WORD) == SYNTAX_WORD:
             p += 1
-        return p
+        gib p
 
     def bol(self, p: int | Nichts = Nichts) -> int:
         """Return the 0-based index of the line breche preceding p most
@@ -444,7 +444,7 @@ klasse Reader:
         p -= 1
         waehrend p >= 0 und b[p] != "\n":
             p -= 1
-        return p + 1
+        gib p + 1
 
     def eol(self, p: int | Nichts = Nichts) -> int:
         """Return the 0-based index of the line breche following p most
@@ -456,22 +456,22 @@ klasse Reader:
         b = self.buffer
         waehrend p < len(b) und b[p] != "\n":
             p += 1
-        return p
+        gib p
 
     def max_column(self, y: int) -> int:
         """Return the last x-offset fuer line y"""
-        return self.screeninfo[y][0] + sum(self.screeninfo[y][1])
+        gib self.screeninfo[y][0] + sum(self.screeninfo[y][1])
 
     def max_row(self) -> int:
-        return len(self.screeninfo) - 1
+        gib len(self.screeninfo) - 1
 
     def get_arg(self, default: int = 1) -> int:
         """Return any prefix argument that the user has supplied,
         returning 'default' wenn there is Nichts.  Defaults to 1.
         """
         wenn self.arg is Nichts:
-            return default
-        return self.arg
+            gib default
+        gib self.arg
 
     def get_prompt(self, lineno: int, cursor_on_line: bool) -> str:
         """Return what should be in the left-hand margin fuer line
@@ -493,7 +493,7 @@ klasse Reader:
         wenn self.can_colorize:
             t = THEME()
             prompt = f"{t.prompt}{prompt}{t.reset}"
-        return prompt
+        gib prompt
 
     def push_input_trans(self, itrans: input.KeymapTranslator) -> Nichts:
         self.input_trans_stack.append(self.input_trans)
@@ -540,7 +540,7 @@ klasse Reader:
         wenn pos == len(self.buffer) und len(self.screeninfo) > 0:
             y = len(self.screeninfo) - 1
             prompt_len, char_widths = self.screeninfo[y]
-            return prompt_len + sum(char_widths), y
+            gib prompt_len + sum(char_widths), y
 
         fuer prompt_len, char_widths in self.screeninfo:
             offset = len(char_widths)
@@ -556,7 +556,7 @@ klasse Reader:
 
             pos -= offset
             y += 1
-        return prompt_len + sum(char_widths[:pos]), y
+        gib prompt_len + sum(char_widths[:pos]), y
 
     def insert(self, text: str | list[str]) -> Nichts:
         """Insert 'text' at the insertion point."""
@@ -600,8 +600,8 @@ klasse Reader:
 
     def last_command_is(self, cls: type) -> bool:
         wenn nicht self.last_command:
-            return Falsch
-        return issubclass(cls, self.last_command)
+            gib Falsch
+        gib issubclass(cls, self.last_command)
 
     def restore(self) -> Nichts:
         """Clean up after a run."""
@@ -613,7 +613,7 @@ klasse Reader:
         prev_state = {f.name: getattr(self, f.name) fuer f in fields(self)}
         try:
             self.restore()
-            yield
+            liefere
         finally:
             fuer arg in ("msg", "ps1", "ps2", "ps3", "ps4", "paste_mode"):
                 setattr(self, arg, prev_state[arg])
@@ -650,7 +650,7 @@ klasse Reader:
         sowenn isinstance(cmd[0], type):
             command_type = cmd[0]
         sonst:
-            return  # nothing to do
+            gib  # nothing to do
 
         command = command_type(self, *cmd)  # type: ignore[arg-type]
         command.do()
@@ -690,7 +690,7 @@ klasse Reader:
 
     def handle1(self, block: bool = Wahr) -> bool:
         """Handle a single event.  Wait als long als it takes wenn block
-        is true (the default), otherwise return Falsch wenn no event is
+        is true (the default), otherwise gib Falsch wenn no event is
         pending."""
 
         wenn self.msg:
@@ -705,7 +705,7 @@ klasse Reader:
             wenn nicht event:
                 wenn block:
                     weiter
-                return Falsch
+                gib Falsch
 
             translate = Wahr
 
@@ -726,10 +726,10 @@ klasse Reader:
             wenn cmd is Nichts:
                 wenn block:
                     weiter
-                return Falsch
+                gib Falsch
 
             self.do_cmd(cmd)
-            return Wahr
+            gib Wahr
 
     def push_char(self, char: int | bytes) -> Nichts:
         self.console.push_char(char)
@@ -746,7 +746,7 @@ klasse Reader:
             self.refresh()
             waehrend nicht self.finished:
                 self.handle1()
-            return self.get_unicode()
+            gib self.get_unicode()
 
         finally:
             self.restore()
@@ -759,4 +759,4 @@ klasse Reader:
 
     def get_unicode(self) -> str:
         """Return the current buffer als a unicode string."""
-        return "".join(self.buffer)
+        gib "".join(self.buffer)

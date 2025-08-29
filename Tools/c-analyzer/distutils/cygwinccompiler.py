@@ -63,19 +63,19 @@ def get_msvcr():
         msc_ver = sys.version[msc_pos+6:msc_pos+10]
         wenn msc_ver == '1300':
             # MSVC 7.0
-            return ['msvcr70']
+            gib ['msvcr70']
         sowenn msc_ver == '1310':
             # MSVC 7.1
-            return ['msvcr71']
+            gib ['msvcr71']
         sowenn msc_ver == '1400':
             # VS2005 / MSVC 8.0
-            return ['msvcr80']
+            gib ['msvcr80']
         sowenn msc_ver == '1500':
             # VS2008 / MSVC 9.0
-            return ['msvcr90']
+            gib ['msvcr90']
         sowenn msc_ver == '1600':
             # VS2010 / MSVC 10.0
-            return ['msvcr100']
+            gib ['msvcr100']
         sonst:
             raise ValueError("Unknown MS Compiler version %s " % msc_ver)
 
@@ -231,7 +231,7 @@ def check_config_h():
     # wenn sys.version contains GCC then python was compiled mit GCC, und the
     # pyconfig.h file should be OK
     wenn "GCC" in sys.version:
-        return CONFIG_H_OK, "sys.version mentions 'GCC'"
+        gib CONFIG_H_OK, "sys.version mentions 'GCC'"
 
     # let's see wenn __GNUC__ is mentioned in python.h
     fn = sysconfig.get_config_h_filename()
@@ -239,13 +239,13 @@ def check_config_h():
         config_h = open(fn)
         try:
             wenn "__GNUC__" in config_h.read():
-                return CONFIG_H_OK, "'%s' mentions '__GNUC__'" % fn
+                gib CONFIG_H_OK, "'%s' mentions '__GNUC__'" % fn
             sonst:
-                return CONFIG_H_NOTOK, "'%s' does nicht mention '__GNUC__'" % fn
+                gib CONFIG_H_NOTOK, "'%s' does nicht mention '__GNUC__'" % fn
         finally:
             config_h.close()
     except OSError als exc:
-        return (CONFIG_H_UNCERTAIN,
+        gib (CONFIG_H_UNCERTAIN,
                 "couldn't read '%s': %s" % (fn, exc.strerror))
 
 RE_VERSION = re.compile(br'(\d+\.\d+(\.\d+)*)')
@@ -258,7 +258,7 @@ def _find_exe_version(cmd):
     """
     executable = cmd.split()[0]
     wenn find_executable(executable) is Nichts:
-        return Nichts
+        gib Nichts
     out = Popen(cmd, shell=Wahr, stdout=PIPE).stdout
     try:
         out_string = out.read()
@@ -266,10 +266,10 @@ def _find_exe_version(cmd):
         out.close()
     result = RE_VERSION.search(out_string)
     wenn result is Nichts:
-        return Nichts
+        gib Nichts
     # LooseVersion works mit strings
     # so we need to decode our bytes
-    return LooseVersion(result.group(1).decode())
+    gib LooseVersion(result.group(1).decode())
 
 def get_versions():
     """ Try to find out the versions of gcc, ld und dllwrap.
@@ -277,9 +277,9 @@ def get_versions():
     If nicht possible it returns Nichts fuer it.
     """
     commands = ['gcc -dumpversion', 'ld -v', 'dllwrap --version']
-    return tuple([_find_exe_version(cmd) fuer cmd in commands])
+    gib tuple([_find_exe_version(cmd) fuer cmd in commands])
 
 def is_cygwingcc():
     '''Try to determine wenn the gcc that would be used is von cygwin.'''
     out_string = check_output(['gcc', '-dumpmachine'])
-    return out_string.strip().endswith(b'cygwin')
+    gib out_string.strip().endswith(b'cygwin')

@@ -23,7 +23,7 @@ This returns an instance of a klasse mit the following public methods:
       readframes(n)   -- returns at most n frames of audio
       rewind()        -- rewind to the beginning of the audio stream
       setpos(pos)     -- seek to the specified position
-      tell()          -- return the current position
+      tell()          -- gib the current position
       close()         -- close the instance (make it unusable)
 The position returned by tell() und the position given to setpos()
 are compatible und have nothing to do mit the actual position in the
@@ -47,7 +47,7 @@ This returns an instance of a klasse mit the following public methods:
                          human-readable compression type
       setparams(tuple)
                       -- set all parameters at once
-      tell()          -- return current position in output file
+      tell()          -- gib current position in output file
       writeframesraw(data)
                       -- write audio frames without patching up the
                          file header
@@ -96,7 +96,7 @@ def _byteswap(data, width):
         fuer j in range(width):
             swapped_data[i + width - 1 - j] = data[i + j]
 
-    return bytes(swapped_data)
+    gib bytes(swapped_data)
 
 
 klasse _Chunk:
@@ -127,7 +127,7 @@ klasse _Chunk:
 
     def getname(self):
         """Return the name (ID) of the current chunk."""
-        return self.chunkname
+        gib self.chunkname
 
     def close(self):
         wenn nicht self.closed:
@@ -158,7 +158,7 @@ klasse _Chunk:
     def tell(self):
         wenn self.closed:
             raise ValueError("I/O operation on closed file")
-        return self.size_read
+        gib self.size_read
 
     def read(self, size=-1):
         """Read at most size bytes von the chunk.
@@ -169,7 +169,7 @@ klasse _Chunk:
         wenn self.closed:
             raise ValueError("I/O operation on closed file")
         wenn self.size_read >= self.chunksize:
-            return b''
+            gib b''
         wenn size < 0:
             size = self.chunksize - self.size_read
         wenn size > self.chunksize - self.size_read:
@@ -181,7 +181,7 @@ klasse _Chunk:
            (self.chunksize & 1):
             dummy = self.file.read(1)
             self.size_read = self.size_read + len(dummy)
-        return data
+        gib data
 
     def skip(self):
         """Skip the rest of the chunk.
@@ -200,7 +200,7 @@ klasse _Chunk:
                     n = n + 1
                 self.file.seek(n, 1)
                 self.size_read = self.size_read + n
-                return
+                gib
             except OSError:
                 pass
         waehrend self.size_read < self.chunksize:
@@ -289,7 +289,7 @@ klasse Wave_read:
         self.close()
 
     def __enter__(self):
-        return self
+        gib self
 
     def __exit__(self, *args):
         self.close()
@@ -298,7 +298,7 @@ klasse Wave_read:
     # User visible methods.
     #
     def getfp(self):
-        return self._file
+        gib self._file
 
     def rewind(self):
         self._data_seek_needed = 1
@@ -312,28 +312,28 @@ klasse Wave_read:
             file.close()
 
     def tell(self):
-        return self._soundpos
+        gib self._soundpos
 
     def getnchannels(self):
-        return self._nchannels
+        gib self._nchannels
 
     def getnframes(self):
-        return self._nframes
+        gib self._nframes
 
     def getsampwidth(self):
-        return self._sampwidth
+        gib self._sampwidth
 
     def getframerate(self):
-        return self._framerate
+        gib self._framerate
 
     def getcomptype(self):
-        return self._comptype
+        gib self._comptype
 
     def getcompname(self):
-        return self._compname
+        gib self._compname
 
     def getparams(self):
-        return _wave_params(self.getnchannels(), self.getsampwidth(),
+        gib _wave_params(self.getnchannels(), self.getsampwidth(),
                        self.getframerate(), self.getnframes(),
                        self.getcomptype(), self.getcompname())
 
@@ -351,14 +351,14 @@ klasse Wave_read:
                 self._data_chunk.seek(pos, 0)
             self._data_seek_needed = 0
         wenn nframes == 0:
-            return b''
+            gib b''
         data = self._data_chunk.read(nframes * self._framesize)
         wenn self._sampwidth != 1 und sys.byteorder == 'big':
             data = _byteswap(data, self._sampwidth)
         wenn self._convert und data:
             data = self._convert(data)
         self._soundpos = self._soundpos + len(data) // (self._nchannels * self._sampwidth)
-        return data
+        gib data
 
     #
     # Internal methods.
@@ -457,7 +457,7 @@ klasse Wave_write:
         self.close()
 
     def __enter__(self):
-        return self
+        gib self
 
     def __exit__(self, *args):
         self.close()
@@ -475,7 +475,7 @@ klasse Wave_write:
     def getnchannels(self):
         wenn nicht self._nchannels:
             raise Error('number of channels nicht set')
-        return self._nchannels
+        gib self._nchannels
 
     def setsampwidth(self, sampwidth):
         wenn self._datawritten:
@@ -487,7 +487,7 @@ klasse Wave_write:
     def getsampwidth(self):
         wenn nicht self._sampwidth:
             raise Error('sample width nicht set')
-        return self._sampwidth
+        gib self._sampwidth
 
     def setframerate(self, framerate):
         wenn self._datawritten:
@@ -499,7 +499,7 @@ klasse Wave_write:
     def getframerate(self):
         wenn nicht self._framerate:
             raise Error('frame rate nicht set')
-        return self._framerate
+        gib self._framerate
 
     def setnframes(self, nframes):
         wenn self._datawritten:
@@ -507,7 +507,7 @@ klasse Wave_write:
         self._nframes = nframes
 
     def getnframes(self):
-        return self._nframeswritten
+        gib self._nframeswritten
 
     def setcomptype(self, comptype, compname):
         wenn self._datawritten:
@@ -518,10 +518,10 @@ klasse Wave_write:
         self._compname = compname
 
     def getcomptype(self):
-        return self._comptype
+        gib self._comptype
 
     def getcompname(self):
-        return self._compname
+        gib self._compname
 
     def setparams(self, params):
         nchannels, sampwidth, framerate, nframes, comptype, compname = params
@@ -536,11 +536,11 @@ klasse Wave_write:
     def getparams(self):
         wenn nicht self._nchannels oder nicht self._sampwidth oder nicht self._framerate:
             raise Error('not all parameters set')
-        return _wave_params(self._nchannels, self._sampwidth, self._framerate,
+        gib _wave_params(self._nchannels, self._sampwidth, self._framerate,
               self._nframes, self._comptype, self._compname)
 
     def tell(self):
-        return self._nframeswritten
+        gib self._nframeswritten
 
     def writeframesraw(self, data):
         wenn nicht isinstance(data, (bytes, bytearray)):
@@ -612,7 +612,7 @@ klasse Wave_write:
     def _patchheader(self):
         assert self._headerwritten
         wenn self._datawritten == self._datalength:
-            return
+            gib
         curpos = self._file.tell()
         self._file.seek(self._form_length_pos, 0)
         self._file.write(struct.pack('<L', 36 + self._datawritten))
@@ -629,8 +629,8 @@ def open(f, mode=Nichts):
         sonst:
             mode = 'rb'
     wenn mode in ('r', 'rb'):
-        return Wave_read(f)
+        gib Wave_read(f)
     sowenn mode in ('w', 'wb'):
-        return Wave_write(f)
+        gib Wave_write(f)
     sonst:
         raise Error("mode must be 'r', 'rb', 'w', oder 'wb'")

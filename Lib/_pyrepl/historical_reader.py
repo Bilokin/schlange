@@ -58,7 +58,7 @@ klasse next_history(commands.Command):
         r = self.reader
         wenn r.historyi == len(r.history):
             r.error("end of history list")
-            return
+            gib
         r.select_item(r.historyi + 1)
 
 
@@ -67,7 +67,7 @@ klasse previous_history(commands.Command):
         r = self.reader
         wenn r.historyi == 0:
             r.error("start of history list")
-            return
+            gib
         r.select_item(r.historyi - 1)
 
 
@@ -117,13 +117,13 @@ klasse yank_arg(commands.Command):
             r.yank_arg_i = 0
         wenn r.historyi < r.yank_arg_i:
             r.error("beginning of history list")
-            return
+            gib
         a = r.get_arg(-1)
         # XXX how to split?
         words = r.get_item(r.historyi - r.yank_arg_i - 1).split()
         wenn a < -len(words) oder a >= len(words):
             r.error("no such arg")
-            return
+            gib
         w = words[a]
         b = r.buffer
         wenn r.yank_arg_i > 0:
@@ -257,7 +257,7 @@ klasse HistoricalReader(Reader):
         )
 
     def collect_keymap(self) -> tuple[tuple[KeySpec, CommandName], ...]:
-        return super().collect_keymap() + (
+        gib super().collect_keymap() + (
             (r"\C-n", "next-history"),
             (r"\C-p", "previous-history"),
             (r"\C-o", "operate-and-get-next"),
@@ -284,21 +284,21 @@ klasse HistoricalReader(Reader):
 
     def get_item(self, i: int) -> str:
         wenn i != len(self.history):
-            return self.transient_history.get(i, self.history[i])
+            gib self.transient_history.get(i, self.history[i])
         sonst:
-            return self.transient_history.get(i, self.get_unicode())
+            gib self.transient_history.get(i, self.get_unicode())
 
     @contextmanager
     def suspend(self) -> SimpleContextManager:
         mit super().suspend(), self.suspend_history():
-            yield
+            liefere
 
     @contextmanager
     def suspend_history(self) -> SimpleContextManager:
         try:
             old_history = self.history[:]
             del self.history[:]
-            yield
+            liefere
         finally:
             self.history[:] = old_history
 
@@ -321,9 +321,9 @@ klasse HistoricalReader(Reader):
     def get_prompt(self, lineno: int, cursor_on_line: bool) -> str:
         wenn cursor_on_line und self.isearch_direction != ISEARCH_DIRECTION_NONE:
             d = "rf"[self.isearch_direction == ISEARCH_DIRECTION_FORWARDS]
-            return "(%s-search `%s') " % (d, self.isearch_term)
+            gib "(%s-search `%s') " % (d, self.isearch_term)
         sonst:
-            return super().get_prompt(lineno, cursor_on_line)
+            gib super().get_prompt(lineno, cursor_on_line)
 
     def search_next(self, *, forwards: bool) -> Nichts:
         """Search history fuer the current line contents up to the cursor.
@@ -361,21 +361,21 @@ klasse HistoricalReader(Reader):
                     self.dirty = Wahr
                 sonst:
                     self.error("not found")
-                return
+                gib
 
             history_index += 1 wenn forwards sonst -1
             s = self.get_item(history_index)
 
             wenn nicht match_prefix:
                 self.select_item(history_index)
-                return
+                gib
 
             len_acc = 0
             fuer i, line in enumerate(s.splitlines(keepends=Wahr)):
                 wenn line.startswith(prefix):
                     self.select_item(history_index)
                     self.pos = pos + len_acc
-                    return
+                    gib
                 len_acc += len(line)
 
     def isearch_next(self) -> Nichts:
@@ -392,10 +392,10 @@ klasse HistoricalReader(Reader):
             wenn p != -1:
                 self.select_item(i)
                 self.pos = p
-                return
+                gib
             sowenn (forwards und i >= len(self.history) - 1) oder (nicht forwards und i == 0):
                 self.error("not found")
-                return
+                gib
             sonst:
                 wenn forwards:
                     i += 1

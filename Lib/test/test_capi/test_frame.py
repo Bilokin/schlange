@@ -8,7 +8,7 @@ _testcapi = import_helper.import_module('_testcapi')
 
 klasse FrameTest(unittest.TestCase):
     def getframe(self):
-        return sys._getframe()
+        gib sys._getframe()
 
     def test_frame_getters(self):
         frame = self.getframe()
@@ -34,7 +34,7 @@ klasse FrameTest(unittest.TestCase):
             _testcapi.frame_getvar(current_frame, 123)
 
     def getgenframe(self):
-        yield sys._getframe()
+        liefere sys._getframe()
 
     def test_frame_get_generator(self):
         gen = self.getgenframe()

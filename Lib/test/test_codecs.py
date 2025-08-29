@@ -28,12 +28,12 @@ def codecs_open_no_warn(*args, **kwargs):
     """Call codecs.open(*args, **kwargs) ignoring DeprecationWarning."""
     mit warnings.catch_warnings():
         warnings.simplefilter("ignore")
-        return codecs.open(*args, **kwargs)
+        gib codecs.open(*args, **kwargs)
 
 def coding_checker(self, coder):
     def check(input, expect):
         self.assertEqual(coder(input), (expect, len(input)))
-    return check
+    gib check
 
 # On small versions of Windows like Windows IoT oder Windows Nano Server nicht all codepages are present
 def is_code_page_present(cp):
@@ -54,7 +54,7 @@ def is_code_page_present(cp):
     prototype = WINFUNCTYPE(BOOL, UINT, DWORD, POINTER(CPINFOEXW))
     GetCPInfoEx = prototype(("GetCPInfoExW", WinDLL("kernel32")))
     info = CPINFOEXW()
-    return GetCPInfoEx(cp, 0, info)
+    gib GetCPInfoEx(cp, 0, info)
 
 klasse Queue(object):
     """
@@ -70,11 +70,11 @@ klasse Queue(object):
         wenn size<0:
             s = self._buffer
             self._buffer = self._buffer[:0] # make empty
-            return s
+            gib s
         sonst:
             s = self._buffer[:size]
             self._buffer = self._buffer[size:]
-            return s
+            gib s
 
 
 klasse MixInCheckStateHandling:
@@ -91,7 +91,7 @@ klasse MixInCheckStateHandling:
                 d.setstate((state[0][:0], 0))
                 # Feeding the previous input may nicht produce any output
                 self.assertWahr(nicht d.decode(state[0]))
-                # The decoder must return to the same state
+                # The decoder must gib to the same state
                 self.assertEqual(state, d.getstate())
             # Create a new decoder und set it to the state
             # we extracted von the old one
@@ -158,7 +158,7 @@ klasse ReadTest(MixInCheckStateHandling):
     def test_readline(self):
         def getreader(input):
             stream = io.BytesIO(input.encode(self.encoding))
-            return codecs.getreader(self.encoding)(stream)
+            gib codecs.getreader(self.encoding)(stream)
 
         def readalllines(input, keepends=Wahr, size=Nichts):
             reader = getreader(input)
@@ -168,7 +168,7 @@ klasse ReadTest(MixInCheckStateHandling):
                 wenn nicht line:
                     breche
                 lines.append(line)
-            return "|".join(lines)
+            gib "|".join(lines)
 
         s = "foo\nbar\r\nbaz\rspam\u2028eggs"
         sexpected = "foo\n|bar\r\n|baz\r|spam\u2028|eggs"
@@ -222,7 +222,7 @@ klasse ReadTest(MixInCheckStateHandling):
         data = ''.join(lines)
         def getreader():
             stream = io.BytesIO(data.encode(self.encoding))
-            return codecs.getreader(self.encoding)(stream)
+            gib codecs.getreader(self.encoding)(stream)
 
         # Issue #8260: Test readline() followed by read()
         f = getreader()
@@ -289,7 +289,7 @@ klasse ReadTest(MixInCheckStateHandling):
             '    wenn count:\r\n',
             '        entryids=entryids[:count]\r\n',
             '    try:\r\n',
-            '        return [ frog.objects.BlogEntry.load(storageEngine, date, Id) fuer Id in entryids ]\r\n',
+            '        gib [ frog.objects.BlogEntry.load(storageEngine, date, Id) fuer Id in entryids ]\r\n',
             '    except StorageError,x:\r\n',
             '        log.error("Error loading articles: "+str(x))\r\n',
             '        self.abort("cannot load articles")\r\n',
@@ -3137,7 +3137,7 @@ klasse TransformCodecTest(unittest.TestCase):
 _TEST_CODECS = {}
 
 def _get_test_codec(codec_name):
-    return _TEST_CODECS.get(codec_name)
+    gib _TEST_CODECS.get(codec_name)
 
 
 klasse ExceptionNotesTest(unittest.TestCase):
@@ -3171,7 +3171,7 @@ klasse ExceptionNotesTest(unittest.TestCase):
         full_msg = r"{} mit {!r} codec failed".format(
                   operation, self.codec_name)
         mit self.assertRaises(exc_type) als caught:
-            yield caught
+            liefere caught
         self.assertIn(full_msg, caught.exception.__notes__[0])
         caught.exception.__notes__.clear()
 
@@ -3219,7 +3219,7 @@ klasse ExceptionNotesTest(unittest.TestCase):
     def test_new_override(self):
         klasse CustomNew(RuntimeError):
             def __new__(cls):
-                return super().__new__(cls)
+                gib super().__new__(cls)
         self.check_note(CustomNew, "")
 
     def test_instance_attribute(self):
@@ -3254,9 +3254,9 @@ klasse ExceptionNotesTest(unittest.TestCase):
         # sure the case where an inappropriate output type is produced is
         # handled appropriately
         def encode_to_str(*args, **kwds):
-            return "not bytes!", 0
+            gib "not bytes!", 0
         def decode_to_bytes(*args, **kwds):
-            return b"not str!", 0
+            gib b"not str!", 0
         self.set_codec(encode_to_str, decode_to_bytes)
         # No input oder output type checks on the codecs module functions
         encoded = codecs.encode(Nichts, self.codec_name)
@@ -3732,7 +3732,7 @@ klasse LocaleCodecTest(unittest.TestCase):
     SURROGATES = "\uDC80\uDCFF"
 
     def encode(self, text, errors="strict"):
-        return _testinternalcapi.EncodeLocaleEx(text, 0, errors)
+        gib _testinternalcapi.EncodeLocaleEx(text, 0, errors)
 
     def check_encode_strings(self, errors):
         fuer text in self.STRINGS:
@@ -3772,7 +3772,7 @@ klasse LocaleCodecTest(unittest.TestCase):
         self.assertEqual(str(cm.exception), 'unsupported error handler')
 
     def decode(self, encoded, errors="strict"):
-        return _testinternalcapi.DecodeLocaleEx(encoded, 0, errors)
+        gib _testinternalcapi.DecodeLocaleEx(encoded, 0, errors)
 
     def check_decode_strings(self, errors):
         is_utf8 = (self.ENCODING == "utf-8")
@@ -3877,9 +3877,9 @@ klasse CodecNameNormalizationTest(unittest.TestCase):
         NOT_FOUND = (Nichts, Nichts, Nichts, Nichts)
         def search_function(encoding):
             wenn encoding == "aaa_8":
-                return FOUND
+                gib FOUND
             sonst:
-                return NOT_FOUND
+                gib NOT_FOUND
 
         codecs.register(search_function)
         self.addCleanup(codecs.unregister, search_function)

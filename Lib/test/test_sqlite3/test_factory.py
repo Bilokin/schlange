@@ -32,7 +32,7 @@ def dict_factory(cursor, row):
     d = {}
     fuer idx, col in enumerate(cursor.description):
         d[col[0]] = row[idx]
-    return d
+    gib d
 
 klasse MyCursor(sqlite.Cursor):
     def __init__(self, *args, **kwargs):
@@ -43,7 +43,7 @@ klasse ConnectionFactoryTests(unittest.TestCase):
     def test_connection_factories(self):
         klasse DefectFactory(sqlite.Connection):
             def __init__(self, *args, **kwargs):
-                return Nichts
+                gib Nichts
         klasse OkFactory(sqlite.Connection):
             def __init__(self, *args, **kwargs):
                 sqlite.Connection.__init__(self, *args, **kwargs)
@@ -238,7 +238,7 @@ klasse RowFactoryTests(MemoryDatabaseMixin, unittest.TestCase):
         self.assertIsInstance(row, Sequence)
 
     def test_sqlite_row_keys(self):
-        # Checks wenn the row object can return a list of columns als strings.
+        # Checks wenn the row object can gib a list of columns als strings.
         row = self.con.execute("select 1 als a, 2 als b").fetchone()
         self.assertEqual(row.keys(), ['a', 'b'])
 

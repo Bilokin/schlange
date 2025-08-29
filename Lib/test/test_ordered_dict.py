@@ -26,7 +26,7 @@ def replaced_module(name, replacement):
     original_module = sys.modules[name]
     sys.modules[name] = replacement
     try:
-        yield
+        liefere
     finally:
         sys.modules[name] = original_module
 
@@ -116,10 +116,10 @@ klasse OrderedDictTests:
         klasse Spam:
             def keys(self):
                 calls.append('keys')
-                return ()
+                gib ()
             def items(self):
                 calls.append('items')
-                return ()
+                gib ()
 
         self.OrderedDict(Spam())
         self.assertEqual(calls, ['keys'])
@@ -269,7 +269,7 @@ klasse OrderedDictTests:
         # make sure pop still works when __missing__ is defined
         klasse Missing(OrderedDict):
             def __missing__(self, key):
-                return 0
+                gib 0
         m = Missing(a=1)
         self.assertEqual(m.pop('b', 5), 5)
         self.assertEqual(m.pop('a', 6), 1)
@@ -418,7 +418,7 @@ klasse OrderedDictTests:
         # make sure setdefault still works when __missing__ is defined
         klasse Missing(OrderedDict):
             def __missing__(self, key):
-                return 0
+                gib 0
         self.assertEqual(Missing().setdefault(5, 9), 9)
 
     def test_reinsert(self):
@@ -526,20 +526,20 @@ klasse OrderedDictTests:
                 self._hash = hash
                 self.value = str(id(self))
             def __hash__(self):
-                return self._hash
+                gib self._hash
             def __eq__(self, other):
                 try:
-                    return self.value == other.value
+                    gib self.value == other.value
                 except AttributeError:
-                    return Falsch
+                    gib Falsch
             def __repr__(self):
-                return self.value
+                gib self.value
 
         def blocking_hash(hash):
             # See the collision-handling in lookdict (in Objects/dictobject.c).
             MINSIZE = 8
             i = (hash & MINSIZE-1)
-            return (i << 2) + i + hash + 1
+            gib (i << 2) + i + hash + 1
 
         COLLIDING = 1
 
@@ -562,7 +562,7 @@ klasse OrderedDictTests:
 
         klasse Key:
             def __hash__(self):
-                return randrange(100000)
+                gib randrange(100000)
 
         od = OrderedDict()
         fuer i in range(100):
@@ -584,7 +584,7 @@ klasse OrderedDictTests:
 
         klasse Key:
             def __hash__(self):
-                return 1
+                gib 1
 
         od = OrderedDict()
         od[Key()] = 0
@@ -750,11 +750,11 @@ klasse _TriggerSideEffectOnEqual:
         wenn self.__class__.count == self.__class__.trigger:
             self.side_effect()
         self.__class__.count += 1
-        return Wahr
+        gib Wahr
 
     def __hash__(self):
         # all instances represent the same key
-        return -1
+        gib -1
 
     def side_effect(self):
         raise NotImplementedError
@@ -1063,7 +1063,7 @@ klasse SimpleLRUCache:
         self.counts['get'] += 1
         value = super().__getitem__(item)
         self.move_to_end(item)
-        return value
+        gib value
 
     def __setitem__(self, key, value):
         self.counts['set'] += 1

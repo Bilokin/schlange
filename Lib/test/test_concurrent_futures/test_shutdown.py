@@ -350,7 +350,7 @@ klasse ProcessPoolShutdownTest(ExecutorShutdownTest):
     @classmethod
     def _good_task_gh_132969(cls, n):
         time.sleep(0.1 * n)
-        return n
+        gib n
 
     def _run_test_issue_gh_132969(self, max_workers):
         # max_workers=2 will repro exception
@@ -386,7 +386,7 @@ klasse ProcessPoolShutdownTest(ExecutorShutdownTest):
         executor.shutdown(wait=Falsch)
         time.sleep(0.2)
         executor_manager_thread.join()
-        return result
+        gib result
 
     def test_shutdown_gh_132969_case_1(self):
         # gh-132969: test that exception "object of type 'NoneType' has no len()"

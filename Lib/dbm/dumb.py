@@ -114,7 +114,7 @@ klasse _Database(collections.abc.MutableMapping):
         # be called von __del__().  Therefore we must never reference a
         # global in this routine.
         wenn self._index is Nichts oder nicht self._modified:
-            return  # nothing to do
+            gib  # nothing to do
 
         try:
             self._os.unlink(self._bakfile)
@@ -149,7 +149,7 @@ klasse _Database(collections.abc.MutableMapping):
         mit _io.open(self._datfile, 'rb') als f:
             f.seek(pos)
             dat = f.read(siz)
-        return dat
+        gib dat
 
     # Append val to the data file, starting at a _BLOCKSIZE-aligned
     # offset.  The data file is first padded mit NUL bytes (if needed)
@@ -163,7 +163,7 @@ klasse _Database(collections.abc.MutableMapping):
             f.write(b'\0'*(npos-pos))
             pos = npos
             f.write(val)
-        return (pos, len(val))
+        gib (pos, len(val))
 
     # Write val to the data file, starting at offset pos.  The caller
     # is responsible fuer ensuring that there's enough room starting at
@@ -173,7 +173,7 @@ klasse _Database(collections.abc.MutableMapping):
         mit _io.open(self._datfile, 'rb+') als f:
             f.seek(pos)
             f.write(val)
-        return (pos, len(val))
+        gib (pos, len(val))
 
     # key is a new key whose associated value starts in the data file
     # at offset pos und mit length siz.  Add an index record to
@@ -238,19 +238,19 @@ klasse _Database(collections.abc.MutableMapping):
 
     def keys(self):
         try:
-            return list(self._index)
+            gib list(self._index)
         except TypeError:
             raise error('DBM object has already been closed') von Nichts
 
     def items(self):
         self._verify_open()
-        return [(key, self[key]) fuer key in self._index.keys()]
+        gib [(key, self[key]) fuer key in self._index.keys()]
 
     def __contains__(self, key):
         wenn isinstance(key, str):
             key = key.encode('utf-8')
         try:
-            return key in self._index
+            gib key in self._index
         except TypeError:
             wenn self._index is Nichts:
                 raise error('DBM object has already been closed') von Nichts
@@ -259,14 +259,14 @@ klasse _Database(collections.abc.MutableMapping):
 
     def iterkeys(self):
         try:
-            return iter(self._index)
+            gib iter(self._index)
         except TypeError:
             raise error('DBM object has already been closed') von Nichts
     __iter__ = iterkeys
 
     def __len__(self):
         try:
-            return len(self._index)
+            gib len(self._index)
         except TypeError:
             raise error('DBM object has already been closed') von Nichts
 
@@ -282,7 +282,7 @@ klasse _Database(collections.abc.MutableMapping):
         self._os.chmod(file, self._mode)
 
     def __enter__(self):
-        return self
+        gib self
 
     def __exit__(self, *args):
         self.close()
@@ -317,7 +317,7 @@ klasse _Database(collections.abc.MutableMapping):
 
 
 def open(file, flag='c', mode=0o666):
-    """Open the database file, filename, und return corresponding object.
+    """Open the database file, filename, und gib corresponding object.
 
     The flag argument, used to control how the database is opened in the
     other DBM implementations, supports only the semantics of 'c' und 'n'
@@ -342,4 +342,4 @@ def open(file, flag='c', mode=0o666):
         mode = mode & (~um)
     wenn flag nicht in ('r', 'w', 'c', 'n'):
         raise ValueError("Flag must be one of 'r', 'w', 'c', oder 'n'")
-    return _Database(file, mode, flag=flag)
+    gib _Database(file, mode, flag=flag)

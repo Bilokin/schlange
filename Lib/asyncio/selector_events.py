@@ -45,9 +45,9 @@ def _test_selector_event(selector, fd, event):
     try:
         key = selector.get_key(fd)
     except KeyError:
-        return Falsch
+        gib Falsch
     sonst:
-        return bool(key.events & event)
+        gib bool(key.events & event)
 
 
 klasse BaseSelectorEventLoop(base_events.BaseEventLoop):
@@ -69,7 +69,7 @@ klasse BaseSelectorEventLoop(base_events.BaseEventLoop):
     def _make_socket_transport(self, sock, protocol, waiter=Nichts, *,
                                extra=Nichts, server=Nichts):
         self._ensure_fd_no_transport(sock)
-        return _SelectorSocketTransport(self, sock, protocol, waiter,
+        gib _SelectorSocketTransport(self, sock, protocol, waiter,
                                         extra, server)
 
     def _make_ssl_transport(
@@ -88,19 +88,19 @@ klasse BaseSelectorEventLoop(base_events.BaseEventLoop):
         )
         _SelectorSocketTransport(self, rawsock, ssl_protocol,
                                  extra=extra, server=server)
-        return ssl_protocol._app_transport
+        gib ssl_protocol._app_transport
 
     def _make_datagram_transport(self, sock, protocol,
                                  address=Nichts, waiter=Nichts, extra=Nichts):
         self._ensure_fd_no_transport(sock)
-        return _SelectorDatagramTransport(self, sock, protocol,
+        gib _SelectorDatagramTransport(self, sock, protocol,
                                           address, waiter, extra)
 
     def close(self):
         wenn self.is_running():
             raise RuntimeError("Cannot close a running event loop")
         wenn self.is_closed():
-            return
+            gib
         self._close_self_pipe()
         super().close()
         wenn self._selector is nicht Nichts:
@@ -146,7 +146,7 @@ klasse BaseSelectorEventLoop(base_events.BaseEventLoop):
         # EBADF, but let's nicht rely on the exact error code).
         csock = self._csock
         wenn csock is Nichts:
-            return
+            gib
 
         try:
             csock.send(b'\0')
@@ -186,7 +186,7 @@ klasse BaseSelectorEventLoop(base_events.BaseEventLoop):
             except (BlockingIOError, InterruptedError):
                 # Early exit because of a signal oder
                 # the socket accept buffer is empty.
-                return
+                gib
             except OSError als exc:
                 # There's nowhere to send the error, so just log it.
                 wenn exc.errno in (errno.EMFILE, errno.ENFILE,
@@ -288,14 +288,14 @@ klasse BaseSelectorEventLoop(base_events.BaseEventLoop):
                                   (handle, writer))
             wenn reader is nicht Nichts:
                 reader.cancel()
-        return handle
+        gib handle
 
     def _remove_reader(self, fd):
         wenn self.is_closed():
-            return Falsch
+            gib Falsch
         key = self._selector.get_map().get(fd)
         wenn key is Nichts:
-            return Falsch
+            gib Falsch
         mask, (reader, writer) = key.events, key.data
         mask &= ~selectors.EVENT_READ
         wenn nicht mask:
@@ -305,9 +305,9 @@ klasse BaseSelectorEventLoop(base_events.BaseEventLoop):
 
         wenn reader is nicht Nichts:
             reader.cancel()
-            return Wahr
+            gib Wahr
         sonst:
-            return Falsch
+            gib Falsch
 
     def _add_writer(self, fd, callback, *args):
         self._check_closed()
@@ -322,15 +322,15 @@ klasse BaseSelectorEventLoop(base_events.BaseEventLoop):
                                   (reader, handle))
             wenn writer is nicht Nichts:
                 writer.cancel()
-        return handle
+        gib handle
 
     def _remove_writer(self, fd):
         """Remove a writer callback."""
         wenn self.is_closed():
-            return Falsch
+            gib Falsch
         key = self._selector.get_map().get(fd)
         wenn key is Nichts:
-            return Falsch
+            gib Falsch
         mask, (reader, writer) = key.events, key.data
         # Remove both writer und connector.
         mask &= ~selectors.EVENT_WRITE
@@ -341,9 +341,9 @@ klasse BaseSelectorEventLoop(base_events.BaseEventLoop):
 
         wenn writer is nicht Nichts:
             writer.cancel()
-            return Wahr
+            gib Wahr
         sonst:
-            return Falsch
+            gib Falsch
 
     def add_reader(self, fd, callback, *args):
         """Add a reader callback."""
@@ -353,7 +353,7 @@ klasse BaseSelectorEventLoop(base_events.BaseEventLoop):
     def remove_reader(self, fd):
         """Remove a reader callback."""
         self._ensure_fd_no_transport(fd)
-        return self._remove_reader(fd)
+        gib self._remove_reader(fd)
 
     def add_writer(self, fd, callback, *args):
         """Add a writer callback.."""
@@ -363,12 +363,12 @@ klasse BaseSelectorEventLoop(base_events.BaseEventLoop):
     def remove_writer(self, fd):
         """Remove a writer callback."""
         self._ensure_fd_no_transport(fd)
-        return self._remove_writer(fd)
+        gib self._remove_writer(fd)
 
     async def sock_recv(self, sock, n):
         """Receive data von the socket.
 
-        The return value is a bytes object representing the data received.
+        The gib value is a bytes object representing the data received.
         The maximum amount of data to be received at once is specified by
         nbytes.
         """
@@ -376,7 +376,7 @@ klasse BaseSelectorEventLoop(base_events.BaseEventLoop):
         wenn self._debug und sock.gettimeout() != 0:
             raise ValueError("the socket must be non-blocking")
         try:
-            return sock.recv(n)
+            gib sock.recv(n)
         except (BlockingIOError, InterruptedError):
             pass
         fut = self.create_future()
@@ -385,7 +385,7 @@ klasse BaseSelectorEventLoop(base_events.BaseEventLoop):
         handle = self._add_reader(fd, self._sock_recv, fut, sock, n)
         fut.add_done_callback(
             functools.partial(self._sock_read_done, fd, handle=handle))
-        return await fut
+        gib await fut
 
     def _sock_read_done(self, fd, fut, handle=Nichts):
         wenn handle is Nichts oder nicht handle.cancelled():
@@ -395,11 +395,11 @@ klasse BaseSelectorEventLoop(base_events.BaseEventLoop):
         # _sock_recv() can add itself als an I/O callback wenn the operation can't
         # be done immediately. Don't use it directly, call sock_recv().
         wenn fut.done():
-            return
+            gib
         try:
             data = sock.recv(n)
         except (BlockingIOError, InterruptedError):
-            return  # try again next time
+            gib  # try again next time
         except (SystemExit, KeyboardInterrupt):
             raise
         except BaseException als exc:
@@ -411,13 +411,13 @@ klasse BaseSelectorEventLoop(base_events.BaseEventLoop):
         """Receive data von the socket.
 
         The received data is written into *buf* (a writable buffer).
-        The return value is the number of bytes written.
+        The gib value is the number of bytes written.
         """
         base_events._check_ssl_socket(sock)
         wenn self._debug und sock.gettimeout() != 0:
             raise ValueError("the socket must be non-blocking")
         try:
-            return sock.recv_into(buf)
+            gib sock.recv_into(buf)
         except (BlockingIOError, InterruptedError):
             pass
         fut = self.create_future()
@@ -426,18 +426,18 @@ klasse BaseSelectorEventLoop(base_events.BaseEventLoop):
         handle = self._add_reader(fd, self._sock_recv_into, fut, sock, buf)
         fut.add_done_callback(
             functools.partial(self._sock_read_done, fd, handle=handle))
-        return await fut
+        gib await fut
 
     def _sock_recv_into(self, fut, sock, buf):
         # _sock_recv_into() can add itself als an I/O callback wenn the operation
         # can't be done immediately. Don't use it directly, call
         # sock_recv_into().
         wenn fut.done():
-            return
+            gib
         try:
             nbytes = sock.recv_into(buf)
         except (BlockingIOError, InterruptedError):
-            return  # try again next time
+            gib  # try again next time
         except (SystemExit, KeyboardInterrupt):
             raise
         except BaseException als exc:
@@ -448,7 +448,7 @@ klasse BaseSelectorEventLoop(base_events.BaseEventLoop):
     async def sock_recvfrom(self, sock, bufsize):
         """Receive a datagram von a datagram socket.
 
-        The return value is a tuple of (bytes, address) representing the
+        The gib value is a tuple of (bytes, address) representing the
         datagram received und the address it came from.
         The maximum amount of data to be received at once is specified by
         nbytes.
@@ -457,7 +457,7 @@ klasse BaseSelectorEventLoop(base_events.BaseEventLoop):
         wenn self._debug und sock.gettimeout() != 0:
             raise ValueError("the socket must be non-blocking")
         try:
-            return sock.recvfrom(bufsize)
+            gib sock.recvfrom(bufsize)
         except (BlockingIOError, InterruptedError):
             pass
         fut = self.create_future()
@@ -466,18 +466,18 @@ klasse BaseSelectorEventLoop(base_events.BaseEventLoop):
         handle = self._add_reader(fd, self._sock_recvfrom, fut, sock, bufsize)
         fut.add_done_callback(
             functools.partial(self._sock_read_done, fd, handle=handle))
-        return await fut
+        gib await fut
 
     def _sock_recvfrom(self, fut, sock, bufsize):
         # _sock_recvfrom() can add itself als an I/O callback wenn the operation
         # can't be done immediately. Don't use it directly, call
         # sock_recvfrom().
         wenn fut.done():
-            return
+            gib
         try:
             result = sock.recvfrom(bufsize)
         except (BlockingIOError, InterruptedError):
-            return  # try again next time
+            gib  # try again next time
         except (SystemExit, KeyboardInterrupt):
             raise
         except BaseException als exc:
@@ -489,7 +489,7 @@ klasse BaseSelectorEventLoop(base_events.BaseEventLoop):
         """Receive data von the socket.
 
         The received data is written into *buf* (a writable buffer).
-        The return value is a tuple of (number of bytes written, address).
+        The gib value is a tuple of (number of bytes written, address).
         """
         base_events._check_ssl_socket(sock)
         wenn self._debug und sock.gettimeout() != 0:
@@ -498,7 +498,7 @@ klasse BaseSelectorEventLoop(base_events.BaseEventLoop):
             nbytes = len(buf)
 
         try:
-            return sock.recvfrom_into(buf, nbytes)
+            gib sock.recvfrom_into(buf, nbytes)
         except (BlockingIOError, InterruptedError):
             pass
         fut = self.create_future()
@@ -508,18 +508,18 @@ klasse BaseSelectorEventLoop(base_events.BaseEventLoop):
                                   nbytes)
         fut.add_done_callback(
             functools.partial(self._sock_read_done, fd, handle=handle))
-        return await fut
+        gib await fut
 
     def _sock_recvfrom_into(self, fut, sock, buf, bufsize):
         # _sock_recv_into() can add itself als an I/O callback wenn the operation
         # can't be done immediately. Don't use it directly, call
         # sock_recv_into().
         wenn fut.done():
-            return
+            gib
         try:
             result = sock.recvfrom_into(buf, bufsize)
         except (BlockingIOError, InterruptedError):
-            return  # try again next time
+            gib  # try again next time
         except (SystemExit, KeyboardInterrupt):
             raise
         except BaseException als exc:
@@ -546,7 +546,7 @@ klasse BaseSelectorEventLoop(base_events.BaseEventLoop):
 
         wenn n == len(data):
             # all data sent
-            return
+            gib
 
         fut = self.create_future()
         fd = sock.fileno()
@@ -556,22 +556,22 @@ klasse BaseSelectorEventLoop(base_events.BaseEventLoop):
                                   memoryview(data), [n])
         fut.add_done_callback(
             functools.partial(self._sock_write_done, fd, handle=handle))
-        return await fut
+        gib await fut
 
     def _sock_sendall(self, fut, sock, view, pos):
         wenn fut.done():
             # Future cancellation can be scheduled on previous loop iteration
-            return
+            gib
         start = pos[0]
         try:
             n = sock.send(view[start:])
         except (BlockingIOError, InterruptedError):
-            return
+            gib
         except (SystemExit, KeyboardInterrupt):
             raise
         except BaseException als exc:
             fut.set_exception(exc)
-            return
+            gib
 
         start += n
 
@@ -593,7 +593,7 @@ klasse BaseSelectorEventLoop(base_events.BaseEventLoop):
         wenn self._debug und sock.gettimeout() != 0:
             raise ValueError("the socket must be non-blocking")
         try:
-            return sock.sendto(data, address)
+            gib sock.sendto(data, address)
         except (BlockingIOError, InterruptedError):
             pass
 
@@ -605,16 +605,16 @@ klasse BaseSelectorEventLoop(base_events.BaseEventLoop):
                                   address)
         fut.add_done_callback(
             functools.partial(self._sock_write_done, fd, handle=handle))
-        return await fut
+        gib await fut
 
     def _sock_sendto(self, fut, sock, data, address):
         wenn fut.done():
             # Future cancellation can be scheduled on previous loop iteration
-            return
+            gib
         try:
             n = sock.sendto(data, 0, address)
         except (BlockingIOError, InterruptedError):
-            return
+            gib
         except (SystemExit, KeyboardInterrupt):
             raise
         except BaseException als exc:
@@ -642,7 +642,7 @@ klasse BaseSelectorEventLoop(base_events.BaseEventLoop):
         fut = self.create_future()
         self._sock_connect(fut, sock, address)
         try:
-            return await fut
+            gib await fut
         finally:
             # Needed to breche cycles when an exception occurs.
             fut = Nichts
@@ -676,7 +676,7 @@ klasse BaseSelectorEventLoop(base_events.BaseEventLoop):
 
     def _sock_connect_cb(self, fut, sock, address):
         wenn fut.done():
-            return
+            gib
 
         try:
             err = sock.getsockopt(socket.SOL_SOCKET, socket.SO_ERROR)
@@ -699,7 +699,7 @@ klasse BaseSelectorEventLoop(base_events.BaseEventLoop):
         """Accept a connection.
 
         The socket must be bound to an address und listening fuer connections.
-        The return value is a pair (conn, address) where conn is a new socket
+        The gib value is a pair (conn, address) where conn is a new socket
         object usable to send und receive data on the connection, und address
         is the address bound to the socket on the other end of the connection.
         """
@@ -708,7 +708,7 @@ klasse BaseSelectorEventLoop(base_events.BaseEventLoop):
             raise ValueError("the socket must be non-blocking")
         fut = self.create_future()
         self._sock_accept(fut, sock)
-        return await fut
+        gib await fut
 
     def _sock_accept(self, fut, sock):
         fd = sock.fileno()
@@ -733,7 +733,7 @@ klasse BaseSelectorEventLoop(base_events.BaseEventLoop):
         transp.pause_reading()
         await transp._make_empty_waiter()
         try:
-            return await self.sock_sendfile(transp._sock, file, offset, count,
+            gib await self.sock_sendfile(transp._sock, file, offset, count,
                                             fallback=Falsch)
         finally:
             transp._reset_empty_waiter()
@@ -824,7 +824,7 @@ klasse _SelectorTransport(transports._FlowControlMixin,
 
             bufsize = self.get_write_buffer_size()
             info.append(f'write=<{state}, bufsize={bufsize}>')
-        return '<{}>'.format(' '.join(info))
+        gib '<{}>'.format(' '.join(info))
 
     def abort(self):
         self._force_close(Nichts)
@@ -834,17 +834,17 @@ klasse _SelectorTransport(transports._FlowControlMixin,
         self._protocol_connected = Wahr
 
     def get_protocol(self):
-        return self._protocol
+        gib self._protocol
 
     def is_closing(self):
-        return self._closing
+        gib self._closing
 
     def is_reading(self):
-        return nicht self.is_closing() und nicht self._paused
+        gib nicht self.is_closing() und nicht self._paused
 
     def pause_reading(self):
         wenn nicht self.is_reading():
-            return
+            gib
         self._paused = Wahr
         self._loop._remove_reader(self._sock_fd)
         wenn self._loop.get_debug():
@@ -852,7 +852,7 @@ klasse _SelectorTransport(transports._FlowControlMixin,
 
     def resume_reading(self):
         wenn self._closing oder nicht self._paused:
-            return
+            gib
         self._paused = Falsch
         self._add_reader(self._sock_fd, self._read_ready)
         wenn self._loop.get_debug():
@@ -860,7 +860,7 @@ klasse _SelectorTransport(transports._FlowControlMixin,
 
     def close(self):
         wenn self._closing:
-            return
+            gib
         self._closing = Wahr
         self._loop._remove_reader(self._sock_fd)
         wenn nicht self._buffer:
@@ -891,7 +891,7 @@ klasse _SelectorTransport(transports._FlowControlMixin,
 
     def _force_close(self, exc):
         wenn self._conn_lost:
-            return
+            gib
         wenn self._buffer:
             self._buffer.clear()
             self._loop._remove_writer(self._sock_fd)
@@ -916,11 +916,11 @@ klasse _SelectorTransport(transports._FlowControlMixin,
                 self._server = Nichts
 
     def get_write_buffer_size(self):
-        return sum(map(len, self._buffer))
+        gib sum(map(len, self._buffer))
 
     def _add_reader(self, fd, callback, *args):
         wenn nicht self.is_reading():
-            return
+            gib
         self._loop._add_reader(fd, callback, *args)
 
 
@@ -967,7 +967,7 @@ klasse _SelectorSocketTransport(_SelectorTransport):
 
     def _read_ready__get_buffer(self):
         wenn self._conn_lost:
-            return
+            gib
 
         try:
             buf = self._protocol.get_buffer(-1)
@@ -978,21 +978,21 @@ klasse _SelectorSocketTransport(_SelectorTransport):
         except BaseException als exc:
             self._fatal_error(
                 exc, 'Fatal error: protocol.get_buffer() call failed.')
-            return
+            gib
 
         try:
             nbytes = self._sock.recv_into(buf)
         except (BlockingIOError, InterruptedError):
-            return
+            gib
         except (SystemExit, KeyboardInterrupt):
             raise
         except BaseException als exc:
             self._fatal_error(exc, 'Fatal read error on socket transport')
-            return
+            gib
 
         wenn nicht nbytes:
             self._read_ready__on_eof()
-            return
+            gib
 
         try:
             self._protocol.buffer_updated(nbytes)
@@ -1004,20 +1004,20 @@ klasse _SelectorSocketTransport(_SelectorTransport):
 
     def _read_ready__data_received(self):
         wenn self._conn_lost:
-            return
+            gib
         try:
             data = self._sock.recv(self.max_size)
         except (BlockingIOError, InterruptedError):
-            return
+            gib
         except (SystemExit, KeyboardInterrupt):
             raise
         except BaseException als exc:
             self._fatal_error(exc, 'Fatal read error on socket transport')
-            return
+            gib
 
         wenn nicht data:
             self._read_ready__on_eof()
-            return
+            gib
 
         try:
             self._protocol.data_received(data)
@@ -1038,7 +1038,7 @@ klasse _SelectorSocketTransport(_SelectorTransport):
         except BaseException als exc:
             self._fatal_error(
                 exc, 'Fatal error: protocol.eof_received() call failed.')
-            return
+            gib
 
         wenn keep_open:
             # We're keeping the connection open so the
@@ -1057,13 +1057,13 @@ klasse _SelectorSocketTransport(_SelectorTransport):
         wenn self._empty_waiter is nicht Nichts:
             raise RuntimeError('unable to write; sendfile is in progress')
         wenn nicht data:
-            return
+            gib
 
         wenn self._conn_lost:
             wenn self._conn_lost >= constants.LOG_THRESHOLD_FOR_CONNLOST_WRITES:
                 logger.warning('socket.send() raised exception.')
             self._conn_lost += 1
-            return
+            gib
 
         wenn nicht self._buffer:
             # Optimization: try to send now.
@@ -1075,11 +1075,11 @@ klasse _SelectorSocketTransport(_SelectorTransport):
                 raise
             except BaseException als exc:
                 self._fatal_error(exc, 'Fatal write error on socket transport')
-                return
+                gib
             sonst:
                 data = memoryview(data)[n:]
                 wenn nicht data:
-                    return
+                    gib
             # Not all was written; register write handler.
             self._loop._add_writer(self._sock_fd, self._write_ready)
 
@@ -1088,12 +1088,12 @@ klasse _SelectorSocketTransport(_SelectorTransport):
         self._maybe_pause_protocol()
 
     def _get_sendmsg_buffer(self):
-        return itertools.islice(self._buffer, SC_IOV_MAX)
+        gib itertools.islice(self._buffer, SC_IOV_MAX)
 
     def _write_sendmsg(self):
         assert self._buffer, 'Data should nicht be empty'
         wenn self._conn_lost:
-            return
+            gib
         try:
             nbytes = self._sock.sendmsg(self._get_sendmsg_buffer())
             self._adjust_leftover_buffer(nbytes)
@@ -1132,7 +1132,7 @@ klasse _SelectorSocketTransport(_SelectorTransport):
     def _write_send(self):
         assert self._buffer, 'Data should nicht be empty'
         wenn self._conn_lost:
-            return
+            gib
         try:
             buffer = self._buffer.popleft()
             n = self._sock.send(buffer)
@@ -1162,7 +1162,7 @@ klasse _SelectorSocketTransport(_SelectorTransport):
 
     def write_eof(self):
         wenn self._closing oder self._eof:
-            return
+            gib
         self._eof = Wahr
         wenn nicht self._buffer:
             self._sock.shutdown(socket.SHUT_WR)
@@ -1173,7 +1173,7 @@ klasse _SelectorSocketTransport(_SelectorTransport):
         wenn self._empty_waiter is nicht Nichts:
             raise RuntimeError('unable to writelines; sendfile is in progress')
         wenn nicht list_of_data:
-            return
+            gib
         self._buffer.extend([memoryview(data) fuer data in list_of_data])
         self._write_ready()
         # If the entire buffer couldn't be written, register a write handler
@@ -1182,7 +1182,7 @@ klasse _SelectorSocketTransport(_SelectorTransport):
             self._maybe_pause_protocol()
 
     def can_write_eof(self):
-        return Wahr
+        gib Wahr
 
     def _call_connection_lost(self, exc):
         try:
@@ -1199,7 +1199,7 @@ klasse _SelectorSocketTransport(_SelectorTransport):
         self._empty_waiter = self._loop.create_future()
         wenn nicht self._buffer:
             self._empty_waiter.set_result(Nichts)
-        return self._empty_waiter
+        gib self._empty_waiter
 
     def _reset_empty_waiter(self):
         self._empty_waiter = Nichts
@@ -1229,11 +1229,11 @@ klasse _SelectorDatagramTransport(_SelectorTransport, transports.DatagramTranspo
                                  waiter, Nichts)
 
     def get_write_buffer_size(self):
-        return self._buffer_size
+        gib self._buffer_size
 
     def _read_ready(self):
         wenn self._conn_lost:
-            return
+            gib
         try:
             data, addr = self._sock.recvfrom(self.max_size)
         except (BlockingIOError, InterruptedError):
@@ -1262,7 +1262,7 @@ klasse _SelectorDatagramTransport(_SelectorTransport, transports.DatagramTranspo
             wenn self._conn_lost >= constants.LOG_THRESHOLD_FOR_CONNLOST_WRITES:
                 logger.warning('socket.send() raised exception.')
             self._conn_lost += 1
-            return
+            gib
 
         wenn nicht self._buffer:
             # Attempt to send it right away first.
@@ -1271,18 +1271,18 @@ klasse _SelectorDatagramTransport(_SelectorTransport, transports.DatagramTranspo
                     self._sock.send(data)
                 sonst:
                     self._sock.sendto(data, addr)
-                return
+                gib
             except (BlockingIOError, InterruptedError):
                 self._loop._add_writer(self._sock_fd, self._sendto_ready)
             except OSError als exc:
                 self._protocol.error_received(exc)
-                return
+                gib
             except (SystemExit, KeyboardInterrupt):
                 raise
             except BaseException als exc:
                 self._fatal_error(
                     exc, 'Fatal write error on datagram transport')
-                return
+                gib
 
         # Ensure that what we buffer is immutable.
         self._buffer.append((bytes(data), addr))
@@ -1304,13 +1304,13 @@ klasse _SelectorDatagramTransport(_SelectorTransport, transports.DatagramTranspo
                 breche
             except OSError als exc:
                 self._protocol.error_received(exc)
-                return
+                gib
             except (SystemExit, KeyboardInterrupt):
                 raise
             except BaseException als exc:
                 self._fatal_error(
                     exc, 'Fatal write error on datagram transport')
-                return
+                gib
 
         self._maybe_resume_protocol()  # May append to buffer.
         wenn nicht self._buffer:

@@ -221,10 +221,10 @@ klasse TestKQueue(unittest.TestCase):
         # __len__ is nicht consistent mit __iter__
         klasse BadList:
             def __len__(self):
-                return 0
+                gib 0
             def __iter__(self):
                 fuer i in range(100):
-                    yield ev
+                    liefere ev
         kq.control(BadList(), 0)
         # doesn't have __len__
         kq.control(iter([ev]), 0)

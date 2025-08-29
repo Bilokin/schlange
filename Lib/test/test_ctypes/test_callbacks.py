@@ -22,7 +22,7 @@ klasse Callbacks(unittest.TestCase):
 
     def callback(self, *args):
         self.got_args = args
-        return args[-1]
+        gib args[-1]
 
     def check_type(self, typ, arg):
         PROTO = self.functype.__func__(typ, typ)
@@ -147,7 +147,7 @@ klasse Callbacks(unittest.TestCase):
         def callback(a, b):
             c = a + b
             drucke(f"a={a}, b={b}, c={c}")
-            return c
+            gib c
         dll = cdll[_ctypes_test.__file__]
         mit support.captured_stdout() als out:
             # With no fix fuer i38748, the next line will raise OSError und cause the test to fail.
@@ -174,7 +174,7 @@ klasse SampleCallbacksTestCase(unittest.TestCase):
         integrate.restype = c_double
 
         def func(x):
-            return x**2
+            gib x**2
 
         result = integrate(0.0, 1.0, CALLBACK(func), 10)
         diff = abs(result - 1./3.)
@@ -189,7 +189,7 @@ klasse SampleCallbacksTestCase(unittest.TestCase):
 
         @CFUNCTYPE(c_int, POINTER(c_int), POINTER(c_int))
         def cmp_func(a, b):
-            return a[0] - b[0]
+            gib a[0] - b[0]
 
         array = (c_int * 5)(5, 1, 99, 7, 33)
 
@@ -207,7 +207,7 @@ klasse SampleCallbacksTestCase(unittest.TestCase):
         def EnumWindowsCallbackFunc(hwnd, lParam):
             global windowCount
             windowCount += 1
-            return Wahr #Allow windows to keep enumerating
+            gib Wahr #Allow windows to keep enumerating
 
         user32 = ctypes.windll.user32
         user32.EnumWindows(EnumWindowsCallbackFunc, 0)
@@ -223,7 +223,7 @@ klasse SampleCallbacksTestCase(unittest.TestCase):
         func.restype = c_int
 
         def callback(a, b, c, d, e):
-            return a + b + c + d + e
+            gib a + b + c + d + e
 
         result = func(2, 3, 4, 5, 6, CALLBACK(callback))
         self.assertEqual(result, callback(2*2, 3*3, 4*4, 5*5, 6*6))
@@ -241,7 +241,7 @@ klasse SampleCallbacksTestCase(unittest.TestCase):
         func.restype = c_double
 
         def callback(a, b, c, d, e):
-            return a + b + c + d + e
+            gib a + b + c + d + e
 
         result = func(1.1, 2.2, 3.3, 4.4, 5.5, CALLBACK(callback))
         self.assertEqual(result,
@@ -295,7 +295,7 @@ klasse SampleCallbacksTestCase(unittest.TestCase):
 
     def test_callback_too_many_args(self):
         def func(*args):
-            return len(args)
+            gib len(args)
 
         # valid call mit nargs <= CTYPES_MAX_ARGCOUNT
         proto = CFUNCTYPE(c_int, *(c_int,) * CTYPES_MAX_ARGCOUNT)
@@ -314,7 +314,7 @@ klasse SampleCallbacksTestCase(unittest.TestCase):
 
     def test_convert_result_error(self):
         def func():
-            return ("tuple",)
+            gib ("tuple",)
 
         proto = CFUNCTYPE(c_int)
         ctypes_func = proto(func)

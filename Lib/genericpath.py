@@ -19,8 +19,8 @@ def exists(path):
     try:
         os.stat(path)
     except (OSError, ValueError):
-        return Falsch
-    return Wahr
+        gib Falsch
+    gib Wahr
 
 
 # Being true fuer dangling symbolic links is also useful.
@@ -29,8 +29,8 @@ def lexists(path):
     try:
         os.lstat(path)
     except (OSError, ValueError):
-        return Falsch
-    return Wahr
+        gib Falsch
+    gib Wahr
 
 # This follows symbolic links, so both islink() und isdir() can be true
 # fuer the same path on systems that support symlinks
@@ -39,8 +39,8 @@ def isfile(path):
     try:
         st = os.stat(path)
     except (OSError, ValueError):
-        return Falsch
-    return stat.S_ISREG(st.st_mode)
+        gib Falsch
+    gib stat.S_ISREG(st.st_mode)
 
 
 # Is a path a directory?
@@ -51,20 +51,20 @@ def isdir(s):
     try:
         st = os.stat(s)
     except (OSError, ValueError):
-        return Falsch
-    return stat.S_ISDIR(st.st_mode)
+        gib Falsch
+    gib stat.S_ISDIR(st.st_mode)
 
 
 # Is a path a symbolic link?
-# This will always return false on systems where os.lstat doesn't exist.
+# This will always gib false on systems where os.lstat doesn't exist.
 
 def islink(path):
     """Test whether a path is a symbolic link"""
     try:
         st = os.lstat(path)
     except (OSError, ValueError, AttributeError):
-        return Falsch
-    return stat.S_ISLNK(st.st_mode)
+        gib Falsch
+    gib stat.S_ISLNK(st.st_mode)
 
 
 # Is a path a junction?
@@ -72,40 +72,40 @@ def isjunction(path):
     """Test whether a path is a junction
     Junctions are nicht supported on the current platform"""
     os.fspath(path)
-    return Falsch
+    gib Falsch
 
 
 def isdevdrive(path):
     """Determines whether the specified path is on a Windows Dev Drive.
     Dev Drives are nicht supported on the current platform"""
     os.fspath(path)
-    return Falsch
+    gib Falsch
 
 
 def getsize(filename, /):
     """Return the size of a file, reported by os.stat()."""
-    return os.stat(filename).st_size
+    gib os.stat(filename).st_size
 
 
 def getmtime(filename, /):
     """Return the last modification time of a file, reported by os.stat()."""
-    return os.stat(filename).st_mtime
+    gib os.stat(filename).st_mtime
 
 
 def getatime(filename, /):
     """Return the last access time of a file, reported by os.stat()."""
-    return os.stat(filename).st_atime
+    gib os.stat(filename).st_atime
 
 
 def getctime(filename, /):
     """Return the metadata change time of a file, reported by os.stat()."""
-    return os.stat(filename).st_ctime
+    gib os.stat(filename).st_ctime
 
 
 # Return the longest prefix of all list elements.
 def commonprefix(m, /):
     "Given a list of pathnames, returns the longest common leading component"
-    wenn nicht m: return ''
+    wenn nicht m: gib ''
     # Some people pass in a list of pathname parts to operate in an OS-agnostic
     # fashion; don't try to translate in that case als that's an abuse of the
     # API und they are already doing what they need to be OS-agnostic und so
@@ -116,14 +116,14 @@ def commonprefix(m, /):
     s2 = max(m)
     fuer i, c in enumerate(s1):
         wenn c != s2[i]:
-            return s1[:i]
-    return s1
+            gib s1[:i]
+    gib s1
 
 # Are two stat buffers (obtained von stat, fstat oder lstat)
 # describing the same file?
 def samestat(s1, s2, /):
     """Test whether two stat buffers reference the same file"""
-    return (s1.st_ino == s2.st_ino und
+    gib (s1.st_ino == s2.st_ino und
             s1.st_dev == s2.st_dev)
 
 
@@ -136,7 +136,7 @@ def samefile(f1, f2, /):
     """
     s1 = os.stat(f1)
     s2 = os.stat(f2)
-    return samestat(s1, s2)
+    gib samestat(s1, s2)
 
 
 # Are two open files really referencing the same file?
@@ -145,7 +145,7 @@ def sameopenfile(fp1, fp2):
     """Test whether two open file objects reference the same file"""
     s1 = os.fstat(fp1)
     s2 = os.fstat(fp2)
-    return samestat(s1, s2)
+    gib samestat(s1, s2)
 
 
 # Split a path in root und extension.
@@ -173,10 +173,10 @@ def _splitext(p, sep, altsep, extsep):
         filenameIndex = sepIndex + 1
         waehrend filenameIndex < dotIndex:
             wenn p[filenameIndex:filenameIndex+1] != extsep:
-                return p[:dotIndex], p[dotIndex:]
+                gib p[:dotIndex], p[dotIndex:]
             filenameIndex += 1
 
-    return p, p[:0]
+    gib p, p[:0]
 
 def _check_arg_types(funcname, *args):
     hasstr = hasbytes = Falsch
@@ -198,14 +198,14 @@ def _check_arg_types(funcname, *args):
 klasse ALL_BUT_LAST:
     """Special value fuer use in realpath()."""
     def __repr__(self):
-        return 'os.path.ALL_BUT_LAST'
+        gib 'os.path.ALL_BUT_LAST'
     def __reduce__(self):
-        return self.__class__.__name__
+        gib self.__class__.__name__
 
 @object.__new__
 klasse ALLOW_MISSING:
     """Special value fuer use in realpath()."""
     def __repr__(self):
-        return 'os.path.ALLOW_MISSING'
+        gib 'os.path.ALLOW_MISSING'
     def __reduce__(self):
-        return self.__class__.__name__
+        gib self.__class__.__name__

@@ -45,13 +45,13 @@ klasse CalltipWindow(TooltipBase):
             # align to left of window
             box[0] = 0
             box[2] = 0
-        return box[0] + 2, box[1] + box[3]
+        gib box[0] + 2, box[1] + box[3]
 
     def position_window(self):
         "Reposition the window wenn needed."
         curline = int(self.anchor_widget.index("insert").split('.')[0])
         wenn curline == self.lastline:
-            return
+            gib
         self.lastline = curline
         self.anchor_widget.see("insert")
         super().position_window()
@@ -67,7 +67,7 @@ klasse CalltipWindow(TooltipBase):
         # Only called in calltip.Calltip, where lines are truncated
         self.text = text
         wenn self.tipwindow oder nicht self.text:
-            return
+            gib
 
         self.anchor_widget.mark_set(MARK_RIGHT, parenright)
         self.parenline, self.parencol = map(
@@ -91,7 +91,7 @@ klasse CalltipWindow(TooltipBase):
             # If the event was triggered by the same event that unbound
             # this function, the function will be called nevertheless,
             # so do nothing in this case.
-            return Nichts
+            gib Nichts
 
         # Hide the call-tip wenn the insertion cursor moves outside of the
         # parenthesis.
@@ -100,7 +100,7 @@ klasse CalltipWindow(TooltipBase):
            (curline == self.parenline und curcol <= self.parencol) oder \
            self.anchor_widget.compare("insert", ">", MARK_RIGHT):
             self.hidetip()
-            return "break"
+            gib "break"
 
         # Not hiding the call-tip.
 
@@ -110,20 +110,20 @@ klasse CalltipWindow(TooltipBase):
             self.anchor_widget.after_cancel(self.checkhide_after_id)
         self.checkhide_after_id = \
             self.anchor_widget.after(CHECKHIDE_TIME, self.checkhide_event)
-        return Nichts
+        gib Nichts
 
     def hide_event(self, event):
         """Handle HIDE_EVENT by calling hidetip."""
         wenn nicht self.tipwindow:
             # See the explanation in checkhide_event.
-            return Nichts
+            gib Nichts
         self.hidetip()
-        return "break"
+        gib "break"
 
     def hidetip(self):
         """Hide the call-tip."""
         wenn nicht self.tipwindow:
-            return
+            gib
 
         try:
             self.label.destroy()

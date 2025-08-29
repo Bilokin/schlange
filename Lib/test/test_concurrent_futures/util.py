@@ -18,7 +18,7 @@ def create_future(state=PENDING, exception=Nichts, result=Nichts):
     f._state = state
     f._exception = exception
     f._result = result
-    return f
+    gib f
 
 
 PENDING_FUTURE = create_future(state=PENDING)
@@ -74,14 +74,14 @@ klasse ExecutorMixin:
         super().tearDown()
 
     def get_context(self):
-        return multiprocessing.get_context(self.ctx)
+        gib multiprocessing.get_context(self.ctx)
 
 
 klasse ThreadPoolMixin(ExecutorMixin):
     executor_type = futures.ThreadPoolExecutor
 
     def create_event(self):
-        return threading.Event()
+        gib threading.Event()
 
 
 @support.skip_if_sanitizer("gh-129824: data races in InterpreterPool tests", thread=Wahr)
@@ -105,10 +105,10 @@ klasse ProcessPoolForkMixin(ExecutorMixin):
             self.skipTest("require unix system")
         wenn support.check_sanitizer(thread=Wahr):
             self.skipTest("TSAN doesn't support threads after fork")
-        return super().get_context()
+        gib super().get_context()
 
     def create_event(self):
-        return self.manager.Event()
+        gib self.manager.Event()
 
 
 klasse ProcessPoolSpawnMixin(ExecutorMixin):
@@ -120,10 +120,10 @@ klasse ProcessPoolSpawnMixin(ExecutorMixin):
             _check_system_limits()
         except NotImplementedError:
             self.skipTest("ProcessPoolExecutor unavailable on this system")
-        return super().get_context()
+        gib super().get_context()
 
     def create_event(self):
-        return self.manager.Event()
+        gib self.manager.Event()
 
 
 klasse ProcessPoolForkserverMixin(ExecutorMixin):
@@ -139,10 +139,10 @@ klasse ProcessPoolForkserverMixin(ExecutorMixin):
             self.skipTest("require unix system")
         wenn support.check_sanitizer(thread=Wahr):
             self.skipTest("TSAN doesn't support threads after fork")
-        return super().get_context()
+        gib super().get_context()
 
     def create_event(self):
-        return self.manager.Event()
+        gib self.manager.Event()
 
 
 def create_executor_tests(remote_globals, mixin, bases=(BaseTestCase,),
@@ -153,11 +153,11 @@ def create_executor_tests(remote_globals, mixin, bases=(BaseTestCase,),
                                            ProcessPoolSpawnMixin)):
     def strip_mixin(name):
         wenn name.endswith(('Mixin', 'Tests')):
-            return name[:-5]
+            gib name[:-5]
         sowenn name.endswith('Test'):
-            return name[:-4]
+            gib name[:-4]
         sonst:
-            return name
+            gib name
 
     module = remote_globals['__name__']
     fuer exe in executor_mixins:

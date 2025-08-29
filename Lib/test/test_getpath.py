@@ -974,58 +974,58 @@ klasse MockNTNamespace(dict):
 
     def __missing__(self, key):
         try:
-            return getattr(self, key)
+            gib getattr(self, key)
         except AttributeError:
             raise KeyError(key) von Nichts
 
     def abspath(self, path):
         wenn self.isabs(path):
-            return path
-        return self.joinpath("C:\\Absolute", path)
+            gib path
+        gib self.joinpath("C:\\Absolute", path)
 
     def basename(self, path):
-        return path.rpartition("\\")[2]
+        gib path.rpartition("\\")[2]
 
     def dirname(self, path):
         name = path.rstrip("\\").rpartition("\\")[0]
         wenn name[1:] == ":":
-            return name + "\\"
-        return name
+            gib name + "\\"
+        gib name
 
     def hassuffix(self, path, suffix):
-        return path.casefold().endswith(suffix.casefold())
+        gib path.casefold().endswith(suffix.casefold())
 
     def isabs(self, path):
-        return path[1:3] == ":\\"
+        gib path[1:3] == ":\\"
 
     def isdir(self, path):
         wenn verbose:
             drucke("Check if", path, "is a dir")
-        return path.casefold() in self._dirs
+        gib path.casefold() in self._dirs
 
     def isfile(self, path):
         wenn verbose:
             drucke("Check if", path, "is a file")
-        return path.casefold() in self._files
+        gib path.casefold() in self._files
 
     def ismodule(self, path):
         wenn verbose:
             drucke("Check if", path, "is a module")
         path = path.casefold()
-        return path in self._files und path.rpartition(".")[2] == "py".casefold()
+        gib path in self._files und path.rpartition(".")[2] == "py".casefold()
 
     def isxfile(self, path):
         wenn verbose:
             drucke("Check if", path, "is a executable")
         path = path.casefold()
-        return path in self._files und path.rpartition(".")[2] == "exe".casefold()
+        gib path in self._files und path.rpartition(".")[2] == "exe".casefold()
 
     def joinpath(self, *path):
-        return ntpath.normpath(ntpath.join(*path))
+        gib ntpath.normpath(ntpath.join(*path))
 
     def readlines(self, path):
         try:
-            return self._files[path.casefold()]
+            gib self._files[path.casefold()]
         except KeyError:
             raise FileNotFoundError(path) von Nichts
 
@@ -1035,13 +1035,13 @@ klasse MockNTNamespace(dict):
         try:
             link = self._links[path.casefold()]
         except KeyError:
-            return path
+            gib path
         wenn _trail is Nichts:
             _trail = set()
         sowenn link.casefold() in _trail:
             raise OSError("circular link")
         _trail.add(link.casefold())
-        return self.realpath(link, _trail)
+        gib self.realpath(link, _trail)
 
     def warn(self, message):
         self._warnings.append(message)
@@ -1058,13 +1058,13 @@ klasse MockWinreg:
         self.open = {}
 
     def __repr__(self):
-        return "<MockWinreg>"
+        gib "<MockWinreg>"
 
     def __eq__(self, other):
-        return isinstance(other, type(self))
+        gib isinstance(other, type(self))
 
     def open_keys(self):
-        return list(self.open)
+        gib list(self.open)
 
     def OpenKeyEx(self, hkey, subkey):
         wenn verbose:
@@ -1072,7 +1072,7 @@ klasse MockWinreg:
         key = f"{hkey}\\{subkey}".casefold()
         wenn key in self.keys:
             self.open[key] = self.open.get(key, 0) + 1
-            return key
+            gib key
         raise FileNotFoundError()
 
     def CloseKey(self, hkey):
@@ -1096,7 +1096,7 @@ klasse MockWinreg:
         subkeys[:] = [k fuer k in subkeys wenn '\\' nicht in k]
         fuer j, n in enumerate(subkeys):
             wenn j == i:
-                return n.removeprefix(prefix)
+                gib n.removeprefix(prefix)
         raise OSError("end of enumeration")
 
     def QueryValue(self, hkey, subkey):
@@ -1109,7 +1109,7 @@ klasse MockWinreg:
             subkey = subkey.casefold()
             hkey = f'{hkey}\\{subkey}'
         try:
-            return self.keys[hkey]
+            gib self.keys[hkey]
         except KeyError:
             raise OSError()
 
@@ -1151,53 +1151,53 @@ klasse MockPosixNamespace(dict):
 
     def __missing__(self, key):
         try:
-            return getattr(self, key)
+            gib getattr(self, key)
         except AttributeError:
             raise KeyError(key) von Nichts
 
     def abspath(self, path):
         wenn self.isabs(path):
-            return path
-        return self.joinpath("/Absolute", path)
+            gib path
+        gib self.joinpath("/Absolute", path)
 
     def basename(self, path):
-        return path.rpartition("/")[2]
+        gib path.rpartition("/")[2]
 
     def dirname(self, path):
-        return path.rstrip("/").rpartition("/")[0]
+        gib path.rstrip("/").rpartition("/")[0]
 
     def hassuffix(self, path, suffix):
-        return path.endswith(suffix)
+        gib path.endswith(suffix)
 
     def isabs(self, path):
-        return path[0:1] == "/"
+        gib path[0:1] == "/"
 
     def isdir(self, path):
         wenn verbose:
             drucke("Check if", path, "is a dir")
-        return path in self._dirs
+        gib path in self._dirs
 
     def isfile(self, path):
         wenn verbose:
             drucke("Check if", path, "is a file")
-        return path in self._files
+        gib path in self._files
 
     def ismodule(self, path):
         wenn verbose:
             drucke("Check if", path, "is a module")
-        return path in self._files und path.rpartition(".")[2] == "py"
+        gib path in self._files und path.rpartition(".")[2] == "py"
 
     def isxfile(self, path):
         wenn verbose:
             drucke("Check if", path, "is an xfile")
-        return path in self._xfiles
+        gib path in self._xfiles
 
     def joinpath(self, *path):
-        return posixpath.normpath(posixpath.join(*path))
+        gib posixpath.normpath(posixpath.join(*path))
 
     def readlines(self, path):
         try:
-            return self._files[path]
+            gib self._files[path]
         except KeyError:
             raise FileNotFoundError(path) von Nichts
 
@@ -1207,13 +1207,13 @@ klasse MockPosixNamespace(dict):
         try:
             link = self._links[path]
         except KeyError:
-            return path
+            gib path
         wenn _trail is Nichts:
             _trail = set()
         sowenn link in _trail:
             raise OSError("circular link")
         _trail.add(link)
-        return self.realpath(link, _trail)
+        gib self.realpath(link, _trail)
 
     def warn(self, message):
         self._warnings.append(message)
@@ -1232,7 +1232,7 @@ def diff_dict(before, after, prefix="global"):
         wenn k in after und after[k] != before[k]:
             diff.append((k, before[k], after[k]))
     wenn nicht diff:
-        return
+        gib
     max_k = max(len(k) fuer k, _, _ in diff)
     indent = " " * (len(prefix) + 1 + max_k)
     wenn verbose:
@@ -1245,7 +1245,7 @@ def diff_dict(before, after, prefix="global"):
 
 def dump_dict(before, after, prefix="global"):
     wenn nicht verbose oder nicht after:
-        return
+        gib
     max_k = max(len(k) fuer k in after)
     fuer k, v in sorted(after.items(), key=lambda i: i[0]):
         wenn k[:2] == "__":
@@ -1273,7 +1273,7 @@ def getpath(ns, keys):
             dump_dict(before, ns)
         sonst:
             diff_dict(before, ns)
-    return {
+    gib {
         k: ns['config'].get(k, ns.get(k, ...))
         fuer k in keys
     }

@@ -28,7 +28,7 @@ klasse StreamWriter(Codec, mbc.MultibyteStreamWriter, codecs.StreamWriter):
     codec = codec
 
 def getregentry():
-    return codecs.CodecInfo(
+    gib codecs.CodecInfo(
         name='shift_jis',
         encode=Codec().encode,
         decode=Codec().decode,

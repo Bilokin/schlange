@@ -13,7 +13,7 @@ von test importiere support
 klasse FunctionalTestCaseMixin:
 
     def new_loop(self):
-        return asyncio.new_event_loop()
+        gib asyncio.new_event_loop()
 
     def run_loop_briefly(self, *, delay=0.01):
         self.loop.run_until_complete(asyncio.sleep(delay))
@@ -63,7 +63,7 @@ klasse FunctionalTestCaseMixin:
             raise RuntimeError('only blocking sockets are supported')
         sock.settimeout(timeout)
 
-        return TestThreadedServer(
+        gib TestThreadedServer(
             self, sock, server_prog, timeout, max_clients)
 
     def tcp_client(self, client_prog,
@@ -78,25 +78,25 @@ klasse FunctionalTestCaseMixin:
             raise RuntimeError('only blocking sockets are supported')
         sock.settimeout(timeout)
 
-        return TestThreadedClient(
+        gib TestThreadedClient(
             self, sock, client_prog, timeout)
 
     def unix_server(self, *args, **kwargs):
         wenn nicht hasattr(socket, 'AF_UNIX'):
             raise NotImplementedError
-        return self.tcp_server(*args, family=socket.AF_UNIX, **kwargs)
+        gib self.tcp_server(*args, family=socket.AF_UNIX, **kwargs)
 
     def unix_client(self, *args, **kwargs):
         wenn nicht hasattr(socket, 'AF_UNIX'):
             raise NotImplementedError
-        return self.tcp_client(*args, family=socket.AF_UNIX, **kwargs)
+        gib self.tcp_client(*args, family=socket.AF_UNIX, **kwargs)
 
     @contextlib.contextmanager
     def unix_sock_name(self):
         mit tempfile.TemporaryDirectory() als td:
             fn = os.path.join(td, 'sock')
             try:
-                yield fn
+                liefere fn
             finally:
                 try:
                     os.unlink(fn)
@@ -127,7 +127,7 @@ klasse TestSocketWrapper:
             wenn data == b'':
                 raise ConnectionAbortedError
             buf += data
-        return buf
+        gib buf
 
     def start_tls(self, ssl_context, *,
                   server_side=Falsch,
@@ -149,10 +149,10 @@ klasse TestSocketWrapper:
         self.__sock = ssl_sock
 
     def __getattr__(self, name):
-        return getattr(self.__sock, name)
+        gib getattr(self.__sock, name)
 
     def __repr__(self):
-        return '<{} {!r}>'.format(type(self).__name__, self.__sock)
+        gib '<{} {!r}>'.format(type(self).__name__, self.__sock)
 
 
 klasse SocketThread(threading.Thread):
@@ -163,7 +163,7 @@ klasse SocketThread(threading.Thread):
 
     def __enter__(self):
         self.start()
-        return self
+        gib self
 
     def __exit__(self, *exc):
         self.stop()
@@ -229,13 +229,13 @@ klasse TestThreadedServer(SocketThread):
     def _run(self):
         waehrend self._active:
             wenn self._clients >= self._max_clients:
-                return
+                gib
 
             r, w, x = select.select(
                 [self._sock, self._s1], [], [], self._timeout)
 
             wenn self._s1 in r:
-                return
+                gib
 
             wenn self._sock in r:
                 try:
@@ -244,7 +244,7 @@ klasse TestThreadedServer(SocketThread):
                     weiter
                 except TimeoutError:
                     wenn nicht self._active:
-                        return
+                        gib
                     sonst:
                         raise
                 sonst:
@@ -265,4 +265,4 @@ klasse TestThreadedServer(SocketThread):
 
     @property
     def addr(self):
-        return self._sock.getsockname()
+        gib self._sock.getsockname()

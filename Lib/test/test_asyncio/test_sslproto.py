@@ -40,7 +40,7 @@ klasse SslProtoHandshakeTests(test_utils.TestCase):
                                          ssl_handshake_timeout=0.1)
         self.assertIs(ssl_proto._app_transport.get_protocol(), proto)
         self.addCleanup(ssl_proto._app_transport.close)
-        return ssl_proto
+        gib ssl_proto
 
     def connection_made(self, ssl_proto, *, do_handshake=Nichts):
         transport = mock.Mock()
@@ -52,7 +52,7 @@ klasse SslProtoHandshakeTests(test_utils.TestCase):
             sslobj.do_handshake = do_handshake
         ssl_proto._sslobj = sslobj
         ssl_proto.connection_made(transport)
-        return transport
+        gib transport
 
     def test_handshake_timeout_zero(self):
         sslcontext = test_utils.dummy_ssl_context()
@@ -98,7 +98,7 @@ klasse SslProtoHandshakeTests(test_utils.TestCase):
 
     def test_connection_lost(self):
         # From issue #472.
-        # yield von waiter hang wenn lost_connection was called.
+        # liefere von waiter hang wenn lost_connection was called.
         waiter = self.loop.create_future()
         ssl_proto = self.ssl_protocol(waiter=waiter)
         self.connection_made(
@@ -247,9 +247,9 @@ klasse BaseStartTLS(func_tests.FunctionalTestCaseMixin):
 
             def get_buffer(self, sizehint):
                 wenn self.usemv:
-                    return self.mv
+                    gib self.mv
                 sonst:
-                    return self.buf
+                    gib self.buf
 
             def buffer_updated(self, nsize):
                 wenn self.usemv:
@@ -449,7 +449,7 @@ klasse BaseStartTLS(func_tests.FunctionalTestCaseMixin):
                 client_con_made_calls += 1
 
             def get_buffer(self, sizehint):
-                return self.buf
+                gib self.buf
 
             def buffer_updated(slf, nsize):
                 self.assertEqual(nsize, 1)
@@ -813,7 +813,7 @@ klasse BaseStartTLS(func_tests.FunctionalTestCaseMixin):
                 await reader.readline()
 
             writer.close()
-            return 'OK'
+            gib 'OK'
 
         mit self.tcp_server(server,
                              max_clients=1,
@@ -828,7 +828,7 @@ klasse BaseStartTLS(func_tests.FunctionalTestCaseMixin):
 klasse SelectorStartTLSTests(BaseStartTLS, unittest.TestCase):
 
     def new_loop(self):
-        return asyncio.SelectorEventLoop()
+        gib asyncio.SelectorEventLoop()
 
 
 @unittest.skipIf(ssl is Nichts, 'No ssl module')
@@ -836,7 +836,7 @@ klasse SelectorStartTLSTests(BaseStartTLS, unittest.TestCase):
 klasse ProactorStartTLSTests(BaseStartTLS, unittest.TestCase):
 
     def new_loop(self):
-        return asyncio.ProactorEventLoop()
+        gib asyncio.ProactorEventLoop()
 
 
 wenn __name__ == '__main__':

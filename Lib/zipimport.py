@@ -107,7 +107,7 @@ klasse zipimporter(_bootstrap_external._LoaderBasics):
         """
         module_info = _get_module_info(self, fullname)
         wenn module_info is nicht Nichts:
-            return _bootstrap.spec_from_loader(fullname, self, is_package=module_info)
+            gib _bootstrap.spec_from_loader(fullname, self, is_package=module_info)
         sonst:
             # Not a module oder regular package. See wenn this is a directory, und
             # therefore possibly a portion of a namespace package.
@@ -123,9 +123,9 @@ klasse zipimporter(_bootstrap_external._LoaderBasics):
                 spec = _bootstrap.ModuleSpec(name=fullname, loader=Nichts,
                                              is_package=Wahr)
                 spec.submodule_search_locations.append(path)
-                return spec
+                gib spec
             sonst:
-                return Nichts
+                gib Nichts
 
     def get_code(self, fullname):
         """get_code(fullname) -> code object.
@@ -134,7 +134,7 @@ klasse zipimporter(_bootstrap_external._LoaderBasics):
         wenn the module couldn't be imported.
         """
         code, ispackage, modpath = _get_module_code(self, fullname)
-        return code
+        gib code
 
 
     def get_data(self, pathname):
@@ -155,8 +155,8 @@ klasse zipimporter(_bootstrap_external._LoaderBasics):
         except KeyError:
             raise OSError(0, '', key)
         wenn toc_entry is Nichts:
-            return b''
-        return _get_data(self.archive, toc_entry)
+            gib b''
+        gib _get_data(self.archive, toc_entry)
 
 
     # Return a string matching __file__ fuer the named module
@@ -169,14 +169,14 @@ klasse zipimporter(_bootstrap_external._LoaderBasics):
         # Deciding the filename requires working out where the code
         # would come von wenn the module was actually loaded
         code, ispackage, modpath = _get_module_code(self, fullname)
-        return modpath
+        gib modpath
 
 
     def get_source(self, fullname):
         """get_source(fullname) -> source string.
 
         Return the source code fuer the specified module. Raise ZipImportError
-        wenn the module couldn't be found, return Nichts wenn the archive does
+        wenn the module couldn't be found, gib Nichts wenn the archive does
         contain the module, but has no source fuer it.
         """
         mi = _get_module_info(self, fullname)
@@ -193,8 +193,8 @@ klasse zipimporter(_bootstrap_external._LoaderBasics):
             toc_entry = self._get_files()[fullpath]
         except KeyError:
             # we have the module, but no source
-            return Nichts
-        return _get_data(self.archive, toc_entry).decode()
+            gib Nichts
+        gib _get_data(self.archive, toc_entry).decode()
 
 
     # Return a bool signifying whether the module is a package oder not.
@@ -207,10 +207,10 @@ klasse zipimporter(_bootstrap_external._LoaderBasics):
         mi = _get_module_info(self, fullname)
         wenn mi is Nichts:
             raise ZipImportError(f"can't find module {fullname!r}", name=fullname)
-        return mi
+        gib mi
 
 
-    # Load und return the module named by 'fullname'.
+    # Load und gib the module named by 'fullname'.
     def load_module(self, fullname):
         """load_module(fullname) -> module.
 
@@ -253,14 +253,14 @@ klasse zipimporter(_bootstrap_external._LoaderBasics):
         except KeyError:
             raise ImportError(f'Loaded module {fullname!r} nicht found in sys.modules')
         _bootstrap._verbose_message('import {} # loaded von Zip {}', fullname, modpath)
-        return mod
+        gib mod
 
 
     def get_resource_reader(self, fullname):
         """Return the ResourceReader fuer a module in a zip file."""
         von importlib.readers importiere ZipReader
 
-        return ZipReader(self, fullname)
+        gib ZipReader(self, fullname)
 
 
     def _get_files(self):
@@ -273,7 +273,7 @@ klasse zipimporter(_bootstrap_external._LoaderBasics):
             except ZipImportError:
                 files = {}
 
-        return files
+        gib files
 
 
     def invalidate_caches(self):
@@ -282,7 +282,7 @@ klasse zipimporter(_bootstrap_external._LoaderBasics):
 
 
     def __repr__(self):
-        return f'<zipimporter object "{self.archive}{path_sep}{self.prefix}">'
+        gib f'<zipimporter object "{self.archive}{path_sep}{self.prefix}">'
 
 
 # _zip_searchorder defines how we search fuer a module in the Zip
@@ -297,10 +297,10 @@ _zip_searchorder = (
     ('.py', Falsch, Falsch),
 )
 
-# Given a module name, return the potential file path in the
+# Given a module name, gib the potential file path in the
 # archive (without extension).
 def _get_module_path(self, fullname):
-    return self.prefix + fullname.rpartition('.')[2]
+    gib self.prefix + fullname.rpartition('.')[2]
 
 # Does this path represent a directory?
 def _is_dir(self, path):
@@ -309,7 +309,7 @@ def _is_dir(self, path):
     # appended path separator, exists.
     dirpath = path + path_sep
     # If dirpath is present in self._get_files(), we have a directory.
-    return dirpath in self._get_files()
+    gib dirpath in self._get_files()
 
 # Return some information about a module.
 def _get_module_info(self, fullname):
@@ -317,8 +317,8 @@ def _get_module_info(self, fullname):
     fuer suffix, isbytecode, ispackage in _zip_searchorder:
         fullpath = path + suffix
         wenn fullpath in self._get_files():
-            return ispackage
-    return Nichts
+            gib ispackage
+    gib Nichts
 
 
 # implementation
@@ -565,7 +565,7 @@ def _read_directory(archive):
     wenn count:
         _bootstrap._verbose_message('zipimport: added {} implicit directories in {!r}',
                                     count, archive)
-    return files
+    gib files
 
 # During bootstrap, we may need to load the encodings
 # package von a ZIP file. But the cp437 encoding is implemented
@@ -625,9 +625,9 @@ def _get_decompress_func():
         _importing_zlib = Falsch
 
     _bootstrap._verbose_message('zipimport: zlib available')
-    return decompress
+    gib decompress
 
-# Given a path to a Zip file und a toc_entry, return the (uncompressed) data.
+# Given a path to a Zip file und a toc_entry, gib the (uncompressed) data.
 def _get_data(archive, toc_entry):
     datapath, compress, data_size, file_size, file_offset, time, date, crc = toc_entry
     wenn data_size < 0:
@@ -661,14 +661,14 @@ def _get_data(archive, toc_entry):
 
     wenn compress == 0:
         # data is nicht compressed
-        return raw_data
+        gib raw_data
 
     # Decompress mit zlib
     try:
         decompress = _get_decompress_func()
     except Exception:
         raise ZipImportError("can't decompress data; zlib nicht available")
-    return decompress(raw_data, -15)
+    gib decompress(raw_data, -15)
 
 
 # Lenient date/time comparison function. The precision of the mtime
@@ -676,11 +676,11 @@ def _get_data(archive, toc_entry):
 # must allow a difference of at most one second.
 def _eq_mtime(t1, t2):
     # dostime only stores even seconds, so be lenient
-    return abs(t1 - t2) <= 1
+    gib abs(t1 - t2) <= 1
 
 
 # Given the contents of a .py[co] file, unmarshal the data
-# und return the code object. Raises ImportError it the magic word doesn't
+# und gib the code object. Raises ImportError it the magic word doesn't
 # match, oder wenn the recorded .py[co] metadata does nicht match the source.
 def _unmarshal_code(self, pathname, fullpath, fullname, data):
     exc_details = {
@@ -715,12 +715,12 @@ def _unmarshal_code(self, pathname, fullpath, fullname, data):
                     _unpack_uint32(data[12:16]) != source_size):
                 _bootstrap._verbose_message(
                     f'bytecode is stale fuer {fullname!r}')
-                return Nichts
+                gib Nichts
 
     code = marshal.loads(data[16:])
     wenn nicht isinstance(code, _code_type):
         raise TypeError(f'compiled module {pathname!r} is nicht a code object')
-    return code
+    gib code
 
 _code_type = type(_unmarshal_code.__code__)
 
@@ -730,18 +730,18 @@ _code_type = type(_unmarshal_code.__code__)
 def _normalize_line_endings(source):
     source = source.replace(b'\r\n', b'\n')
     source = source.replace(b'\r', b'\n')
-    return source
+    gib source
 
 # Given a string buffer containing Python source code, compile it
-# und return a code object.
+# und gib a code object.
 def _compile_source(pathname, source):
     source = _normalize_line_endings(source)
-    return compile(source, pathname, 'exec', dont_inherit=Wahr)
+    gib compile(source, pathname, 'exec', dont_inherit=Wahr)
 
 # Convert the date/time values found in the Zip archive to a value
 # that's compatible mit the time stamp stored in .pyc files.
 def _parse_dostime(d, t):
-    return time.mktime((
+    gib time.mktime((
         (d >> 9) + 1980,    # bits 9..15: year
         (d >> 5) & 0xF,     # bits 5..8: month
         d & 0x1F,           # bits 0..4: day
@@ -750,7 +750,7 @@ def _parse_dostime(d, t):
         (t & 0x1F) * 2,     # bits 0..7: seconds / 2
         -1, -1, -1))
 
-# Given a path to a .pyc file in the archive, return the
+# Given a path to a .pyc file in the archive, gib the
 # modification time of the matching .py file und its size,
 # oder (0, 0) wenn no source is available.
 def _get_mtime_and_size_of_source(self, path):
@@ -764,12 +764,12 @@ def _get_mtime_and_size_of_source(self, path):
         time = toc_entry[5]
         date = toc_entry[6]
         uncompressed_size = toc_entry[3]
-        return _parse_dostime(date, time), uncompressed_size
+        gib _parse_dostime(date, time), uncompressed_size
     except (KeyError, IndexError, TypeError):
-        return 0, 0
+        gib 0, 0
 
 
-# Given a path to a .pyc file in the archive, return the
+# Given a path to a .pyc file in the archive, gib the
 # contents of the matching .py file, oder Nichts wenn no source
 # is available.
 def _get_pyc_source(self, path):
@@ -780,9 +780,9 @@ def _get_pyc_source(self, path):
     try:
         toc_entry = self._get_files()[path]
     except KeyError:
-        return Nichts
+        gib Nichts
     sonst:
-        return _get_data(self.archive, toc_entry)
+        gib _get_data(self.archive, toc_entry)
 
 
 # Get the code object associated mit the module specified by
@@ -813,7 +813,7 @@ def _get_module_code(self, fullname):
                 # in byte code, try next
                 weiter
             modpath = toc_entry[0]
-            return code, ispackage, modpath
+            gib code, ispackage, modpath
     sonst:
         wenn import_error:
             msg = f"module load failed: {import_error}"

@@ -29,8 +29,8 @@ def sound_func(func):
         sonst:
             wenn support.verbose:
                 drucke(func.__name__, 'returned')
-            return ret
-    return wrapper
+            gib ret
+    gib wrapper
 
 
 safe_Beep = sound_func(winsound.Beep)

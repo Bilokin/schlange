@@ -198,8 +198,8 @@ klasse TestMockOpen(unittest.TestCase):
 
 
     def test_readline_data(self):
-        # Check that readline will return all the lines von the fake file
-        # And that once fully consumed, readline will return an empty string.
+        # Check that readline will gib all the lines von the fake file
+        # And that once fully consumed, readline will gib an empty string.
         mock = mock_open(read_data='foo\nbar\nbaz\n')
         mit patch('%s.open' % __name__, mock, create=Wahr):
             h = open('bar')
@@ -221,7 +221,7 @@ klasse TestMockOpen(unittest.TestCase):
 
 
     def test_dunder_iter_data(self):
-        # Check that dunder_iter will return all the lines von the fake file.
+        # Check that dunder_iter will gib all the lines von the fake file.
         mock = mock_open(read_data='foo\nbar\nbaz\n')
         mit patch('%s.open' % __name__, mock, create=Wahr):
             h = open('bar')
@@ -234,7 +234,7 @@ klasse TestMockOpen(unittest.TestCase):
             next(h)
 
     def test_next_data(self):
-        # Check that next will correctly return the next available
+        # Check that next will correctly gib the next available
         # line und plays well mit the dunder_iter part.
         mock = mock_open(read_data='foo\nbar\nbaz\n')
         mit patch('%s.open' % __name__, mock, create=Wahr):

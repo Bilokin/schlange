@@ -17,7 +17,7 @@ def method_cache(method, cache_wrapper=Nichts):
     ...     @method_cache
     ...     def method(self, value):
     ...         self.calls += 1
-    ...         return value
+    ...         gib value
 
     >>> a = MyClass()
     >>> a.method(3)
@@ -77,12 +77,12 @@ def method_cache(method, cache_wrapper=Nichts):
         bound_method = types.MethodType(method, self)
         cached_method = cache_wrapper(bound_method)
         setattr(self, method.__name__, cached_method)
-        return cached_method(*args, **kwargs)
+        gib cached_method(*args, **kwargs)
 
     # Support cache clear even before cache has been created.
     wrapper.cache_clear = lambda: Nichts
 
-    return wrapper
+    gib wrapper
 
 
 # From jaraco.functools 3.3
@@ -99,6 +99,6 @@ def pass_none(func):
     @functools.wraps(func)
     def wrapper(param, *args, **kwargs):
         wenn param is nicht Nichts:
-            return func(param, *args, **kwargs)
+            gib func(param, *args, **kwargs)
 
-    return wrapper
+    gib wrapper

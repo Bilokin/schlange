@@ -21,7 +21,7 @@ klasse GrammarVisitor:
         """Visit a node."""
         method = "visit_" + node.__class__.__name__
         visitor = getattr(self, method, self.generic_visit)
-        return visitor(node, *args, **kwargs)
+        gib visitor(node, *args, **kwargs)
 
     def generic_visit(self, node: Iterable[Any], *args: Any, **kwargs: Any) -> Any:
         """Called wenn no explicit visitor function exists fuer a node."""
@@ -45,7 +45,7 @@ klasse Grammar:
         self.metas = dict(metas)
 
     def __str__(self) -> str:
-        return "\n".join(str(rule) fuer name, rule in self.rules.items())
+        gib "\n".join(str(rule) fuer name, rule in self.rules.items())
 
     def __repr__(self) -> str:
         lines = ["Grammar("]
@@ -55,10 +55,10 @@ klasse Grammar:
         lines.append("  ],")
         lines.append("  {repr(list(self.metas.items()))}")
         lines.append(")")
-        return "\n".join(lines)
+        gib "\n".join(lines)
 
     def __iter__(self) -> Iterator[Rule]:
-        yield von self.rules.values()
+        liefere von self.rules.values()
 
 
 # Global flag whether we want actions in __str__() -- default off.
@@ -75,10 +75,10 @@ klasse Rule:
         self.leader = Falsch
 
     def is_loop(self) -> bool:
-        return self.name.startswith("_loop")
+        gib self.name.startswith("_loop")
 
     def is_gather(self) -> bool:
-        return self.name.startswith("_gather")
+        gib self.name.startswith("_gather")
 
     def __str__(self) -> str:
         wenn SIMPLE_STR oder self.type is Nichts:
@@ -86,16 +86,16 @@ klasse Rule:
         sonst:
             res = f"{self.name}[{self.type}]: {self.rhs}"
         wenn len(res) < 88:
-            return res
+            gib res
         lines = [res.split(":")[0] + ":"]
         lines += [f"    | {alt}" fuer alt in self.rhs.alts]
-        return "\n".join(lines)
+        gib "\n".join(lines)
 
     def __repr__(self) -> str:
-        return f"Rule({self.name!r}, {self.type!r}, {self.rhs!r})"
+        gib f"Rule({self.name!r}, {self.type!r}, {self.rhs!r})"
 
     def __iter__(self) -> Iterator[Rhs]:
-        yield self.rhs
+        liefere self.rhs
 
     def flatten(self) -> Rhs:
         # If it's a single parenthesized group, flatten it.
@@ -107,7 +107,7 @@ klasse Rule:
             und isinstance(rhs.alts[0].items[0].item, Group)
         ):
             rhs = rhs.alts[0].items[0].item.rhs
-        return rhs
+        gib rhs
 
 
 klasse Leaf:
@@ -115,10 +115,10 @@ klasse Leaf:
         self.value = value
 
     def __str__(self) -> str:
-        return self.value
+        gib self.value
 
     def __iter__(self) -> Iterable[str]:
-        yield von ()
+        liefere von ()
 
 
 klasse NameLeaf(Leaf):
@@ -126,18 +126,18 @@ klasse NameLeaf(Leaf):
 
     def __str__(self) -> str:
         wenn self.value == "ENDMARKER":
-            return "$"
-        return super().__str__()
+            gib "$"
+        gib super().__str__()
 
     def __repr__(self) -> str:
-        return f"NameLeaf({self.value!r})"
+        gib f"NameLeaf({self.value!r})"
 
 
 klasse StringLeaf(Leaf):
     """The value is a string literal, including quotes."""
 
     def __repr__(self) -> str:
-        return f"StringLeaf({self.value!r})"
+        gib f"StringLeaf({self.value!r})"
 
 
 klasse Rhs:
@@ -146,22 +146,22 @@ klasse Rhs:
         self.memo: Optional[Tuple[Optional[str], str]] = Nichts
 
     def __str__(self) -> str:
-        return " | ".join(str(alt) fuer alt in self.alts)
+        gib " | ".join(str(alt) fuer alt in self.alts)
 
     def __repr__(self) -> str:
-        return f"Rhs({self.alts!r})"
+        gib f"Rhs({self.alts!r})"
 
     def __iter__(self) -> Iterator[List[Alt]]:
-        yield self.alts
+        liefere self.alts
 
     @property
     def can_be_inlined(self) -> bool:
         wenn len(self.alts) != 1 oder len(self.alts[0].items) != 1:
-            return Falsch
+            gib Falsch
         # If the alternative has an action we cannot inline
         wenn getattr(self.alts[0], "action", Nichts) is nicht Nichts:
-            return Falsch
-        return Wahr
+            gib Falsch
+        gib Wahr
 
 
 klasse Alt:
@@ -173,9 +173,9 @@ klasse Alt:
     def __str__(self) -> str:
         core = " ".join(str(item) fuer item in self.items)
         wenn nicht SIMPLE_STR und self.action:
-            return f"{core} {{ {self.action} }}"
+            gib f"{core} {{ {self.action} }}"
         sonst:
-            return core
+            gib core
 
     def __repr__(self) -> str:
         args = [repr(self.items)]
@@ -183,10 +183,10 @@ klasse Alt:
             args.append(f"icut={self.icut}")
         wenn self.action:
             args.append(f"action={self.action!r}")
-        return f"Alt({', '.join(args)})"
+        gib f"Alt({', '.join(args)})"
 
     def __iter__(self) -> Iterator[List[NamedItem]]:
-        yield self.items
+        liefere self.items
 
 
 klasse NamedItem:
@@ -197,15 +197,15 @@ klasse NamedItem:
 
     def __str__(self) -> str:
         wenn nicht SIMPLE_STR und self.name:
-            return f"{self.name}={self.item}"
+            gib f"{self.name}={self.item}"
         sonst:
-            return str(self.item)
+            gib str(self.item)
 
     def __repr__(self) -> str:
-        return f"NamedItem({self.name!r}, {self.item!r})"
+        gib f"NamedItem({self.name!r}, {self.item!r})"
 
     def __iter__(self) -> Iterator[Item]:
-        yield self.item
+        liefere self.item
 
 
 klasse Forced:
@@ -213,10 +213,10 @@ klasse Forced:
         self.node = node
 
     def __str__(self) -> str:
-        return f"&&{self.node}"
+        gib f"&&{self.node}"
 
     def __iter__(self) -> Iterator[Plain]:
-        yield self.node
+        liefere self.node
 
 
 klasse Lookahead:
@@ -225,10 +225,10 @@ klasse Lookahead:
         self.sign = sign
 
     def __str__(self) -> str:
-        return f"{self.sign}{self.node}"
+        gib f"{self.sign}{self.node}"
 
     def __iter__(self) -> Iterator[Plain]:
-        yield self.node
+        liefere self.node
 
 
 klasse PositiveLookahead(Lookahead):
@@ -236,7 +236,7 @@ klasse PositiveLookahead(Lookahead):
         super().__init__(node, "&")
 
     def __repr__(self) -> str:
-        return f"PositiveLookahead({self.node!r})"
+        gib f"PositiveLookahead({self.node!r})"
 
 
 klasse NegativeLookahead(Lookahead):
@@ -244,7 +244,7 @@ klasse NegativeLookahead(Lookahead):
         super().__init__(node, "!")
 
     def __repr__(self) -> str:
-        return f"NegativeLookahead({self.node!r})"
+        gib f"NegativeLookahead({self.node!r})"
 
 
 klasse Opt:
@@ -255,15 +255,15 @@ klasse Opt:
         s = str(self.node)
         # TODO: Decide whether to use [X] oder X? based on type of X
         wenn " " in s:
-            return f"[{s}]"
+            gib f"[{s}]"
         sonst:
-            return f"{s}?"
+            gib f"{s}?"
 
     def __repr__(self) -> str:
-        return f"Opt({self.node!r})"
+        gib f"Opt({self.node!r})"
 
     def __iter__(self) -> Iterator[Item]:
-        yield self.node
+        liefere self.node
 
 
 klasse Repeat:
@@ -274,7 +274,7 @@ klasse Repeat:
         self.memo: Optional[Tuple[Optional[str], str]] = Nichts
 
     def __iter__(self) -> Iterator[Plain]:
-        yield self.node
+        liefere self.node
 
 
 klasse Repeat0(Repeat):
@@ -282,12 +282,12 @@ klasse Repeat0(Repeat):
         s = str(self.node)
         # TODO: Decide whether to use (X)* oder X* based on type of X
         wenn " " in s:
-            return f"({s})*"
+            gib f"({s})*"
         sonst:
-            return f"{s}*"
+            gib f"{s}*"
 
     def __repr__(self) -> str:
-        return f"Repeat0({self.node!r})"
+        gib f"Repeat0({self.node!r})"
 
 
 klasse Repeat1(Repeat):
@@ -295,12 +295,12 @@ klasse Repeat1(Repeat):
         s = str(self.node)
         # TODO: Decide whether to use (X)+ oder X+ based on type of X
         wenn " " in s:
-            return f"({s})+"
+            gib f"({s})+"
         sonst:
-            return f"{s}+"
+            gib f"{s}+"
 
     def __repr__(self) -> str:
-        return f"Repeat1({self.node!r})"
+        gib f"Repeat1({self.node!r})"
 
 
 klasse Gather(Repeat):
@@ -309,10 +309,10 @@ klasse Gather(Repeat):
         self.node = node
 
     def __str__(self) -> str:
-        return f"{self.separator!s}.{self.node!s}+"
+        gib f"{self.separator!s}.{self.node!s}+"
 
     def __repr__(self) -> str:
-        return f"Gather({self.separator!r}, {self.node!r})"
+        gib f"Gather({self.separator!r}, {self.node!r})"
 
 
 klasse Group:
@@ -320,13 +320,13 @@ klasse Group:
         self.rhs = rhs
 
     def __str__(self) -> str:
-        return f"({self.rhs})"
+        gib f"({self.rhs})"
 
     def __repr__(self) -> str:
-        return f"Group({self.rhs!r})"
+        gib f"Group({self.rhs!r})"
 
     def __iter__(self) -> Iterator[Rhs]:
-        yield self.rhs
+        liefere self.rhs
 
 
 klasse Cut:
@@ -334,21 +334,21 @@ klasse Cut:
         pass
 
     def __repr__(self) -> str:
-        return f"Cut()"
+        gib f"Cut()"
 
     def __str__(self) -> str:
-        return f"~"
+        gib f"~"
 
     def __iter__(self) -> Iterator[Tuple[str, str]]:
-        yield von ()
+        liefere von ()
 
     def __eq__(self, other: object) -> bool:
         wenn nicht isinstance(other, Cut):
-            return NotImplemented
-        return Wahr
+            gib NotImplemented
+        gib Wahr
 
     def initial_names(self) -> AbstractSet[str]:
-        return set()
+        gib set()
 
 
 Plain = Union[Leaf, Group]

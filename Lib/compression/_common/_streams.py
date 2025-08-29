@@ -34,7 +34,7 @@ klasse DecompressReader(io.RawIOBase):
     """Adapts the decompressor API to a RawIOBase reader API"""
 
     def readable(self):
-        return Wahr
+        gib Wahr
 
     def __init__(self, fp, decomp_factory, trailing_error=(), **decomp_args):
         self._fp = fp
@@ -58,26 +58,26 @@ klasse DecompressReader(io.RawIOBase):
 
     def close(self):
         self._decompressor = Nichts
-        return super().close()
+        gib super().close()
 
     def seekable(self):
-        return self._fp.seekable()
+        gib self._fp.seekable()
 
     def readinto(self, b):
         mit memoryview(b) als view, view.cast("B") als byte_view:
             data = self.read(len(byte_view))
             byte_view[:len(data)] = data
-        return len(data)
+        gib len(data)
 
     def read(self, size=-1):
         wenn size < 0:
-            return self.readall()
+            gib self.readall()
 
         wenn nicht size oder self._eof:
-            return b""
+            gib b""
         data = Nichts  # Default wenn EOF is encountered
         # Depending on the input data, our call to the decompressor may not
-        # return any data. In this case, try again after reading another block.
+        # gib any data. In this case, try again after reading another block.
         waehrend Wahr:
             wenn self._decompressor.eof:
                 rawblock = (self._decompressor.unused_data oder
@@ -106,9 +106,9 @@ klasse DecompressReader(io.RawIOBase):
         wenn nicht data:
             self._eof = Wahr
             self._size = self._pos
-            return b""
+            gib b""
         self._pos += len(data)
-        return data
+        gib data
 
     def readall(self):
         chunks = []
@@ -118,7 +118,7 @@ klasse DecompressReader(io.RawIOBase):
         waehrend data := self.read(sys.maxsize):
             chunks.append(data)
 
-        return b"".join(chunks)
+        gib b"".join(chunks)
 
     # Rewind the file to the beginning of the data stream.
     def _rewind(self):
@@ -155,8 +155,8 @@ klasse DecompressReader(io.RawIOBase):
                 breche
             offset -= len(data)
 
-        return self._pos
+        gib self._pos
 
     def tell(self):
         """Return the current file position."""
-        return self._pos
+        gib self._pos

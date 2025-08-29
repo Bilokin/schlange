@@ -24,7 +24,7 @@ klasse DictTest(unittest.TestCase):
                 {}.update(**invalid)
 
     def test_constructor(self):
-        # calling built-in types without argument must return empty
+        # calling built-in types without argument must gib empty
         self.assertEqual(dict(), {})
         self.assertIsNot(dict(), {})
 
@@ -162,7 +162,7 @@ klasse DictTest(unittest.TestCase):
             def __eq__(self, other):
                 raise Exc()
             def __hash__(self):
-                return 24
+                gib 24
 
         d = {}
         d[BadEq()] = 42
@@ -176,7 +176,7 @@ klasse DictTest(unittest.TestCase):
                 wenn self.fail:
                     raise Exc()
                 sonst:
-                    return 42
+                    gib 42
 
         x = BadHash()
         d[x] = 42
@@ -206,9 +206,9 @@ klasse DictTest(unittest.TestCase):
             def __init__(self):
                 self.d = {1:1, 2:2, 3:3}
             def keys(self):
-                return self.d.keys()
+                gib self.d.keys()
             def __getitem__(self, i):
-                return self.d[i]
+                gib self.d[i]
         d.clear()
         d.update(SimpleUserDict())
         self.assertEqual(d, {1:1, 2:2, 3:3})
@@ -227,15 +227,15 @@ klasse DictTest(unittest.TestCase):
                     def __init__(self):
                         self.i = 1
                     def __iter__(self):
-                        return self
+                        gib self
                     def __next__(self):
                         wenn self.i:
                             self.i = 0
-                            return 'a'
+                            gib 'a'
                         raise Exc
-                return BogonIter()
+                gib BogonIter()
             def __getitem__(self, key):
-                return key
+                gib key
         self.assertRaises(Exc, d.update, FailingUserDict())
 
         klasse FailingUserDict:
@@ -244,21 +244,21 @@ klasse DictTest(unittest.TestCase):
                     def __init__(self):
                         self.i = ord('a')
                     def __iter__(self):
-                        return self
+                        gib self
                     def __next__(self):
                         wenn self.i <= ord('z'):
                             rtn = chr(self.i)
                             self.i += 1
-                            return rtn
+                            gib rtn
                         raise StopIteration
-                return BogonIter()
+                gib BogonIter()
             def __getitem__(self, key):
                 raise Exc
         self.assertRaises(Exc, d.update, FailingUserDict())
 
         klasse badseq(object):
             def __iter__(self):
-                return self
+                gib self
             def __next__(self):
                 raise Exc()
 
@@ -277,9 +277,9 @@ klasse DictTest(unittest.TestCase):
         )
 
         def badgen():
-            yield "key"
+            liefere "key"
             raise TypeError("oops")
-            yield "value"
+            liefere "value"
 
         mit self.assertRaises(TypeError) als cm:
             dict([badgen() fuer _ in range(3)])
@@ -297,7 +297,7 @@ klasse DictTest(unittest.TestCase):
         # dict.update() call.
         klasse MyStr(str):
             def __hash__(self):
-                return super().__hash__()
+                gib super().__hash__()
 
             def __eq__(self, other):
                 # Create an object that shares the same PyDictKeysObject as
@@ -306,7 +306,7 @@ klasse DictTest(unittest.TestCase):
                 obj2.a = "a"
                 obj2.b = "b"
                 obj2.c = "c"
-                return super().__eq__(other)
+                gib super().__eq__(other)
 
         obj = MyClass()
         obj.a = "a"
@@ -331,7 +331,7 @@ klasse DictTest(unittest.TestCase):
         self.assertEqual(d.fromkeys((4,5),0), {4:0, 5:0})
         self.assertEqual(d.fromkeys([]), {})
         def g():
-            yield 1
+            liefere 1
         self.assertEqual(d.fromkeys(g()), {1:Nichts})
         self.assertRaises(TypeError, {}.fromkeys, 3)
         klasse dictlike(dict): pass
@@ -341,7 +341,7 @@ klasse DictTest(unittest.TestCase):
         self.assertIsInstance(dictlike().fromkeys('a'), dictlike)
         klasse mydict(dict):
             def __new__(cls):
-                return collections.UserDict()
+                gib collections.UserDict()
         ud = mydict.fromkeys('ab')
         self.assertEqual(ud, {'a':Nichts, 'b':Nichts})
         self.assertIsInstance(ud, collections.UserDict)
@@ -357,7 +357,7 @@ klasse DictTest(unittest.TestCase):
 
         klasse BadSeq(object):
             def __iter__(self):
-                return self
+                gib self
             def __next__(self):
                 raise Exc()
 
@@ -383,7 +383,7 @@ klasse DictTest(unittest.TestCase):
         # test fast path when object's constructor returns large non-empty dict
         klasse baddict3(dict):
             def __new__(cls):
-                return d
+                gib d
         d = {i : i fuer i in range(1000)}
         res = d.copy()
         res.update(a=Nichts, b=Nichts, c=Nichts)
@@ -482,7 +482,7 @@ klasse DictTest(unittest.TestCase):
                 wenn self.fail:
                     raise Exc()
                 sonst:
-                    return 42
+                    gib 42
 
         x = BadHash()
         d[x] = 42
@@ -497,10 +497,10 @@ klasse DictTest(unittest.TestCase):
                 self.eq_count = 0
             def __hash__(self):
                 self.hash_count += 1
-                return 42
+                gib 42
             def __eq__(self, other):
                 self.eq_count += 1
-                return id(self) == id(other)
+                gib id(self) == id(other)
         hashed1 = Hashed()
         y = {hashed1: 5}
         hashed2 = Hashed()
@@ -516,10 +516,10 @@ klasse DictTest(unittest.TestCase):
                 self.eq_count = 0
             def __hash__(self):
                 self.hash_count += 1
-                return 42
+                gib 42
             def __eq__(self, other):
                 self.eq_count += 1
-                return id(self) == id(other)
+                gib id(self) == id(other)
         hashed1 = Hashed()
         # 5 items
         y = {hashed1: 5, 0: 0, 1: 1, 2: 2, 3: 3}
@@ -583,7 +583,7 @@ klasse DictTest(unittest.TestCase):
                 wenn self.fail:
                     raise Exc()
                 sonst:
-                    return 42
+                    gib 42
 
         x = BadHash()
         d[x] = 42
@@ -635,14 +635,14 @@ klasse DictTest(unittest.TestCase):
 
             def __hash__(self):
                 # hash collision!
-                return 1
+                gib 1
 
             def __eq__(self, other):
                 wenn NastyKey.mutate_dict:
                     mydict, key = NastyKey.mutate_dict
                     NastyKey.mutate_dict = Nichts
                     del mydict[key]
-                return self.value == other.value
+                gib self.value == other.value
 
         key1 = NastyKey(1)
         key2 = NastyKey(2)
@@ -687,7 +687,7 @@ klasse DictTest(unittest.TestCase):
             def __eq__(self, other):
                 raise Exc()
             def __hash__(self):
-                return 1
+                gib 1
 
         d1 = {BadCmp(): 1}
         d2 = {1: 1}
@@ -828,7 +828,7 @@ klasse DictTest(unittest.TestCase):
         # (G) subclass doesn't define __missing__ at all
         klasse D(dict):
             def __missing__(self, key):
-                return 42
+                gib 42
         d = D({1: 2, 3: 4})
         self.assertEqual(d[1], 2)
         self.assertEqual(d[3], 4)
@@ -874,12 +874,12 @@ klasse DictTest(unittest.TestCase):
 
         klasse BadDictKey:
             def __hash__(self):
-                return hash(self.__class__)
+                gib hash(self.__class__)
 
             def __eq__(self, other):
                 wenn isinstance(other, self.__class__):
                     raise CustomException
-                return other
+                gib other
 
         d = {}
         x1 = BadDictKey()
@@ -917,11 +917,11 @@ klasse DictTest(unittest.TestCase):
 
         klasse X(object):
             def __hash__(self):
-                return 5
+                gib 5
             def __eq__(self, other):
                 wenn resizing:
                     d.clear()
-                return Falsch
+                gib Falsch
         d = {}
         resizing = Falsch
         d[X()] = 1
@@ -967,7 +967,7 @@ klasse DictTest(unittest.TestCase):
             a.x, a.y, a.z = 1, 2, 3
             dicts.append(a.__dict__)
 
-        return dicts
+        gib dicts
 
     @support.cpython_only
     def test_splittable_setdefault(self):
@@ -1235,11 +1235,11 @@ klasse DictTest(unittest.TestCase):
     def test_merge_and_mutate(self):
         klasse X:
             def __hash__(self):
-                return 0
+                gib 0
 
             def __eq__(self, o):
                 other.clear()
-                return Falsch
+                gib Falsch
 
         l = [(i,0) fuer i in range(1, 1337)]
         other = dict(l)
@@ -1261,10 +1261,10 @@ klasse DictTest(unittest.TestCase):
 
             def __eq__(self, other):
                 dict_a.clear()
-                return Wahr
+                gib Wahr
 
             def __hash__(self):
-                return 13
+                gib 13
 
         dict_a = {X(): 0}
         dict_b = {X(): X()}
@@ -1274,7 +1274,7 @@ klasse DictTest(unittest.TestCase):
         klasse Y:
             def __eq__(self, other):
                 dict_d.clear()
-                return Wahr
+                gib Wahr
 
         dict_c = {0: Y()}
         dict_d = {0: set()}
@@ -1284,12 +1284,12 @@ klasse DictTest(unittest.TestCase):
         # test fix fuer seg fault reported in issue 27945 part 4a.
         klasse X(int):
             def __hash__(self):
-                return 13
+                gib 13
 
             def __eq__(self, other):
                 wenn len(d) > 1:
                     d.clear()
-                return Falsch
+                gib Falsch
 
         d = {}  # this is required to exist so that d can be constructed!
         d = {X(1): 1, X(2): 2}
@@ -1302,12 +1302,12 @@ klasse DictTest(unittest.TestCase):
         # test fix fuer seg fault reported in issue 27945 part 4b.
         klasse X(int):
             def __hash__(self):
-                return 13
+                gib 13
 
             def __eq__(self, other):
                 wenn len(d) > 1:
                     d.clear()
-                return Falsch
+                gib Falsch
 
         d = {}  # this is required to exist so that d can be constructed!
         d = {X(1), X(2)}
@@ -1320,7 +1320,7 @@ klasse DictTest(unittest.TestCase):
         klasse X:
             def __eq__(self, other):
                 d.clear()
-                return NotImplemented
+                gib NotImplemented
 
         d = {0: set()}
         (0, X()) in d.items()
@@ -1330,10 +1330,10 @@ klasse DictTest(unittest.TestCase):
         klasse S(str):
             def __eq__(self, other):
                 d.clear()
-                return NotImplemented
+                gib NotImplemented
 
             def __hash__(self):
-                return hash('test')
+                gib hash('test')
 
         d = {S(): 'value'}
         self.assertFalsch('test' in d)
@@ -1342,7 +1342,7 @@ klasse DictTest(unittest.TestCase):
         klasse X:
             def __hash__(self):
                 pair[:] = []
-                return 13
+                gib 13
 
         pair = [X(), 123]
         dict([pair])
@@ -1413,12 +1413,12 @@ klasse DictTest(unittest.TestCase):
 
         klasse CustomReversedDict(dict):
             def keys(self):
-                return reversed(list(dict.keys(self)))
+                gib reversed(list(dict.keys(self)))
 
             __iter__ = keys
 
             def items(self):
-                return reversed(dict.items(self))
+                gib reversed(dict.items(self))
 
         d = CustomReversedDict(pairs)
         self.assertEqual(pairs[::-1], list(dict(d).items()))
@@ -1472,14 +1472,14 @@ klasse DictTest(unittest.TestCase):
         # This klasse compares equal to the string 'key3'
         klasse Key3:
             def __hash__(self):
-                return hash('key3')
+                gib hash('key3')
 
             def __eq__(self, other):
                 nonlocal eq_count
                 wenn isinstance(other, Key3) oder isinstance(other, str) und other == 'key3':
                     eq_count += 1
-                    return Wahr
-                return Falsch
+                    gib Wahr
+                gib Falsch
 
         key3_1 = StrSub('key3')
         key3_2 = Key3()
@@ -1517,9 +1517,9 @@ klasse DictTest(unittest.TestCase):
 
             # `dict(iterable)`
             def make_pairs():
-                yield ('key1', 42)
-                yield ('key2', 43)
-                yield (key3, 44)
+                liefere ('key1', 42)
+                liefere ('key2', 43)
+                liefere (key3, 44)
             d = dict(make_pairs())
             dicts.append(d)
 
@@ -1566,7 +1566,7 @@ klasse DictTest(unittest.TestCase):
 
         def check_unhashable_key():
             msg = "cannot use 'list' als a dict key (unhashable type: 'list')"
-            return self.assertRaisesRegex(TypeError, re.escape(msg))
+            gib self.assertRaisesRegex(TypeError, re.escape(msg))
 
         mit check_unhashable_key():
             key in d
@@ -1625,7 +1625,7 @@ klasse CAPITest(unittest.TestCase):
             def __eq__(self, other):
                 raise Exc
             def __hash__(self):
-                return 7
+                gib 7
 
         k1, k2 = BadEq(), BadEq()
         d = {k1: 1}

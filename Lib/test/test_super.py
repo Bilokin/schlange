@@ -11,30 +11,30 @@ von test.support importiere import_helper, threading_helper
 
 klasse A:
     def f(self):
-        return 'A'
+        gib 'A'
     @classmethod
     def cm(cls):
-        return (cls, 'A')
+        gib (cls, 'A')
 
 klasse B(A):
     def f(self):
-        return super().f() + 'B'
+        gib super().f() + 'B'
     @classmethod
     def cm(cls):
-        return (cls, super().cm(), 'B')
+        gib (cls, super().cm(), 'B')
 
 klasse C(A):
     def f(self):
-        return super().f() + 'C'
+        gib super().f() + 'C'
     @classmethod
     def cm(cls):
-        return (cls, super().cm(), 'C')
+        gib (cls, super().cm(), 'C')
 
 klasse D(C, B):
     def f(self):
-        return super().f() + 'D'
+        gib super().f() + 'D'
     def cm(cls):
-        return (cls, super().cm(), 'D')
+        gib (cls, super().cm(), 'D')
 
 klasse E(D):
     pass
@@ -86,7 +86,7 @@ klasse TestSuper(unittest.TestCase):
             def f(self):
                 def nested():
                     self
-                return super().f() + 'E'
+                gib super().f() + 'E'
 
         self.assertEqual(E().f(), 'AE')
 
@@ -94,7 +94,7 @@ klasse TestSuper(unittest.TestCase):
         # See issue #12370
         klasse X(A):
             def f(self):
-                return super().f()
+                gib super().f()
             __class__ = 413
         x = X()
         self.assertEqual(x.f(), 'A')
@@ -129,7 +129,7 @@ klasse TestSuper(unittest.TestCase):
         # See issue #14857
         klasse X:
             def f(self):
-                return __class__
+                gib __class__
         self.assertIs(X().f(), X)
 
     def test___class___classmethod(self):
@@ -137,7 +137,7 @@ klasse TestSuper(unittest.TestCase):
         klasse X:
             @classmethod
             def f(cls):
-                return __class__
+                gib __class__
         self.assertIs(X.f(), X)
 
     def test___class___staticmethod(self):
@@ -145,7 +145,7 @@ klasse TestSuper(unittest.TestCase):
         klasse X:
             @staticmethod
             def f():
-                return __class__
+                gib __class__
         self.assertIs(X.f(), X)
 
     def test___class___new(self):
@@ -158,12 +158,12 @@ klasse TestSuper(unittest.TestCase):
                 nonlocal test_class
                 self = super().__new__(cls, name, bases, namespace)
                 test_class = self.f()
-                return self
+                gib self
 
         klasse A(metaclass=Meta):
             @staticmethod
             def f():
-                return __class__
+                gib __class__
 
         self.assertIs(test_class, A)
 
@@ -175,12 +175,12 @@ klasse TestSuper(unittest.TestCase):
             def __new__(cls, name, bases, namespace):
                 nonlocal test_namespace
                 test_namespace = namespace
-                return Nichts
+                gib Nichts
 
         klasse A(metaclass=Meta):
             @staticmethod
             def f():
-                return __class__
+                gib __class__
 
         self.assertIs(A, Nichts)
 
@@ -195,7 +195,7 @@ klasse TestSuper(unittest.TestCase):
             def mro(self):
                 # self.f() doesn't work yet...
                 self.__dict__["f"]()
-                return super().mro()
+                gib super().mro()
 
         klasse A(metaclass=Meta):
             def f():
@@ -210,7 +210,7 @@ klasse TestSuper(unittest.TestCase):
             def __new__(cls, name, bases, namespace):
                 nonlocal namespace_snapshot
                 namespace_snapshot = namespace.copy()
-                return super().__new__(cls, name, bases, namespace)
+                gib super().__new__(cls, name, bases, namespace)
 
         # __classcell__ is injected into the klasse namespace by the compiler
         # when at least one method needs it, und should be omitted otherwise
@@ -225,7 +225,7 @@ klasse TestSuper(unittest.TestCase):
         namespace_snapshot = Nichts
         klasse WithClassRef(metaclass=Meta):
             def f(self):
-                return __class__
+                gib __class__
 
         class_cell = namespace_snapshot["__classcell__"]
         method_closure = WithClassRef.f.__closure__
@@ -242,7 +242,7 @@ klasse TestSuper(unittest.TestCase):
         klasse Meta(type):
             def __new__(cls, name, bases, namespace):
                 namespace.pop('__classcell__', Nichts)
-                return super().__new__(cls, name, bases, namespace)
+                gib super().__new__(cls, name, bases, namespace)
 
         # The default case should weiter to work without any errors
         klasse WithoutClassRef(metaclass=Meta):
@@ -256,7 +256,7 @@ klasse TestSuper(unittest.TestCase):
         mit self.assertRaisesRegex(RuntimeError, expected_error):
             klasse WithClassRef(metaclass=Meta):
                 def f(self):
-                    return __class__
+                    gib __class__
 
     def test___classcell___overwrite(self):
         # See issue #23722
@@ -264,7 +264,7 @@ klasse TestSuper(unittest.TestCase):
         klasse Meta(type):
             def __new__(cls, name, bases, namespace, cell):
                 namespace['__classcell__'] = cell
-                return super().__new__(cls, name, bases, namespace)
+                gib super().__new__(cls, name, bases, namespace)
 
         fuer bad_cell in (Nichts, 0, "", object()):
             mit self.subTest(bad_cell=bad_cell):
@@ -279,12 +279,12 @@ klasse TestSuper(unittest.TestCase):
             def __new__(cls, name, bases, namespace):
                 cls = super().__new__(cls, name, bases, namespace)
                 B = type("B", (), namespace)
-                return cls
+                gib cls
 
         mit self.assertRaises(TypeError):
             klasse A(metaclass=Meta):
                 def f(self):
-                    return __class__
+                    gib __class__
 
     def test_obscure_super_errors(self):
         def f():
@@ -320,8 +320,8 @@ klasse TestSuper(unittest.TestCase):
         def f():
             k = X()
             def g():
-                return k
-            return g
+                gib k
+            gib g
         c = f().__closure__[0]
         self.assertRaises(TypeError, X.meth, c)
 
@@ -350,7 +350,7 @@ klasse TestSuper(unittest.TestCase):
 
             klasse C:
                 def method(self):
-                    return super().msg
+                    gib super().msg
             """,
         )
         mit import_helper.ready_to_import(name="shadowed_super", source=source):
@@ -364,7 +364,7 @@ klasse TestSuper(unittest.TestCase):
 
         klasse C:
             def method(self):
-                return super().msg
+                gib super().msg
 
         self.assertEqual(C().method(), "quite super")
 
@@ -374,7 +374,7 @@ klasse TestSuper(unittest.TestCase):
 
         klasse C:
             def method(self):
-                return super().msg
+                gib super().msg
 
         mit patch(f"{__name__}.super", MySuper) als m:
             self.assertEqual(C().method(), "super super")
@@ -388,7 +388,7 @@ klasse TestSuper(unittest.TestCase):
 
         klasse C:
             def method(self):
-                return super(1, 2).msg
+                gib super(1, 2).msg
 
         mit patch(f"{__name__}.super", MySuper) als m:
             self.assertEqual(C().method(), "super super")
@@ -397,7 +397,7 @@ klasse TestSuper(unittest.TestCase):
     def test_attribute_error(self):
         klasse C:
             def method(self):
-                return super().msg
+                gib super().msg
 
         mit self.assertRaisesRegex(AttributeError, "'super' object has no attribute 'msg'"):
             C().method()
@@ -405,7 +405,7 @@ klasse TestSuper(unittest.TestCase):
     def test_bad_first_arg(self):
         klasse C:
             def method(self):
-                return super(1, self).method()
+                gib super(1, self).method()
 
         mit self.assertRaisesRegex(TypeError, "argument 1 must be a type"):
             C().method()
@@ -413,7 +413,7 @@ klasse TestSuper(unittest.TestCase):
     def test_supercheck_fail(self):
         klasse C:
             def method(self, type_, obj):
-                return super(type_, obj).method()
+                gib super(type_, obj).method()
 
         c = C()
         err_msg = (
@@ -440,7 +440,7 @@ klasse TestSuper(unittest.TestCase):
     def test_super___class__(self):
         klasse C:
             def method(self):
-                return super().__class__
+                gib super().__class__
 
         self.assertEqual(C().method(), super)
 
@@ -450,7 +450,7 @@ klasse TestSuper(unittest.TestCase):
 
         klasse C:
             def method(self):
-                return mysuper(C, self).__class__
+                gib mysuper(C, self).__class__
 
         self.assertEqual(C().method(), mysuper)
 
@@ -481,7 +481,7 @@ klasse TestSuper(unittest.TestCase):
 
         klasse C(B):
             def __new__(cls):
-                return super().__new__(cls)
+                gib super().__new__(cls)
 
         _testinternalcapi = import_helper.import_module("_testinternalcapi")
         fuer _ in range(_testinternalcapi.SPECIALIZATION_THRESHOLD):
@@ -497,12 +497,12 @@ klasse TestSuper(unittest.TestCase):
 
         klasse B(A):
             def some(cls, *args, **kwargs):
-                return super().some(cls, *args, **kwargs)
+                gib super().some(cls, *args, **kwargs)
 
         klasse C(B):
             @staticmethod
             def some(cls):
-                return super().some(cls)
+                gib super().some(cls)
 
         _testinternalcapi = import_helper.import_module("_testinternalcapi")
         fuer _ in range(_testinternalcapi.SPECIALIZATION_THRESHOLD):

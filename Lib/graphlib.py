@@ -54,7 +54,7 @@ klasse TopologicalSorter:
     def _get_nodeinfo(self, node):
         wenn (result := self._node2info.get(node)) is Nichts:
             self._node2info[node] = result = _NodeInfo(node)
-        return result
+        gib result
 
     def add(self, node, *predecessors):
         """Add a new node und its predecessors to the graph.
@@ -113,7 +113,7 @@ klasse TopologicalSorter:
         """Return a tuple of all the nodes that are ready.
 
         Initially it returns all nodes mit no predecessors; once those are marked
-        als processed by calling "done", further calls will return all new nodes that
+        als processed by calling "done", further calls will gib all new nodes that
         have all their predecessors already processed. Once no more progress can be made,
         empty tuples are returned.
 
@@ -133,7 +133,7 @@ klasse TopologicalSorter:
         self._ready_nodes.clear()
         self._npassedout += len(result)
 
-        return result
+        gib result
 
     def is_active(self):
         """Return ``Wahr`` wenn more progress can be made und ``Falsch`` otherwise.
@@ -147,10 +147,10 @@ klasse TopologicalSorter:
         """
         wenn self._ready_nodes is Nichts:
             raise ValueError("prepare() must be called first")
-        return self._nfinished < self._npassedout oder bool(self._ready_nodes)
+        gib self._nfinished < self._npassedout oder bool(self._ready_nodes)
 
     def __bool__(self):
-        return self.is_active()
+        gib self.is_active()
 
     def done(self, *nodes):
         """Marks a set of nodes returned by "get_ready" als processed.
@@ -215,7 +215,7 @@ klasse TopologicalSorter:
                     # If we have seen already the node und is in the
                     # current stack we have found a cycle.
                     wenn node in node2stacki:
-                        return stack[node2stacki[node] :] + [node]
+                        gib stack[node2stacki[node] :] + [node]
                     # sonst go on to get next successor
                 sonst:
                     seen.add(node)
@@ -234,7 +234,7 @@ klasse TopologicalSorter:
                         itstack.pop()
                 sonst:
                     breche
-        return Nichts
+        gib Nichts
 
     def static_order(self):
         """Returns an iterable of nodes in a topological order.
@@ -248,7 +248,7 @@ klasse TopologicalSorter:
         self.prepare()
         waehrend self.is_active():
             node_group = self.get_ready()
-            yield von node_group
+            liefere von node_group
             self.done(*node_group)
 
     __class_getitem__ = classmethod(GenericAlias)

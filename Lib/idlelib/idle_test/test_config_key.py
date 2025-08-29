@@ -132,7 +132,7 @@ klasse ToggleLevelTest(unittest.TestCase):
                     basic = index
                 wenn child._name == 'keyseq_advanced':
                     advanced = index
-            return basic, advanced
+            gib basic, advanced
 
         # New window starts at basic level.
         self.assertFalsch(dialog.advanced)
@@ -337,7 +337,7 @@ klasse HelperTest(unittest.TestCase):
         tr = config_key.translate_key
         eq = self.assertEqual
 
-        # Letters return unchanged mit no 'Shift'.
+        # Letters gib unchanged mit no 'Shift'.
         eq(tr('q', []), 'Key-q')
         eq(tr('q', ['Control', 'Alt']), 'Key-q')
 

@@ -25,7 +25,7 @@ def get_typespecs(typedecls):
             typespecs[decl.shortkey] = [decl]
         sonst:
             typespecs[decl.shortkey].append(decl)
-    return typespecs
+    gib typespecs
 
 
 def analyze_decl(decl, typespecs, knowntypespecs, types, knowntypes, *,
@@ -33,10 +33,10 @@ def analyze_decl(decl, typespecs, knowntypespecs, types, knowntypes, *,
     resolved = resolve_decl(decl, typespecs, knowntypespecs, types)
     wenn resolved is Nichts:
         # The decl is supposed to be skipped oder ignored.
-        return Nichts
+        gib Nichts
     wenn analyze_resolved is Nichts:
-        return resolved, Nichts
-    return analyze_resolved(resolved, decl, types, knowntypes)
+        gib resolved, Nichts
+    gib analyze_resolved(resolved, decl, types, knowntypes)
 
 # This alias helps us avoid name collisions.
 _analyze_decl = analyze_decl
@@ -111,7 +111,7 @@ def resolve_decl(decl, typespecs, knowntypespecs, types):
             vartypes = [m.vartype fuer m in decl.members]
         sonst:
             # Skip this one!
-            return Nichts
+            gib Nichts
 
         typedeps = []
         fuer vartype in vartypes:
@@ -143,13 +143,13 @@ def resolve_decl(decl, typespecs, knowntypespecs, types):
                     # The typedecl fuer the typespec hasn't been resolved yet.
                     typedecl = Nichts
             typedeps.append(typedecl)
-    return typedeps
+    gib typedeps
 
 
 def find_typedecl(decl, typespec, typespecs):
     specdecls = typespecs.get(typespec)
     wenn nicht specdecls:
-        return Nichts
+        gib Nichts
 
     filename = decl.filename
 
@@ -157,8 +157,8 @@ def find_typedecl(decl, typespec, typespecs):
         typedecl, = specdecls
         wenn '-' in typespec und typedecl.filename != filename:
             # Inlined types are always in the same file.
-            return Nichts
-        return typedecl
+            gib Nichts
+        gib typedecl
 
     # Decide which one to return.
     candidates = []
@@ -176,7 +176,7 @@ def find_typedecl(decl, typespec, typespecs):
             weiter
         candidates.append(typedecl)
     wenn nicht candidates:
-        return Nichts
+        gib Nichts
     sowenn len(candidates) == 1:
         winner, = candidates
         # XXX Check fuer inline?
@@ -190,7 +190,7 @@ def find_typedecl(decl, typespec, typespecs):
         # We don't know which to return.
         raise NotImplementedError((decl, candidates))
 
-    return winner
+    gib winner
 
 
 #############################
@@ -252,7 +252,7 @@ def _dump_unresolved(decl, types, analyze_decl):
             found = [d fuer d in types wenn d.shortkey == typespec]
             wenn nicht found:
                 drucke(f'*** {typespec} ???')
-                return
+                gib
                 #raise NotImplementedError(decl)
             sonst:
                 decl, = found

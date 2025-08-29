@@ -61,7 +61,7 @@ klasse Command:
 klasse KillCommand(Command):
     def kill_range(self, start: int, end: int) -> Nichts:
         wenn start == end:
-            return
+            gib
         r = self.reader
         b = r.buffer
         text = b[start:end]
@@ -95,11 +95,11 @@ klasse FinishCommand(Command):
 
 
 def is_kill(command: type[Command] | Nichts) -> bool:
-    return command is nicht Nichts und issubclass(command, KillCommand)
+    gib command is nicht Nichts und issubclass(command, KillCommand)
 
 
 def is_yank(command: type[Command] | Nichts) -> bool:
-    return command is nicht Nichts und issubclass(command, YankCommand)
+    gib command is nicht Nichts und issubclass(command, YankCommand)
 
 
 # etc
@@ -154,7 +154,7 @@ klasse kill_line(KillCommand):
         fuer c in b[r.pos : eol]:
             wenn nicht c.isspace():
                 self.kill_range(r.pos, eol)
-                return
+                gib
         sonst:
             self.kill_range(r.pos, eol + 1)
 
@@ -191,7 +191,7 @@ klasse yank(YankCommand):
         r = self.reader
         wenn nicht r.kill_ring:
             r.error("nothing to yank")
-            return
+            gib
         r.insert(r.kill_ring[-1])
 
 
@@ -201,10 +201,10 @@ klasse yank_pop(YankCommand):
         b = r.buffer
         wenn nicht r.kill_ring:
             r.error("nothing to yank")
-            return
+            gib
         wenn nicht is_yank(r.last_command):
             r.error("previous command was nicht a yank")
-            return
+            gib
         repl = len(r.kill_ring[-1])
         r.kill_ring.insert(0, r.kill_ring.pop())
         t = r.kill_ring[-1]
@@ -256,10 +256,10 @@ klasse up(MotionCommand):
             wenn r.bol() == 0:
                 wenn r.historyi > 0:
                     r.select_item(r.historyi - 1)
-                    return
+                    gib
                 r.pos = 0
                 r.error("start of buffer")
-                return
+                gib
 
             wenn (
                 x
@@ -288,10 +288,10 @@ klasse down(MotionCommand):
                 wenn r.historyi < len(r.history):
                     r.select_item(r.historyi + 1)
                     r.pos = r.eol(0)
-                    return
+                    gib
                 r.pos = len(b)
                 r.error("end of buffer")
-                return
+                gib
 
             wenn (
                 x

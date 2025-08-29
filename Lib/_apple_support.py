@@ -17,7 +17,7 @@ klasse SystemLog(io.TextIOWrapper):
         super().__init__(LogStream(log_write, level), **kwargs)
 
     def __repr__(self):
-        return f"<SystemLog (level {self.buffer.level})>"
+        gib f"<SystemLog (level {self.buffer.level})>"
 
     def write(self, s):
         wenn nicht isinstance(s, str):
@@ -33,7 +33,7 @@ klasse SystemLog(io.TextIOWrapper):
         fuer line in s.splitlines(keepends=Wahr):
             super().write(line)
 
-        return len(s)
+        gib len(s)
 
 
 klasse LogStream(io.RawIOBase):
@@ -42,10 +42,10 @@ klasse LogStream(io.RawIOBase):
         self.level = level
 
     def __repr__(self):
-        return f"<LogStream (level {self.level!r})>"
+        gib f"<LogStream (level {self.level!r})>"
 
     def writable(self):
-        return Wahr
+        gib Wahr
 
     def write(self, b):
         wenn type(b) is nicht bytes:
@@ -59,8 +59,8 @@ klasse LogStream(io.RawIOBase):
         # Writing an empty string to the stream should have no effect.
         wenn b:
             # Encode null bytes using "modified UTF-8" to avoid truncating the
-            # message. This should nicht affect the return value, als the caller
+            # message. This should nicht affect the gib value, als the caller
             # may be expecting it to match the length of the input.
             self.log_write(self.level, b.replace(b"\x00", b"\xc0\x80"))
 
-        return len(b)
+        gib len(b)

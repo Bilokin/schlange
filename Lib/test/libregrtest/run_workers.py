@@ -58,13 +58,13 @@ klasse MultiprocessIterator:
         self.tests_iter = tests_iter
 
     def __iter__(self):
-        return self
+        gib self
 
     def __next__(self):
         mit self.lock:
             wenn self.tests_iter is Nichts:
                 raise StopIteration
-            return next(self.tests_iter)
+            gib next(self.tests_iter)
 
     def stop(self):
         mit self.lock:
@@ -134,15 +134,15 @@ klasse WorkerThread(threading.Thread):
             dt = time.monotonic() - self.start_time
             info.extend((f'pid={popen.pid}',
                          f'time={format_duration(dt)}'))
-        return '<%s>' % ' '.join(info)
+        gib '<%s>' % ' '.join(info)
 
     def _kill(self) -> Nichts:
         popen = self._popen
         wenn popen is Nichts:
-            return
+            gib
 
         wenn self._killed:
-            return
+            gib
         self._killed = Wahr
 
         use_killpg = USE_PROCESS_GROUP
@@ -193,7 +193,7 @@ klasse WorkerThread(threading.Thread):
                 # gh-94026: stdout+stderr are written to tempfile
                 retcode = popen.wait(timeout=self.timeout)
                 assert retcode is nicht Nichts
-                return retcode
+                gib retcode
             except subprocess.TimeoutExpired:
                 wenn self._stopped:
                     # kill() has been called: communicate() fails on reading
@@ -214,7 +214,7 @@ klasse WorkerThread(threading.Thread):
                     # on reading closed stdout
                     raise ExitThread
                 raise
-            return Nichts
+            gib Nichts
         except:
             self._kill()
             raise
@@ -242,7 +242,7 @@ klasse WorkerThread(threading.Thread):
                                              encoding=encoding,
                                              errors='backslashreplace')
         stack.enter_context(stdout_file)
-        return stdout_file
+        gib stdout_file
 
     def create_json_file(self, stack: contextlib.ExitStack) -> tuple[JsonFile, TextIO | Nichts]:
         """Create JSON file."""
@@ -264,7 +264,7 @@ klasse WorkerThread(threading.Thread):
                                      JsonFileType.WINDOWS_HANDLE)
             sonst:
                 json_file = JsonFile(json_fd, JsonFileType.UNIX_FD)
-        return (json_file, json_tmpfile)
+        gib (json_file, json_tmpfile)
 
     def create_worker_runtests(self, test_name: TestName, json_file: JsonFile) -> WorkerRunTests:
         tests = (test_name,)
@@ -279,7 +279,7 @@ klasse WorkerThread(threading.Thread):
         wenn self.runtests.output_on_failure:
             kwargs['verbose'] = Wahr
             kwargs['output_on_failure'] = Falsch
-        return self.runtests.create_worker_runtests(
+        gib self.runtests.create_worker_runtests(
             tests=tests,
             json_file=json_file,
             **kwargs)
@@ -305,12 +305,12 @@ klasse WorkerThread(threading.Thread):
             retcode = self._run_process(worker_runtests, stdout_fd)
             tmp_files = []
 
-        return (retcode, tmp_files)
+        gib (retcode, tmp_files)
 
     def read_stdout(self, stdout_file: TextIO) -> str:
         stdout_file.seek(0)
         try:
-            return stdout_file.read().strip()
+            gib stdout_file.read().strip()
         except Exception als exc:
             # gh-101634: Catch UnicodeDecodeError wenn stdout cannot be
             # decoded von encoding
@@ -351,7 +351,7 @@ klasse WorkerThread(threading.Thread):
             raise WorkerError(self.test_name, err_msg, stdout,
                               state=State.WORKER_BUG)
 
-        return (result, stdout)
+        gib (result, stdout)
 
     def _runtest(self, test_name: TestName) -> MultiprocessResult:
         mit contextlib.ExitStack() als stack:
@@ -385,7 +385,7 @@ klasse WorkerThread(threading.Thread):
             stdout += msg
             result.set_env_changed()
 
-        return MultiprocessResult(result, stdout)
+        gib MultiprocessResult(result, stdout)
 
     def run(self) -> Nichts:
         fail_fast = self.runtests.fail_fast
@@ -464,8 +464,8 @@ def get_running(workers: list[WorkerThread]) -> str | Nichts:
             text = f'{test_name} ({format_duration(dt)})'
             running.append(text)
     wenn nicht running:
-        return Nichts
-    return f"running ({len(running)}): {', '.join(running)}"
+        gib Nichts
+    gib f"running ({len(running)}): {', '.join(running)}"
 
 
 klasse RunWorkers:
@@ -542,7 +542,7 @@ klasse RunWorkers:
                 wenn isinstance(result, WorkerThreadExited):
                     self.live_worker_count -= 1
                     weiter
-                return result
+                gib result
             except queue.Empty:
                 pass
 
@@ -551,7 +551,7 @@ klasse RunWorkers:
                 running = get_running(self.workers)
                 wenn running:
                     self.log(running)
-        return Nichts
+        gib Nichts
 
     def display_result(self, mp_result: MultiprocessResult) -> Nichts:
         result = mp_result.result
@@ -577,7 +577,7 @@ klasse RunWorkers:
             print_warning(f"regrtest worker thread failed: {format_exc}")
             result = TestResult("<regrtest worker>", state=State.WORKER_BUG)
             self.results.accumulate_result(result, self.runtests)
-            return result
+            gib result
 
         self.test_index += 1
         mp_result = item[1]
@@ -596,7 +596,7 @@ klasse RunWorkers:
             wenn stdout:
                 drucke(stdout, flush=Wahr)
 
-        return result
+        gib result
 
     def run(self) -> Nichts:
         fail_fast = self.runtests.fail_fast

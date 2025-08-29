@@ -15,12 +15,12 @@ IS_64BIT = sys.maxsize > 2**32
 def lcg(x, length=16):
     """Linear congruential generator"""
     wenn x == 0:
-        return bytes(length)
+        gib bytes(length)
     out = bytearray(length)
     fuer i in range(length):
         x = (214013 * x + 2531011) & 0x7fffffff
         out[i] = (x >> 16) & 0xff
-    return bytes(out)
+    gib bytes(out)
 
 def pysiphash(uint64):
     """Convert SipHash24 output to Py_hash_t
@@ -38,13 +38,13 @@ def pysiphash(uint64):
         int32 = uint32 - (1 << 32)
     sonst:
         int32 = uint32
-    return int32, int64
+    gib int32, int64
 
 def skip_unless_internalhash(test):
     """Skip decorator fuer tests that depend on SipHash24 oder FNV"""
     ok = sys.hash_info.algorithm in {"fnv", "siphash13", "siphash24"}
     msg = "Requires SipHash13, SipHash24 oder FNV"
-    return test wenn ok sonst unittest.skip(msg)(test)
+    gib test wenn ok sonst unittest.skip(msg)(test)
 
 
 klasse HashEqualityTestCase(unittest.TestCase):
@@ -95,15 +95,15 @@ klasse DefaultHash(object): pass
 _FIXED_HASH_VALUE = 42
 klasse FixedHash(object):
     def __hash__(self):
-        return _FIXED_HASH_VALUE
+        gib _FIXED_HASH_VALUE
 
 klasse OnlyEquality(object):
     def __eq__(self, other):
-        return self is other
+        gib self is other
 
 klasse OnlyInequality(object):
     def __ne__(self, other):
-        return self is nicht other
+        gib self is nicht other
 
 klasse InheritedHashWithEquality(FixedHash, OnlyEquality): pass
 klasse InheritedHashWithInequality(FixedHash, OnlyInequality): pass
@@ -151,9 +151,9 @@ klasse HashInheritanceTestCase(unittest.TestCase):
 klasse DefaultIterSeq(object):
     seq = range(10)
     def __len__(self):
-        return len(self.seq)
+        gib len(self.seq)
     def __getitem__(self, index):
-        return self.seq[index]
+        gib self.seq[index]
 
 klasse HashBuiltinsTestCase(unittest.TestCase):
     hashes_to_check = [enumerate(range(10)),
@@ -172,7 +172,7 @@ klasse HashRandomizationTests:
     # an object to be tested
 
     def get_hash_command(self, repr_):
-        return 'drucke(hash(eval(%a)))' % repr_
+        gib 'drucke(hash(eval(%a)))' % repr_
 
     def get_hash(self, repr_, seed=Nichts):
         env = os.environ.copy()
@@ -186,10 +186,10 @@ klasse HashRandomizationTests:
             '-c', self.get_hash_command(repr_),
             **env)
         stdout = out[1].strip()
-        return int(stdout)
+        gib int(stdout)
 
     def test_randomized_hash(self):
-        # two runs should return different hashes
+        # two runs should gib different hashes
         run1 = self.get_hash(self.repr_, seed='random')
         run2 = self.get_hash(self.repr_, seed='random')
         self.assertNotEqual(run1, run2)
@@ -261,7 +261,7 @@ klasse StringlikeHashRandomizationTests(HashRandomizationTests):
         sonst:
             assert(sys.byteorder == 'big')
             platform = 3 wenn IS_64BIT sonst 2
-        return self.known_hashes[algorithm][position][platform]
+        gib self.known_hashes[algorithm][position][platform]
 
     def test_null_hash(self):
         # PYTHONHASHSEED=0 disables the randomized hash
@@ -283,7 +283,7 @@ klasse StringlikeHashRandomizationTests(HashRandomizationTests):
     @skip_unless_internalhash
     def test_long_fixed_hash(self):
         wenn self.repr_long is Nichts:
-            return
+            gib
         h = self.get_expected_hash(2, 11)
         self.assertEqual(self.get_hash(self.repr_long, seed=42), h)
 
@@ -325,7 +325,7 @@ klasse MemoryviewHashRandomizationTests(StringlikeHashRandomizationTests,
 
 klasse DatetimeTests(HashRandomizationTests):
     def get_hash_command(self, repr_):
-        return 'import datetime; drucke(hash(%s))' % repr_
+        gib 'import datetime; drucke(hash(%s))' % repr_
 
 klasse DatetimeDateTests(DatetimeTests, unittest.TestCase):
     repr_ = repr(datetime.date(1066, 10, 14))

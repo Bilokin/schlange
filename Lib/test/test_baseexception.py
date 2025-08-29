@@ -123,7 +123,7 @@ klasse ExceptionClassTests(unittest.TestCase):
         klasse HashThisKeyWillClearTheDict(str):
             def __hash__(self) -> int:
                 d.clear()
-                return super().__hash__()
+                gib super().__hash__()
         klasse Value(str):
             pass
         exc = Exception()
@@ -149,7 +149,7 @@ klasse UsageTests(unittest.TestCase):
         try:
             raise object_
         except TypeError:
-            return  # What is expected.
+            gib  # What is expected.
         self.fail("TypeError expected fuer raising %s" % type(object_))
 
     def catch_fails(self, object_):
@@ -170,7 +170,7 @@ klasse UsageTests(unittest.TestCase):
             except (object_,):
                 pass
         except TypeError:
-            return
+            gib
         except Exception:
             self.fail("TypeError expected when catching %s als specified in a "
                         "tuple" % type(object_))

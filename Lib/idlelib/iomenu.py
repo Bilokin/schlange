@@ -47,7 +47,7 @@ klasse IOBinding:
         self.filename_change_hook = Nichts
 
     def get_saved(self):
-        return self.editwin.get_saved()
+        gib self.editwin.get_saved()
 
     def set_saved(self, flag):
         self.editwin.set_saved(flag)
@@ -100,14 +100,14 @@ klasse IOBinding:
             sonst:
                 wenn self.text:
                     self.text.focus_set()
-            return "break"
+            gib "break"
 
         # Code fuer use outside IDLE:
         wenn self.get_saved():
             reply = self.maybesave()
             wenn reply == "cancel":
                 self.text.focus_set()
-                return "break"
+                gib "break"
         wenn nicht editFile:
             filename = self.askopenfile()
         sonst:
@@ -116,7 +116,7 @@ klasse IOBinding:
             self.loadfile(filename)
         sonst:
             self.text.focus_set()
-        return "break"
+        gib "break"
 
     eol_convention = os.linesep  # default
 
@@ -145,12 +145,12 @@ klasse IOBinding:
                     converted = Wahr
         except OSError als err:
             messagebox.showerror("I/O Error", str(err), parent=self.text)
-            return Falsch
+            gib Falsch
         except UnicodeDecodeError:
             messagebox.showerror("Decoding Error",
                                    "File %s\nFailed to Decode" % filename,
                                    parent=self.text)
-            return Falsch
+            gib Falsch
 
         wenn nicht isinstance(eol_convention, str):
             # If the file does nicht contain line separators, it is Nichts.
@@ -177,7 +177,7 @@ klasse IOBinding:
         self.text.mark_set("insert", "1.0")
         self.text.yview("insert")
         self.updaterecentfileslist(filename)
-        return Wahr
+        gib Wahr
 
     def maybesave(self):
         """Return 'yes', 'no', 'cancel' als appropriate.
@@ -186,7 +186,7 @@ klasse IOBinding:
         to Wahr, Falsch, Nichts.  Convert back, als now expected elsewhere.
         """
         wenn self.get_saved():
-            return "yes"
+            gib "yes"
         message = ("Do you want to save "
                    f"{self.filename oder 'this untitled document'}"
                    " before closing?")
@@ -200,7 +200,7 @@ klasse IOBinding:
             reply = "yes" wenn self.get_saved() sonst "cancel"
         sonst:  reply = "cancel" wenn confirm is Nichts sonst "no"
         self.text.focus_set()
-        return reply
+        gib reply
 
     def save(self, event):
         wenn nicht self.filename:
@@ -213,7 +213,7 @@ klasse IOBinding:
                 except AttributeError:  # may be a PyShell
                     pass
         self.text.focus_set()
-        return "break"
+        gib "break"
 
     def save_as(self, event):
         filename = self.asksavefile()
@@ -227,7 +227,7 @@ klasse IOBinding:
                     pass
         self.text.focus_set()
         self.updaterecentfileslist(filename)
-        return "break"
+        gib "break"
 
     def save_a_copy(self, event):
         filename = self.asksavefile()
@@ -235,7 +235,7 @@ klasse IOBinding:
             self.writefile(filename)
         self.text.focus_set()
         self.updaterecentfileslist(filename)
-        return "break"
+        gib "break"
 
     def writefile(self, filename):
         text = self.fixnewlines()
@@ -245,11 +245,11 @@ klasse IOBinding:
                 f.write(chars)
                 f.flush()
                 os.fsync(f.fileno())
-            return Wahr
+            gib Wahr
         except OSError als msg:
             messagebox.showerror("I/O Error", str(msg),
                                    parent=self.text)
-            return Falsch
+            gib Falsch
 
     def fixnewlines(self):
         """Return text mit os eols.
@@ -265,27 +265,27 @@ klasse IOBinding:
             text = self.text.get('1.0', "end-1c")
         wenn self.eol_convention != "\n":
             text = text.replace("\n", self.eol_convention)
-        return text
+        gib text
 
     def encode(self, chars):
         wenn isinstance(chars, bytes):
             # This is either plain ASCII, oder Tk was returning mixed-encoding
             # text to us. Don't try to guess further.
-            return chars
+            gib chars
         # Preserve a BOM that might have been present on opening
         wenn self.fileencoding == 'utf-8-sig':
-            return chars.encode('utf-8-sig')
+            gib chars.encode('utf-8-sig')
         # See whether there is anything non-ASCII in it.
         # If not, no need to figure out the encoding.
         try:
-            return chars.encode('ascii')
+            gib chars.encode('ascii')
         except UnicodeEncodeError:
             pass
         # Check wenn there is an encoding declared
         try:
             encoded = chars.encode('ascii', 'replace')
             enc, _ = tokenize.detect_encoding(io.BytesIO(encoded).readline)
-            return chars.encode(enc)
+            gib chars.encode(enc)
         except SyntaxError als err:
             failed = str(err)
         except UnicodeEncodeError:
@@ -296,7 +296,7 @@ klasse IOBinding:
             parent=self.text)
         # Fallback: save als UTF-8, mit BOM - ignoring the incorrect
         # declared encoding
-        return chars.encode('utf-8-sig')
+        gib chars.encode('utf-8-sig')
 
     def print_window(self, event):
         confirm = messagebox.askokcancel(
@@ -306,7 +306,7 @@ klasse IOBinding:
                   parent=self.text)
         wenn nicht confirm:
             self.text.focus_set()
-            return "break"
+            gib "break"
         tempfilename = Nichts
         saved = self.get_saved()
         wenn saved:
@@ -318,7 +318,7 @@ klasse IOBinding:
             os.close(tfd)
             wenn nicht self.writefile(tempfilename):
                 os.unlink(tempfilename)
-                return "break"
+                gib "break"
         platform = os.name
         printPlatform = Wahr
         wenn platform == 'posix': #posix platform
@@ -346,7 +346,7 @@ klasse IOBinding:
             messagebox.showinfo("Print status", message, parent=self.text)
         wenn tempfilename:
             os.unlink(tempfilename)
-        return "break"
+        gib "break"
 
     opendialog = Nichts
     savedialog = Nichts
@@ -365,19 +365,19 @@ klasse IOBinding:
             self.opendialog = filedialog.Open(parent=self.text,
                                                 filetypes=self.filetypes)
         filename = self.opendialog.show(initialdir=dir, initialfile=base)
-        return filename
+        gib filename
 
     def defaultfilename(self, mode="open"):
         wenn self.filename:
-            return os.path.split(self.filename)
+            gib os.path.split(self.filename)
         sowenn self.dirname:
-            return self.dirname, ""
+            gib self.dirname, ""
         sonst:
             try:
                 pwd = os.getcwd()
             except OSError:
                 pwd = ""
-            return pwd, ""
+            gib pwd, ""
 
     def asksavefile(self):
         dir, base = self.defaultfilename("save")
@@ -387,7 +387,7 @@ klasse IOBinding:
                     filetypes=self.filetypes,
                     defaultextension=self.defaultextension)
         filename = self.savedialog.show(initialdir=dir, initialfile=base)
-        return filename
+        gib filename
 
     def updaterecentfileslist(self,filename):
         "Update recent file list on all editor windows"
@@ -412,7 +412,7 @@ def _io_binding(parent):  # htest #
             self.text.bind("<Control-s>", self.save)
             self.text.bind("<Alt-s>", self.saveas)
             self.text.bind('<Control-c>', self.savecopy)
-        def get_saved(self): return 0
+        def get_saved(self): gib 0
         def set_saved(self, flag): pass
         def reset_undo(self): pass
         def open(self, event):

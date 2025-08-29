@@ -39,7 +39,7 @@ def main():
     yin(200, "black", "white")
     yin(200, "white", "black")
     ht()
-    return "Done!"
+    gib "Done!"
 
 wenn __name__ == '__main__':
     main()

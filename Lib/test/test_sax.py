@@ -106,13 +106,13 @@ klasse XmlTestBase(unittest.TestCase):
 
 def xml_str(doc, encoding=Nichts):
     wenn encoding is Nichts:
-        return doc
-    return '<?xml version="1.0" encoding="%s"?>\n%s' % (encoding, doc)
+        gib doc
+    gib '<?xml version="1.0" encoding="%s"?>\n%s' % (encoding, doc)
 
 def xml_bytes(doc, encoding, decl_encoding=...):
     wenn decl_encoding is ...:
         decl_encoding = encoding
-    return xml_str(doc, decl_encoding).encode(encoding, 'xmlcharrefreplace')
+    gib xml_str(doc, decl_encoding).encode(encoding, 'xmlcharrefreplace')
 
 def make_xml_file(doc, encoding, decl_encoding=...):
     wenn decl_encoding is ...:
@@ -208,7 +208,7 @@ klasse ParseTest(unittest.TestCase):
         def mock_open(*args):
             nonlocal fileobj
             fileobj = builtin_open(*args)
-            return fileobj
+            gib fileobj
 
         mit mock.patch('xml.sax.saxutils.open', side_effect=mock_open):
             make_xml_file(self.data, 'iso-8859-1', Nichts)
@@ -361,10 +361,10 @@ klasse PrepareInputSourceTest(unittest.TestCase):
         os_helper.unlink(self.file)
 
     def make_byte_stream(self):
-        return BytesIO(b"This is a byte stream.")
+        gib BytesIO(b"This is a byte stream.")
 
     def make_character_stream(self):
-        return StringIO("This is a character stream.")
+        gib StringIO("This is a character stream.")
 
     def checkContent(self, stream, content):
         self.assertIsNotNichts(stream)
@@ -790,7 +790,7 @@ klasse StringXmlgenTest(XmlgenTest, unittest.TestCase):
     ioclass = StringIO
 
     def xml(self, doc, encoding='iso-8859-1'):
-        return '<?xml version="1.0" encoding="%s"?>\n%s' % (encoding, doc)
+        gib '<?xml version="1.0" encoding="%s"?>\n%s' % (encoding, doc)
 
     test_xmlgen_unencodable = Nichts
 
@@ -798,7 +798,7 @@ klasse BytesXmlgenTest(XmlgenTest, unittest.TestCase):
     ioclass = BytesIO
 
     def xml(self, doc, encoding='iso-8859-1'):
-        return ('<?xml version="1.0" encoding="%s"?>\n%s' %
+        gib ('<?xml version="1.0" encoding="%s"?>\n%s' %
                 (encoding, doc)).encode(encoding, 'xmlcharrefreplace')
 
 klasse WriterXmlgenTest(BytesXmlgenTest):
@@ -807,24 +807,24 @@ klasse WriterXmlgenTest(BytesXmlgenTest):
         closed = Falsch
 
         def seekable(self):
-            return Wahr
+            gib Wahr
 
         def tell(self):
-            # return 0 at start und nicht 0 after start
-            return len(self)
+            # gib 0 at start und nicht 0 after start
+            gib len(self)
 
         def getvalue(self):
-            return b''.join(self)
+            gib b''.join(self)
 
 klasse StreamWriterXmlgenTest(XmlgenTest, unittest.TestCase):
     def ioclass(self):
         raw = BytesIO()
         writer = codecs.getwriter('ascii')(raw, 'xmlcharrefreplace')
         writer.getvalue = raw.getvalue
-        return writer
+        gib writer
 
     def xml(self, doc, encoding='iso-8859-1'):
-        return ('<?xml version="1.0" encoding="%s"?>\n%s' %
+        gib ('<?xml version="1.0" encoding="%s"?>\n%s' %
                 (encoding, doc)).encode('ascii', 'xmlcharrefreplace')
 
 klasse StreamReaderWriterXmlgenTest(XmlgenTest, unittest.TestCase):
@@ -842,12 +842,12 @@ klasse StreamReaderWriterXmlgenTest(XmlgenTest, unittest.TestCase):
             # Windows will nicht let use reopen without first closing
             writer.close()
             mit open(writer.name, 'rb') als f:
-                return f.read()
+                gib f.read()
         writer.getvalue = getvalue
-        return writer
+        gib writer
 
     def xml(self, doc, encoding='iso-8859-1'):
-        return ('<?xml version="1.0" encoding="%s"?>\n%s' %
+        gib ('<?xml version="1.0" encoding="%s"?>\n%s' %
                 (encoding, doc)).encode('ascii', 'xmlcharrefreplace')
 
 start = b'<?xml version="1.0" encoding="iso-8859-1"?>\n'
@@ -967,7 +967,7 @@ klasse ExpatReaderTest(XmlTestBase):
             source = InputSource()
             source.setPublicId(publicId)
             source.setSystemId(systemId)
-            return source
+            gib source
 
     def test_expat_dtdhandler(self):
         parser = create_parser()
@@ -1021,7 +1021,7 @@ klasse ExpatReaderTest(XmlTestBase):
         def resolveEntity(self, publicId, systemId):
             inpsrc = InputSource()
             inpsrc.setByteStream(BytesIO(b"<entity/>"))
-            return inpsrc
+            gib inpsrc
 
     def test_expat_entityresolver_enabled(self):
         parser = create_parser()
@@ -1359,16 +1359,16 @@ klasse ErrorReportingTest(unittest.TestCase):
             self._colno = colno
 
         def getPublicId(self):
-            return "pubid"
+            gib "pubid"
 
         def getSystemId(self):
-            return "sysid"
+            gib "sysid"
 
         def getLineNumber(self):
-            return self._lineno
+            gib self._lineno
 
         def getColumnNumber(self):
-            return self._colno
+            gib self._colno
 
 # ===========================================================================
 #

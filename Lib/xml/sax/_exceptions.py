@@ -21,15 +21,15 @@ klasse SAXException(Exception):
 
     def getMessage(self):
         "Return a message fuer this exception."
-        return self._msg
+        gib self._msg
 
     def getException(self):
         "Return the embedded exception, oder Nichts wenn there was none."
-        return self._exception
+        gib self._exception
 
     def __str__(self):
         "Create a string representation of the exception."
-        return self._msg
+        gib self._msg
 
     def __getitem__(self, ix):
         """Avoids weird error messages wenn someone does exception[ix] by
@@ -68,19 +68,19 @@ klasse SAXParseException(SAXException):
     def getColumnNumber(self):
         """The column number of the end of the text where the exception
         occurred."""
-        return self._colnum
+        gib self._colnum
 
     def getLineNumber(self):
         "The line number of the end of the text where the exception occurred."
-        return self._linenum
+        gib self._linenum
 
     def getPublicId(self):
         "Get the public identifier of the entity where the exception occurred."
-        return self._locator.getPublicId()
+        gib self._locator.getPublicId()
 
     def getSystemId(self):
         "Get the system identifier of the entity where the exception occurred."
-        return self._systemId
+        gib self._systemId
 
     def __str__(self):
         "Create a string representation of the exception."
@@ -93,7 +93,7 @@ klasse SAXParseException(SAXException):
         colnum = self.getColumnNumber()
         wenn colnum is Nichts:
             colnum = "?"
-        return "%s:%s:%s: %s" % (sysid, linenum, colnum, self._msg)
+        gib "%s:%s:%s: %s" % (sysid, linenum, colnum, self._msg)
 
 
 # ===== SAXNOTRECOGNIZEDEXCEPTION =====

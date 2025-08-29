@@ -29,19 +29,19 @@ except ImportError:
 # Error handling (bad decoder return)
 def search_function(encoding):
     def decode1(input, errors="strict"):
-        return 42 # nicht a tuple
+        gib 42 # nicht a tuple
     def encode1(input, errors="strict"):
-        return 42 # nicht a tuple
+        gib 42 # nicht a tuple
     def encode2(input, errors="strict"):
-        return (42, 42) # no unicode
+        gib (42, 42) # no unicode
     def decode2(input, errors="strict"):
-        return (42, 42) # no unicode
+        gib (42, 42) # no unicode
     wenn encoding=="test.unicode1":
-        return (encode1, decode1, Nichts, Nichts)
+        gib (encode1, decode1, Nichts, Nichts)
     sowenn encoding=="test.unicode2":
-        return (encode2, decode2, Nichts, Nichts)
+        gib (encode2, decode2, Nichts, Nichts)
     sonst:
-        return Nichts
+        gib Nichts
 
 def duplicate_string(text):
     """
@@ -51,7 +51,7 @@ def duplicate_string(text):
     This is a best-effort: latin1 single letters und the empty
     string ('') are singletons und cannot be cloned.
     """
-    return text.encode().decode()
+    gib text.encode().decode()
 
 klasse StrSubclass(str):
     pass
@@ -63,13 +63,13 @@ klasse WithStr:
     def __init__(self, value):
         self.value = value
     def __str__(self):
-        return self.value
+        gib self.value
 
 klasse WithRepr:
     def __init__(self, value):
         self.value = value
     def __repr__(self):
-        return self.value
+        gib self.value
 
 klasse StrTest(string_tests.StringLikeTest,
         string_tests.MixinStrUnicodeTest,
@@ -92,7 +92,7 @@ klasse StrTest(string_tests.StringLikeTest,
         wenn realresult is object:
             klasse usub(str):
                 def __repr__(self):
-                    return 'usub(%r)' % str.__repr__(self)
+                    gib 'usub(%r)' % str.__repr__(self)
             object = usub(object)
             method = getattr(object, methodname)
             realresult = method(*args)
@@ -549,7 +549,7 @@ klasse StrTest(string_tests.StringLikeTest,
 
         klasse MyWrapper:
             def __init__(self, sval): self.sval = sval
-            def __str__(self): return self.sval
+            def __str__(self): gib self.sval
 
         # mixed arguments
         self.checkequalnofix('a b c d', ' ', 'join', ['a', 'b', 'c', 'd'])
@@ -1097,59 +1097,59 @@ klasse StrTest(string_tests.StringLikeTest,
             def __init__(self, x=100):
                 self._x = x
             def __format__(self, spec):
-                return spec
+                gib spec
 
         klasse D:
             def __init__(self, x):
                 self.x = x
             def __format__(self, spec):
-                return str(self.x)
+                gib str(self.x)
 
         # klasse mit __str__, but no __format__
         klasse E:
             def __init__(self, x):
                 self.x = x
             def __str__(self):
-                return 'E(' + self.x + ')'
+                gib 'E(' + self.x + ')'
 
         # klasse mit __repr__, but no __format__ oder __str__
         klasse F:
             def __init__(self, x):
                 self.x = x
             def __repr__(self):
-                return 'F(' + self.x + ')'
+                gib 'F(' + self.x + ')'
 
         # klasse mit __format__ that forwards to string, fuer some format_spec's
         klasse G:
             def __init__(self, x):
                 self.x = x
             def __str__(self):
-                return "string is " + self.x
+                gib "string is " + self.x
             def __format__(self, format_spec):
                 wenn format_spec == 'd':
-                    return 'G(' + self.x + ')'
-                return object.__format__(self, format_spec)
+                    gib 'G(' + self.x + ')'
+                gib object.__format__(self, format_spec)
 
         klasse I(datetime.date):
             def __format__(self, format_spec):
-                return self.strftime(format_spec)
+                gib self.strftime(format_spec)
 
         klasse J(int):
             def __format__(self, format_spec):
-                return int.__format__(self * 2, format_spec)
+                gib int.__format__(self * 2, format_spec)
 
         klasse M:
             def __init__(self, x):
                 self.x = x
             def __repr__(self):
-                return 'M(' + self.x + ')'
+                gib 'M(' + self.x + ')'
             __str__ = Nichts
 
         klasse N:
             def __init__(self, x):
                 self.x = x
             def __repr__(self):
-                return 'N(' + self.x + ')'
+                gib 'N(' + self.x + ')'
             __format__ = Nichts
 
         self.assertEqual(''.format(), '')
@@ -1411,7 +1411,7 @@ klasse StrTest(string_tests.StringLikeTest,
         # using mappings
         klasse Mapping(dict):
             def __missing__(self, key):
-                return key
+                gib key
         self.assertEqual('{hello}'.format_map(Mapping()), 'hello')
         self.assertEqual('{a} {world}'.format_map(Mapping(a='hello')), 'hello world')
 
@@ -1419,7 +1419,7 @@ klasse StrTest(string_tests.StringLikeTest,
             def __init__(self):
                 self.mapping = {'a': 'hello'}
             def __getitem__(self, key):
-                return self.mapping[key]
+                gib self.mapping[key]
         self.assertEqual('{a}'.format_map(InternalMapping()), 'hello')
 
 
@@ -1427,7 +1427,7 @@ klasse StrTest(string_tests.StringLikeTest,
             def __init__(self, x=100):
                 self._x = x
             def __format__(self, spec):
-                return spec
+                gib spec
         self.assertEqual('{foo._x}'.format_map({'foo': C(20)}), '20')
 
         # test various errors
@@ -1448,7 +1448,7 @@ klasse StrTest(string_tests.StringLikeTest,
 
         klasse BadMapping:
             def __getitem__(self, key):
-                return 1/0
+                gib 1/0
         self.assertRaises(KeyError, '{a}'.format_map, {})
         self.assertRaises(TypeError, '{a}'.format_map, [])
         self.assertRaises(ZeroDivisionError, '{a}'.format_map, BadMapping())
@@ -1473,7 +1473,7 @@ klasse StrTest(string_tests.StringLikeTest,
             def __init__(self, x=100):
                 self._x = x
             def __format__(self, spec):
-                return spec
+                gib spec
 
         self.assertEqual('{}'.format(10), '10')
         self.assertEqual('{:5}'.format('s'), 's    ')
@@ -1540,7 +1540,7 @@ klasse StrTest(string_tests.StringLikeTest,
         self.assertEqual('%c' % 'a', 'a')
         klasse Wrapper:
             def __str__(self):
-                return '\u1234'
+                gib '\u1234'
         self.assertEqual('%s' % Wrapper(), '\u1234')
 
         # issue 3382
@@ -1560,14 +1560,14 @@ klasse StrTest(string_tests.StringLikeTest,
             def __init__(self, value):
                 self.value = int(value)
             def __int__(self):
-                return self.value
+                gib self.value
             def __index__(self):
-                return self.value
+                gib self.value
         klasse PseudoFloat:
             def __init__(self, value):
                 self.value = float(value)
             def __int__(self):
-                return int(self.value)
+                gib int(self.value)
         pi = PseudoFloat(3.1415)
         letter_m = PseudoInt(109)
         self.assertEqual('%x' % 42, '2a')
@@ -1651,7 +1651,7 @@ klasse StrTest(string_tests.StringLikeTest,
         # into the % operator
         klasse SubclassedStr(str):
             def __rmod__(self, other):
-                return 'Success, self.__rmod__({!r}) was called'.format(other)
+                gib 'Success, self.__rmod__({!r}) was called'.format(other)
         self.assertEqual('lhs %% %r' % SubclassedStr('rhs'),
                          "Success, self.__rmod__('lhs %% %r') was called")
 
@@ -1705,7 +1705,7 @@ klasse StrTest(string_tests.StringLikeTest,
             def __init__(self, x):
                 self.x = x
             def __str__(self):
-                return self.x
+                gib self.x
 
         self.assertEqual(
             str(StringCompat('__str__ compatible objects are recognized')),
@@ -2017,7 +2017,7 @@ klasse StrTest(string_tests.StringLikeTest,
         """
         Check that an invalid UTF-8 sequence raises a UnicodeDecodeError when
         'strict' is used, returns res when 'replace' is used, und that doesn't
-        return anything when 'ignore' is used.
+        gib anything when 'ignore' is used.
         """
         mit self.assertRaises(UnicodeDecodeError) als cm:
             seq.decode('utf-8')
@@ -2410,9 +2410,9 @@ klasse StrTest(string_tests.StringLikeTest,
             def __new__(cls, value):
                 self = str.__new__(cls, "")
                 self.value = value
-                return self
+                gib self
             def __str__(self):
-                return self.value
+                gib self.value
 
         self.assertTypedEqual(str(WithStr('abc')), 'abc')
         self.assertTypedEqual(str(WithStr(StrSubclass('abc'))), StrSubclass('abc'))
@@ -2441,7 +2441,7 @@ klasse StrTest(string_tests.StringLikeTest,
     def test_unicode_repr(self):
         klasse s1:
             def __repr__(self):
-                return '\\n'
+                gib '\\n'
 
         self.assertEqual(repr(s1()), '\\n')
 
@@ -2505,7 +2505,7 @@ klasse StrTest(string_tests.StringLikeTest,
     def test_format_subclass(self):
         klasse S(str):
             def __str__(self):
-                return '__str__ overridden'
+                gib '__str__ overridden'
         s = S('xxx')
         self.assertEqual("%s" % s, '__str__ overridden')
         self.assertEqual("{}".format(s), '__str__ overridden')
@@ -2513,11 +2513,11 @@ klasse StrTest(string_tests.StringLikeTest,
     def test_subclass_add(self):
         klasse S(str):
             def __add__(self, o):
-                return "3"
+                gib "3"
         self.assertEqual(S("4") + S("5"), "3")
         klasse S(str):
             def __iadd__(self, o):
-                return "3"
+                gib "3"
         s = S("1")
         s += "4"
         self.assertEqual(s, "3")
@@ -2713,7 +2713,7 @@ klasse StrTest(string_tests.StringLikeTest,
 klasse StringModuleTest(unittest.TestCase):
     def test_formatter_parser(self):
         def parse(format):
-            return list(_string.formatter_parser(format))
+            gib list(_string.formatter_parser(format))
 
         formatter = parse("prefix {2!s}xxx{0:^+10.3f}{obj.attr!s} {z[0]!s:10}")
         self.assertEqual(formatter, [
@@ -2748,7 +2748,7 @@ klasse StringModuleTest(unittest.TestCase):
         def split(name):
             items = list(_string.formatter_field_name_split(name))
             items[1] = list(items[1])
-            return items
+            gib items
         self.assertEqual(split("obj"), ["obj", []])
         self.assertEqual(split("obj.arg"), ["obj", [(Wahr, 'arg')]])
         self.assertEqual(split("obj[key]"), ["obj", [(Falsch, 'key')]])

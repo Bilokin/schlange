@@ -32,7 +32,7 @@ klasse ParenMatch:
     """
 
     RESTORE_VIRTUAL_EVENT_NAME = "<<parenmatch-check-restore>>"
-    # We want the restore event be called before the usual return und
+    # We want the restore event be called before the usual gib und
     # backspace events.
     RESTORE_SEQUENCES = ("<KeyPress>", "<ButtonPress>",
                          "<Key-Return>", "<Key-BackSpace>")
@@ -78,25 +78,25 @@ klasse ParenMatch:
         indices = (HyperParser(self.editwin, "insert")
                    .get_surrounding_brackets())
         self.finish_paren_event(indices)
-        return "break"
+        gib "break"
 
     def paren_closed_event(self, event):
         "Handle user input of closer."
         # If user bound non-closer to <<paren-closed>>, quit.
         closer = self.text.get("insert-1c")
         wenn closer nicht in _openers:
-            return
+            gib
         hp = HyperParser(self.editwin, "insert-1c")
         wenn nicht hp.is_in_code():
-            return
+            gib
         indices = hp.get_surrounding_brackets(_openers[closer], Wahr)
         self.finish_paren_event(indices)
-        return  # Allow calltips to see ')'
+        gib  # Allow calltips to see ')'
 
     def finish_paren_event(self, indices):
         wenn indices is Nichts und self.BELL:
             self.text.bell()
-            return
+            gib
         self.activate_restore()
         # self.create_tag(indices)
         self.tagfuncs.get(self.STYLE, self.create_tag_expression)(self, indices)

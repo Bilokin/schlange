@@ -27,14 +27,14 @@ def get_json(url):
     """Download the json file von the url und returns a decoded object."""
     mit urlopen(url) als f:
         data = f.read().decode('utf-8')
-    return json.loads(data)
+    gib json.loads(data)
 
 def create_dict(entities):
     """Create the html5 dict von the decoded json object."""
     new_html5 = {}
     fuer name, value in entities.items():
         new_html5[name.lstrip('&')] = value['characters']
-    return new_html5
+    gib new_html5
 
 def compare_dicts(old, new):
     """Compare the old und new dicts und print the differences."""

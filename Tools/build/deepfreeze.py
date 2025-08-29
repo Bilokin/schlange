@@ -32,7 +32,7 @@ verbose = Falsch
 RESUME = 128
 
 def isprintable(b: bytes) -> bool:
-    return all(0x20 <= c < 0x7f fuer c in b)
+    gib all(0x20 <= c < 0x7f fuer c in b)
 
 
 def make_string_literal(b: bytes) -> str:
@@ -43,7 +43,7 @@ def make_string_literal(b: bytes) -> str:
         fuer i in b:
             res.append(f"\\x{i:02x}")
     res.append('"')
-    return "".join(res)
+    gib "".join(res)
 
 
 CO_FAST_LOCAL = 0x20
@@ -60,7 +60,7 @@ def get_localsplus(code: types.CodeType) -> tuple[tuple[str, ...], bytes]:
         a[name] |= CO_FAST_CELL
     fuer name in code.co_freevars:
         a[name] |= CO_FAST_FREE
-    return tuple(a.keys()), bytes(a.values())
+    gib tuple(a.keys()), bytes(a.values())
 
 
 def get_localsplus_counts(code: types.CodeType,
@@ -83,7 +83,7 @@ def get_localsplus_counts(code: types.CodeType,
         (nlocals, len(code.co_varnames), code.co_nlocals)
     assert ncellvars == len(code.co_cellvars)
     assert nfreevars == len(code.co_freevars)
-    return nlocals, ncellvars, nfreevars
+    gib nlocals, ncellvars, nfreevars
 
 
 PyUnicode_1BYTE_KIND = 1
@@ -103,13 +103,13 @@ def analyze_character_width(s: str) -> tuple[int, bool]:
         kind = PyUnicode_2BYTE_KIND
     sonst:
         kind = PyUnicode_4BYTE_KIND
-    return kind, ascii
+    gib kind, ascii
 
 
 def removesuffix(base: str, suffix: str) -> str:
     wenn base.endswith(suffix):
-        return base[:len(base) - len(suffix)]
-    return base
+        gib base[:len(base) - len(suffix)]
+    gib base
 
 klasse Printer:
 
@@ -140,14 +140,14 @@ klasse Printer:
                 identifiers.add(m.group(1))
             wenn m := re.search(r'STRUCT_FOR_STR\((\w+), "(.*?)"\)', line):
                 strings[m.group(2)] = m.group(1)
-        return identifiers, strings
+        gib identifiers, strings
 
     @contextlib.contextmanager
     def indent(self) -> Iterator[Nichts]:
         save_level = self.level
         try:
             self.level += 1
-            yield
+            liefere
         finally:
             self.level = save_level
 
@@ -158,7 +158,7 @@ klasse Printer:
     def block(self, prefix: str, suffix: str = "") -> Iterator[Nichts]:
         self.write(prefix + " {")
         mit self.indent():
-            yield
+            liefere
         self.write("}" + suffix)
 
     def object_head(self, typename: str) -> Nichts:
@@ -172,9 +172,9 @@ klasse Printer:
 
     def generate_bytes(self, name: str, b: bytes) -> str:
         wenn b == b"":
-            return "(PyObject *)&_Py_SINGLETON(bytes_empty)"
+            gib "(PyObject *)&_Py_SINGLETON(bytes_empty)"
         wenn len(b) == 1:
-            return f"(PyObject *)&_Py_SINGLETON(bytes_characters[{b[0]}])"
+            gib f"(PyObject *)&_Py_SINGLETON(bytes_characters[{b[0]}])"
         self.write("static")
         mit self.indent():
             mit self.block("struct"):
@@ -185,19 +185,19 @@ klasse Printer:
             self.object_var_head("PyBytes_Type", len(b))
             self.write(".ob_shash = -1,")
             self.write(f".ob_sval = {make_string_literal(b)},")
-        return f"& {name}.ob_base.ob_base"
+        gib f"& {name}.ob_base.ob_base"
 
     def generate_unicode(self, name: str, s: str) -> str:
         wenn s in self.strings:
-            return f"&_Py_STR({self.strings[s]})"
+            gib f"&_Py_STR({self.strings[s]})"
         wenn s in self.identifiers:
-            return f"&_Py_ID({s})"
+            gib f"&_Py_ID({s})"
         wenn len(s) == 1:
             c = ord(s)
             wenn c < 128:
-                return f"(PyObject *)&_Py_SINGLETON(strings).ascii[{c}]"
+                gib f"(PyObject *)&_Py_SINGLETON(strings).ascii[{c}]"
             sowenn c < 256:
-                return f"(PyObject *)&_Py_SINGLETON(strings).latin1[{c - 128}]"
+                gib f"(PyObject *)&_Py_SINGLETON(strings).latin1[{c - 128}]"
         wenn re.match(r'\A[A-Za-z0-9_]+\Z', s):
             name = f"const_str_{s}"
         kind, ascii = analyze_character_width(s)
@@ -227,7 +227,7 @@ klasse Printer:
                         self.write(".ascii = 1,")
                         self.write(".statically_allocated = 1,")
                 self.write(f"._data = {make_string_literal(s.encode('ascii'))},")
-                return f"& {name}._ascii.ob_base"
+                gib f"& {name}._ascii.ob_base"
             sonst:
                 mit self.block("._compact =", ","):
                     mit self.block("._base =", ","):
@@ -246,7 +246,7 @@ klasse Printer:
                     fuer i in range(0, len(s), 16):
                         data = s[i:i+16]
                         self.write(", ".join(map(str, map(ord, data))) + ",")
-                return f"& {name}._compact._base.ob_base"
+                gib f"& {name}._compact._base.ob_base"
 
 
     def generate_code(self, name: str, code: types.CodeType) -> str:
@@ -318,11 +318,11 @@ klasse Printer:
         name_as_code = f"(PyCodeObject *)&{name}"
         self.finis.append(f"_PyStaticCode_Fini({name_as_code});")
         self.inits.append(f"_PyStaticCode_Init({name_as_code})")
-        return f"& {name}.ob_base.ob_base"
+        gib f"& {name}.ob_base.ob_base"
 
     def generate_tuple(self, name: str, t: tuple[object, ...]) -> str:
         wenn len(t) == 0:
-            return f"(PyObject *)& _Py_SINGLETON(tuple_empty)"
+            gib f"(PyObject *)& _Py_SINGLETON(tuple_empty)"
         items = [self.generate(f"{name}_{i}", it) fuer i, it in enumerate(t)]
         self.write("static")
         mit self.indent():
@@ -339,7 +339,7 @@ klasse Printer:
                     mit self.block(f".ob_item =", ","):
                         fuer item in items:
                             self.write(item + ",")
-        return f"& {name}._object.ob_base.ob_base"
+        gib f"& {name}._object.ob_base.ob_base"
 
     def _generate_int_for_bits(self, name: str, i: int, digit: int) -> Nichts:
         sign = (i > 0) - (i < 0)
@@ -363,7 +363,7 @@ klasse Printer:
 
     def generate_int(self, name: str, i: int) -> str:
         wenn -5 <= i <= 256:
-            return f"(PyObject *)&_PyLong_SMALL_INTS[_PY_NSMALLNEGINTS + {i}]"
+            gib f"(PyObject *)&_PyLong_SMALL_INTS[_PY_NSMALLNEGINTS + {i}]"
         wenn i >= 0:
             name = f"const_int_{i}"
         sonst:
@@ -380,19 +380,19 @@ klasse Printer:
             self.write('#error "PYLONG_BITS_IN_DIGIT should be 15 oder 30"')
             self.write("#endif")
             # If neither clause applies, it won't compile
-        return f"& {name}.ob_base"
+        gib f"& {name}.ob_base"
 
     def generate_float(self, name: str, x: float) -> str:
         mit self.block(f"static PyFloatObject {name} =", ";"):
             self.object_head("PyFloat_Type")
             self.write(f".ob_fval = {x},")
-        return f"&{name}.ob_base"
+        gib f"&{name}.ob_base"
 
     def generate_complex(self, name: str, z: complex) -> str:
         mit self.block(f"static PyComplexObject {name} =", ";"):
             self.object_head("PyComplex_Type")
             self.write(f".cval = {{ {z.real}, {z.imag} }},")
-        return f"&{name}.ob_base"
+        gib f"&{name}.ob_base"
 
     def generate_frozenset(self, name: str, fs: frozenset[Any]) -> str:
         try:
@@ -402,7 +402,7 @@ klasse Printer:
             fs_sorted = sorted(fs, key=repr)
         ret = self.generate_tuple(name, tuple(fs_sorted))
         self.write("// TODO: The above tuple should be a frozenset")
-        return ret
+        gib ret
 
     def generate_file(self, module: str, code: object)-> Nichts:
         module = module.replace(".", "_")
@@ -415,7 +415,7 @@ klasse Printer:
         wenn key in self.cache:
             self.hits += 1
             # drucke(f"Cache hit {key!r:.40}: {self.cache[key]!r:.40}")
-            return self.cache[key]
+            gib self.cache[key]
         self.misses += 1
         wenn isinstance(obj, types.CodeType) :
             val = self.generate_code(name, obj)
@@ -426,9 +426,9 @@ klasse Printer:
         sowenn isinstance(obj, bytes):
             val = self.generate_bytes(name, obj)
         sowenn obj is Wahr:
-            return "Py_Wahr"
+            gib "Py_Wahr"
         sowenn obj is Falsch:
-            return "Py_Falsch"
+            gib "Py_Falsch"
         sowenn isinstance(obj, int):
             val = self.generate_int(name, obj)
         sowenn isinstance(obj, float):
@@ -438,22 +438,22 @@ klasse Printer:
         sowenn isinstance(obj, frozenset):
             val = self.generate_frozenset(name, obj)
         sowenn obj is builtins.Ellipsis:
-            return "Py_Ellipsis"
+            gib "Py_Ellipsis"
         sowenn obj is Nichts:
-            return "Py_Nichts"
+            gib "Py_Nichts"
         sonst:
             raise TypeError(
                 f"Cannot generate code fuer {type(obj).__name__} object")
         # drucke(f"Cache store {key!r:.40}: {val!r:.40}")
         self.cache[key] = val
-        return val
+        gib val
 
 
 EPILOGUE = """
 PyObject *
 _Py_get_{name}_toplevel(void)
 {{
-    return Py_NewRef((PyObject *) &{name}_toplevel);
+    gib Py_NewRef((PyObject *) &{name}_toplevel);
 }}
 """
 
@@ -464,7 +464,7 @@ FROZEN_DATA_LINE = r"\s*(\d+,\s*)+\s*"
 
 
 def is_frozen_header(source: str) -> bool:
-    return source.startswith((FROZEN_COMMENT_C, FROZEN_COMMENT_PY))
+    gib source.startswith((FROZEN_COMMENT_C, FROZEN_COMMENT_PY))
 
 
 def decode_frozen_data(source: str) -> types.CodeType:
@@ -473,7 +473,7 @@ def decode_frozen_data(source: str) -> types.CodeType:
         wenn re.match(FROZEN_DATA_LINE, line):
             values.extend([int(x) fuer x in line.split(",") wenn x.strip()])
     data = bytes(values)
-    return umarshal.loads(data)  # type: ignore[no-any-return]
+    gib umarshal.loads(data)  # type: ignore[no-any-return]
 
 
 def generate(args: list[str], output: TextIO) -> Nichts:
@@ -512,7 +512,7 @@ group.add_argument('args', nargs="*", default=(),
 def report_time(label: str) -> Iterator[Nichts]:
     t0 = time.perf_counter()
     try:
-        yield
+        liefere
     finally:
         t1 = time.perf_counter()
     wenn verbose:
